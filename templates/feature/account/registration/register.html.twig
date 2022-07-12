@@ -7,15 +7,61 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div>
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Register</h2>
+            </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+            {{ form_start(registrationForm, ) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            <div class="mt-8 space-y-6">
+                <input type="hidden" name="remember" value="true">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="email-address" class="sr-only">Email address</label>
+                        <input id="email-address" name="registration_form[email]" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address">
+
+                        {% if form_errors(registrationForm.email) %}
+                            {% for error in registrationForm.email.vars.errors.form.getErrors(true) %}
+                                <p class="text-red-400">{{ error.message }}</p>
+                            {% endfor %}
+                        {% endif %}
+
+
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <input id="password" name="registration_form[plainPassword]" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password">
+
+                        {% if form_errors(registrationForm.plainPassword) %}
+                            {% for error in registrationForm.plainPassword.vars.errors.form.getErrors(true) %}
+                                <p class="text-red-400">{{ error.message }}</p>
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember-me" name="registration_form[agreeTerms]" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Accept terms </label>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Register
+                    </button>
+                </div>
+            </div>
+
+            {{ form_row(registrationForm._token) }}
+
+            {{ form_end(registrationForm, {'render_rest': false}) }}
+
+        </div>
+    </div>
+
 {% endblock %}
