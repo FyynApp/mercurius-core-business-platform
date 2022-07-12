@@ -1,0 +1,9 @@
+feature.account.register:
+  path: /register
+  controller: App\Controller\Feature\Account\RegistrationController::registerAction
+  methods: [ GET, POST ]
+
+feature.account.verify_email:
+  path: /verify_email
+  controller: App\Controller\Feature\Account\RegistrationController::verifyEmailAction
+  methods: [ GET ]
