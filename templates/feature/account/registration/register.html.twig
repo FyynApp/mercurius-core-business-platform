@@ -24,7 +24,7 @@
 
                         {% if form_errors(registrationForm.email) %}
                             {% for error in registrationForm.email.vars.errors.form.getErrors(true) %}
-                                <p class="text-red-400">{{ error.message }}</p>
+                                <p class="text-red-400">{{ error.message|trans }}</p>
                             {% endfor %}
                         {% endif %}
 
@@ -36,7 +36,7 @@
 
                         {% if form_errors(registrationForm.plainPassword) %}
                             {% for error in registrationForm.plainPassword.vars.errors.form.getErrors(true) %}
-                                <p class="text-red-400">{{ error.message }}</p>
+                                <p class="text-red-400">{{ error.message|trans }}</p>
                             {% endfor %}
                         {% endif %}
 
