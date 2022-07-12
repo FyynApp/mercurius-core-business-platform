@@ -1,2 +1,19 @@
 features:
-    resource: "routes/feature/*.yaml"
+    resource: 'routes/feature/*.yaml'
+    prefix: /{_locale}
+    requirements:
+        _locale: en|de
+    defaults:
+        _locale: en
+
+catchall:
+    path:     /{catchall}
+    controller: App\Controller\CatchallController::indexAction
+    methods:  [GET]
+    requirements:
+        catchall: ".+"
+
+root:
+    path:     /
+    controller: App\Controller\CatchallController::indexAction
+    methods:  [GET]
