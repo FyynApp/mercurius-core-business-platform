@@ -7,3 +7,8 @@ feature.account.verify_email:
   path: /verify_email
   controller: App\Controller\Feature\Account\RegistrationController::verifyEmailAction
   methods: [ GET ]
+
+feature.account.login:
+  path: /login
+  controller: App\Controller\Feature\Account\LoginController::indexAction
+  methods: [ GET, POST ]
