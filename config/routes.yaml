@@ -1,3 +1,2 @@
-controllers:
-    resource: ../src/Controller/
-    type: attribute
+features:
+    resource: "routes/feature/*.yaml"

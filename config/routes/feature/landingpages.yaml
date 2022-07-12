@@ -1,0 +1,4 @@
+feature.landingpages.homepage:
+  path: /
+  controller: App\Controller\Feature\Landingpages\HomepageController::indexAction
+  methods: [ GET ]
