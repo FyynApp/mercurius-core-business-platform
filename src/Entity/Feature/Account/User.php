@@ -114,6 +114,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    public function getFirstName(): ?string
+    {
+        if (!is_null($this->getThirdPartyAuthLinkedinResourceOwner())) {
+            return $this->getThirdPartyAuthLinkedinResourceOwner()->getFirstName();
+        }
+
+        return null;
+    }
+
+    public function getLastName(): ?string
+    {
+        if (!is_null($this->getThirdPartyAuthLinkedinResourceOwner())) {
+            return $this->getThirdPartyAuthLinkedinResourceOwner()->getLastName();
+        }
+
+        return null;
+    }
+
+
     public function hasProfilePhoto(): bool
     {
         if (!is_null($this->getThirdPartyAuthLinkedinResourceOwner())

@@ -2,3 +2,13 @@ feature.landingpages.homepage:
   path: /
   controller: App\Controller\Feature\Landingpages\HomepageController::indexAction
   methods: [ GET ]
+
+feature.landingpages.features:
+  path: /features
+  controller: App\Controller\Feature\Landingpages\HomepageController::indexAction
+  methods: [ GET ]
+
+feature.landingpages.pricing:
+  path: /pricing
+  controller: App\Controller\Feature\Landingpages\HomepageController::indexAction
+  methods: [ GET ]
