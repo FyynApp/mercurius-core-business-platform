@@ -1,1 +1,11 @@
-'There is already an account with this email': 'Ein Konto mit dieser E-Mail existiert bereits'
+'There is already an account with this email': 'Ein Konto mit dieser E-Mail existiert bereits.'
+
+feature:
+  account:
+    thirdpartyauth:
+      errorpage:
+        title: 'Ein Fehler ist aufgetreten.'
+        cta_back_to_login: 'Zurück zum Login'
+        cta_back_to_registration: 'Zurück zur Registrierung'
+        linkedin:
+          infotext: 'Leider ist bei der Kommmunikation mit LinkedIn ein unerwarteter Fehler aufgetreten. Bitte wiederholen Sie den Vorgang.'

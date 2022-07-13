@@ -1,1 +1,5 @@
-'There is already an account with this email': 'There is already an account with this email'
+feature:
+  account:
+    thirdpartyauth:
+      errorpage:
+        title: 'An error occured.'

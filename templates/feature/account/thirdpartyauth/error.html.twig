@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'feature.account.thirdpartyauth.errorpage.title'|trans }}{% endblock %}
+
+{% block body %}
+    {{ 'feature.account.thirdpartyauth.errorpage.linkedin.infotext'|trans }}
+
+    <a href="{{ path('feature.account.register') }}">{{ 'feature.account.thirdpartyauth.errorpage.cta_back_to_registration'|trans }}</a>
+    <a href="{{ path('feature.account.login') }}">{{ 'feature.account.thirdpartyauth.errorpage.cta_back_to_login'|trans }}</a>
+{% endblock %}
