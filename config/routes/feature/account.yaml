@@ -13,6 +13,10 @@ feature.account.login:
   controller: App\Controller\Feature\Account\LoginController::indexAction
   methods: [ GET, POST ]
 
+feature.account.login_link_check:
+  path: /login-link-check
+  methods: [ GET, POST ]
+
 feature.account.3rdpartyauth.linkedin.start:
   path: /3rdpartyauth/linkedin/start
   controller: App\Controller\Feature\Account\ThirdPartyAuthController::linkedinStartAction

@@ -35,16 +35,27 @@ class ThirdPartyAuthController extends AbstractController
             if (!$result->wasSuccessful()) {
                 return $this->render(
                     'feature/account/thirdpartyauth/error.html.twig',
-                    [],
+                    [
+                        'error' => $result->getError(),
+                        'gotThrowable' => false
+                    ],
                     new Response(null, Response::HTTP_INTERNAL_SERVER_ERROR)
                 );
+            }
+
+            if (!is_null($result->getLoginLinkUrl())) {
+                return $this->redirect($result->getLoginLinkUrl());
             }
 
             return new Response(print_r($receivedResourceOwner, true));
         } catch (Throwable $t) {
             return $this->render(
                 'feature/account/thirdpartyauth/error.html.twig',
-                [],
+                [
+                    'error' => -1,
+                    'gotThrowable' => true,
+                    'throwable' => $t
+                ],
                 new Response(null, Response::HTTP_INTERNAL_SERVER_ERROR)
             );
         }

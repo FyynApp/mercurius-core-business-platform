@@ -22,6 +22,10 @@ security:
                 check_path: feature.account.login
                 enable_csrf: true
 
+            login_link:
+                check_route: feature.account.login_link_check
+                signature_properties: ['id']
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

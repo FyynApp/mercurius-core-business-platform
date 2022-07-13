@@ -20,6 +20,7 @@ class ThirdPartyAuthLinkedinResourceOwner
         $this->lastName = $lastName;
         $this->sortedProfilePicture800Url = null;
         $this->sortedProfilePicture800ContentType = null;
+        $this->user = null;
     }
 
     #[ORM\Id]
@@ -84,5 +85,19 @@ class ThirdPartyAuthLinkedinResourceOwner
     public function setSortedProfilePicture800ContentType(?string $contentType): void
     {
         $this->sortedProfilePicture800ContentType = $contentType;
+    }
+
+    #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?User $user;
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
     }
 }
