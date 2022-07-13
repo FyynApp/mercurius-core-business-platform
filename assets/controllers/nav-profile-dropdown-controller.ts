@@ -3,6 +3,9 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['dropdown'];
 
+    isOpen: boolean;
+    dropdownTarget: HTMLButtonElement;
+
     initialize() {
         this.isOpen = false;
     }
