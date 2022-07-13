@@ -1,10 +1,10 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['dropdown'];
+    static targets = ['menu'];
 
     isOpen: boolean;
-    dropdownTarget: HTMLDivElement;
+    menuTarget: HTMLDivElement;
 
     initialize() {
         this.isOpen = false;
@@ -12,10 +12,10 @@ export default class extends Controller {
 
     click() {
         if (this.isOpen) {
-            this.dropdownTarget.classList.add('hidden');
+            this.menuTarget.classList.add('hidden');
             this.isOpen = false;
         } else {
-            this.dropdownTarget.classList.remove('hidden');
+            this.menuTarget.classList.remove('hidden');
             this.isOpen = true;
         }
     }
