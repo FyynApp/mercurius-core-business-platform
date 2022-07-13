@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -27,6 +28,12 @@ class RegistrationController extends AbstractController
 
     public function registerAction(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+
+        if (!is_null($user)) {
+            return $this->redirectToRoute('feature.landingpages.homepage');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -43,8 +50,9 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('feature.account.verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'feature.account.verify_email',
+                $user,
                 (new TemplatedEmail())
                     ->from(new Address('no-reply@fyyn.io', 'Fyyn.io'))
                     ->to($user->getEmail())
@@ -60,7 +68,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    public function verifyEmailAction(Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
+    public function verifyEmailAction(Request $request, TranslatorInterface $translator, UserRepository $userRepository, LoginLinkHandlerInterface $loginLinkHandler): Response
     {
         $id = $request->get('id');
 
@@ -85,6 +93,6 @@ class RegistrationController extends AbstractController
 
         $this->addFlash('success', 'Your email address has been verified.');
 
-        return $this->redirectToRoute('feature.landingpages.homepage');
+        return $this->redirect($loginLinkHandler->createLoginLink($user)->getUrl());
     }
 }

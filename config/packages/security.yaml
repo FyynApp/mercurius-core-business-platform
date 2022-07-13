@@ -26,6 +26,11 @@ security:
                 check_route: feature.account.login_link_check
                 signature_properties: ['id']
 
+            logout:
+                path: feature.account.logout
+                target: feature.account.login
+
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

@@ -15,6 +15,25 @@
         {% endblock %}
     </head>
     <body>
+        <nav>
+            {% if app.user %}
+                {% if app.user.hasProfilePhoto() %}
+                    <div class="flex m-2">
+                        <img
+                            class="inline-block h-6 w-6 rounded-full ring-4 ring-white"
+                            src="{{ ContentDeliveryService.getUrlForUserProfilePhoto(app.user) }}"
+                            alt=""
+                        />
+                    </div>
+                {% endif %}
+
+                <a href="{{ path('feature.account.logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ path('feature.account.login') }}">Login</a>
+                <a href="{{ path('feature.account.register') }}">Register</a>
+            {% endif %}
+        </nav>
+
         {% block body %}{% endblock %}
     </body>
 </html>

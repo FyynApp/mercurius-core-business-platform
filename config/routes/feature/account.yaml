@@ -17,6 +17,10 @@ feature.account.login_link_check:
   path: /login-link-check
   methods: [ GET, POST ]
 
+feature.account.logout:
+  path: /logout
+  methods: [ GET, POST ]
+
 feature.account.3rdpartyauth.linkedin.start:
   path: /3rdpartyauth/linkedin/start
   controller: App\Controller\Feature\Account\ThirdPartyAuthController::linkedinStartAction
