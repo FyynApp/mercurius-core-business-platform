@@ -2,4 +2,11 @@
 
 {% block body %}
     <h2 class="tw-text-3xl tw-bg-orange-800 tw-border-2 tw-underline">Hello, world.</h2>
+
+    {% if app.user %}
+        {% if app.user.hasProfilePhoto() %}
+            <img src="{{ ContentDeliveryService.getUrlForUserProfilePhoto(app.user) }}" />
+        {% endif %}
+    {% endif %}
+
 {% endblock %}

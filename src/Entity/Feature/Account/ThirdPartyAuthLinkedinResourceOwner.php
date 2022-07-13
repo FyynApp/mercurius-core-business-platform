@@ -78,6 +78,11 @@ class ThirdPartyAuthLinkedinResourceOwner
         $this->sortedProfilePicture800Url = $url;
     }
 
+    public function getSortedProfilePicture800Url(): ?string
+    {
+        return $this->sortedProfilePicture800Url;
+    }
+
 
     #[ORM\Column(name: 'sorted_profile_picture_800_content_type', type: 'string', length: 100, unique: false, nullable: true)]
     private ?string $sortedProfilePicture800ContentType;
@@ -87,7 +92,13 @@ class ThirdPartyAuthLinkedinResourceOwner
         $this->sortedProfilePicture800ContentType = $contentType;
     }
 
-    #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist'])]
+    public function getSortedProfilePicture800ContentType(): ?string
+    {
+        return $this->sortedProfilePicture800ContentType;
+    }
+
+
+    #[ORM\OneToOne(inversedBy: 'thirdPartyAuthLinkedinResourceOwner', targetEntity: User::class, cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?User $user;
 

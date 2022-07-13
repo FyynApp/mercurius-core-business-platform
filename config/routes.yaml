@@ -6,6 +6,9 @@ features:
     defaults:
         _locale: en
 
+aspects:
+    resource: 'routes/aspect/*.yaml'
+
 catchall:
     path:     /{catchall}
     controller: App\Controller\CatchallController::indexAction

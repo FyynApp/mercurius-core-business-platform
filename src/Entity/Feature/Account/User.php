@@ -19,22 +19,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'uuid', unique: true)]
     private string $id;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private string $email;
-
-    #[ORM\Column(type: 'json')]
-    private array $roles = [];
-
-    #[ORM\Column(type: 'string')]
-    private string $password;
-
-    #[ORM\Column(type: 'boolean')]
-    private bool $isVerified = false;
-
     public function getId(): ?string
     {
         return $this->id;
     }
+
+
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    private string $email;
 
     public function getEmail(): ?string
     {
@@ -48,10 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     public function getRoles(): array
     {
@@ -69,6 +60,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    #[ORM\Column(type: 'string')]
+    private string $password;
+
     public function getPassword(): string
     {
         return $this->password;
@@ -81,11 +76,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isVerified = false;
 
     public function isVerified(): bool
     {
@@ -97,5 +90,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: ThirdPartyAuthLinkedinResourceOwner::class, cascade: ['persist'])]
+    private ?ThirdPartyAuthLinkedinResourceOwner $thirdPartyAuthLinkedinResourceOwner = null;
+
+    public function getThirdPartyAuthLinkedinResourceOwner(): ?ThirdPartyAuthLinkedinResourceOwner
+    {
+        return $this->thirdPartyAuthLinkedinResourceOwner;
+    }
+
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+
+    public function hasProfilePhoto(): bool
+    {
+        if (!is_null($this->getThirdPartyAuthLinkedinResourceOwner())
+            && !is_null($this->getThirdPartyAuthLinkedinResourceOwner()->getSortedProfilePicture800Url())
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function getProfilePhotoUrl(): ?string
+    {
+        if ($this->hasProfilePhoto()) {
+            return $this->getThirdPartyAuthLinkedinResourceOwner()->getSortedProfilePicture800Url();
+        }
+
+        return null;
+    }
+
+    public function getProfilePhotoContentType(): ?string
+    {
+        if ($this->hasProfilePhoto()) {
+            return $this->getThirdPartyAuthLinkedinResourceOwner()->getSortedProfilePicture800ContentType();
+        }
+
+        return null;
     }
 }

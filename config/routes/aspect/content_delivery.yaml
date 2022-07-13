@@ -1,0 +1,4 @@
+aspect.content_delivery.serve_external_asset:
+  path: /content-delivery/serve-external-asset
+  controller: App\Controller\Aspect\ContentDelivery\ContentDeliveryController::serveExternalAssetAction
+  methods: [ GET ]
