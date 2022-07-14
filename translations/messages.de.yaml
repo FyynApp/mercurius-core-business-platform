@@ -10,6 +10,30 @@ sidenav:
   signout: 'Ausloggen'
 
 feature:
+
+  landinpages:
+    homepage:
+      title1: 'Bessere Abschlüsse'
+      title2: 'durch Video.'
+      text: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.'
+      cta:
+        get_started: 'Jetzt anmelden'
+        live_demo: 'Live Demo'
+    features:
+      title1: 'Wir bieten'
+      title2: 'was sie brauchen.'
+      text: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.'
+      cta:
+        get_started: 'Jetzt anmelden'
+        live_demo: 'Live Demo'
+    pricing:
+      title1: 'Preis/Leistung'
+      title2: 'wie es sein muss.'
+      text: 'Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.'
+      cta:
+        get_started: 'Jetzt anmelden'
+        live_demo: 'Live Demo'
+
   account:
     thirdpartyauth:
       errorpage:
