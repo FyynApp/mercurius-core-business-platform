@@ -34,7 +34,7 @@ class MainNavigationComponent
             ];
         } else {
             $this->entries = [
-                new NavigationEntry('mainnav.dashboard', 'feature.landingpages.homepage'),
+                new NavigationEntry('mainnav.dashboard', 'feature.dashboard.show'),
             ];
         }
 

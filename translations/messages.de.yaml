@@ -34,6 +34,21 @@ feature:
         get_started: 'Jetzt anmelden'
         live_demo: 'Live Demo'
 
+  dashboard:
+    show:
+      your_info: 'Ihre Daten'
+      your_info_subtitle: 'Kontoinformationen und Inhalte'
+      your_name: 'Name'
+      your_email_address: 'E-Mail Adresse'
+      your_subscription: 'Ihr aktuelles Paket'
+      subscription:
+        m:
+          title: 'Paket M'
+          description: '4,99 EUR/Monat — bis zu 10 Aufnahmen pro Monat'
+      your_latest_videos: 'Neueste Videos'
+      cta:
+        manage_video: 'Verwalten'
+
   account:
     thirdpartyauth:
       errorpage:

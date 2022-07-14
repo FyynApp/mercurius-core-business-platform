@@ -1,0 +1,4 @@
+feature.dashboard.show:
+  path: /my/dashboard
+  controller: App\Controller\Feature\Dashboard\DashboardController::showAction
+  methods: [ GET ]

@@ -34,6 +34,21 @@ feature:
         get_started: 'Get started'
         live_demo: 'Live demo'
 
+  dashboard:
+    show:
+      your_info: 'Your data'
+      your_info_subtitle: 'Account information and content'
+      your_name: 'Full name'
+      your_email_address: 'E-mail address'
+      your_subscription: 'Current subscription'
+      subscription:
+        m:
+          title: 'Package M'
+          description: '$4.99/month — up to 10 recordings per month'
+      your_latest_videos: 'Newest videos'
+      cta:
+        manage_video: 'manage'
+
   account:
     thirdpartyauth:
       errorpage:
