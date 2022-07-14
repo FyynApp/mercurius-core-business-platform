@@ -1,3 +1,14 @@
+mainnav:
+  homepage: 'About'
+  features: 'Features'
+  pricing: 'Pricing'
+  dashboard: 'Dashboard'
+
+sidenav:
+  signin: 'Sign in'
+  signup: 'Sign up'
+  signout: 'Sign out'
+
 feature:
   account:
     thirdpartyauth:

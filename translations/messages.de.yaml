@@ -1,4 +1,13 @@
-'There is already an account with this email': 'Ein Konto mit dieser E-Mail existiert bereits.'
+mainnav:
+  homepage: 'Über'
+  features: 'Funktionen'
+  pricing: 'Preise'
+  dashboard: 'Übersicht'
+
+sidenav:
+  signin: 'Einloggen'
+  signup: 'Registrieren'
+  signout: 'Ausloggen'
 
 feature:
   account:

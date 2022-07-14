@@ -1,0 +1,146 @@
+{# @var this \App\Components\SideNavigationComponent #}
+
+{% if this.type is same as 'stacked' %}
+    <div class="pt-4 pb-3 border-t border-gray-700">
+
+        {% if this.user %}
+            <div class="flex items-center px-3">
+                <div class="flex-shrink-0">
+
+                    {% if app.user.hasProfilePhoto() %}
+                        <img class="h-8 w-8 rounded-full ring-2 ring-gray-600" src="{{ ContentDeliveryService.getUrlForUserProfilePhoto(app.user) }}" alt="">
+                    {% else %}
+                        <!-- Heroicon name: outline/user-circle -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    {% endif %}
+
+                </div>
+                <div class="ml-3">
+
+                    {% if app.user.firstName is not null or app.user.lastName is not null %}
+                        <div class="text-base font-medium leading-none text-white">
+                            {{ app.user.firstName }}
+                            {{ app.user.lastName }}
+                        </div>
+                    {% endif %}
+
+                    <div class="text-sm font-medium leading-none text-gray-400">{{ app.user.userIdentifier }}</div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="mt-3 px-0 space-y-1">
+
+            {% for entry in this.entries %}
+                <a
+                    {% if entry.active %}
+                        class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                        aria-current="page"
+                    {% else %}
+                        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                    {% endif %}
+
+                    href="{{ path(entry.routeName) }}"
+                >
+                    {{ entry.displayNameTransId|trans }}
+                </a>
+            {% endfor %}
+
+        </div>
+    </div>
+
+{% else %}
+
+    {% if app.user %}
+        <div class="hidden md:block">
+            <div class="ml-4 flex items-center md:ml-6">
+
+                <!-- Profile dropdown -->
+                <div
+                        {{ stimulus_controller('nav-profile-dropdown') }}
+                        class="ml-3 relative"
+                >
+                    <div>
+                        <button
+                                {{ stimulus_action('nav-profile-dropdown', 'click') }}
+                                type="button"
+                                class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                                id="user-menu-button"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                        >
+                            <span class="sr-only">Open user menu</span>
+                            {% if app.user.hasProfilePhoto() %}
+                                <img class="h-8 w-8 rounded-full ring-2 ring-gray-600" src="{{ ContentDeliveryService.getUrlForUserProfilePhoto(app.user) }}" alt="">
+                            {% else %}
+                                <!-- Heroicon name: outline/user-circle -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            {% endif %}
+                        </button>
+                    </div>
+
+                    <!--
+                      Dropdown menu, show/hide based on menu state.
+
+                      Entering: "transition ease-out duration-100"
+                        From: "transform opacity-0 scale-95"
+                        To: "transform opacity-100 scale-100"
+                      Leaving: "transition ease-in duration-75"
+                        From: "transform opacity-100 scale-100"
+                        To: "transform opacity-0 scale-95"
+                    -->
+                    <div
+                            {{ stimulus_target('nav-profile-dropdown', 'dropdown') }}
+                            class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            role="menu"
+                            aria-orientation="vertical"
+                            aria-labelledby="user-menu-button"
+                            tabindex="-1"
+                    >
+
+                        {% for entry in this.entries %}
+                            <a
+                                    {% if entry.active %}
+                                        class="bg-gray-100 block px-4 py-2 text-sm text-gray-700"
+                                        role="menuitem"
+                                        aria-current="page"
+                                    {% else %}
+                                        class="block px-4 py-2 text-sm text-gray-700"
+                                        role="menuitem"
+                                    {% endif %}
+
+                                    href="{{ path(entry.routeName) }}"
+                            >
+                                {{ entry.displayNameTransId|trans }}
+                            </a>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+
+        {% for entry in this.entries %}
+            <a
+                {% if entry.active %}
+                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                    aria-current="page"
+                {% else %}
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                {% endif %}
+
+                href="{{ path(entry.routeName) }}"
+            >
+                {{ entry.displayNameTransId|trans }}
+            </a>
+        {% endfor %}
+
+    {% endif %}
+
+{% endif %}
