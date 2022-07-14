@@ -9,6 +9,13 @@ sidenav:
   signup: 'Registrieren'
   signout: 'Ausloggen'
 
+footernav:
+  german: 'Deutsch'
+  english: 'English'
+  imprint: 'Impressum'
+  terms: 'AGB'
+  contact: 'Kontakt'
+
 feature:
 
   landinpages:

@@ -9,6 +9,14 @@ sidenav:
   signup: 'Sign up'
   signout: 'Sign out'
 
+footernav:
+  german: 'Deutsch'
+  english: 'English'
+  imprint: 'Imprint'
+  terms: 'Terms'
+  contact: 'Contact'
+
+
 feature:
 
   landinpages:

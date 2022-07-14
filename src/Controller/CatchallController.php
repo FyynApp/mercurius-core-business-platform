@@ -16,6 +16,7 @@ class CatchallController extends AbstractController
 
         if (   $preferredLanguage === 'de'
             || mb_substr($preferredLanguage, 0, 3) === 'de_'
+            || mb_substr($preferredLanguage, 0, 3) === 'de-'
         ) {
             return new RedirectResponse(
                 $router->generate(

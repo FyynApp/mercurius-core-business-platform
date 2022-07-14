@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full bg-gray-100">
+<html class="h-full">
     <head>
         <meta charset="UTF-8">
         <title>Fyyn — {% block title %}Welcome!{% endblock %}</title>
@@ -16,7 +16,7 @@
     </head>
     <body class="h-full">
 
-        <div class="min-h-full">
+        <div class="min-h-full flex flex-col h-screen justify-between">
             <nav
                 {{ stimulus_controller('nav-mobilemenu') }}
                 class="bg-gray-800"
@@ -123,22 +123,52 @@
                 </div>
             </nav>
 
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <h1 class="text-3xl font-bold text-gray-900">
-                        {% block contentTitle %}{% endblock %}
-                    </h1>
-                </div>
-            </header>
-            <main>
-                <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                    <div>
-
-                        {% block body %}{% endblock %}
-
+            <div class="mb-auto">
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <h1 class="text-3xl font-bold text-gray-900">
+                            {% block contentTitle %}{% endblock %}
+                        </h1>
                     </div>
-                </div>
-            </main>
+                </header>
+                <main>
+                    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                        <div>
+
+                            {% block body %}{% endblock %}
+
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <footer class="min-h-max w-full bottom-0 p-4 md:pt-20 shadow-2xl md:flex md:items-center md:justify-between md:p-6 md:pt-20 dark:bg-white border-t-2">
+                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                    © {{ "now"|date("Y") }} Mercurius Gruppe
+                </span>
+                <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+                    <li>
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="mr-4 hover:underline md:mr-6">{{ 'footernav.german'|trans }}</a>
+                    </li>
+                </ul>
+
+                <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+                    <li>
+                        <a href="#" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.imprint'|trans }}</a>
+                    </li>
+                    <li>
+                        <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.terms'|trans }}</a>
+                    </li>
+                    <li>
+                        <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.contact'|trans }}</a>
+                    </li>
+                </ul>
+            </footer>
+
         </div>
+
     </body>
 </html>
