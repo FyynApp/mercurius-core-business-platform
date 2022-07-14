@@ -58,6 +58,33 @@ feature:
         manage_video: 'manage'
 
   account:
+    login:
+      placeholder:
+        email: 'E-mail address'
+        password: 'Password'
+      cta:
+        sign_in: 'Sign in'
+        sign_in_with_linkedin: 'Sign in with LinkedIn'
+      or: 'or'
+      sign_in_with_linkedin_question: 'Already using LinkedIn?'
+      sign_in_with_linkedin_info: 'Use your existing LinkedIn account to sign in with Fyyn.io with a simple click - no registration needed!'
+
+    register:
+      placeholder:
+        email: 'E-mail address'
+        password: 'Password'
+      cta:
+        accept_terms: 'Accept terms'
+        sign_up: 'Sign up'
+        sign_up_with_linkedin: 'Sign up with LinkedIn'
+      or: 'or'
+      sign_up_with_linkedin_question: 'Already using LinkedIn?'
+      sign_up_with_linkedin_info: 'Use your existing LinkedIn account to sign up with Fyyn.io with a simple click!'
+
     thirdpartyauth:
       errorpage:
         title: 'An error occured.'
+        cta_back_to_login: 'Back to sign in'
+        cta_back_to_registration: 'Back to sign up'
+        linkedin:
+          infotext: 'We are afraid there was a problem while exchanging data with LinkedIn (Code %error%). Please try again.'

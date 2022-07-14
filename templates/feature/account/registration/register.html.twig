@@ -37,7 +37,7 @@
                             autocomplete="email"
                             required
                             class="appearance-none rounded-none relative block h-16 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="E-mail address"
+                            placeholder="{{ 'feature.account.register.placeholder.email'|trans }}"
                         />
                     </div>
                     <div>
@@ -49,7 +49,7 @@
                             autocomplete="current-password"
                             required
                             class="appearance-none rounded-none relative block h-16 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Password"
+                            placeholder="{{ 'feature.account.register.placeholder.password'|trans }}"
                         />
                     </div>
                 </div>
@@ -57,7 +57,9 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <input id="remember-me" name="registration_form[agreeTerms]" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                        <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Accept terms </label>
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                            {{ 'feature.account.register.cta.accept_terms'|trans }}
+                        </label>
                     </div>
                 </div>
 
@@ -66,7 +68,7 @@
                         type="submit"
                         class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
                     >
-                        Sign up
+                        {{ 'feature.account.register.cta.sign_up'|trans }}
                     </button>
                 </div>
             </div>
@@ -79,7 +81,7 @@
     </div>
 
     <div class="mt-16 min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8 text-gray-500">
-        —&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;—
+        —&nbsp;&nbsp;&nbsp;{{ 'feature.account.register.or'|trans }}&nbsp;&nbsp;&nbsp;—
     </div>
 
     <div class="mt-16 min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8">
@@ -89,8 +91,12 @@
                     <div class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                         <div class="w-0 flex-1 flex items-center">
                             <div class="ml-2 flex-1 w-0">
-                                <p class="font-bold mb-2">Already using LinkedIn?</p>
-                                <p>In this case, you can create a new Fyyn account with a simple click.</p>
+                                <p class="font-bold mb-2">
+                                    {{ 'feature.account.register.sign_up_with_linkedin_question'|trans }}
+                                </p>
+                                <p>
+                                    {{ 'feature.account.register.sign_up_with_linkedin_info'|trans }}
+                                </p>
                             </div>
                         </div>
                         <div class="ml-4 flex-shrink-0">
@@ -98,9 +104,7 @@
                                     href="{{ path('feature.account.3rdpartyauth.linkedin.start') }}"
                                     class="text-center flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-6 text-xs font-medium text-white shadow-sm hover:bg-indigo-700"
                             >
-                                Sign up<br/>
-                                with<br/>
-                                LinkedIn
+                                {{ 'feature.account.register.cta.sign_up_with_linkedin'|trans }}
                             </a>
                         </div>
                     </div>
