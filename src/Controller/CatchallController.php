@@ -4,13 +4,32 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 class CatchallController extends AbstractController
 {
-    public function indexAction(RouterInterface $router): Response
+    public function indexAction(RouterInterface $router, Request $request): Response
     {
-        return new RedirectResponse($router->generate('feature.landingpages.homepage'));
+        $preferredLanguage = $request->getPreferredLanguage();
+
+        if (   $preferredLanguage === 'de'
+            || mb_substr($preferredLanguage, 0, 3) === 'de_'
+        ) {
+            return new RedirectResponse(
+                $router->generate(
+                    'feature.landingpages.homepage',
+                    ['_locale' => 'de']
+                )
+            );
+        } else {
+            return new RedirectResponse(
+                $router->generate(
+                    'feature.landingpages.homepage',
+                    ['_locale' => 'en']
+                )
+            );
+        }
     }
 }
