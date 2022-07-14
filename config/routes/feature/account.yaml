@@ -1,5 +1,5 @@
 feature.account.register:
-  path: /register
+  path: /sign-up
   controller: App\Controller\Feature\Account\RegistrationController::registerAction
   methods: [ GET, POST ]
 
@@ -9,7 +9,7 @@ feature.account.verify_email:
   methods: [ GET ]
 
 feature.account.login:
-  path: /login
+  path: /sign-in
   controller: App\Controller\Feature\Account\LoginController::indexAction
   methods: [ GET, POST ]
 
@@ -18,7 +18,7 @@ feature.account.login_link_check:
   methods: [ GET, POST ]
 
 feature.account.logout:
-  path: /logout
+  path: /sign-out
   methods: [ GET, POST ]
 
 feature.account.3rdpartyauth.linkedin.start:
