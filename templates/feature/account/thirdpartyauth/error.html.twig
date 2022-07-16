@@ -3,7 +3,7 @@
 {% block title %}{{ 'feature.account.thirdpartyauth.errorpage.title'|trans }}{% endblock %}
 
 {% block body %}
-    {{ 'feature.account.thirdpartyauth.errorpage.linkedin.infotext'|trans({'%error%': error}) }}
+    {{ 'feature.account.thirdpartyauth.errorpage.linkedin.infotext'|trans({'error': error}) }}
 
     {% if gotThrowable %}
         <!-- Got throwable: {{ throwable.message }} -->

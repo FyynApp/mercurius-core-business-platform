@@ -3,6 +3,7 @@ mainnav:
   features: 'Funktionen'
   pricing: 'Preise'
   dashboard: 'Übersicht'
+  presentationpage_templates: 'Vorlagen Präsentationsseite'
 
 sidenav:
   signin: 'Einloggen'
@@ -56,6 +57,18 @@ feature:
       cta:
         manage_video: 'Verwalten'
 
+  presentationpage_templates:
+    overview:
+      title: >-
+        {numberOfTemplates, plural,
+          =0    {Sie haben noch keine Vorlagen angelegt}
+          one   {Sie verfügen aktuell über eine Vorlage}
+          other {Sie verfügen aktuell über # Vorlagen}
+        }
+      subtitle: 'Vorlagen legen fest, wie eine Videolandingpage beim Aufruf durch Ihren Kunden dargestellt wird.'
+      cta:
+        add: 'Vorlage anlegen'
+
   account:
     login:
       placeholder:
@@ -86,4 +99,4 @@ feature:
         cta_back_to_login: 'Zurück zum Login'
         cta_back_to_registration: 'Zurück zur Registrierung'
         linkedin:
-          infotext: 'Leider ist bei der Kommmunikation mit LinkedIn ein unerwarteter Fehler aufgetreten (Fehler %error%). Bitte wiederholen Sie den Vorgang.'
+          infotext: 'Leider ist bei der Kommmunikation mit LinkedIn ein unerwarteter Fehler aufgetreten (Fehler {error}). Bitte wiederholen Sie den Vorgang.'

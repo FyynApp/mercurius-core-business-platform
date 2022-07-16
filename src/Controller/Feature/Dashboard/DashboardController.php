@@ -9,7 +9,6 @@ class DashboardController extends AbstractController
 {
     public function showAction(): Response
     {
-
         return $this->render('feature/dashboard/show.html.twig');
     }
 }

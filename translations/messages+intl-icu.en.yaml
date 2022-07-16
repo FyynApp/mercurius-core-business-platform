@@ -3,6 +3,7 @@ mainnav:
   features: 'Features'
   pricing: 'Pricing'
   dashboard: 'Dashboard'
+  presentationpage_templates: 'Landingpage Templates'
 
 sidenav:
   signin: 'Sign in'
@@ -87,4 +88,4 @@ feature:
         cta_back_to_login: 'Back to sign in'
         cta_back_to_registration: 'Back to sign up'
         linkedin:
-          infotext: 'We are afraid there was a problem while exchanging data with LinkedIn (Code %error%). Please try again.'
+          infotext: 'We are afraid there was a problem while exchanging data with LinkedIn (Code {error}). Please try again.'

@@ -35,6 +35,7 @@ class MainNavigationComponent
         } else {
             $this->entries = [
                 new NavigationEntry('mainnav.dashboard', 'feature.dashboard.show'),
+                new NavigationEntry('mainnav.presentationpage_templates', 'feature.presentationpage_templates.overview'),
             ];
         }
 

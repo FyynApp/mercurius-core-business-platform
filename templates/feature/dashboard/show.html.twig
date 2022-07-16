@@ -1,19 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% import 'macros/global.html.twig' as global %}
+
 {% block title %}{{ 'mainnav.dashboard'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.dashboard'|trans }}{% endblock %}
 
 {% block body %}
 
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                {{ 'feature.dashboard.show.your_info'|trans }}
-            </h3>
-            <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                {{ 'feature.dashboard.show.your_info_subtitle'|trans }}
-            </p>
-        </div>
+        {{ global.contentBoxHeader('feature.dashboard.show.your_info'|trans, 'feature.dashboard.show.your_info_subtitle'|trans) }}
         <div class="border-t border-gray-200">
             <dl>
 
@@ -94,7 +89,5 @@
             </dl>
         </div>
     </div>
-
-
 
 {% endblock %}
