@@ -2,8 +2,12 @@
 
 namespace App\Entity\Feature\Account;
 
+use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Repository\Feature\Account\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -13,9 +17,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public function __construct()
+    {
+        $this->presentationpageTemplates = new ArrayCollection();
+    }
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(type: 'uuid', unique: true)]
     private string $id;
 
@@ -98,6 +108,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getThirdPartyAuthLinkedinResourceOwner(): ?ThirdPartyAuthLinkedinResourceOwner
     {
         return $this->thirdPartyAuthLinkedinResourceOwner;
+    }
+
+    /** @var PresentationpageTemplate[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PresentationpageTemplate::class, cascade: ['persist'])]
+    private Collection $presentationpageTemplates;
+
+    /**
+     * @return PresentationpageTemplate[]|Collection
+     */
+    public function getPresentationpageTemplates(): Collection
+    {
+        return $this->presentationpageTemplates;
     }
 
 
