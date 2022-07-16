@@ -20,7 +20,7 @@
 
             {% import 'macros/form_elements.html.twig' as formElements %}
 
-            <div class="grid grid-cols-6 gap-6" {{ stimulus_controller('feature/presentationpage-templates/add-form') }}>
+            <div class="grid grid-cols-6 gap-6" {{ stimulus_controller('feature/presentationpageTemplates/addForm') }}>
                 <div class="col-span-6 sm:col-span-3">
                     {{
                         formElements.inputWithLabel(
@@ -43,11 +43,11 @@
 
                     {% for color in ['#ffffff', '#949398FF', '#f56565', '#9C27B0'] %}
                         {% if loop.first %}
-                            <input type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpage-templates/add-form', 'bgColorHiddenInput') }}/>
+                            <input type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorHiddenInput') }}/>
                         {% endif %}
                         <div
-                            {{ stimulus_action('feature/presentationpage-templates/add-form', 'selectBgColor', 'click') }}
-                            {{ stimulus_target('feature/presentationpage-templates/add-form', 'bgColorOption') }}
+                            {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectBgColor', 'click') }}
+                            {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorOption') }}
                             role="checkbox"
                             class="{% if loop.first %}border-4{% else %}border-0{% endif %} border-black w-8 h-8 inline-flex rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
                             style="background: {{ color }};"
