@@ -18,7 +18,7 @@
 
         <div class="min-h-full flex flex-col h-screen justify-between">
             <nav
-                {{ stimulus_controller('nav-mobilemenu') }}
+                {{ stimulus_controller('navMobileMenuSwitch') }}
                 class="bg-gray-800"
             >
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,7 +64,7 @@
                         <div class="-mr-2 flex md:hidden">
                             <!-- Mobile menu button -->
                             <button
-                                {{ stimulus_action('nav-mobilemenu', 'click') }}
+                                {{ stimulus_action('navMobileMenuSwitch', 'click') }}
                                 type="button"
                                 class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                                 aria-controls="mobile-menu"
@@ -94,7 +94,7 @@
 
                 <!-- Mobile menu, show/hide based on menu state. -->
                 <div
-                    {{ stimulus_target('nav-mobilemenu', 'menu') }}
+                    {{ stimulus_target('navMobileMenuSwitch', 'menu') }}
                     class="hidden md:hidden"
                     id="mobile-menu"
                 >

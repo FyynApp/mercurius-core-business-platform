@@ -20,47 +20,51 @@
 
             {% import 'macros/form_elements.html.twig' as formElements %}
 
-            <div class="grid grid-cols-6 gap-6" {{ stimulus_controller('feature/presentationpageTemplates/addForm') }}>
-                <div class="col-span-6 sm:col-span-3">
-                    {{
-                        formElements.inputWithLabel(
-                            'title',
-                            'feature.presentationpage_templates.add_form.formfield.title'|trans
-                        )
-                    }}
-                </div>
+            <div class="p-10">
 
-
-                <div class="col-span-6">
-
-                    <div class="mb-2">
+                <div class="grid grid-cols-6 gap-6" {{ stimulus_controller('feature/presentationpageTemplates/addForm') }}>
+                    <div class="col-span-6 sm:col-span-3">
                         {{
-                            formElements.label(
-                                'feature.presentationpage_templates.add_form.formfield.bg_color'|trans
+                            formElements.inputWithLabel(
+                                'title',
+                                'feature.presentationpage_templates.add_form.formfield.title'|trans
                             )
                         }}
                     </div>
 
-                    {% for color in ['#ffffff', '#949398FF', '#f56565', '#9C27B0'] %}
-                        {% if loop.first %}
-                            <input type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorHiddenInput') }}/>
-                        {% endif %}
-                        <div
-                            {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectBgColor', 'click') }}
-                            {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorOption') }}
-                            role="checkbox"
-                            class="{% if loop.first %}border-4{% else %}border-0{% endif %} border-black w-8 h-8 inline-flex rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
-                            style="background: {{ color }};"
-                            data-value="{{ color }}"
-                        ></div>
-                    {% endfor %}
+
+                    <div class="col-span-6">
+
+                        <div class="mb-2">
+                            {{
+                                formElements.label(
+                                    'feature.presentationpage_templates.add_form.formfield.bg_color'|trans
+                                )
+                            }}
+                        </div>
+
+                        {% for color in ['#ffffff', '#949398FF', '#f56565', '#9C27B0'] %}
+                            {% if loop.first %}
+                                <input type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorHiddenInput') }}/>
+                            {% endif %}
+                            <div
+                                {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectBgColor', 'click') }}
+                                {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorOption') }}
+                                role="checkbox"
+                                class="{% if loop.first %}border-4{% else %}border-0{% endif %} border-black w-8 h-8 inline-flex rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
+                                style="background: {{ color }};"
+                                data-value="{{ color }}"
+                            ></div>
+                        {% endfor %}
+                    </div>
+
                 </div>
 
-            </div>
+                <div class="mt-6 text-right">
 
-            <div class="mt-6 text-right">
+                    {{ formElements.primarySubmitButton('feature.presentationpage_templates.add_form.formfield.submit_cta'|trans) }}
 
-                {{ formElements.primarySubmitButton('feature.presentationpage_templates.add_form.formfield.submit_cta'|trans) }}
+                </div>
 
             </div>
         {% endblock %}

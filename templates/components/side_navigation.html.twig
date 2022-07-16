@@ -59,12 +59,12 @@
 
                 <!-- Profile dropdown -->
                 <div
-                        {{ stimulus_controller('nav-profile-dropdown') }}
+                        {{ stimulus_controller('navProfileDropdown') }}
                         class="ml-3 relative"
                 >
                     <div>
                         <button
-                                {{ stimulus_action('nav-profile-dropdown', 'click') }}
+                                {{ stimulus_action('navProfileDropdown', 'click') }}
                                 type="button"
                                 class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
                                 id="user-menu-button"
@@ -94,7 +94,7 @@
                         To: "transform opacity-0 scale-95"
                     -->
                     <div
-                            {{ stimulus_target('nav-profile-dropdown', 'dropdown') }}
+                            {{ stimulus_target('navProfileDropdown', 'dropdown') }}
                             class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                             role="menu"
                             aria-orientation="vertical"
