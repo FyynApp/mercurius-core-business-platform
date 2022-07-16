@@ -56,6 +56,47 @@
                                 data-value="{{ color }}"
                             ></div>
                         {% endfor %}
+
+
+                        <div class="mt-4 mb-2">
+                            {{
+                            formElements.label(
+                                'feature.presentationpage_templates.add_form.formfield.text_color'|trans
+                            )
+                            }}
+                        </div>
+
+                        {% for color in ['#ffffff', '#949398FF', '#f56565', '#9C27B0'] %}
+                            {% if loop.first %}
+                                <input type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorHiddenInput') }}/>
+                            {% endif %}
+                            <div
+                                    {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectTextColor', 'click') }}
+                                    {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorOption') }}
+                                    role="checkbox"
+                                    class="{% if loop.first %}border-4{% else %}border-0{% endif %} border-black w-8 h-8 inline-flex rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
+                                    style="background: {{ color }};"
+                                    data-value="{{ color }}"
+                            ></div>
+                        {% endfor %}
+                    </div>
+
+                    <div
+                        {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorPreview') }}
+                        class="rounded-2xl p-5 w-96"
+                        style="background: #ffffff;"
+                    >
+                        <div
+                            {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorPreview') }}
+                            style="color: #000000;"
+                        >
+                            <h1 class="font-bold text-2xl mb-1">
+                                {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_headline'|trans }}
+                            </h1>
+                            <p>
+                                {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_paragraph'|trans }}
+                            </p>
+                        </div>
                     </div>
 
                 </div>
