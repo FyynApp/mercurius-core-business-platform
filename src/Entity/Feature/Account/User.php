@@ -102,6 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: ThirdPartyAuthLinkedinResourceOwner::class, cascade: ['persist'])]
     private ?ThirdPartyAuthLinkedinResourceOwner $thirdPartyAuthLinkedinResourceOwner = null;
 
@@ -109,6 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->thirdPartyAuthLinkedinResourceOwner;
     }
+
 
     /** @var PresentationpageTemplate[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PresentationpageTemplate::class, cascade: ['persist'])]
