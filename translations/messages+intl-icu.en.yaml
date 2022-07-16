@@ -58,6 +58,25 @@ feature:
       cta:
         manage_video: 'manage'
 
+  presentationpage_templates:
+    overview:
+      title: >-
+        {numberOfTemplates, plural,
+          =0    {You do not yet have any templates}
+          one   {You currently have one template}
+          other {You currently have # templates}
+        }
+      subtitle: 'Templates define the look and feel of the video landingpages as presented to your customers.'
+      cta:
+        add: 'Create template'
+    add_form:
+      title: 'New template'
+      subtitle: 'Fill in the required information to create a new template'
+      formfield:
+        title: 'Name for this template'
+        bg_color: 'Background color'
+        submit_cta: 'Create template'
+
   account:
     login:
       placeholder:

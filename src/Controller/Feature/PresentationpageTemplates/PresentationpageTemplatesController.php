@@ -18,4 +18,15 @@ class PresentationpageTemplatesController extends AbstractController
             ['presentationpageTemplates' => $user->getPresentationpageTemplates()]
         );
     }
+
+    public function addFormAction(): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->render(
+            'feature/presentationpage_templates/add_form.html.twig',
+            ['presentationpageTemplates' => $user->getPresentationpageTemplates()]
+        );
+    }
 }
