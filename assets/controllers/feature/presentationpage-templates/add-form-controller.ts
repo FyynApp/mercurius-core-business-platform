@@ -1,13 +1,22 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['bgColor'];
+    static targets = ['bgColorHiddenInput', 'bgColorOption'];
 
-    bgColorTarget: HTMLFormElement;
+    bgColorHiddenInputTarget: HTMLInputElement;
+    bgColorOptionTargets: HTMLDivElement[];
 
     selectBgColor(e: Event) {
-        console.log('event', e);
         const t: HTMLElement = e.target as HTMLElement;
-        console.dir('value', t.dataset['value']);
+
+        this.bgColorOptionTargets.forEach(e => {
+            e.classList.remove('border-4');
+            e.classList.add('border-0');
+        });
+
+        t.classList.remove('border-0');
+        t.classList.add('border-4');
+
+        this.bgColorHiddenInputTarget.value = t.dataset['value'];
     }
 }
