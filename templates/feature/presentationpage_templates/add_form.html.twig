@@ -85,12 +85,12 @@
 
                             {% for color in textColors %}
                                 <div
-                                        {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectTextColor', 'click') }}
-                                        {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorOption') }}
-                                        role="checkbox"
-                                        class="{% if loop.first %}border-8{% else %}border-2{% endif %} border-gray-700 w-8 h-8 inline-flex rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
-                                        style="background: {{ color }};"
-                                        data-value="{{ color }}"
+                                    {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectTextColor', 'click') }}
+                                    {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorOption') }}
+                                    role="checkbox"
+                                    class="{% if loop.first %}border-8{% else %}border-2{% endif %} border-gray-700 w-8 h-8 inline-flex rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
+                                    style="background: {{ color }};"
+                                    data-value="{{ color }}"
                                 ></div>
                             {% endfor %}
                         </div>
