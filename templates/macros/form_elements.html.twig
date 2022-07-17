@@ -1,12 +1,21 @@
-{% macro inputWithLabel(name, label, value, type = "text") %}
-    <label for="form-element-{{ name }}" class="block text-sm font-medium text-gray-700">{{ label }}</label>
+{% macro inputWithLabel(formView) %}
+    <label for="{{ formView.vars.id }}" class="block text-sm font-medium text-gray-700">
+        {{ formView.vars.label }}
+    </label>
     <input
-        type="{{ type }}"
-        name="{{ name }}"
-        id="form-element-{{ name }}"
-        value="{{ value|e }}"
-        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+        type="text"
+        name="{{ formView.vars.full_name }}"
+        id="{{ formView.vars.id }}"
+        value="{{ formView.vars.value|e }}"
+        class="{% if form_errors(formView) %}bg-red-50 border-red-900{% else %}border-gray-300{% endif %} mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm rounded-md"
     />
+
+    {% if form_errors(formView) %}
+        {% for error in formView.vars.errors.form.getErrors(true) %}
+            <p class="mt-2 text-red-800">{{ error.message|trans }}</p>
+        {% endfor %}
+    {% endif %}
+
 {% endmacro %}
 
 {% macro label(text) %}

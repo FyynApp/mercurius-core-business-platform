@@ -5,6 +5,7 @@ namespace App\Entity\Feature\PresentationpageTemplates;
 use App\Entity\Feature\Account\User;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'presentationpage_templates')]
@@ -86,6 +87,8 @@ class PresentationpageTemplate
     }
 
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 256)]
     #[ORM\Column(type: 'string', length: 256, unique: false, nullable: true)]
     private ?string $title;
 

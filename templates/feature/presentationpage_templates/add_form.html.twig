@@ -3,7 +3,7 @@
 {% block title %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
 
-{# @var presentationpageTemplates \App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate[] #}
+{# @var form \Symfony\Component\Form\FormView #}
 
 {% block body %}
 
@@ -20,15 +20,16 @@
 
             {% import 'macros/form_elements.html.twig' as formElements %}
 
-            <form action="{{ path('feature.presentationpage_templates.add') }}" method="post">
+            {{ form_start(form) }}
 
                 <div class="p-10">
 
                     <div class="grid grid-cols-6 gap-6" {{ stimulus_controller('feature/presentationpageTemplates/addForm') }}>
+
                         <div class="col-span-6 sm:col-span-3">
                             {{
                                 formElements.inputWithLabel(
-                                    'title',
+                                    form.title,
                                     'feature.presentationpage_templates.add_form.formfield.title'|trans
                                 )
                             }}
@@ -47,7 +48,7 @@
 
                             {% for color in bgColors %}
                                 {% if loop.first %}
-                                    <input name="bgColor" type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorHiddenInput') }}/>
+                                    <input name="{{ form.bgColor.vars.full_name }}" type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorHiddenInput') }}/>
                                 {% endif %}
                                 <div
                                     {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectBgColor', 'click') }}
@@ -62,15 +63,15 @@
 
                             <div class="mt-4 mb-2">
                                 {{
-                                formElements.label(
-                                    'feature.presentationpage_templates.add_form.formfield.text_color'|trans
-                                )
+                                    formElements.label(
+                                        'feature.presentationpage_templates.add_form.formfield.text_color'|trans
+                                    )
                                 }}
                             </div>
 
                             {% for color in textColors %}
                                 {% if loop.first %}
-                                    <input name="textColor" type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorHiddenInput') }}/>
+                                    <input name="{{ form.textColor.vars.full_name }}" type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorHiddenInput') }}/>
                                 {% endif %}
                                 <div
                                         {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectTextColor', 'click') }}
@@ -104,12 +105,14 @@
                     </div>
 
                     <div class="mt-12">
+                        {{ form_row(form._token) }}
+
                         {{ formElements.primarySubmitButton('feature.presentationpage_templates.add_form.formfield.submit_cta'|trans) }}
                     </div>
 
                 </div>
 
-            </form>
+            {{ form_end(form, {'render_rest': false}) }}
 
         {% endblock %}
     {% endembed %}
