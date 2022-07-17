@@ -18,12 +18,12 @@ export default class extends Controller {
         const t: HTMLElement = e.target as HTMLElement;
 
         this.bgColorOptionTargets.forEach(e => {
-            e.classList.remove('border-4');
-            e.classList.add('border-0');
+            e.classList.remove('border-8');
+            e.classList.add('border-2');
         });
 
-        t.classList.remove('border-0');
-        t.classList.add('border-4');
+        t.classList.remove('border-2');
+        t.classList.add('border-8');
 
         this.bgColorHiddenInputTarget.value = t.dataset['value'];
 
@@ -34,12 +34,12 @@ export default class extends Controller {
         const t: HTMLElement = e.target as HTMLElement;
 
         this.textColorOptionTargets.forEach(e => {
-            e.classList.remove('border-4');
-            e.classList.add('border-0');
+            e.classList.remove('border-5');
+            e.classList.add('border-1');
         });
 
-        t.classList.remove('border-0');
-        t.classList.add('border-4');
+        t.classList.remove('border-1');
+        t.classList.add('border-5');
 
         this.textColorHiddenInputTarget.value = t.dataset['value'];
 
