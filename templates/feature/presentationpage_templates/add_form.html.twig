@@ -20,138 +20,97 @@
 
             {% import 'macros/form_elements.html.twig' as formElements %}
 
-            <div class="p-10">
+            <form action="{{ path('feature.presentationpage_templates.add') }}" method="post">
 
-                <div class="grid grid-cols-6 gap-6" {{ stimulus_controller('feature/presentationpageTemplates/addForm') }}>
-                    <div class="col-span-6 sm:col-span-3">
-                        {{
-                            formElements.inputWithLabel(
-                                'title',
-                                'feature.presentationpage_templates.add_form.formfield.title'|trans
-                            )
-                        }}
-                    </div>
+                <div class="p-10">
 
-
-                    <div class="col-span-6">
-
-                        <div class="mb-2">
+                    <div class="grid grid-cols-6 gap-6" {{ stimulus_controller('feature/presentationpageTemplates/addForm') }}>
+                        <div class="col-span-6 sm:col-span-3">
                             {{
-                                formElements.label(
-                                    'feature.presentationpage_templates.add_form.formfield.bg_color'|trans
+                                formElements.inputWithLabel(
+                                    'title',
+                                    'feature.presentationpage_templates.add_form.formfield.title'|trans
                                 )
                             }}
                         </div>
 
-                        {% for color in [
-                            '#ffffff',
-                            '#ffebee',
-                            '#fce4ec',
-                            '#f3e5f5',
-                            '#ede7f6',
-                            '#e8eaf6',
-                            '#e3f2fd',
-                            '#e0f7fa',
-                            '#e0f2f1',
-                            '#e8f5e9',
-                            '#f1f8e9',
-                            '#f9fbe7',
-                            '#fffde7',
-                            '#fff8e1',
-                            '#fff3e0',
-                            '#fbe9e7',
-                            '#efebe9',
-                            '#fafafa',
-                            '#eceff1',
-                            '#424242',
-                            '#37474f',
-                        ] %}
-                            {% if loop.first %}
-                                <input type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorHiddenInput') }}/>
-                            {% endif %}
-                            <div
-                                {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectBgColor', 'click') }}
-                                {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorOption') }}
-                                role="checkbox"
-                                class="{% if loop.first %}border-8{% else %}border-2{% endif %} border-gray-700 w-8 h-8 inline-flex rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
-                                style="background: {{ color }};"
-                                data-value="{{ color }}"
-                            ></div>
-                        {% endfor %}
 
+                        <div class="col-span-6">
 
-                        <div class="mt-4 mb-2">
-                            {{
-                            formElements.label(
-                                'feature.presentationpage_templates.add_form.formfield.text_color'|trans
-                            )
-                            }}
-                        </div>
+                            <div class="mb-2">
+                                {{
+                                    formElements.label(
+                                        'feature.presentationpage_templates.add_form.formfield.bg_color'|trans
+                                    )
+                                }}
+                            </div>
 
-                        {% for color in [
-                            '#000000',
-                            '#b71c1c',
-                            '#880e4f',
-                            '#4a148c',
-                            '#311b92',
-                            '#1a237e',
-                            '#0d47a1',
-                            '#006064',
-                            '#004d40',
-                            '#1b5e20',
-                            '#33691e',
-                            '#827717',
-                            '#f57f17',
-                            '#ff6f00',
-                            '#e65100',
-                            '#bf360c',
-                            '#3e2723',
-                            '#212121',
-                            '#263238',
-                            '#fafafa',
-                            '#eceff1',
-                        ] %}
-                            {% if loop.first %}
-                                <input type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorHiddenInput') }}/>
-                            {% endif %}
-                            <div
-                                    {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectTextColor', 'click') }}
-                                    {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorOption') }}
+                            {% for color in bgColors %}
+                                {% if loop.first %}
+                                    <input name="bgColor" type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorHiddenInput') }}/>
+                                {% endif %}
+                                <div
+                                    {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectBgColor', 'click') }}
+                                    {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorOption') }}
                                     role="checkbox"
                                     class="{% if loop.first %}border-8{% else %}border-2{% endif %} border-gray-700 w-8 h-8 inline-flex rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
                                     style="background: {{ color }};"
                                     data-value="{{ color }}"
-                            ></div>
-                        {% endfor %}
-                    </div>
+                                ></div>
+                            {% endfor %}
 
-                    <div
-                        {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorPreview') }}
-                        class="col-span-6 rounded-2xl p-5 w-96 max-w-full"
-                        style="background: #ffffff;"
-                    >
-                        <div
-                            {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorPreview') }}
-                            style="color: #000000;"
-                        >
-                            <h1 class="font-bold text-2xl mb-1">
-                                {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_headline'|trans }}
-                            </h1>
-                            <p>
-                                {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_paragraph'|trans }}
-                            </p>
+
+                            <div class="mt-4 mb-2">
+                                {{
+                                formElements.label(
+                                    'feature.presentationpage_templates.add_form.formfield.text_color'|trans
+                                )
+                                }}
+                            </div>
+
+                            {% for color in textColors %}
+                                {% if loop.first %}
+                                    <input name="textColor" type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorHiddenInput') }}/>
+                                {% endif %}
+                                <div
+                                        {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectTextColor', 'click') }}
+                                        {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorOption') }}
+                                        role="checkbox"
+                                        class="{% if loop.first %}border-8{% else %}border-2{% endif %} border-gray-700 w-8 h-8 inline-flex rounded-full cursor-pointer focus:outline-none focus:shadow-outline"
+                                        style="background: {{ color }};"
+                                        data-value="{{ color }}"
+                                ></div>
+                            {% endfor %}
                         </div>
+
+                        <div
+                            {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorPreview') }}
+                            class="col-span-6 rounded-md p-5 w-96 max-w-full"
+                            style="background: #ffffff;"
+                        >
+                            <div
+                                {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorPreview') }}
+                                style="color: #000000;"
+                            >
+                                <h1 class="font-bold text-2xl mb-1">
+                                    {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_headline'|trans }}
+                                </h1>
+                                <p>
+                                    {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_paragraph'|trans }}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-12">
+                        {{ formElements.primarySubmitButton('feature.presentationpage_templates.add_form.formfield.submit_cta'|trans) }}
                     </div>
 
                 </div>
 
-                <div class="mt-6 text-right">
+            </form>
 
-                    {{ formElements.primarySubmitButton('feature.presentationpage_templates.add_form.formfield.submit_cta'|trans) }}
-
-                </div>
-
-            </div>
         {% endblock %}
     {% endembed %}
 

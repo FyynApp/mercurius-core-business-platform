@@ -8,6 +8,11 @@ feature.presentationpage_templates.add_form:
   controller: App\Controller\Feature\PresentationpageTemplates\PresentationpageTemplatesController::addFormAction
   methods: [ GET ]
 
+feature.presentationpage_templates.add:
+  path: /my/presentationpage-templates/
+  controller: App\Controller\Feature\PresentationpageTemplates\PresentationpageTemplatesController::addAction
+  methods: [ POST ]
+
 feature.presentationpage_templates.preview:
   path: /my/presentationpage-templates/{templateId}/preview
   controller: App\Controller\Feature\PresentationpageTemplates\PresentationpageTemplatesController::previewAction
