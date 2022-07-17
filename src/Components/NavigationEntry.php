@@ -8,12 +8,19 @@ class NavigationEntry
 
     private string $routeName;
 
+    /** @var string[] */
+    private array $additionalRouteNames;
+
     private bool $isActive;
 
-    public function __construct(string $displayNameTransId, string $routeName)
+    /**
+     * @param string[] $additionalRouteNames
+     */
+    public function __construct(string $displayNameTransId, string $routeName, array $additionalRouteNames = [])
     {
         $this->displayNameTransId = $displayNameTransId;
         $this->routeName = $routeName;
+        $this->additionalRouteNames = $additionalRouteNames;
         $this->isActive = false;
     }
 
@@ -22,9 +29,19 @@ class NavigationEntry
         return $this->displayNameTransId;
     }
 
+
     public function getRouteName(): string
     {
         return $this->routeName;
+    }
+
+
+    /**
+     * @return string[]
+     */
+    public function getAdditionalRouteNames(): array
+    {
+        return $this->additionalRouteNames;
     }
 
 

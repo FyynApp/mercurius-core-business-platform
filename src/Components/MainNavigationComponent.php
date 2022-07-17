@@ -28,19 +28,40 @@ class MainNavigationComponent
 
         if (is_null($user)) {
             $this->entries = [
-                new NavigationEntry('mainnav.homepage', 'feature.landingpages.homepage'),
-                new NavigationEntry('mainnav.features', 'feature.landingpages.features'),
-                new NavigationEntry('mainnav.pricing', 'feature.landingpages.pricing'),
+                new NavigationEntry(
+                    'mainnav.homepage',
+                    'feature.landingpages.homepage'
+                ),
+
+                new NavigationEntry(
+                    'mainnav.features',
+                    'feature.landingpages.features'
+                ),
+
+                new NavigationEntry(
+                    'mainnav.pricing',
+                    'feature.landingpages.pricing'
+                ),
             ];
         } else {
             $this->entries = [
-                new NavigationEntry('mainnav.dashboard', 'feature.dashboard.show'),
-                new NavigationEntry('mainnav.presentationpage_templates', 'feature.presentationpage_templates.overview'),
+                new NavigationEntry(
+                    'mainnav.dashboard',
+                    'feature.dashboard.show'
+                ),
+
+                new NavigationEntry(
+                    'mainnav.presentationpage_templates',
+                    'feature.presentationpage_templates.overview',
+                    ['feature.presentationpage_templates.add_form']
+                ),
             ];
         }
 
         foreach ($this->entries as $entry) {
-            if ($request->attributes->get('_route') === $entry->getRouteName()) {
+            if (   $request->attributes->get('_route') === $entry->getRouteName()
+                || in_array($request->attributes->get('_route'), $entry->getAdditionalRouteNames())
+            ) {
                 $entry->setIsActive(true);
                 break;
             }
