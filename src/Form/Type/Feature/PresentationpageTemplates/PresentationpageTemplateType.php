@@ -3,7 +3,6 @@
 namespace App\Form\Type\Feature\PresentationpageTemplates;
 
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,8 +13,14 @@ class PresentationpageTemplateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class)
+            ->add(
+                'title',
+                TextType::class,
+                ['label' => 'feature.presentationpage_templates.add_form.formfield.title'],
+            )
+
             ->add('bgColor', TextType::class)
+
             ->add('textColor', TextType::class)
         ;
     }

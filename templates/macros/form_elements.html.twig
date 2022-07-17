@@ -1,6 +1,6 @@
 {% macro inputWithLabel(formView) %}
     <label for="{{ formView.vars.id }}" class="block text-sm font-medium text-gray-700">
-        {{ formView.vars.label }}
+        {{ formView.vars.label|trans }}
     </label>
     <input
         type="text"
