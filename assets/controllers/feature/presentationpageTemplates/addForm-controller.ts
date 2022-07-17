@@ -14,6 +14,32 @@ export default class extends Controller {
     textColorOptionTargets: HTMLDivElement[];
     textColorPreviewTarget: HTMLDivElement;
 
+    initialize() {
+
+        this.bgColorPreviewTarget.style.backgroundColor = this.bgColorHiddenInputTarget.value;
+        this.textColorPreviewTarget.style.color = this.textColorHiddenInputTarget.value;
+
+        this.bgColorOptionTargets.forEach(e => {
+            e.classList.remove('border-8');
+            e.classList.add('border-2');
+            if (e.dataset['value'] === this.bgColorHiddenInputTarget.value) {
+                e.classList.remove('border-2');
+                e.classList.add('border-8');
+            }
+        });
+
+        this.textColorOptionTargets.forEach(e => {
+            e.classList.remove('border-8');
+            e.classList.add('border-2');
+            if (e.dataset['value'] === this.textColorHiddenInputTarget.value) {
+                e.classList.remove('border-2');
+                e.classList.add('border-8');
+            }
+        });
+
+        super.initialize();
+    }
+
     selectBgColor(e: Event) {
         const t: HTMLElement = e.target as HTMLElement;
 
@@ -34,12 +60,12 @@ export default class extends Controller {
         const t: HTMLElement = e.target as HTMLElement;
 
         this.textColorOptionTargets.forEach(e => {
-            e.classList.remove('border-5');
-            e.classList.add('border-1');
+            e.classList.remove('border-8');
+            e.classList.add('border-2');
         });
 
-        t.classList.remove('border-1');
-        t.classList.add('border-5');
+        t.classList.remove('border-2');
+        t.classList.add('border-8');
 
         this.textColorHiddenInputTarget.value = t.dataset['value'];
 

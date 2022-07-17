@@ -104,7 +104,7 @@ class PresentationpageTemplate
 
 
     #[ORM\Column(type: 'string', length: 7, unique: false, nullable: false)]
-    private string $bgColor = '#ffffff';
+    private string $bgColor = self::ALLOWED_BG_COLORS[0];
 
     public function getBgColor(): string
     {
@@ -118,7 +118,7 @@ class PresentationpageTemplate
 
 
     #[ORM\Column(type: 'string', length: 7, unique: false, nullable: false)]
-    private string $textColor = '#000000';
+    private string $textColor = self::ALLOWED_TEXT_COLORS[0];
 
     public function getTextColor(): string
     {

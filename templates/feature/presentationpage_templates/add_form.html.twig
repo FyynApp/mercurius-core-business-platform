@@ -49,10 +49,14 @@
                                 }}
                             </div>
 
+                            <input
+                                    {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorHiddenInput') }}
+                                    name="{{ form.bgColor.vars.full_name }}"
+                                    type="hidden"
+                                    value="{{ form.bgColor.vars.value }}"
+                            />
+
                             {% for color in bgColors %}
-                                {% if loop.first %}
-                                    <input name="{{ form.bgColor.vars.full_name }}" type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorHiddenInput') }}/>
-                                {% endif %}
                                 <div
                                     {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectBgColor', 'click') }}
                                     {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorOption') }}
@@ -72,10 +76,14 @@
                                 }}
                             </div>
 
+                            <input
+                                    {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorHiddenInput') }}
+                                    name="{{ form.textColor.vars.full_name }}"
+                                    type="hidden"
+                                    value="{{ form.textColor.vars.value }}"
+                            />
+
                             {% for color in textColors %}
-                                {% if loop.first %}
-                                    <input name="{{ form.textColor.vars.full_name }}" type="hidden" value="{{ color }}" {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorHiddenInput') }}/>
-                                {% endif %}
                                 <div
                                         {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectTextColor', 'click') }}
                                         {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorOption') }}
