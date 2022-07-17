@@ -1,25 +1,26 @@
 {% macro inputWithLabel(formView) %}
-    <label for="{{ formView.vars.id }}" class="block text-sm font-medium text-gray-700">
-        {{ formView.vars.label|trans }}
+    <label for="{{ formView.vars.id }}" class="block text-lg font-normal text-gray-700">
+        {{ formView.vars.label|trans }}{% if formView.vars.required %}<span class="align-text-top text-sm">*</span>{% endif %}
     </label>
     <input
         type="text"
         name="{{ formView.vars.full_name }}"
         id="{{ formView.vars.id }}"
         value="{{ formView.vars.value|e }}"
+        {% if formView.vars.required %}required="required"{% endif %}
         class="{% if form_errors(formView) %}bg-red-50 border-red-900{% else %}border-gray-300{% endif %} mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm rounded-md"
     />
 
     {% if form_errors(formView) %}
         {% for error in formView.vars.errors.form.getErrors(true) %}
-            <p class="mt-2 text-red-800">{{ error.message|trans }}</p>
+            <p class="mt-2 text-red-800 text-sm font-bold">{{ error.message|trans }}</p>
         {% endfor %}
     {% endif %}
 
 {% endmacro %}
 
 {% macro label(text) %}
-    <label class="block text-sm font-medium text-gray-700">{{ text }}</label>
+    <label class="block text-lg font-normal text-gray-700">{{ text }}</label>
 {% endmacro %}
 
 {% macro primarySubmitButton(text) %}
