@@ -19,20 +19,34 @@
         {% block contentBoxContent %}
 
             {% if presentationpageTemplates|length > 0 %}
-                <div class="p-10">
+
+                <dl class="bg-white">
                     {% for presentationpageTemplate in presentationpageTemplates %}
-                        {{ presentationpageTemplate.title }}
-                        <br/>
-                        {{ presentationpageTemplate.bgColor }}
-                        <br/>
-                        {{ presentationpageTemplate.textColor }}
-                        <br/>
+                        {% embed 'embeds/two_column_content_box_content_row.twig' with { odd: cycle([true, false], loop.index0) } %}
+                            {% block contentLeft %}
+                                {{ presentationpageTemplate.title }}
+                            {% endblock %}
+                            {% block contentRight %}
+
+                                <div
+                                    style="background-color: {{ presentationpageTemplate.bgColor }};"
+                                    class="rounded p-5"
+                                >
+                                    <span
+                                        style="color: {{ presentationpageTemplate.textColor }}"
+                                        class="font-bold"
+                                    >
+                                        {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_headline'|trans }}
+                                    </span>
+                                </div>
+                            {% endblock %}
+                        {% endembed %}
                     {% endfor %}
-                </div>
+                </dl>
             {% endif %}
 
             <div class="p-10">
-                <div class="border-4 border-dashed border-gray-300 rounded-lg h-96">
+                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if presentationpageTemplates|length > 0 %} h-24 {% else %} h-96 {% endif %}">
 
                     <div class="flex justify-center items-center h-full w-full">
                         <!-- Heroicon name: solid/plus-circle -->

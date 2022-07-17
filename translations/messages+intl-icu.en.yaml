@@ -55,6 +55,13 @@ feature:
           title: 'Package M'
           description: '$4.99/month — up to 10 recordings per month'
       your_latest_videos: 'Newest videos'
+      your_presentationpage_templates: 'Landingpage template'
+      your_presentationpage_templates.info: >-
+        {numberOfTemplates, plural,
+          =0    {You do not yet have any templates.}
+          one   {You currently have one template.}
+          other {You currently have # templates.}
+        }
       cta:
         manage_video: 'manage'
 
@@ -68,7 +75,7 @@ feature:
         }
       subtitle: 'Templates define the look and feel of the video landingpages as presented to your customers.'
       cta:
-        add: 'Create template'
+        add: 'Add template'
     add_form:
       title: 'New template'
       subtitle: 'Fill in the required information to create a new template.'
