@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Feature\Account;
+namespace App\Form\Type\Feature\Account;
 
 use App\Entity\Feature\Account\User;
 use Symfony\Component\Form\AbstractType;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationFormType extends AbstractType
+class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
