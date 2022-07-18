@@ -16,7 +16,6 @@ export default class extends Controller {
     textColorPreviewTarget: HTMLDivElement;
 
     initialize() {
-
         this.bgColorPreviewTarget.style.backgroundColor = this.bgColorHiddenInputTarget.value;
         this.textColorPreviewTarget.style.color = this.textColorHiddenInputTarget.value;
 
