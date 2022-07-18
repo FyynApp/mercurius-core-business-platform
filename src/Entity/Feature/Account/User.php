@@ -3,6 +3,7 @@
 namespace App\Entity\Feature\Account;
 
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
+use App\Entity\Feature\Recordings\RecordingSession;
 use App\Repository\Feature\Account\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,6 +21,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->presentationpageTemplates = new ArrayCollection();
+        $this->recordingSessions = new ArrayCollection();
     }
 
 
@@ -122,6 +124,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPresentationpageTemplates(): Collection
     {
         return $this->presentationpageTemplates;
+    }
+
+
+    /** @var RecordingSession[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSession::class, cascade: ['persist'])]
+    private Collection $recordingSessions;
+
+    /**
+     * @return RecordingSession[]|Collection
+     */
+    public function getRecordingSessions(): Collection
+    {
+        return $this->recordingSessions;
     }
 
 

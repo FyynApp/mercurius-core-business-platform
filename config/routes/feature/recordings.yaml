@@ -1,3 +1,8 @@
+feature.recordings.recording-studio:
+  path: /my/recordings/recording-studio
+  controller: App\Controller\Feature\Recordings\RecordingsController::recordingStudioAction
+  methods: [ GET ]
+
 feature.recordings.return_from_recording_session:
   path: /my/recordings/return-from-recording-session
   controller: App\Controller\Feature\Recordings\RecordingsController::returnFromRecordingSessionAction
