@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{# @var form \Symfony\Component\Form\FormView #}
+{# @var PresentationpageTemplatesService \App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService #}
+
 {% block title %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
-
-{# @var form \Symfony\Component\Form\FormView #}
 
 {% block body %}
 
@@ -56,7 +57,7 @@
                                     value="{{ form.bgColor.vars.value }}"
                             />
 
-                            {% for color in bgColors %}
+                            {% for color in PresentationpageTemplatesService.availableBgColors %}
                                 <div
                                     {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectBgColor', 'click') }}
                                     {{ stimulus_target('feature/presentationpageTemplates/addForm', 'bgColorOption') }}
@@ -83,7 +84,7 @@
                                     value="{{ form.textColor.vars.value }}"
                             />
 
-                            {% for color in textColors %}
+                            {% for color in PresentationpageTemplatesService.availableTextColors %}
                                 <div
                                     {{ stimulus_action('feature/presentationpageTemplates/addForm', 'selectTextColor', 'click') }}
                                     {{ stimulus_target('feature/presentationpageTemplates/addForm', 'textColorOption') }}

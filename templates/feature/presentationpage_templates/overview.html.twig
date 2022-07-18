@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{# @var PresentationpageTemplatesService \App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService #}
+
 {% block title %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
-
-{# @var presentationpageTemplates \App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate[] #}
 
 {% block body %}
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.presentationpage_templates.overview.title'|trans({ numberOfTemplates: presentationpageTemplates|length}) }}
+            {{ 'feature.presentationpage_templates.overview.title'|trans({ numberOfTemplates: PresentationpageTemplatesService.templatesForUser(app.user)|length}) }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
@@ -18,10 +18,10 @@
 
         {% block contentBoxContent %}
 
-            {% if presentationpageTemplates|length > 0 %}
+            {% if PresentationpageTemplatesService.templatesForUser(app.user)|length > 0 %}
 
                 <dl class="bg-white">
-                    {% for presentationpageTemplate in presentationpageTemplates %}
+                    {% for presentationpageTemplate in PresentationpageTemplatesService.templatesForUser(app.user) %}
                         {% embed 'embeds/two_column_content_box_content_row.twig' with { odd: cycle([true, false], loop.index0) } %}
                             {% block contentLeft %}
                                 {{ presentationpageTemplate.title }}
@@ -46,7 +46,7 @@
             {% endif %}
 
             <div class="p-10">
-                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if presentationpageTemplates|length > 0 %} h-24 {% else %} h-96 {% endif %}">
+                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if PresentationpageTemplatesService.templatesForUser(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
 
                     <div class="flex justify-center items-center h-full w-full">
                         <!-- Heroicon name: solid/plus-circle -->

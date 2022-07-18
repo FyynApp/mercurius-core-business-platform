@@ -28,4 +28,23 @@ class PresentationpageTemplatesService
 
         return $template;
     }
+
+    /** @return PresentationpageTemplate[] */
+    public function getTemplatesForUser(User $user): array
+    {
+        return $user->getPresentationpageTemplates()->toArray();
+    }
+
+
+    /** @return string[] */
+    public function getAvailableBgColors(): array
+    {
+        return PresentationpageTemplate::ALLOWED_BG_COLORS;
+    }
+
+    /** @return string[] */
+    public function getAvailableTextColors(): array
+    {
+        return PresentationpageTemplate::ALLOWED_TEXT_COLORS;
+    }
 }

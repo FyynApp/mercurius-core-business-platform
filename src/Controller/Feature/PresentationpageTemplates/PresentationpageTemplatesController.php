@@ -12,19 +12,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PresentationpageTemplatesController extends AbstractController
 {
-    public function overviewAction(): Response
+    public function overviewAction(PresentationpageTemplatesService $presentationpageTemplatesService): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
         return $this->render(
             'feature/presentationpage_templates/overview.html.twig',
-            ['presentationpageTemplates' => $user->getPresentationpageTemplates()]
+            ['PresentationpageTemplatesService' => $presentationpageTemplatesService]
         );
     }
 
-    public function addFormAction(Request $request, PresentationpageTemplatesService $templatesService): Response
-    {
+    public function addFormAction(
+        Request $request,
+        PresentationpageTemplatesService $presentationpageTemplatesService
+    ): Response {
         /** @var User $user */
         $user = $this->getUser();
 
@@ -37,7 +39,7 @@ class PresentationpageTemplatesController extends AbstractController
             /** @var PresentationpageTemplate $template */
             $template = $form->getData();
 
-            $templatesService->addNewTemplate($user, $template);
+            $presentationpageTemplatesService->addNewTemplate($user, $template);
 
             return $this->redirectToRoute('feature.presentationpage_templates.overview');
         } else {
@@ -45,8 +47,7 @@ class PresentationpageTemplatesController extends AbstractController
                 'feature/presentationpage_templates/add_form.html.twig',
                 [
                     'form' => $form,
-                    'bgColors' => PresentationpageTemplate::ALLOWED_BG_COLORS,
-                    'textColors' => PresentationpageTemplate::ALLOWED_TEXT_COLORS
+                    'PresentationpageTemplatesService' => $presentationpageTemplatesService
                 ]
             );
         }
