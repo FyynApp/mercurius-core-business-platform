@@ -19,7 +19,7 @@
         {% block contentBoxContent %}
             <dl class="bg-white">
 
-                {% embed 'embeds/two_column_content_box_content_row.twig' with { odd: true } %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_name'|trans }}
                     {% endblock %}
@@ -29,7 +29,7 @@
                     {% endblock %}
                 {% endembed %}
 
-                {% embed 'embeds/two_column_content_box_content_row.twig' %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_email_address'|trans }}
                     {% endblock %}
@@ -38,7 +38,7 @@
                     {% endblock %}
                 {% endembed %}
 
-                {% embed 'embeds/two_column_content_box_content_row.twig' with { odd: true } %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_subscription'|trans }}
                     {% endblock %}
@@ -50,7 +50,7 @@
                     {% endblock %}
                 {% endembed %}
 
-                {% embed 'embeds/two_column_content_box_content_row.twig' %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_latest_videos'|trans }}
                     {% endblock %}
@@ -81,7 +81,7 @@
                 {% endembed %}
 
 
-                {% embed 'embeds/two_column_content_box_content_row.twig' with { odd: true } %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_presentationpage_templates'|trans }}
                     {% endblock %}
