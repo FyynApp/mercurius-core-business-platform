@@ -1,0 +1,4 @@
+feature.recordings.return_from_recording_session:
+  path: /my/recordings/return-from-recording-session
+  controller: App\Controller\Feature\Recordings\RecordingsController::returnFromRecordingSessionAction
+  methods: [ GET ]

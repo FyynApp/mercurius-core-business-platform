@@ -7,6 +7,7 @@ use App\Repository\Feature\Account\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class RecordingsApiController extends AbstractController
@@ -60,7 +61,7 @@ class RecordingsApiController extends AbstractController
             'mediaAlert' => [
                 'notAllowed' => '<strong>Zugriff verweigert</strong> Bitte erlauben Sie den Zugriff auf Ihre Kamera und Mikrofon.',
                 'info' => '<strong>Wichtig!!</strong> Bitte aktivieren Sie Ihre Kamera.',
-                'notSupported' => '<strong>Ihr Ger\u00e4t wird nicht unterst\u00fctzt.</strong>'
+                'notSupported' => '<strong>Ihr Gerät wird nicht unterstützt.</strong>'
             ],
 
             'videoInterview' => [
@@ -70,22 +71,26 @@ class RecordingsApiController extends AbstractController
                 ],
                 'maxAnswerTimeText' => 'maximale Aufnahmedauer',
                 'maxAnswerTime' => 300,
-                'nextUrl' => 'https://fyyn.io/exec/uploadFinished.php',
+                'nextUrl' => $router->generate(
+                    'feature.recordings.return_from_recording_session',
+                    ['recordingSessionId' => $recordingSessionId],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
                 'recordSuccessText' => 'Dein Video wird gespeichert... Es dauert nicht lange, versprochen!',
                 'recordBtnText' => 'Aufnahme starten',
                 'stopBtnText' => 'Aufnahme beenden',
                 'finished' => [
                     'nextBtn' => [
-                        'text' => 'weiter zum n\u00e4chsten Schritt'
+                        'text' => 'weiter zum nächsten Schritt'
                     ],
                     'againBtn' => [
                         'text' => 'Aufnahme wiederholen'
                     ],
-                    'workingtext' => 'Cooles Video \ud83d\ude0e - Wir ben\u00f6tigen noch einige Sekunden, wir sind gleich fertig...',
-                    'titletext' => 'Dein geniales Video ist bereit um die Welt zu erobern \ud83d\ude80',
+                    'workingtext' => 'Cooles Video - wir benötigen noch einige Sekunden, wir sind gleich fertig...',
+                    'titletext' => 'Dein geniales Video ist bereit um die Welt zu erobern!',
                     'headline' => 'Aufnahme beendet',
                     'subheadline' => 'Sind Sie mit der Aufnahme zufrieden?',
-                    'text' => 'Sind Sie mit Ton und Video zufrieden?\nWenn Sie mit der Aufnahmen nicht zufrieden sind, k\u00f6nnen Sie die Aufnahmen wiederholen.',
+                    'text' => 'Sind Sie mit Ton und Video zufrieden?\nWenn Sie mit der Aufnahmen nicht zufrieden sind, können Sie die Aufnahmen wiederholen.',
                     'notWorkingBtn' => [
                         'text' => 'not working (Error)-'
                     ]
@@ -93,7 +98,7 @@ class RecordingsApiController extends AbstractController
                 'functionTest' => [
                     'headline' => 'Kamera- und Toneinstellungen',
                     'subheadline' => 'Funktionstest',
-                    'text' => 'Bitte kontrollieren Sie ob die Kamera und das Mikrofon richtig konfiguriert sind.\n\nW\u00e4hlen Sie bei Bedarf die richtige Kamera und das richtige Mikrofon.\n\n<strong>Wichtig:</strong> Ihr Videobild muss sichtbar sein.',
+                    'text' => 'Bitte kontrollieren Sie ob die Kamera und das Mikrofon richtig konfiguriert sind.\n\nWählen Sie bei Bedarf die richtige Kamera und das richtige Mikrofon.\n\n<strong>Wichtig:</strong> Ihr Videobild muss sichtbar sein.',
                     'microphoneText' => 'Ihr Mikrofon',
                     'cameraText' => 'Ihre Kamera',
                     'noDevicePermissionText' => 'Leider kann nicht auf Ihre Kamera zugeriffen werden.\nBitte aktivieren Sie die Kamera in Ihrem Brow',
@@ -113,7 +118,7 @@ class RecordingsApiController extends AbstractController
                     ],
                     'headline' => 'Aufnahme Test',
                     'subheadline' => '',
-                    'text' => 'In diesem Schritt wird die Aufnahmefunktion Ihrer Kamera \u00fcberp\u00fcft.\n\nBitte starten Sie die Aufnahme und erstellen ein kurzes <strong>Test-Video</strong> in dem Sie z.B. Ihren Namen sagen.\nNach der Aufnahme pr\u00fcfen Sie bitte ob der <strong>Ton</strong> h\u00f6rbar und das <strong>Video</strong> sichtbar ist.\n<strong>Zum starten der Aufnahme</strong>, kicken Sie den Button unterhalb des Videobildes.\nDie Aufnahme wird automatich nach 5 Sekunden beendet.\n<strong>Hinweis:</strong> Dieses Video ist <u>kein</u> Teil der Bewerbung.'
+                    'text' => 'In diesem Schritt wird die Aufnahmefunktion Ihrer Kamera überpüft.\n\nBitte starten Sie die Aufnahme und erstellen ein kurzes <strong>Test-Video</strong> in dem Sie z.B. Ihren Namen sagen.\nNach der Aufnahme prüfen Sie bitte ob der <strong>Ton</strong> hörbar und das <strong>Video</strong> sichtbar ist.\n<strong>Zum starten der Aufnahme</strong>, kicken Sie den Button unterhalb des Videobildes.\nDie Aufnahme wird automatich nach 5 Sekunden beendet.\n<strong>Hinweis:</strong> Dieses Video ist <u>kein</u> Teil der Bewerbung.'
                 ]
             ],
 
