@@ -9,6 +9,10 @@ features:
 aspects:
     resource: 'routes/aspect/*.yaml'
 
+api:
+    resource: 'routes/api/**/*.yaml'
+    prefix: /api
+
 catchall:
     path:     /{catchall}
     controller: App\Controller\CatchallController::indexAction

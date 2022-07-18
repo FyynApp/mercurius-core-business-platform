@@ -1,0 +1,4 @@
+api.feature.recordings.recording_session.get_info:
+  path: /feature/recordings/recording-session/{recordingSessionId}/info
+  controller: App\Controller\Feature\Recordings\RecordingsApiController::getRecordingSessionInfoAction
+  methods: [ GET ]
