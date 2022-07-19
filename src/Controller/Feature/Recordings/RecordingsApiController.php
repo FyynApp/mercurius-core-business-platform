@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -155,8 +156,16 @@ class RecordingsApiController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         LoggerInterface $logger,
-        RouterInterface $router
+        RouterInterface $router,
+        ?Profiler $profiler
     ): Response {
+
+        ini_set('memory_limit', '1024M');
+        if (!is_null($profiler)) {
+            $profiler->disable();
+        }
+        $entityManager->getConfiguration()->setSQLLogger();
+
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {

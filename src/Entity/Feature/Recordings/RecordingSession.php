@@ -55,4 +55,13 @@ class RecordingSession
     {
         return $this->recordingSessionVideoChunks;
     }
+
+
+    #[ORM\OneToOne(mappedBy: 'recordingSession', targetEntity: RecordingSessionFullVideo::class, cascade: ['persist'])]
+    private ?RecordingSessionFullVideo $recordingSessionFullVideo = null;
+
+    public function getRecordingSessionFullVideo(): ?RecordingSessionFullVideo
+    {
+        return $this->recordingSessionFullVideo;
+    }
 }

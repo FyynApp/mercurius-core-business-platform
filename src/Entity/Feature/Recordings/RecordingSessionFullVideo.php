@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Entity\Feature\Recordings;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+
+#[ORM\Entity]
+#[ORM\Table(name: 'recording_session_full_videos')]
+class RecordingSessionFullVideo
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private string $id;
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+
+    #[ORM\OneToOne(inversedBy: 'recordingSessionFullVideo', targetEntity: RecordingSession::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'recording_sessions_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    private RecordingSession $recordingSession;
+
+    public function getRecordingSession(): RecordingSession
+    {
+        return $this->recordingSession;
+    }
+
+    public function setRecordingSession(RecordingSession $recordingSession): void
+    {
+        $this->recordingSession = $recordingSession;
+    }
+
+
+    #[ORM\Column(type: 'string', length: 32, unique: false, nullable: false)]
+    private string $mimeType;
+
+    public function getMimeType(): string
+    {
+        return $this->mimeType;
+    }
+
+    public function setMimeType(string $mimeType): void
+    {
+        $this->mimeType = $mimeType;
+    }
+
+
+    #[ORM\Column(type: 'blob', unique: false, nullable: false)]
+    /** @var resource */
+    private $videoBlob;
+
+    /** @return resource */
+    public function getVideoBlob()
+    {
+        return $this->videoBlob;
+    }
+
+    public function setVideoBlob(mixed $videoBlob): void
+    {
+        $this->videoBlob = $videoBlob;
+    }
+}
