@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{# @var RecordingsService \App\Service\Feature\Recordings\RecordingsService #}
+
+{% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed 'embeds/default_content_box.html.twig' %}
+        {% block contentBoxTitle %}
+            {{ 'feature.recordings.recording_sessions_overview.title'|trans({ numberOfRecordingSessions: RecordingsService.recordingSessionsWithFullVideo(app.user)|length}) }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'feature.recordings.recording_sessions_overview.subtitle'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            {% if RecordingsService.recordingSessionsWithFullVideo(app.user)|length > 0 %}
+
+                <dl class="bg-white">
+                    {% for recordingSession in RecordingsService.recordingSessionsWithFullVideo(app.user) %}
+                        {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: cycle([true, false], loop.index0) } %}
+                            {% block contentLeft %}
+                                {{ recordingSession.createdAt|date('Y-m-d H:i:s') }}
+                            {% endblock %}
+                            {% block contentRight %}
+                                {{ recordingSession.id }}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endfor %}
+                </dl>
+            {% endif %}
+
+            <div class="p-10">
+                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if RecordingsService.recordingSessionsWithFullVideo(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
+
+                    <div class="flex justify-center items-center h-full w-full">
+                        <!-- Heroicon name: solid/plus-circle -->
+                        <a href="{{ path('feature.recordings.recording-studio') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="{{ path('feature.recordings.recording-studio') }}">
+                            {{ 'feature.recordings.overview.cta.add'|trans }}
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

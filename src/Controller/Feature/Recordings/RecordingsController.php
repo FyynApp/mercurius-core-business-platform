@@ -6,11 +6,10 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
+use App\Service\Feature\Recordings\RecordingsService;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -35,9 +34,17 @@ class RecordingsController extends AbstractController
         );
     }
 
-    public function returnFromRecordingSessionAction(Request $request): Response
+    public function returnFromRecordingSessionAction(): Response
     {
-        return new Response($request->get('recordingSessionId'));
+        return $this->redirectToRoute('feature.recordings.recording_sessions.overview');
+    }
+
+    public function recordingSessionsOverviewAction(RecordingsService $recordingsService): Response
+    {
+        return $this->render(
+            'feature/recordings/recording_sessions_overview.html.twig',
+            ['RecordingsService' => $recordingsService]
+        );
     }
 
     public function getRecordingSessionVideoChunkBlobAction(

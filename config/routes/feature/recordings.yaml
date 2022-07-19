@@ -8,6 +8,11 @@ feature.recordings.return_from_recording_session:
   controller: App\Controller\Feature\Recordings\RecordingsController::returnFromRecordingSessionAction
   methods: [ GET ]
 
+feature.recordings.recording_sessions.overview:
+  path: /my/recordings/recording-sessions/
+  controller: App\Controller\Feature\Recordings\RecordingsController::recordingSessionsOverviewAction
+  methods: [ GET ]
+
 feature.recordings.recording_session.video_chunk_blob.get:
   path: /my/recordings/recording-sessions/{recordingSessionId}/video-chunk-blobs/{videoChunkId}
   controller: App\Controller\Feature\Recordings\RecordingsController::getRecordingSessionVideoChunkBlobAction

@@ -51,6 +51,12 @@ class MainNavigationComponent
                 ),
 
                 new NavigationEntry(
+                    'mainnav.recordings',
+                    'feature.recordings.recording_sessions.overview',
+                    ['feature.recordings.recording-studio']
+                ),
+
+                new NavigationEntry(
                     'mainnav.presentationpage_templates',
                     'feature.presentationpage_templates.overview',
                     ['feature.presentationpage_templates.add_form']
