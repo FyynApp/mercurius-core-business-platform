@@ -1,8 +1,13 @@
+dateformat:
+  datetime_normal: 'Y-m-d, H:i'
+
 mainnav:
   homepage: 'About'
   features: 'Features'
   pricing: 'Pricing'
   dashboard: 'Dashboard'
+  recordings: 'Recordings'
+  recording_studio: 'Recording studio'
   presentationpage_templates: 'Landingpage Templates'
 
 sidenav:

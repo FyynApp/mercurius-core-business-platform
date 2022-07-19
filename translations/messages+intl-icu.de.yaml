@@ -1,8 +1,13 @@
+dateformat:
+  datetime_normal: 'd.m.Y, H:i \U\h\r'
+
 mainnav:
   homepage: 'Über'
   features: 'Funktionen'
   pricing: 'Preise'
   dashboard: 'Übersicht'
+  recordings: 'Aufnahmen'
+  recording_studio: 'Aufnahmestudio'
   presentationpage_templates: 'Vorlagen Präsentationsseite'
 
 sidenav:
@@ -56,6 +61,13 @@ feature:
       your_latest_videos: 'Neueste Videos'
       cta:
         manage_video: 'Verwalten'
+
+  recordings:
+    recording_sessions_overview:
+      title: Übersicht der bisherigen Aufnahmen
+      subtitle: Aufnahmen können in Form einer Präsentationsseite per E-Mail oder Messenger versendet werden.
+      cta:
+        add: 'Neue Aufnahme erstellen'
 
   presentationpage_templates:
     overview:

@@ -3,6 +3,9 @@
 namespace App\Entity\Feature\PresentationpageTemplates;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\Feature\Presentationpage\Presentationpage;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -59,6 +62,11 @@ class PresentationpageTemplate
         '#eceff1',
     ];
 
+
+    public function __construct()
+    {
+        $this->presentationpages = new ArrayCollection();
+    }
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -128,5 +136,18 @@ class PresentationpageTemplate
     public function setTextColor(string $textColor): void
     {
         $this->textColor = $textColor;
+    }
+
+
+    /** @var Presentationpage[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'presentationpageTemplate', targetEntity: Presentationpage::class, cascade: ['persist'])]
+    private Collection $presentationpages;
+
+    /**
+     * @return Presentationpage[]|Collection
+     */
+    public function getPresentationpages(): Collection
+    {
+        return $this->presentationpages;
     }
 }

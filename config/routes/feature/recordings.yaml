@@ -19,6 +19,11 @@ feature.recordings.recording_session.video_chunk_blob.get:
   methods: [ GET ]
 
 feature.recordings.recording_session.full_video_blob.get:
-  path: /my/recordings/recording-sessions/{recordingSessionId}/full-video-blob
+  path: /my/recordings/recording-sessions/{recordingSessionId}/full-video-blob.webm
   controller: App\Controller\Feature\Recordings\RecordingsController::getRecordingSessionFullVideoBlobAction
+  methods: [ GET ]
+
+feature.recordings.recording_session.full_video_preview_image.get:
+  path: /my/recordings/recording-sessions/{recordingSessionId}/full-video-preview-image.gif
+  controller: App\Controller\Feature\Recordings\RecordingsController::getRecordingSessionFullVideoPreviewImageAction
   methods: [ GET ]

@@ -122,13 +122,22 @@ class RecordingsController extends AbstractController
             $filelistFilePath = $filesystem->tempnam($workdirPath, 'filelist');
             file_put_contents($filelistFilePath, $filelistFileContent);
 
-            $resultFilePath = $workdirPath . '/' . 'result.webm';
+            $fullVideoFilePath = $workdirPath . '/' . 'full_video.webm';
+            $previewFilePath = $workdirPath . '/' . 'preview.gif';
 
-            shell_exec("/opt/homebrew/bin/ffmpeg -f concat -safe 0 -i $filelistFilePath -c copy $resultFilePath");
+            shell_exec("/opt/homebrew/bin/ffmpeg -f concat -safe 0 -i $filelistFilePath -c copy $fullVideoFilePath");
 
-            $fileResource = fopen($resultFilePath, 'r');
-            $fullVideo->setVideoBlob(stream_get_contents($fileResource));
-            fclose($fileResource);
+            shell_exec("/opt/homebrew/bin/ffmpeg -i $fullVideoFilePath -vf fps=1 -s 160x120 $workdirPath/frame%03d.jpg");
+
+            shell_exec("/opt/homebrew/bin/ffmpeg -f image2 -framerate 5 -i $workdirPath/frame%03d.jpg $previewFilePath");
+
+            $fullVideoFileResource = fopen($fullVideoFilePath, 'r');
+            $fullVideo->setVideoBlob(stream_get_contents($fullVideoFileResource));
+            fclose($fullVideoFileResource);
+
+            $previewFileResource = fopen($previewFilePath, 'r');
+            $fullVideo->setPreviewImageBlob(stream_get_contents($previewFileResource));
+            fclose($previewFileResource);
 
             $entityManager->persist($fullVideo);
             $entityManager->flush();
@@ -140,8 +149,8 @@ class RecordingsController extends AbstractController
             $entityManager->flush();
             */
 
-            $response->setCallback(function () use ($resultFilePath, $filesystem, $workdirPath) {
-                $fileResource = fopen($resultFilePath, 'r');
+            $response->setCallback(function () use ($fullVideoFilePath, $filesystem, $workdirPath) {
+                $fileResource = fopen($fullVideoFilePath, 'r');
                 print stream_get_contents($fileResource);
                 flush();
                 fclose($fileResource);
@@ -155,6 +164,28 @@ class RecordingsController extends AbstractController
                 flush();
             });
         }
+
+        return $response->send();
+    }
+
+
+    public function getRecordingSessionFullVideoPreviewImageAction(
+        string $recordingSessionId,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new NotFoundHttpException("No recording session with id '$recordingSessionId'.");
+        }
+
+        $response = new StreamedResponse();
+        $response->headers->set('X-Accel-Buffering', 'no');
+        $response->headers->set('Content-Type' , 'image/gif');
+        $response->setCallback(function () use ($recordingSession) {
+            print stream_get_contents($recordingSession->getRecordingSessionFullVideo()->getPreviewImageBlob());
+            flush();
+        });
 
         return $response->send();
     }

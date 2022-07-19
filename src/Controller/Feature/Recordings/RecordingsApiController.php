@@ -194,6 +194,10 @@ class RecordingsApiController extends AbstractController
                 'previewVideo' => $router->generate(
                     'feature.recordings.recording_session.full_video_blob.get',
                     ['recordingSessionId' => $recordingSessionId]
+                ),
+                'previewImage' => $router->generate(
+                    'feature.recordings.recording_session.full_video_preview_image.get',
+                    ['recordingSessionId' => $recordingSessionId]
                 )
             ]);
 
