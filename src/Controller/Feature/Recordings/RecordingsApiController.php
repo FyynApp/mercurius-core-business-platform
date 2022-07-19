@@ -2,11 +2,18 @@
 
 namespace App\Controller\Feature\Recordings;
 
-use App\Entity\Feature\Account\User;
-use App\Repository\Feature\Account\UserRepository;
+use App\Entity\Feature\Recordings\RecordingSession;
+use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -14,21 +21,17 @@ class RecordingsApiController extends AbstractController
 {
     public function getRecordingSessionInfoAction(
         string $recordingSessionId,
-        UserRepository $userRepository,
+        EntityManagerInterface $entityManager,
         RouterInterface $router
     ): JsonResponse {
-        /** @var User $user */
-        $user = $userRepository->findOneBy(['email' => 'manuel@kiessling.net']);
 
-        if (is_null($user)) {
-            return $this->json(
-                'Not an authorized user.',
-                Response::HTTP_FORBIDDEN,
-                [
-                    'Access-Control-Allow-Origin' => 'http://localhost:3000'
-                ]
-            );
+        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new NotFoundHttpException("A recording session with id '$recordingSessionId' does not exist.");
         }
+
+        $user = $recordingSession->getUser();
 
         $responseBody = [
             'settings' => [
@@ -67,7 +70,11 @@ class RecordingsApiController extends AbstractController
             'videoInterview' => [
                 'post' => [
                     'ios_upload_url' => 'https://c1.staffapply.com/iOS_upload.php',
-                    'mediaPostUrl' => 'https://c1.staffapply.com/slashvid.php'
+                    'mediaPostUrl' => $router->generate(
+                        'api.feature.recordings.recording_session.handle_video_chunk',
+                        ['recordingSessionId' => $recordingSessionId],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    )
                 ],
                 'maxAnswerTimeText' => 'maximale Aufnahmedauer',
                 'maxAnswerTime' => 300,
@@ -142,4 +149,83 @@ class RecordingsApiController extends AbstractController
         );
     }
 
+
+    public function handleRecordingSessionVideoChunkAction(
+        string $recordingSessionId,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        LoggerInterface $logger,
+        RouterInterface $router
+    ): Response {
+        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new NotFoundHttpException("A recording session with id '$recordingSessionId' does not exist.");
+        }
+
+
+        $userId = $request->get('userId');
+
+        if (is_null($userId)) {
+            if (is_null($userId)) {
+                throw new BadRequestHttpException("Missing request value 'userId'.");
+            }
+        }
+
+        if ($userId !== $recordingSession->getUser()->getId()) {
+            throw new AccessDeniedHttpException("userId '$userId' does not match the user id of session '$recordingSessionId'.");
+        }
+
+
+        if (   !is_null($request->get('recordingDone'))
+            && (string)$request->get('recordingDone') === 'true'
+        ) {
+            return $this->json([
+                'status' => Response::HTTP_OK,
+                'previewVideo' => $router->generate(
+                    'feature.recordings.recording_session.full_video_blob.get',
+                    ['recordingSessionId' => $recordingSessionId]
+                )
+            ]);
+
+        } else {
+            $name = $request->get('video');
+
+            if (is_null($name)) {
+                throw new BadRequestHttpException("Missing request value 'video'.");
+            }
+
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $request->files->get('video-blob');
+
+            if (is_null($uploadedFile)) {
+                throw new BadRequestHttpException("Missing request file part 'video-blob'.");
+            }
+
+            $logger->debug('uploadedFile mimeType: ' . $uploadedFile->getMimeType());
+            $logger->debug('uploadedFile pathName: ' . $uploadedFile->getPathname());
+
+            $videoBlob = $uploadedFile->getContent();
+
+            $chunk = new RecordingSessionVideoChunk();
+            $chunk->setRecordingSession($recordingSession);
+            $chunk->setName($name);
+            $chunk->setMimeType($uploadedFile->getMimeType());
+            $chunk->setVideoBlob($videoBlob);
+
+            $entityManager->persist($chunk);
+            $entityManager->flush();
+
+            return $this->json([
+                'status' => Response::HTTP_OK,
+                'preview' => $router->generate(
+                    'feature.recordings.recording_session.video_chunk_blob.get',
+                    [
+                        'recordingSessionId' => $recordingSessionId,
+                        'videoChunkId' => $chunk->getId()
+                    ]
+                )
+            ]);
+        }
+    }
 }

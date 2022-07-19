@@ -3,6 +3,8 @@
 namespace App\Entity\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -10,6 +12,11 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Table(name: 'recording_sessions')]
 class RecordingSession
 {
+    public function __construct()
+    {
+        $this->recordingSessionVideoChunks = new ArrayCollection();
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
@@ -34,5 +41,18 @@ class RecordingSession
     public function setUser(User $user): void
     {
         $this->user = $user;
+    }
+
+
+    /** @var RecordingSession[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'recordingSession', targetEntity: RecordingSessionVideoChunk::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
+    private Collection $recordingSessionVideoChunks;
+
+    /**
+     * @return RecordingSessionVideoChunk[]|Collection
+     */
+    public function getRecordingSessionVideoChunks(): Collection
+    {
+        return $this->recordingSessionVideoChunks;
     }
 }
