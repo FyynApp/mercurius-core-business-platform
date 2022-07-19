@@ -1,3 +1,9 @@
+feature.presentationpages.show:
+  path: /presentationpages/{presentationpageId}
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::showAction
+  methods: [ GET ]
+
+
 feature.presentationpages.create_from_recording_session_full_video:
   path: /my/presentationpages/create-from-recording-session-full-video
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createFromRecordingSessionFullVideoAction

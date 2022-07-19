@@ -50,6 +50,16 @@
                                 {% endfor %}
                             {% endif %}
 
+                            <div class="mb-4 mt-16">
+                                <a
+                                    href="{{ path('feature.presentationpages.show', { presentationpageId: presentationpage.id }) }}"
+                                    target="_blank"
+                                >
+                                    ⇒ {{ 'feature.presentationpages.editor.cta_show'|trans }}
+                                </a>
+                            </div>
+
+
                         {% endblock %}
                         {% block contentRight %}
 
@@ -70,12 +80,10 @@
                                 <div
                                     class="p-4"
                                 >
-                                    <video
+                                    <img
                                             class="rounded-md w-48"
-                                            src="{{ path('feature.recordings.recording_session.full_video_blob.get', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id }) }}"
-                                            autoplay
-                                            controls
-                                    ></video>
+                                            src="{{ path('feature.recordings.recording_session.full_video_preview_image.get', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id }) }}"
+                                    ></img>
                                 </div>
 
                                 <div

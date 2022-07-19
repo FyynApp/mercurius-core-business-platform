@@ -78,6 +78,7 @@ feature:
       subtitle: 'Hier entscheidet sich, wie genau einem Besucher Ihr Video präsentiert wird.'
       template: 'Gewählte Vorlage'
       change_template: 'Vorlage ändern'
+      cta_show: 'Präsentationsseite anzeigen'
       no_template_selected: 'Vorschau aufgrund fehlenden Templates nicht möglich.'
 
   presentationpage_templates:

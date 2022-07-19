@@ -13,10 +13,23 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class PresentationpagesController extends AbstractController
 {
+    public function showAction(string $presentationpageId, EntityManagerInterface $entityManager): Response
+    {
+        $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
+
+        if (is_null($presentationpage)) {
+            throw new NotFoundHttpException("No presentationpage with id '$presentationpageId'.");
+        }
+
+        return $this->render(
+            'feature/presentationpages/show.html.twig',
+            ['presentationpage' => $presentationpage]
+        );
+    }
+
     public function createFromRecordingSessionFullVideoAction(
         Request $request,
         EntityManagerInterface $entityManager

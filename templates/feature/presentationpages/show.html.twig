@@ -1,0 +1,40 @@
+{% extends 'base_naked.html.twig' %}
+
+{# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+
+{% block body %}
+
+    {% if presentationpage.presentationpageTemplate is not null %}
+
+        <div
+            class="w-full h-full text-center p-36"
+            style="background-color: {{ presentationpage.presentationpageTemplate.bgColor }}; color: {{ presentationpage.presentationpageTemplate.textColor }};"
+        >
+
+            <h1 class="text-3xl font-bold">
+                {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_headline'|trans }}
+            </h1>
+
+            <div
+                    class="flex p-4 justify-center"
+            >
+                <video
+                        class="rounded-md w-100"
+                        src="{{ path('feature.recordings.recording_session.full_video_blob.get', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id }) }}"
+                        autoplay
+                        controls
+                ></video>
+            </div>
+
+            <p class="text-lg flex p-4 justify-center">
+                {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_paragraph'|trans }}
+            </p>
+        </div>
+
+    {% else %}
+
+        {{ 'feature.presentationpages.editor.no_template_selected'|trans }}
+
+    {% endif %}
+
+{% endblock %}
