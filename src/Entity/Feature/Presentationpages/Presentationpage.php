@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Feature\Presentationpage;
+namespace App\Entity\Feature\Presentationpages;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
@@ -73,7 +73,7 @@ class Presentationpage
     }
 
 
-    #[ORM\ManyToOne(targetEntity: RecordingSessionFullVideo::class, cascade: ['persist'], inversedBy: 'presentationPages')]
+    #[ORM\ManyToOne(targetEntity: RecordingSessionFullVideo::class, cascade: ['persist'], inversedBy: 'presentationpages')]
     #[ORM\JoinColumn(name: 'recording_session_full_videos_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?RecordingSessionFullVideo $recordingSessionFullVideo;
 
@@ -88,7 +88,7 @@ class Presentationpage
     }
 
 
-    #[ORM\ManyToOne(targetEntity: PresentationpageTemplate::class, cascade: ['persist'], inversedBy: 'presentationPages')]
+    #[ORM\ManyToOne(targetEntity: PresentationpageTemplate::class, cascade: ['persist'], inversedBy: 'presentationpages')]
     #[ORM\JoinColumn(name: 'presentationpage_templates_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?PresentationpageTemplate $presentationpageTemplate;
 

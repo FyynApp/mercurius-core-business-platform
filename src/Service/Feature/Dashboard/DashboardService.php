@@ -3,6 +3,7 @@
 namespace App\Service\Feature\Dashboard;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\Feature\Recordings\RecordingSession;
 use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
 
 class DashboardService
@@ -34,13 +35,10 @@ class DashboardService
         return 'm';
     }
 
-    /** @return string[] */
-    public function getRecordingTitles(User $user): array
+    /** @return RecordingSession[] */
+    public function getLatestRecordingSessions(User $user): array
     {
-        return [
-            'First test recording',
-            'IBM Sales Pitch for Mr Smith, version 3'
-        ];
+        return $user->getRecordingSessions()->slice(0, 3);
     }
 
     public function getNumberOfPresentationpageTemplates(User $user): int

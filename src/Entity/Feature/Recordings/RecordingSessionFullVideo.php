@@ -2,7 +2,7 @@
 
 namespace App\Entity\Feature\Recordings;
 
-use App\Entity\Feature\Presentationpage\Presentationpage;
+use App\Entity\Feature\Presentationpages\Presentationpage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

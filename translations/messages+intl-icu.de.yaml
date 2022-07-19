@@ -8,7 +8,8 @@ mainnav:
   dashboard: 'Übersicht'
   recordings: 'Aufnahmen'
   recording_studio: 'Aufnahmestudio'
-  presentationpage_templates: 'Vorlagen Präsentationsseite'
+  presentationpages: 'Präsentationsseiten'
+  presentationpage_templates: 'Vorlagen'
 
 sidenav:
   signin: 'Einloggen'
@@ -68,6 +69,16 @@ feature:
       subtitle: Aufnahmen können in Form einer Präsentationsseite per E-Mail oder Messenger versendet werden.
       cta:
         add: 'Neue Aufnahme erstellen'
+        create_presentationpage: 'Präsentationsseite erstellen'
+        edit_presentationpage: 'Präsentationsseite bearbeiten'
+
+  presentationpages:
+    editor:
+      title: 'Bearbeiten Sie Ihre Präsentationsseite'
+      subtitle: 'Hier entscheidet sich, wie genau einem Besucher Ihr Video präsentiert wird.'
+      template: 'Gewählte Vorlage'
+      change_template: 'Vorlage ändern'
+      no_template_selected: 'Vorschau aufgrund fehlenden Templates nicht möglich.'
 
   presentationpage_templates:
     overview:

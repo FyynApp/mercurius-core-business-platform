@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+{# @var PresentationpageTemplatesService \App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService #}
+
+{% block title %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed 'embeds/default_content_box.html.twig' %}
+        {% block contentBoxTitle %}
+            {{ 'feature.presentationpages.editor.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'feature.presentationpages.editor.subtitle'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+            <div class="bg-white">
+
+                {% if presentationpage.presentationpageTemplate is not null %}
+
+                    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true } %}
+                        {% block contentLeft %}
+                            <div class="mb-4">
+                                {{ 'feature.presentationpages.editor.change_template'|trans }}
+                            </div>
+
+                            {% if PresentationpageTemplatesService.templatesForUser(app.user)|length > 1 %}
+                                {% for presentationpageTemplate in PresentationpageTemplatesService.templatesForUser(app.user)|filter(t => t.id != presentationpage.presentationpageTemplate.id ) %}
+                                    <form action="{{ path('feature.presentationpages.switch_to_template', { presentationpageId: presentationpage.id, presentationpageTemplateId: presentationpageTemplate.id }) }}" method="post">
+                                        <button
+                                            type="submit"
+                                            style="background-color: {{ presentationpageTemplate.bgColor }};"
+                                            class="rounded p-2 w-full mb-4"
+                                        >
+                                            <span
+                                                    style="color: {{ presentationpageTemplate.textColor }}"
+                                                    class="font-bold"
+                                            >
+                                                {{ presentationpageTemplate.title }}
+                                            </span>
+                                        </button>
+                                    </form>
+                                    <a href="">
+
+                                    </a>
+                                {% endfor %}
+                            {% endif %}
+
+                        {% endblock %}
+                        {% block contentRight %}
+
+                            <div class="mb-4">
+                                {{ 'feature.presentationpages.editor.template'|trans }}
+                            </div>
+
+                            <div
+                                class="rounded-lg p-4"
+                                style="background-color: {{ presentationpage.presentationpageTemplate.bgColor }}; color: {{ presentationpage.presentationpageTemplate.textColor }};"
+                            >
+                                <div
+                                    class="text-lg font-bold p-4"
+                                >
+                                    {{ presentationpage.presentationpageTemplate.title }}
+                                </div>
+
+                                <div
+                                    class="p-4"
+                                >
+                                    <video
+                                            class="rounded-md w-48"
+                                            src="{{ path('feature.recordings.recording_session.full_video_blob.get', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id }) }}"
+                                            autoplay
+                                            controls
+                                    ></video>
+                                </div>
+
+                                <div
+                                        class="text-sm font-medium p-4"
+                                >
+                                    {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_paragraph'|trans }}
+                                </div>
+                            </div>
+
+                        {% endblock %}
+                    {% endembed %}
+
+                {% else %}
+
+                    {{ 'feature.presentationpages.editor.no_template_selected'|trans }}
+
+                {% endif %}
+
+
+            </div>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

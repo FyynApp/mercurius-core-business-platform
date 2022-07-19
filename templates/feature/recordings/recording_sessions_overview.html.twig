@@ -29,7 +29,17 @@
                         <div class="grid grid-cols-1 gap-y-32 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 
                             {% for recordingSession in RecordingsService.recordingSessionsWithFullVideo(app.user) %}
-                                <a href="#" class="group">
+                                {# @var recordingSession \App\Entity\Feature\Recordings\RecordingSession #}
+                                <a
+                                    href="
+                                        {% if recordingSession.recordingSessionFullVideo.presentationpages is empty %}
+                                            {{ path('feature.presentationpages.create_from_recording_session_full_video', { recordingSessionFullVideoId: recordingSession.recordingSessionFullVideo.id }) }}
+                                        {% else %}
+                                            {{ path('feature.presentationpages.editor', { presentationpageId: recordingSession.recordingSessionFullVideo.presentationpages.first.id }) }}
+                                        {% endif %}
+                                    "
+                                    class="group"
+                                >
                                     <div class="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                                         <img
                                             class="w-full h-full object-center object-cover group-hover:opacity-75"
@@ -38,8 +48,11 @@
                                     </div>
                                     <h3 class="mt-4 text-sm text-gray-700">{{ recordingSession.createdAt|date('dateformat.datetime_normal'|trans) }}</h3>
 
-                                    {{ formElements.primaryCtaButton('Präsentationsseite erstellen') }}
-
+                                    {% if recordingSession.recordingSessionFullVideo.presentationpages is empty %}
+                                        {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.create_presentationpage'|trans) }}
+                                    {% else %}
+                                        {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.edit_presentationpage'|trans) }}
+                                    {% endif %}
                                 </a>
                             {% endfor %}
                         </div>

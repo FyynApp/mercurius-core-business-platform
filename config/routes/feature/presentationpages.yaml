@@ -1,0 +1,14 @@
+feature.presentationpages.create_from_recording_session_full_video:
+  path: /my/presentationpages/create-from-recording-session-full-video
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createFromRecordingSessionFullVideoAction
+  methods: [ GET ]
+
+feature.presentationpages.editor:
+  path: /my/presentationpages/{presentationpageId}/editor
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::editorAction
+  methods: [ GET ]
+
+feature.presentationpages.switch_to_template:
+  path: /my/presentationpages/{presentationpageId}/switch-to-template/{presentationpageTemplateId}
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::switchToTemplateAction
+  methods: [ POST ]
