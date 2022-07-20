@@ -1,9 +1,9 @@
 api.feature.recordings.recording_session.get_info:
-  path: /feature/recordings/recording-session/{recordingSessionId}/info
+  path: /feature/recordings/recording-sessions/{recordingSessionId}/info
   controller: App\Controller\Feature\Recordings\RecordingsApiController::getRecordingSessionInfoAction
   methods: [ GET ]
 
 api.feature.recordings.recording_session.handle_video_chunk:
-  path: /feature/recordings/recording-session/{recordingSessionId}/video-chunks/
+  path: /feature/recordings/recording-sessions/{recordingSessionId}/video-chunks/
   controller: App\Controller\Feature\Recordings\RecordingsApiController::handleRecordingSessionVideoChunkAction
   methods: [ POST ]
