@@ -3,18 +3,16 @@
 namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
+use App\Service\Aspect\ValueFormats\ValueFormatsService;
+use App\Service\Feature\Recordings\RecordingSessionService;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -154,35 +152,19 @@ class RecordingsApiController extends AbstractController
     public function handleRecordingSessionVideoChunkAction(
         string $recordingSessionId,
         Request $request,
-        EntityManagerInterface $entityManager,
-        LoggerInterface $logger,
         RouterInterface $router,
-        ?Profiler $profiler
+        RecordingSessionService $recordingSessionService
     ): Response {
 
-        ini_set('memory_limit', '1024M');
-        if (!is_null($profiler)) {
-            $profiler->disable();
+        if (ValueFormatsService::isValidGuid($recordingSessionId)) {
+            throw new BadRequestHttpException('recordingSessionId is not valid.');
         }
-        $entityManager->getConfiguration()->setSQLLogger();
-
-        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
-
-        if (is_null($recordingSession)) {
-            throw new NotFoundHttpException("A recording session with id '$recordingSessionId' does not exist.");
-        }
-
 
         $userId = $request->get('userId');
 
         if (is_null($userId)) {
             throw new BadRequestHttpException("Missing request value 'userId'.");
         }
-
-        if ($userId !== $recordingSession->getUser()->getId()) {
-            throw new AccessDeniedHttpException("userId '$userId' does not match the user id of session '$recordingSessionId'.");
-        }
-
 
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
@@ -200,9 +182,9 @@ class RecordingsApiController extends AbstractController
             ]);
 
         } else {
-            $name = $request->get('video');
+            $chunkName = $request->get('video');
 
-            if (is_null($name)) {
+            if (is_null($chunkName)) {
                 throw new BadRequestHttpException("Missing request value 'video'.");
             }
 
@@ -213,19 +195,13 @@ class RecordingsApiController extends AbstractController
                 throw new BadRequestHttpException("Missing request file part 'video-blob'.");
             }
 
-            $logger->debug('uploadedFile mimeType: ' . $uploadedFile->getMimeType());
-            $logger->debug('uploadedFile pathName: ' . $uploadedFile->getPathname());
-
-            $videoBlob = $uploadedFile->getContent();
-
-            $chunk = new RecordingSessionVideoChunk();
-            $chunk->setRecordingSession($recordingSession);
-            $chunk->setName($name);
-            $chunk->setMimeType($uploadedFile->getMimeType());
-            $chunk->setVideoBlob($videoBlob);
-
-            $entityManager->persist($chunk);
-            $entityManager->flush();
+            $chunk = $recordingSessionService->handleRecordingSessionVideoChunk(
+                $recordingSessionId,
+                $userId,
+                $chunkName,
+                $uploadedFile->getPathname(),
+                $uploadedFile->getMimeType()
+            );
 
             return $this->json([
                 'status' => Response::HTTP_OK,

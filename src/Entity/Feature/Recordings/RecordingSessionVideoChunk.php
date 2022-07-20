@@ -63,20 +63,4 @@ class RecordingSessionVideoChunk
     {
         $this->mimeType = $mimeType;
     }
-
-
-    #[ORM\Column(type: 'blob', unique: false, nullable: false)]
-    /** @var resource */
-    private $videoBlob;
-
-    /** @return resource */
-    public function getVideoBlob()
-    {
-        return $this->videoBlob;
-    }
-
-    public function setVideoBlob(mixed $videoBlob): void
-    {
-        $this->videoBlob = $videoBlob;
-    }
 }
