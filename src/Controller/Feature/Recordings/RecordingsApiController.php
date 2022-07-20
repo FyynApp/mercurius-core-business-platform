@@ -166,6 +166,11 @@ class RecordingsApiController extends AbstractController
             throw new BadRequestHttpException("Missing request value 'userId'.");
         }
 
+        if (ValueFormatsService::isValidGuid($userId)) {
+            throw new BadRequestHttpException('userId is not valid.');
+        }
+
+
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
         ) {
@@ -206,10 +211,10 @@ class RecordingsApiController extends AbstractController
             return $this->json([
                 'status' => Response::HTTP_OK,
                 'preview' => $router->generate(
-                    'feature.recordings.recording_session.video_chunk_blob.get',
+                    'feature.recordings.recording_session.video_chunk.asset',
                     [
                         'recordingSessionId' => $recordingSessionId,
-                        'videoChunkId' => $chunk->getId()
+                        'chunkId' => $chunk->getId()
                     ]
                 )
             ]);

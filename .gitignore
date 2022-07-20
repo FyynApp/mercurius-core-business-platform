@@ -1,4 +1,5 @@
 .idea/
+public/generated-content/
 
 ###> symfony/framework-bundle ###
 /.env.local

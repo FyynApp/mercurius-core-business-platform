@@ -6,6 +6,8 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
+use App\Service\Aspect\ValueFormats\ValueFormatsService;
+use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\RecordingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,34 +47,6 @@ class RecordingsController extends AbstractController
             'feature/recordings/recording_sessions_overview.html.twig',
             ['RecordingsService' => $recordingsService]
         );
-    }
-
-    public function getRecordingSessionVideoChunkBlobAction(
-        string $recordingSessionId,
-        string $videoChunkId,
-        EntityManagerInterface $entityManager
-    ): Response {
-
-        $videoChunk = $entityManager->find(RecordingSessionVideoChunk::class, $videoChunkId);
-
-        if (is_null($videoChunk)) {
-            throw new NotFoundHttpException("No video chunk with id '$videoChunkId'.");
-        }
-
-        if ($videoChunk->getRecordingSession()->getId() !== $recordingSessionId) {
-            throw new BadRequestHttpException("recording session id of video chunk is not '$recordingSessionId'.");
-        }
-
-        $response = new StreamedResponse();
-        $response->headers->set('X-Accel-Buffering', 'no');
-        $response->headers->set('Content-Type' , $videoChunk->getMimeType());
-
-        $response->setCallback(function () use ($videoChunk) {
-            print(stream_get_contents($videoChunk->getVideoBlob()));
-            flush();
-        });
-
-        return $response->send();
     }
 
     public function getRecordingSessionFullVideoBlobAction(

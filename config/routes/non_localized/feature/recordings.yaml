@@ -1,0 +1,2 @@
+feature.recordings.recording_session.video_chunk.asset:
+  path: /generated-content/recording-sessions/{recordingSessionId}/video-chunks/{chunkId}
