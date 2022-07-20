@@ -176,9 +176,7 @@ class RecordingsApiController extends AbstractController
         $userId = $request->get('userId');
 
         if (is_null($userId)) {
-            if (is_null($userId)) {
-                throw new BadRequestHttpException("Missing request value 'userId'.");
-            }
+            throw new BadRequestHttpException("Missing request value 'userId'.");
         }
 
         if ($userId !== $recordingSession->getUser()->getId()) {
