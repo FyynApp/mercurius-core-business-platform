@@ -20,10 +20,11 @@
             >
                 <video
                     class="rounded-md w-100"
-                    src="{{ path('feature.recordings.recording_session.full_video.video.asset', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id }) }}"
-                    autoplay
+                    autoplay="autoplay"
                     controls
-                ></video>
+                >
+                    <source src="{{ path('feature.recordings.recording_session.full_video.video.asset', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id }) }}">
+                </video>
             </div>
 
             <p class="text-lg flex p-4 justify-center">
