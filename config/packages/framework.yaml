@@ -1,5 +1,8 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
+    router:
+        default_uri: '%env(ROUTER_REQUEST_CONTEXT_SCHEME)%://%env(ROUTER_REQUEST_CONTEXT_HOST)%/%env(ROUTER_REQUEST_CONTEXT_BASE_URL)%'
+
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true
     http_method_override: false

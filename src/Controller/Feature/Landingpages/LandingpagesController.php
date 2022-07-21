@@ -12,7 +12,10 @@ class LandingpagesController extends AbstractController
         if (!is_null($this->getUser())) {
             return $this->redirectToRoute('feature.dashboard.show');
         }
-        return $this->render('feature/landingpages/homepage.html.twig');
+        return $this->render(
+            'feature/landingpages/homepage.html.twig',
+            ['kernel_environment' => $this->getParameter('kernel.environment')]
+        );
     }
 
     public function featuresAction(): Response

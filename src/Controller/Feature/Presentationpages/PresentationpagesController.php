@@ -37,6 +37,10 @@ class PresentationpagesController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
+        if ($user->getPresentationpageTemplates()->count() === 0) {
+            return $this->redirectToRoute('feature.presentationpage_templates.add_form');
+        }
+
         $recordingSessionFullVideoId = $request->get('recordingSessionFullVideoId');
 
         $recordingSessionFullVideo = $entityManager->find(RecordingSessionFullVideo::class, $recordingSessionFullVideoId);
