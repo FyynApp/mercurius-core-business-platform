@@ -127,7 +127,7 @@ class RecordingSessionService
 
         shell_exec("/opt/homebrew/bin/ffmpeg -i {$this->getFullVideoVideoFilePath($recordingSession)} -vf fps=1 -s 160x120 {$this->getFullVideoPreviewPartsFolderPath($recordingSession)}/frame%03d.jpg");
 
-        shell_exec("/opt/homebrew/bin/ffmpeg -f image2 -framerate 5 -i {$this->getFullVideoPreviewPartsFolderPath($recordingSession)}/frame%03d.jpg {$this->getFullVideoPreviewFilePath($recordingSession)}");
+        shell_exec("/opt/homebrew/bin/ffmpeg -f image2 -framerate 1 -i {$this->getFullVideoPreviewPartsFolderPath($recordingSession)}/frame%03d.jpg -vf \"fps=1,scale=160:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" {$this->getFullVideoPreviewFilePath($recordingSession)}");
 
 
         $fs->remove($this->getFullVideoPreviewPartsFolderPath($recordingSession));
