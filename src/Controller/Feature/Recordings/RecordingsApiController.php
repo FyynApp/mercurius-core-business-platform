@@ -156,7 +156,7 @@ class RecordingsApiController extends AbstractController
         RecordingSessionService $recordingSessionService
     ): Response {
 
-        if (ValueFormatsService::isValidGuid($recordingSessionId)) {
+        if (!ValueFormatsService::isValidGuid($recordingSessionId)) {
             throw new BadRequestHttpException('recordingSessionId is not valid.');
         }
 
@@ -166,7 +166,7 @@ class RecordingsApiController extends AbstractController
             throw new BadRequestHttpException("Missing request value 'userId'.");
         }
 
-        if (ValueFormatsService::isValidGuid($userId)) {
+        if (!ValueFormatsService::isValidGuid($userId)) {
             throw new BadRequestHttpException('userId is not valid.');
         }
 

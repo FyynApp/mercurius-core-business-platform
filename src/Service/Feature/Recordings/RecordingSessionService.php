@@ -56,6 +56,14 @@ class RecordingSessionService
 
         $fs = new Filesystem();
 
+        $fs->mkdir(
+            $this->filesystemService->getPublicWebfolderGeneratedContentPath([
+                'recording-sessions',
+                $recordingSession->getId(),
+                'video-chunks'
+            ])
+        );
+
         $fs->copy(
             $videoChunkFilePath,
             $this->filesystemService->getPublicWebfolderGeneratedContentPath([
@@ -63,6 +71,15 @@ class RecordingSessionService
                 $recordingSession->getId(),
                 'video-chunks',
                 $chunk->getId()
+            ])
+        );
+
+
+        $fs->mkdir(
+            $this->filesystemService->getContentStoragePath([
+                'recording-sessions',
+                $recordingSession->getId(),
+                'video-chunks'
             ])
         );
 

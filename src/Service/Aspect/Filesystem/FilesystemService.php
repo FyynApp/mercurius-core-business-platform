@@ -30,8 +30,8 @@ class FilesystemService
     {
         $path = implode('/', $pathParts);
         if ($path === '') {
-            return $this->parameterBag->get('kernel.project_dir') . '/generated-content';
+            return $this->parameterBag->get('kernel.project_dir') . '/public/generated-content';
         }
-        return $this->parameterBag->get('kernel.project_dir') . '/generated-content/' . $path;
+        return $this->parameterBag->get('kernel.project_dir') . '/public/generated-content/' . $path;
     }
 }
