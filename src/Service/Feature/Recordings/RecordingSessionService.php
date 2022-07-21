@@ -4,6 +4,7 @@ namespace App\Service\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
+use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +18,7 @@ class RecordingSessionService
 
     private FilesystemService $filesystemService;
 
+
     public function __construct(
         EntityManagerInterface $entityManager,
         FilesystemService $filesystemService
@@ -24,6 +26,7 @@ class RecordingSessionService
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
     }
+
 
     /** @throws Exception */
     public function handleRecordingSessionVideoChunk(
@@ -75,26 +78,110 @@ class RecordingSessionService
         );
 
 
-        $fs->mkdir(
-            $this->filesystemService->getContentStoragePath([
-                'recording-sessions',
-                $recordingSession->getId(),
-                'video-chunks'
-            ])
-        );
+        $fs->mkdir($this->getVideoChunkContentStorageFolderPath($chunk->getRecordingSession()));
 
         $fs->rename(
             $videoChunkFilePath,
-            $this->filesystemService->getContentStoragePath([
-                'recording-sessions',
-                $recordingSession->getId(),
-                'video-chunks',
-                $chunk->getId()
-            ])
+            $this->getVideoChunkContentStorageFilePath($chunk)
         );
 
         $this->entityManager->flush();
 
         return $chunk;
+    }
+
+
+    /** @throws Exception */
+    public function generateFullVideo(
+        string $recordingSessionId,
+    ): RecordingSessionFullVideo
+    {
+        $recordingSession = $this->entityManager->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new Exception("No recording session with id '$recordingSessionId'.");
+        }
+
+        $fullVideo = new RecordingSessionFullVideo();
+        $fullVideo->setRecordingSession($recordingSession);
+        $fullVideo->setMimeType($recordingSession->getRecordingSessionVideoChunks()->first()->getMimeType());
+
+        $chunkFilesListPath = $this->filesystemService->getContentStoragePath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'video-chunks-files.list'
+        ]);
+        $chunkFilesListContent = '';
+
+        foreach ($recordingSession->getRecordingSessionVideoChunks() as $chunk) {
+            $chunkFilesListContent .= "file '{$this->getVideoChunkContentStorageFilePath($chunk)}'\n";
+        }
+
+        file_put_contents($chunkFilesListPath, $chunkFilesListContent);
+
+        shell_exec("/opt/homebrew/bin/ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy {$this->getFullVideoVideoFilePath($recordingSession)}");
+
+
+        $fs = new Filesystem();
+        $fs->mkdir($this->getFullVideoPreviewPartsFolderPath($recordingSession));
+
+        shell_exec("/opt/homebrew/bin/ffmpeg -i {$this->getFullVideoVideoFilePath($recordingSession)} -vf fps=1 -s 160x120 {$this->getFullVideoPreviewPartsFolderPath($recordingSession)}/frame%03d.jpg");
+
+        shell_exec("/opt/homebrew/bin/ffmpeg -f image2 -framerate 5 -i {$this->getFullVideoPreviewPartsFolderPath($recordingSession)}/frame%03d.jpg {$this->getFullVideoPreviewFilePath($recordingSession)}");
+
+
+        $fs->remove($this->getFullVideoPreviewPartsFolderPath($recordingSession));
+        $fs->remove($this->getVideoChunkContentStorageFolderPath($recordingSession));
+
+        $this->entityManager->persist($fullVideo);
+        $this->entityManager->flush();
+
+        return $fullVideo;
+    }
+
+    private function getVideoChunkContentStorageFilePath(RecordingSessionVideoChunk $chunk): string
+    {
+        return $this->filesystemService->getContentStoragePath([
+            'recording-sessions',
+            $chunk->getRecordingSession()->getId(),
+            'video-chunks',
+            $chunk->getId() . '.webm'
+        ]);
+    }
+
+    private function getVideoChunkContentStorageFolderPath(RecordingSession $recordingSession): string
+    {
+        return $this->filesystemService->getContentStoragePath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'video-chunks'
+        ]);
+    }
+
+    private function getFullVideoVideoFilePath(RecordingSession $recordingSession): string
+    {
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'full-video.webm'
+        ]);
+    }
+
+    private function getFullVideoPreviewFilePath(RecordingSession $recordingSession): string
+    {
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'full-video-preview.gif'
+        ]);
+    }
+
+    private function getFullVideoPreviewPartsFolderPath(RecordingSession $recordingSession): string
+    {
+        return $this->filesystemService->getContentStoragePath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'preview-parts'
+        ]);
     }
 }

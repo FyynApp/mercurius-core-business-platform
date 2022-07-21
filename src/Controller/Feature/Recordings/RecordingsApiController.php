@@ -174,14 +174,16 @@ class RecordingsApiController extends AbstractController
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
         ) {
+            $recordingSessionService->generateFullVideo($recordingSessionId);
+
             return $this->json([
                 'status' => Response::HTTP_OK,
                 'previewVideo' => $router->generate(
-                    'feature.recordings.recording_session.full_video_blob.get',
+                    'feature.recordings.recording_session.full_video.video.asset',
                     ['recordingSessionId' => $recordingSessionId]
                 ),
                 'previewImage' => $router->generate(
-                    'feature.recordings.recording_session.full_video_preview_image.get',
+                    'feature.recordings.recording_session.full_video.preview.asset',
                     ['recordingSessionId' => $recordingSessionId]
                 )
             ]);

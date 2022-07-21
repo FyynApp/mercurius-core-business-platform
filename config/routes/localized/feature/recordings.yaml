@@ -12,13 +12,3 @@ feature.recordings.recording_sessions.overview:
   path: /my/recordings/recording-sessions/
   controller: App\Controller\Feature\Recordings\RecordingsController::recordingSessionsOverviewAction
   methods: [ GET ]
-
-feature.recordings.recording_session.full_video_blob.get:
-  path: /my/recordings/recording-sessions/{recordingSessionId}/full-video-blob.webm
-  controller: App\Controller\Feature\Recordings\RecordingsController::getRecordingSessionFullVideoBlobAction
-  methods: [ GET ]
-
-feature.recordings.recording_session.full_video_preview_image.get:
-  path: /my/recordings/recording-sessions/{recordingSessionId}/full-video-preview-image.gif
-  controller: App\Controller\Feature\Recordings\RecordingsController::getRecordingSessionFullVideoPreviewImageAction
-  methods: [ GET ]

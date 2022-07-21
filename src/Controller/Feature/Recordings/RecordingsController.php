@@ -4,19 +4,10 @@ namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
-use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
-use App\Service\Aspect\ValueFormats\ValueFormatsService;
-use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\RecordingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Profiler\Profiler;
 
 class RecordingsController extends AbstractController
 {
@@ -47,120 +38,5 @@ class RecordingsController extends AbstractController
             'feature/recordings/recording_sessions_overview.html.twig',
             ['RecordingsService' => $recordingsService]
         );
-    }
-
-    public function getRecordingSessionFullVideoBlobAction(
-        string $recordingSessionId,
-        EntityManagerInterface $entityManager,
-        Filesystem $filesystem,
-        ?Profiler $profiler
-    ): Response {
-
-        ini_set('memory_limit', '1024M');
-        if (!is_null($profiler)) {
-            $profiler->disable();
-        }
-        $entityManager->getConfiguration()->setSQLLogger();
-
-        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
-
-        if (is_null($recordingSession)) {
-            throw new NotFoundHttpException("No recording session with id '$recordingSessionId'.");
-        }
-
-        $response = new StreamedResponse();
-        $response->headers->set('X-Accel-Buffering', 'no');
-
-        if (is_null($recordingSession->getRecordingSessionFullVideo())) {
-            $fullVideo = new RecordingSessionFullVideo();
-            $fullVideo->setRecordingSession($recordingSession);
-            $fullVideo->setMimeType($recordingSession->getRecordingSessionVideoChunks()->first()->getMimeType());
-
-            $response->headers->set('Content-Type' , $fullVideo->getMimeType());
-
-            $workdirPath = '/var/tmp/mercurius-core-business-platform/' . sha1(rand(0, PHP_INT_MAX));
-
-            $filesystem->mkdir($workdirPath);
-
-            $tmpFilePaths = [];
-            foreach ($recordingSession->getRecordingSessionVideoChunks() as $chunk) {
-                $tmpFilePath = $filesystem->tempnam($workdirPath, $chunk->getId(), '.webm');
-                file_put_contents($tmpFilePath, stream_get_contents($chunk->getVideoBlob()));
-                $tmpFilePaths[] = $tmpFilePath;
-            }
-
-            $filelistFileContent = '';
-            foreach ($tmpFilePaths as $tmpFilePath) {
-                $filelistFileContent .= "file '$tmpFilePath'\n";
-            }
-            $filelistFilePath = $filesystem->tempnam($workdirPath, 'filelist');
-            file_put_contents($filelistFilePath, $filelistFileContent);
-
-            $fullVideoFilePath = $workdirPath . '/' . 'full_video.webm';
-            $previewFilePath = $workdirPath . '/' . 'preview.gif';
-
-            shell_exec("/opt/homebrew/bin/ffmpeg -f concat -safe 0 -i $filelistFilePath -c copy $fullVideoFilePath");
-
-            shell_exec("/opt/homebrew/bin/ffmpeg -i $fullVideoFilePath -vf fps=1 -s 160x120 $workdirPath/frame%03d.jpg");
-
-            shell_exec("/opt/homebrew/bin/ffmpeg -f image2 -framerate 5 -i $workdirPath/frame%03d.jpg $previewFilePath");
-
-            $fullVideoFileResource = fopen($fullVideoFilePath, 'r');
-            $fullVideo->setVideoBlob(stream_get_contents($fullVideoFileResource));
-            fclose($fullVideoFileResource);
-
-            $previewFileResource = fopen($previewFilePath, 'r');
-            $fullVideo->setPreviewImageBlob(stream_get_contents($previewFileResource));
-            fclose($previewFileResource);
-
-            $entityManager->persist($fullVideo);
-            $entityManager->flush();
-
-            /*
-            foreach ($recordingSession->getRecordingSessionVideoChunks() as $chunk) {
-                $entityManager->remove($chunk);
-            }
-            $entityManager->flush();
-            */
-
-            $response->setCallback(function () use ($fullVideoFilePath, $filesystem, $workdirPath) {
-                $fileResource = fopen($fullVideoFilePath, 'r');
-                print stream_get_contents($fileResource);
-                flush();
-                fclose($fileResource);
-                $filesystem->remove($workdirPath);
-            });
-
-        } else {
-            $response->headers->set('Content-Type' , $recordingSession->getRecordingSessionFullVideo()->getMimeType());
-            $response->setCallback(function () use ($recordingSession) {
-                print stream_get_contents($recordingSession->getRecordingSessionFullVideo()->getVideoBlob());
-                flush();
-            });
-        }
-
-        return $response->send();
-    }
-
-
-    public function getRecordingSessionFullVideoPreviewImageAction(
-        string $recordingSessionId,
-        EntityManagerInterface $entityManager
-    ): Response {
-        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
-
-        if (is_null($recordingSession)) {
-            throw new NotFoundHttpException("No recording session with id '$recordingSessionId'.");
-        }
-
-        $response = new StreamedResponse();
-        $response->headers->set('X-Accel-Buffering', 'no');
-        $response->headers->set('Content-Type' , 'image/gif');
-        $response->setCallback(function () use ($recordingSession) {
-            print stream_get_contents($recordingSession->getRecordingSessionFullVideo()->getPreviewImageBlob());
-            flush();
-        });
-
-        return $response->send();
     }
 }

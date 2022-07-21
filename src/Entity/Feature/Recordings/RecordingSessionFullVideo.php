@@ -58,38 +58,6 @@ class RecordingSessionFullVideo
     }
 
 
-    #[ORM\Column(type: 'blob', unique: false, nullable: false)]
-    /** @var resource */
-    private $videoBlob;
-
-    /** @return resource */
-    public function getVideoBlob()
-    {
-        return $this->videoBlob;
-    }
-
-    public function setVideoBlob(mixed $videoBlob): void
-    {
-        $this->videoBlob = $videoBlob;
-    }
-
-
-    #[ORM\Column(type: 'blob', unique: false, nullable: false)]
-    /** @var resource */
-    private $previewImageBlob;
-
-    /** @return resource */
-    public function getPreviewImageBlob()
-    {
-        return $this->previewImageBlob;
-    }
-
-    public function setPreviewImageBlob(mixed $previewImageBlob): void
-    {
-        $this->previewImageBlob = $previewImageBlob;
-    }
-
-
     /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(mappedBy: 'recordingSessionFullVideo', targetEntity: Presentationpage::class, cascade: ['persist'])]
     private Collection $presentationpages;
