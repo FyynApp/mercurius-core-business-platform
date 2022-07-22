@@ -13,6 +13,9 @@ server {
   index index.php;
 
   location /nginx_status {
+    auth_basic "Login required";
+    auth_basic_user_file /etc/nginx/htpasswd;
+
     stub_status on;
     access_log off;
     allow 127.0.0.1;
@@ -22,6 +25,9 @@ server {
   location ~ /\. { deny all; }
 
   location ~ \.php$ {
+    auth_basic "Login required";
+    auth_basic_user_file /etc/nginx/htpasswd;
+
     include snippets/fastcgi-php.conf;
     fastcgi_param APP_ENV "preprod";
     fastcgi_hide_header Forwarded;
@@ -29,6 +35,9 @@ server {
   }
 
   location / {
+    auth_basic "Login required";
+    auth_basic_user_file /etc/nginx/htpasswd;
+
     if (-f $request_filename) {
       expires max;
       break;
