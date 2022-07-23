@@ -10,6 +10,7 @@ use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class RecordingSessionService
@@ -18,13 +19,17 @@ class RecordingSessionService
 
     private FilesystemService $filesystemService;
 
+    private LoggerInterface $logger;
+
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        FilesystemService $filesystemService
+        FilesystemService $filesystemService,
+        LoggerInterface $logger
     ) {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
+        $this->logger = $logger;
     }
 
 
@@ -112,7 +117,18 @@ class RecordingSessionService
         ]);
         $chunkFilesListContent = '';
 
-        foreach ($recordingSession->getRecordingSessionVideoChunks() as $chunk) {
+        $sql = "
+            SELECT id FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
+            WHERE recording_sessions_id = :rsid
+            ORDER BY name ASC
+            ;
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([':rsid' => $recordingSession->getId()]);
+
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
             $chunkFilesListContent .= "file '{$this->getVideoChunkContentStorageFilePath($chunk)}'\n";
         }
 
