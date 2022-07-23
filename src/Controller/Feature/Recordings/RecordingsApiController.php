@@ -210,16 +210,22 @@ class RecordingsApiController extends AbstractController
                 $uploadedFile->getMimeType()
             );
 
-            return $this->json([
-                'status' => Response::HTTP_OK,
-                'preview' => $router->generate(
-                    'feature.recordings.recording_session.video_chunk.asset',
-                    [
-                        'recordingSessionId' => $recordingSessionId,
-                        'chunkId' => $chunk->getId()
-                    ]
-                )
-            ]);
+            if ($chunk->getRecordingSession()->getRecordingSessionVideoChunks()->count() === 1) {
+                return $this->json([
+                    'status' => Response::HTTP_OK,
+                    'preview' => $router->generate(
+                        'feature.recordings.recording_session.video_chunk.asset',
+                        [
+                            'recordingSessionId' => $recordingSessionId,
+                            'chunkId' => $chunk->getId()
+                        ]
+                    )
+                ]);
+            } else {
+                return $this->json([
+                    'status' => Response::HTTP_OK
+                ]);
+            }
         }
     }
 }
