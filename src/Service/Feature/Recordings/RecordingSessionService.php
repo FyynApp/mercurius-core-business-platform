@@ -94,8 +94,7 @@ class RecordingSessionService
     /** @throws Exception */
     public function generateFullVideo(
         string $recordingSessionId,
-    ): RecordingSessionFullVideo
-    {
+    ): RecordingSessionFullVideo {
         $recordingSession = $this->entityManager->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {
