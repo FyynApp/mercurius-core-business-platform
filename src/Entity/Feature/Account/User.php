@@ -28,7 +28,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\Column(type: 'guid', unique: true)]
     private string $id;
 
     public function getId(): ?string
