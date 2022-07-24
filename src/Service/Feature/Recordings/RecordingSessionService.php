@@ -134,18 +134,15 @@ class RecordingSessionService
 
         file_put_contents($chunkFilesListPath, $chunkFilesListContent);
 
-        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy {$this->getFullVideoVideoFilePath($recordingSession)}");
+        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy {$this->getFullVideoFilePath($recordingSession)}");
 
+        // Video preview of full video
+        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullVideoFilePath($recordingSession)} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getFullVideoPreviewFilePath($recordingSession)}");
+
+        // Poster image preview of full video
+        shell_exec("/usr/bin/env ffmpeg -i {$this->getFullVideoFilePath($recordingSession)} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getFullVideoPosterFilePath($recordingSession)}");
 
         $fs = new Filesystem();
-        $fs->mkdir($this->getFullVideoPreviewPartsFolderPath($recordingSession));
-
-        shell_exec("/usr/bin/env ffmpeg -i {$this->getFullVideoVideoFilePath($recordingSession)} -vf fps=1 -s 160x120 {$this->getFullVideoPreviewPartsFolderPath($recordingSession)}/frame%03d.jpg");
-
-        shell_exec("/usr/bin/env ffmpeg -f image2 -framerate 1 -i {$this->getFullVideoPreviewPartsFolderPath($recordingSession)}/frame%03d.jpg -vf \"fps=1,scale=160:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" {$this->getFullVideoPreviewFilePath($recordingSession)}");
-
-
-        $fs->remove($this->getFullVideoPreviewPartsFolderPath($recordingSession));
         $fs->remove($this->getVideoChunkContentStorageFolderPath($recordingSession));
 
         $this->entityManager->persist($fullVideo);
@@ -173,7 +170,7 @@ class RecordingSessionService
         ]);
     }
 
-    private function getFullVideoVideoFilePath(RecordingSession $recordingSession): string
+    private function getFullVideoFilePath(RecordingSession $recordingSession): string
     {
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
             'recording-sessions',
@@ -187,16 +184,16 @@ class RecordingSessionService
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
             'recording-sessions',
             $recordingSession->getId(),
-            'full-video-preview.gif'
+            'full-video-preview.webp'
         ]);
     }
 
-    private function getFullVideoPreviewPartsFolderPath(RecordingSession $recordingSession): string
+    private function getFullVideoPosterFilePath(RecordingSession $recordingSession): string
     {
-        return $this->filesystemService->getContentStoragePath([
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
             'recording-sessions',
             $recordingSession->getId(),
-            'preview-parts'
+            'full-video-poster.webp'
         ]);
     }
 }

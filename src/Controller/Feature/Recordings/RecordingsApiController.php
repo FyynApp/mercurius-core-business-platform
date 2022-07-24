@@ -179,12 +179,18 @@ class RecordingsApiController extends AbstractController
             return $this->json([
                 'status' => Response::HTTP_OK,
                 'previewVideo' => $router->generate(
-                    'feature.recordings.recording_session.full_video.video.asset',
-                    ['recordingSessionId' => $recordingSessionId]
+                    'feature.recordings.recording_session.full_video.asset',
+                    [
+                        'recordingSessionId' => $recordingSessionId,
+                        'extension' => 'webm'
+                    ]
                 ),
                 'previewImage' => $router->generate(
                     'feature.recordings.recording_session.full_video.preview.asset',
-                    ['recordingSessionId' => $recordingSessionId]
+                    [
+                        'recordingSessionId' => $recordingSessionId,
+                        'extension' => 'webp'
+                    ]
                 )
             ]);
 

@@ -22,8 +22,12 @@
                     class="rounded-md w-100"
                     autoplay="autoplay"
                     controls
+                    poster="{{ path('feature.recordings.recording_session.full_video.poster.asset', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id, extension: 'webp' }) }}"
                 >
-                    <source src="{{ path('feature.recordings.recording_session.full_video.video.asset', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id }) }}">
+                    <source
+                        src="{{ path('feature.recordings.recording_session.full_video.asset', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id, extension: 'webm' }) }}"
+                        type="video/webm"
+                    >
                 </video>
             </div>
 
