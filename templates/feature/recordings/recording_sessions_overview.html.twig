@@ -20,26 +20,37 @@
 
             {% import 'macros/form_elements.html.twig' as formElements %}
 
+            <div class="p-10">
+                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if RecordingsService.recordingSessionsWithFullVideo(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
+
+                    <div class="flex justify-center items-center h-full w-full">
+                        <!-- Heroicon name: solid/plus-circle -->
+                        <a href="{{ path('feature.recordings.recording-studio') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="{{ path('feature.recordings.recording-studio') }}">
+                            {{ 'feature.recordings.recording_sessions_overview.cta.add'|trans }}
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
             {% if RecordingsService.recordingSessionsWithFullVideo(app.user)|length > 0 %}
 
                 <div class="bg-white">
 
                     <div class="max-w-2xl mx-auto py-16 px-4 sm:py-10 sm:px-6 lg:max-w-7xl lg:px-8">
 
-                        <div class="grid grid-cols-1 gap-y-32 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                        <div class="group grid grid-cols-1 gap-y-32 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 
                             {% for recordingSession in RecordingsService.recordingSessionsWithFullVideo(app.user) %}
                                 {# @var recordingSession \App\Entity\Feature\Recordings\RecordingSession #}
-                                <a
-                                    href="
-                                        {% if recordingSession.recordingSessionFullVideo.presentationpages is empty %}
-                                            {{ path('feature.presentationpages.create_from_recording_session_full_video', { recordingSessionFullVideoId: recordingSession.recordingSessionFullVideo.id }) }}
-                                        {% else %}
-                                            {{ path('feature.presentationpages.editor', { presentationpageId: recordingSession.recordingSessionFullVideo.presentationpages.first.id }) }}
-                                        {% endif %}
-                                    "
-                                    class="group"
-                                >
+
+                                <div>
+
                                     <div class="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                                         <video
                                             class="w-full h-full object-center object-cover group-hover:opacity-75"
@@ -58,37 +69,31 @@
                                             src=""
                                         >
                                     </div>
+
                                     <h3 class="mt-4 mb-4 text-sm text-gray-700">{{ recordingSession.createdAt|date('dateformat.datetime_normal'|trans) }}</h3>
 
-                                    {% if recordingSession.recordingSessionFullVideo.presentationpages is empty %}
-                                        {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.create_presentationpage'|trans) }}
-                                    {% else %}
-                                        {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.edit_presentationpage'|trans) }}
-                                    {% endif %}
-                                </a>
+                                    <a
+                                        href="
+                                            {% if recordingSession.recordingSessionFullVideo.presentationpages is empty %}
+                                                {{ path('feature.presentationpages.create_from_recording_session_full_video', { recordingSessionFullVideoId: recordingSession.recordingSessionFullVideo.id }) }}
+                                            {% else %}
+                                                {{ path('feature.presentationpages.editor', { presentationpageId: recordingSession.recordingSessionFullVideo.presentationpages.first.id }) }}
+                                            {% endif %}
+                                        "
+                                    >
+                                        {% if recordingSession.recordingSessionFullVideo.presentationpages is empty %}
+                                            {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.create_presentationpage'|trans) }}
+                                        {% else %}
+                                            {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.edit_presentationpage'|trans) }}
+                                        {% endif %}
+                                    </a>
+
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
                 </div>
             {% endif %}
-
-            <div class="p-10">
-                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if RecordingsService.recordingSessionsWithFullVideo(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
-
-                    <div class="flex justify-center items-center h-full w-full">
-                        <!-- Heroicon name: solid/plus-circle -->
-                        <a href="{{ path('feature.recordings.recording-studio') }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="{{ path('feature.recordings.recording-studio') }}">
-                            {{ 'feature.recordings.recording_sessions_overview.cta.add'|trans }}
-                        </a>
-                    </div>
-
-                </div>
-            </div>
         {% endblock %}
     {% endembed %}
 
