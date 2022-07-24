@@ -7,6 +7,7 @@ use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Service\Aspect\Filesystem\FilesystemService;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
@@ -120,7 +121,7 @@ class RecordingSessionService
         $sql = "
             SELECT id FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
             WHERE recording_sessions_id = :rsid
-            ORDER BY name ASC
+            ORDER BY name " . Criteria::ASC . "
             ;
         ";
 
