@@ -78,7 +78,7 @@ class RecordingsApiController extends AbstractController
                 'maxAnswerTimeText' => 'maximale Aufnahmedauer',
                 'maxAnswerTime' => 300,
                 'nextUrl' => $router->generate(
-                    'feature.recordings.return_from_recording_session',
+                    'feature.recordings.return_from_recording_studio',
                     ['recordingSessionId' => $recordingSessionId],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),

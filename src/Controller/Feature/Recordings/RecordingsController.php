@@ -4,10 +4,15 @@ namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
+use App\Message\Feature\Recordings\RecordingSessionFinished;
 use App\Service\Feature\Recordings\RecordingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class RecordingsController extends AbstractController
 {
@@ -27,8 +32,25 @@ class RecordingsController extends AbstractController
         );
     }
 
-    public function returnFromRecordingSessionAction(): Response
-    {
+    public function returnFromRecordingStudioAction(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        MessageBusInterface $messageBus
+    ): Response {
+        $recordingSessionId = $request->get('recordingSessionId');
+
+        if (is_null($recordingSessionId)) {
+            throw new BadRequestHttpException('Missing recordingSessionId');
+        }
+
+        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new NotFoundHttpException("No recording session with id '$recordingSessionId'.");
+        }
+
+        $messageBus->dispatch(new RecordingSessionFinished($recordingSession));
+
         return $this->redirectToRoute('feature.recordings.recording_sessions.overview');
     }
 

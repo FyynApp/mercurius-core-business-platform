@@ -53,7 +53,7 @@ class MainNavigationComponent
                 new NavigationEntry(
                     'mainnav.recordings',
                     'feature.recordings.recording_sessions.overview',
-                    ['feature.recordings.recording-studio']
+                    ['feature.recordings.recording_studio']
                 ),
 
                 new NavigationEntry(
