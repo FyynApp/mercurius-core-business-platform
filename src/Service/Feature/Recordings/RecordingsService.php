@@ -21,11 +21,12 @@ class RecordingsService
      * @throws Exception
      * @return RecordingSession[]
      */
-    public function getRecordingSessionsWithFullVideo(User $user): array
+    public function getFinishedRecordingSessions(User $user): array
     {
         $sql = "
             SELECT id FROM {$this->entityManager->getClassMetadata(RecordingSession::class)->getTableName()}
             WHERE users_id = :users_id
+            AND is_finished = 1
             ORDER BY created_at " . Criteria::DESC . "
             ;
         ";
@@ -38,11 +39,6 @@ class RecordingsService
             $recordingSessions[] = $this->entityManager->find(RecordingSession::class, $row['id']);
         }
 
-        $results = [];
-        foreach ($recordingSessions as $recordingSession) {
-            if (!is_null($recordingSession->getRecordingSessionFullVideo()))
-                $results[] = $recordingSession;
-        }
-        return $results;
+        return $recordingSessions;
     }
 }

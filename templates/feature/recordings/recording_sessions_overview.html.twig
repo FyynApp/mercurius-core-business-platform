@@ -9,7 +9,7 @@
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.recordings.recording_sessions_overview.title'|trans({ numberOfRecordingSessions: RecordingsService.recordingSessionsWithFullVideo(app.user)|length}) }}
+            {{ 'feature.recordings.recording_sessions_overview.title'|trans({ numberOfRecordingSessions: RecordingsService.finishedRecordingSessions(app.user)|length}) }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
@@ -21,7 +21,7 @@
             {% import 'macros/form_elements.html.twig' as formElements %}
 
             <div class="p-10">
-                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if RecordingsService.recordingSessionsWithFullVideo(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
+                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if RecordingsService.finishedRecordingSessions(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
 
                     <div class="flex justify-center items-center h-full w-full">
                         <!-- Heroicon name: solid/plus-circle -->
@@ -38,7 +38,7 @@
                 </div>
             </div>
 
-            {% if RecordingsService.recordingSessionsWithFullVideo(app.user)|length > 0 %}
+            {% if RecordingsService.finishedRecordingSessions(app.user)|length > 0 %}
 
                 <div class="bg-white">
 
@@ -46,7 +46,7 @@
 
                         <div class="group grid grid-cols-1 gap-y-32 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 
-                            {% for recordingSession in RecordingsService.recordingSessionsWithFullVideo(app.user) %}
+                            {% for recordingSession in RecordingsService.finishedRecordingSessions(app.user) %}
                                 {# @var recordingSession \App\Entity\Feature\Recordings\RecordingSession #}
 
                                 <div>

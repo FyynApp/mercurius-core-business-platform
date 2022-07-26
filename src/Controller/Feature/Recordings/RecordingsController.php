@@ -5,6 +5,7 @@ namespace App\Controller\Feature\Recordings;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Message\Feature\Recordings\RecordingSessionFinished;
+use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\RecordingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,7 +36,7 @@ class RecordingsController extends AbstractController
     public function returnFromRecordingStudioAction(
         Request $request,
         EntityManagerInterface $entityManager,
-        MessageBusInterface $messageBus
+        RecordingSessionService $recordingSessionService
     ): Response {
         $recordingSessionId = $request->get('recordingSessionId');
 
@@ -49,7 +50,7 @@ class RecordingsController extends AbstractController
             throw new NotFoundHttpException("No recording session with id '$recordingSessionId'.");
         }
 
-        $messageBus->dispatch(new RecordingSessionFinished($recordingSession));
+        $recordingSessionService->handleRecordingSessionFinished($recordingSession);
 
         return $this->redirectToRoute('feature.recordings.recording_sessions.overview');
     }

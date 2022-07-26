@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
+use App\Message\Feature\Recordings\RecordingSessionFinished;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class RecordingSessionService
 {
@@ -22,17 +24,30 @@ class RecordingSessionService
 
     private LoggerInterface $logger;
 
+    private MessageBusInterface $messageBus;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         FilesystemService $filesystemService,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        MessageBusInterface $messageBus
     ) {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
         $this->logger = $logger;
+        $this->messageBus = $messageBus;
     }
 
+
+    public function handleRecordingSessionFinished(RecordingSession $recordingSession): void
+    {
+        $recordingSession->setIsFinished(true);
+        $this->entityManager->persist($recordingSession);
+        $this->entityManager->flush();
+
+        // Heavy-lifting stuff like webm to mp4 conversion happens asynchronously
+        $this->messageBus->dispatch(new RecordingSessionFinished($recordingSession));
+    }
 
     /** @throws Exception */
     public function handleRecordingSessionVideoChunk(

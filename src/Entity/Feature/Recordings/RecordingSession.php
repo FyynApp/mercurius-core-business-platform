@@ -41,6 +41,21 @@ class RecordingSession
         return $this->createdAt;
     }
 
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isFinished = false;
+
+    public function isFinished(): bool
+    {
+        return $this->isFinished;
+    }
+
+    public function setIsFinished(bool $isFinished): void
+    {
+        $this->isFinished = $isFinished;
+    }
+
+
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
