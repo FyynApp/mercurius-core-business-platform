@@ -5,7 +5,7 @@ namespace App\Message\Feature\Recordings;
 use App\Entity\Feature\Recordings\RecordingSession;
 use InvalidArgumentException;
 
-class RecordingSessionFinished
+class RecordingSessionFinishedMessage
 {
     private string $recordingSessionId;
 

@@ -174,25 +174,7 @@ class RecordingsApiController extends AbstractController
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
         ) {
-            $recordingSessionService->generateFullVideo($recordingSessionId);
-
-            return $this->json([
-                'status' => Response::HTTP_OK,
-                'previewVideo' => $router->generate(
-                    'feature.recordings.recording_session.full_video.asset',
-                    [
-                        'recordingSessionId' => $recordingSessionId,
-                        'extension' => 'webm'
-                    ]
-                ),
-                'previewImage' => $router->generate(
-                    'feature.recordings.recording_session.full_video.preview.asset',
-                    [
-                        'recordingSessionId' => $recordingSessionId,
-                        'extension' => 'webp'
-                    ]
-                )
-            ]);
+            return $this->json(['status' => Response::HTTP_OK]);
 
         } else {
             $chunkName = $request->get('video');

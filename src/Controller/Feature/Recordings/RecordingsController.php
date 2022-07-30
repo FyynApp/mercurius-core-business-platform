@@ -4,7 +4,6 @@ namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Message\Feature\Recordings\RecordingSessionFinished;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\RecordingsService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class RecordingsController extends AbstractController
 {

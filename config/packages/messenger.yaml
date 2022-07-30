@@ -20,4 +20,4 @@ framework:
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
 
-            App\Message\Feature\Recordings\RecordingSessionFinished: async
+            App\Message\Feature\Recordings\RecordingSessionFinishedMessage: async

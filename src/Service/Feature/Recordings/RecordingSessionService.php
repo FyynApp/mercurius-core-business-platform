@@ -6,7 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
-use App\Message\Feature\Recordings\RecordingSessionFinished;
+use App\Message\Feature\Recordings\RecordingSessionFinishedMessage;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,7 +46,7 @@ class RecordingSessionService
         $this->entityManager->flush();
 
         // Heavy-lifting stuff like webm to mp4 conversion happens asynchronously
-        $this->messageBus->dispatch(new RecordingSessionFinished($recordingSession));
+        $this->messageBus->dispatch(new RecordingSessionFinishedMessage($recordingSession));
     }
 
     /** @throws Exception */
