@@ -113,7 +113,7 @@ class RecordingSessionService
 
 
     /** @throws Exception */
-    public function generateRecordingPreviewVideo(string $recordingSessionId): void
+    public function handleRecordingDone(string $recordingSessionId): void
     {
         /** @var RecordingSession $recordingSession */
         $recordingSession = $this->entityManager->find(RecordingSession::class, $recordingSessionId);
@@ -126,7 +126,16 @@ class RecordingSessionService
             throw new Exception("Recording session '$recordingSessionId' needs at least one video chunk.");
         }
 
-        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getRecordingPreviewFilePath($recordingSession)}");
+        $fullVideo = new RecordingSessionFullVideo();
+        $fullVideo->setMimeType('video/webm');
+        $fullVideo->setRecordingSession($recordingSession);
+        $this->entityManager->persist($fullVideo);
+        $this->entityManager->persist($recordingSession);
+        $this->entityManager->flush();
+
+        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getRecordingPreviewVideoFilePath($recordingSession)}");
+
+        shell_exec("/usr/bin/env ffmpeg -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getRecordingPreviewVideoPosterFilePath($recordingSession)}");
     }
 
 
@@ -204,6 +213,26 @@ class RecordingSessionService
         ]);
     }
 
+
+    private function getRecordingPreviewVideoFilePath(RecordingSession $recordingSession): string
+    {
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'recording-preview-video.webm'
+        ]);
+    }
+
+    private function getRecordingPreviewVideoPosterFilePath(RecordingSession $recordingSession): string
+    {
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'recording-preview-video-poster.webp'
+        ]);
+    }
+
+
     private function getFullVideoFilePath(RecordingSession $recordingSession): string
     {
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
@@ -219,15 +248,6 @@ class RecordingSessionService
             'recording-sessions',
             $recordingSession->getId(),
             'full-video-preview.webp'
-        ]);
-    }
-
-    private function getRecordingPreviewFilePath(RecordingSession $recordingSession): string
-    {
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'recording-preview.webm'
         ]);
     }
 
