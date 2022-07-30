@@ -153,7 +153,8 @@ class RecordingsApiController extends AbstractController
         string $recordingSessionId,
         Request $request,
         RouterInterface $router,
-        RecordingSessionService $recordingSessionService
+        RecordingSessionService $recordingSessionService,
+        EntityManagerInterface $entityManager
     ): Response {
 
         if (!ValueFormatsService::isValidGuid($recordingSessionId)) {
@@ -174,7 +175,23 @@ class RecordingsApiController extends AbstractController
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
         ) {
-            return $this->json(['status' => Response::HTTP_OK]);
+            return $this->json([
+                'status' => Response::HTTP_OK,
+                'preview' => $router->generate( // this is used for the poster attribute after recording
+                    'feature.recordings.recording_session.video_chunk.asset',
+                    [
+                        'recordingSessionId' => $recordingSessionId,
+                        'chunkId' => $entityManager->find(RecordingSession::class, $recordingSessionId)->getRecordingSessionVideoChunks()->first()->getId()
+                    ]
+                ),
+                'previewVideo' => $router->generate(
+                    'feature.recordings.recording_session.video_chunk.asset',
+                    [
+                        'recordingSessionId' => $recordingSessionId,
+                        'chunkId' => $entityManager->find(RecordingSession::class, $recordingSessionId)->getRecordingSessionVideoChunks()->first()->getId()
+                    ]
+                )
+            ]);
 
         } else {
             $chunkName = $request->get('video');
@@ -190,7 +207,7 @@ class RecordingsApiController extends AbstractController
                 throw new BadRequestHttpException("Missing request file part 'video-blob'.");
             }
 
-            $chunk = $recordingSessionService->handleRecordingSessionVideoChunk(
+            $recordingSessionService->handleRecordingSessionVideoChunk(
                 $recordingSessionId,
                 $userId,
                 $chunkName,
@@ -198,22 +215,9 @@ class RecordingsApiController extends AbstractController
                 $uploadedFile->getMimeType()
             );
 
-            if ($chunk->getRecordingSession()->getRecordingSessionVideoChunks()->count() === 1) {
-                return $this->json([
-                    'status' => Response::HTTP_OK,
-                    'preview' => $router->generate(
-                        'feature.recordings.recording_session.video_chunk.asset',
-                        [
-                            'recordingSessionId' => $recordingSessionId,
-                            'chunkId' => $chunk->getId()
-                        ]
-                    )
-                ]);
-            } else {
-                return $this->json([
-                    'status' => Response::HTTP_OK
-                ]);
-            }
+            return $this->json([
+                'status' => Response::HTTP_OK
+            ]);
         }
     }
 }

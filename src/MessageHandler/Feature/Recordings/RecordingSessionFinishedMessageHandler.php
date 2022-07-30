@@ -26,6 +26,6 @@ class RecordingSessionFinishedMessageHandler
     {
         $this->logger->debug("Received RecordingSessionFinishedMessage for recording session {$message->getRecordingSessionId()}.");
 
-        $this->recordingSessionService->generateFullVideo($message->getRecordingSessionId());
+        $this->recordingSessionService->generateFullVideoAssets($message->getRecordingSessionId());
     }
 }

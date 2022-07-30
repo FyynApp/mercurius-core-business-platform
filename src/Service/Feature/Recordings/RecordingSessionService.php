@@ -113,7 +113,7 @@ class RecordingSessionService
 
 
     /** @throws Exception */
-    public function generateFullVideo(
+    public function generateFullVideoAssets(
         string $recordingSessionId,
     ): RecordingSessionFullVideo {
         $recordingSession = $this->entityManager->find(RecordingSession::class, $recordingSessionId);
