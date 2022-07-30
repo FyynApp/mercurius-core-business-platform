@@ -175,20 +175,15 @@ class RecordingsApiController extends AbstractController
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
         ) {
+            $recordingSessionService->generateRecordingPreviewVideo($recordingSessionId);
+
             return $this->json([
                 'status' => Response::HTTP_OK,
-                'preview' => $router->generate( // this is used for the poster attribute after recording
-                    'feature.recordings.recording_session.video_chunk.asset',
+                'preview' => $router->generate(
+                    'feature.recordings.recording_session.recording_preview.asset',
                     [
                         'recordingSessionId' => $recordingSessionId,
-                        'chunkId' => $entityManager->find(RecordingSession::class, $recordingSessionId)->getRecordingSessionVideoChunks()->first()->getId()
-                    ]
-                ),
-                'previewVideo' => $router->generate(
-                    'feature.recordings.recording_session.video_chunk.asset',
-                    [
-                        'recordingSessionId' => $recordingSessionId,
-                        'chunkId' => $entityManager->find(RecordingSession::class, $recordingSessionId)->getRecordingSessionVideoChunks()->first()->getId()
+                        'extension' => 'webm'
                     ]
                 )
             ]);

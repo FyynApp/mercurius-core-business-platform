@@ -1,6 +1,9 @@
 feature.recordings.recording_session.video_chunk.asset:
   path: /generated-content/recording-sessions/{recordingSessionId}/video-chunks/{chunkId}
 
+feature.recordings.recording_session.recording_preview.asset:
+  path: /generated-content/recording-sessions/{recordingSessionId}/recording-preview.{extension}
+
 feature.recordings.recording_session.full_video.asset:
   path: /generated-content/recording-sessions/{recordingSessionId}/full-video.{extension}
 

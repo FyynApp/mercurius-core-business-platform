@@ -113,6 +113,24 @@ class RecordingSessionService
 
 
     /** @throws Exception */
+    public function generateRecordingPreviewVideo(string $recordingSessionId): void
+    {
+        /** @var RecordingSession $recordingSession */
+        $recordingSession = $this->entityManager->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new Exception("No recording session with id '$recordingSessionId'.");
+        }
+
+        if ($recordingSession->getRecordingSessionVideoChunks()->count() < 1) {
+            throw new Exception("Recording session '$recordingSessionId' needs at least one video chunk.");
+        }
+
+        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getRecordingPreviewFilePath($recordingSession)}");
+    }
+
+
+    /** @throws Exception */
     public function generateFullVideoAssets(
         string $recordingSessionId,
     ): RecordingSessionFullVideo {
@@ -201,6 +219,15 @@ class RecordingSessionService
             'recording-sessions',
             $recordingSession->getId(),
             'full-video-preview.webp'
+        ]);
+    }
+
+    private function getRecordingPreviewFilePath(RecordingSession $recordingSession): string
+    {
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'recording-preview.webm'
         ]);
     }
 
