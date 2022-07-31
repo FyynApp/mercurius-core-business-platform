@@ -1,6 +1,7 @@
 {% extends 'base_naked.html.twig' %}
 
 {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
 
 {% block body %}
 
@@ -22,11 +23,10 @@
                     class="rounded-md w-100"
                     autoplay="autoplay"
                     controls
-                    poster="{{ path('feature.recordings.video.poster_still.asset', { recordingSessionId: presentationpage.video.recordingSession.id, extension: 'webp' }) }}"
+                    poster="{{ VideoService.posterStillAssetUrl(presentationpage.video) }}"
                 >
                     <source
-                        src="{{ path('feature.recordings.video.full.asset', { recordingSessionId: presentationpage.video.recordingSession.id, extension: 'webm' }) }}"
-                        type="video/webm"
+                        src="{{ VideoService.getFullAssetUrl(presentationpage.video) }}"
                     >
                 </video>
             </div>

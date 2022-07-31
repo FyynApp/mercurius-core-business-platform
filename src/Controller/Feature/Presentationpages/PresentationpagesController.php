@@ -17,8 +17,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PresentationpagesController extends AbstractController
 {
-    public function showAction(string $presentationpageId, EntityManagerInterface $entityManager): Response
-    {
+    public function showAction(
+        string $presentationpageId,
+        EntityManagerInterface $entityManager,
+        VideoService $videoService
+    ): Response {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {
@@ -27,7 +30,10 @@ class PresentationpagesController extends AbstractController
 
         return $this->render(
             'feature/presentationpages/show.html.twig',
-            ['presentationpage' => $presentationpage]
+            [
+                'presentationpage' => $presentationpage,
+                'VideoService' => $videoService
+            ]
         );
     }
 
@@ -100,8 +106,11 @@ class PresentationpagesController extends AbstractController
     }
 
 
-    public function switchToTemplateAction(string $presentationpageId, string $presentationpageTemplateId, EntityManagerInterface $entityManager): Response
-    {
+    public function switchToTemplateAction(
+        string $presentationpageId,
+        string $presentationpageTemplateId,
+        EntityManagerInterface $entityManager
+    ): Response {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {

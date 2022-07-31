@@ -67,16 +67,32 @@ class VideoService
         }
     }
 
-
     public function getPosterAnimatedAssetUrl(Video $video): string
     {
-        if ($video->hasAssetPosterStillWebp()) {
+        if ($video->hasAssetPosterAnimatedWebp()) {
             return $this->router->generate(
                 'feature.recordings.video.poster_animated.asset',
                 ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(Video::ASSET_MIME_TYPE_WEBP)]
             );
         } else {
             return $this->router->generate('feature.recordings.video.missing_poster_asset_placeholder');
+        }
+    }
+
+    public function getFullAssetUrl(Video $video): string
+    {
+        if ($video->hasAssetFullMp4()) {
+            return $this->router->generate(
+                'feature.recordings.video.full.asset',
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(Video::ASSET_MIME_TYPE_MP4)]
+            );
+        } elseif ($video->hasAssetFullWebm()) {
+            return $this->router->generate(
+                'feature.recordings.video.full.asset',
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(Video::ASSET_MIME_TYPE_WEBM)]
+            );
+        } else {
+            return $this->router->generate('feature.recordings.video.missing_full_asset_placeholder');
         }
     }
 
