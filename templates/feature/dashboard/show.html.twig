@@ -50,7 +50,7 @@
                     {% endblock %}
                 {% endembed %}
 
-                {% if DashboardService.latestRecordingSessions(app.user)|length > 0 %}
+                {% if DashboardService.latestVideos(app.user)|length > 0 %}
                     {% embed 'embeds/two_column_content_box_content_row.html.twig' %}
                         {% block contentLeft %}
                             {{ 'feature.dashboard.show.your_latest_videos'|trans }}
@@ -58,7 +58,7 @@
                         {% block contentRight %}
                             <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
 
-                                {% for recordingSession in DashboardService.latestRecordingSessions(app.user) %}
+                                {% for recordingSession in DashboardService.latestVideos(app.user) %}
                                     {# @var recordingSession \App\Entity\Feature\Recordings\RecordingSession  #}
                                     <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                                         <div class="w-0 flex-1 flex items-center">

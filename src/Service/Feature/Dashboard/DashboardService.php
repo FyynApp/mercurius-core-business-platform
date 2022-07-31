@@ -3,7 +3,7 @@
 namespace App\Service\Feature\Dashboard;
 
 use App\Entity\Feature\Account\User;
-use App\Entity\Feature\Recordings\RecordingSession;
+use App\Entity\Feature\Recordings\Video;
 use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
 
 class DashboardService
@@ -35,10 +35,12 @@ class DashboardService
         return 'm';
     }
 
-    /** @return RecordingSession[] */
-    public function getLatestRecordingSessions(User $user): array
+    /** @return Video[] */
+    public function getLatestVideos(User $user): array
     {
-        return $user->getRecordingSessions()->slice(0, 3);
+        $videos = $user->getVideos()->slice(0, 3);
+        rsort($videos);
+        return $videos;
     }
 
     public function getNumberOfPresentationpageTemplates(User $user): int
