@@ -19,8 +19,7 @@ class RecordingSessionService
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        FilesystemService $filesystemService,
-        VideoService $videoService
+        FilesystemService $filesystemService
     ) {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;

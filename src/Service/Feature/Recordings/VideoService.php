@@ -17,6 +17,8 @@ use Symfony\Component\Routing\RouterInterface;
 
 class VideoService
 {
+    private const ASSETS_SUBFOLDER_NAME = 'video-assets';
+
     private EntityManagerInterface $entityManager;
 
     private FilesystemService $filesystemService;
@@ -75,6 +77,7 @@ class VideoService
             throw new Exception("Cannot generate poster assets for video '{$video->getId()}' because its recording session '{$recordingSession->getId()}' does not have any video chunks.");
         }
 
+        $this->createFilesystemStructureForAssets($video);
 
         shell_exec("/usr/bin/env ffmpeg -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBP)}");
 
@@ -97,14 +100,13 @@ class VideoService
 
 
     /** @throws Exception */
-    public function generateMissingAssets(
-        Video $video
-    ): void {
-
+    public function generateMissingAssets(Video $video): void
+    {
         if (is_null($video->getRecordingSession())) {
             throw new Exception('Need video linked to recording session.');
         }
 
+        $this->createFilesystemStructureForAssets($video);
 
         if (!$video->hasAssetFullWebm()) {
             $chunkFilesListPath = $this->filesystemService->getContentStoragePath([
@@ -161,8 +163,7 @@ class VideoService
 
 
         if (!$video->hasAssetPosterAnimatedGif()) {
-            // Poster animated gif
-            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBM)} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBP)}");
+            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_GIF)} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, Video::ASSET_MIME_TYPE_GIF)}");
 
             $video->setHasAssetPosterAnimatedGif(true);
             $this->entityManager->persist($video);
@@ -179,6 +180,17 @@ class VideoService
         }
     }
 
+
+    private function createFilesystemStructureForAssets(Video $video): void
+    {
+        $fs = new Filesystem();
+        $fs->mkdir(
+            $this->filesystemService->getPublicWebfolderGeneratedContentPath([
+                self::ASSETS_SUBFOLDER_NAME,
+                $video->getId()
+            ])
+        );
+    }
 
 
     /** @throws InvalidArgumentException */
@@ -200,7 +212,7 @@ class VideoService
             throw new InvalidArgumentException();
         }
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            'video-assets',
+            self::ASSETS_SUBFOLDER_NAME,
             $video->getId(),
             'poster-still.' . $this->mimeTypeToFileSuffix($mimeType)
         ]);
@@ -214,16 +226,16 @@ class VideoService
             throw new InvalidArgumentException();
         }
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            'video-assets',
+            self::ASSETS_SUBFOLDER_NAME,
             $video->getId(),
-            'poster-still.' . $this->mimeTypeToFileSuffix($mimeType)
+            'poster-animated.' . $this->mimeTypeToFileSuffix($mimeType)
         ]);
     }
 
     private function getFullAssetFilePath(Video $video, string $mimeType): string
     {
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            'video-assets',
+            self::ASSETS_SUBFOLDER_NAME,
             $video->getId(),
             'full.' . $this->mimeTypeToFileSuffix($mimeType)
         ]);

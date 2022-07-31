@@ -41,6 +41,6 @@ class VideoCreatedMessageHandler
             throw new UnrecoverableMessageHandlingException("Could not find video with id '{$message->getVideoId()}'.");
         }
 
-        $this->videoService->generateMissingAssets($video->getVideo());
+        $this->videoService->generateMissingAssets($video);
     }
 }
