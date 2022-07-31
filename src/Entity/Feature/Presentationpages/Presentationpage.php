@@ -5,7 +5,7 @@ namespace App\Entity\Feature\Presentationpages;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
+use App\Entity\Feature\Recordings\Video;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -73,16 +73,16 @@ class Presentationpage
     }
 
 
-    #[ORM\ManyToOne(targetEntity: RecordingSessionFullVideo::class, cascade: ['persist'], inversedBy: 'presentationpages')]
+    #[ORM\ManyToOne(targetEntity: Video::class, cascade: ['persist'], inversedBy: 'presentationpages')]
     #[ORM\JoinColumn(name: 'recording_session_full_videos_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    private ?RecordingSessionFullVideo $recordingSessionFullVideo;
+    private ?Video $recordingSessionFullVideo;
 
-    public function getRecordingSessionFullVideo(): ?RecordingSessionFullVideo
+    public function getRecordingSessionFullVideo(): ?Video
     {
         return $this->recordingSessionFullVideo;
     }
 
-    public function setRecordingSessionFullVideo(?RecordingSessionFullVideo $recordingSessionFullVideo): void
+    public function setRecordingSessionFullVideo(?Video $recordingSessionFullVideo): void
     {
         $this->recordingSessionFullVideo = $recordingSessionFullVideo;
     }

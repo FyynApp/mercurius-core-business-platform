@@ -4,17 +4,11 @@ namespace App\Service\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
-use App\Message\Feature\Recordings\RecordingSessionFinishedMessage;
 use App\Service\Aspect\Filesystem\FilesystemService;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use InvalidArgumentException;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class RecordingSessionService
 {
@@ -22,20 +16,17 @@ class RecordingSessionService
 
     private FilesystemService $filesystemService;
 
-    private LoggerInterface $logger;
+    private VideoService $videoService;
 
-    private MessageBusInterface $messageBus;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         FilesystemService $filesystemService,
-        LoggerInterface $logger,
-        MessageBusInterface $messageBus
+        VideoService $videoService
     ) {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
-        $this->logger = $logger;
-        $this->messageBus = $messageBus;
+        $this->videoService = $videoService;
     }
 
 
@@ -45,31 +36,20 @@ class RecordingSessionService
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
 
-        // Heavy-lifting stuff like webm to mp4 conversion happens asynchronously
-        $this->messageBus->dispatch(new RecordingSessionFinishedMessage($recordingSession));
+        $this->videoService->createVideoFromFinishedRecordingSession($recordingSession);
     }
 
     /** @throws Exception */
     public function handleRecordingSessionVideoChunk(
-        string $recordingSessionId,
-        string $userId,
+        RecordingSession $recordingSession,
+        User $user,
         string $chunkName,
         string $videoChunkFilePath,
         string $mimeType
     ): RecordingSessionVideoChunk {
 
-        $recordingSession = $this->entityManager->find(RecordingSession::class, $recordingSessionId);
-        if (is_null($recordingSession)) {
-            throw new InvalidArgumentException("No recording session with id '$recordingSessionId'.");
-        }
-
-        $user = $this->entityManager->find(User::class, $userId);
-        if (is_null($user)) {
-            throw new InvalidArgumentException("No user with id '$recordingSessionId'.");
-        }
-
         if ($user->getId() !== $recordingSession->getUser()->getId()) {
-            throw new Exception("User id '{$user->getId()}' does not match the user id of session '$recordingSessionId'.");
+            throw new Exception("User id '{$user->getId()}' does not match the user id of session '{$recordingSession->getId()}'.");
         }
 
         $chunk = new RecordingSessionVideoChunk();
@@ -113,88 +93,24 @@ class RecordingSessionService
 
 
     /** @throws Exception */
-    public function handleRecordingDone(string $recordingSessionId): void
+    public function handleRecordingDone(RecordingSession $recordingSession): void
     {
-        /** @var RecordingSession $recordingSession */
-        $recordingSession = $this->entityManager->find(RecordingSession::class, $recordingSessionId);
-
-        if (is_null($recordingSession)) {
-            throw new Exception("No recording session with id '$recordingSessionId'.");
-        }
-
         if ($recordingSession->getRecordingSessionVideoChunks()->count() < 1) {
-            throw new Exception("Recording session '$recordingSessionId' needs at least one video chunk.");
+            throw new Exception("Recording session '{$recordingSession->getId()}' needs at least one video chunk.");
         }
-
-        $fullVideo = new RecordingSessionFullVideo();
-        $fullVideo->setMimeType('video/webm');
-        $fullVideo->setRecordingSession($recordingSession);
-        $this->entityManager->persist($fullVideo);
-        $this->entityManager->persist($recordingSession);
-        $this->entityManager->flush();
 
         shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getRecordingPreviewVideoFilePath($recordingSession)}");
 
         shell_exec("/usr/bin/env ffmpeg -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getRecordingPreviewVideoPosterFilePath($recordingSession)}");
-    }
 
-
-    /** @throws Exception */
-    public function generateFullVideoAssets(
-        string $recordingSessionId,
-    ): RecordingSessionFullVideo {
-        $recordingSession = $this->entityManager->find(RecordingSession::class, $recordingSessionId);
-
-        if (is_null($recordingSession)) {
-            throw new Exception("No recording session with id '$recordingSessionId'.");
-        }
-
-        $fullVideo = new RecordingSessionFullVideo();
-        $fullVideo->setRecordingSession($recordingSession);
-        $fullVideo->setMimeType($recordingSession->getRecordingSessionVideoChunks()->first()->getMimeType());
-
-        $chunkFilesListPath = $this->filesystemService->getContentStoragePath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'video-chunks-files.list'
-        ]);
-        $chunkFilesListContent = '';
-
-        $sql = "
-            SELECT id FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
-            WHERE recording_sessions_id = :rsid
-            ORDER BY name " . Criteria::ASC . "
-            ;
-        ";
-
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([':rsid' => $recordingSession->getId()]);
-
-        foreach ($resultSet->fetchAllAssociative() as $row) {
-            $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
-            $chunkFilesListContent .= "file '{$this->getVideoChunkContentStorageFilePath($chunk)}'\n";
-        }
-
-        file_put_contents($chunkFilesListPath, $chunkFilesListContent);
-
-        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy {$this->getFullVideoFilePath($recordingSession)}");
-
-        // Video preview of full video
-        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullVideoFilePath($recordingSession)} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getFullVideoPreviewFilePath($recordingSession)}");
-
-        // Poster image preview of full video
-        shell_exec("/usr/bin/env ffmpeg -i {$this->getFullVideoFilePath($recordingSession)} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getFullVideoPosterFilePath($recordingSession)}");
-
-        $fs = new Filesystem();
-        $fs->remove($this->getVideoChunkContentStorageFolderPath($recordingSession));
-
-        $this->entityManager->persist($fullVideo);
+        $recordingSession->setIsDone(true);
+        $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
-
-        return $fullVideo;
     }
 
-    private function getVideoChunkContentStorageFilePath(RecordingSessionVideoChunk $chunk): string
+
+
+    public function getVideoChunkContentStorageFilePath(RecordingSessionVideoChunk $chunk): string
     {
         return $this->filesystemService->getContentStoragePath([
             'recording-sessions',
@@ -204,7 +120,7 @@ class RecordingSessionService
         ]);
     }
 
-    private function getVideoChunkContentStorageFolderPath(RecordingSession $recordingSession): string
+    public function getVideoChunkContentStorageFolderPath(RecordingSession $recordingSession): string
     {
         return $this->filesystemService->getContentStoragePath([
             'recording-sessions',
@@ -233,30 +149,13 @@ class RecordingSessionService
     }
 
 
-    private function getFullVideoFilePath(RecordingSession $recordingSession): string
+    private function getPosterUrl(): string
     {
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'full-video.webm'
-        ]);
+        return '';
     }
 
-    private function getFullVideoPreviewFilePath(RecordingSession $recordingSession): string
+    private function getVideoUrl(): string
     {
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'full-video-preview.webp'
-        ]);
-    }
-
-    private function getFullVideoPosterFilePath(RecordingSession $recordingSession): string
-    {
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'full-video-poster.webp'
-        ]);
+        return '';
     }
 }

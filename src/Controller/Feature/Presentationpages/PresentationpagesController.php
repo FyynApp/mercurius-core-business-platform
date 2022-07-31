@@ -5,7 +5,7 @@ namespace App\Controller\Feature\Presentationpages;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
-use App\Entity\Feature\Recordings\RecordingSessionFullVideo;
+use App\Entity\Feature\Recordings\Video;
 use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,7 +43,7 @@ class PresentationpagesController extends AbstractController
 
         $recordingSessionFullVideoId = $request->get('recordingSessionFullVideoId');
 
-        $recordingSessionFullVideo = $entityManager->find(RecordingSessionFullVideo::class, $recordingSessionFullVideoId);
+        $recordingSessionFullVideo = $entityManager->find(Video::class, $recordingSessionFullVideoId);
 
         if (is_null($recordingSessionFullVideo)) {
             throw new NotFoundHttpException("A recording session full video with id '$recordingSessionFullVideoId' does not exist.");

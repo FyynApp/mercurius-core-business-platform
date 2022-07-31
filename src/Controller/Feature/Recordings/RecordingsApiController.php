@@ -2,6 +2,7 @@
 
 namespace App\Controller\Feature\Recordings;
 
+use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Service\Aspect\ValueFormats\ValueFormatsService;
 use App\Service\Feature\Recordings\RecordingSessionService;
@@ -157,25 +158,20 @@ class RecordingsApiController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
 
-        if (!ValueFormatsService::isValidGuid($recordingSessionId)) {
-            throw new BadRequestHttpException('recordingSessionId is not valid.');
+        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new NotFoundHttpException("Could not find recording session with id '$recordingSessionId'.");
         }
 
-        $userId = $request->get('userId');
-
-        if (is_null($userId)) {
-            throw new BadRequestHttpException("Missing request value 'userId'.");
-        }
-
-        if (!ValueFormatsService::isValidGuid($userId)) {
-            throw new BadRequestHttpException('userId is not valid.');
-        }
-
+        /** @var User $user */
+        $user = $this->getUser();
+        
 
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
         ) {
-            $recordingSessionService->handleRecordingDone($recordingSessionId);
+            $recordingSessionService->handleRecordingDone($recordingSession);
 
             return $this->json([
                 'status' => Response::HTTP_OK,
@@ -210,8 +206,8 @@ class RecordingsApiController extends AbstractController
             }
 
             $recordingSessionService->handleRecordingSessionVideoChunk(
-                $recordingSessionId,
-                $userId,
+                $recordingSession,
+                $user,
                 $chunkName,
                 $uploadedFile->getPathname(),
                 $uploadedFile->getMimeType()

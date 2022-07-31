@@ -38,10 +38,6 @@ class RecordingsController extends AbstractController
     ): Response {
         $recordingSessionId = $request->get('recordingSessionId');
 
-        if (is_null($recordingSessionId)) {
-            throw new BadRequestHttpException('Missing recordingSessionId');
-        }
-
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {

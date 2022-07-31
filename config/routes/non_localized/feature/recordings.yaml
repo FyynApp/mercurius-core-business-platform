@@ -7,11 +7,19 @@ feature.recordings.recording_session.recording_preview.asset:
 feature.recordings.recording_session.recording_preview.poster.asset:
   path: /generated-content/recording-sessions/{recordingSessionId}/recording-preview-video-poster.{extension}
 
-feature.recordings.recording_session.full_video.asset:
-  path: /generated-content/recording-sessions/{recordingSessionId}/full-video.{extension}
 
-feature.recordings.recording_session.full_video.preview.asset:
-  path: /generated-content/recording-sessions/{recordingSessionId}/full-video-preview.{extension}
+feature.recordings.video.missing_poster_asset_placeholder:
+  path: /assets/images/feature/recordings/video/missing_poster_asset_placeholder.webp
 
-feature.recordings.recording_session.full_video.poster.asset:
-  path: /generated-content/recording-sessions/{recordingSessionId}/full-video-poster.{extension}
+feature.recordings.video.missing_full_asset_placeholder:
+  path: /assets/images/feature/recordings/video/missing_full_asset_placeholder.mp4
+
+
+feature.recordings.video.poster_still.asset:
+  path: /generated-content/video-assets/{videoId}/poster-still.{extension}
+
+feature.recordings.video.poster_animated.asset:
+  path: /generated-content/video-assets/{videoId}/poster-animated.{extension}
+
+feature.recordings.video.full.asset:
+  path: /generated-content/video-assets/{videoId}/full.{extension}

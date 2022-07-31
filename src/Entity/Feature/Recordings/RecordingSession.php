@@ -43,6 +43,20 @@ class RecordingSession
 
 
     #[ORM\Column(type: 'boolean')]
+    private bool $isDone = false;
+
+    public function isDone(): bool
+    {
+        return $this->isDone;
+    }
+
+    public function setIsDone(bool $isDone): void
+    {
+        $this->isDone = $isDone;
+    }
+
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isFinished = false;
 
     public function isFinished(): bool
@@ -84,11 +98,16 @@ class RecordingSession
     }
 
 
-    #[ORM\OneToOne(mappedBy: 'recordingSession', targetEntity: RecordingSessionFullVideo::class, cascade: ['persist'])]
-    private ?RecordingSessionFullVideo $recordingSessionFullVideo = null;
+    #[ORM\OneToOne(mappedBy: 'recordingSession', targetEntity: Video::class, cascade: ['persist'])]
+    private ?Video $video = null;
 
-    public function getRecordingSessionFullVideo(): ?RecordingSessionFullVideo
+    public function getVideo(): ?Video
     {
-        return $this->recordingSessionFullVideo;
+        return $this->video;
+    }
+
+    public function setVideo(?Video $video): void
+    {
+        $this->video = $video;
     }
 }
