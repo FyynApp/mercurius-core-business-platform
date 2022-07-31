@@ -163,7 +163,7 @@ class VideoService
 
 
         if (!$video->hasAssetPosterAnimatedGif()) {
-            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_GIF)} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, Video::ASSET_MIME_TYPE_GIF)}");
+            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBM)} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, Video::ASSET_MIME_TYPE_GIF)}");
 
             $video->setHasAssetPosterAnimatedGif(true);
             $this->entityManager->persist($video);

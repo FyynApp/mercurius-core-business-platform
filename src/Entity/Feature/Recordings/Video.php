@@ -18,7 +18,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Video
 {
     const ASSET_MIME_TYPE_WEBP = 'image/webp';
-    const ASSET_MIME_TYPE_GIF = 'image/webp';
+    const ASSET_MIME_TYPE_GIF = 'image/gif';
     const ASSET_MIME_TYPE_WEBM = 'video/webm';
     const ASSET_MIME_TYPE_MP4 = 'video/mp4';
 
