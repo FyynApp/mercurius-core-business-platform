@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_sessions', indexes: [])]
-#[ORM\Index(name: "created_at_idx", fields: ['createdAt'])]
+#[ORM\Index(name: 'created_at_idx', fields: ['createdAt'])]
 class RecordingSession
 {
     public function __construct()

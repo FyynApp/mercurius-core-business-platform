@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'videos')]
-#[ORM\Index(fields: ['createdAt'], name: "created_at_idx")]
+#[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
 class Video
 {
     const ASSET_MIME_TYPE_WEBP = 'image/webp';
