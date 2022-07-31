@@ -172,7 +172,7 @@ class VideoService
 
 
         if (!$video->hasAssetFullMp4()) {
-            shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBM)} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_MP4)}");
+            shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBM)} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_MP4)}");
 
             $video->setHasAssetFullMp4(true);
             $this->entityManager->persist($video);
