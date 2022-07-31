@@ -58,8 +58,8 @@
                         {% block contentRight %}
                             <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
 
-                                {% for recordingSession in DashboardService.latestVideos(app.user) %}
-                                    {# @var recordingSession \App\Entity\Feature\Recordings\RecordingSession  #}
+                                {% for video in DashboardService.latestVideos(app.user) %}
+                                    {# @var video \App\Entity\Feature\Recordings\Video  #}
                                     <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                                         <div class="w-0 flex-1 flex items-center">
                                             <!-- Heroicon name: outline/film -->
@@ -67,7 +67,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
                                             </svg>
                                             <span class="ml-2 flex-1 w-0 truncate">
-                                            {{ recordingSession.createdAt|date('dateformat.datetime_normal'|trans) }}
+                                            {{ video.createdAt|date('dateformat.datetime_normal'|trans) }}
                                         </span>
                                         </div>
                                         <div class="ml-4 flex-shrink-0">
