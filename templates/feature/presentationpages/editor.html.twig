@@ -37,8 +37,8 @@
                                             class="rounded p-2 w-full mb-4"
                                         >
                                             <span
-                                                    style="color: {{ presentationpageTemplate.textColor }}"
-                                                    class="font-bold"
+                                                style="color: {{ presentationpageTemplate.textColor }}"
+                                                class="font-bold"
                                             >
                                                 {{ presentationpageTemplate.title }}
                                             </span>
@@ -82,12 +82,12 @@
                                 >
                                     <img
                                         class="rounded-md w-48"
-                                        src="{{ path('feature.recordings.video.poster_still.asset', { recordingSessionId: presentationpage.video.recordingSession.id, extension: 'webp' }) }}"
-                                    ></img>
+                                        src="{{ path('feature.recordings.video.poster_animated.asset', { videoId: presentationpage.video.id, extension: 'webp' }) }}"
+                                    />
                                 </div>
 
                                 <div
-                                        class="text-sm font-medium p-4"
+                                    class="text-sm font-medium p-4"
                                 >
                                     {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_paragraph'|trans }}
                                 </div>

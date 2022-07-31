@@ -2,6 +2,7 @@
 
 namespace App\Service\Feature\Recordings;
 
+use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Entity\Feature\Recordings\Video;
@@ -42,6 +43,15 @@ class VideoService
         $this->recordingSessionService = $recordingSessionService;
         $this->router = $router;
         $this->messageBus = $messageBus;
+    }
+
+
+    /**
+     * @return Video[]
+     */
+    public function getAvailableVideos(User $user): array
+    {
+        return $user->getVideos()->toArray();
     }
 
 

@@ -5,13 +5,11 @@ namespace App\Controller\Feature\Recordings;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Service\Feature\Recordings\RecordingSessionService;
-use App\Service\Feature\Recordings\RecordingsService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RecordingsController extends AbstractController
@@ -48,14 +46,14 @@ class RecordingsController extends AbstractController
 
         $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
 
-        return $this->redirectToRoute('feature.recordings.recording_sessions.overview');
+        return $this->redirectToRoute('feature.recordings.videos.overview');
     }
 
-    public function recordingSessionsOverviewAction(RecordingsService $recordingsService): Response
+    public function videosOverviewAction(VideoService $videoService): Response
     {
         return $this->render(
-            'feature/recordings/recording_sessions_overview.html.twig',
-            ['RecordingsService' => $recordingsService]
+            'feature/recordings/videos_overview.html.twig',
+            ['VideoService' => $videoService]
         );
     }
 }

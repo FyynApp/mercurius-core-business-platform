@@ -8,7 +8,7 @@ feature.recordings.return_from_recording_studio:
   controller: App\Controller\Feature\Recordings\RecordingsController::returnFromRecordingStudioAction
   methods: [ GET ]
 
-feature.recordings.recording_sessions.overview:
+feature.recordings.videos.overview:
   path: /my/recordings/recording-sessions/
-  controller: App\Controller\Feature\Recordings\RecordingsController::recordingSessionsOverviewAction
+  controller: App\Controller\Feature\Recordings\VideosController::videosOverviewAction
   methods: [ GET ]

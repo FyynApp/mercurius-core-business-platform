@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{# @var RecordingsService \App\Service\Feature\Recordings\RecordingsService #}
+{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
 
 {% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
@@ -9,11 +9,11 @@
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.recordings.recording_sessions_overview.title'|trans({ numberOfRecordingSessions: RecordingsService.finishedRecordingSessions(app.user)|length}) }}
+            {{ 'feature.recordings.videos_overview.title'|trans({ numberOfRecordingSessions: VideoService.availableVideos(app.user)|length}) }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'feature.recordings.recording_sessions_overview.subtitle'|trans }}
+            {{ 'feature.recordings.videos_overview.subtitle'|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}
@@ -21,7 +21,7 @@
             {% import 'macros/form_elements.html.twig' as formElements %}
 
             <div class="p-10">
-                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if RecordingsService.finishedRecordingSessions(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
+                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if VideoService.availableVideos(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
 
                     <div class="flex justify-center items-center h-full w-full">
                         <!-- Heroicon name: solid/plus-circle -->
@@ -31,14 +31,14 @@
                             </svg>
                         </a>
                         <a href="{{ path('feature.recordings.recording_studio') }}">
-                            {{ 'feature.recordings.recording_sessions_overview.cta.add'|trans }}
+                            {{ 'feature.recordings.videos_overview.cta.add'|trans }}
                         </a>
                     </div>
 
                 </div>
             </div>
 
-            {% if RecordingsService.finishedRecordingSessions(app.user)|length > 0 %}
+            {% if VideoService.availableVideos(app.user)|length > 0 %}
 
                 <div class="bg-white">
 
@@ -46,30 +46,30 @@
 
                         <div class="group grid grid-cols-1 gap-y-32 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 
-                            {% for recordingSession in RecordingsService.finishedRecordingSessions(app.user) %}
-                                {# @var recordingSession \App\Entity\Feature\Recordings\RecordingSession #}
+                            {% for video in VideoService.availableVideos(app.user) %}
+                                {# @var video \App\Entity\Feature\Recordings\Video #}
 
                                 <div>
 
                                     <div class="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                                        <img class="w-full" src="{{ path('feature.recordings.recording_session.recording_preview.poster.asset', { recordingSessionId: recordingSession.id, extension: 'webp' }) }}"/>
+                                        <img class="w-full" src="{{ path('feature.recordings.recording_session.recording_preview.poster.asset', { recordingSessionId: video.recordingSession.id, extension: 'webp' }) }}"/>
                                     </div>
 
-                                    <h3 class="mt-4 mb-4 text-sm text-gray-700">{{ recordingSession.createdAt|date('dateformat.datetime_normal'|trans) }}</h3>
+                                    <h3 class="mt-4 mb-4 text-sm text-gray-700">{{ video.createdAt|date('dateformat.datetime_normal'|trans) }}</h3>
 
                                     <a
                                         href="
-                                            {% if recordingSession.video.presentationpages is empty %}
-                                                {{ path('feature.presentationpages.create_from_video', { videoId: recordingSession.video.id }) }}
+                                            {% if video.presentationpages is empty %}
+                                                {{ path('feature.presentationpages.create_from_video', { videoId: video.id }) }}
                                             {% else %}
-                                                {{ path('feature.presentationpages.editor', { presentationpageId: recordingSession.video.presentationpages.first.id }) }}
+                                                {{ path('feature.presentationpages.editor', { presentationpageId: video.presentationpages.first.id }) }}
                                             {% endif %}
                                         "
                                     >
-                                        {% if recordingSession.video.presentationpages is empty %}
-                                            {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.create_presentationpage'|trans) }}
+                                        {% if video.presentationpages is empty %}
+                                            {{ formElements.primaryCtaButton('feature.recordings.videos_overview.cta.create_presentationpage'|trans) }}
                                         {% else %}
-                                            {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.edit_presentationpage'|trans) }}
+                                            {{ formElements.primaryCtaButton('feature.recordings.videos_overview.cta.edit_presentationpage'|trans) }}
                                         {% endif %}
                                     </a>
 

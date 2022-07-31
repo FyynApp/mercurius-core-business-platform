@@ -64,7 +64,7 @@ feature:
         manage_video: 'Verwalten'
 
   recordings:
-    recording_sessions_overview:
+    videos_overview:
       title: Übersicht der bisherigen Aufnahmen
       subtitle: Aufnahmen können in Form einer Präsentationsseite per E-Mail oder Messenger versendet werden.
       cta:
