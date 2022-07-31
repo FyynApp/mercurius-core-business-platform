@@ -39,13 +39,16 @@ class PresentationpagesController extends AbstractController
 
     public function createFromVideoAction(
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        PresentationpageTemplatesService $presentationpageTemplatesService
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
 
         if ($user->getPresentationpageTemplates()->count() === 0) {
-            return $this->redirectToRoute('feature.presentationpage_templates.add_form');
+            $presentationpageTemplate = $presentationpageTemplatesService->createDefaultTemplate($user);
+        } else {
+            $presentationpageTemplate = $user->getPresentationpageTemplates()->first();
         }
 
         $videoId = $request->get('videoId');
@@ -64,7 +67,7 @@ class PresentationpagesController extends AbstractController
         $presentationpage->setUser($user);
 
         $presentationpage->setVideo($video);
-        $presentationpage->setPresentationpageTemplate($user->getPresentationpageTemplates()->first());
+        $presentationpage->setPresentationpageTemplate($presentationpageTemplate);
 
         $entityManager->persist($presentationpage);
         $entityManager->flush();

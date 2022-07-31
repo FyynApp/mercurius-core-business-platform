@@ -16,6 +16,18 @@ class PresentationpageTemplatesService
         $this->entityManager = $entityManager;
     }
 
+    public function createDefaultTemplate(
+        User $user
+    ): PresentationpageTemplate {
+
+        $template = new PresentationpageTemplate();
+        $template->setTitle('Default');
+        $template->setBgColor(PresentationpageTemplate::ALLOWED_BG_COLORS[0]);
+        $template->setTextColor(PresentationpageTemplate::ALLOWED_TEXT_COLORS[0]);
+
+        return $this->addNewTemplate($user, $template);
+    }
+
     public function addNewTemplate(
         User $user,
         PresentationpageTemplate $template
