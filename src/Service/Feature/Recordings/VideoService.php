@@ -60,7 +60,20 @@ class VideoService
         if ($video->hasAssetPosterStillWebp()) {
             return $this->router->generate(
                 'feature.recordings.video.poster_still.asset',
-                ['videoId' => $video->getId(), 'extension' => Video::ASSET_MIME_TYPE_WEBP]
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(Video::ASSET_MIME_TYPE_WEBP)]
+            );
+        } else {
+            return $this->router->generate('feature.recordings.video.missing_poster_asset_placeholder');
+        }
+    }
+
+
+    public function getPosterAnimatedAssetUrl(Video $video): string
+    {
+        if ($video->hasAssetPosterStillWebp()) {
+            return $this->router->generate(
+                'feature.recordings.video.poster_animated.asset',
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(Video::ASSET_MIME_TYPE_WEBP)]
             );
         } else {
             return $this->router->generate('feature.recordings.video.missing_poster_asset_placeholder');

@@ -2,6 +2,7 @@
 
 {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
 {# @var PresentationpageTemplatesService \App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService #}
+{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
 
 {% block title %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
@@ -82,7 +83,7 @@
                                 >
                                     <img
                                         class="rounded-md w-48"
-                                        src="{{ path('feature.recordings.video.poster_animated.asset', { videoId: presentationpage.video.id, extension: 'webp' }) }}"
+                                        src="{{ VideoService.posterAnimatedAssetUrl(presentationpage.video) }}"
                                     />
                                 </div>
 

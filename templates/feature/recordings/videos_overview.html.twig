@@ -52,7 +52,7 @@
                                 <div>
 
                                     <div class="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                                        <img class="w-full" src="{{ path('feature.recordings.recording_session.recording_preview.poster.asset', { recordingSessionId: video.recordingSession.id, extension: 'webp' }) }}"/>
+                                        <img class="w-full" src="{{ VideoService.posterStillAssetUrl(video) }}"/>
                                     </div>
 
                                     <h3 class="mt-4 mb-4 text-sm text-gray-700">{{ video.createdAt|date('dateformat.datetime_normal'|trans) }}</h3>

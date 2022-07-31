@@ -7,6 +7,7 @@ use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Entity\Feature\Recordings\Video;
 use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
+use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,8 +70,12 @@ class PresentationpagesController extends AbstractController
     }
 
 
-    public function editorAction(string $presentationpageId, EntityManagerInterface $entityManager, PresentationpageTemplatesService $presentationpageTemplatesService): Response
-    {
+    public function editorAction(
+        string $presentationpageId,
+        EntityManagerInterface $entityManager,
+        PresentationpageTemplatesService $presentationpageTemplatesService,
+        VideoService $videoService
+    ): Response {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {
@@ -88,7 +93,8 @@ class PresentationpagesController extends AbstractController
             'feature/presentationpages/editor.html.twig',
             [
                 'presentationpage' => $presentationpage,
-                'PresentationpageTemplatesService' => $presentationpageTemplatesService
+                'PresentationpageTemplatesService' => $presentationpageTemplatesService,
+                'VideoService' => $videoService
             ]
         );
     }
