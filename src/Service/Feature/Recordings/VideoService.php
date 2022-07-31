@@ -56,13 +56,14 @@ class VideoService
     }
 
 
+    /** @throws Exception */
     public function createVideoFromFinishedRecordingSession(RecordingSession $recordingSession): Video
     {
         if (!$recordingSession->isFinished()) {
             throw new InvalidArgumentException("Recording session '{$recordingSession->getId()} is not finished'.");
         }
 
-        $video = new Video();
+        $video = new Video($recordingSession->getUser());
         $video->setRecordingSession($recordingSession);
         $recordingSession->setVideo($video);
         $recordingSession->setIsFinished(true);
@@ -70,14 +71,26 @@ class VideoService
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
 
+        if (is_null($recordingSession->getRecordingSessionVideoChunks()->first())) {
+            throw new Exception("Cannot generate poster assets for video '{$video->getId()}' because its recording session '{$recordingSession->getId()}' does not have any video chunks.");
+        }
+
+
         shell_exec("/usr/bin/env ffmpeg -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBP)}");
 
         $video->setHasAssetPosterStillWebp(true);
+
+
+        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBP)}");
+
+        $video->setHasAssetPosterAnimatedWebp(true);
+
+
         $this->entityManager->persist($video);
         $this->entityManager->flush();
 
         // Heavy-lifting stuff like missing video assets generation happens asynchronously
-        $this->messageBus->dispatch(new VideoCreatedMessage($recordingSession));
+        $this->messageBus->dispatch(new VideoCreatedMessage($video));
 
         return $video;
     }

@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\RecordingsService;
+use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,8 @@ class RecordingsController extends AbstractController
     public function returnFromRecordingStudioAction(
         Request $request,
         EntityManagerInterface $entityManager,
-        RecordingSessionService $recordingSessionService
+        RecordingSessionService $recordingSessionService,
+        VideoService $videoService
     ): Response {
         $recordingSessionId = $request->get('recordingSessionId');
 
@@ -44,7 +46,7 @@ class RecordingsController extends AbstractController
             throw new NotFoundHttpException("No recording session with id '$recordingSessionId'.");
         }
 
-        $recordingSessionService->handleRecordingSessionFinished($recordingSession);
+        $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
 
         return $this->redirectToRoute('feature.recordings.recording_sessions.overview');
     }

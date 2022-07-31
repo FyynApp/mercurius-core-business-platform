@@ -74,17 +74,17 @@ class Presentationpage
 
 
     #[ORM\ManyToOne(targetEntity: Video::class, cascade: ['persist'], inversedBy: 'presentationpages')]
-    #[ORM\JoinColumn(name: 'recording_session_full_videos_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    private ?Video $recordingSessionFullVideo;
+    #[ORM\JoinColumn(name: 'videos_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?Video $video;
 
-    public function getRecordingSessionFullVideo(): ?Video
+    public function getVideo(): ?Video
     {
-        return $this->recordingSessionFullVideo;
+        return $this->video;
     }
 
-    public function setRecordingSessionFullVideo(?Video $recordingSessionFullVideo): void
+    public function setVideo(?Video $video): void
     {
-        $this->recordingSessionFullVideo = $recordingSessionFullVideo;
+        $this->video = $video;
     }
 
 

@@ -22,10 +22,10 @@
                     class="rounded-md w-100"
                     autoplay="autoplay"
                     controls
-                    poster="{{ path('feature.recordings.recording_session.full_video.poster.asset', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id, extension: 'webp' }) }}"
+                    poster="{{ path('feature.recordings.video.poster_still.asset', { recordingSessionId: presentationpage.video.recordingSession.id, extension: 'webp' }) }}"
                 >
                     <source
-                        src="{{ path('feature.recordings.recording_session.full_video.asset', { recordingSessionId: presentationpage.recordingSessionFullVideo.recordingSession.id, extension: 'webm' }) }}"
+                        src="{{ path('feature.recordings.video.full.asset', { recordingSessionId: presentationpage.video.recordingSession.id, extension: 'webm' }) }}"
                         type="video/webm"
                     >
                 </video>

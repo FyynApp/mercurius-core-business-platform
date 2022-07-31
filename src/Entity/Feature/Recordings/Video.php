@@ -9,11 +9,12 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'videos')]
-#[ORM\Index(name: "created_at_idx", fields: ['createdAt'])]
+#[ORM\Index(fields: ['createdAt'], name: "created_at_idx")]
 class Video
 {
     const ASSET_MIME_TYPE_WEBP = 'image/webp';
@@ -21,8 +22,9 @@ class Video
     const ASSET_MIME_TYPE_WEBM = 'video/webm';
     const ASSET_MIME_TYPE_MP4 = 'video/mp4';
 
-    public function __construct()
+    public function __construct(User $user)
     {
+        $this->user = $user;
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
         $this->presentationpages = new ArrayCollection();
     }
@@ -63,7 +65,7 @@ class Video
     }
 
 
-    #[ORM\OneToOne(inversedBy: 'recordingSessionFullVideo', targetEntity: RecordingSession::class, cascade: ['persist'])]
+    #[ORM\OneToOne(inversedBy: 'video', targetEntity: RecordingSession::class, cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'recording_sessions_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?RecordingSession $recordingSession;
 
@@ -74,6 +76,9 @@ class Video
 
     public function setRecordingSession(?RecordingSession $recordingSession): void
     {
+        if ($recordingSession->getUser()->getId() !== $this->getUser()->getId()) {
+            throw new InvalidArgumentException("Trying to set recording session '{$recordingSession->getId()}' which belongs to user '{$recordingSession->getUser()->getId()}', while the video belongs to user '{$this->getUser()->getId()}'.");
+        }
         $this->recordingSession = $recordingSession;
     }
 
@@ -149,7 +154,7 @@ class Video
 
 
     /** @var Presentationpage[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'recordingSessionFullVideo', targetEntity: Presentationpage::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'video', targetEntity: Presentationpage::class, cascade: ['persist'])]
     private Collection $presentationpages;
 
     /**

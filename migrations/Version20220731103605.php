@@ -19,7 +19,6 @@ final class Version20220731103605 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE presentationpages DROP FOREIGN KEY FK_7BF635218FE1B5D0');
 
         $this->addSql('
@@ -46,7 +45,6 @@ final class Version20220731103605 extends AbstractMigration
         $this->addSql('ALTER TABLE videos ADD CONSTRAINT FK_29AA643267B3B43D FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE videos ADD CONSTRAINT FK_29AA6432D98B1C16 FOREIGN KEY (recording_sessions_id) REFERENCES recording_sessions (id) ON DELETE SET NULL');
         $this->addSql('DROP TABLE recording_session_full_videos');
-        $this->addSql('ALTER TABLE presentationpages DROP FOREIGN KEY FK_7BF635218FE1B5D0');
         $this->addSql('ALTER TABLE presentationpages ADD CONSTRAINT FK_7BF635218FE1B5D0 FOREIGN KEY (recording_session_full_videos_id) REFERENCES videos (id) ON DELETE SET NULL');
         $this->addSql('ALTER TABLE recording_sessions ADD is_done TINYINT(1) NOT NULL');
     }

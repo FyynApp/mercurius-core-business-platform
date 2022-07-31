@@ -4,9 +4,9 @@ namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Service\Aspect\ValueFormats\ValueFormatsService;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -155,8 +155,11 @@ class RecordingsApiController extends AbstractController
         Request $request,
         RouterInterface $router,
         RecordingSessionService $recordingSessionService,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LoggerInterface $logger
     ): Response {
+
+        $logger->warning('Here we are!');
 
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
@@ -166,7 +169,9 @@ class RecordingsApiController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-        
+
+
+        $logger->warning('blubb!');
 
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
@@ -205,6 +210,8 @@ class RecordingsApiController extends AbstractController
                 throw new BadRequestHttpException("Missing request file part 'video-blob'.");
             }
 
+            $logger->debug('a');
+
             $recordingSessionService->handleRecordingSessionVideoChunk(
                 $recordingSession,
                 $user,
@@ -212,6 +219,8 @@ class RecordingsApiController extends AbstractController
                 $uploadedFile->getPathname(),
                 $uploadedFile->getMimeType()
             );
+
+            $logger->debug('b');
 
             return $this->json([
                 'status' => Response::HTTP_OK

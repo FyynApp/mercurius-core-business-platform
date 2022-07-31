@@ -16,8 +16,6 @@ class RecordingSessionService
 
     private FilesystemService $filesystemService;
 
-    private VideoService $videoService;
-
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -26,17 +24,16 @@ class RecordingSessionService
     ) {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
-        $this->videoService = $videoService;
     }
 
 
-    public function handleRecordingSessionFinished(RecordingSession $recordingSession): void
+    public function handleRecordingSessionFinished(RecordingSession $recordingSession, VideoService $videoService): void
     {
         $recordingSession->setIsFinished(true);
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
 
-        $this->videoService->createVideoFromFinishedRecordingSession($recordingSession);
+        $videoService->createVideoFromFinishedRecordingSession($recordingSession);
     }
 
     /** @throws Exception */

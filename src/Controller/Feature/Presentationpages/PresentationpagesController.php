@@ -30,7 +30,7 @@ class PresentationpagesController extends AbstractController
         );
     }
 
-    public function createFromRecordingSessionFullVideoAction(
+    public function createFromVideoAction(
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
@@ -41,22 +41,22 @@ class PresentationpagesController extends AbstractController
             return $this->redirectToRoute('feature.presentationpage_templates.add_form');
         }
 
-        $recordingSessionFullVideoId = $request->get('recordingSessionFullVideoId');
+        $videoId = $request->get('videoId');
 
-        $recordingSessionFullVideo = $entityManager->find(Video::class, $recordingSessionFullVideoId);
+        $video = $entityManager->find(Video::class, $videoId);
 
-        if (is_null($recordingSessionFullVideo)) {
-            throw new NotFoundHttpException("A recording session full video with id '$recordingSessionFullVideoId' does not exist.");
+        if (is_null($video)) {
+            throw new NotFoundHttpException("A recording session full video with id '$videoId' does not exist.");
         }
 
-        if ($user->getId() !== $recordingSessionFullVideo->getRecordingSession()->getUser()->getId()) {
-            throw new AccessDeniedHttpException("The recording session full video with id '$recordingSessionFullVideoId' does not belong to the current user.");
+        if ($user->getId() !== $video->getRecordingSession()->getUser()->getId()) {
+            throw new AccessDeniedHttpException("The recording session full video with id '$videoId' does not belong to the current user.");
         }
 
         $presentationpage = new Presentationpage();
         $presentationpage->setUser($user);
 
-        $presentationpage->setRecordingSessionFullVideo($recordingSessionFullVideo);
+        $presentationpage->setVideo($video);
         $presentationpage->setPresentationpageTemplate($user->getPresentationpageTemplates()->first());
 
         $entityManager->persist($presentationpage);

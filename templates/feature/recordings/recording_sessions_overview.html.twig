@@ -59,14 +59,14 @@
 
                                     <a
                                         href="
-                                            {% if recordingSession.recordingSessionFullVideo.presentationpages is empty %}
-                                                {{ path('feature.presentationpages.create_from_recording_session_full_video', { recordingSessionFullVideoId: recordingSession.recordingSessionFullVideo.id }) }}
+                                            {% if recordingSession.video.presentationpages is empty %}
+                                                {{ path('feature.presentationpages.create_from_video', { videoId: recordingSession.video.id }) }}
                                             {% else %}
-                                                {{ path('feature.presentationpages.editor', { presentationpageId: recordingSession.recordingSessionFullVideo.presentationpages.first.id }) }}
+                                                {{ path('feature.presentationpages.editor', { presentationpageId: recordingSession.video.presentationpages.first.id }) }}
                                             {% endif %}
                                         "
                                     >
-                                        {% if recordingSession.recordingSessionFullVideo.presentationpages is empty %}
+                                        {% if recordingSession.video.presentationpages is empty %}
                                             {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.create_presentationpage'|trans) }}
                                         {% else %}
                                             {{ formElements.primaryCtaButton('feature.recordings.recording_sessions_overview.cta.edit_presentationpage'|trans) }}
