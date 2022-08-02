@@ -2,12 +2,14 @@
 
 namespace App\Entity\Feature\Recordings;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_session_video_chunks')]
 #[ORM\UniqueConstraint(name: 'session_name', columns: ['recording_sessions_id', 'name'])]
+#[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
 class RecordingSessionVideoChunk
 {
     #[ORM\Id]
@@ -62,5 +64,19 @@ class RecordingSessionVideoChunk
     public function setMimeType(string $mimeType): void
     {
         $this->mimeType = $mimeType;
+    }
+
+
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    private DateTime $createdAt;
+
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTime $dateTime): void
+    {
+        $this->createdAt = $dateTime;
     }
 }

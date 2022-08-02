@@ -5,6 +5,7 @@ namespace App\Service\Feature\Recordings;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
+use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,6 +55,7 @@ class RecordingSessionService
         $chunk->setRecordingSession($recordingSession);
         $chunk->setName($chunkName);
         $chunk->setMimeType($mimeType);
+        $chunk->setCreatedAt(DateAndTimeService::getDateTimeUtc());
         $this->entityManager->persist($chunk);
 
         $fs = new Filesystem();

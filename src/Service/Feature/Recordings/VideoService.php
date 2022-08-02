@@ -52,7 +52,9 @@ class VideoService
      */
     public function getAvailableVideos(User $user): array
     {
-        return $user->getVideos()->toArray();
+        $arr = $user->getVideos()->toArray();
+        rsort($arr);
+        return $arr;
     }
 
 
@@ -164,9 +166,16 @@ class VideoService
         if (!$video->hasAssetPosterStillWebp()) {
             shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
 
-            $video->setHasAssetPosterStillWebp(true);
-            $this->entityManager->persist($video);
-            $this->entityManager->flush();
+            // Video was very short and had less than 50 frames
+            if (filesize($this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)) === 0) {
+                shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -vf \"select=eq(n\,1)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
+            }
+
+            if (filesize($this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)) > 0) {
+                $video->setHasAssetPosterStillWebp(true);
+                $this->entityManager->persist($video);
+                $this->entityManager->flush();
+            }
         }
 
 
@@ -210,7 +219,7 @@ class VideoService
         $sql = "
                 SELECT id FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
                 WHERE recording_sessions_id = :rsid
-                ORDER BY name " . Criteria::ASC . "
+                ORDER BY created_at " . Criteria::ASC . "
                 ;
             ";
 
