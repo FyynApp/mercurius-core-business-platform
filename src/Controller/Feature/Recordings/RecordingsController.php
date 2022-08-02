@@ -71,7 +71,7 @@ class RecordingsController extends AbstractController
             throw new NotFoundHttpException("Could not find recording session with id '$recordingSessionId'.");
         }
 
-        $recordingSessionService->waitForRecordingPreviewAssetGenerated($recordingSession);
+        $recordingSessionService->waitForRecordingPreviewAssetGenerated($recordingSession, $videoService);
 
         return $this->redirectToRoute(
             'feature.recordings.recording_session.recording_preview.asset',
