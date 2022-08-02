@@ -17,11 +17,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
 class Video
 {
-    const ASSET_MIME_TYPE_WEBP = 'image/webp';
-    const ASSET_MIME_TYPE_GIF = 'image/gif';
-    const ASSET_MIME_TYPE_WEBM = 'video/webm';
-    const ASSET_MIME_TYPE_MP4 = 'video/mp4';
-
     public function __construct(User $user)
     {
         $this->user = $user;

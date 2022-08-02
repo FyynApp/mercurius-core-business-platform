@@ -3,6 +3,7 @@
 namespace App\Service\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Entity\Feature\Recordings\Video;
@@ -60,7 +61,7 @@ class VideoService
         if ($video->hasAssetPosterStillWebp()) {
             return $this->router->generate(
                 'feature.recordings.video.poster_still.asset',
-                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(Video::ASSET_MIME_TYPE_WEBP)]
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)]
             );
         } else {
             return $this->router->generate('feature.recordings.video.missing_poster_asset_placeholder');
@@ -72,7 +73,7 @@ class VideoService
         if ($video->hasAssetPosterAnimatedWebp()) {
             return $this->router->generate(
                 'feature.recordings.video.poster_animated.asset',
-                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(Video::ASSET_MIME_TYPE_WEBP)]
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)]
             );
         } else {
             return $this->router->generate('feature.recordings.video.missing_poster_asset_placeholder');
@@ -84,12 +85,12 @@ class VideoService
         if ($video->hasAssetFullMp4()) {
             return $this->router->generate(
                 'feature.recordings.video.full.asset',
-                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(Video::ASSET_MIME_TYPE_MP4)]
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4)]
             );
         } elseif ($video->hasAssetFullWebm()) {
             return $this->router->generate(
                 'feature.recordings.video.full.asset',
-                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(Video::ASSET_MIME_TYPE_WEBM)]
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)]
             );
         } else {
             return $this->router->generate('feature.recordings.video.missing_full_asset_placeholder');
@@ -118,12 +119,12 @@ class VideoService
 
         $this->createFilesystemStructureForAssets($video);
 
-        shell_exec("/usr/bin/env ffmpeg -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBP)}");
+        shell_exec("/usr/bin/env ffmpeg -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
 
         $video->setHasAssetPosterStillWebp(true);
 
 
-        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBP)}");
+        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}");
 
         $video->setHasAssetPosterAnimatedWebp(true);
 
@@ -172,7 +173,7 @@ class VideoService
 
             file_put_contents($chunkFilesListPath, $chunkFilesListContent);
 
-            shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBM)}");
+            shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)}");
 
             $video->setHasAssetFullWebm(true);
             $this->entityManager->persist($video);
@@ -184,7 +185,7 @@ class VideoService
 
 
         if (!$video->hasAssetPosterStillWebp()) {
-            shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBM)} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBP)}");
+            shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
 
             $video->setHasAssetPosterStillWebp(true);
             $this->entityManager->persist($video);
@@ -193,7 +194,7 @@ class VideoService
 
 
         if (!$video->hasAssetPosterAnimatedWebp()) {
-            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBM)} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBP)}");
+            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}");
 
             $video->setHasAssetPosterAnimatedWebp(true);
             $this->entityManager->persist($video);
@@ -202,7 +203,7 @@ class VideoService
 
 
         if (!$video->hasAssetPosterAnimatedGif()) {
-            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBM)} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, Video::ASSET_MIME_TYPE_GIF)}");
+            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageGif)}");
 
             $video->setHasAssetPosterAnimatedGif(true);
             $this->entityManager->persist($video);
@@ -211,7 +212,7 @@ class VideoService
 
 
         if (!$video->hasAssetFullMp4()) {
-            shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_WEBM)} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, Video::ASSET_MIME_TYPE_MP4)}");
+            shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)}");
 
             $video->setHasAssetFullMp4(true);
             $this->entityManager->persist($video);
@@ -233,21 +234,20 @@ class VideoService
 
 
     /** @throws InvalidArgumentException */
-    private function mimeTypeToFileSuffix(string $mimeType): string
+    private function mimeTypeToFileSuffix(AssetMimeType $mimeType): string
     {
         return match ($mimeType) {
-            Video::ASSET_MIME_TYPE_WEBP => 'webp',
-            Video::ASSET_MIME_TYPE_GIF => 'gif',
-            Video::ASSET_MIME_TYPE_WEBM => 'webm',
-            Video::ASSET_MIME_TYPE_MP4 => 'mp4',
-            default => throw new InvalidArgumentException("Unknown mime type '$mimeType'.")
+            AssetMimeType::ImageWebp => 'webp',
+            AssetMimeType::ImageGif => 'gif',
+            AssetMimeType::VideoWebm => 'webm',
+            AssetMimeType::VideoMp4 => 'mp4',
         };
     }
 
 
-    private function getPosterStillAssetFilePath(Video $video, string $mimeType): string
+    private function getPosterStillAssetFilePath(Video $video, AssetMimeType $mimeType): string
     {
-        if ($mimeType !== Video::ASSET_MIME_TYPE_WEBP) {
+        if ($mimeType !== AssetMimeType::ImageWebp) {
             throw new InvalidArgumentException();
         }
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
@@ -257,10 +257,10 @@ class VideoService
         ]);
     }
 
-    private function getPosterAnimatedAssetFilePath(Video $video, string $mimeType): string
+    private function getPosterAnimatedAssetFilePath(Video $video, AssetMimeType $mimeType): string
     {
-        if (   $mimeType !== Video::ASSET_MIME_TYPE_WEBP
-            && $mimeType !== Video::ASSET_MIME_TYPE_GIF
+        if (   $mimeType !== AssetMimeType::ImageWebp
+            && $mimeType !== AssetMimeType::ImageGif
         ) {
             throw new InvalidArgumentException();
         }
@@ -271,7 +271,7 @@ class VideoService
         ]);
     }
 
-    private function getFullAssetFilePath(Video $video, string $mimeType): string
+    private function getFullAssetFilePath(Video $video, AssetMimeType $mimeType): string
     {
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
             self::ASSETS_SUBFOLDER_NAME,
