@@ -4,6 +4,7 @@ namespace App\Entity\Feature\Account;
 
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Entity\Feature\Recordings\RecordingSession;
+use App\Entity\Feature\Recordings\RecordingSettings;
 use App\Entity\Feature\Recordings\Video;
 use App\Repository\Feature\Account\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -152,6 +153,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getVideos(): Collection
     {
         return $this->videos;
+    }
+
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: RecordingSettings::class, cascade: ['persist'])]
+    private ?RecordingSettings $recordingSettings = null;
+
+    public function getRecordingSettings(): ?RecordingSettings
+    {
+        return $this->recordingSettings;
+    }
+
+    public function setRecordingSettings(?RecordingSettings $recordingSettings): void
+    {
+        $this->recordingSettings = $recordingSettings;
     }
 
 
