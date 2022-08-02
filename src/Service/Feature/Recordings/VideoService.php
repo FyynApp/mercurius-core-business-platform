@@ -13,6 +13,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -31,19 +32,23 @@ class VideoService
 
     private MessageBusInterface $messageBus;
 
+    private LoggerInterface $logger;
+
 
     public function __construct(
         EntityManagerInterface $entityManager,
         FilesystemService $filesystemService,
         RecordingSessionService $recordingSessionService,
         RouterInterface $router,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
+        LoggerInterface $logger
     ) {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
         $this->recordingSessionService = $recordingSessionService;
         $this->router = $router;
         $this->messageBus = $messageBus;
+        $this->logger = $logger;
     }
 
 
@@ -119,20 +124,9 @@ class VideoService
             throw new Exception("Cannot generate poster assets for video '{$video->getId()}' because its recording session '{$recordingSession->getId()}' does not have any video chunks.");
         }
 
-        $this->createFilesystemStructureForAssets($video);
+        $this->generateAssetPosterStillWebp($video);
 
-        shell_exec("/usr/bin/env ffmpeg -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
-
-        $video->setHasAssetPosterStillWebp(true);
-
-
-        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}");
-
-        $video->setHasAssetPosterAnimatedWebp(true);
-
-
-        $this->entityManager->persist($video);
-        $this->entityManager->flush();
+        $this->generateAssetPosterAnimatedWebp($video);
 
         // Heavy-lifting stuff like missing video assets generation happens asynchronously
         $this->messageBus->dispatch(new VideoCreatedMessage($video));
@@ -164,27 +158,12 @@ class VideoService
 
 
         if (!$video->hasAssetPosterStillWebp()) {
-            shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
-
-            // Video was very short and had less than 50 frames
-            if (filesize($this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)) === 0) {
-                shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -vf \"select=eq(n\,1)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
-            }
-
-            if (filesize($this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)) > 0) {
-                $video->setHasAssetPosterStillWebp(true);
-                $this->entityManager->persist($video);
-                $this->entityManager->flush();
-            }
+            $this->generateAssetPosterStillWebp($video);
         }
 
 
         if (!$video->hasAssetPosterAnimatedWebp()) {
-            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}");
-
-            $video->setHasAssetPosterAnimatedWebp(true);
-            $this->entityManager->persist($video);
-            $this->entityManager->flush();
+            $this->generateAssetPosterAnimatedWebp($video);
         }
 
 
@@ -206,6 +185,36 @@ class VideoService
         }
     }
 
+
+    public function generateAssetPosterStillWebp(Video $video): void
+    {
+        $this->createFilesystemStructureForAssets($video);
+
+        for ($i = 50; $i > 0; $i--) {
+            shell_exec("/usr/bin/env ffmpeg -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,$i)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
+
+            clearstatcache();
+            $filesize = filesize($this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp));
+
+            if ($filesize > 0) {
+                $video->setHasAssetPosterStillWebp(true);
+                $this->entityManager->persist($video);
+                $this->entityManager->flush();
+                break;
+            }
+        }
+    }
+
+    public function generateAssetPosterAnimatedWebp(Video $video): void
+    {
+        $this->createFilesystemStructureForAssets($video);
+
+        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}");
+
+        $video->setHasAssetPosterAnimatedWebp(true);
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
+    }
 
     public function generateAssetFullWebm(RecordingSession $recordingSession, string $targetFilePath): void
     {
