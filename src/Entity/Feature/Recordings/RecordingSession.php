@@ -57,6 +57,20 @@ class RecordingSession
 
 
     #[ORM\Column(type: 'boolean')]
+    private bool $recordingPreviewAssetHasBeenGenerated = false;
+
+    public function hasRecordingPreviewAssetBeenGenerated(): bool
+    {
+        return $this->recordingPreviewAssetHasBeenGenerated;
+    }
+
+    public function setRecordingPreviewAssetHasBeenGenerated(bool $val): void
+    {
+        $this->recordingPreviewAssetHasBeenGenerated = $val;
+    }
+
+
+    #[ORM\Column(type: 'boolean')]
     private bool $isFinished = false;
 
     public function isFinished(): bool

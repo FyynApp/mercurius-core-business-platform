@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Service\Aspect\Filesystem\FilesystemService;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
@@ -41,7 +42,8 @@ class RecordingSessionService
         User $user,
         string $chunkName,
         string $videoChunkFilePath,
-        string $mimeType
+        string $mimeType,
+        VideoService $videoService
     ): RecordingSessionVideoChunk {
 
         if ($user->getId() !== $recordingSession->getUser()->getId()) {
@@ -84,6 +86,22 @@ class RecordingSessionService
 
         $this->entityManager->flush();
 
+        // The final video chunk request is sent AFTER the 'recordingDone' request was sent.
+        // This is because the 'recordingDone' request is sent the moment the user hits 'Stop recording',
+        // but in this moment a 5-second-recording-chunk is still in the making, and it's only sent
+        // with the next request. We therefore need to treat the video chunk that is received after
+        // the recordingDone request has been received in a special way: it's the request that allows
+        // us to generate the recording preview asset.
+        // Setting the recordingPreviewAssetHasBeenGenerated info to true on the entity then allows
+        // the RecordingsController::recordingPreviewAssetRedirectAction, which waits for this info to
+        // become true, to redirect to the generated asset.
+        if ($recordingSession->isDone()) {
+            $videoService->generateAssetFullWebm($recordingSession, $this->getRecordingPreviewVideoFilePath($recordingSession));
+            $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
+            $this->entityManager->persist($recordingSession);
+            $this->entityManager->flush();
+        }
+
         return $chunk;
     }
 
@@ -95,8 +113,6 @@ class RecordingSessionService
             throw new Exception("Recording session '{$recordingSession->getId()}' needs at least one video chunk.");
         }
 
-        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getRecordingPreviewVideoFilePath($recordingSession)}");
-
         shell_exec("/usr/bin/env ffmpeg -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getRecordingPreviewVideoPosterFilePath($recordingSession)}");
 
         $recordingSession->setIsDone(true);
@@ -104,6 +120,17 @@ class RecordingSessionService
         $this->entityManager->flush();
     }
 
+
+    public function waitForRecordingPreviewAssetGenerated(RecordingSession $recordingSession): void
+    {
+        for ($i = 0; $i < 60; $i++) {
+            $this->entityManager->refresh($recordingSession);
+            if ($recordingSession->hasRecordingPreviewAssetBeenGenerated()) {
+                return;
+            }
+            sleep(1);
+        }
+    }
 
 
     public function getVideoChunkContentStorageFilePath(RecordingSessionVideoChunk $chunk): string

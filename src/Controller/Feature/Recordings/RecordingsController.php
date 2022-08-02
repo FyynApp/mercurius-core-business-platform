@@ -3,6 +3,7 @@
 namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
@@ -54,6 +55,30 @@ class RecordingsController extends AbstractController
         return $this->render(
             'feature/recordings/videos_overview.html.twig',
             ['VideoService' => $videoService]
+        );
+    }
+
+    public function recordingPreviewAssetRedirectAction(
+        string $recordingSessionId,
+        RecordingSessionService $recordingSessionService,
+        EntityManagerInterface $entityManager,
+        VideoService $videoService
+    ): Response {
+
+        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new NotFoundHttpException("Could not find recording session with id '$recordingSessionId'.");
+        }
+
+        $recordingSessionService->waitForRecordingPreviewAssetGenerated($recordingSession);
+
+        return $this->redirectToRoute(
+            'feature.recordings.recording_session.recording_preview.asset',
+            [
+                'recordingSessionId' => $recordingSessionId,
+                'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)
+            ]
         );
     }
 }

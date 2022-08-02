@@ -3,8 +3,10 @@
 namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Service\Feature\Recordings\RecordingSessionService;
+use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -156,7 +158,8 @@ class RecordingsApiController extends AbstractController
         RouterInterface $router,
         RecordingSessionService $recordingSessionService,
         EntityManagerInterface $entityManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        VideoService $videoService
     ): Response {
 
         $logger->warning('Here we are!');
@@ -184,14 +187,22 @@ class RecordingsApiController extends AbstractController
                     'feature.recordings.recording_session.recording_preview.poster.asset',
                     [
                         'recordingSessionId' => $recordingSessionId,
-                        'extension' => 'webp'
+                        'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)
                     ]
                 ),
+
+                // We receive the 'recordingDone' request BEFORE the final video chunk is received.
+                // This creates a chicken-and-egg problem: We need to return the recording preview asset
+                // url for the recordingDone request, but only the next video chunk request handling (which
+                // follows only after the 'recordingDone' request) can actually create the full video preview
+                // (because only at this point do we have all the chunks).
+                // Thus, we do not return the actual asset url here - instead, we return the url to a
+                // controller action which will wait until the recording preview asset has been generated,
+                // and redirects to the actual asset url afterwards.
                 'previewVideo' => $router->generate(
-                    'feature.recordings.recording_session.recording_preview.asset',
+                    'feature.recordings.recording_session.recording_preview.asset-redirect',
                     [
-                        'recordingSessionId' => $recordingSessionId,
-                        'extension' => 'webm'
+                        'recordingSessionId' => $recordingSessionId
                     ]
                 )
             ]);
@@ -210,17 +221,14 @@ class RecordingsApiController extends AbstractController
                 throw new BadRequestHttpException("Missing request file part 'video-blob'.");
             }
 
-            $logger->debug('a');
-
             $recordingSessionService->handleRecordingSessionVideoChunk(
                 $recordingSession,
                 $user,
                 $chunkName,
                 $uploadedFile->getPathname(),
-                $uploadedFile->getMimeType()
+                $uploadedFile->getMimeType(),
+                $videoService
             );
-
-            $logger->debug('b');
 
             return $this->json([
                 'status' => Response::HTTP_OK

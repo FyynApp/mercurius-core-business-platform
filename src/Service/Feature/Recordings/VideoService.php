@@ -149,31 +149,8 @@ class VideoService
         $this->createFilesystemStructureForAssets($video);
 
         if (!$video->hasAssetFullWebm()) {
-            $chunkFilesListPath = $this->filesystemService->getContentStoragePath([
-                'recording-sessions',
-                $video->getRecordingSession()->getId(),
-                'video-chunks-files.list'
-            ]);
-            $chunkFilesListContent = '';
 
-            $sql = "
-                SELECT id FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
-                WHERE recording_sessions_id = :rsid
-                ORDER BY name " . Criteria::ASC . "
-                ;
-            ";
-
-            $stmt = $this->entityManager->getConnection()->prepare($sql);
-            $resultSet = $stmt->executeQuery([':rsid' => $video->getRecordingSession()->getId()]);
-
-            foreach ($resultSet->fetchAllAssociative() as $row) {
-                $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
-                $chunkFilesListContent .= "file '{$this->recordingSessionService->getVideoChunkContentStorageFilePath($chunk)}'\n";
-            }
-
-            file_put_contents($chunkFilesListPath, $chunkFilesListContent);
-
-            shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)}");
+            $this->generateAssetFullWebm($video->getRecordingSession(), $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm));
 
             $video->setHasAssetFullWebm(true);
             $this->entityManager->persist($video);
@@ -221,6 +198,36 @@ class VideoService
     }
 
 
+    public function generateAssetFullWebm(RecordingSession $recordingSession, string $targetFilePath): void
+    {
+        $chunkFilesListPath = $this->filesystemService->getContentStoragePath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'video-chunks-files.list'
+        ]);
+        $chunkFilesListContent = '';
+
+        $sql = "
+                SELECT id FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
+                WHERE recording_sessions_id = :rsid
+                ORDER BY name " . Criteria::ASC . "
+                ;
+            ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([':rsid' => $recordingSession->getId()]);
+
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
+            $chunkFilesListContent .= "file '{$this->recordingSessionService->getVideoChunkContentStorageFilePath($chunk)}'\n";
+        }
+
+        file_put_contents($chunkFilesListPath, $chunkFilesListContent);
+
+        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy $targetFilePath");
+    }
+
+
     private function createFilesystemStructureForAssets(Video $video): void
     {
         $fs = new Filesystem();
@@ -234,7 +241,7 @@ class VideoService
 
 
     /** @throws InvalidArgumentException */
-    private function mimeTypeToFileSuffix(AssetMimeType $mimeType): string
+    public function mimeTypeToFileSuffix(AssetMimeType $mimeType): string
     {
         return match ($mimeType) {
             AssetMimeType::ImageWebp => 'webp',

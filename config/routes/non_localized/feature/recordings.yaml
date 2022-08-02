@@ -1,6 +1,11 @@
 feature.recordings.recording_session.video_chunk.asset:
   path: /generated-content/recording-sessions/{recordingSessionId}/video-chunks/{chunkId}
 
+feature.recordings.recording_session.recording_preview.asset-redirect:
+  path: /my/recordings/recording-sessions/{recordingSessionId}/recording-preview-asset-redirect
+  controller: App\Controller\Feature\Recordings\RecordingsController::recordingPreviewAssetRedirectAction
+  methods: [ GET ]
+
 feature.recordings.recording_session.recording_preview.asset:
   path: /generated-content/recording-sessions/{recordingSessionId}/recording-preview-video.{extension}
 
