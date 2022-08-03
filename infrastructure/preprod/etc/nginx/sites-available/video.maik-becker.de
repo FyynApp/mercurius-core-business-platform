@@ -1,13 +1,13 @@
 server {
 
-  server_name preprod.fyyn.io;
+  server_name video.maik-becker.de;
 
   charset utf-8;
 
   client_max_body_size 50M;
 
-  access_log /var/log/nginx/preprod.fyyn.io.access.log combined gzip buffer=4k flush=5m;
-  error_log /var/log/nginx/preprod.fyyn.io.error.log;
+  access_log /var/log/nginx/video.maik-becker.de.access.log combined gzip buffer=4k flush=5m;
+  error_log /var/log/nginx/video.maik-becker.de.error.log;
 
   root /var/www/mercurius-core-business-platform/preprod/public;
   index index.php;
@@ -54,27 +54,23 @@ server {
     rewrite ^(.*) /index.php last;
   }
 
-
-    listen [::]:443 ssl ipv6only=on; # managed by Certbot
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/preprod.fyyn.io/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/preprod.fyyn.io/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
+      listen [::]:443 ssl; # managed by Certbot
+      listen 443 ssl; # managed by Certbot
+      ssl_certificate /etc/letsencrypt/live/video.maik-becker.de/fullchain.pem; # managed by Certbot
+      ssl_certificate_key /etc/letsencrypt/live/video.maik-becker.de/privkey.pem; # managed by Certbot
+      include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+      ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 }
 
 server {
-    if ($host = preprod.fyyn.io) {
+    if ($host = video.maik-becker.de) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
 
-
-  server_name preprod.fyyn.io;
-
-  listen 80;
-  listen [::]:80;
+        listen 80 ;
+        listen [::]:80 ;
+    server_name video.maik-becker.de;
     return 404; # managed by Certbot
 
 
