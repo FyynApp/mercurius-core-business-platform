@@ -19,7 +19,6 @@ final class Version20220723092633 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE presentationpage_templates (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', users_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', title VARCHAR(256) DEFAULT NULL, bg_color VARCHAR(7) NOT NULL, text_color VARCHAR(7) NOT NULL, INDEX IDX_4A5A7C867B3B43D (users_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE presentationpages (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', users_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', recording_session_full_videos_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\', presentationpage_templates_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\', title VARCHAR(256) DEFAULT NULL, welcome_text VARCHAR(8192) DEFAULT NULL, INDEX IDX_7BF6352167B3B43D (users_id), INDEX IDX_7BF635218FE1B5D0 (recording_session_full_videos_id), INDEX IDX_7BF63521BE077F85 (presentationpage_templates_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE recording_session_full_videos (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', recording_sessions_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', mime_type VARCHAR(32) NOT NULL, UNIQUE INDEX UNIQ_8DFD21E9D98B1C16 (recording_sessions_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -40,7 +39,6 @@ final class Version20220723092633 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE presentationpages DROP FOREIGN KEY FK_7BF63521BE077F85');
         $this->addSql('ALTER TABLE presentationpages DROP FOREIGN KEY FK_7BF635218FE1B5D0');
         $this->addSql('ALTER TABLE recording_session_full_videos DROP FOREIGN KEY FK_8DFD21E9D98B1C16');

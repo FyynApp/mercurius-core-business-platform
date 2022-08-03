@@ -19,7 +19,6 @@ final class Version20220731130322 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE presentationpages DROP FOREIGN KEY FK_7BF635218FE1B5D0');
         $this->addSql('DROP INDEX IDX_7BF635218FE1B5D0 ON presentationpages');
         $this->addSql('ALTER TABLE presentationpages CHANGE recording_session_full_videos_id videos_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\'');
@@ -29,7 +28,6 @@ final class Version20220731130322 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE presentationpages DROP FOREIGN KEY FK_7BF63521763C10B2');
         $this->addSql('DROP INDEX IDX_7BF63521763C10B2 ON presentationpages');
         $this->addSql('ALTER TABLE presentationpages CHANGE videos_id recording_session_full_videos_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\'');

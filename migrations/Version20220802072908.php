@@ -19,13 +19,11 @@ final class Version20220802072908 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE recording_sessions ADD recording_preview_asset_has_been_generated TINYINT(1) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE recording_sessions DROP recording_preview_asset_has_been_generated');
     }
 }
