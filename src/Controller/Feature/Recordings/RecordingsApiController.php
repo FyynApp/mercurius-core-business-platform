@@ -5,9 +5,12 @@ namespace App\Controller\Feature\Recordings;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
+use App\Entity\Feature\Recordings\RecordingSettings;
+use App\Service\Aspect\Cookies\CookieName;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -37,7 +40,7 @@ class RecordingsApiController extends AbstractController
 
         $responseBody = [
             'settings' => [
-                'status' => 200,
+                'status' => Response::HTTP_OK,
                 'sessionId' => $recordingSessionId,
                 'userId' => $user->getId(),
                 'userName' => $user->getUserIdentifier(),
@@ -144,11 +147,65 @@ class RecordingsApiController extends AbstractController
 
         return $this->json(
             $responseBody,
-            Response::HTTP_OK,
-            [
-                'Access-Control-Allow-Origin' => 'http://localhost:3000'
-            ]
+            Response::HTTP_OK
         );
+    }
+
+
+    public function getRecordingSettingsAction(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): JsonResponse
+    {
+        $clientId = $request->cookies->get(CookieName::ClientId->value);
+
+        /** @var EntityRepository $repo */
+        $repo = $entityManager->getRepository(RecordingSettings::class);
+
+        /** @var ?RecordingSettings $settings */
+        $settings = $repo->findOneBy(['clientId' => $clientId]);
+
+        if (is_null($settings)) {
+            $settingVal = [];
+        } else {
+            $settingVal = json_decode($settings->getSettings());
+        }
+
+        $responseBody = [
+            'status' => Response::HTTP_OK,
+            'userSessionId' => $request->get('userSessionId')
+        ];
+
+        $responseBody = [$settingVal, ...$responseBody];
+
+        return $this->json($responseBody);
+    }
+
+
+    public function setRecordingSettingsAction(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): JsonResponse
+    {
+        $clientId = $request->cookies->get(CookieName::ClientId->value);
+
+        /** @var EntityRepository $repo */
+        $repo = $entityManager->getRepository(RecordingSettings::class);
+
+        /** @var ?RecordingSettings $settings */
+        $settings = $repo->findOneBy(['clientId' => $clientId]);
+
+        if (is_null($settings)) {
+            $settings = new RecordingSettings();
+            $settings->setUser($this->getUser());
+            $settings->setClientId($clientId);
+        }
+        $settings->setSettings($request->getContent());
+
+        $entityManager->persist($settings);
+        $entityManager->flush();
+
+        return $this->json(['status' => Response::HTTP_OK]);
     }
 
 

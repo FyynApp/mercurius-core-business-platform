@@ -25,6 +25,20 @@ class RecordingSettings
     }
 
 
+    #[ORM\Column(type: 'text', length: 32, unique: true)]
+    private string $clientId = '';
+
+    public function getClientId(): string
+    {
+        return $this->clientId;
+    }
+
+    public function setClientId(string $clientId): void
+    {
+        $this->clientId = $clientId;
+    }
+
+
     #[ORM\Column(type: 'text')]
     private string $settings = '';
 
