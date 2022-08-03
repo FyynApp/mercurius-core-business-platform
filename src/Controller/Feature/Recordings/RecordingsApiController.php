@@ -166,17 +166,19 @@ class RecordingsApiController extends AbstractController
         $settings = $repo->findOneBy(['clientId' => $clientId]);
 
         if (is_null($settings)) {
-            $settingVal = [];
+            $responseBody = [
+                'status' => Response::HTTP_OK,
+                'userSessionId' => $request->get('userSessionId')
+            ];
         } else {
-            $settingVal = json_decode($settings->getSettings());
+            $settingsVal = json_decode($settings->getSettings(), true);
+            $responseBody = [
+                'status' => Response::HTTP_OK,
+                'userSessionId' => $request->get('userSessionId'),
+                'audio' => $settingsVal['audio'],
+                'video' => $settingsVal['video']
+            ];
         }
-
-        $responseBody = [
-            'status' => Response::HTTP_OK,
-            'userSessionId' => $request->get('userSessionId')
-        ];
-
-        $responseBody = [$settingVal, ...$responseBody];
 
         return $this->json($responseBody);
     }
@@ -200,7 +202,15 @@ class RecordingsApiController extends AbstractController
             $settings->setUser($this->getUser());
             $settings->setClientId($clientId);
         }
-        $settings->setSettings($request->getContent());
+
+        $content = $request->getContent();
+
+        $contentAsArray = json_decode($content, true);
+
+        $settings->setSettings(json_encode([
+            'audio' => $contentAsArray['audio'],
+            'video' => $contentAsArray['video']
+        ]));
 
         $entityManager->persist($settings);
         $entityManager->flush();

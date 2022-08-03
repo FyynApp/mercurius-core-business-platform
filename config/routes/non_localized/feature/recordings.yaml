@@ -28,3 +28,24 @@ feature.recordings.video.poster_animated.asset:
 
 feature.recordings.video.full.asset:
   path: /generated-content/video-assets/{videoId}/full.{extension}
+
+
+# TODO: change path in recorder, see https://trello.com/c/9XbHtrku/32-recorder-nutzt-hardcoded-settings-url-muss-dynamisch-per-info-vom-backend-kommen
+legacy.feature.recordings.recording_settings.get:
+  path: /settings/
+  methods: [ GET ]
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+  defaults:
+    route: api.feature.recordings.recording_settings.get
+    permanent: true
+    keepQueryParams: true
+
+legacy.feature.recordings.recording_settings.set:
+  path: /settings/
+  methods: [ POST ]
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+  defaults:
+    route: api.feature.recordings.recording_settings.set
+    permanent: false
+    keepQueryParams: true
+    keepRequestMethod: true

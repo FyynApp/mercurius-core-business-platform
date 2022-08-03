@@ -4,12 +4,12 @@ api.feature.recordings.recording_session.get_info:
   methods: [ GET ]
 
 api.feature.recordings.recording_settings.get:
-  path: /settings/
+  path: /feature/recordings/recording-settings
   controller: App\Controller\Feature\Recordings\RecordingsApiController::getRecordingSettingsAction
   methods: [ GET ]
 
 api.feature.recordings.recording_settings.set:
-  path: /settings/
+  path: /feature/recordings/recording-settings
   controller: App\Controller\Feature\Recordings\RecordingsApiController::setRecordingSettingsAction
   methods: [ POST ]
 
