@@ -168,7 +168,9 @@ class RecordingsApiController extends AbstractController
         if (is_null($settings)) {
             $responseBody = [
                 'status' => Response::HTTP_OK,
-                'userSessionId' => $request->get('userSessionId')
+                'userSessionId' => $request->get('userSessionId'),
+                'audio' => true,
+                'video' => true
             ];
         } else {
             $settingsVal = json_decode($settings->getSettings(), true);
