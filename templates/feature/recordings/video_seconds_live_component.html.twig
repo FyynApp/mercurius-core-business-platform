@@ -5,8 +5,8 @@
             data-poll
         {% endif %}
 >
-    {% if this.video.assetFullMp4Seconds is not null %}
-        {{ 'feature.recordings.seconds'|trans({seconds: this.video.assetFullMp4Seconds|round(0)}) }}
+    {% if this.seconds is not null %}
+        {{ 'feature.recordings.seconds'|trans({seconds: this.seconds|round(0)}) }}
     {% else %}
         &nbsp;
     {% endif %}
