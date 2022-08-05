@@ -265,7 +265,8 @@ class RecordingsApiController extends AbstractController
                 'previewVideo' => $router->generate(
                     'feature.recordings.recording_session.recording_preview.asset-redirect',
                     [
-                        'recordingSessionId' => $recordingSessionId
+                        'recordingSessionId' => $recordingSessionId,
+                        'random' => random_bytes(8)
                     ]
                 )
             ]);

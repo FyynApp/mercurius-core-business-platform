@@ -77,7 +77,8 @@ class RecordingsController extends AbstractController
                 'feature.recordings.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
-                    'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)
+                    'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                    'random' => random_bytes(8)
                 ]
             );
         }
@@ -94,7 +95,8 @@ class RecordingsController extends AbstractController
                 'feature.recordings.recording_session.recording_preview.asset-redirect',
                 [
                     'counter' => $counter - 1,
-                    'recordingSessionId' => $recordingSessionId
+                    'recordingSessionId' => $recordingSessionId,
+                    'random' => random_bytes(8)
                 ]
             );
         } else {
@@ -107,7 +109,8 @@ class RecordingsController extends AbstractController
                 'feature.recordings.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
-                    'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)
+                    'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                    'random' => random_bytes(8)
                 ]
             );
         }
