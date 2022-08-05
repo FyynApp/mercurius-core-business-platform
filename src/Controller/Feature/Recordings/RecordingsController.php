@@ -52,8 +52,6 @@ class RecordingsController extends AbstractController
 
         $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
 
-        sleep(1); // Give the background job a chance to create the mp4 and get its metadata like fps and seconds
-
         return $this->redirectToRoute('feature.recordings.videos.overview');
     }
 
