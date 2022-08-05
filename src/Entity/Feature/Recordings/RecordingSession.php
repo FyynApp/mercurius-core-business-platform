@@ -111,6 +111,11 @@ class RecordingSession
         return $this->recordingSessionVideoChunks;
     }
 
+    public function setRecordingSessionVideoChunks(Collection $recordingSessionVideoChunks): void
+    {
+        $this->recordingSessionVideoChunks = $recordingSessionVideoChunks;
+    }
+
 
     #[ORM\OneToOne(mappedBy: 'recordingSession', targetEntity: Video::class, cascade: ['persist'])]
     private ?Video $video = null;

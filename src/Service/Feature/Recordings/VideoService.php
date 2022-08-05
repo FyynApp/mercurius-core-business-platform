@@ -242,7 +242,7 @@ class VideoService
 
         file_put_contents($chunkFilesListPath, $chunkFilesListContent);
 
-        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy $targetFilePath");
+        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy -y $targetFilePath");
     }
 
 

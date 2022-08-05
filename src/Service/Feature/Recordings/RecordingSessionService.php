@@ -7,6 +7,7 @@ use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use App\Service\Aspect\Filesystem\FilesystemService;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -52,6 +53,22 @@ class RecordingSessionService
 
         if ($user->getId() !== $recordingSession->getUser()->getId()) {
             throw new Exception("User id '{$user->getId()}' does not match the user id of session '{$recordingSession->getId()}'.");
+        }
+
+        if ($chunkName === '1.webm') {
+
+            $this->logger->info('Received 1.webm chunk while there already are existing chunks for this session - we assume this is a repeated recording, and remove all traces of the existing one.');
+
+            if ($recordingSession->getRecordingSessionVideoChunks()->count() > 0) {
+                foreach ($recordingSession->getRecordingSessionVideoChunks() as $existingChunk) {
+                    $this->entityManager->remove($existingChunk);
+                    $this->entityManager->flush();
+                }
+                $recordingSession->setRecordingSessionVideoChunks(new ArrayCollection());
+                $recordingSession->setIsDone(false);
+                $this->entityManager->persist($recordingSession);
+                $this->entityManager->flush();
+            }
         }
 
         $chunk = new RecordingSessionVideoChunk();
