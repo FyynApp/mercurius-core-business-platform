@@ -66,6 +66,7 @@ class RecordingSessionService
                 }
                 $recordingSession->setRecordingSessionVideoChunks(new ArrayCollection());
                 $recordingSession->setIsDone(false);
+                $recordingSession->setRecordingPreviewAssetHasBeenGenerated(false);
                 $this->entityManager->persist($recordingSession);
                 $this->entityManager->flush();
             }
