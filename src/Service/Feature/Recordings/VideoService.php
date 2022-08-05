@@ -103,6 +103,18 @@ class VideoService
     }
 
 
+    /** @throws InvalidArgumentException */
+    public function mimeTypeToFileSuffix(AssetMimeType $mimeType): string
+    {
+        return match ($mimeType) {
+            AssetMimeType::ImageWebp => 'webp',
+            AssetMimeType::ImageGif => 'gif',
+            AssetMimeType::VideoWebm => 'webm',
+            AssetMimeType::VideoMp4 => 'mp4',
+        };
+    }
+
+
     /** @throws Exception */
     public function createVideoEntityForFinishedRecordingSession(RecordingSession $recordingSession): Video
     {
@@ -234,19 +246,6 @@ class VideoService
             ])
         );
     }
-
-
-    /** @throws InvalidArgumentException */
-    public function mimeTypeToFileSuffix(AssetMimeType $mimeType): string
-    {
-        return match ($mimeType) {
-            AssetMimeType::ImageWebp => 'webp',
-            AssetMimeType::ImageGif => 'gif',
-            AssetMimeType::VideoWebm => 'webm',
-            AssetMimeType::VideoMp4 => 'mp4',
-        };
-    }
-
 
     private function getPosterStillAssetFilePath(Video $video, AssetMimeType $mimeType): string
     {
