@@ -5,11 +5,9 @@ namespace App\Service\Feature\Recordings;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Entity\Feature\Recordings\Video;
 use App\Message\Feature\Recordings\VideoCreatedMessage;
 use App\Service\Aspect\Filesystem\FilesystemService;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
@@ -166,7 +164,7 @@ class VideoService
     }
 
 
-    public function generateAssetPosterStillWebp(Video $video): void
+    private function generateAssetPosterStillWebp(Video $video): void
     {
         $this->createFilesystemStructureForAssets($video);
 
@@ -185,7 +183,7 @@ class VideoService
         }
     }
 
-    public function generateAssetPosterAnimatedWebp(Video $video): void
+    private function generateAssetPosterAnimatedWebp(Video $video): void
     {
         $this->createFilesystemStructureForAssets($video);
 
@@ -196,7 +194,7 @@ class VideoService
         $this->entityManager->flush();
     }
 
-    public function generateAssetPosterAnimatedGif(Video $video): void
+    private function generateAssetPosterAnimatedGif(Video $video): void
     {
         $this->createFilesystemStructureForAssets($video);
 
@@ -207,7 +205,7 @@ class VideoService
         $this->entityManager->flush();
     }
 
-    public function generateAssetFullWebm(Video $video): void
+    private function generateAssetFullWebm(Video $video): void
     {
         shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionService->generateVideoChunksFilesListFile($video->getRecordingSession())} -vf \"fps=60\" -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)}");
 
@@ -216,7 +214,7 @@ class VideoService
         $this->entityManager->flush();
     }
 
-    public function generateAssetFullMp4(Video $video): void
+    private function generateAssetFullMp4(Video $video): void
     {
         shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionService->generateVideoChunksFilesListFile($video->getRecordingSession())} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)}");
 
