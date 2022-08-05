@@ -52,7 +52,24 @@
                                 <div>
 
                                     <div class="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                                        <img class="w-full" src="{{ VideoService.posterStillAssetUrl(video) }}"/>
+
+                                        <div
+                                                {{ stimulus_controller('feature/recordings/videoPreview') }}
+                                                data-action="
+                                                    focus->feature--recordings--videoPreview#showAnimated
+                                                    click->feature--recordings--videoPreview#showAnimated
+                                                    mouseover->feature--recordings--videoPreview#showAnimated
+                                                    mouseout->feature--recordings--videoPreview#showStill
+                                                    blur->feature--recordings--videoPreview#showStill
+                                                "
+                                        >
+                                            <div {{ stimulus_target('feature/recordings/videoPreview', 'stillImage') }}>
+                                                <img class="w-full" src="{{ VideoService.posterStillAssetUrl(video) }}"/>
+                                            </div>
+                                            <div class="hidden" {{ stimulus_target('feature/recordings/videoPreview', 'animatedImage') }}>
+                                                <img class="w-full" src="{{ VideoService.posterAnimatedAssetUrl(video) }}"/>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="mt-4 mb-2 text-sm text-gray-700">{{ video.createdAt|date('dateformat.datetime_normal'|trans) }}</div>
