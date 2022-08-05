@@ -7,9 +7,9 @@ use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use App\Service\Aspect\Filesystem\FilesystemService;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class RecordingSessionService
@@ -18,13 +18,16 @@ class RecordingSessionService
 
     private FilesystemService $filesystemService;
 
+    private LoggerInterface $logger;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        FilesystemService $filesystemService
+        FilesystemService $filesystemService,
+        LoggerInterface $logger
     ) {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
+        $this->logger = $logger;
     }
 
 
@@ -98,10 +101,15 @@ class RecordingSessionService
         // the RecordingsController::recordingPreviewAssetRedirectAction, which waits for this info to
         // become true, to redirect to the generated asset.
         if ($recordingSession->isDone()) {
+
+            $this->logger->info("Received a video chunk after the 'recordingDone' request has been received - starting full webm asset generation.");
+
             $videoService->generateAssetFullWebm($recordingSession, $this->getRecordingPreviewVideoFilePath($recordingSession));
             $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
             $this->entityManager->persist($recordingSession);
             $this->entityManager->flush();
+
+            $this->logger->info("Finished full webm asset generation.");
         }
 
         return $chunk;
@@ -125,7 +133,7 @@ class RecordingSessionService
 
     public function waitForRecordingPreviewAssetGenerated(RecordingSession $recordingSession, VideoService $videoService): void
     {
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $this->entityManager->refresh($recordingSession);
             if ($recordingSession->hasRecordingPreviewAssetBeenGenerated()) {
                 return;
@@ -135,7 +143,7 @@ class RecordingSessionService
 
         // Yet another edge case: If the user hits "Stop recording" before the first 5-second-blob has been sent,
         // then the recorder shows the correct behaviour - it first sends the blob, then the recordingDone request.
-        // We thus assume that if after 6 seconds the asset has still not been generated, then this is the scenario
+        // We thus assume that if after 10 seconds the asset has still not been generated, then this is the scenario
         // we ran into and we thus generate the asset ourselves.
         $videoService->generateAssetFullWebm($recordingSession, $this->getRecordingPreviewVideoFilePath($recordingSession));
         $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
