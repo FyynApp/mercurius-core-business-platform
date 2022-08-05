@@ -218,7 +218,6 @@ class VideoService
 
     public function generateAssetFullMp4(Video $video): void
     {
-        // video-chunks-files.list  full.mp4
         shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionService->generateVideoChunksFilesListFile($video->getRecordingSession())} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)}");
 
         $video->setHasAssetFullMp4(true);
