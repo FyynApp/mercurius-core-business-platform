@@ -106,7 +106,7 @@ class VideoService
 
 
     /** @throws Exception */
-    public function createVideoFromFinishedRecordingSession(RecordingSession $recordingSession): Video
+    public function createVideoEntityForFinishedRecordingSession(RecordingSession $recordingSession): Video
     {
         if (!$recordingSession->isFinished()) {
             throw new InvalidArgumentException("Recording session '{$recordingSession->getId()} is not finished'.");
@@ -144,44 +144,24 @@ class VideoService
 
         $this->createFilesystemStructureForAssets($video);
 
-        if (!$video->hasAssetFullWebm()) {
-
-            $this->generateAssetFullWebm($video->getRecordingSession(), $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm));
-
-            $video->setHasAssetFullWebm(true);
-            $this->entityManager->persist($video);
-            $this->entityManager->flush();
-
-            $fs = new Filesystem();
-            $fs->remove($this->recordingSessionService->getVideoChunkContentStorageFolderPath($video->getRecordingSession()));
-        }
-
-
         if (!$video->hasAssetPosterStillWebp()) {
             $this->generateAssetPosterStillWebp($video);
         }
-
 
         if (!$video->hasAssetPosterAnimatedWebp()) {
             $this->generateAssetPosterAnimatedWebp($video);
         }
 
-
-        if (!$video->hasAssetPosterAnimatedGif()) {
-            shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageGif)}");
-
-            $video->setHasAssetPosterAnimatedGif(true);
-            $this->entityManager->persist($video);
-            $this->entityManager->flush();
+        if (!$video->hasAssetFullMp4()) {
+            $this->generateAssetFullMp4($video);
         }
 
+        if (!$video->hasAssetPosterAnimatedGif()) {
+            $this->generateAssetPosterAnimatedGif($video);
+        }
 
-        if (!$video->hasAssetFullMp4()) {
-            shell_exec("/usr/bin/env ffmpeg -i {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)}");
-
-            $video->setHasAssetFullMp4(true);
-            $this->entityManager->persist($video);
-            $this->entityManager->flush();
+        if (!$video->hasAssetFullWebm()) {
+            $this->generateAssetFullWebm($video);
         }
     }
 
@@ -216,33 +196,34 @@ class VideoService
         $this->entityManager->flush();
     }
 
-    public function generateAssetFullWebm(RecordingSession $recordingSession, string $targetFilePath): void
+    public function generateAssetPosterAnimatedGif(Video $video): void
     {
-        $chunkFilesListPath = $this->filesystemService->getContentStoragePath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'video-chunks-files.list'
-        ]);
-        $chunkFilesListContent = '';
+        $this->createFilesystemStructureForAssets($video);
 
-        $sql = "
-                SELECT id FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
-                WHERE recording_sessions_id = :rsid
-                ORDER BY created_at " . Criteria::ASC . "
-                ;
-            ";
+        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageGif)}");
 
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([':rsid' => $recordingSession->getId()]);
+        $video->setHasAssetPosterAnimatedGif(true);
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
+    }
 
-        foreach ($resultSet->fetchAllAssociative() as $row) {
-            $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
-            $chunkFilesListContent .= "file '{$this->recordingSessionService->getVideoChunkContentStorageFilePath($chunk)}'\n";
-        }
+    public function generateAssetFullWebm(Video $video): void
+    {
+        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionService->generateVideoChunksFilesListFile($video->getRecordingSession())} -vf \"fps=60\" -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)}");
 
-        file_put_contents($chunkFilesListPath, $chunkFilesListContent);
+        $video->setHasAssetFullWebm(true);
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
+    }
 
-        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i $chunkFilesListPath -c copy -y $targetFilePath");
+    public function generateAssetFullMp4(Video $video): void
+    {
+        // video-chunks-files.list  full.mp4
+        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionService->generateVideoChunksFilesListFile($video->getRecordingSession())} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)}");
+
+        $video->setHasAssetFullMp4(true);
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
     }
 
 

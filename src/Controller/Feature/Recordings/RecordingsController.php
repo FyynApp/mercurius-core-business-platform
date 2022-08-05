@@ -83,7 +83,7 @@ class RecordingsController extends AbstractController
                 [
                     'recordingSessionId' => $recordingSessionId,
                     'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
-                    'random' => random_bytes(8)
+                    'random' => bin2hex(random_bytes(8))
                 ]
             );
         }
@@ -101,21 +101,18 @@ class RecordingsController extends AbstractController
                 [
                     'counter' => $counter - 1,
                     'recordingSessionId' => $recordingSessionId,
-                    'random' => random_bytes(8)
+                    'random' => bin2hex(random_bytes(8))
                 ]
             );
         } else {
-            $videoService->generateAssetFullWebm($recordingSession, $recordingSessionService->getRecordingPreviewVideoFilePath($recordingSession));
-            $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
-            $entityManager->persist($recordingSession);
-            $entityManager->flush();
+            $recordingSessionService->generateRecordingPreviewVideo($recordingSession);
 
             return $this->redirectToRoute(
                 'feature.recordings.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
                     'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
-                    'random' => random_bytes(8)
+                    'random' => bin2hex(random_bytes(8))
                 ]
             );
         }

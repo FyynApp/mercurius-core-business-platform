@@ -8,6 +8,7 @@ use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -38,7 +39,7 @@ class RecordingSessionService
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
 
-        $videoService->createVideoFromFinishedRecordingSession($recordingSession);
+        $videoService->createVideoEntityForFinishedRecordingSession($recordingSession);
     }
 
     /** @throws Exception */
@@ -119,15 +120,8 @@ class RecordingSessionService
         // the RecordingsController::recordingPreviewAssetRedirectAction, which waits for this info to
         // become true, to redirect to the generated asset.
         if ($recordingSession->isDone()) {
-
             $this->logger->info("Received a video chunk after the 'recordingDone' request has been received - starting full webm asset generation.");
-
-            $videoService->generateAssetFullWebm($recordingSession, $this->getRecordingPreviewVideoFilePath($recordingSession));
-            $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
-            $this->entityManager->persist($recordingSession);
-            $this->entityManager->flush();
-
-            $this->logger->info("Finished full webm asset generation.");
+            $this->generateRecordingPreviewVideo($recordingSession);
         }
 
         return $chunk;
@@ -146,6 +140,44 @@ class RecordingSessionService
         $recordingSession->setIsDone(true);
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
+    }
+
+    public function generateRecordingPreviewVideo(RecordingSession $recordingSession): void
+    {
+        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->generateVideoChunksFilesListFile($recordingSession)} -c copy -y {$this->getRecordingPreviewVideoFilePath($recordingSession)}");
+
+        $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
+        $this->entityManager->persist($recordingSession);
+        $this->entityManager->flush();
+    }
+
+    public function generateVideoChunksFilesListFile(RecordingSession $recordingSession): string
+    {
+        $chunkFilesListPath = $this->filesystemService->getContentStoragePath([
+            'recording-sessions',
+            $recordingSession->getId(),
+            'video-chunks-files.' . bin2hex(random_bytes(8)) . '.list'
+        ]);
+        $chunkFilesListContent = '';
+
+        $sql = "
+                SELECT id FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
+                WHERE recording_sessions_id = :rsid
+                ORDER BY created_at " . Criteria::ASC . "
+                ;
+            ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([':rsid' => $recordingSession->getId()]);
+
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
+            $chunkFilesListContent .= "file '{$this->getVideoChunkContentStorageFilePath($chunk)}'\n";
+        }
+
+        file_put_contents($chunkFilesListPath, $chunkFilesListContent);
+
+        return $chunkFilesListPath;
     }
 
     public function getVideoChunkContentStorageFilePath(RecordingSessionVideoChunk $chunk): string
@@ -184,16 +216,5 @@ class RecordingSessionService
             $recordingSession->getId(),
             'recording-preview-video-poster.webp'
         ]);
-    }
-
-
-    private function getPosterUrl(): string
-    {
-        return '';
-    }
-
-    private function getVideoUrl(): string
-    {
-        return '';
     }
 }

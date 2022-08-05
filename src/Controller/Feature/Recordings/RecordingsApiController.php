@@ -266,7 +266,7 @@ class RecordingsApiController extends AbstractController
                     'feature.recordings.recording_session.recording_preview.asset-redirect',
                     [
                         'recordingSessionId' => $recordingSessionId,
-                        'random' => random_bytes(8)
+                        'random' => bin2hex(random_bytes(8))
                     ]
                 )
             ]);
