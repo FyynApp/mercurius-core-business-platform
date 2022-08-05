@@ -45,6 +45,11 @@ class RecordingsController extends AbstractController
             throw new NotFoundHttpException("No recording session with id '$recordingSessionId'.");
         }
 
+        // Edge case, if the user came here twice
+        if ($recordingSession->isFinished()) {
+            return $this->redirectToRoute('feature.recordings.videos.overview');
+        }
+
         $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
 
         return $this->redirectToRoute('feature.recordings.videos.overview');
