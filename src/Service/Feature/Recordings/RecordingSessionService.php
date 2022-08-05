@@ -130,28 +130,6 @@ class RecordingSessionService
         $this->entityManager->flush();
     }
 
-
-    public function waitForRecordingPreviewAssetGenerated(RecordingSession $recordingSession, VideoService $videoService): void
-    {
-        for ($i = 0; $i < 10; $i++) {
-            $this->entityManager->refresh($recordingSession);
-            if ($recordingSession->hasRecordingPreviewAssetBeenGenerated()) {
-                return;
-            }
-            sleep(1);
-        }
-
-        // Yet another edge case: If the user hits "Stop recording" before the first 5-second-blob has been sent,
-        // then the recorder shows the correct behaviour - it first sends the blob, then the recordingDone request.
-        // We thus assume that if after 10 seconds the asset has still not been generated, then this is the scenario
-        // we ran into and we thus generate the asset ourselves.
-        $videoService->generateAssetFullWebm($recordingSession, $this->getRecordingPreviewVideoFilePath($recordingSession));
-        $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
-        $this->entityManager->persist($recordingSession);
-        $this->entityManager->flush();
-    }
-
-
     public function getVideoChunkContentStorageFilePath(RecordingSessionVideoChunk $chunk): string
     {
         return $this->filesystemService->getContentStoragePath([
@@ -172,7 +150,7 @@ class RecordingSessionService
     }
 
 
-    private function getRecordingPreviewVideoFilePath(RecordingSession $recordingSession): string
+    public function getRecordingPreviewVideoFilePath(RecordingSession $recordingSession): string
     {
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
             'recording-sessions',

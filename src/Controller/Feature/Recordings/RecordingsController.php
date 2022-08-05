@@ -60,6 +60,7 @@ class RecordingsController extends AbstractController
 
     public function recordingPreviewAssetRedirectAction(
         string $recordingSessionId,
+        Request $request,
         RecordingSessionService $recordingSessionService,
         EntityManagerInterface $entityManager,
         VideoService $videoService
@@ -71,14 +72,44 @@ class RecordingsController extends AbstractController
             throw new NotFoundHttpException("Could not find recording session with id '$recordingSessionId'.");
         }
 
-        $recordingSessionService->waitForRecordingPreviewAssetGenerated($recordingSession, $videoService);
+        if ($recordingSession->hasRecordingPreviewAssetBeenGenerated()) {
+            return $this->redirectToRoute(
+                'feature.recordings.recording_session.recording_preview.asset',
+                [
+                    'recordingSessionId' => $recordingSessionId,
+                    'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)
+                ]
+            );
+        }
 
-        return $this->redirectToRoute(
-            'feature.recordings.recording_session.recording_preview.asset',
-            [
-                'recordingSessionId' => $recordingSessionId,
-                'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)
-            ]
-        );
+        $counter = $request->get('counter');
+
+        if (is_null($counter)) {
+            $counter = 6;
+        }
+
+        if ($counter > 0) {
+            sleep(1);
+            return $this->redirectToRoute(
+                'feature.recordings.recording_session.recording_preview.asset-redirect',
+                [
+                    'counter' => $counter - 1,
+                    'recordingSessionId' => $recordingSessionId
+                ]
+            );
+        } else {
+            $videoService->generateAssetFullWebm($recordingSession, $recordingSessionService->getRecordingPreviewVideoFilePath($recordingSession));
+            $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
+            $entityManager->persist($recordingSession);
+            $entityManager->flush();
+
+            return $this->redirectToRoute(
+                'feature.recordings.recording_session.recording_preview.asset',
+                [
+                    'recordingSessionId' => $recordingSessionId,
+                    'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)
+                ]
+            );
+        }
     }
 }
