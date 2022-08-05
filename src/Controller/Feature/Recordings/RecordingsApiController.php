@@ -230,9 +230,6 @@ class RecordingsApiController extends AbstractController
         LoggerInterface $logger,
         VideoService $videoService
     ): Response {
-
-        $logger->warning('Here we are!');
-
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {
@@ -241,9 +238,6 @@ class RecordingsApiController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-
-
-        $logger->warning('blubb!');
 
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
