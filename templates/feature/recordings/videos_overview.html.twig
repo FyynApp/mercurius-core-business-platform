@@ -57,10 +57,6 @@
 
                                     <div class="mt-4 mb-2 text-sm text-gray-700">{{ video.createdAt|date('dateformat.datetime_normal'|trans) }}</div>
 
-                                    {% if video.assetFullMp4Fps is not null %}
-                                        <div class="mt-2 mb-2 text-sm text-gray-700">{{ video.assetFullMp4Fps }} {{ 'feature.recordings.frames_per_second'|trans }}</div>
-                                    {% endif %}
-
                                     {% if video.assetFullMp4Seconds is not null %}
                                         <div class="mt-2 mb-2 text-sm text-gray-700">{{ 'feature.recordings.seconds'|trans({seconds: video.assetFullMp4Seconds|round(0)}) }}</div>
                                     {% endif %}
