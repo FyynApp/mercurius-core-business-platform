@@ -134,6 +134,34 @@ class Video
     }
 
 
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $assetFullWebmFps = null;
+
+    public function getAssetFullWebmFps(): ?float
+    {
+        return $this->assetFullWebmFps;
+    }
+
+    public function setAssetFullWebmFps(?float $val): void
+    {
+        $this->assetFullWebmFps = $val;
+    }
+
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $assetFullWebmSeconds = null;
+
+    public function getAssetFullWebmSeconds(): ?float
+    {
+        return $this->assetFullWebmSeconds;
+    }
+
+    public function setAssetFullWebmSeconds(?float $val): void
+    {
+        $this->assetFullWebmSeconds = $val;
+    }
+
+
     #[ORM\Column(type: 'boolean')]
     private bool $hasAssetFullMp4 = false;
 
@@ -145,6 +173,34 @@ class Video
     public function setHasAssetFullMp4(bool $hasAssetFullMp4): void
     {
         $this->hasAssetFullMp4 = $hasAssetFullMp4;
+    }
+
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $assetFullMp4Fps = null;
+
+    public function getAssetFullMp4Fps(): ?float
+    {
+        return $this->assetFullMp4Fps;
+    }
+
+    public function setAssetFullMp4Fps(?float $val): void
+    {
+        $this->assetFullMp4Fps = $val;
+    }
+
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $assetFullMp4Seconds = null;
+
+    public function getAssetFullMp4Seconds(): ?float
+    {
+        return $this->assetFullMp4Seconds;
+    }
+
+    public function setAssetFullMp4Seconds(?float $val): void
+    {
+        $this->assetFullMp4Seconds = $val;
     }
 
 

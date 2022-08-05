@@ -217,22 +217,84 @@ class VideoService
         $this->entityManager->flush();
     }
 
+
+    /**
+     * @throws Exception
+     */
     private function generateAssetFullWebm(Video $video): void
     {
         shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionService->generateVideoChunksFilesListFile($video->getRecordingSession())} -vf \"fps=60\" -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)}");
 
         $video->setHasAssetFullWebm(true);
+
+        $video->setAssetFullWebmFps(
+            $this->getAssetFullFps(
+                $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm))
+        );
+
+        $video->setAssetFullWebmSeconds(
+            $this->getAssetFullSeconds(
+                $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm))
+        );
+
+
         $this->entityManager->persist($video);
         $this->entityManager->flush();
     }
 
+    /**
+     * @throws Exception
+     */
     private function generateAssetFullMp4(Video $video): void
     {
         shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionService->generateVideoChunksFilesListFile($video->getRecordingSession())} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)}");
 
         $video->setHasAssetFullMp4(true);
+
+        $video->setAssetFullMp4Fps(
+            $this->getAssetFullFps(
+                $this->getFullAssetFilePath($video, AssetMimeType::VideoMp4))
+        );
+
+        $video->setAssetFullMp4Seconds(
+            $this->getAssetFullSeconds(
+                $this->getFullAssetFilePath($video, AssetMimeType::VideoMp4))
+        );
+
         $this->entityManager->persist($video);
         $this->entityManager->flush();
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    private function getAssetFullFps(string $filepath): float
+    {
+        $output = shell_exec("/usr/bin/env ffprobe -v error -select_streams v -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate $filepath");
+
+        $outputParts = explode('/', $output);
+
+        if (is_numeric($outputParts[0]) && is_numeric($outputParts[1])) {
+            return $outputParts[0] / $outputParts[1];
+        } else {
+            throw new Exception("Did not get numeric fps values for file at $filepath.");
+        }
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    private function getAssetFullSeconds(string $filepath): float
+    {
+        $output = shell_exec("/usr/bin/env ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $filepath");
+
+        if (is_numeric($output)) {
+            return (float)$output;
+        } else {
+            throw new Exception("Did not get numeric seconds value for file at $filepath.");
+        }
     }
 
 

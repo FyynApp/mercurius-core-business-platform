@@ -64,6 +64,13 @@ feature:
         manage_video: 'Verwalten'
 
   recordings:
+    frames_per_second: 'Bilder pro Sekunde'
+    seconds: >-
+      {seconds, plural,
+        =0    {1 Sekunde lang}
+        one   {1 Sekunde lang}
+        other {# Sekunden lang}
+      }
     videos_overview:
       title: Übersicht der bisherigen Aufnahmen
       subtitle: Aufnahmen können in Form einer Präsentationsseite per E-Mail oder Messenger versendet werden.
