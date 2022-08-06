@@ -16,4 +16,16 @@
     .nav-btn-active-mobile {
         @apply bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium;
     }
+
+    .cta-link-primary {
+        @apply rounded-md bg-indigo-100 text-indigo-700 p-2 text-center;
+    }
+
+    .cta-link-success {
+        @apply rounded-md bg-lime-100 text-green-900 p-2 text-center;
+    }
+
+    .cta-link-danger {
+        @apply rounded-md bg-red-100 text-red-700 p-2 text-center;
+    }
 }
