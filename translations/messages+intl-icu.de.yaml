@@ -78,6 +78,7 @@ feature:
         add: 'Neue Aufnahme erstellen'
         create_presentationpage: 'Präsentationsseite erstellen'
         edit_presentationpage: 'Präsentationsseite bearbeiten'
+        remove_video: 'Aufnahme löschen'
 
   presentationpages:
     editor:
