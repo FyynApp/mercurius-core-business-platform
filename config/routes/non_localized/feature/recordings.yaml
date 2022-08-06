@@ -14,7 +14,7 @@ feature.recordings.recording_session.recording_preview.poster.asset:
 
 
 feature.recordings.video.missing_poster_asset_placeholder:
-  path: /assets/images/feature/recordings/video/missing_poster_asset_placeholder.webp
+  path: /assets/images/feature/recordings/video/missing_poster_asset_placeholder.gif
 
 feature.recordings.video.missing_full_asset_placeholder:
   path: /assets/images/feature/recordings/video/missing_full_asset_placeholder.mp4
