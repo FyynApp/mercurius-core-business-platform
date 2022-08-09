@@ -170,9 +170,11 @@ class VideoService
             $this->generateAssetPosterAnimatedGif($video);
         }
 
+        /* Very expensive and likely not needed
         if (!$video->hasAssetFullWebm()) {
             $this->generateAssetFullWebm($video);
         }
+        */
     }
 
 
