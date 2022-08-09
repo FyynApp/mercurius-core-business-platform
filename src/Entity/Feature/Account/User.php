@@ -4,7 +4,7 @@ namespace App\Entity\Feature\Account;
 
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\RecordingSettings;
+use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Entity\Feature\Recordings\Video;
 use App\Repository\Feature\Account\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -24,7 +24,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->presentationpageTemplates = new ArrayCollection();
         $this->recordingSessions = new ArrayCollection();
-        $this->recordingSettings = new ArrayCollection();
+        $this->recordingSettingsBags = new ArrayCollection();
         $this->videos = new ArrayCollection();
     }
 
@@ -157,9 +157,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    /** @var RecordingSettings[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSettings::class, cascade: ['persist'])]
-    private Collection $recordingSettings;
+    /** @var RecordingSettingsBag[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSettingsBag::class, cascade: ['persist'])]
+    private Collection $recordingSettingsBags;
 
 
     public function getUserIdentifier(): string

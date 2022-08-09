@@ -36,7 +36,7 @@ legacy.feature.recordings.recording_settings.get:
   methods: [ GET ]
   controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
   defaults:
-    route: api.feature.recordings.recording_settings.get
+    route: api.feature.recordings.recording_settings_bag.get
     permanent: true
     keepQueryParams: true
 
@@ -45,7 +45,7 @@ legacy.feature.recordings.recording_settings.set:
   methods: [ POST ]
   controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
   defaults:
-    route: api.feature.recordings.recording_settings.set
+    route: api.feature.recordings.recording_settings_bag.set
     permanent: false
     keepQueryParams: true
     keepRequestMethod: true

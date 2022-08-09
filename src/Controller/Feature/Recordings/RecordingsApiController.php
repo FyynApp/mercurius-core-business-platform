@@ -5,7 +5,7 @@ namespace App\Controller\Feature\Recordings;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\RecordingSettings;
+use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Service\Aspect\Cookies\CookieName;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
@@ -152,7 +152,7 @@ class RecordingsApiController extends AbstractController
     }
 
 
-    public function getRecordingSettingsAction(
+    public function getRecordingSettingsBagAction(
         Request $request,
         EntityManagerInterface $entityManager
     ): JsonResponse
@@ -160,12 +160,12 @@ class RecordingsApiController extends AbstractController
         $clientId = $request->cookies->get(CookieName::ClientId->value);
 
         /** @var EntityRepository $repo */
-        $repo = $entityManager->getRepository(RecordingSettings::class);
+        $repo = $entityManager->getRepository(RecordingSettingsBag::class);
 
-        /** @var ?RecordingSettings $settings */
-        $settings = $repo->findOneBy(['clientId' => $clientId]);
+        /** @var ?RecordingSettingsBag $settingsBag */
+        $settingsBag = $repo->findOneBy(['clientId' => $clientId]);
 
-        if (is_null($settings)) {
+        if (is_null($settingsBag)) {
             $responseBody = [
                 'status' => Response::HTTP_OK,
                 'userSessionId' => $request->get('userSessionId'),
@@ -173,12 +173,12 @@ class RecordingsApiController extends AbstractController
                 'video' => true
             ];
         } else {
-            $settingsVal = json_decode($settings->getSettings(), true);
+            $settings = json_decode($settingsBag->getSettings(), true);
             $responseBody = [
                 'status' => Response::HTTP_OK,
                 'userSessionId' => $request->get('userSessionId'),
-                'audio' => $settingsVal['audio'],
-                'video' => $settingsVal['video']
+                'audio' => $settings['audio'],
+                'video' => $settings['video']
             ];
         }
 
@@ -186,7 +186,7 @@ class RecordingsApiController extends AbstractController
     }
 
 
-    public function setRecordingSettingsAction(
+    public function setRecordingSettingsBagAction(
         Request $request,
         EntityManagerInterface $entityManager
     ): JsonResponse
@@ -194,27 +194,27 @@ class RecordingsApiController extends AbstractController
         $clientId = $request->cookies->get(CookieName::ClientId->value);
 
         /** @var EntityRepository $repo */
-        $repo = $entityManager->getRepository(RecordingSettings::class);
+        $repo = $entityManager->getRepository(RecordingSettingsBag::class);
 
-        /** @var ?RecordingSettings $settings */
-        $settings = $repo->findOneBy(['clientId' => $clientId]);
+        /** @var ?RecordingSettingsBag $settingsBag */
+        $settingsBag = $repo->findOneBy(['clientId' => $clientId]);
 
-        if (is_null($settings)) {
-            $settings = new RecordingSettings();
-            $settings->setUser($this->getUser());
-            $settings->setClientId($clientId);
+        if (is_null($settingsBag)) {
+            $settingsBag = new RecordingSettingsBag();
+            $settingsBag->setUser($this->getUser());
+            $settingsBag->setClientId($clientId);
         }
 
         $content = $request->getContent();
 
         $contentAsArray = json_decode($content, true);
 
-        $settings->setSettings(json_encode([
+        $settingsBag->setSettings(json_encode([
             'audio' => $contentAsArray['audio'],
             'video' => $contentAsArray['video']
         ]));
 
-        $entityManager->persist($settings);
+        $entityManager->persist($settingsBag);
         $entityManager->flush();
 
         return $this->json(['status' => Response::HTTP_OK]);
@@ -284,6 +284,10 @@ class RecordingsApiController extends AbstractController
             if (is_null($uploadedFile)) {
                 throw new BadRequestHttpException("Missing request file part 'video-blob'.");
             }
+
+            $logger->info('Dies ist ein Test');
+            $logger->warning('Dies ist ein Test');
+            $logger->info("Uploaded file path is '{$uploadedFile->getPathname()}'.");
 
             $recordingSessionService->handleRecordingSessionVideoChunk(
                 $recordingSession,

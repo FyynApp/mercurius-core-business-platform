@@ -58,9 +58,10 @@ class RecordingSessionService
 
         if ($chunkName === '1.webm') {
 
-            $this->logger->info('Received 1.webm chunk while there already are existing chunks for this session - we assume this is a repeated recording, and remove all traces of the existing one.');
-
             if ($recordingSession->getRecordingSessionVideoChunks()->count() > 0) {
+
+                $this->logger->info('Received 1.webm chunk while there already are existing chunks for this session - we assume this is a repeated recording, and remove all traces of the existing one.');
+
                 foreach ($recordingSession->getRecordingSessionVideoChunks() as $existingChunk) {
                     $this->entityManager->remove($existingChunk);
                     $this->entityManager->flush();

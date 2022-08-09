@@ -6,8 +6,8 @@ use App\Entity\Feature\Account\User;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'recording_settings')]
-class RecordingSettings
+#[ORM\Table(name: 'recording_settings_bags')]
+class RecordingSettingsBag
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 32)]
@@ -23,7 +23,7 @@ class RecordingSettings
         $this->clientId = $clientId;
     }
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSettings')]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSettingsBags')]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 

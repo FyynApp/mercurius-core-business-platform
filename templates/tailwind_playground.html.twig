@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
+
+{% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed 'embeds/default_content_box.html.twig' %}
+        {% block contentBoxTitle %}
+            Tailwind Playground
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            Breakpoint:
+            <span class="inline sm:hidden">xs</span>
+            <span class="hidden sm:inline md:hidden">sm</span>
+            <span class="hidden md:inline lg:hidden">md</span>
+            <span class="hidden lg:inline xl:hidden">lg</span>
+            <span class="hidden xl:inline 2xl:hidden">xl</span>
+            <span class="hidden 2xl:inline">2xl</span>
+
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+
+            <div class="md:flex md:flex-row">
+
+                <div class="md:shrink-0 bg-amber-300 flex justify-center md:flex-col">
+                    <img
+                            class="md:max-w-sm max-h-36 md:max-h-48"
+                            src="{{ asset('assets/images/fyyn-logo-640x345.png') }}"
+                    >
+                </div>
+
+                <div class="bg-green-300 md:max-w-md">
+                    zwei jr eiufje roifj reofihre uifh riufherhfiruhf iuerhf iuerhf iuerhf iurfh uierh fiuhr efiurfh iuferh iufhre
+                    zwei jr eiufje roifj reofihre uifh riufherhfiruhf iuerhf iuerhf iuerhf iurfh uierh fiuhr efiurfh iuferh iufhre
+                    zwei jr eiufje roifj reofihre uifh riufherhfiruhf iuerhf iuerhf iuerhf iurfh uierh fiuhr efiurfh iuferh iufhre
+                </div>
+
+                <div class="bg-blue-300 w-full">
+                    drei
+                </div>
+            </div>
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

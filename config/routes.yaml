@@ -13,6 +13,12 @@ api:
     resource: 'routes/api/**/*.yaml'
     prefix: /api
 
+tailwind_playground:
+    path: /tailwind-playground
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        template: /tailwind_playground.html.twig
+
 catchall:
     path:     /{catchall}
     controller: App\Controller\CatchallController::indexAction
