@@ -5,14 +5,21 @@ namespace App\Service\Feature\Dashboard;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\Video;
 use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
+use App\Service\Feature\Recordings\VideoService;
 
 class DashboardService
 {
     private PresentationpageTemplatesService $presentationpageTemplatesService;
 
-    public function __construct(PresentationpageTemplatesService $presentationpageTemplatesService)
+    private VideoService $videoService;
+
+    public function __construct(
+        PresentationpageTemplatesService $presentationpageTemplatesService,
+        VideoService $videoService
+    )
     {
         $this->presentationpageTemplatesService = $presentationpageTemplatesService;
+        $this->videoService = $videoService;
     }
 
     public function getFirstName(User $user): string
@@ -38,9 +45,8 @@ class DashboardService
     /** @return Video[] */
     public function getLatestVideos(User $user): array
     {
-        $videos = $user->getVideos()->slice(0, 3);
-        rsort($videos);
-        return $videos;
+        $videos = $this->videoService->getAvailableVideos($user);
+        return array_slice($videos, 0, 3);
     }
 
     public function getNumberOfPresentationpageTemplates(User $user): int
