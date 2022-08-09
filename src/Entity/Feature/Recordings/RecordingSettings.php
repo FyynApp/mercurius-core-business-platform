@@ -6,11 +6,24 @@ use App\Entity\Feature\Account\User;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'recording_settings', indexes: [])]
+#[ORM\Table(name: 'recording_settings')]
 class RecordingSettings
 {
     #[ORM\Id]
-    #[ORM\OneToOne(inversedBy: 'recordingSettings', targetEntity: User::class, cascade: ['persist'])]
+    #[ORM\Column(type: 'string', length: 32)]
+    private string $clientId = '';
+
+    public function getClientId(): string
+    {
+        return $this->clientId;
+    }
+
+    public function setClientId(string $clientId): void
+    {
+        $this->clientId = $clientId;
+    }
+
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSettings')]
     #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
@@ -22,20 +35,6 @@ class RecordingSettings
     public function setUser(User $user): void
     {
         $this->user = $user;
-    }
-
-
-    #[ORM\Column(type: 'text', length: 32, unique: true)]
-    private string $clientId = '';
-
-    public function getClientId(): string
-    {
-        return $this->clientId;
-    }
-
-    public function setClientId(string $clientId): void
-    {
-        $this->clientId = $clientId;
     }
 
 

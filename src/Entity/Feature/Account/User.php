@@ -24,6 +24,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->presentationpageTemplates = new ArrayCollection();
         $this->recordingSessions = new ArrayCollection();
+        $this->recordingSettings = new ArrayCollection();
         $this->videos = new ArrayCollection();
     }
 
@@ -156,18 +157,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: RecordingSettings::class, cascade: ['persist'])]
-    private ?RecordingSettings $recordingSettings = null;
-
-    public function getRecordingSettings(): ?RecordingSettings
-    {
-        return $this->recordingSettings;
-    }
-
-    public function setRecordingSettings(?RecordingSettings $recordingSettings): void
-    {
-        $this->recordingSettings = $recordingSettings;
-    }
+    /** @var RecordingSettings[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSettings::class, cascade: ['persist'])]
+    private Collection $recordingSettings;
 
 
     public function getUserIdentifier(): string
