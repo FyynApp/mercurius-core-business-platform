@@ -1,5 +1,5 @@
 dateformat:
-  datetime_normal: 'd.m.Y, H:i \U\h\r'
+  datetime_normal: '{date} Uhr'
 
 mainnav:
   homepage: 'Über'

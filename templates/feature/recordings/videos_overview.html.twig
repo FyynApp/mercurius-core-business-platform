@@ -75,7 +75,7 @@
                                     <div class="mb-8">
                                         <div class="flex justify-between text-base font-medium text-gray-900">
                                             <h3>
-                                                {{ video.createdAt|date('dateformat.datetime_normal'|trans) }}
+                                                {{ 'dateformat.datetime_normal'|trans({ 'date': video.createdAt|format_datetime('long', 'short', locale=app.request.locale, timezone=client_timezone) }) }}
                                             </h3>
                                         </div>
                                         <div class="mt-2 text-gray-500">
