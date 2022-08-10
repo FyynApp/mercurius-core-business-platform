@@ -18,14 +18,14 @@
     }
 
     .cta-link-primary {
-        @apply rounded-md bg-indigo-100 text-indigo-700 p-4 text-center w-full;
+        @apply flex flex-row gap-2 rounded-md bg-indigo-100 text-indigo-700 p-4 text-start w-full ease-in-out delay-75 duration-300 hover:shadow-md hover:shadow-indigo-300 hover:-translate-y-1;
     }
 
     .cta-link-success {
-        @apply rounded-md bg-lime-100 text-green-900 p-4 text-center w-full;
+        @apply flex flex-row gap-2 rounded-md bg-lime-100 text-lime-900 p-4 text-start w-full ease-in-out delay-75 duration-300 hover:shadow-md hover:shadow-lime-300 hover:-translate-y-1;
     }
 
     .cta-link-danger {
-        @apply rounded-md bg-red-100 text-red-700 p-4 text-center w-full;
+        @apply flex flex-row gap-2 rounded-md bg-red-100 text-red-700 p-4 text-start w-full ease-in-out delay-75 duration-300 hover:shadow-md hover:shadow-red-300 hover:-translate-y-1;
     }
 }
