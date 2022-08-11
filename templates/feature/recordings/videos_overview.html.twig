@@ -45,29 +45,28 @@
                     {% for video in VideoService.availableVideos(app.user) %}
                         {# @var video \App\Entity\Feature\Recordings\Video #}
 
-                        <div class="flex flex-col gap-4 m-6 justify-between sm:max-w-md sm:w-72">
+                        <div class="flex flex-col gap-4 m-6 justify-between sm:max-w-md sm:w-64">
 
-                            <div class="bg-gray-50 rounded-md shadow-md shadow-gray-200">
+                            <div
+                                    class="bg-black rounded-md shadow-md shadow-gray-200"
 
-                                <div
-                                        {{ stimulus_controller('feature/recordings/videoPreview') }}
-                                        data-action="
-                                                focus->feature--recordings--videoPreview#showAnimated
-                                                click->feature--recordings--videoPreview#showAnimated
-                                                mouseover->feature--recordings--videoPreview#showAnimated
-                                                mouseout->feature--recordings--videoPreview#showStill
-                                                blur->feature--recordings--videoPreview#showStill
-                                            "
-                                >
-                                    <div {{ stimulus_target('feature/recordings/videoPreview', 'stillImage') }}>
-                                        <img class="rounded-md" src="{{ VideoService.posterStillAssetUrl(video) }}" alt=""/>
-                                    </div>
-                                    <div class="hidden" {{ stimulus_target('feature/recordings/videoPreview', 'animatedImage') }}>
-                                        <img class="rounded-md" src="{{ VideoService.posterAnimatedAssetUrl(video) }}" alt=""/>
-                                    </div>
+                                    {{ stimulus_controller('feature/recordings/videoPreview') }}
+                                    data-action="
+                                            focus->feature--recordings--videoPreview#showAnimated
+                                            click->feature--recordings--videoPreview#showAnimated
+                                            mouseover->feature--recordings--videoPreview#showAnimated
+                                            mouseout->feature--recordings--videoPreview#showStill
+                                            blur->feature--recordings--videoPreview#showStill
+                                        "
+                            >
+                                <div {{ stimulus_target('feature/recordings/videoPreview', 'stillImage') }}>
+                                    <img class="rounded-md object-contain sm:h-44 sm:w-96" src="{{ VideoService.posterStillAssetUrl(video) }}" alt=""/>
                                 </div>
-
+                                <div class="hidden" {{ stimulus_target('feature/recordings/videoPreview', 'animatedImage') }}>
+                                    <img class="rounded-md object-contain sm:h-44 sm:w-96" src="{{ VideoService.posterAnimatedAssetUrl(video) }}" alt=""/>
+                                </div>
                             </div>
+
 
                             <div class="flex flex-col gap-4">
 
