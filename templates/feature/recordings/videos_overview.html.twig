@@ -20,35 +20,33 @@
 
             {% import 'macros/form_elements.html.twig' as formElements %}
 
-            <div class="p-10">
-                <div class="border-4 border-dashed border-gray-300 rounded-lg {% if VideoService.availableVideos(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
+            <div class="mb-4 border-4 border-dashed border-gray-300 rounded-lg {% if VideoService.availableVideos(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
 
-                    <div class="flex justify-center items-center h-full w-full">
-                        <!-- Heroicon name: solid/plus-circle -->
-                        <a href="{{ path('feature.recordings.recording_studio') }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="{{ path('feature.recordings.recording_studio') }}">
-                            {{ 'feature.recordings.videos_overview.cta.add'|trans }}
-                        </a>
-                    </div>
-
+                <div class="flex justify-center items-center h-full w-full">
+                    <!-- Heroicon name: solid/plus-circle -->
+                    <a href="{{ path('feature.recordings.recording_studio') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="{{ path('feature.recordings.recording_studio') }}">
+                        {{ 'feature.recordings.videos_overview.cta.add'|trans }}
+                    </a>
                 </div>
+
             </div>
 
             {% if VideoService.availableVideos(app.user)|length > 0 %}
 
-                <div class="flex flex-wrap gap-2 bg-white justify-start">
+                <div class="flex flex-wrap gap-8 justify-start bg-gray-50 p-4 rounded-md shadow-inner shadow-gray-300">
 
                     {% for video in VideoService.availableVideos(app.user) %}
                         {# @var video \App\Entity\Feature\Recordings\Video #}
 
-                        <div class="flex flex-col gap-4 m-6 justify-between sm:max-w-md sm:w-64">
+                        <div class="flex flex-col gap-2 justify-between sm:max-w-md sm:w-64">
 
                             <div
-                                    class="bg-black rounded-md shadow-md shadow-gray-200"
+                                    class="bg-gray-900 rounded-md shadow-md shadow-gray-100"
 
                                     {{ stimulus_controller('feature/recordings/videoPreview') }}
                                     data-action="
@@ -60,15 +58,15 @@
                                         "
                             >
                                 <div {{ stimulus_target('feature/recordings/videoPreview', 'stillImage') }}>
-                                    <img class="rounded-md object-contain sm:h-44 sm:w-96" src="{{ VideoService.posterStillAssetUrl(video) }}" alt=""/>
+                                    <img class="rounded-md object-cover sm:h-44 sm:w-96" src="{{ VideoService.posterStillAssetUrl(video) }}" alt=""/>
                                 </div>
                                 <div class="hidden" {{ stimulus_target('feature/recordings/videoPreview', 'animatedImage') }}>
-                                    <img class="rounded-md object-contain sm:h-44 sm:w-96" src="{{ VideoService.posterAnimatedAssetUrl(video) }}" alt=""/>
+                                    <img class="rounded-md object-cover sm:h-44 sm:w-96" src="{{ VideoService.posterAnimatedAssetUrl(video) }}" alt=""/>
                                 </div>
                             </div>
 
 
-                            <div class="flex flex-col gap-4">
+                            <div class="flex flex-col gap-2">
 
                                 {% if video.presentationpages is empty %}
                                     <a
