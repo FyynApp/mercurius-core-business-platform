@@ -26,7 +26,7 @@
                 {{ stimulus_controller('navMobileMenuSwitch') }}
                 class="bg-gray-800"
             >
-                <div class="mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mx-auto px-4 sm:px-8">
                     <div class="flex items-center justify-between h-16">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
@@ -129,12 +129,10 @@
             </nav>
 
             <div class="mb-auto">
-                <header class="bg-white shadow">
-                    <div class="mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        <h1 class="text-3xl font-bold text-gray-900">
-                            {% block contentTitle %}{% endblock %}
-                        </h1>
-                    </div>
+                <header class="padded-content-box shadow text-3xl font-bold text-gray-200 bg-gray-900">
+                    <h1>
+                        {% block contentTitle %}{% endblock %}
+                    </h1>
                 </header>
 
                 <main>
@@ -143,11 +141,11 @@
 
             </div>
 
-            <footer class="min-h-max w-full bottom-0 p-4 md:pt-20 shadow-2xl md:flex md:items-center md:justify-between md:p-6 md:pt-20 dark:bg-white border-t-2">
-                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+            <footer class="bg-gray-800 min-h-max w-full bottom-0 p-4 md:pt-20 shadow-inner shadow-black md:flex md:items-center md:justify-between md:p-6 md:pt-20">
+                <span class="text-sm text-gray-500 sm:text-center">
                     © {{ "now"|date("Y") }} smart DSGVO GmbH
                 </span>
-                <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+                <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 sm:mt-0">
                     <li>
                         <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
                     </li>
@@ -156,7 +154,7 @@
                     </li>
                 </ul>
 
-                <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+                <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 sm:mt-0">
                     <li>
                         <a href="#" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.imprint'|trans }}</a>
                     </li>

@@ -17,7 +17,7 @@
         {% endblock %}
 
         {% block contentBoxContent %}
-            <dl class="bg-white">
+            <div class="collection-box">
 
                 {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true } %}
                     {% block contentLeft %}
@@ -96,7 +96,7 @@
                     {% endblock %}
                 {% endembed %}
 
-            </dl>
+            </div>
         {% endblock %}
     {% endembed %}
 

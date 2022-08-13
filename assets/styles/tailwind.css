@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 @layer components {
+
+    .padded-content-box {
+        @apply px-4 py-6 sm:px-8;
+    }
+
+    .collection-box {
+        @apply bg-gray-50 p-8 rounded-md shadow-inner shadow-gray-300;
+    }
+
     .nav-btn-default {
         @apply text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium;
     }

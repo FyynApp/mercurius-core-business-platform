@@ -1,5 +1,6 @@
 <div class="overflow-hidden">
-    <div class="px-4 py-5 sm:px-8">
+
+    <div class="padded-content-box bg-gray-400 shadow-inner shadow-gray-500">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
             {% block contentBoxTitle %}{% endblock %}
         </h3>
@@ -8,11 +9,8 @@
         </p>
     </div>
 
-    <div class="border-t border-gray-200">
-        <div class="p-0 px-4 py-5 sm:px-8 bg-gray-200">
-
-            {% block contentBoxContent %}{% endblock %}
-
-        </div>
+    <div class="padded-content-box">
+         {% block contentBoxContent %}{% endblock %}
     </div>
+
 </div>

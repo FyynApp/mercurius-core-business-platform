@@ -20,7 +20,7 @@
 
             {% import 'macros/form_elements.html.twig' as formElements %}
 
-            <div class="mb-4 border-4 border-dashed border-gray-300 rounded-lg {% if VideoService.availableVideos(app.user)|length > 0 %} h-24 {% else %} h-96 {% endif %}">
+            <div class="mb-4 border-2 border-dotted border-gray-400 rounded-lg">
 
                 <div class="flex justify-center items-center h-full w-full">
                     <!-- Heroicon name: solid/plus-circle -->
@@ -38,7 +38,7 @@
 
             {% if VideoService.availableVideos(app.user)|length > 0 %}
 
-                <div class="flex flex-wrap gap-8 gap-y-24 justify-start bg-gray-50 p-8 rounded-md shadow-inner shadow-gray-300">
+                <div class="collection-box flex flex-wrap gap-8 gap-y-24 justify-start">
 
                     {% for video in VideoService.availableVideos(app.user) %}
                         {# @var video \App\Entity\Feature\Recordings\Video #}
