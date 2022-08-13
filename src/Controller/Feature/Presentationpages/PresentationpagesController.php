@@ -21,7 +21,8 @@ class PresentationpagesController extends AbstractController
         string $presentationpageId,
         EntityManagerInterface $entityManager,
         VideoService $videoService
-    ): Response {
+    ): Response
+    {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {
@@ -41,7 +42,8 @@ class PresentationpagesController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         PresentationpageTemplatesService $presentationpageTemplatesService
-    ): Response {
+    ): Response
+    {
         /** @var User $user */
         $user = $this->getUser();
 
@@ -84,7 +86,8 @@ class PresentationpagesController extends AbstractController
         EntityManagerInterface $entityManager,
         PresentationpageTemplatesService $presentationpageTemplatesService,
         VideoService $videoService
-    ): Response {
+    ): Response
+    {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {
@@ -109,11 +112,34 @@ class PresentationpagesController extends AbstractController
     }
 
 
+    public function editAction(
+        Request $request,
+        Presentationpage $presentationpage,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $form = $this->createForm(Presentationpage::class, $presentationpage);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_post_index');
+        }
+
+        return $this->renderForm('feature/presentationpages/editForm.html.twig', [
+            'presentationpage' => $presentationpage,
+            'form' => $form,
+        ]);
+    }
+
+
     public function switchToTemplateAction(
         string $presentationpageId,
         string $presentationpageTemplateId,
         EntityManagerInterface $entityManager
-    ): Response {
+    ): Response
+    {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {
