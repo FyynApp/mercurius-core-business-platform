@@ -3,7 +3,7 @@
 namespace App\MessageHandler\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
-use App\Message\Feature\Recordings\VideoCreatedMessage;
+use App\Message\Feature\Recordings\GenerateMissingAssetsCommandMessage;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
 #[AsMessageHandler]
-class VideoCreatedMessageHandler
+class GenerateMissingAssetsCommandMessageHandler
 {
     private EntityManagerInterface $entityManager;
 
@@ -31,7 +31,7 @@ class VideoCreatedMessageHandler
     }
 
     /** @throws Exception */
-    public function __invoke(VideoCreatedMessage $message): void
+    public function __invoke(GenerateMissingAssetsCommandMessage $message): void
     {
         $this->logger->debug("Received VideoCreatedMessage for video {$message->getVideoId()}.");
 

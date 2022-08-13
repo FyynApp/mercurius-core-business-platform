@@ -5,7 +5,7 @@ namespace App\Message\Feature\Recordings;
 use App\Entity\Feature\Recordings\Video;
 use InvalidArgumentException;
 
-class VideoCreatedMessage
+class GenerateMissingAssetsCommandMessage
 {
     private string $videoId;
 

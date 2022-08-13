@@ -6,7 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\Video;
-use App\Message\Feature\Recordings\VideoCreatedMessage;
+use App\Message\Feature\Recordings\GenerateMissingAssetsCommandMessage;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -139,7 +139,7 @@ class VideoService
         $this->generateAssetPosterAnimatedWebp($video);
 
         // Heavy-lifting stuff like missing video assets generation happens asynchronously
-        $this->messageBus->dispatch(new VideoCreatedMessage($video));
+        $this->messageBus->dispatch(new GenerateMissingAssetsCommandMessage($video));
 
         return $video;
     }
