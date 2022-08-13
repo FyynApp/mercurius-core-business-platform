@@ -1,0 +1,34 @@
+{# @var this \App\Components\Feature\Presentationpages\PresentationspageEditFormLiveComponent #}
+<div {{ attributes }}>
+
+
+    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false } %}
+
+        {% block contentLeft %}
+
+            {% form_theme form 'form_theme_default.html.twig' %}
+
+            {{ form_start(form) }}
+
+            {{ form_row(form.title, {
+                attr: {
+                    'data-model': 'on(input)|debounce(250)|presentationpage.title'
+                },
+                label: 'feature.presentationpages.editor.edit_form.label_title'|trans
+            }) }}
+
+            {{ form_row(form.welcomeText) }}
+
+            <button>Save</button>
+            {{ form_end(form) }}
+        {% endblock %}
+
+
+        {% block contentRight %}
+            <div>{{ this.presentationpage.title }}</div>
+        {% endblock %}
+    {% endembed %}
+
+
+
+</div>

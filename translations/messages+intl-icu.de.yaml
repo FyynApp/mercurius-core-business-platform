@@ -88,6 +88,8 @@ feature:
       change_template: 'Vorlage ändern'
       cta_show: 'Präsentationsseite anzeigen'
       no_template_selected: 'Vorschau aufgrund fehlenden Templates nicht möglich.'
+      edit_form:
+        label_title: 'Überschrift'
 
   presentationpage_templates:
     overview:

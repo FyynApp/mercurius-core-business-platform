@@ -23,42 +23,16 @@
 
                 {% if presentationpage.presentationpageTemplate is not null %}
 
+                    {{ component('feature_presentationpages_edit_form', {
+                        presentationpage: presentationpage,
+                        form: form
+                    }) }}
+
+
                     {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false } %}
                         {% block contentLeft %}
-                            <div class="mb-4">
-                                {{ 'feature.presentationpages.editor.change_template'|trans }}
-                            </div>
 
-                            {% if PresentationpageTemplatesService.templatesForUser(app.user)|length > 1 %}
-                                {% for presentationpageTemplate in PresentationpageTemplatesService.templatesForUser(app.user)|filter(t => t.id != presentationpage.presentationpageTemplate.id ) %}
-                                    <form action="{{ path('feature.presentationpages.switch_to_template', { presentationpageId: presentationpage.id, presentationpageTemplateId: presentationpageTemplate.id }) }}" method="post">
-                                        <button
-                                            type="submit"
-                                            style="background-color: {{ presentationpageTemplate.bgColor }};"
-                                            class="rounded p-2 w-full mb-4"
-                                        >
-                                            <span
-                                                style="color: {{ presentationpageTemplate.textColor }}"
-                                                class="font-bold"
-                                            >
-                                                {{ presentationpageTemplate.title }}
-                                            </span>
-                                        </button>
-                                    </form>
-                                    <a href="">
 
-                                    </a>
-                                {% endfor %}
-                            {% endif %}
-
-                            <div class="mb-4 mt-16">
-                                <a
-                                    href="{{ path('feature.presentationpages.show', { presentationpageId: presentationpage.id }) }}"
-                                    target="_blank"
-                                >
-                                    ⇒ {{ 'feature.presentationpages.editor.cta_show'|trans }}
-                                </a>
-                            </div>
 
 
                         {% endblock %}

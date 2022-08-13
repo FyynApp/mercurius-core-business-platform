@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Type\Feature\Presentationpage;
+namespace App\Form\Type\Feature\Presentationpages;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use Symfony\Component\Form\AbstractType;

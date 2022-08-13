@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Entity\Feature\Recordings\Video;
+use App\Form\Type\Feature\Presentationpages\PresentationpageType;
 use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -101,36 +102,17 @@ class PresentationpagesController extends AbstractController
             throw new AccessDeniedHttpException("The presentationpage with id '{$presentationpage->getId()}' does not belong to the current user.");
         }
 
-        return $this->render(
+        $form = $this->createForm(PresentationpageType::class, $presentationpage);
+
+        return $this->renderForm(
             'feature/presentationpages/editor.html.twig',
             [
                 'presentationpage' => $presentationpage,
+                'form' => $form,
                 'PresentationpageTemplatesService' => $presentationpageTemplatesService,
                 'VideoService' => $videoService
             ]
         );
-    }
-
-
-    public function editAction(
-        Request $request,
-        Presentationpage $presentationpage,
-        EntityManagerInterface $entityManager
-    ): Response
-    {
-        $form = $this->createForm(Presentationpage::class, $presentationpage);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_post_index');
-        }
-
-        return $this->renderForm('feature/presentationpages/editForm.html.twig', [
-            'presentationpage' => $presentationpage,
-            'form' => $form,
-        ]);
     }
 
 
