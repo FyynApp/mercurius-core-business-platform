@@ -19,11 +19,11 @@
         {% endblock %}
 
         {% block contentBoxContent %}
-            <div class="bg-white">
+            <div class="collection-box">
 
                 {% if presentationpage.presentationpageTemplate is not null %}
 
-                    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true } %}
+                    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false } %}
                         {% block contentLeft %}
                             <div class="mb-4">
                                 {{ 'feature.presentationpages.editor.change_template'|trans }}
