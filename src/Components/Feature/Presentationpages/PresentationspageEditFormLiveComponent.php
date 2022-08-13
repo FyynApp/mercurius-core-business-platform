@@ -4,6 +4,7 @@ namespace App\Components\Feature\Presentationpages;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
+use App\Service\Feature\Recordings\VideoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -20,8 +21,19 @@ class PresentationspageEditFormLiveComponent extends AbstractController
     #[LiveProp(fieldName: 'data')]
     public ?Presentationpage $presentationpage = null;
 
+    #[LiveProp]
+    public string $posterAnimatedAssetUrl = '';
+
+    private VideoService $videoService;
+
+    public function __construct(VideoService $videoService)
+    {
+        $this->videoService = $videoService;
+    }
+
     protected function instantiateForm(): FormInterface
     {
+        $this->posterAnimatedAssetUrl = $this->videoService->getPosterAnimatedAssetUrl($this->presentationpage->getVideo());
         return $this->createForm(PresentationpageType::class, $this->presentationpage);
     }
 }

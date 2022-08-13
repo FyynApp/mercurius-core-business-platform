@@ -42,31 +42,7 @@
                                 {{ 'feature.presentationpages.editor.template'|trans }}
                             </div>
 
-                            <div
-                                class="rounded-lg p-4"
-                                style="background-color: {{ presentationpage.presentationpageTemplate.bgColor }}; color: {{ presentationpage.presentationpageTemplate.textColor }};"
-                            >
-                                <div
-                                    class="text-lg font-bold p-4"
-                                >
-                                    {{ presentationpage.presentationpageTemplate.title }}
-                                </div>
 
-                                <div
-                                    class="p-4"
-                                >
-                                    <img
-                                        class="rounded-md w-48"
-                                        src="{{ VideoService.posterAnimatedAssetUrl(presentationpage.video) }}"
-                                    />
-                                </div>
-
-                                <div
-                                    class="text-sm font-medium p-4"
-                                >
-                                    {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_paragraph'|trans }}
-                                </div>
-                            </div>
 
                         {% endblock %}
                     {% endembed %}

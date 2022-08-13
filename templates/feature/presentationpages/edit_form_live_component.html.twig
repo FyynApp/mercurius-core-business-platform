@@ -25,7 +25,33 @@
 
 
         {% block contentRight %}
-            <div>{{ this.presentationpage.title }}</div>
+
+            <div
+                    class="rounded-lg p-4"
+                    style="background-color: {{ this.presentationpage.presentationpageTemplate.bgColor }}; color: {{ this.presentationpage.presentationpageTemplate.textColor }};"
+            >
+                <div
+                        class="text-lg font-bold p-4"
+                >
+                    {{ this.presentationpage.title }}
+                </div>
+
+                <div
+                        class="p-4"
+                >
+                    <img
+                            class="rounded-md w-48"
+                            src="{{ this.posterAnimatedAssetUrl }}"
+                    />
+                </div>
+
+                <div
+                        class="text-sm font-medium p-4"
+                >
+                    {{ this.presentationpage.welcomeText }}
+                </div>
+            </div>
+
         {% endblock %}
     {% endembed %}
 
