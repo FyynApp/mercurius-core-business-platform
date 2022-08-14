@@ -64,6 +64,9 @@ class PresentationspageEditFormLiveComponent extends AbstractController
         $this->logger->info("presentationpage.title is {$this->presentationpage->getTitle()}");
         $this->logger->info("presentationpage.welcomeText is {$this->presentationpage->getWelcomeText()}");
 
-        return $this->createForm(PresentationpageType::class, $this->presentationpage);
+        return $this->createForm(
+            PresentationpageType::class,
+            $this->presentationpage
+        );
     }
 }

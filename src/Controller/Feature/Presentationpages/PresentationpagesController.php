@@ -106,7 +106,10 @@ class PresentationpagesController extends AbstractController
             throw new AccessDeniedHttpException("The presentationpage with id '{$presentationpage->getId()}' does not belong to the current user.");
         }
 
-        $form = $this->createForm(PresentationpageType::class, $presentationpage);
+        $form = $this->createForm(
+            PresentationpageType::class,
+            $presentationpage
+        );
 
         $form->handleRequest($request);
 
