@@ -28,25 +28,6 @@
                         form: form
                     }) }}
 
-
-                    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false } %}
-                        {% block contentLeft %}
-
-
-
-
-                        {% endblock %}
-                        {% block contentRight %}
-
-                            <div class="mb-4">
-                                {{ 'feature.presentationpages.editor.template'|trans }}
-                            </div>
-
-
-
-                        {% endblock %}
-                    {% endembed %}
-
                 {% else %}
 
                     {{ 'feature.presentationpages.editor.no_template_selected'|trans }}

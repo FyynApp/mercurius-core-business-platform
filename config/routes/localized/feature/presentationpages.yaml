@@ -12,7 +12,7 @@ feature.presentationpages.create_from_video:
 feature.presentationpages.editor:
   path: /my/presentationpages/{presentationpageId}/editor
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::editorAction
-  methods: [ GET ]
+  methods: [ GET, POST ]
 
 feature.presentationpages.switch_to_template:
   path: /my/presentationpages/{presentationpageId}/switch-to-template/{presentationpageTemplateId}

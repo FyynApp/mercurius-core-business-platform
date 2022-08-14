@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Entity\Feature\Recordings\Video;
+use App\Enum\FlashMessageLabel;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
 use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
 use App\Service\Feature\Recordings\VideoService;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PresentationpagesController extends AbstractController
 {
@@ -84,9 +86,11 @@ class PresentationpagesController extends AbstractController
 
     public function editorAction(
         string $presentationpageId,
+        Request $request,
         EntityManagerInterface $entityManager,
         PresentationpageTemplatesService $presentationpageTemplatesService,
-        VideoService $videoService
+        VideoService $videoService,
+        TranslatorInterface $translator
     ): Response
     {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
@@ -103,6 +107,24 @@ class PresentationpagesController extends AbstractController
         }
 
         $form = $this->createForm(PresentationpageType::class, $presentationpage);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash(
+                FlashMessageLabel::Success->value,
+                $translator->trans('feature.presentationpages.editor.edit_form.successfully_saved')
+            );
+
+            return $this->redirectToRoute(
+                'feature.presentationpages.editor',
+                [
+                    'presentationpageId' => $presentationpageId
+                ]
+            );
+        }
 
         return $this->renderForm(
             'feature/presentationpages/editor.html.twig',

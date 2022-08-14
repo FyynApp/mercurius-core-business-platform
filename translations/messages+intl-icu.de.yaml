@@ -87,9 +87,18 @@ feature:
       template: 'Gewählte Vorlage'
       change_template: 'Vorlage ändern'
       cta_show: 'Präsentationsseite anzeigen'
+      cta_show_note: 'Nur bereits abgespeicherte Änderungen werden auf Ihrer Präsentationsseite angezeigt.'
       no_template_selected: 'Vorschau aufgrund fehlenden Templates nicht möglich.'
       edit_form:
+        form_headline: 'Ihre Änderungen'
         label_title: 'Überschrift'
+        title_placeholder: 'Die Überschrift der Seite'
+        label_welcomeText: 'Begrüßungstext'
+        welcomeText_placeholder: 'Der Fließtext unterhalb des Videos.'
+        save_button: 'Änderungen speichern'
+        successfully_saved: 'Die Änderungen an der Seite wurden erfolgreich übernommen.'
+        preview_headline: 'Vorschau Ihrer Änderungen'
+
 
   presentationpage_templates:
     overview:

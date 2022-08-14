@@ -31,10 +31,14 @@
     }
 
     .cta-link-success {
-        @apply flex flex-row gap-2 rounded-md bg-lime-100 text-lime-900 p-4 text-start w-full ease-in-out delay-75 duration-300 hover:shadow-md hover:shadow-lime-300 hover:-translate-y-1;
+        @apply flex flex-row gap-2 rounded-md bg-lime-100 text-lime-900 p-4 text-start w-full ease-in-out delay-75 duration-300 hover:shadow-md hover:shadow-lime-300 hover:-translate-y-1 border-2;
     }
 
     .cta-link-danger {
         @apply flex flex-row gap-2 rounded-md bg-red-100 text-red-700 p-4 text-start w-full ease-in-out delay-75 duration-300 hover:shadow-md hover:shadow-red-300 hover:-translate-y-1;
+    }
+
+    .button-success {
+        @apply cta-link-success w-fit border-lime-300;
     }
 }
