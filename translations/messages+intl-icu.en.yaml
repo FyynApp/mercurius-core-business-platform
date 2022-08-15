@@ -1,5 +1,5 @@
 dateformat:
-  datetime_normal: 'Y-m-d, H:i'
+  datetime_normal: "{date}"
 
 mainnav:
   homepage: 'About'
