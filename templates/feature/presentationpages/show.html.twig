@@ -34,6 +34,12 @@
             <p class="text-lg flex p-4 justify-center">
                 {{ presentationpage.welcomeText }}
             </p>
+
+            {% if presentationpage.calendlyEmbedCode is not empty %}
+                <div class="w-96 mx-auto">
+                    {{ presentationpage.calendlyEmbedCode|raw }}
+                </div>
+            {% endif %}
         </div>
 
     {% else %}

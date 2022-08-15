@@ -73,6 +73,22 @@ class Presentationpage
     }
 
 
+    #[Assert\NotBlank(allowNull: true)]
+    #[Assert\Length(max: 2048)]
+    #[ORM\Column(type: 'string', length: 2048, unique: false, nullable: true)]
+    private ?string $calendlyEmbedCode;
+
+    public function getCalendlyEmbedCode(): ?string
+    {
+        return $this->calendlyEmbedCode;
+    }
+
+    public function setCalendlyEmbedCode(?string $calendlyEmbedCode): void
+    {
+        $this->calendlyEmbedCode = $calendlyEmbedCode;
+    }
+
+    
     #[ORM\ManyToOne(targetEntity: Video::class, cascade: ['persist'], inversedBy: 'presentationpages')]
     #[ORM\JoinColumn(name: 'videos_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Video $video;
