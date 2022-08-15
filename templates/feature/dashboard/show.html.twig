@@ -19,7 +19,7 @@
         {% block contentBoxContent %}
             <div class="collection-box">
 
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true } %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_name'|trans }}
                     {% endblock %}
@@ -29,7 +29,7 @@
                     {% endblock %}
                 {% endembed %}
 
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_email_address'|trans }}
                     {% endblock %}
@@ -38,7 +38,7 @@
                     {% endblock %}
                 {% endembed %}
 
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true } %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_subscription'|trans }}
                     {% endblock %}
@@ -51,7 +51,7 @@
                 {% endembed %}
 
                 {% if DashboardService.latestVideos(app.user)|length > 0 %}
-                    {% embed 'embeds/two_column_content_box_content_row.html.twig' %}
+                    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
                         {% block contentLeft %}
                             {{ 'feature.dashboard.show.your_latest_videos'|trans }}
                         {% endblock %}
@@ -83,7 +83,7 @@
                     {% endembed %}
                 {% endif %}
 
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true } %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_presentationpage_templates'|trans }}
                     {% endblock %}

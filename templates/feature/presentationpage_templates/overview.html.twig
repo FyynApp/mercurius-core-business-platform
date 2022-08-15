@@ -39,7 +39,7 @@
                 <div class="collection-box">
 
                     {% for presentationpageTemplate in PresentationpageTemplatesService.templatesForUser(app.user) %}
-                        {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: cycle([true, false], loop.index0) } %}
+                        {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: cycle([true, false], loop.index0), colspanLeft: 3, colspanRight: 9 } %}
                             {% block contentLeft %}
                                 {{ presentationpageTemplate.title }}
                             {% endblock %}
