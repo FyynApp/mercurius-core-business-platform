@@ -14,7 +14,10 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent('feature_presentationpages_edit_form', 'feature/presentationpages/edit_form_live_component.html.twig')]
+#[AsLiveComponent(
+    'feature_presentationpages_edit_form',
+    'feature/presentationpages/edit_form_live_component.html.twig'
+)]
 class PresentationspageEditFormLiveComponent extends AbstractController
 {
     use DefaultActionTrait;
@@ -47,9 +50,8 @@ class PresentationspageEditFormLiveComponent extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    public function mount(
-        ?Presentationpage $presentationpage = null,
-    ) {
+    public function mount(?Presentationpage $presentationpage = null)
+    {
         $this->presentationpage = $presentationpage;
         if (!is_null($presentationpage)) {
             $this->posterStillAssetUrl = $this->videoService->getPosterStillAssetUrl($presentationpage->getVideo());

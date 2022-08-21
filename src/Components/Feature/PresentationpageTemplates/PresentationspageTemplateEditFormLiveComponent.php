@@ -9,11 +9,16 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
-#[AsLiveComponent('feature_presentationpages_edit_form', 'feature/presentationpages/edit_form_live_component.html.twig')]
+#[AsLiveComponent(
+    'feature_presentationpage_templates_edit_form',
+    'feature/presentationpage_templates/edit_form_live_component.html.twig'
+)]
 class PresentationspageTemplateEditFormLiveComponent extends AbstractController
 {
     use DefaultActionTrait;
@@ -36,10 +41,21 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    public function mount(
-        ?PresentationpageTemplate $presentationpageTemplate = null,
-    ) {
+    public function mount(?PresentationpageTemplate $presentationpageTemplate = null)
+    {
         $this->presentationpageTemplate = $presentationpageTemplate;
+    }
+
+    #[LiveAction]
+    public function addElement()
+    {
+        $this->formValues['presentationpageTemplateElements'][] = [];
+    }
+
+    #[LiveAction]
+    public function removeComment(#[LiveArg] int $index)
+    {
+        unset($this->formValues['presentationpageTemplateElements'][$index]);
     }
 
     protected function instantiateForm(): FormInterface
