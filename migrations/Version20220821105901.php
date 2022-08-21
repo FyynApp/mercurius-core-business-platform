@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220815191836 extends AbstractMigration
+final class Version20220821105901 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -19,11 +19,11 @@ final class Version20220815191836 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE presentationpages ADD calendly_embed_code VARCHAR(2048) DEFAULT NULL');
+        $this->addSql('ALTER TABLE presentationpage_template_elements CHANGE element_type element_type VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE presentationpages DROP calendly_embed_code');
+        $this->addSql('ALTER TABLE presentationpage_template_elements CHANGE element_type element_type VARCHAR(255) DEFAULT NULL');
     }
 }

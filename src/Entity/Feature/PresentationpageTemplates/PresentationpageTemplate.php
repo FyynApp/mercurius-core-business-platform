@@ -66,6 +66,7 @@ class PresentationpageTemplate
     public function __construct()
     {
         $this->presentationpages = new ArrayCollection();
+        $this->presentationpageTemplateElements = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -136,6 +137,19 @@ class PresentationpageTemplate
     public function setTextColor(string $textColor): void
     {
         $this->textColor = $textColor;
+    }
+
+
+    /** @var PresentationpageTemplateElement[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'presentationpageTemplate', targetEntity: PresentationpageTemplateElement::class, cascade: ['persist'])]
+    private Collection $presentationpageTemplateElements;
+
+    /**
+     * @return PresentationpageTemplateElement[]|Collection
+     */
+    public function getPresentationpageTemplateElements(): Collection
+    {
+        return $this->presentationpageTemplateElements;
     }
 
 
