@@ -2,7 +2,7 @@
 
 namespace App\Entity\Feature\PresentationpageTemplates;
 
-enum PresentationpageTemplateElementType: string
+enum PresentationpageTemplateElementVariant: string
 {
     case Headline = 'headline';
     case Paragraph = 'paragraph';

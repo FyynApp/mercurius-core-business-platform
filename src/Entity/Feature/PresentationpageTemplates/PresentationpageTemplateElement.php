@@ -36,17 +36,17 @@ class PresentationpageTemplateElement
     }
 
 
-    #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageTemplateElementType::class)]
-    private PresentationpageTemplateElementType $elementType;
+    #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageTemplateElementVariant::class)]
+    private PresentationpageTemplateElementVariant $elementVariant;
 
-    public function getElementType(): PresentationpageTemplateElementType
+    public function getElementVariant(): PresentationpageTemplateElementVariant
     {
-        return $this->elementType;
+        return $this->elementVariant;
     }
 
-    public function setElementType(PresentationpageTemplateElementType $elementType): void
+    public function setElementVariant(PresentationpageTemplateElementVariant $elementVariant): void
     {
-        $this->elementType = $elementType;
+        $this->elementVariant = $elementVariant;
     }
 
 
