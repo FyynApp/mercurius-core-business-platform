@@ -4,6 +4,7 @@ namespace App\Entity\Feature\PresentationpageTemplates;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'presentationpage_template_elements')]
@@ -61,5 +62,20 @@ class PresentationpageTemplateElement
     public function setPosition(int $position): void
     {
         $this->position = $position;
+    }
+
+
+    #[Assert\Length(max: 32768)]
+    #[ORM\Column(type: 'string', length: 32768, nullable: true)]
+    private ?string $textContent;
+
+    public function getTextContent(): ?string
+    {
+        return $this->textContent;
+    }
+
+    public function setTextContent(?string $textContent): void
+    {
+        $this->textContent = $textContent;
     }
 }
