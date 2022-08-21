@@ -1,0 +1,128 @@
+{# @var this \App\Components\Feature\Presentationpages\PresentationspageEditFormLiveComponent #}
+<div {{ attributes }}>
+
+    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 7, colspanRight: 5 } %}
+
+        {% block contentLeft %}
+
+            <div class="mb-16">
+                <div class="mb-8 font-bold text-xl">
+                    {{ 'feature.presentationpages.editor.edit_form.form_headline'|trans }}
+                </div>
+
+
+                <div class="mb-8">
+                    {% form_theme form 'form_themes/form_theme_default.html.twig' %}
+
+                    {{ form_start(form) }}
+
+                    {{ form_row(form.title, {
+                        attr: {
+                            'data-model': 'on(input)|debounce(250)|presentationpage.title',
+                            'placeholder': 'feature.presentationpages.editor.edit_form.title_placeholder'|trans
+                        },
+                        label: 'feature.presentationpages.editor.edit_form.label_title'|trans
+                    }) }}
+
+                    {{ form_row(form.welcomeText, {
+                        attr: {
+                            'data-model': 'on(input)|debounce(250)|presentationpage.welcomeText',
+                            'placeholder': 'feature.presentationpages.editor.edit_form.welcomeText_placeholder'|trans,
+                            'rows': 10
+                        },
+                        label: 'feature.presentationpages.editor.edit_form.label_welcomeText'|trans
+                    }) }}
+
+                    {{ form_row(form.calendlyEmbedCode, {
+                        attr: {
+                            'data-model': 'on(input)|debounce(250)|presentationpage.calendlyEmbedCode',
+                            'placeholder': 'feature.presentationpages.editor.edit_form.calendlyEmbedCode_placeholder'|trans,
+                            'rows': 5
+                        },
+                        label: 'feature.presentationpages.editor.edit_form.label_calendlyEmbedCode'|trans
+                    }) }}
+
+                    {{ form_row(form.presentationpageTemplate, {
+                        label: 'feature.presentationpages.editor.edit_form.label_presentationpageTemplate'|trans
+                    }) }}
+
+                    <button class="button-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" class=heroicon-next-to-text fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                        </svg>
+                        {{ 'feature.presentationpages.editor.edit_form.save_button'|trans }}
+                    </button>
+
+                    {{ form_end(form) }}
+                </div>
+
+
+                <a
+                        class="cta-link-primary"
+                        href="{{ path('feature.presentationpages.show', {'presentationpageId': this.presentationpage.id}) }}"
+                        target="_blank"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class=heroicon-next-to-text fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    {{ 'feature.presentationpages.editor.cta_show'|trans }}
+                </a>
+                <div class="mt-2">
+                    {{ 'feature.presentationpages.editor.cta_show_note'|trans }}
+                </div>
+            </div>
+
+        {% endblock %}
+
+
+        {% block contentRight %}
+
+            <div class="mb-8 font-bold text-xl">
+                {{ 'feature.presentationpages.editor.edit_form.preview_headline'|trans }}
+            </div>
+
+            <div
+                    class="rounded-lg p-4 shadow-inner"
+                    style="background-color: {{ this.presentationpage.presentationpageTemplate.bgColor }}; color: {{ this.presentationpage.presentationpageTemplate.textColor }};"
+            >
+                <div
+                        class="text-lg font-bold p-4"
+                >
+                    {% if this.presentationpage.title is empty %}
+                        {{ 'feature.presentationpages.editor.edit_form.title_placeholder'|trans }}
+                    {% else %}
+                        {{ this.presentationpage.title }}
+                    {% endif %}
+                </div>
+
+                <div
+                        class="p-4"
+                >
+                    <img
+                            class="rounded-md w-48"
+                            src="{{ this.posterAnimatedAssetUrl }}"
+                    />
+                </div>
+
+                <div
+                        class="text-sm font-medium p-4"
+                >
+                    {% if this.presentationpage.welcomeText is empty %}
+                        {{ 'feature.presentationpages.editor.edit_form.welcomeText_placeholder'|trans }}
+                    {% else %}
+                        {{ this.presentationpage.welcomeText|nl2br }}
+                    {% endif %}
+
+                </div>
+
+                {% if this.presentationpage.calendlyEmbedCode is not empty %}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                {% endif %}
+            </div>
+
+        {% endblock %}
+    {% endembed %}
+
+</div>

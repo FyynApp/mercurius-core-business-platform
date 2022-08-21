@@ -152,6 +152,10 @@ class PresentationpageTemplate
         return $this->presentationpageTemplateElements;
     }
 
+    public function addPresentationpageTemplateElement(PresentationpageTemplateElement $element): void
+    {
+        $this->presentationpageTemplateElements->add($element);
+    }
 
     /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(mappedBy: 'presentationpageTemplate', targetEntity: Presentationpage::class, cascade: ['persist'])]

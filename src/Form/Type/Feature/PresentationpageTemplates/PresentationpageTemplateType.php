@@ -3,12 +3,9 @@
 namespace App\Form\Type\Feature\PresentationpageTemplates;
 
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
-use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElementVariant;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 
@@ -33,21 +30,6 @@ class PresentationpageTemplateType extends AbstractType
                 ['entry_type' => PresentationpageTemplateElementType::class]
             )
         ;
-
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            /** @var PresentationpageTemplate $presentationpageTemplate */
-            $presentationpageTemplate = $event->getData();
-            $form = $event->getForm();
-
-            foreach ($presentationpageTemplate->getPresentationpageTemplateElements() as $element) {
-                if ($element->getElementVariant() === PresentationpageTemplateElementVariant::Headline) {
-                }
-            }
-
-            if (!$presentationpageTemplate || null === $presentationpageTemplate->getId()) {
-                $form->add('name', TextType::class);
-            }
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -3,9 +3,14 @@ feature.presentationpage_templates.overview:
   controller: App\Controller\Feature\PresentationpageTemplates\PresentationpageTemplatesController::overviewAction
   methods: [ GET ]
 
-feature.presentationpage_templates.add_form:
-  path: /my/presentationpage-templates/add
-  controller: App\Controller\Feature\PresentationpageTemplates\PresentationpageTemplatesController::addFormAction
+feature.presentationpages.create_from_video:
+  path: /my/presentationpage-templates/create
+  controller: App\Controller\Feature\PresentationpageTemplates\PresentationpageTemplatesController::createAction
+  methods: [ POST ]
+
+feature.presentationpage_templates.editor:
+  path: /my/presentationpage-templates/{presentationpageTemplateId}/editor
+  controller: App\Controller\Feature\PresentationpageTemplates\PresentationpageTemplatesController::editorAction
   methods: [ GET, POST ]
 
 feature.presentationpage_templates.preview:
