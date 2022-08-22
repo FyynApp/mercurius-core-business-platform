@@ -22,12 +22,12 @@
 
                 <div class="flex justify-center items-center h-full w-full">
                     <!-- Heroicon name: solid/plus-circle -->
-                    <a href="{{ path('feature.presentationpage_templates.add_form') }}">
+                    <a href="{{ path('feature.presentationpage_templates.create') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
                         </svg>
                     </a>
-                    <a href="{{ path('feature.presentationpage_templates.add_form') }}">
+                    <a href="{{ path('feature.presentationpage_templates.create') }}">
                         {{ 'feature.presentationpage_templates.overview.cta.add'|trans }}
                     </a>
                 </div>
@@ -39,9 +39,14 @@
                 <div class="collection-box">
 
                     {% for presentationpageTemplate in PresentationpageTemplatesService.templatesForUser(app.user) %}
+                        {# @var presentationpageTemplate \App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate #}
+
                         {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: cycle([true, false], loop.index0), colspanLeft: 3, colspanRight: 9 } %}
                             {% block contentLeft %}
                                 {{ presentationpageTemplate.title }}
+                                <div>
+                                    <a href="{{ path('feature.presentationpage_templates.editor', { presentationpageTemplateId: presentationpageTemplate.id }) }}">Edit</a>
+                                </div>
                             {% endblock %}
                             {% block contentRight %}
 

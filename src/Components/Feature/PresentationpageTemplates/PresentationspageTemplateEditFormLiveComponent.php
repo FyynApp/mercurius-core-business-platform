@@ -3,6 +3,7 @@
 namespace App\Components\Feature\PresentationpageTemplates;
 
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
+use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElement;
 use App\Form\Type\Feature\PresentationpageTemplates\PresentationpageTemplateType;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -49,11 +50,18 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
     #[LiveAction]
     public function addElement()
     {
-        $this->formValues['presentationpageTemplateElements'][] = [];
+        $element = new PresentationpageTemplateElement();
+        $element->setPresentationpageTemplate($this->presentationpageTemplate);
+        $element->setPosition(sizeof($this->presentationpageTemplate->getPresentationpageTemplateElements()));
+        $this->presentationpageTemplate->addPresentationpageTemplateElement($element);
+        $this->entityManager->persist($element);
+        $this->entityManager->persist($this->presentationpageTemplate);
+        $this->entityManager->flush();
+        $this->formValues['presentationpageTemplateElements'][] = $element;
     }
 
     #[LiveAction]
-    public function removeComment(#[LiveArg] int $index)
+    public function removeElement(#[LiveArg] int $index)
     {
         unset($this->formValues['presentationpageTemplateElements'][$index]);
     }

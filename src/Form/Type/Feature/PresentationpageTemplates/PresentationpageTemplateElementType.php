@@ -30,6 +30,14 @@ class PresentationpageTemplateElementType extends AbstractType
             $presentationpageTemplateElement = $event->getData();
             $form = $event->getForm();
 
+            if (is_null($presentationpageTemplateElement)) {
+                $form->add(
+                    'textContent',
+                    TextType::class
+                );
+                return;
+            }
+
             switch ($presentationpageTemplateElement->getElementVariant()) {
                 case PresentationpageTemplateElementVariant::Headline:
                     $form->add(

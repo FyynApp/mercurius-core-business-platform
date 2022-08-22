@@ -1,41 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+{# @var presentationpageTemplate \App\Entity\Feature\Presentationpages\PresentationpageTemplate #}
 {# @var PresentationpageTemplatesService \App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService #}
-{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
 
-{% block title %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
+{% block title %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
 
 {% block body %}
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.presentationpages.editor.title'|trans }}
+            {{ 'feature.presentationpage_templates.editor.title'|trans }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'feature.presentationpages.editor.subtitle'|trans }}
+            {{ 'feature.presentationpage_templates.editor.subtitle'|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}
-            <div class="collection-box">
-
-                {% if presentationpage.presentationpageTemplate is not null %}
-
-                    {{ component('feature_presentationpages_edit_form', {
-                        presentationpage: presentationpage,
-                        form: form
-                    }) }}
-
-                {% else %}
-
-                    {{ 'feature.presentationpages.editor.no_template_selected'|trans }}
-
-                {% endif %}
-
-
-            </div>
+            {{ component('feature_presentationpage_templates_edit_form', {
+                presentationpageTemplate: presentationpageTemplate,
+                form: form
+            }) }}
         {% endblock %}
     {% endembed %}
 

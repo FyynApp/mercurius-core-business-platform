@@ -10,6 +10,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'presentationpage_template_elements')]
 class PresentationpageTemplateElement
 {
+    public function __construct()
+    {
+        $this->setElementVariant(PresentationpageTemplateElementVariant::Headline);
+    }
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
@@ -66,7 +72,7 @@ class PresentationpageTemplateElement
 
 
     #[Assert\Length(max: 32768)]
-    #[ORM\Column(type: 'string', length: 32768, nullable: true)]
+    #[ORM\Column(type: 'text', length: 32768, nullable: true)]
     private ?string $textContent;
 
     public function getTextContent(): ?string

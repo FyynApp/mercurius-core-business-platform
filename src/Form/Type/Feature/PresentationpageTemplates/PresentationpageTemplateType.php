@@ -27,7 +27,11 @@ class PresentationpageTemplateType extends AbstractType
             ->add(
                 'presentationpageTemplateElements',
                 CollectionType::class,
-                ['entry_type' => PresentationpageTemplateElementType::class]
+                [
+                    'entry_type' => PresentationpageTemplateElementType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true
+                ]
             )
         ;
     }
