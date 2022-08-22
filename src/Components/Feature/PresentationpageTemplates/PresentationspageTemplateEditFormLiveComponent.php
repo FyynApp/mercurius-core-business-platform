@@ -4,9 +4,11 @@ namespace App\Components\Feature\PresentationpageTemplates;
 
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElement;
+use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElementVariant;
 use App\Form\Type\Feature\PresentationpageTemplates\PresentationpageTemplateType;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use ReflectionEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -48,11 +50,13 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function addElement()
+    public function addElement(#[LiveArg] string $variant)
     {
+        $this->logger->debug("variant is $variant");
         $element = new PresentationpageTemplateElement();
         $element->setPresentationpageTemplate($this->presentationpageTemplate);
         $element->setPosition(sizeof($this->presentationpageTemplate->getPresentationpageTemplateElements()));
+        $element->setElementVariant(PresentationpageTemplateElementVariant::tryFrom($variant));
         $this->presentationpageTemplate->addPresentationpageTemplateElement($element);
         $this->entityManager->persist($element);
         $this->entityManager->persist($this->presentationpageTemplate);

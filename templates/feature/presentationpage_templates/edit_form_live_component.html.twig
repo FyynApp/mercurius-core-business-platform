@@ -51,9 +51,15 @@
 
                     <button
                             data-action="live#action"
-                            data-action-name="addElement"
+                            data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline').value }})"
                             type="button"
-                    >+ Add Element</button>
+                    >+ Add headline</button>
+
+                    <button
+                            data-action="live#action"
+                            data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph').value }})"
+                            type="button"
+                    >+ Add paragraph</button>
 
                 </div>
 
