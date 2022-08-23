@@ -67,7 +67,8 @@ class PresentationpageTemplatesController extends AbstractController
             /** @var PresentationpageTemplate $template */
             $template = $form->getData();
 
-            $presentationpageTemplatesService->addNewTemplate($user, $template);
+            $entityManager->persist($template);
+            $entityManager->flush();
 
             return $this->redirectToRoute('feature.presentationpage_templates.overview');
         } else {

@@ -24,22 +24,13 @@ class PresentationpageTemplatesService
         $template->setTitle('Default');
         $template->setBgColor(PresentationpageTemplate::ALLOWED_BG_COLORS[0]);
         $template->setTextColor(PresentationpageTemplate::ALLOWED_TEXT_COLORS[0]);
-
-        return $this->addNewTemplate($user, $template);
-    }
-
-    public function addNewTemplate(
-        User $user,
-        PresentationpageTemplate $template
-    ): PresentationpageTemplate {
-
         $template->setUser($user);
-
         $this->entityManager->persist($template);
         $this->entityManager->flush($template);
 
         return $template;
     }
+
 
     /** @return PresentationpageTemplate[] */
     public function getTemplatesForUser(User $user): array

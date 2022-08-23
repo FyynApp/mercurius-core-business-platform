@@ -10,9 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'presentationpage_template_elements')]
 class PresentationpageTemplateElement
 {
-    public function __construct()
+    public function __construct(int $position = 0)
     {
-        $this->setElementVariant(PresentationpageTemplateElementVariant::Headline);
+        $this->setPosition($position);
     }
 
 
@@ -20,7 +20,7 @@ class PresentationpageTemplateElement
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(type: 'guid', unique: true)]
-    private string $id;
+    private ?string $id = null;
 
     public function getId(): ?string
     {
@@ -44,7 +44,7 @@ class PresentationpageTemplateElement
 
 
     #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageTemplateElementVariant::class)]
-    private PresentationpageTemplateElementVariant $elementVariant;
+    private PresentationpageTemplateElementVariant $elementVariant = PresentationpageTemplateElementVariant::Headline;
 
     public function getElementVariant(): PresentationpageTemplateElementVariant
     {
@@ -65,15 +65,15 @@ class PresentationpageTemplateElement
         return $this->position;
     }
 
-    public function setPosition(?int $position): void
+    public function setPosition(int $position): void
     {
-        $this->position = (int)$position;
+        $this->position = $position;
     }
 
 
     #[Assert\Length(max: 32768)]
     #[ORM\Column(type: 'text', length: 32768, nullable: true)]
-    private ?string $textContent;
+    private ?string $textContent = null;
 
     public function getTextContent(): ?string
     {

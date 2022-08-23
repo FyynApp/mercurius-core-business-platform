@@ -61,7 +61,7 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
         $this->entityManager->persist($element);
         $this->entityManager->persist($this->presentationpageTemplate);
         $this->entityManager->flush();
-        $this->formValues['presentationpageTemplateElements'][] = [];
+        $this->formValues['presentationpageTemplateElements'][] = ['position' => $element->getPosition(), 'textContent' => null];
     }
 
     #[LiveAction]
@@ -76,6 +76,7 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
                 break;
             }
         }
+        $this->logger->debug('form value is ' . print_r($this->formValues['presentationpageTemplateElements'][$index], true));
         unset($this->formValues['presentationpageTemplateElements'][$index]);
     }
 

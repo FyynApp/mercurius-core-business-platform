@@ -22,8 +22,7 @@ class PresentationpageTemplateElementType extends AbstractType
             ->add(
                 'position',
                 HiddenType::class
-            )
-        ;
+            );
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             /** @var PresentationpageTemplateElement $presentationpageTemplateElement */
