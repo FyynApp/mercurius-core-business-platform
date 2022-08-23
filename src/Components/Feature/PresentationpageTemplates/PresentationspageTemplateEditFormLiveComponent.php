@@ -5,6 +5,7 @@ namespace App\Components\Feature\PresentationpageTemplates;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElement;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElementVariant;
+use App\Form\Type\Feature\PresentationpageTemplates\PresentationpageTemplateElementType;
 use App\Form\Type\Feature\PresentationpageTemplates\PresentationpageTemplateType;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -52,7 +53,6 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
     #[LiveAction]
     public function addElement(#[LiveArg] string $variant)
     {
-        $this->logger->debug("variant is $variant");
         $element = new PresentationpageTemplateElement();
         $element->setPresentationpageTemplate($this->presentationpageTemplate);
         $element->setPosition(sizeof($this->presentationpageTemplate->getPresentationpageTemplateElements()));
@@ -61,12 +61,21 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
         $this->entityManager->persist($element);
         $this->entityManager->persist($this->presentationpageTemplate);
         $this->entityManager->flush();
-        $this->formValues['presentationpageTemplateElements'][] = $element;
+        $this->formValues['presentationpageTemplateElements'][] = [];
     }
 
     #[LiveAction]
-    public function removeElement(#[LiveArg] int $index)
+    public function removeElement(#[LiveArg] int $index, #[LiveArg] string $elementId)
     {
+        foreach ($this->presentationpageTemplate->getPresentationpageTemplateElements() as $element) {
+            if ($element->getId() === $elementId) {
+                $this->presentationpageTemplate->removePresentationpageTemplateElement($element);
+                $this->entityManager->persist($this->presentationpageTemplate);
+                $this->entityManager->remove($element);
+                $this->entityManager->flush();
+                break;
+            }
+        }
         unset($this->formValues['presentationpageTemplateElements'][$index]);
     }
 

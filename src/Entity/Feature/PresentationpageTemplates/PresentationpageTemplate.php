@@ -157,6 +157,11 @@ class PresentationpageTemplate
         $this->presentationpageTemplateElements->add($element);
     }
 
+    public function removePresentationpageTemplateElement(PresentationpageTemplateElement $elementToRemove): void
+    {
+        $this->presentationpageTemplateElements->removeElement($elementToRemove);
+    }
+
     /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(mappedBy: 'presentationpageTemplate', targetEntity: Presentationpage::class, cascade: ['persist'])]
     private Collection $presentationpages;

@@ -40,7 +40,7 @@
                     {% for key, elementForm in form.presentationpageTemplateElements %}
                         <button
                                 data-action="live#action"
-                                data-action-name="removeElement(index={{ key }})"
+                                data-action-name="removeElement(index={{ key }}, elementId={{ elementForm.vars.value.id }})"
                                 type="button"
                         >Delete</button>
 
