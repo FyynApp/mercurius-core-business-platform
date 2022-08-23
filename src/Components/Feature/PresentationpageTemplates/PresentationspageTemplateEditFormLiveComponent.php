@@ -85,16 +85,12 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
             $i++;
         }
 
-
         $this->rebuildFormValues();
     }
 
     private function rebuildFormValues(): void
     {
-        $this->formValues['presentationpageTemplateElements'] = [];
-        foreach ($this->presentationpageTemplate->getPresentationpageTemplateElements() as $element) {
-            $this->formValues['presentationpageTemplateElements'][] = ['position' => $element->getPosition(), 'textContent' => $element->getTextContent()];
-        }
+        $this->formValues = $this->extractFormValues($this->instantiateForm()->createView());
     }
 
     protected function instantiateForm(): FormInterface
