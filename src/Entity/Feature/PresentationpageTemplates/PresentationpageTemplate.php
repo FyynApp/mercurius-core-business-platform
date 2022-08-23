@@ -7,6 +7,7 @@ use App\Entity\Feature\Presentationpages\Presentationpage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -146,10 +147,15 @@ class PresentationpageTemplate
 
     /**
      * @return PresentationpageTemplateElement[]|Collection
+     * @throws Exception
      */
     public function getPresentationpageTemplateElements(): Collection
     {
-        return $this->presentationpageTemplateElements;
+        $iterator = $this->presentationpageTemplateElements->getIterator();
+        $iterator->uasort(function (PresentationpageTemplateElement $first, PresentationpageTemplateElement $second) {
+            return $first->getPosition() > $second->getPosition() ? 1 : -1;
+        });
+        return new ArrayCollection($iterator->getArrayCopy());
     }
 
     public function addPresentationpageTemplateElement(PresentationpageTemplateElement $element): void

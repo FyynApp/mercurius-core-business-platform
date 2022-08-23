@@ -5,11 +5,9 @@ namespace App\Components\Feature\PresentationpageTemplates;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElement;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElementVariant;
-use App\Form\Type\Feature\PresentationpageTemplates\PresentationpageTemplateElementType;
 use App\Form\Type\Feature\PresentationpageTemplates\PresentationpageTemplateType;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use ReflectionEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -61,7 +59,8 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
         $this->entityManager->persist($element);
         $this->entityManager->persist($this->presentationpageTemplate);
         $this->entityManager->flush();
-        $this->formValues['presentationpageTemplateElements'][] = ['position' => $element->getPosition(), 'textContent' => null];
+
+        $this->rebuildFormValues();
     }
 
     #[LiveAction]
@@ -69,6 +68,7 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
     {
         foreach ($this->presentationpageTemplate->getPresentationpageTemplateElements() as $element) {
             if ($element->getId() === $elementId) {
+                $this->logger->debug("Removing element with id $elementId");
                 $this->presentationpageTemplate->removePresentationpageTemplateElement($element);
                 $this->entityManager->persist($this->presentationpageTemplate);
                 $this->entityManager->remove($element);
@@ -76,8 +76,25 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
                 break;
             }
         }
-        $this->logger->debug('form value is ' . print_r($this->formValues['presentationpageTemplateElements'][$index], true));
-        unset($this->formValues['presentationpageTemplateElements'][$index]);
+
+        $i = 0;
+        foreach ($this->presentationpageTemplate->getPresentationpageTemplateElements() as $element) {
+            $element->setPosition($i);
+            $this->entityManager->persist($element);
+            $this->entityManager->flush();
+            $i++;
+        }
+
+
+        $this->rebuildFormValues();
+    }
+
+    private function rebuildFormValues(): void
+    {
+        $this->formValues['presentationpageTemplateElements'] = [];
+        foreach ($this->presentationpageTemplate->getPresentationpageTemplateElements() as $element) {
+            $this->formValues['presentationpageTemplateElements'][] = ['position' => $element->getPosition(), 'textContent' => $element->getTextContent()];
+        }
     }
 
     protected function instantiateForm(): FormInterface
