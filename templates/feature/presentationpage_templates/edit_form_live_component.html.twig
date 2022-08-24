@@ -101,6 +101,7 @@
 
                     {% if form.vars.valid %}
                         <button
+                                class="cta-link-primary mb-4"
                                 data-action="live#action"
                                 data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline').value }})"
                                 type="button"
@@ -109,6 +110,7 @@
                         </button>
 
                         <button
+                                class="cta-link-primary mb-4"
                                 data-action="live#action"
                                 data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph').value }})"
                                 type="button"
@@ -117,6 +119,7 @@
                         </button>
 
                         <button
+                                class="cta-link-primary mb-4"
                                 data-action="live#action"
                                 data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed').value }})"
                                 type="button"
@@ -172,7 +175,9 @@
                         {% endif %}
                         {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed').value %}
                             <p class="mb-2">
-                                {{ element.textContent|raw }}
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-0 pl-0 h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
                             </p>
                         {% endif %}
                     {% endfor %}

@@ -134,6 +134,7 @@ feature:
           headline: 'Überschrift hinzufügen'
           paragraph: 'Absatz hinzufügen'
           calendly_embed: 'Calendly Widget hinzufügen'
+        save_button: 'Vorlage speichern'
 
   account:
     login:
