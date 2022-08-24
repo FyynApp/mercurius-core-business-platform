@@ -16,25 +16,27 @@
 
                     {{ form_start(form) }}
 
+                    {{ dump(form.title) }}
+
                     {{ form_row(form.title, {
                         attr: {
-                            'data-model': 'on(input)|debounce(250)|presentationpage_template.title',
+                            'data-model': 'on(input)|debounce(250)|' ~ form.title.vars.full_name,
                             'data-action': 'live#action',
-                            'data-action-name': "prevent|debounce(300)|save"
+                            'data-action-name': "debounce(300)|save"
                         },
                         label: 'feature.presentationpage_templates.editor.edit_form.label_title'|trans
                     }) }}
 
                     {{ form_row(form.bgColor, {
                         attr: {
-                            'data-model': 'on(input)|debounce(250)|presentationpage_template.bgColor'
+                            'data-model': 'on(input)|debounce(250)|' ~ form.bgColor.vars.full_name
                         },
                         label: 'feature.presentationpages_templates.editor.edit_form.label_bg_color'|trans
                     }) }}
 
                     {{ form_row(form.textColor, {
                         attr: {
-                            'data-model': 'on(input)|debounce(250)|presentationpage_template.textColor'
+                            'data-model': 'on(input)|debounce(250)|' ~ form.textColor.vars.full_name
                         },
                         label: 'feature.presentationpages_templates.editor.edit_form.label_text_color'|trans
                     }) }}
