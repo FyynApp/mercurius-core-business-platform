@@ -61,7 +61,7 @@
                                     {{ form_label(elementFormRow) }}
 
                                     <div class="flex flex-row justify-start items-end">
-                                        <div>
+                                        <div class="w-full">
                                             {{ form_widget(elementFormRow, {
                                                 attr: {
                                                     'data-model': 'on(input)|debounce(250)|' ~ elementFormRow.vars.full_name,
@@ -101,29 +101,38 @@
 
                     {% if form.vars.valid %}
                         <button
-                                class="cta-link-primary mb-4"
+                                class="cta-link-primary mb-4 w-52"
                                 data-action="live#action"
                                 data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline').value }})"
                                 type="button"
                         >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
+                            </svg>
                             {{ 'feature.presentationpage_templates.editor.edit_form.cta_add_element.headline'|trans }}
                         </button>
 
                         <button
-                                class="cta-link-primary mb-4"
+                                class="cta-link-primary mb-4 w-52"
                                 data-action="live#action"
                                 data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph').value }})"
                                 type="button"
                         >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
+                            </svg>
                             {{ 'feature.presentationpage_templates.editor.edit_form.cta_add_element.paragraph'|trans }}
                         </button>
 
                         <button
-                                class="cta-link-primary mb-4"
+                                class="cta-link-primary mb-4 w-52"
                                 data-action="live#action"
                                 data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed').value }})"
                                 type="button"
                         >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
+                            </svg>
                             {{ 'feature.presentationpage_templates.editor.edit_form.cta_add_element.calendly_embed'|trans }}
                         </button>
                     {% endif %}
@@ -133,7 +142,7 @@
 
 
 
-                <button class="button-success">
+                <button class="cta-link-success">
                     <svg xmlns="http://www.w3.org/2000/svg" class=heroicon-next-to-text fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                     </svg>
@@ -152,37 +161,46 @@
                 {{ 'feature.presentationpage_templates.editor.edit_form.preview_headline'|trans }}
             </div>
 
-            <div
-                    class="rounded-lg p-4 shadow-inner"
-                    style="background-color: {{ this.presentationpageTemplate.bgColor }}; color: {{ this.presentationpageTemplate.textColor }};"
-            >
+            {% if this.presentationpageTemplate.presentationpageTemplateElements.count is same as 0 %}
+
+                {{ 'feature.presentationpage_templates.editor.edit_form.preview_note_no_elements'|trans }}
+
+            {% else %}
+
                 <div
-                        class="font-bold p-4"
+                        class="rounded-lg p-4 shadow-inner"
+                        style="background-color: {{ this.presentationpageTemplate.bgColor }}; color: {{ this.presentationpageTemplate.textColor }};"
                 >
-                    {% for element in this.presentationpageTemplate.presentationpageTemplateElements %}
-                        {# @var element \App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElement #}
+                    <div
+                            class="font-bold p-4"
+                    >
+                        {% for element in this.presentationpageTemplate.presentationpageTemplateElements %}
+                            {# @var element \App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElement #}
 
-                        {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline').value %}
-                            <h2 class="text-lg">
-                                {{ element.textContent }}
-                            </h2>
-                        {% endif %}
+                            {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline').value %}
+                                <h2 class="text-lg">
+                                    {{ element.textContent }}
+                                </h2>
+                            {% endif %}
 
-                        {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph').value %}
-                            <p class="mb-2">
-                                {{ element.textContent }}
-                            </p>
-                        {% endif %}
-                        {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed').value %}
-                            <p class="mb-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-0 pl-0 h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </p>
-                        {% endif %}
-                    {% endfor %}
+                            {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph').value %}
+                                <p class="mb-2">
+                                    {{ element.textContent }}
+                                </p>
+                            {% endif %}
+                            {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed').value %}
+                                <p class="mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-0 pl-0 h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
+
+            {% endif %}
+
 
         {% endblock %}
     {% endembed %}

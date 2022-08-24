@@ -122,6 +122,7 @@ feature:
         subheadline_elements: 'Designelemente'
         subheadline_basesettings: 'Basiswerte'
         preview_headline: 'Vorschau'
+        preview_note_no_elements: 'Fügen Sie Elemente zu Ihrer Vorlage hinzu, um eine Vorschau zu sehen.'
         label_title: 'Name der Vorlage'
         label_bg_color: 'Hintergrundfarbe der Seite'
         label_text_color: 'Textfarbe'
@@ -131,9 +132,9 @@ feature:
           calendly_embed: 'Calendly Widget Code'
         cta_remove_element: 'Löschen'
         cta_add_element:
-          headline: 'Überschrift hinzufügen'
-          paragraph: 'Absatz hinzufügen'
-          calendly_embed: 'Calendly Widget hinzufügen'
+          headline: 'Überschrift'
+          paragraph: 'Absatz'
+          calendly_embed: 'Calendly Widget'
         save_button: 'Vorlage speichern'
 
   account:
