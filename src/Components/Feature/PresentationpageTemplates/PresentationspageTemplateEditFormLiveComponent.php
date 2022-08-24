@@ -80,7 +80,6 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
                 $this->logger->debug("Removing element with id $elementId");
                 $this->presentationpageTemplate->removePresentationpageTemplateElement($element);
                 $this->entityManager->remove($element);
-                unset($element);
                 $this->entityManager->persist($this->presentationpageTemplate);
                 $this->entityManager->flush();
                 $this->entityManager->refresh($this->presentationpageTemplate);

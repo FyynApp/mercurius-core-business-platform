@@ -166,7 +166,11 @@ class PresentationpageTemplate
 
     public function removePresentationpageTemplateElement(PresentationpageTemplateElement $elementToRemove): void
     {
+        if (!$this->presentationpageTemplateElements->contains($elementToRemove)) {
+            return;
+        }
         $this->presentationpageTemplateElements->removeElement($elementToRemove);
+        $elementToRemove->setPresentationpageTemplate(null);
     }
 
     /** @var Presentationpage[]|Collection */

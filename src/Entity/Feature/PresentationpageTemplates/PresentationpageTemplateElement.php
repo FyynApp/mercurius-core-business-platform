@@ -30,16 +30,16 @@ class PresentationpageTemplateElement
 
     #[ORM\ManyToOne(targetEntity: PresentationpageTemplate::class, cascade: ['persist'], inversedBy: 'presentationpageTemplateElements')]
     #[ORM\JoinColumn(name: 'presentationpage_templates_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private PresentationpageTemplate $presentationpageTemplate;
+    private ?PresentationpageTemplate $presentationpageTemplate;
 
-    public function getPresentationpageTemplate(): PresentationpageTemplate
+    public function getPresentationpageTemplate(): ?PresentationpageTemplate
     {
         return $this->presentationpageTemplate;
     }
 
-    public function setPresentationpageTemplate(PresentationpageTemplate $user): void
+    public function setPresentationpageTemplate(?PresentationpageTemplate $template): void
     {
-        $this->presentationpageTemplate = $user;
+        $this->presentationpageTemplate = $template;
     }
 
 
