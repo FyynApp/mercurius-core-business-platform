@@ -49,30 +49,41 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
     }
 
     #[LiveAction]
+    public function save()
+    {
+        $this->submitForm();
+
+        $this->storeDataAndRebuildForm();
+    }
+
+    #[LiveAction]
     public function addElement(#[LiveArg] string $variant)
     {
+        $this->submitForm();
+
         $element = new PresentationpageTemplateElement();
-        $element->setPresentationpageTemplate($this->presentationpageTemplate);
         $element->setPosition(sizeof($this->presentationpageTemplate->getPresentationpageTemplateElements()));
         $element->setElementVariant(PresentationpageTemplateElementVariant::tryFrom($variant));
         $this->presentationpageTemplate->addPresentationpageTemplateElement($element);
         $this->entityManager->persist($element);
-        $this->entityManager->persist($this->presentationpageTemplate);
-        $this->entityManager->flush();
 
-        $this->rebuildFormValues();
+        $this->storeDataAndRebuildForm();
     }
 
     #[LiveAction]
     public function removeElement(#[LiveArg] int $index, #[LiveArg] string $elementId)
     {
+        $this->submitForm();
+
         foreach ($this->presentationpageTemplate->getPresentationpageTemplateElements() as $element) {
             if ($element->getId() === $elementId) {
                 $this->logger->debug("Removing element with id $elementId");
                 $this->presentationpageTemplate->removePresentationpageTemplateElement($element);
-                $this->entityManager->persist($this->presentationpageTemplate);
                 $this->entityManager->remove($element);
+                unset($element);
+                $this->entityManager->persist($this->presentationpageTemplate);
                 $this->entityManager->flush();
+                $this->entityManager->refresh($this->presentationpageTemplate);
                 break;
             }
         }
@@ -85,11 +96,15 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
             $i++;
         }
 
-        $this->rebuildFormValues();
+        $this->storeDataAndRebuildForm();
     }
 
-    private function rebuildFormValues(): void
+    private function storeDataAndRebuildForm(): void
     {
+        $this->entityManager->persist($this->presentationpageTemplate);
+        $this->entityManager->flush();
+        $form = $this->createForm(PresentationpageTemplateType::class, $this->presentationpageTemplate);
+        $this->formView = $form->createView();
         $this->formValues = $this->extractFormValues($this->instantiateForm()->createView());
     }
 

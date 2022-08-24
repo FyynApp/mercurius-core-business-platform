@@ -17,20 +17,24 @@
                     {{ form_start(form) }}
 
                     {{ form_row(form.title, {
-                        attr: {},
+                        attr: {
+                            'data-model': 'on(input)|debounce(250)|presentationpage_template.title',
+                            'data-action': 'live#action',
+                            'data-action-name': "prevent|debounce(300)|save"
+                        },
                         label: 'feature.presentationpage_templates.editor.edit_form.label_title'|trans
                     }) }}
 
                     {{ form_row(form.bgColor, {
                         attr: {
-                            'data-model': 'on(input)|debounce(250)|presentationpageTemplate.bgColor'
+                            'data-model': 'on(input)|debounce(250)|presentationpage_template.bgColor'
                         },
                         label: 'feature.presentationpages_templates.editor.edit_form.label_bg_color'|trans
                     }) }}
 
                     {{ form_row(form.textColor, {
                         attr: {
-                            'data-model': 'on(input)|debounce(250)|presentationpageTemplate.textColor'
+                            'data-model': 'on(input)|debounce(250)|presentationpage_template.textColor'
                         },
                         label: 'feature.presentationpages_templates.editor.edit_form.label_text_color'|trans
                     }) }}
@@ -38,28 +42,32 @@
 
                     <h3>Elements:</h3>
                     {% for key, elementForm in form.presentationpageTemplateElements %}
-                        <button
-                                data-action="live#action"
-                                data-action-name="removeElement(index={{ key }}, elementId={{ elementForm.vars.value.id }})"
-                                type="button"
-                        >Delete</button>
+                        {% if form.vars.valid %}
+                            <button
+                                    data-action="live#action"
+                                    data-action-name="removeElement(index={{ key }}, elementId={{ elementForm.vars.value.id }})"
+                                    type="button"
+                            >Delete</button>
+                        {% endif %}
 
                         {{ form_widget(elementForm) }}
                     {% endfor %}
 
                     {% do form.presentationpageTemplateElements.setRendered %}
 
-                    <button
-                            data-action="live#action"
-                            data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline').value }})"
-                            type="button"
-                    >+ Add headline</button>
+                    {% if form.vars.valid %}
+                        <button
+                                data-action="live#action"
+                                data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline').value }})"
+                                type="button"
+                        >+ Add headline</button>
 
-                    <button
-                            data-action="live#action"
-                            data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph').value }})"
-                            type="button"
-                    >+ Add paragraph</button>
+                        <button
+                                data-action="live#action"
+                                data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph').value }})"
+                                type="button"
+                        >+ Add paragraph</button>
+                    {% endif %}
 
                 </div>
 

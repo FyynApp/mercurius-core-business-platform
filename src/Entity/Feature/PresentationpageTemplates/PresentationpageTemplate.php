@@ -160,6 +160,7 @@ class PresentationpageTemplate
 
     public function addPresentationpageTemplateElement(PresentationpageTemplateElement $element): void
     {
+        $element->setPresentationpageTemplate($this);
         $this->presentationpageTemplateElements->add($element);
     }
 

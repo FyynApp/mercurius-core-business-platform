@@ -18,37 +18,41 @@ class PresentationpageTemplateElementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add(
-                'position',
-                HiddenType::class
-            );
-
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             /** @var PresentationpageTemplateElement $presentationpageTemplateElement */
             $presentationpageTemplateElement = $event->getData();
             $form = $event->getForm();
 
             if (is_null($presentationpageTemplateElement)) {
-                $form->add(
-                    'textContent',
-                    TextType::class
-                );
                 return;
             }
+
+            $form
+                ->add(
+                    'position',
+                    HiddenType::class
+                );
 
             switch ($presentationpageTemplateElement->getElementVariant()) {
                 case PresentationpageTemplateElementVariant::Headline:
                     $form->add(
                         'textContent',
-                        TextType::class
+                        TextType::class,
+                        [
+                            'required' => true,
+                            'empty_data' => null
+                        ]
                     );
                     break;
 
                 case PresentationpageTemplateElementVariant::Paragraph:
                     $form->add(
                         'textContent',
-                        TextareaType::class
+                        TextareaType::class,
+                        [
+                            'required' => true,
+                            'empty_data' => null
+                        ]
                     );
                     break;
 
