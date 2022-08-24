@@ -40,7 +40,8 @@ class PresentationpageTemplateElementType extends AbstractType
                         TextType::class,
                         [
                             'required' => true,
-                            'empty_data' => null
+                            'trim' => false,
+                            'label' => 'feature.presentationpage_templates.editor.edit_form.label_element_variant.headline'
                         ]
                     );
                     break;
@@ -51,7 +52,20 @@ class PresentationpageTemplateElementType extends AbstractType
                         TextareaType::class,
                         [
                             'required' => true,
-                            'empty_data' => null
+                            'trim' => false,
+                            'label' => 'feature.presentationpage_templates.editor.edit_form.label_element_variant.paragraph'
+                        ]
+                    );
+                    break;
+
+                case PresentationpageTemplateElementVariant::CalendlyEmbed:
+                    $form->add(
+                        'textContent',
+                        TextareaType::class,
+                        [
+                            'required' => true,
+                            'trim' => false,
+                            'label' => 'feature.presentationpage_templates.editor.edit_form.label_element_variant.calendly_embed'
                         ]
                     );
                     break;

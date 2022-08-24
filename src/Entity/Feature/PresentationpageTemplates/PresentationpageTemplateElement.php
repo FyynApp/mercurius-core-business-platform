@@ -71,7 +71,7 @@ class PresentationpageTemplateElement
     }
 
 
-    #[Assert\Length(max: 32768)]
+    #[Assert\Length(min: 3, max: 4)]
     #[ORM\Column(type: 'text', length: 32768, nullable: true)]
     private ?string $textContent = null;
 

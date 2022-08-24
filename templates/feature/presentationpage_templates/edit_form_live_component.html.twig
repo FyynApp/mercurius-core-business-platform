@@ -12,6 +12,10 @@
 
 
                 <div class="mb-8">
+                    <h2 class="text-lg mt-8 mb-4">
+                        {{ 'feature.presentationpage_templates.editor.edit_form.subheadline_basesettings'|trans }}
+                    </h2>
+
                     {% form_theme form 'form_themes/form_theme_default.html.twig' %}
 
                     {{ form_start(form) }}
@@ -22,36 +26,75 @@
                             'data-model': 'on(input)|debounce(250)|' ~ form.title.vars.full_name,
                             'data-action': 'live#action',
                             'data-action-name': "debounce(300)|save"
-                        },
-                        label: 'feature.presentationpage_templates.editor.edit_form.label_title'|trans
+                        }
                     }) }}
 
                     {{ form_row(form.bgColor, {
                         attr: {
-                            'data-model': 'on(input)|debounce(250)|' ~ form.bgColor.vars.full_name
-                        },
-                        label: 'feature.presentationpages_templates.editor.edit_form.label_bg_color'|trans
+                            'data-model': 'on(input)|debounce(250)|' ~ form.bgColor.vars.full_name,
+                            'data-action': 'live#action',
+                            'data-action-name': "debounce(300)|save"
+                        }
                     }) }}
 
                     {{ form_row(form.textColor, {
                         attr: {
-                            'data-model': 'on(input)|debounce(250)|' ~ form.textColor.vars.full_name
-                        },
-                        label: 'feature.presentationpages_templates.editor.edit_form.label_text_color'|trans
+                            'data-model': 'on(input)|debounce(250)|' ~ form.textColor.vars.full_name,
+                            'data-action': 'live#action',
+                            'data-action-name': "debounce(300)|save"
+                        }
                     }) }}
 
 
-                    <h3>Elements:</h3>
-                    {% for key, elementForm in form.presentationpageTemplateElements %}
-                        {% if form.vars.valid %}
-                            <button
-                                    data-action="live#action"
-                                    data-action-name="removeElement(index={{ key }}, elementId={{ elementForm.vars.value.id }})"
-                                    type="button"
-                            >Delete</button>
-                        {% endif %}
+                    <h2 class="text-lg mt-8 mb-4">
+                        {{ 'feature.presentationpage_templates.editor.edit_form.subheadline_elements'|trans }}
+                    </h2>
 
-                        {{ form_widget(elementForm) }}
+                    {% for key, elementForm in form.presentationpageTemplateElements %}
+
+                        {% for elementFormRow in elementForm %}
+
+                            {% if elementFormRow.vars.name is same as 'position' %}
+                                {{ form_row(elementFormRow) }}
+                            {% else %}
+                                <div class="mb-6">
+                                    {{ form_label(elementFormRow) }}
+
+                                    <div class="flex flex-row justify-start items-end">
+                                        <div>
+                                            {{ form_widget(elementFormRow, {
+                                                attr: {
+                                                    'data-model': 'on(input)|debounce(250)|' ~ elementFormRow.vars.full_name,
+                                                    'data-action': 'live#action',
+                                                    'data-action-name': "debounce(300)|save"
+                                                }
+                                            }) }}
+                                        </div>
+
+                                        <div>
+                                            {% if form.vars.valid %}
+                                                <button
+                                                        data-action="live#action"
+                                                        data-action-name="removeElement(index={{ key }}, elementId={{ elementForm.vars.value.id }})"
+                                                        type="button"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-1 pt-1 pb-1 text-red-600 w-8 h-8">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </button>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+
+
+                                    {{ form_help(elementFormRow) }}
+                                    {{ form_errors(elementFormRow) }}
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+
                     {% endfor %}
 
                     {% do form.presentationpageTemplateElements.setRendered %}
@@ -61,13 +104,25 @@
                                 data-action="live#action"
                                 data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline').value }})"
                                 type="button"
-                        >+ Add headline</button>
+                        >
+                            {{ 'feature.presentationpage_templates.editor.edit_form.cta_add_element.headline'|trans }}
+                        </button>
 
                         <button
                                 data-action="live#action"
                                 data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph').value }})"
                                 type="button"
-                        >+ Add paragraph</button>
+                        >
+                            {{ 'feature.presentationpage_templates.editor.edit_form.cta_add_element.paragraph'|trans }}
+                        </button>
+
+                        <button
+                                data-action="live#action"
+                                data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed').value }})"
+                                type="button"
+                        >
+                            {{ 'feature.presentationpage_templates.editor.edit_form.cta_add_element.calendly_embed'|trans }}
+                        </button>
                     {% endif %}
 
                 </div>
@@ -76,14 +131,13 @@
 
 
                 <button class="button-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" class=heroicon-next-to-text fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                        </svg>
-                        {{ 'feature.presentationpage_templates.editor.edit_form.save_button'|trans }}
-                    </button>
+                    <svg xmlns="http://www.w3.org/2000/svg" class=heroicon-next-to-text fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                    </svg>
+                    {{ 'feature.presentationpage_templates.editor.edit_form.save_button'|trans }}
+                </button>
 
-                    {{ form_end(form) }}
-                </div>
+                {{ form_end(form) }}
             </div>
 
         {% endblock %}
@@ -100,13 +154,28 @@
                     style="background-color: {{ this.presentationpageTemplate.bgColor }}; color: {{ this.presentationpageTemplate.textColor }};"
             >
                 <div
-                        class="text-lg font-bold p-4"
+                        class="font-bold p-4"
                 >
-                    {% if this.presentationpageTemplate.title is empty %}
-                        {{ 'feature.presentationpage_templates.editor.edit_form.title_placeholder'|trans }}
-                    {% else %}
-                        {{ this.presentationpageTemplate.title }}
-                    {% endif %}
+                    {% for element in this.presentationpageTemplate.presentationpageTemplateElements %}
+                        {# @var element \App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElement #}
+
+                        {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline').value %}
+                            <h2 class="text-lg">
+                                {{ element.textContent }}
+                            </h2>
+                        {% endif %}
+
+                        {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph').value %}
+                            <p class="mb-2">
+                                {{ element.textContent }}
+                            </p>
+                        {% endif %}
+                        {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed').value %}
+                            <p class="mb-2">
+                                {{ element.textContent|raw }}
+                            </p>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
 

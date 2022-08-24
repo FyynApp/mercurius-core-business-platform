@@ -42,6 +42,10 @@
         @apply cta-link-success w-fit border-lime-300;
     }
 
+    .button-danger {
+        @apply cta-link-danger w-fit border-red-300;
+    }
+
     .heroicon-next-to-text {
         @apply h-6 w-6 inline align-bottom;
     }

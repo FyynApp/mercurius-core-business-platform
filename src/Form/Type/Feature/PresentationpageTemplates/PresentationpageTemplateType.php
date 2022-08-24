@@ -17,12 +17,27 @@ class PresentationpageTemplateType extends AbstractType
             ->add(
                 'title',
                 TextType::class,
-                ['label' => 'feature.presentationpage_templates.add_form.formfield.title'],
+                [
+                    'label' => 'feature.presentationpage_templates.editor.edit_form.label_title',
+                    'trim' => false,
+                ],
             )
 
-            ->add('bgColor', TextType::class)
+            ->add(
+                'bgColor',
+                TextType::class,
+                [
+                    'label' => 'feature.presentationpage_templates.editor.edit_form.label_bg_color'
+                ],
+            )
 
-            ->add('textColor', TextType::class)
+            ->add(
+                'textColor',
+                TextType::class,
+                [
+                    'label' => 'feature.presentationpage_templates.editor.edit_form.label_text_color'
+                ],
+            )
 
             ->add(
                 'presentationpageTemplateElements',

@@ -113,6 +113,8 @@ class PresentationpageTemplate
     }
 
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 7, max: 7)]
     #[ORM\Column(type: 'string', length: 7, unique: false, nullable: false)]
     private string $bgColor = self::ALLOWED_BG_COLORS[0];
 
@@ -126,7 +128,8 @@ class PresentationpageTemplate
         $this->bgColor = $bgColor;
     }
 
-
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 7, max: 7)]
     #[ORM\Column(type: 'string', length: 7, unique: false, nullable: false)]
     private string $textColor = self::ALLOWED_TEXT_COLORS[0];
 
