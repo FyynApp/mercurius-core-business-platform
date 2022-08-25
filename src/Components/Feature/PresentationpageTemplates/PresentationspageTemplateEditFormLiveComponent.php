@@ -49,15 +49,14 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function save()
+    public function save(): void
     {
         $this->submitForm();
-
         $this->storeDataAndRebuildForm();
     }
 
     #[LiveAction]
-    public function addElement(#[LiveArg] string $variant)
+    public function addElement(#[LiveArg] string $variant): void
     {
         $this->submitForm();
 
@@ -71,7 +70,7 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function removeElement(#[LiveArg] string $elementId)
+    public function removeElement(#[LiveArg] string $elementId): void
     {
         $this->submitForm();
 
