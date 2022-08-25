@@ -10,6 +10,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -96,6 +100,89 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
 
         $this->storeDataAndRebuildForm();
     }
+
+    #[LiveAction]
+    public function moveElementUp(
+        #[LiveArg] string $elementId
+    ): void
+    {
+        $elementToMove = $this->entityManager->find(PresentationpageTemplateElement::class, $elementId);
+        if (is_null($elementToMove)) {
+            throw new NotFoundHttpException("Could not find element with id '$elementId'.");
+        }
+
+        if ($elementToMove->getPosition() === 0) {
+            throw new BadRequestHttpException("Element '$elementId' is already at the first position.");
+        }
+
+        $otherElement = null;
+        foreach ($this->presentationpageTemplate->getPresentationpageTemplateElements() as $element) {
+            if ($element->getPosition() === $elementToMove->getPosition() - 1) {
+                $otherElement = $element;
+                break;
+            }
+        }
+
+        if (is_null($otherElement)) {
+            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, 'Could not find element above the element to move.');
+        }
+
+        $this->submitForm();
+
+        $this->swapPositionOfElements($elementToMove, $otherElement);
+    }
+
+    #[LiveAction]
+    public function moveElementDown(
+        #[LiveArg] string $elementId
+    ): void
+    {
+        $elementToMove = $this->entityManager->find(PresentationpageTemplateElement::class, $elementId);
+        if (is_null($elementToMove)) {
+            throw new NotFoundHttpException("Could not find element with id '$elementId'.");
+        }
+
+        if ($elementToMove->getPosition() === $this->presentationpageTemplate->getPresentationpageTemplateElements()->count() - 1) {
+            throw new BadRequestHttpException("Element '$elementId' is already at the last position.");
+        }
+
+        $otherElement = null;
+        foreach ($this->presentationpageTemplate->getPresentationpageTemplateElements() as $element) {
+            if ($element->getPosition() === $elementToMove->getPosition() + 1) {
+                $otherElement = $element;
+                break;
+            }
+        }
+
+        if (is_null($otherElement)) {
+            throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR, 'Could not find element below the element to move.');
+        }
+
+        $this->submitForm();
+
+        $this->swapPositionOfElements($elementToMove, $otherElement);
+    }
+
+
+    private function swapPositionOfElements(
+        PresentationpageTemplateElement $firstElement,
+        PresentationpageTemplateElement $secondElement
+    ): void
+    {
+        $firstElementPosition = $firstElement->getPosition();
+        $secondElementPosition = $secondElement->getPosition();
+
+        $firstElement->setPosition($secondElementPosition);
+        $secondElement->setPosition($firstElementPosition);
+
+        $this->entityManager->persist($firstElement);
+        $this->entityManager->persist($secondElement);
+
+        $this->entityManager->flush();
+
+        $this->storeDataAndRebuildForm();
+    }
+
 
     private function storeDataAndRebuildForm(): void
     {
