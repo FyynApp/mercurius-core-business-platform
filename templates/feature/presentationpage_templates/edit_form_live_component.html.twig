@@ -50,7 +50,7 @@
                         {{ 'feature.presentationpage_templates.editor.edit_form.subheadline_elements'|trans }}
                     </h2>
 
-                    {% for key, elementForm in form.presentationpageTemplateElements %}
+                    {% for elementForm in form.presentationpageTemplateElements %}
 
                         {% for elementFormRow in elementForm %}
 
@@ -75,7 +75,7 @@
                                             {% if form.vars.valid %}
                                                 <button
                                                         data-action="live#action"
-                                                        data-action-name="removeElement(index={{ key }}, elementId={{ elementForm.vars.value.id }})"
+                                                        data-action-name="removeElement(elementId={{ elementForm.vars.value.id }})"
                                                         type="button"
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-1 pt-1 pb-1 text-red-600 w-8 h-8">

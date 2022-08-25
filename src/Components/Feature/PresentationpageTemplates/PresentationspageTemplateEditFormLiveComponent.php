@@ -71,7 +71,7 @@ class PresentationspageTemplateEditFormLiveComponent extends AbstractController
     }
 
     #[LiveAction]
-    public function removeElement(#[LiveArg] int $index, #[LiveArg] string $elementId)
+    public function removeElement(#[LiveArg] string $elementId)
     {
         $this->submitForm();
 
