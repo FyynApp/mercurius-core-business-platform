@@ -129,11 +129,13 @@ feature:
         label_element_variant:
           headline: 'Text für Überschrift'
           paragraph: 'Text für Absatz'
+          image_url: 'URL des Bildes'
           calendly_embed: 'Calendly Widget Code'
         cta_remove_element: 'Löschen'
         cta_add_element:
           headline: 'Überschrift'
           paragraph: 'Absatz'
+          image_url: 'Bild von URL'
           calendly_embed: 'Calendly Widget'
         save_button: 'Vorlage speichern'
 

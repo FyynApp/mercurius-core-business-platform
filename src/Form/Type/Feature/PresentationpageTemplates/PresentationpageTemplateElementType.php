@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -54,6 +55,18 @@ class PresentationpageTemplateElementType extends AbstractType
                             'required' => true,
                             'trim' => false,
                             'label' => 'feature.presentationpage_templates.editor.edit_form.label_element_variant.paragraph'
+                        ]
+                    );
+                    break;
+
+                case PresentationpageTemplateElementVariant::ImageUrl:
+                    $form->add(
+                        'textContent',
+                        UrlType::class,
+                        [
+                            'required' => true,
+                            'trim' => false,
+                            'label' => 'feature.presentationpage_templates.editor.edit_form.label_element_variant.image_url'
                         ]
                     );
                     break;

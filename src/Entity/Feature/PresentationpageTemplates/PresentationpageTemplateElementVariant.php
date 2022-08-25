@@ -7,6 +7,6 @@ enum PresentationpageTemplateElementVariant: string
     case Headline = 'headline';
     case Paragraph = 'paragraph';
     case MercuriusVideo = 'mercuriusVideo';
-    case Image = 'image';
+    case ImageUrl = 'imageUrl';
     case CalendlyEmbed = 'calendlyEmbed';
 }

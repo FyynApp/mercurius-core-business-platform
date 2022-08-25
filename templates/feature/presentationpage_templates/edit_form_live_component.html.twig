@@ -127,6 +127,18 @@
                         <button
                                 class="cta-link-primary mb-4 w-52"
                                 data-action="live#action"
+                                data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::ImageUrl').value }})"
+                                type="button"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
+                            </svg>
+                            {{ 'feature.presentationpage_templates.editor.edit_form.cta_add_element.image_url'|trans }}
+                        </button>
+
+                        <button
+                                class="cta-link-primary mb-4 w-52"
+                                data-action="live#action"
                                 data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed').value }})"
                                 type="button"
                         >
@@ -188,6 +200,13 @@
                                     {{ element.textContent }}
                                 </p>
                             {% endif %}
+
+                            {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::ImageUrl').value %}
+                                <p class="mb-2">
+                                    <img src="{{ element.textContent }}">
+                                </p>
+                            {% endif %}
+
                             {% if element.elementVariant.value is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed').value %}
                                 <p class="mb-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="ml-0 pl-0 h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
