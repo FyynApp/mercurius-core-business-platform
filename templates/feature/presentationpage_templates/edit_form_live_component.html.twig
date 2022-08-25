@@ -83,33 +83,37 @@
 
                             {% if form.vars.valid %}
 
-                                <div class="flex flex-row justify-end w-20">
-                                    <div class="flex flex-col">
-                                        <div>
-                                            <button
-                                                    class="p-0 -m-4 ml-1 mr-1"
-                                                    data-action="live#action"
-                                                    data-action-name="moveElementUp(elementId={{ elementForm.vars.value.id }})"
-                                                    type="button"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-1 pt-1 pb-1 w-8 h-8">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-                                                </svg>
-                                            </button>
-                                        </div>
+                                <div class="flex flex-row justify-end items-start w-20">
+                                    <div class="flex flex-col justify-end">
+                                        {% if elementForm.vars.value.position is not same as 0 %}
+                                            <div>
+                                                <button
+                                                        class="p-0 ml-1 mr-0"
+                                                        data-action="live#action"
+                                                        data-action-name="moveElementUp(elementId={{ elementForm.vars.value.id }})"
+                                                        type="button"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-1 pt-1 pb-1 w-8 h-8">
+                                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm.53 5.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72v5.69a.75.75 0 001.5 0v-5.69l1.72 1.72a.75.75 0 101.06-1.06l-3-3z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        {% endif %}
 
-                                        <div>
-                                            <button
-                                                    class="p-0 -m-4 ml-1 mr-1"
-                                                    data-action="live#action"
-                                                    data-action-name="moveElementDown(elementId={{ elementForm.vars.value.id }})"
-                                                    type="button"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-1 pt-1 pb-1 w-8 h-8">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                                </svg>
-                                            </button>
-                                        </div>
+                                        {% if elementForm.vars.value.position is not same as (form.presentationpageTemplateElements|length - 1) %}
+                                            <div>
+                                                <button
+                                                        class="p-0 ml-1 mr-0"
+                                                        data-action="live#action"
+                                                        data-action-name="moveElementDown(elementId={{ elementForm.vars.value.id }})"
+                                                        type="button"
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-1 mr-0 pt-1 pb-1 w-8 h-8">
+                                                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-.53 14.03a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V8.25a.75.75 0 00-1.5 0v5.69l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        {% endif %}
                                     </div>
 
                                     <div>
@@ -118,7 +122,7 @@
                                                 data-action-name="removeElement(elementId={{ elementForm.vars.value.id }})"
                                                 type="button"
                                         >
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="-mt-3 ml-1 pt-1 pb-1 text-red-600 w-8 h-8">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pt-1 pb-1 text-red-600 w-8 h-8">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </button>
