@@ -298,7 +298,10 @@
 
                                 {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::ImageUrl') %}
                                     <div class="mb-2 w-36 mx-auto">
-                                        <img src="{{ element.textContent }}">
+                                        <img
+                                                class="rounded-md"
+                                                src="{{ element.textContent }}"
+                                        >
                                     </div>
                                 {% endif %}
 
