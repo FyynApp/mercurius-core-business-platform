@@ -35,6 +35,10 @@ class PresentationpageTemplateElementType extends AbstractType
                 );
 
             switch ($presentationpageTemplateElement->getElementVariant()) {
+
+                case PresentationpageTemplateElementVariant::MercuriusVideo:
+                    return;
+
                 case PresentationpageTemplateElementVariant::Headline:
                     $form->add(
                         'textContent',

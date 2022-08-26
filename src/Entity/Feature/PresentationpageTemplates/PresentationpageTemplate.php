@@ -176,6 +176,17 @@ class PresentationpageTemplate
         $elementToRemove->setPresentationpageTemplate(null);
     }
 
+    public function hasMercuriusVideoVariantElement(): bool
+    {
+        foreach ($this->getPresentationpageTemplateElements() as $element) {
+            if ($element->getElementVariant() === PresentationpageTemplateElementVariant::MercuriusVideo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(mappedBy: 'presentationpageTemplate', targetEntity: Presentationpage::class, cascade: ['persist'])]
     private Collection $presentationpages;

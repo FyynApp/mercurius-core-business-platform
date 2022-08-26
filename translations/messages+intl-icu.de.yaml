@@ -127,15 +127,18 @@ feature:
         label_bg_color: 'Hintergrundfarbe der Seite'
         label_text_color: 'Textfarbe'
         label_element_variant:
+          mercurius_video: 'Fyyn.io Videoaufnahme'
+          mercurius_video_note: 'An der Position dieses Elements wird auf Ihrer Präsentationsseite später das von Ihnen aufgenommene Video eingebettet.'
           headline: 'Text für Überschrift'
           paragraph: 'Text für Absatz'
           image_url: 'URL des Bildes'
           calendly_embed: 'Calendly Widget Code'
         cta_remove_element: 'Löschen'
         cta_add_element:
+          mercurius_video: 'Fyyn.io Videoaufnahme'
           headline: 'Überschrift'
           paragraph: 'Absatz'
-          image_url: 'Bild von URL'
+          image_url: 'Externes Bild'
           calendly_embed: 'Calendly Widget'
         save_button: 'Vorlage speichern'
 
