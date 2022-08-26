@@ -82,4 +82,21 @@ class PresentationpageTemplatesController extends AbstractController
             );
         }
     }
+
+    public function previewAction(
+        string                 $presentationpageTemplateId,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $presentationpageTemplate = $entityManager->find(PresentationpageTemplate::class, $presentationpageTemplateId);
+
+        if (is_null($presentationpageTemplate)) {
+            throw new NotFoundHttpException("No presentationpage template with id '$presentationpageTemplateId' found.");
+        }
+
+        return $this->render(
+            'feature/presentationpage_templates/preview.html.twig',
+            ['presentationpageTemplate' => $presentationpageTemplate]
+        );
+    }
 }

@@ -1,0 +1,55 @@
+{# @var presentationpageTemplate \App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate #}
+
+{% extends 'base_naked.html.twig' %}
+
+{% block body %}
+
+    <div class="flex flex-col justify-between shadow-inner p-4 bg-gray-500 shadow-inner">
+
+        <div
+                class="w-full text-center p-8 rounded-3xl bg-none shadow-2xl shadow-gray-700 max-w-3xl mx-auto"
+                style="background-color: {{ presentationpageTemplate.bgColor }}; color: {{ presentationpageTemplate.textColor }};"
+        >
+
+            {% for element in presentationpageTemplate.presentationpageTemplateElements %}
+
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::MercuriusVideo') %}
+                    <div class="mx-auto mt-8 w-96 max-w-full">
+                        <img
+                                class="rounded-lg"
+                                src="{{ asset('assets/images/feature/presentationpageTemplates/video-placeholder-768x432.png') }}"
+                        >
+                    </div>
+                {% endif %}
+
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline') %}
+                    <h2 class="text-xl font-bold mt-8 first:mt-0">
+                        {{ element.textContent }}
+                    </h2>
+                {% endif %}
+
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph') %}
+                    <p class="text-md">
+                        {{ element.textContent }}
+                    </p>
+                {% endif %}
+
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::ImageUrl') %}
+                    <div class="mt-8 mb-8 p-0 mx-auto w-36 max-w-full">
+                        <img
+                                src="{{ element.textContent }}"
+                        >
+                    </div>
+                {% endif %}
+
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed') %}
+                    <div class="mt-8 mb-8 p-0">
+                        {{ element.textContent|raw }}
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+{% endblock %}

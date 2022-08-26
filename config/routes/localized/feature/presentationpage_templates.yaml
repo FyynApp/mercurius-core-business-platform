@@ -14,6 +14,6 @@ feature.presentationpage_templates.editor:
   methods: [ GET, POST ]
 
 feature.presentationpage_templates.preview:
-  path: /my/presentationpage-templates/{templateId}/preview
+  path: /my/presentationpage-templates/{presentationpageTemplateId}/preview
   controller: App\Controller\Feature\PresentationpageTemplates\PresentationpageTemplatesController::previewAction
   methods: [ GET ]
