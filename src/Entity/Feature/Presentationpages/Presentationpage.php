@@ -4,7 +4,6 @@ namespace App\Entity\Feature\Presentationpages;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
-use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\Video;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -54,38 +53,6 @@ class Presentationpage
     public function setTitle(?string $title): void
     {
         $this->title = $title;
-    }
-
-
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 8192)]
-    #[ORM\Column(type: 'string', length: 8192, unique: false, nullable: true)]
-    private ?string $welcomeText;
-
-    public function getWelcomeText(): ?string
-    {
-        return $this->welcomeText;
-    }
-
-    public function setWelcomeText(?string $welcomeText): void
-    {
-        $this->welcomeText = $welcomeText;
-    }
-
-
-    #[Assert\NotBlank(allowNull: true)]
-    #[Assert\Length(max: 2048)]
-    #[ORM\Column(type: 'string', length: 2048, unique: false, nullable: true)]
-    private ?string $calendlyEmbedCode;
-
-    public function getCalendlyEmbedCode(): ?string
-    {
-        return $this->calendlyEmbedCode;
-    }
-
-    public function setCalendlyEmbedCode(?string $calendlyEmbedCode): void
-    {
-        $this->calendlyEmbedCode = $calendlyEmbedCode;
     }
 
     
