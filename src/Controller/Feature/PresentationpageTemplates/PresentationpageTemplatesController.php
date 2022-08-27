@@ -4,8 +4,6 @@ namespace App\Controller\Feature\PresentationpageTemplates;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
-use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElement;
-use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElementVariant;
 use App\Form\Type\Feature\PresentationpageTemplates\PresentationpageTemplateType;
 use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,25 +17,22 @@ class PresentationpageTemplatesController extends AbstractController
 {
     public function overviewAction(PresentationpageTemplatesService $presentationpageTemplatesService): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
-
         return $this->render(
             'feature/presentationpage_templates/overview.html.twig',
             ['PresentationpageTemplatesService' => $presentationpageTemplatesService]
         );
     }
 
-    public function createAction(): Response
+    public function createAction(
+        PresentationpageTemplatesService $presentationpageTemplatesService
+    ): Response
     {
-        $template = new PresentationpageTemplate();
+        $template = $presentationpageTemplatesService->createTemplate($this->getUser());
 
-        $element = new PresentationpageTemplateElement();
-        $element->setElementVariant(PresentationpageTemplateElementVariant::Headline);
-        $element->setPosition(0);
-        $element->setTextContent('Hello, world.');
-
-        $template->addPresentationpageTemplateElement($element);
+        return $this->redirectToRoute(
+            'feature.presentationpage_templates.editor',
+            ['presentationpageTemplateId' => $template->getId()]
+        );
     }
 
     public function editorAction(

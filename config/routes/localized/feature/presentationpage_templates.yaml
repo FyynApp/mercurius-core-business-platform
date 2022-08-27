@@ -4,7 +4,7 @@ feature.presentationpage_templates.overview:
   methods: [ GET ]
 
 feature.presentationpage_templates.create:
-  path: /my/presentationpage-templates/create
+  path: /my/presentationpage-templates/
   controller: App\Controller\Feature\PresentationpageTemplates\PresentationpageTemplatesController::createAction
   methods: [ POST ]
 

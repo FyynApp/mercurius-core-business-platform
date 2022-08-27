@@ -114,6 +114,9 @@ feature:
       subtitle: 'Vorlagen legen fest, wie eine Videolandingpage beim Aufruf durch Ihren Kunden dargestellt wird.'
       cta:
         add: 'Vorlage anlegen'
+    create:
+      default_title: 'Standardvorlage'
+      new_title: 'Vorlage {index}'
     editor:
       title: 'Vorlageneditor'
       subtitle: 'Bearbeiten Sie hier Aussehen und Verhalten dieser Vorlage'
