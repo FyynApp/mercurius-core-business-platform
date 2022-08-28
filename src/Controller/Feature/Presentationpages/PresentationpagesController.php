@@ -4,6 +4,7 @@ namespace App\Controller\Feature\Presentationpages;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
+use App\Entity\Feature\Recordings\Video;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,10 +38,19 @@ class PresentationpagesController extends AbstractController
 
     public function createFromVideoAction(
         string $videoId,
-        PresentationpagesService $presentationpagesService
+        PresentationpagesService $presentationpagesService,
+        EntityManagerInterface $entityManager
     ): Response
     {
-        $presentationpage = $presentationpagesService->createTemplate($this->getUser());
+        $video = $entityManager->find(Video::class, $videoId);
+
+        if (is_null($video)) {
+            throw new NotFoundHttpException("No video with id '$videoId' found.");
+        }
+
+        $presentationpage = $presentationpagesService->createFromVideo(
+            $video
+        );
 
         return $this->redirectToRoute(
             'feature.presentationpages.editor',

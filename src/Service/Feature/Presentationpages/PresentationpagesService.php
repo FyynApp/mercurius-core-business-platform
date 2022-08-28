@@ -76,24 +76,19 @@ class PresentationpagesService
      * @throws Exception
      */
     public function createFromVideo(
-        Video $video,
-        User $user
+        Video $video
     ): Presentationpage {
-
-        if ($video->getUser()->getId() !== $user->getId()) {
-            throw new Exception("Video '{$video->getId()}' belongs to user '{$video->getUser()->getId()}', and not to expected user '{$user->getId()}'.");
-        }
 
         $presentationpage = new Presentationpage();
         $presentationpage->setTitle(
             $this->translator->trans(
                 'feature.presentationpages.create.new_title',
-                ['index' => sizeof($this->getPresentationpagesForUser($user)) + 1]
+                ['index' => sizeof($this->getPresentationpagesForUser($video->getUser())) + 1]
             )
         );
         $presentationpage->setBgColor(Presentationpage::ALLOWED_BG_COLORS[0]);
         $presentationpage->setTextColor(Presentationpage::ALLOWED_TEXT_COLORS[0]);
-        $presentationpage->setUser($user);
+        $presentationpage->setUser($video->getUser());
 
         $element = new PresentationpageElement();
         $element->setElementVariant(PresentationpageElementVariant::MercuriusVideo);
