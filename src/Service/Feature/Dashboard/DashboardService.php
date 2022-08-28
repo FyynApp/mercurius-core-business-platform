@@ -4,21 +4,21 @@ namespace App\Service\Feature\Dashboard;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\Video;
-use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
+use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
 
 class DashboardService
 {
-    private PresentationpageTemplatesService $presentationpageTemplatesService;
+    private PresentationpagesService $presentationpagesService;
 
     private VideoService $videoService;
 
     public function __construct(
-        PresentationpageTemplatesService $presentationpageTemplatesService,
-        VideoService $videoService
+        PresentationpagesService $presentationpagesService,
+        VideoService             $videoService
     )
     {
-        $this->presentationpageTemplatesService = $presentationpageTemplatesService;
+        $this->presentationpagesService = $presentationpagesService;
         $this->videoService = $videoService;
     }
 
@@ -49,8 +49,8 @@ class DashboardService
         return array_slice($videos, 0, 3);
     }
 
-    public function getNumberOfPresentationpageTemplates(User $user): int
+    public function getNumberOfPresentationpages(User $user): int
     {
-        return sizeof($this->presentationpageTemplatesService->getTemplatesForUser($user));
+        return sizeof($this->presentationpagesService->getPresentationpagesForUser($user));
     }
 }

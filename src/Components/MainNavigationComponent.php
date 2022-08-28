@@ -57,9 +57,9 @@ class MainNavigationComponent
                 ),
 
                 new NavigationEntry(
-                    'mainnav.presentationpage_templates',
-                    'feature.presentationpage_templates.overview',
-                    ['feature.presentationpage_templates.add_form']
+                    'mainnav.presentationpages',
+                    'feature.presentationpages.overview',
+                    ['feature.presentationpages.editor']
                 ),
             ];
         }

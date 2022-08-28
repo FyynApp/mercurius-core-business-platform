@@ -1,4 +1,4 @@
-{# @var presentationpageTemplate \App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate #}
+{# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
 
 {% extends 'base_naked.html.twig' %}
 
@@ -8,33 +8,33 @@
 
         <div
                 class="w-full text-center p-8 rounded-3xl bg-none shadow-2xl shadow-gray-700 max-w-3xl mx-auto"
-                style="background-color: {{ presentationpageTemplate.bgColor }}; color: {{ presentationpageTemplate.textColor }};"
+                style="background-color: {{ presentationpage.bgColor }}; color: {{ presentationpage.textColor }};"
         >
 
-            {% for element in presentationpageTemplate.presentationpageTemplateElements %}
+            {% for element in presentationpage.presentationpageElements %}
 
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::MercuriusVideo') %}
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
                     <div class="mx-auto mt-8 w-96 max-w-full">
                         <img
                                 class="rounded-lg"
-                                src="{{ asset('assets/images/feature/presentationpageTemplates/video-placeholder-768x432.png') }}"
+                                src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
                         >
                     </div>
                 {% endif %}
 
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Headline') %}
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
                     <h2 class="text-xl font-bold mt-8 first:mt-0">
                         {{ element.textContent }}
                     </h2>
                 {% endif %}
 
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::Paragraph') %}
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
                     <p class="text-md">
                         {{ element.textContent }}
                     </p>
                 {% endif %}
 
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::ImageUrl') %}
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl') %}
                     <div class="mt-8 mb-8 p-0 mx-auto w-36 max-w-full">
                         <img
                                 class="rounded-md"
@@ -43,7 +43,7 @@
                     </div>
                 {% endif %}
 
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\PresentationpageTemplates\\PresentationpageTemplateElementVariant::CalendlyEmbed') %}
+                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
                     <div class="mt-8 mb-8 p-0">
                         {{ element.textContent|raw }}
                     </div>

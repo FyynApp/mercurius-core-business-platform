@@ -85,12 +85,12 @@
 
                 {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
                     {% block contentLeft %}
-                        {{ 'feature.dashboard.show.your_presentationpage_templates'|trans }}
+                        {{ 'feature.dashboard.show.your_presentationpages'|trans }}
                     {% endblock %}
                     {% block contentRight %}
-                        <a href="{{ path('feature.presentationpage_templates.overview') }}">
-                            {{ 'feature.dashboard.show.your_presentationpage_templates.info'|trans(
-                                {numberOfTemplates: DashboardService.numberOfPresentationpageTemplates(app.user)}
+                        <a href="{{ path('feature.presentationpages.overview') }}">
+                            {{ 'feature.dashboard.show.your_presentationpages.info'|trans(
+                                {numberOfPresentationpages: DashboardService.numberOfPresentationpages(app.user)}
                             ) }}
                         </a>
                     {% endblock %}

@@ -2,7 +2,7 @@
 
 namespace App\Entity\Feature\Account;
 
-use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
+use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Entity\Feature\Recordings\Video;
@@ -22,7 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct()
     {
-        $this->presentationpageTemplates = new ArrayCollection();
+        $this->presentationpages = new ArrayCollection();
         $this->recordingSessions = new ArrayCollection();
         $this->recordingSettingsBags = new ArrayCollection();
         $this->videos = new ArrayCollection();
@@ -118,16 +118,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    /** @var PresentationpageTemplate[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: PresentationpageTemplate::class, cascade: ['persist'])]
-    private Collection $presentationpageTemplates;
+    /** @var Presentationpage[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Presentationpage::class, cascade: ['persist'])]
+    private Collection $presentationpages;
 
     /**
-     * @return PresentationpageTemplate[]|Collection
+     * @return Presentationpage[]|Collection
      */
-    public function getPresentationpageTemplates(): Collection
+    public function getPresentationpages(): Collection
     {
-        return $this->presentationpageTemplates;
+        return $this->presentationpages;
     }
 
 

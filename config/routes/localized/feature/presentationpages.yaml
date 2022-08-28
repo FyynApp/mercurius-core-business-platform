@@ -1,20 +1,24 @@
-feature.presentationpages.show:
-  path: /presentationpages/{presentationpageId}
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::showAction
+feature.presentationpages.overview:
+  path: /my/presentationpages/
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::overviewAction
   methods: [ GET ]
 
+feature.presentationpages.create_template:
+  path: /my/presentationpages/template/
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createTemplateAction
+  methods: [ POST ]
 
 feature.presentationpages.create_from_video:
-  path: /my/presentationpages/create-from-video
+  path: /my/presentationpages/from-video/{videoId}
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createFromVideoAction
-  methods: [ GET ]
+  methods: [ POST ]
 
 feature.presentationpages.editor:
   path: /my/presentationpages/{presentationpageId}/editor
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::editorAction
   methods: [ GET, POST ]
 
-feature.presentationpages.switch_to_template:
-  path: /my/presentationpages/{presentationpageId}/switch-to-template/{presentationpageTemplateId}
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::switchToTemplateAction
-  methods: [ POST ]
+feature.presentationpages.preview:
+  path: /my/presentationpages/{presentationpageId}/preview
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::previewAction
+  methods: [ GET ]

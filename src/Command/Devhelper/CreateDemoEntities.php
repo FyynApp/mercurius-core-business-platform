@@ -3,7 +3,7 @@
 namespace App\Command\Devhelper;
 
 use App\Entity\Feature\Account\User;
-use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
+use App\Entity\Feature\Presentationpages\Presentationpage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -46,11 +46,12 @@ class CreateDemoEntities extends Command
             $this->entityManager->flush();
         }
 
-        $presentationpageTemplate = new PresentationpageTemplate();
-        $presentationpageTemplate->setUser($user);
-        $presentationpageTemplate->setTitle('My first presentation-page template!');
+        $presentationpage = new Presentationpage();
+        $presentationpage->setIsTemplate(true);
+        $presentationpage->setUser($user);
+        $presentationpage->setTitle('My first presentation-page!');
 
-        $this->entityManager->persist($presentationpageTemplate);
+        $this->entityManager->persist($presentationpage);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 

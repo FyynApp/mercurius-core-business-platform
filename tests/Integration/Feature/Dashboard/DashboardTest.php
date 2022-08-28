@@ -20,7 +20,7 @@ class DashboardTest extends KernelTestCase
 
         $this->assertEquals(
             0,
-            $dashboardService->getNumberOfPresentationpageTemplates($user)
+            $dashboardService->getNumberOfPresentationpages($user)
         );
     }
 }

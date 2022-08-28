@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Form\Type\Feature\PresentationpageTemplates;
+namespace App\Form\Type\Feature\Presentationpages;
 
-use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElement;
-use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplateElementVariant;
+use App\Entity\Feature\Presentationpages\PresentationpageElement;
+use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use InvalidArgumentException;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -15,16 +15,16 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 
-class PresentationpageTemplateElementType extends AbstractType
+class PresentationpageElementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            /** @var PresentationpageTemplateElement $presentationpageTemplateElement */
-            $presentationpageTemplateElement = $event->getData();
+            /** @var PresentationpageElement $presentationpageElement */
+            $presentationpageElement = $event->getData();
             $form = $event->getForm();
 
-            if (is_null($presentationpageTemplateElement)) {
+            if (is_null($presentationpageElement)) {
                 return;
             }
 
@@ -34,61 +34,61 @@ class PresentationpageTemplateElementType extends AbstractType
                     HiddenType::class
                 );
 
-            switch ($presentationpageTemplateElement->getElementVariant()) {
+            switch ($presentationpageElement->getElementVariant()) {
 
-                case PresentationpageTemplateElementVariant::MercuriusVideo:
+                case PresentationpageElementVariant::MercuriusVideo:
                     return;
 
-                case PresentationpageTemplateElementVariant::Headline:
+                case PresentationpageElementVariant::Headline:
                     $form->add(
                         'textContent',
                         TextType::class,
                         [
                             'required' => true,
                             'trim' => false,
-                            'label' => 'feature.presentationpage_templates.editor.edit_form.label_element_variant.headline'
+                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.headline'
                         ]
                     );
                     break;
 
-                case PresentationpageTemplateElementVariant::Paragraph:
+                case PresentationpageElementVariant::Paragraph:
                     $form->add(
                         'textContent',
                         TextareaType::class,
                         [
                             'required' => true,
                             'trim' => false,
-                            'label' => 'feature.presentationpage_templates.editor.edit_form.label_element_variant.paragraph'
+                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.paragraph'
                         ]
                     );
                     break;
 
-                case PresentationpageTemplateElementVariant::ImageUrl:
+                case PresentationpageElementVariant::ImageUrl:
                     $form->add(
                         'textContent',
                         UrlType::class,
                         [
                             'required' => true,
                             'trim' => false,
-                            'label' => 'feature.presentationpage_templates.editor.edit_form.label_element_variant.image_url'
+                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.image_url'
                         ]
                     );
                     break;
 
-                case PresentationpageTemplateElementVariant::CalendlyEmbed:
+                case PresentationpageElementVariant::CalendlyEmbed:
                     $form->add(
                         'textContent',
                         TextareaType::class,
                         [
                             'required' => true,
                             'trim' => false,
-                            'label' => 'feature.presentationpage_templates.editor.edit_form.label_element_variant.calendly_embed'
+                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.calendly_embed'
                         ]
                     );
                     break;
 
                 default:
-                    throw new InvalidArgumentException($presentationpageTemplateElement->getElementVariant()->value);
+                    throw new InvalidArgumentException($presentationpageElement->getElementVariant()->value);
             }
         });
     }
@@ -96,7 +96,7 @@ class PresentationpageTemplateElementType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => PresentationpageTemplateElement::class,
+            'data_class' => PresentationpageElement::class,
         ]);
     }
 }

@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{# @var PresentationpageTemplatesService \App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService #}
+{# @var PresentationpagesService \App\Service\Feature\Presentationpages\PresentationpagesService #}
 
-{% block title %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'mainnav.presentationpage_templates'|trans }}{% endblock %}
+{% block title %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
 
 {% block body %}
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.presentationpage_templates.overview.title'|trans({ numberOfTemplates: PresentationpageTemplatesService.templatesForUser(app.user)|length}) }}
+            {{ 'feature.presentationpages.overview.title'|trans({ numberOfPresentationpages: PresentationpagesService.presentationpagesForUser(app.user)|length}) }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'feature.presentationpage_templates.overview.subtitle'|trans }}
+            {{ 'feature.presentationpages.overview.subtitle'|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}
@@ -22,43 +22,43 @@
 
                 <div class="flex justify-center items-center h-full w-full">
                     <!-- Heroicon name: solid/plus-circle -->
-                    <form action="{{ path('feature.presentationpage_templates.create') }}" method="post">
+                    <form action="{{ path('feature.presentationpages.create') }}" method="post">
                         <button type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
                             </svg>
-                            {{ 'feature.presentationpage_templates.overview.cta.add'|trans }}
+                            {{ 'feature.presentationpages.overview.cta.add'|trans }}
                         </button>
                     </form>
                 </div>
 
             </div>
 
-            {% if PresentationpageTemplatesService.templatesForUser(app.user)|length > 0 %}
+            {% if PresentationpagesService.presentationpagesForUser(app.user)|length > 0 %}
 
                 <div class="collection-box">
 
-                    {% for presentationpageTemplate in PresentationpageTemplatesService.templatesForUser(app.user) %}
-                        {# @var presentationpageTemplate \App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate #}
+                    {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user) %}
+                        {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
 
                         {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: cycle([true, false], loop.index0), colspanLeft: 3, colspanRight: 9 } %}
                             {% block contentLeft %}
-                                {{ presentationpageTemplate.title }}
+                                {{ presentationpage.title }}
                                 <div>
-                                    <a href="{{ path('feature.presentationpage_templates.editor', { presentationpageTemplateId: presentationpageTemplate.id }) }}">Edit</a>
+                                    <a href="{{ path('feature.presentationpages.editor', { presentationpageId: presentationpage.id }) }}">Edit</a>
                                 </div>
                             {% endblock %}
                             {% block contentRight %}
 
                                 <div
-                                    style="background-color: {{ presentationpageTemplate.bgColor }};"
+                                    style="background-color: {{ presentationpage.bgColor }};"
                                     class="rounded p-5"
                                 >
                                     <span
-                                        style="color: {{ presentationpageTemplate.textColor }}"
+                                        style="color: {{ presentationpage.textColor }}"
                                         class="font-bold"
                                     >
-                                        {{ 'feature.presentationpage_templates.add_form.formfield.text_color_sample_headline'|trans }}
+                                        {{ 'feature.presentationpages.add_form.formfield.text_color_sample_headline'|trans }}
                                     </span>
                                 </div>
                             {% endblock %}

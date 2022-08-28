@@ -37,9 +37,9 @@ class PresentationpageElement
         return $this->presentationpage;
     }
 
-    public function setPresentationpage(?Presentationpage $presentationPage): void
+    public function setPresentationpage(?Presentationpage $presentationpage): void
     {
-        $this->presentationpage = $presentationPage;
+        $this->presentationpage = $presentationpage;
     }
 
 

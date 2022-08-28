@@ -3,73 +3,59 @@
 namespace App\Form\Type\Feature\Presentationpages;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
-use App\Entity\Feature\PresentationpageTemplates\PresentationpageTemplate;
-use App\Service\Feature\PresentationpageTemplates\PresentationpageTemplatesService;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\AbstractType;
 
 class PresentationpageType extends AbstractType
 {
-    private PresentationpageTemplatesService $presentationpageTemplatesService;
-
-    public function __construct(PresentationpageTemplatesService $presentationpageTemplatesService)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $this->presentationpageTemplatesService = $presentationpageTemplatesService;
-    }
-
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        /** @var Presentationpage $presentationpage */
-        $presentationpage = $options['data'];
-
         $builder
             ->add(
                 'title',
                 TextType::class,
                 [
+                    'label' => 'feature.presentationpages.editor.edit_form.label_title',
                     'trim' => false,
-                    'empty_data' => ''
-                ]
+                ],
             )
 
             ->add(
-                'welcomeText',
-                TextareaType::class,
+                'bgColor',
+                TextType::class,
                 [
-                    'trim' => false,
-                    'empty_data' => ''
-                ]
+                    'label' => 'feature.presentationpages.editor.edit_form.label_bg_color'
+                ],
             )
 
             ->add(
-                'calendlyEmbedCode',
-                TextareaType::class
-            )
-
-            ->add(
-                'presentationpageTemplate',
-                EntityType::class,
+                'textColor',
+                TextType::class,
                 [
-                    'class' => PresentationpageTemplate::class,
-                    'expanded' => true,
-                    'multiple' => false,
-                    'choice_label' => 'title',
-                    'choices' => $this
-                        ->presentationpageTemplatesService
-                        ->getTemplatesForUser($presentationpage->getUser()),
+                    'label' => 'feature.presentationpages.editor.edit_form.label_text_color'
+                ],
+            )
+
+            ->add(
+                'presentationpageElements',
+                CollectionType::class,
+                [
+                    'entry_type' => PresentationpageElementType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false
                 ]
             )
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Presentationpage::class
+            'data_class' => Presentationpage::class,
         ]);
     }
 }
