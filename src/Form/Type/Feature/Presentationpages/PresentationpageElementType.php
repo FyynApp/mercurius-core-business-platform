@@ -78,10 +78,10 @@ class PresentationpageElementType extends AbstractType
                 case PresentationpageElementVariant::CalendlyEmbed:
                     $form->add(
                         'textContent',
-                        TextareaType::class,
+                        UrlType::class,
                         [
                             'required' => true,
-                            'trim' => false,
+                            'trim' => true,
                             'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.calendly_embed'
                         ]
                     );

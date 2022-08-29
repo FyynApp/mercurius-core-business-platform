@@ -45,7 +45,14 @@
 
                 {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
                     <div class="mt-8 mb-8 p-0">
-                        {{ element.textContent|raw }}
+                        <!-- Calendly Inline-Widget Beginn -->
+                        <div
+                                class="calendly-inline-widget w-full"
+                                data-url="{{ element.textContent|trim }}"
+                                style="height: 900px;"
+                        ></div>
+                        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+                        <!-- Calendly Inline-Widget Ende -->
                     </div>
                 {% endif %}
 

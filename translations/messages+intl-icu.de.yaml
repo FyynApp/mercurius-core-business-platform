@@ -115,7 +115,10 @@ feature:
           headline: 'Text für Überschrift'
           paragraph: 'Text für Absatz'
           image_url: 'URL des Bildes'
-          calendly_embed: 'Calendly Widget Code'
+          calendly_embed: 'Calendly Link'
+        help_element_variant:
+          calendly_embed_start: 'Um den Link zu erhalten, gehen Sie einfach auf'
+          calendly_embed_end: 'und klicken Sie beim gewünschten Termin auf "Share". Es öffnet sich ein Dialog mit der Überschrift "Einen Link teilen" - nutzen Sie dort einfach die Funktion "Link kopieren", und fügen Sie die kopierte URL dann hier ein.'
         cta_remove_element: 'Löschen'
         cta_add_element:
           mercurius_video: 'Fyyn.io Videoaufnahme'
