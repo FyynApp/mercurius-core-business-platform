@@ -86,7 +86,7 @@
     }
 
     .heroicon-next-to-text {
-        @apply h-6 w-6 inline align-bottom;
+        @apply h-5 w-5 inline align-bottom;
     }
 
     textarea {

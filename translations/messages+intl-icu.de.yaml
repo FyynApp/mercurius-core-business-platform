@@ -146,7 +146,8 @@ feature:
           paragraph: 'Absatz'
           image_url: 'Externes Bild'
           calendly_embed: 'Calendly Widget'
-        save_button: 'Vorlage speichern'
+        save_button_page: 'Änderungen speichern'
+        save_button_template: 'Änderungen speichern'
 
   account:
     login:
