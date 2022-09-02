@@ -1,7 +1,7 @@
 {# @var this \App\Components\SideNavigationComponent #}
 
 {% if this.type is same as 'stacked' %}
-    <div class="pt-4 pb-3 border-t border-gray-700">
+    <div class="pt-4 pb-3 border-t border-gray-700 z-50">
 
         {% if this.user %}
             <div class="flex items-center px-3">
@@ -54,7 +54,7 @@
 {% else %}
 
     {% if app.user %}
-        <div class="hidden md:block">
+        <div class="hidden md:block z-50">
             <div class="ml-4 flex items-center md:ml-6">
 
                 <!-- Profile dropdown -->
@@ -129,7 +129,7 @@
         {% for entry in this.entries %}
             <a
                 {% if entry.active %}
-                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium z-50"
                     aria-current="page"
                 {% else %}
                     class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
