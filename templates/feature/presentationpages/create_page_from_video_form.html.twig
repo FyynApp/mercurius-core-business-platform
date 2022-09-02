@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{# @var video \App\Entity\Feature\Recordings\Video #}
+{# @var PresentationpagesService \App\Service\Feature\Presentationpages\PresentationpagesService #}
+{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
+
+{% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed 'embeds/default_content_box.html.twig' %}
+        {% block contentBoxTitle %}
+            {{ 'feature.presentationpages.overview.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'feature.presentationpages.overview.subtitle'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <div class="collection-box">
+
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { colspanLeft: 6, colspanRight: 6 } %}
+                    {% block contentLeft %}
+
+                        <video
+                                class="mx-auto rounded-md w-full"
+                                autoplay="autoplay"
+                                controls
+                                poster="{{ VideoService.posterStillAssetUrl(video) }}"
+                        >
+                            <source
+                                    src="{{ VideoService.getFullAssetUrl(video) }}"
+                            >
+                        </video>
+
+                    {% endblock %}
+                    {% block contentRight %}
+
+                        <h2 class="text-xl font-bold mb-4">
+                            {{ 'feature.presentationpages.create_page_from_video_form.templates_headline'|trans }}
+                        </h2>
+
+                        {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
+                            {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
+
+                            <div class="mb-4 p-4 bg-indigo-50 rounded-md">
+                                <h3 class="text-lg font-bold">
+                                    {{ presentationpage.title }}
+                                </h3>
+
+                                <div>
+                                    <form
+                                            action="{{ path('feature.presentationpages.create_page_from_video_and_template', { videoId: video.id, templateId: presentationpage.id }) }}"
+                                            method="post"
+                                            class="inline-block">
+                                        <button
+                                                class="cta-link-primary-small"
+                                                type="submit"
+                                        >
+                                            {{ 'feature.presentationpages.overview.cta.create_page_from_template'|trans }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                    {% endblock %}
+                {% endembed %}
+
+            </div>
+
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

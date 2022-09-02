@@ -10,11 +10,11 @@
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.presentationpages.editor.title'|trans }}
+            {{ ('feature.presentationpages.editor.title_' ~ presentationpage.type.value)|trans }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'feature.presentationpages.editor.subtitle'|trans }}
+            {{ ('feature.presentationpages.editor.subtitle_' ~ presentationpage.type.value)|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}

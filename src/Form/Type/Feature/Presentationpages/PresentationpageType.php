@@ -6,6 +6,8 @@ use App\Entity\Feature\Presentationpages\Presentationpage;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 
@@ -13,16 +15,22 @@ class PresentationpageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add(
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            /** @var Presentationpage $presentationpage */
+            $presentationpage = $event->getData();
+            $form = $event->getForm();
+
+            $form->add(
                 'title',
                 TextType::class,
                 [
-                    'label' => 'feature.presentationpages.editor.edit_form.label_title',
+                    'label' => 'feature.presentationpages.editor.edit_form.label_title_' . $presentationpage->getType()->value,
                     'trim' => false,
                 ],
-            )
+            );
+        });
 
+        $builder
             ->add(
                 'bgColor',
                 TextType::class,

@@ -4,6 +4,7 @@ namespace App\Command\Devhelper;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
+use App\Entity\Feature\Presentationpages\PresentationpageType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -47,7 +48,7 @@ class CreateDemoEntities extends Command
         }
 
         $presentationpage = new Presentationpage();
-        $presentationpage->setIsTemplate(true);
+        $presentationpage->setType(PresentationpageType::Page);
         $presentationpage->setUser($user);
         $presentationpage->setTitle('My first presentation-page!');
 

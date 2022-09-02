@@ -1,4 +1,5 @@
 {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
+{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
 
 {% extends 'base_naked.html.twig' %}
 
@@ -7,19 +8,37 @@
     <div class="flex flex-col justify-between shadow-inner p-4 bg-gray-500 shadow-inner">
 
         <div
-                class="w-full text-center p-8 rounded-3xl bg-none shadow-2xl shadow-gray-700 max-w-3xl mx-auto"
+                class="w-full text-left p-8 rounded-3xl bg-none shadow-2xl shadow-gray-700 max-w-3xl mx-auto"
                 style="background-color: {{ presentationpage.bgColor }}; color: {{ presentationpage.textColor }};"
         >
 
             {% for element in presentationpage.presentationpageElements %}
 
                 {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
-                    <div class="mx-auto mt-8 w-96 max-w-full">
-                        <img
-                                class="rounded-lg"
-                                src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
-                        >
-                    </div>
+
+                    {% if presentationpage.video is null %}
+                        <div class="mx-auto mt-8 w-96 max-w-full">
+                            <img
+                                    class="rounded-lg"
+                                    src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
+                            >
+                        </div>
+
+                    {% else %}
+                        <div class="m-8 p-8">
+                            <video
+                                    class="mx-auto rounded-md w-full"
+                                    autoplay="autoplay"
+                                    controls
+                                    poster="{{ VideoService.posterStillAssetUrl(presentationpage.video) }}"
+                            >
+                                <source
+                                        src="{{ VideoService.getFullAssetUrl(presentationpage.video) }}"
+                                >
+                            </video>
+                        </div>
+                    {% endif %}
+
                 {% endif %}
 
                 {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
@@ -30,7 +49,7 @@
 
                 {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
                     <p class="text-md">
-                        {{ element.textContent }}
+                        {{ element.textContent|nl2br }}
                     </p>
                 {% endif %}
 

@@ -3,14 +3,24 @@ feature.presentationpages.overview:
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::overviewAction
   methods: [ GET ]
 
+feature.presentationpages.create_page:
+  path: /my/presentationpages-of-type-page/
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createPageAction
+  methods: [ POST ]
+
 feature.presentationpages.create_template:
-  path: /my/presentationpages/template/
+  path: /my/presentationpages-of-type-template/
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createTemplateAction
   methods: [ POST ]
 
-feature.presentationpages.create_from_video:
-  path: /my/presentationpages/from-video/{videoId}
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createFromVideoAction
+feature.presentationpages.create_page_from_video_form:
+  path: /my/presentationpages/create-from-video-'{videoId}'-form
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createPageFromVideoFormAction
+  methods: [ GET ]
+
+feature.presentationpages.create_page_from_video_and_template:
+  path: /my/presentationpages-from-video-'{videoId}'-and-template-'{templateId}'/
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createPageFromVideoAndTemplateAction
   methods: [ POST ]
 
 feature.presentationpages.editor:

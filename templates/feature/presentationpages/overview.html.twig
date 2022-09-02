@@ -9,7 +9,7 @@
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.presentationpages.overview.title'|trans({ numberOfPresentationpages: PresentationpagesService.presentationpagesForUser(app.user)|length}) }}
+            {{ 'feature.presentationpages.overview.title'|trans }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
@@ -18,56 +18,122 @@
 
         {% block contentBoxContent %}
 
-            <div class="mb-6 border-2 border-dotted border-gray-400 rounded-lg">
+            <div class="collection-box">
 
-                <div class="flex justify-center items-center h-full w-full">
-                    <!-- Heroicon name: solid/plus-circle -->
-                    <form action="{{ path('feature.presentationpages.create_template') }}" method="post">
-                        <button type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                            </svg>
-                            {{ 'feature.presentationpages.overview.cta.add'|trans }}
-                        </button>
-                    </form>
-                </div>
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { colspanLeft: 6, colspanRight: 6 } %}
+                    {% block contentLeft %}
+
+                        <h2 class="text-xl font-bold mb-4">
+                            {{ 'feature.presentationpages.overview.headline_pages'|trans }}
+                        </h2>
+
+                        <form
+                                class="mb-4"
+                                action="{{ path('feature.presentationpages.create_page') }}"
+                                method="post"
+                        >
+                            <button
+                                    class="flex flex-col sm:flex-row items-center"
+                                    type="submit"
+                            >
+                                <!-- Heroicon name: solid/plus-circle -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                                </svg>
+                                {{ 'feature.presentationpages.overview.cta.create_page'|trans }}
+                            </button>
+                        </form>
+
+                        {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')) %}
+                            {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
+
+                            <div class="mb-4 p-4 bg-indigo-200 rounded-md">
+                                <h3 class="text-lg font-bold">
+                                    {{ presentationpage.title }}
+                                </h3>
+
+                                <div>
+                                    <a
+                                            class="cta-link-primary-small"
+                                            href="{{ path('feature.presentationpages.editor', { presentationpageId: presentationpage.id }) }}">
+                                        {{ 'feature.presentationpages.overview.cta.edit_page'|trans }}
+                                    </a>
+
+                                    <a
+                                            class="cta-link-primary-small"
+                                            target="_blank"
+                                            href="{{ path('feature.presentationpages.preview', { presentationpageId: presentationpage.id }) }}">
+                                        {{ 'feature.presentationpages.overview.cta.preview_page'|trans }}
+                                    </a>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                    {% endblock %}
+                    {% block contentRight %}
+
+                        <h2 class="text-xl font-bold mb-4">
+                            {{ 'feature.presentationpages.overview.headline_templates'|trans }}
+                        </h2>
+
+                        <form
+                                class="mb-4"
+                                action="{{ path('feature.presentationpages.create_template') }}"
+                                method="post"
+                        >
+                            <button
+                                    class="flex flex-col sm:flex-row items-center"
+                                    type="submit"
+                            >
+                                <!-- Heroicon name: solid/plus-circle -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                                </svg>
+                                {{ 'feature.presentationpages.overview.cta.create_template'|trans }}
+                            </button>
+                        </form>
+
+                        {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
+                            {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
+
+                            <div class="mb-4 p-4 bg-indigo-50 rounded-md">
+                                <h3 class="text-lg font-bold">
+                                    {{ presentationpage.title }}
+                                </h3>
+
+                                <div>
+                                    <a
+                                            class="cta-link-primary-small"
+                                            href="{{ path('feature.presentationpages.editor', { presentationpageId: presentationpage.id }) }}">
+                                        {{ 'feature.presentationpages.overview.cta.edit_template'|trans }}
+                                    </a>
+
+                                    <a
+                                            class="cta-link-primary-small"
+                                            target="_blank"
+                                            href="{{ path('feature.presentationpages.preview', { presentationpageId: presentationpage.id }) }}">
+                                        {{ 'feature.presentationpages.overview.cta.preview_template'|trans }}
+                                    </a>
+
+                                    <form class="inline-block">
+                                        <button
+                                                class="cta-link-primary-small"
+                                                type="submit"
+                                        >
+                                            {{ 'feature.presentationpages.overview.cta.create_page_from_template'|trans }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                    {% endblock %}
+                {% endembed %}
 
             </div>
 
-            {% if PresentationpagesService.presentationpagesForUser(app.user)|length > 0 %}
-
-                <div class="collection-box">
-
-                    {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user) %}
-                        {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
-
-                        {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: cycle([true, false], loop.index0), colspanLeft: 3, colspanRight: 9 } %}
-                            {% block contentLeft %}
-                                {{ presentationpage.title }}
-                                <div>
-                                    <a href="{{ path('feature.presentationpages.editor', { presentationpageId: presentationpage.id }) }}">Edit</a>
-                                </div>
-                            {% endblock %}
-                            {% block contentRight %}
-
-                                <div
-                                    style="background-color: {{ presentationpage.bgColor }};"
-                                    class="rounded p-5"
-                                >
-                                    <span
-                                        style="color: {{ presentationpage.textColor }}"
-                                        class="font-bold"
-                                    >
-                                        {{ 'feature.presentationpages.add_form.formfield.text_color_sample_headline'|trans }}
-                                    </span>
-                                </div>
-                            {% endblock %}
-                        {% endembed %}
-                    {% endfor %}
-
-                </div>
-
-            {% endif %}
 
         {% endblock %}
     {% endembed %}

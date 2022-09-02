@@ -90,7 +90,7 @@
                     {% block contentRight %}
                         <a href="{{ path('feature.presentationpages.overview') }}">
                             {{ 'feature.dashboard.show.your_presentationpages.info'|trans(
-                                {numberOfPresentationpages: DashboardService.numberOfPresentationpages(app.user)}
+                                { numberOfPresentationpages: DashboardService.numberOfPresentationpages(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')) }
                             ) }}
                         </a>
                     {% endblock %}

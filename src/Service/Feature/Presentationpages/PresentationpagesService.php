@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Presentationpages\PresentationpageElement;
 use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
+use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Recordings\Video;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,16 +27,28 @@ class PresentationpagesService
         $this->translator = $translator;
     }
 
-    public function createDefaultTemplate(
+    public function createPage(
         User $user
     ): Presentationpage {
 
         $presentationpage = new Presentationpage();
-        $presentationpage->setIsTemplate(true);
-        $presentationpage->setTitle($this->translator->trans('feature.presentationpages.create.default_title'));
+        $presentationpage->setTitle(
+            $this->translator->trans(
+                'feature.presentationpages.create_page.new_title',
+                ['index' => sizeof($this->getPresentationpagesForUser($user, PresentationpageType::Page)) + 1]
+            )
+        );
         $presentationpage->setBgColor(Presentationpage::ALLOWED_BG_COLORS[0]);
         $presentationpage->setTextColor(Presentationpage::ALLOWED_TEXT_COLORS[0]);
         $presentationpage->setUser($user);
+
+        $element = new PresentationpageElement();
+        $element->setElementVariant(PresentationpageElementVariant::MercuriusVideo);
+        $element->setPosition(0);
+
+        $presentationpage->addPresentationpageElement($element);
+
+        $this->entityManager->persist($element);
         $this->entityManager->persist($presentationpage);
         $this->entityManager->flush();
 
@@ -48,11 +61,11 @@ class PresentationpagesService
     ): Presentationpage {
 
         $presentationpage = new Presentationpage();
-        $presentationpage->setIsTemplate(true);
+        $presentationpage->setType(PresentationpageType::Template);
         $presentationpage->setTitle(
             $this->translator->trans(
-                'feature.presentationpages.create.new_title',
-                ['index' => sizeof($this->getPresentationpagesForUser($user)) + 1]
+                'feature.presentationpages.create_template.new_title',
+                ['index' => sizeof($this->getPresentationpagesForUser($user, PresentationpageType::Template)) + 1]
             )
         );
         $presentationpage->setBgColor(Presentationpage::ALLOWED_BG_COLORS[0]);
@@ -75,30 +88,32 @@ class PresentationpagesService
     /**
      * @throws Exception
      */
-    public function createFromVideo(
-        Video $video
+    public function createFromVideoAndTemplate(
+        Video $video,
+        Presentationpage $template
     ): Presentationpage {
 
         $presentationpage = new Presentationpage();
         $presentationpage->setTitle(
             $this->translator->trans(
-                'feature.presentationpages.create.new_title',
-                ['index' => sizeof($this->getPresentationpagesForUser($video->getUser())) + 1]
+                'feature.presentationpages.create_page.new_title',
+                ['index' => sizeof($this->getPresentationpagesForUser($video->getUser(), PresentationpageType::Page)) + 1]
             )
         );
-        $presentationpage->setBgColor(Presentationpage::ALLOWED_BG_COLORS[0]);
-        $presentationpage->setTextColor(Presentationpage::ALLOWED_TEXT_COLORS[0]);
+        $presentationpage->setBgColor($template->getBgColor());
+        $presentationpage->setTextColor($template->getTextColor());
         $presentationpage->setUser($video->getUser());
 
-        $element = new PresentationpageElement();
-        $element->setElementVariant(PresentationpageElementVariant::MercuriusVideo);
-        $element->setPosition(0);
-
-        $presentationpage->addPresentationpageElement($element);
+        foreach ($template->getPresentationpageElements() as $element) {
+            $newElement = clone $element;
+            $newElement->resetId();
+            $newElement->setPresentationpage($presentationpage);
+            $presentationpage->addPresentationpageElement($newElement);
+            $this->entityManager->persist($newElement);
+        }
 
         $presentationpage->setVideo($video);
 
-        $this->entityManager->persist($element);
         $this->entityManager->persist($presentationpage);
         $this->entityManager->flush();
 
@@ -106,9 +121,19 @@ class PresentationpagesService
     }
 
     /** @return Presentationpage[] */
-    public function getPresentationpagesForUser(User $user): array
+    public function getPresentationpagesForUser(User $user, PresentationpageType $type): array
     {
-        return $user->getPresentationpages()->toArray();
+        $results = [];
+
+        /** @var Presentationpage[] $pages */
+        $pages = $user->getPresentationpages()->toArray();
+        foreach ($pages as $page) {
+            if ($page->getType() === $type) {
+                $results[] = $page;
+            }
+        }
+
+        return $results;
     }
 
 

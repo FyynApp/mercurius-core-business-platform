@@ -5,6 +5,7 @@ namespace App\Service\Feature\Recordings;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
+use App\Entity\Feature\Recordings\Video;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,13 +34,16 @@ class RecordingSessionService
     }
 
 
-    public function handleRecordingSessionFinished(RecordingSession $recordingSession, VideoService $videoService): void
+    public function handleRecordingSessionFinished(
+        RecordingSession $recordingSession,
+        VideoService $videoService
+    ): Video
     {
         $recordingSession->setIsFinished(true);
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
 
-        $videoService->createVideoEntityForFinishedRecordingSession($recordingSession);
+        return $videoService->createVideoEntityForFinishedRecordingSession($recordingSession);
     }
 
     /** @throws Exception */

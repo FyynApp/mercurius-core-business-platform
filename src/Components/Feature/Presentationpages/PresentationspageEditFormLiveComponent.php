@@ -6,6 +6,7 @@ use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Presentationpages\PresentationpageElement;
 use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
+use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,14 +38,18 @@ class PresentationspageEditFormLiveComponent extends AbstractController
 
     private EntityManagerInterface $entityManager;
 
+    public VideoService $videoService;
+
 
     public function __construct(
         LoggerInterface $logger,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        VideoService $videoService
     )
     {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
+        $this->videoService = $videoService;
     }
 
     public function mount(?Presentationpage $presentationpage = null)

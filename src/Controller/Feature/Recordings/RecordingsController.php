@@ -50,9 +50,12 @@ class RecordingsController extends AbstractController
             return $this->redirectToRoute('feature.recordings.videos.overview');
         }
 
-        $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
+        $video = $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
 
-        return $this->redirectToRoute('feature.recordings.videos.overview');
+        return $this->redirectToRoute(
+            'feature.presentationpages.create_page_from_video_form',
+            ['videoId' => $video->getId()]
+        );
     }
 
     public function videosOverviewAction(VideoService $videoService): Response

@@ -27,6 +27,11 @@ class PresentationpageElement
         return $this->id;
     }
 
+    public function resetId(): void
+    {
+        $this->id = null;
+    }
+
 
     #[ORM\ManyToOne(targetEntity: Presentationpage::class, cascade: ['persist'], inversedBy: 'presentationpageElements')]
     #[ORM\JoinColumn(name: 'presentationpages_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]

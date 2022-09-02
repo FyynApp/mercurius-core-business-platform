@@ -3,6 +3,7 @@
 namespace App\Service\Feature\Dashboard;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Recordings\Video;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
@@ -49,8 +50,8 @@ class DashboardService
         return array_slice($videos, 0, 3);
     }
 
-    public function getNumberOfPresentationpages(User $user): int
+    public function getNumberOfPresentationpages(User $user, PresentationpageType $type): int
     {
-        return sizeof($this->presentationpagesService->getPresentationpagesForUser($user));
+        return sizeof($this->presentationpagesService->getPresentationpagesForUser($user, $type));
     }
 }

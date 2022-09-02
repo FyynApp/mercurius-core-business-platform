@@ -82,17 +82,17 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'boolean')]
-    private bool $isTemplate = false;
+    #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageType::class)]
+    private PresentationpageType $type = PresentationpageType::Page;
 
-    public function isTemplate(): bool
+    public function getType(): PresentationpageType
     {
-        return $this->isTemplate;
+        return $this->type;
     }
 
-    public function setIsTemplate(bool $isTemplate): void
+    public function setType(PresentationpageType $type): void
     {
-        $this->isTemplate = $isTemplate;
+        $this->type = $type;
     }
 
 
@@ -122,8 +122,8 @@ class Presentationpage
 
     public function setVideo(?Video $video): void
     {
-        if (!is_null($video) && $this->isTemplate()) {
-            throw new InvalidArgumentException('Cannot set video on a presentation page that acts as a template!');
+        if (!is_null($video) && $this->getType() === PresentationpageType::Template) {
+            throw new InvalidArgumentException('Cannot set video on a presentationpage that acts as a template!');
         }
         $this->video = $video;
     }
@@ -216,18 +216,5 @@ class Presentationpage
             }
         }
         return false;
-    }
-
-
-    /** @var Presentationpage[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'presentationpage', targetEntity: Presentationpage::class, cascade: ['persist'])]
-    private Collection $presentationpages;
-
-    /**
-     * @return Presentationpage[]|Collection
-     */
-    public function getPresentationpages(): Collection
-    {
-        return $this->presentationpages;
     }
 }

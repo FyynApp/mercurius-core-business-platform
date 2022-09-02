@@ -59,6 +59,13 @@ feature:
           title: 'Paket M'
           description: '4,99 EUR/Monat — bis zu 10 Aufnahmen pro Monat'
       your_latest_videos: 'Neueste Videos'
+      your_presentationpages: 'Präsentationsseiten'
+      your_presentationpages.info: >-
+        {numberOfPresentationpages, plural,
+          =0    {Sie haben bisher keine Präsentationsseiten.}
+          one   {Sie haben aktuell eine Präsentationsseite.}
+          other {Sie haben aktuell # Präsentationsseiten.}
+        }
       cta:
         manage_video: 'Verwalten'
 
@@ -82,31 +89,44 @@ feature:
 
   presentationpages:
     overview:
-      title: >-
-        {numberOfPresentationpages, plural,
-          =0    {Sie haben noch keine Vorlagen angelegt}
-          one   {Sie verfügen aktuell über eine Vorlage}
-          other {Sie verfügen aktuell über # Vorlagen}
-        }
+      title: 'Seiten und Vorlagen'
       subtitle: 'Vorlagen legen fest, wie eine Videolandingpage beim Aufruf durch Ihren Kunden dargestellt wird.'
+      headline_pages: 'Seiten'
+      headline_templates: 'Vorlagen'
       cta:
-        add: 'Vorlage anlegen'
-    create:
-      default_title: 'Standardvorlage'
+        create_page: 'Neue Seite anlegen'
+        edit_page: 'Bearbeiten'
+        preview_page: 'Vorschau'
+        create_template: 'Neue Vorlage anlegen'
+        edit_template: 'Bearbeiten'
+        preview_template: 'Vorschau'
+        create_page_from_template: 'Neue Seite von dieser Vorlage'
+    create_page_from_video_form:
+      templates_headline: 'Präsentationsseite aus Vorlage erstellen'
+
+    create_page:
+      new_title: 'Seite {index}'
+    create_template:
       new_title: 'Vorlage {index}'
     editor:
-      title: 'Vorlageneditor'
-      subtitle: 'Bearbeiten Sie hier Aussehen und Verhalten dieser Vorlage'
+      title_page: 'Seiteneditor'
+      title_template: 'Vorlageneditor'
+      subtitle_page: 'Bearbeiten Sie hier Aussehen und Verhalten dieser Seite'
+      subtitle_template: 'Bearbeiten Sie hier Aussehen und Verhalten dieser Vorlage'
       edit_form:
         form_headline: 'Basiswerte und Designelemente'
         subheadline_elements: 'Designelemente'
         subheadline_basesettings: 'Basiswerte'
-        preview_headline: 'Vorschau Seitenaufbau'
-        preview_note: 'Hier sehen Sie vereinfacht dargestellt, wie Präsentationsseiten die auf dieser Vorlage basieren aufgebaut sein werden.'
-        preview_full_note: 'Wenn Sie die vollwertige Vorschau dieser Vorlage in einem neuen Browserfenster sehen möchten, dann klicken Sie bitte hier:'
+        preview_headline_page: 'Vorschau Seitenaufbau'
+        preview_headline_template: 'Vorschau Seitenaufbau'
+        preview_note_page: 'Hier sehen Sie vereinfacht dargestellt wie Ihre Präsentationsseite aufgebaut ist.'
+        preview_note_template: 'Hier sehen Sie vereinfacht dargestellt wie Präsentationsseiten, die aus dieser erstellt werden, aufgebaut sind.'
+        preview_full_note_page: 'Wenn Sie die vollwertige Vorschau dieser Seite in einem neuen Browserfenster sehen möchten, dann klicken Sie bitte hier:'
+        preview_full_note_template: 'Wenn Sie die vollwertige Vorschau dieser Vorlage in einem neuen Browserfenster sehen möchten, dann klicken Sie bitte hier:'
         preview_full_note_cta: 'Vollwertige Vorschau öffnen'
         preview_note_no_elements: 'Fügen Sie Elemente zu Ihrer Vorlage hinzu, um eine Vorschau zu sehen.'
-        label_title: 'Name der Vorlage'
+        label_title_page: 'Name der Seite (nur für Sie sichtbar)'
+        label_title_template: 'Name der Vorlage'
         label_bg_color: 'Hintergrundfarbe der Seite'
         label_text_color: 'Textfarbe'
         label_element_variant:

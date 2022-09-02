@@ -248,23 +248,23 @@
             <div class="sm:fixed sm:top-16 bg-gray-100 p-8 rounded-l-lg shadow shadow-2xl shadow-gray-700 h-full overflow-scroll">
 
                 <h1 class="mb-6 font-bold text-xl">
-                    {{ 'feature.presentationpages.editor.edit_form.preview_headline'|trans }}
+                    {{ ('feature.presentationpages.editor.edit_form.preview_headline_' ~ this.presentationpage.type.value)|trans }}
                 </h1>
 
                 {% if this.presentationpage.presentationpageElements.count is same as 0 %}
 
                     <p>
-                        {{ 'feature.presentationpages.editor.edit_form.preview_note_no_elements'|trans }}
+                        {{ ('feature.presentationpages.editor.edit_form.preview_note_no_elements_' ~ this.presentationpage.type.value)|trans }}
                     </p>
 
                 {% else %}
 
                     <p class="mb-6">
-                        {{ 'feature.presentationpages.editor.edit_form.preview_note'|trans }}
+                        {{ ('feature.presentationpages.editor.edit_form.preview_note_' ~ this.presentationpage.type.value)|trans }}
                     </p>
 
                     <p class="mb-2">
-                        {{ 'feature.presentationpages.editor.edit_form.preview_full_note'|trans }}
+                        {{ ('feature.presentationpages.editor.edit_form.preview_full_note_' ~ this.presentationpage.type.value)|trans }}
                     </p>
                     <p class="mb-6">
                         <a
@@ -277,7 +277,7 @@
                     </p>
 
                     <div
-                            class="flex flex-col rounded-lg p-4 shadow-inner text-center justify-center items-center"
+                            class="flex flex-col rounded-lg p-4 shadow-inner text-left justify-center items-center"
                             style="background-color: {{ this.presentationpage.bgColor }}; color: {{ this.presentationpage.textColor }};"
                     >
                         <div
@@ -288,10 +288,17 @@
 
                                 {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
                                     <div class="text-lg p-4">
-                                        <img
-                                                class="w-96 rounded-md"
-                                                src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
-                                        >
+                                        {% if element.presentationpage.video is null %}
+                                            <img
+                                                    class="w-96 rounded-md"
+                                                    src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
+                                            >
+                                        {% else %}
+                                            <img
+                                                    class="w-96 rounded-md"
+                                                    src="{{ this.videoService.posterStillAssetUrl(this.presentationpage.video) }}"
+                                            >
+                                        {% endif %}
                                     </div>
                                 {% endif %}
 
@@ -303,7 +310,7 @@
 
                                 {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
                                     <p class="mb-2">
-                                        {{ element.textContent }}
+                                        {{ element.textContent|nl2br }}
                                     </p>
                                 {% endif %}
 
