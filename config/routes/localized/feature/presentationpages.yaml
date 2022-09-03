@@ -23,6 +23,11 @@ feature.presentationpages.create_page_from_video_and_template:
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createPageFromVideoAndTemplateAction
   methods: [ POST ]
 
+feature.presentationpages.draft.create:
+  path: /my/presentationpages/{presentationpageId}/drafts/
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createDraftAction
+  methods: [ POST ]
+
 feature.presentationpages.editor:
   path: /my/presentationpages/{presentationpageId}/editor
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::editorAction

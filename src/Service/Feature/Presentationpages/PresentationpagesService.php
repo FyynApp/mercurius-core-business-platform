@@ -11,6 +11,7 @@ use App\Entity\Feature\Recordings\Video;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PresentationpagesService
@@ -88,7 +89,7 @@ class PresentationpagesService
     /**
      * @throws Exception
      */
-    public function createFromVideoAndTemplate(
+    public function createPageFromVideoAndTemplate(
         Video $video,
         Presentationpage $template
     ): Presentationpage {
@@ -120,15 +121,88 @@ class PresentationpagesService
         return $presentationpage;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function createDraft(Presentationpage $presentationpage): Presentationpage
+    {
+        if ($presentationpage->isDraft()) {
+            throw new Exception("Presentationpage '{$presentationpage->getId()}' is itself a draft, aborting.");
+        }
+
+        $draft = new Presentationpage();
+        $draft->setIsDraft(true);
+        $draft->setDraftOfPresentationpage($presentationpage);
+
+        $draft->setCreatedAt(DateAndTimeService::getDateTimeUtc());
+        $draft->setTitle($presentationpage->getTitle());
+        $draft->setUser($presentationpage->getUser());
+        $draft->setType($presentationpage->getType());
+        $draft->setBgColor($presentationpage->getBgColor());
+        $draft->setTextColor($presentationpage->getTextColor());
+        $draft->setVideo($presentationpage->getVideo());
+
+        foreach ($presentationpage->getPresentationpageElements() as $element) {
+            $newElement = clone $element;
+            $newElement->resetId();
+            $newElement->setPresentationpage($presentationpage);
+            $draft->addPresentationpageElement($newElement);
+            $this->entityManager->persist($newElement);
+        }
+
+        $this->entityManager->persist($draft);
+        $this->entityManager->flush();
+
+        return $draft;
+    }
+
+    public function handleEdited(Presentationpage $presentationpage): void
+    {
+        $presentationpage->setUpdatedAt(DateAndTimeService::getDateTimeUtc());
+        $this->entityManager->persist($presentationpage);
+        $this->entityManager->flush();
+
+        if ($presentationpage->isDraft()) {
+            $originalPresentationpage = $presentationpage->getDraftOfPresentationpage();
+            if (is_null($originalPresentationpage)) {
+                throw new InvalidArgumentException("Expected draft presentationpage '{$presentationpage->getId()}' to provide draftOfPresentationpage, but got null.");
+            }
+
+            $originalPresentationpage->setUpdatedAt($presentationpage->getUpdatedAt());
+            $originalPresentationpage->setTitle($presentationpage->getTitle());
+            $originalPresentationpage->setBgColor($presentationpage->getBgColor());
+            $originalPresentationpage->setTextColor($presentationpage->getTextColor());
+
+            foreach ($originalPresentationpage->getPresentationpageElements() as $element) {
+                $originalPresentationpage->removePresentationpageElement($element);
+                $element->setPresentationpage(null);
+                $this->entityManager->remove($element);
+            }
+            $this->entityManager->persist($originalPresentationpage);
+
+            foreach ($presentationpage->getPresentationpageElements() as $element) {
+                $newElement = clone $element;
+                $newElement->resetId();
+                $newElement->setPresentationpage($originalPresentationpage);
+                $originalPresentationpage->addPresentationpageElement($newElement);
+                $this->entityManager->persist($newElement);
+            }
+            $this->entityManager->flush();
+        }
+    }
+
     /** @return Presentationpage[] */
-    public function getPresentationpagesForUser(User $user, PresentationpageType $type): array
+    public function getPresentationpagesForUser(
+        User $user,
+        PresentationpageType $type
+    ): array
     {
         $results = [];
 
         /** @var Presentationpage[] $pages */
         $pages = $user->getPresentationpages()->toArray();
         foreach ($pages as $page) {
-            if ($page->getType() === $type) {
+            if ($page->getType() === $type && !$page->isDraft()) {
                 $results[] = $page;
             }
         }

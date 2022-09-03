@@ -29,11 +29,14 @@ class PresentationpagesController extends AbstractController
         PresentationpagesService $presentationpagesService
     ): Response
     {
-        $presentationpage = $presentationpagesService->createPage($this->getUser());
+        $originalPresentationpage = $presentationpagesService->createPage($this->getUser());
+        $draftPresentationpage = $presentationpagesService->createDraft($originalPresentationpage);
 
         return $this->redirectToRoute(
             'feature.presentationpages.editor',
-            ['presentationpageId' => $presentationpage->getId()]
+            [
+                'presentationpageId' => $draftPresentationpage->getId()
+            ]
         );
     }
 
@@ -41,11 +44,14 @@ class PresentationpagesController extends AbstractController
         PresentationpagesService $presentationpagesService
     ): Response
     {
-        $presentationpage = $presentationpagesService->createTemplate($this->getUser());
+        $originalpresentationpage = $presentationpagesService->createTemplate($this->getUser());
+        $draftPresentationpage = $presentationpagesService->createDraft($originalpresentationpage);
 
         return $this->redirectToRoute(
             'feature.presentationpages.editor',
-            ['presentationpageId' => $presentationpage->getId()]
+            [
+                'presentationpageId' => $draftPresentationpage->getId()
+            ]
         );
     }
 
@@ -91,18 +97,50 @@ class PresentationpagesController extends AbstractController
             throw new NotFoundHttpException("No presentationpage with id '$templateId' found.");
         }
 
-        $presentationpage = $presentationpagesService->createFromVideoAndTemplate($video, $template);
+        $originalPresentationpage = $presentationpagesService->createPageFromVideoAndTemplate($video, $template);
+        $draftPresentationpage = $presentationpagesService->createDraft($originalPresentationpage);
 
         return $this->redirectToRoute(
             'feature.presentationpages.editor',
-            ['presentationpageId' => $presentationpage->getId()]
+            [
+                'presentationpageId' => $draftPresentationpage->getId()
+            ]
+        );
+    }
+
+    public function createDraftAction(
+        string $presentationpageId,
+        EntityManagerInterface $entityManager,
+        PresentationpagesService $presentationpagesService
+    ): Response
+    {
+        $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
+
+        if (is_null($presentationpage)) {
+            throw new NotFoundHttpException("No presentationpage with id '$presentationpageId'.");
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($user->getId() !== $presentationpage->getUser()->getId()) {
+            throw new AccessDeniedHttpException("The presentationpage with id '{$presentationpage->getId()}' does not belong to the current user.");
+        }
+
+        $draft = $presentationpagesService->createDraft($presentationpage);
+
+        return $this->redirectToRoute(
+            'feature.presentationpages.editor',
+            [
+                'presentationpageId' => $draft->getId()
+            ]
         );
     }
 
     public function editorAction(
-        string                           $presentationpageId,
-        Request                          $request,
-        EntityManagerInterface           $entityManager,
+        string                   $presentationpageId,
+        Request                  $request,
+        EntityManagerInterface   $entityManager,
         PresentationpagesService $presentationpagesService
     ): Response
     {
@@ -126,8 +164,7 @@ class PresentationpagesController extends AbstractController
             /** @var Presentationpage $presentationpage */
             $presentationpage = $form->getData();
 
-            $entityManager->persist($presentationpage);
-            $entityManager->flush();
+            $presentationpagesService->handleEdited($presentationpage);
 
             return $this->redirectToRoute('feature.presentationpages.overview');
         } else {

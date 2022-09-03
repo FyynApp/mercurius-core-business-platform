@@ -4,6 +4,8 @@ namespace App\Entity\Feature\Presentationpages;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\Video;
+use App\Service\Aspect\DateAndTime\DateAndTimeService;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,6 +70,7 @@ class Presentationpage
     public function __construct()
     {
         $this->presentationpageElements = new ArrayCollection();
+        $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
 
     #[ORM\Id]
@@ -82,6 +85,34 @@ class Presentationpage
     }
 
 
+    #[ORM\Column(type: 'datetime', nullable: false)]
+    private DateTime $createdAt;
+
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTime $updatedAt;
+
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+
     #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageType::class)]
     private PresentationpageType $type = PresentationpageType::Page;
 
@@ -93,6 +124,38 @@ class Presentationpage
     public function setType(PresentationpageType $type): void
     {
         $this->type = $type;
+    }
+
+
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private bool $isDraft = false;
+
+    public function isDraft(): bool
+    {
+        return $this->isDraft;
+    }
+
+    public function setIsDraft(bool $isDraft): void
+    {
+        $this->isDraft = $isDraft;
+    }
+
+
+    #[ORM\ManyToOne(targetEntity: Presentationpage::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'draft_of_presentationpages_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    private ?Presentationpage $draftOfPresentationpage;
+
+    public function setDraftOfPresentationpage(?Presentationpage $draftOfPresentationpage): void
+    {
+        if (!is_null($draftOfPresentationpage) && !$this->isDraft()) {
+            throw new InvalidArgumentException('Cannot set draftOfPresentationpage because this is not a draft.');
+        }
+        $this->draftOfPresentationpage = $draftOfPresentationpage;
+    }
+
+    public function getDraftOfPresentationpage(): ?Presentationpage
+    {
+        return $this->draftOfPresentationpage;
     }
 
 
@@ -113,7 +176,7 @@ class Presentationpage
 
     #[ORM\ManyToOne(targetEntity: Video::class, cascade: ['persist'], inversedBy: 'presentationpages')]
     #[ORM\JoinColumn(name: 'videos_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    private ?Video $video;
+    private ?Video $video = null;
 
     public function getVideo(): ?Video
     {
