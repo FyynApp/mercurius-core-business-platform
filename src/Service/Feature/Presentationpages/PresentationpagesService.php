@@ -187,6 +187,13 @@ class PresentationpagesService
                 $originalPresentationpage->addPresentationpageElement($newElement);
                 $this->entityManager->persist($newElement);
             }
+
+            foreach ($presentationpage->getPresentationpageElements() as $element) {
+                $presentationpage->removePresentationpageElement($element);
+                $this->entityManager->remove($element);
+            }
+            $this->entityManager->remove($presentationpage);
+
             $this->entityManager->flush();
         }
     }
