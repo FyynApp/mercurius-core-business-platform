@@ -2,9 +2,11 @@
 
 namespace App\Components\Feature\Presentationpages;
 
+use App\Entity\Feature\Presentationpages\BgColor;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Presentationpages\PresentationpageElement;
 use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
+use App\Entity\Feature\Presentationpages\TextColor;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,6 +63,26 @@ class PresentationspageEditFormLiveComponent extends AbstractController
     public function save(): void
     {
         $this->submitForm();
+        $this->storeDataAndRebuildForm();
+    }
+
+    #[LiveAction]
+    public function setBgColor(#[LiveArg] string $bgColorValue): void
+    {
+        $this->submitForm();
+
+        $this->presentationpage->setBgColor(BgColor::from($bgColorValue));
+
+        $this->storeDataAndRebuildForm();
+    }
+
+    #[LiveAction]
+    public function setTextColor(#[LiveArg] string $textColorValue): void
+    {
+        $this->submitForm();
+
+        $this->presentationpage->setTextColor(TextColor::from($textColorValue));
+
         $this->storeDataAndRebuildForm();
     }
 

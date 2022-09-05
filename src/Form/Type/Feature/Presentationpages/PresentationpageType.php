@@ -4,6 +4,7 @@ namespace App\Form\Type\Feature\Presentationpages;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -31,22 +32,6 @@ class PresentationpageType extends AbstractType
         });
 
         $builder
-            ->add(
-                'bgColor',
-                TextType::class,
-                [
-                    'label' => 'feature.presentationpages.editor.edit_form.label_bg_color'
-                ],
-            )
-
-            ->add(
-                'textColor',
-                TextType::class,
-                [
-                    'label' => 'feature.presentationpages.editor.edit_form.label_text_color'
-                ],
-            )
-
             ->add(
                 'presentationpageElements',
                 CollectionType::class,

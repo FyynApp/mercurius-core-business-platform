@@ -18,55 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'presentationpages')]
 class Presentationpage
 {
-    const ALLOWED_BG_COLORS = [
-        '#ffffff',
-        '#ffebee',
-        '#fce4ec',
-        '#f3e5f5',
-        '#ede7f6',
-        '#e8eaf6',
-        '#e3f2fd',
-        '#e0f7fa',
-        '#e0f2f1',
-        '#e8f5e9',
-        '#f1f8e9',
-        '#f9fbe7',
-        '#fffde7',
-        '#fff8e1',
-        '#fff3e0',
-        '#fbe9e7',
-        '#efebe9',
-        '#fafafa',
-        '#eceff1',
-        '#424242',
-        '#37474f',
-    ];
-
-    const ALLOWED_TEXT_COLORS = [
-        '#000000',
-        '#b71c1c',
-        '#880e4f',
-        '#4a148c',
-        '#311b92',
-        '#1a237e',
-        '#0d47a1',
-        '#006064',
-        '#004d40',
-        '#1b5e20',
-        '#33691e',
-        '#827717',
-        '#f57f17',
-        '#ff6f00',
-        '#e65100',
-        '#bf360c',
-        '#3e2723',
-        '#212121',
-        '#263238',
-        '#fafafa',
-        '#eceff1',
-    ];
-
-
     public function __construct()
     {
         $this->presentationpageElements = new ArrayCollection();
@@ -208,32 +159,28 @@ class Presentationpage
     }
 
 
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 7, max: 7)]
-    #[ORM\Column(type: 'string', length: 7, unique: false, nullable: false)]
-    private string $bgColor = self::ALLOWED_BG_COLORS[0];
+    #[ORM\Column(type: 'string', length: 7, nullable: false, enumType: BgColor::class)]
+    private BgColor $bgColor = BgColor::_FFFFFF;
 
-    public function getBgColor(): string
+    public function getBgColor(): BgColor
     {
         return $this->bgColor;
     }
 
-    public function setBgColor(string $bgColor): void
+    public function setBgColor(BgColor $bgColor): void
     {
         $this->bgColor = $bgColor;
     }
 
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 7, max: 7)]
-    #[ORM\Column(type: 'string', length: 7, unique: false, nullable: false)]
-    private string $textColor = self::ALLOWED_TEXT_COLORS[0];
+    #[ORM\Column(type: 'string', length: 7, nullable: false, enumType: TextColor::class)]
+    private TextColor $textColor = TextColor::_000000;
 
-    public function getTextColor(): string
+    public function getTextColor(): TextColor
     {
         return $this->textColor;
     }
 
-    public function setTextColor(string $textColor): void
+    public function setTextColor(TextColor $textColor): void
     {
         $this->textColor = $textColor;
     }
@@ -279,5 +226,15 @@ class Presentationpage
             }
         }
         return false;
+    }
+
+    public function getPossibleBgColors(): array
+    {
+        return BgColor::cases();
+    }
+
+    public function getPossibleTextColors(): array
+    {
+        return TextColor::cases();
     }
 }

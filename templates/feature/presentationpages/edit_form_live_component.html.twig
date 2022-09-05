@@ -29,22 +29,72 @@
                         }
                     }) }}
 
-                    {{ form_row(form.bgColor, {
-                        attr: {
-                            'data-model': 'on(input)|debounce(250)|' ~ form.bgColor.vars.full_name,
-                            'data-action': 'live#action',
-                            'data-action-name': "debounce(300)|save"
-                        }
-                    }) }}
+                    <label class="block text-gray-800 font-bold required">
+                        {{ 'feature.presentationpages.editor.edit_form.label_bg_color'|trans }}
+                    </label>
+                    <div class="mt-2 mb-4">
+                        {% for bgColor in this.presentationpage.possibleBgColors %}
+                            <button
+                                    style="background-color: {{ bgColor.value }}"
+                                    class="
+                                        {% apply spaceless %}
+                                            {% if this.presentationpage.bgColor.value is same as bgColor.value %}
+                                                border-gray-700
+                                                shadow-neutral-700
+                                                outline-2
+                                                outline-white
+                                                shadow-sm
+                                            {% endif %}
+                                            border-1
+                                            w-8
+                                            h-8
+                                            inline-flex
+                                            rounded-full
+                                            cursor-pointer
+                                            focus:outline-none
+                                            focus:shadow-outline
+                                        {% endapply %}
+                                    "
+                                    type="button"
+                                    data-action="live#action"
+                                    data-action-name="setBgColor(bgColorValue={{ bgColor.value }})"
+                            ></button>
+                        {% endfor %}
+                    </div>
 
-                    {{ form_row(form.textColor, {
-                        attr: {
-                            'data-model': 'on(input)|debounce(250)|' ~ form.textColor.vars.full_name,
-                            'data-action': 'live#action',
-                            'data-action-name': "debounce(300)|save"
-                        }
-                    }) }}
 
+                    <label class="block text-gray-800 font-bold required">
+                        {{ 'feature.presentationpages.editor.edit_form.label_text_color'|trans }}
+                    </label>
+                    <div class="mt-2 mb-4">
+                        {% for textColor in this.presentationpage.possibleTextColors %}
+                            <button
+                                    style="background-color: {{ textColor.value }}"
+                                    class="
+                                        {% apply spaceless %}
+                                            {% if this.presentationpage.textColor.value is same as textColor.value %}
+                                                border-gray-700
+                                                shadow-neutral-700
+                                                outline-2
+                                                outline-white
+                                                shadow-sm
+                                            {% endif %}
+                                            border-1
+                                            w-8
+                                            h-8
+                                            inline-flex
+                                            rounded-full
+                                            cursor-pointer
+                                            focus:outline-none
+                                            focus:shadow-outline
+                                        {% endapply %}
+                                    "
+                                    type="button"
+                                    data-action="live#action"
+                                    data-action-name="setTextColor(textColorValue={{ textColor.value }})"
+                            ></button>
+                        {% endfor %}
+                    </div>
 
                     <h2 class="text-lg mt-8 mb-4">
                         {{ 'feature.presentationpages.editor.edit_form.subheadline_elements'|trans }}
@@ -278,7 +328,7 @@
 
                     <div
                             class="flex flex-col rounded-lg p-4 shadow-inner text-left justify-center items-center"
-                            style="background-color: {{ this.presentationpage.bgColor }}; color: {{ this.presentationpage.textColor }};"
+                            style="background-color: {{ this.presentationpage.bgColor.value }}; color: {{ this.presentationpage.textColor.value }};"
                     >
                         <div
                                 class="font-bold p-4"

@@ -3,10 +3,12 @@
 namespace App\Service\Feature\Presentationpages;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\Feature\Presentationpages\BgColor;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Presentationpages\PresentationpageElement;
 use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
+use App\Entity\Feature\Presentationpages\TextColor;
 use App\Entity\Feature\Recordings\Video;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,8 +41,8 @@ class PresentationpagesService
                 ['index' => sizeof($this->getPresentationpagesForUser($user, PresentationpageType::Page)) + 1]
             )
         );
-        $presentationpage->setBgColor(Presentationpage::ALLOWED_BG_COLORS[0]);
-        $presentationpage->setTextColor(Presentationpage::ALLOWED_TEXT_COLORS[0]);
+        $presentationpage->setBgColor(BgColor::_FFFFFF);
+        $presentationpage->setTextColor(TextColor::_000000);
         $presentationpage->setUser($user);
 
         $element = new PresentationpageElement();
@@ -69,8 +71,8 @@ class PresentationpagesService
                 ['index' => sizeof($this->getPresentationpagesForUser($user, PresentationpageType::Template)) + 1]
             )
         );
-        $presentationpage->setBgColor(Presentationpage::ALLOWED_BG_COLORS[0]);
-        $presentationpage->setTextColor(Presentationpage::ALLOWED_TEXT_COLORS[0]);
+        $presentationpage->setBgColor(BgColor::_FFFFFF);
+        $presentationpage->setTextColor(TextColor::_000000);
         $presentationpage->setUser($user);
 
         $element = new PresentationpageElement();
@@ -214,18 +216,5 @@ class PresentationpagesService
         }
 
         return $results;
-    }
-
-
-    /** @return string[] */
-    public function getAvailableBgColors(): array
-    {
-        return Presentationpage::ALLOWED_BG_COLORS;
-    }
-
-    /** @return string[] */
-    public function getAvailableTextColors(): array
-    {
-        return Presentationpage::ALLOWED_TEXT_COLORS;
     }
 }
