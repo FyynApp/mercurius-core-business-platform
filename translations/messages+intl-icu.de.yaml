@@ -103,6 +103,9 @@ feature:
         create_page_from_template: 'Neue Seite von dieser Vorlage'
     create_page_from_video_form:
       templates_headline: 'Präsentationsseite aus Vorlage erstellen'
+    flash:
+      need_to_create_video_to_create_presentationpage: 'Sie müssen zuerst ein Video aufzeichnen, um dann eine Präsentationsseite mit diesem Video erstellen zu können.'
+      need_choose_video_to_create_presentationpage: 'Bitte wählen Sie ein Video aus, für das Sie eine Präsentationsseite erstellen möchten.'
 
     create_page:
       new_title: 'Seite {index}'

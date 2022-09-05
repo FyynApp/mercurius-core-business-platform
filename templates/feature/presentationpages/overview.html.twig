@@ -54,8 +54,9 @@
 
                                 <div>
                                     <form
-                                        action="{{ path('feature.presentationpages.draft.create', { presentationpageId: presentationpage.id }) }}"
-                                        method="post"
+                                            class="inline-block"
+                                            action="{{ path('feature.presentationpages.draft.create', { presentationpageId: presentationpage.id }) }}"
+                                            method="post"
                                     >
                                         <button
                                             class="cta-link-primary-small"
@@ -109,6 +110,7 @@
 
                                 <div>
                                     <form
+                                            class="inline-block"
                                             action="{{ path('feature.presentationpages.draft.create', { presentationpageId: presentationpage.id }) }}"
                                             method="post"
                                     >
@@ -125,19 +127,6 @@
                                             href="{{ path('feature.presentationpages.preview', { presentationpageId: presentationpage.id }) }}">
                                         {{ 'feature.presentationpages.overview.cta.preview_template'|trans }}
                                     </a>
-
-                                    <form
-                                            action="{{ path('feature.presentationpages.create_page_from_video_and_template', { videoId: video.id, templateId: presentationpage.id }) }}"
-                                            method="post"
-                                            class="inline-block"
-                                    >
-                                        <button
-                                                class="cta-link-primary-small"
-                                                type="submit"
-                                        >
-                                            {{ 'feature.presentationpages.overview.cta.create_page_from_template'|trans }}
-                                        </button>
-                                    </form>
                                 </div>
                             </div>
 

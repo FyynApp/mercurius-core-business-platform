@@ -3,6 +3,7 @@
 namespace App\Controller\Feature\Account;
 
 use App\Entity\Feature\Account\User;
+use App\Enum\FlashMessageLabel;
 use App\Form\Type\Feature\Account\RegistrationType;
 use App\Repository\Feature\Account\UserRepository;
 use App\Security\Feature\Account\EmailVerifier;
@@ -91,7 +92,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('feature.account.register');
         }
 
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash(FlashMessageLabel::Success->value, 'Your email address has been verified.');
 
         return $this->redirect($loginLinkHandler->createLoginLink($user)->getUrl());
     }

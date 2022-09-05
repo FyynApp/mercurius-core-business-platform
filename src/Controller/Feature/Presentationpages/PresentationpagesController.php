@@ -5,6 +5,7 @@ namespace App\Controller\Feature\Presentationpages;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Recordings\Video;
+use App\Enum\FlashMessageLabel;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PresentationpagesController extends AbstractController
 {
@@ -26,17 +28,18 @@ class PresentationpagesController extends AbstractController
     }
 
     public function createPageAction(
-        PresentationpagesService $presentationpagesService
+        VideoService $videoService,
+        TranslatorInterface $translator
     ): Response
     {
-        $originalPresentationpage = $presentationpagesService->createPage($this->getUser());
-        $draftPresentationpage = $presentationpagesService->createDraft($originalPresentationpage);
+        if (sizeof($videoService->getAvailableVideos($this->getUser())) === 0) {
+            $this->addFlash(FlashMessageLabel::Info->value, $translator->trans('feature.presentationpages.flash.need_to_create_video_to_create_presentationpage'));
+        } else {
+            $this->addFlash(FlashMessageLabel::Info->value, $translator->trans('feature.presentationpages.flash.need_choose_video_to_create_presentationpage'));
+        }
 
         return $this->redirectToRoute(
-            'feature.presentationpages.editor',
-            [
-                'presentationpageId' => $draftPresentationpage->getId()
-            ]
+            'feature.recordings.videos.overview'
         );
     }
 
