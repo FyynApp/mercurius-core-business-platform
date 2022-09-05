@@ -175,7 +175,6 @@ class PresentationpagesService
 
             foreach ($originalPresentationpage->getPresentationpageElements() as $element) {
                 $originalPresentationpage->removePresentationpageElement($element);
-                $element->setPresentationpage(null);
                 $this->entityManager->remove($element);
             }
             $this->entityManager->persist($originalPresentationpage);
