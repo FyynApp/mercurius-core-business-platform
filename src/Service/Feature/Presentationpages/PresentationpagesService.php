@@ -10,10 +10,12 @@ use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Presentationpages\TextColor;
 use App\Entity\Feature\Recordings\Video;
+use App\Security\VotingAttribute;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PresentationpagesService
@@ -22,12 +24,16 @@ class PresentationpagesService
 
     private TranslatorInterface $translator;
 
+    private AuthorizationCheckerInterface $authorizationChecker;
+
     public function __construct(
         EntityManagerInterface $entityManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     public function createPage(
@@ -95,6 +101,10 @@ class PresentationpagesService
         Video $video,
         Presentationpage $template
     ): Presentationpage {
+
+        if (!$this->authorizationChecker->isGranted(VotingAttribute::Use, $template)) {
+            throw new InvalidArgumentException("User cannot use presentation page '{$template->getId()}'.");
+        }
 
         $presentationpage = new Presentationpage();
         $presentationpage->setTitle(
