@@ -7,6 +7,7 @@ use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Recordings\Video;
 use App\Enum\FlashMessageLabel;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
+use App\Security\VotingAttribute;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -71,6 +72,8 @@ class PresentationpagesController extends AbstractController
             throw new NotFoundHttpException("No video with id '$videoId' found.");
         }
 
+        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $video);
+
         return $this->render(
             'feature/presentationpages/create_page_from_video_form.html.twig',
             [
@@ -94,11 +97,17 @@ class PresentationpagesController extends AbstractController
             throw new NotFoundHttpException("No video with id '$videoId' found.");
         }
 
+        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $video);
+
+
         $template = $entityManager->find(Presentationpage::class, $templateId);
 
         if (is_null($templateId)) {
             throw new NotFoundHttpException("No presentationpage with id '$templateId' found.");
         }
+
+        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $template);
+
 
         $originalPresentationpage = $presentationpagesService->createPageFromVideoAndTemplate($video, $template);
         $draftPresentationpage = $presentationpagesService->createDraft($originalPresentationpage);
@@ -123,12 +132,7 @@ class PresentationpagesController extends AbstractController
             throw new NotFoundHttpException("No presentationpage with id '$presentationpageId'.");
         }
 
-        /** @var User $user */
-        $user = $this->getUser();
-
-        if ($user->getId() !== $presentationpage->getUser()->getId()) {
-            throw new AccessDeniedHttpException("The presentationpage with id '{$presentationpage->getId()}' does not belong to the current user.");
-        }
+        $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $presentationpage);
 
         $draft = $presentationpagesService->createDraft($presentationpage);
 
@@ -153,12 +157,7 @@ class PresentationpagesController extends AbstractController
             throw new NotFoundHttpException("No presentationpage with id '$presentationpageId'.");
         }
 
-        /** @var User $user */
-        $user = $this->getUser();
-
-        if ($user->getId() !== $presentationpage->getUser()->getId()) {
-            throw new AccessDeniedHttpException("The presentationpage with id '{$presentationpage->getId()}' does not belong to the current user.");
-        }
+        $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $presentationpage);
 
         $form = $this->createForm(PresentationpageType::class, $presentationpage);
 
@@ -193,6 +192,9 @@ class PresentationpagesController extends AbstractController
         if (is_null($presentationpage)) {
             throw new NotFoundHttpException("No presentationpage with id '$presentationpageId' found.");
         }
+
+        $this->denyAccessUnlessGranted(VotingAttribute::View->value, $presentationpage);
+
 
         return $this->render(
             'feature/presentationpages/preview.html.twig',

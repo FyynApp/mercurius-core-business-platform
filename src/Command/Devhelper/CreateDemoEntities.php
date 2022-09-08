@@ -47,9 +47,8 @@ class CreateDemoEntities extends Command
             $this->entityManager->flush();
         }
 
-        $presentationpage = new Presentationpage();
+        $presentationpage = new Presentationpage($user);
         $presentationpage->setType(PresentationpageType::Page);
-        $presentationpage->setUser($user);
         $presentationpage->setTitle('My first presentation-page!');
 
         $this->entityManager->persist($presentationpage);

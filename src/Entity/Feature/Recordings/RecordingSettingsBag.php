@@ -3,12 +3,18 @@
 namespace App\Entity\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\UserOwnedEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_settings_bags')]
-class RecordingSettingsBag
+class RecordingSettingsBag implements UserOwnedEntityInterface
 {
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 32)]
     private string $clientId = '';
@@ -30,11 +36,6 @@ class RecordingSettingsBag
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
 

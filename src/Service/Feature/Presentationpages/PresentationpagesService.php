@@ -40,7 +40,7 @@ class PresentationpagesService
         User $user
     ): Presentationpage {
 
-        $presentationpage = new Presentationpage();
+        $presentationpage = new Presentationpage($user);
         $presentationpage->setTitle(
             $this->translator->trans(
                 'feature.presentationpages.create_page.new_title',
@@ -49,7 +49,6 @@ class PresentationpagesService
         );
         $presentationpage->setBgColor(BgColor::_FFFFFF);
         $presentationpage->setTextColor(TextColor::_000000);
-        $presentationpage->setUser($user);
 
         $element = new PresentationpageElement();
         $element->setElementVariant(PresentationpageElementVariant::MercuriusVideo);
@@ -69,7 +68,7 @@ class PresentationpagesService
         User $user
     ): Presentationpage {
 
-        $presentationpage = new Presentationpage();
+        $presentationpage = new Presentationpage($user);
         $presentationpage->setType(PresentationpageType::Template);
         $presentationpage->setTitle(
             $this->translator->trans(
@@ -79,7 +78,6 @@ class PresentationpagesService
         );
         $presentationpage->setBgColor(BgColor::_FFFFFF);
         $presentationpage->setTextColor(TextColor::_000000);
-        $presentationpage->setUser($user);
 
         $element = new PresentationpageElement();
         $element->setElementVariant(PresentationpageElementVariant::MercuriusVideo);
@@ -106,7 +104,11 @@ class PresentationpagesService
             throw new InvalidArgumentException("User cannot use presentation page '{$template->getId()}'.");
         }
 
-        $presentationpage = new Presentationpage();
+        if (!$this->authorizationChecker->isGranted(VotingAttribute::Use, $video)) {
+            throw new InvalidArgumentException("User cannot use video '{$video->getId()}'.");
+        }
+
+        $presentationpage = new Presentationpage($video->getUser());
         $presentationpage->setTitle(
             $this->translator->trans(
                 'feature.presentationpages.create_page.new_title',
@@ -115,7 +117,6 @@ class PresentationpagesService
         );
         $presentationpage->setBgColor($template->getBgColor());
         $presentationpage->setTextColor($template->getTextColor());
-        $presentationpage->setUser($video->getUser());
 
         foreach ($template->getPresentationpageElements() as $element) {
             $newElement = clone $element;
@@ -142,13 +143,12 @@ class PresentationpagesService
             throw new Exception("Presentationpage '{$presentationpage->getId()}' is itself a draft, aborting.");
         }
 
-        $draft = new Presentationpage();
+        $draft = new Presentationpage($presentationpage->getUser());
         $draft->setIsDraft(true);
         $draft->setDraftOfPresentationpage($presentationpage);
 
         $draft->setCreatedAt(DateAndTimeService::getDateTimeUtc());
         $draft->setTitle($presentationpage->getTitle());
-        $draft->setUser($presentationpage->getUser());
         $draft->setType($presentationpage->getType());
         $draft->setBgColor($presentationpage->getBgColor());
         $draft->setTextColor($presentationpage->getTextColor());

@@ -3,6 +3,7 @@
 namespace App\Entity\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\UserOwnedEntityInterface;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,10 +14,11 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_sessions', indexes: [])]
 #[ORM\Index(name: 'created_at_idx', fields: ['createdAt'])]
-class RecordingSession
+class RecordingSession implements UserOwnedEntityInterface
 {
-    public function __construct()
+    public function __construct(User $user)
     {
+        $this->user = $user;
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
         $this->recordingSessionVideoChunks = new ArrayCollection();
     }

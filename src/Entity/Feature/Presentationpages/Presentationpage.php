@@ -4,6 +4,7 @@ namespace App\Entity\Feature\Presentationpages;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\Video;
+use App\Entity\UserOwnedEntityInterface;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,10 +17,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'presentationpages')]
-class Presentationpage
+class Presentationpage implements UserOwnedEntityInterface
 {
-    public function __construct()
+    public function __construct(User $user)
     {
+        $this->user = $user;
         $this->presentationpageElements = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
@@ -117,11 +119,6 @@ class Presentationpage
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
 

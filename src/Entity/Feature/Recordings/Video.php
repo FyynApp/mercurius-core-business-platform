@@ -4,6 +4,7 @@ namespace App\Entity\Feature\Recordings;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
+use App\Entity\UserOwnedEntityInterface;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,13 +16,13 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity]
 #[ORM\Table(name: 'videos')]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
-class Video
+class Video implements UserOwnedEntityInterface
 {
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->createdAt = DateAndTimeService::getDateTimeUtc();
         $this->presentationpages = new ArrayCollection();
+        $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
 
     #[ORM\Id]
@@ -52,11 +53,6 @@ class Video
     public function getUser(): User
     {
         return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
     }
 
 

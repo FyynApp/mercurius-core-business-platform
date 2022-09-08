@@ -200,8 +200,7 @@ class RecordingsApiController extends AbstractController
         $settingsBag = $repo->findOneBy(['clientId' => $clientId]);
 
         if (is_null($settingsBag)) {
-            $settingsBag = new RecordingSettingsBag();
-            $settingsBag->setUser($this->getUser());
+            $settingsBag = new RecordingSettingsBag($this->getUser());
             $settingsBag->setClientId($clientId);
         }
 
