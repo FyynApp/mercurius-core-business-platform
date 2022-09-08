@@ -5,6 +5,7 @@ namespace App\Controller\Feature\Recordings;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
+use App\Security\VotingAttribute;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,8 +21,7 @@ class RecordingsController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $recordingSession = new RecordingSession();
-        $recordingSession->setUser($user);
+        $recordingSession = new RecordingSession($user);
         $entityManager->persist($recordingSession);
         $entityManager->flush($recordingSession);
 
@@ -44,6 +44,8 @@ class RecordingsController extends AbstractController
         if (is_null($recordingSession)) {
             throw new NotFoundHttpException("No recording session with id '$recordingSessionId'.");
         }
+
+        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
         // Edge case, if the user came here twice
         if ($recordingSession->isFinished()) {
@@ -79,6 +81,8 @@ class RecordingsController extends AbstractController
         if (is_null($recordingSession)) {
             throw new NotFoundHttpException("Could not find recording session with id '$recordingSessionId'.");
         }
+
+        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
         if ($recordingSession->hasRecordingPreviewAssetBeenGenerated()) {
             return $this->redirectToRoute(

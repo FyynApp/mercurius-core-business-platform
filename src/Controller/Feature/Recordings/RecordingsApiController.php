@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
+use App\Security\VotingAttribute;
 use App\Service\Aspect\Cookies\CookieName;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
@@ -234,6 +235,8 @@ class RecordingsApiController extends AbstractController
         if (is_null($recordingSession)) {
             throw new NotFoundHttpException("Could not find recording session with id '$recordingSessionId'.");
         }
+
+        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
         /** @var User $user */
         $user = $this->getUser();
