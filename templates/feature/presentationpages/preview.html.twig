@@ -9,7 +9,7 @@
 
         <div
                 class="w-full text-left p-8 rounded-md bg-none shadow-2xl shadow-gray-700 max-w-3xl mx-auto"
-                style="background-color: {{ presentationpage.bgColor }}; color: {{ presentationpage.textColor }};"
+                style="background-color: {{ presentationpage.bgColor.value }}; color: {{ presentationpage.textColor.value }};"
         >
 
             {% for element in presentationpage.presentationpageElements %}
