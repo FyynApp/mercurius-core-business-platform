@@ -2,6 +2,10 @@
 
 SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+pushd "$SCRIPT_FOLDER"/../
+  npm run build
+popd
+
 rsync \
   -avc \
   --exclude .git/ \
@@ -12,4 +16,9 @@ rsync \
   --exclude public/generated-content/ \
   --delete \
   "$SCRIPT_FOLDER"/../ \
-  www-data@89.58.33.15:/var/www/mercurius-core-business-platform/preprod/
+  www-data@preprod.fyyn.io:/var/www/mercurius-core-business-platform/preprod/
+
+ssh www-data@preprod.fyyn.io -C ' \
+cd ~/mercurius-core-business-platform/preprod; \
+/usr/bin/env php bin/console --env=preprod cache:clear \
+'
