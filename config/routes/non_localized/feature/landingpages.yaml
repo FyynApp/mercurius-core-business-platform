@@ -1,0 +1,4 @@
+feature.landingpages.wrapped_external_content:
+  path: /_content
+  controller: App\Controller\Feature\Landingpages\LandingpagesController::wrappedExternalContentAction
+  methods: [ GET ]

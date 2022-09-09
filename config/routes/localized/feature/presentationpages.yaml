@@ -29,7 +29,7 @@ feature.presentationpages.draft.create:
   methods: [ POST ]
 
 feature.presentationpages.editor:
-  path: /my/presentationpages/{presentationpageId}/editor
+  path: /my/presentationpages/{originalPresentationpageId}/draft/{presentationpageId}/editor
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::editorAction
   methods: [ GET, POST ]
 
