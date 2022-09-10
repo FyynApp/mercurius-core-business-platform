@@ -5,6 +5,7 @@ namespace App\Components\Feature\Presentationpages;
 use App\Entity\Feature\Presentationpages\BgColor;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Presentationpages\PresentationpageElement;
+use App\Entity\Feature\Presentationpages\PresentationpageElementHorizontalPosition;
 use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use App\Entity\Feature\Presentationpages\TextColor;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
@@ -89,11 +90,16 @@ class PresentationspageEditFormLiveComponent extends AbstractController
     #[LiveAction]
     public function addElement(#[LiveArg] string $variant): void
     {
+        $resolvedVariant = PresentationpageElementVariant::tryFrom($variant);
+        if (is_null($resolvedVariant)) {
+            throw new BadRequestHttpException("Unknown variant '$variant'.");
+        }
+
         $this->submitForm();
 
         $element = new PresentationpageElement();
         $element->setPosition(sizeof($this->presentationpage->getPresentationpageElements()));
-        $element->setElementVariant(PresentationpageElementVariant::tryFrom($variant));
+        $element->setElementVariant($resolvedVariant);
         $this->presentationpage->addPresentationpageElement($element);
         $this->entityManager->persist($element);
 
@@ -188,6 +194,33 @@ class PresentationspageEditFormLiveComponent extends AbstractController
         $this->submitForm();
 
         $this->swapPositionOfElements($elementToMove, $otherElement);
+    }
+
+
+    #[LiveAction]
+    public function setElementHorizontalPosition(
+        #[LiveArg] string $elementId,
+        #[LiveArg] string $horizontalPosition
+    ): void
+    {
+        $resolvedHorizontalPosition = PresentationpageElementHorizontalPosition::tryFrom($horizontalPosition);
+        if (is_null($resolvedHorizontalPosition)) {
+            throw new BadRequestHttpException("Unknown horizontal position '$horizontalPosition'.");
+        }
+
+        $element = $this->entityManager->find(PresentationpageElement::class, $elementId);
+        if (is_null($element)) {
+            throw new NotFoundHttpException("Could not find element with id '$elementId'.");
+        }
+
+        $this->submitForm();
+
+        $element->setElementHorizontalPosition($resolvedHorizontalPosition);
+
+        $this->entityManager->persist($element);
+        $this->entityManager->flush();
+
+        $this->storeDataAndRebuildForm();
     }
 
 

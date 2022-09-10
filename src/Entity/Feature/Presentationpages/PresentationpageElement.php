@@ -62,6 +62,20 @@ class PresentationpageElement
     }
 
 
+    #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageElementHorizontalPosition::class)]
+    private PresentationpageElementHorizontalPosition $elementHorizontalPosition = PresentationpageElementHorizontalPosition::Center;
+
+    public function getElementHorizontalPosition(): PresentationpageElementHorizontalPosition
+    {
+        return $this->elementHorizontalPosition;
+    }
+
+    public function setElementHorizontalPosition(PresentationpageElementHorizontalPosition $elementHorizontalPosition): void
+    {
+        $this->elementHorizontalPosition = $elementHorizontalPosition;
+    }
+
+
     #[ORM\Column(type: 'integer', nullable: false, options: ['unsigned' => true])]
     private int $position;
 

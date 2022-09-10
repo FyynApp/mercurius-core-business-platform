@@ -132,6 +132,7 @@ feature:
         label_title_template: 'Name der Vorlage'
         label_bg_color: 'Hintergrundfarbe der Seite'
         label_text_color: 'Textfarbe'
+        label_horizontal_position: 'Ausrichtung'
         label_element_variant:
           mercurius_video: 'Fyyn.io Videoaufnahme'
           mercurius_video_note: 'An der Position dieses Elements wird auf Ihrer Präsentationsseite später das von Ihnen aufgenommene Video eingebettet.'
