@@ -123,7 +123,7 @@ feature:
         preview_headline_page: 'Vorschau Seitenaufbau'
         preview_headline_template: 'Vorschau Seitenaufbau'
         preview_note_page: 'Hier sehen Sie vereinfacht dargestellt wie Ihre Präsentationsseite aufgebaut ist.'
-        preview_note_template: 'Hier sehen Sie vereinfacht dargestellt wie Präsentationsseiten, die aus dieser erstellt werden, aufgebaut sind.'
+        preview_note_template: 'Hier sehen Sie vereinfacht dargestellt wie Präsentationsseiten, die aus dieser Vorlage erstellt werden, aufgebaut sind.'
         preview_full_note_page: 'Wenn Sie die vollwertige Vorschau dieser Seite in einem neuen Browserfenster sehen möchten, dann klicken Sie bitte hier:'
         preview_full_note_template: 'Wenn Sie die vollwertige Vorschau dieser Vorlage in einem neuen Browserfenster sehen möchten, dann klicken Sie bitte hier:'
         preview_full_note_cta: 'Vollwertige Vorschau öffnen'

@@ -398,61 +398,114 @@
                     </p>
 
                     <div
-                            class="flex flex-col rounded-lg p-4 shadow-inner text-left justify-center items-center"
+                            class="flex flex-col rounded-lg p-4 shadow-inner text-left justify-start"
                             style="background-color: {{ this.presentationpage.bgColor.value }}; color: {{ this.presentationpage.textColor.value }};"
                     >
-                        <div
-                                class="font-bold p-4"
-                        >
-                            {% for element in this.presentationpage.presentationpageElements %}
-                                {# @var element \App\Entity\Feature\Presentationpages\PresentationpageElement #}
 
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
-                                    <div class="text-lg p-4">
-                                        {% if element.presentationpage.video is null %}
-                                            <img
-                                                    class="w-96 rounded-md"
-                                                    src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
-                                            >
-                                        {% else %}
-                                            <img
-                                                    class="w-96 rounded-md"
-                                                    src="{{ this.videoService.posterStillAssetUrl(this.presentationpage.video) }}"
-                                            >
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
+                        {% for element in this.presentationpage.presentationpageElements %}
+                            {# @var element \App\Entity\Feature\Presentationpages\PresentationpageElement #}
 
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
-                                    <h2 class="text-lg mt-12 first:mt-0">
-                                        {{ element.textContent }}
-                                    </h2>
-                                {% endif %}
-
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
-                                    <p class="mb-2">
-                                        {{ element.textContent|nl2br }}
-                                    </p>
-                                {% endif %}
-
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl') %}
-                                    <div class="mb-2 w-36 mx-auto">
+                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
+                                <div class="
+                                    flex
+                                    flex-row
+                                    mb-2
+                                    w-full
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                        justify-start
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                        justify-center
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                        justify-end
+                                    {% endif %}
+                                ">
+                                    {% if element.presentationpage.video is null %}
                                         <img
-                                                class="rounded-md"
-                                                src="{{ element.textContent }}"
+                                                class="w-56 rounded-md"
+                                                src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
                                         >
-                                    </div>
-                                {% endif %}
+                                    {% else %}
+                                        <img
+                                                class="w-56 rounded-md"
+                                                src="{{ this.videoService.posterStillAssetUrl(this.presentationpage.video) }}"
+                                        >
+                                    {% endif %}
+                                </div>
+                            {% endif %}
 
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
-                                    <div class="mb-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
+                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
+                                <h2 class="
+                                    text-lg
+                                    mt-12
+                                    first:mt-0
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                        text-left
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                        text-center
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                        text-right
+                                    {% endif %}
+                                ">
+                                    {{ element.textContent }}
+                                </h2>
+                            {% endif %}
+
+                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
+                                <p class="
+                                    mb-2
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                        text-left
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                        text-center
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                        text-right
+                                    {% endif %}
+                                ">
+                                    {{ element.textContent|nl2br }}
+                                </p>
+                            {% endif %}
+
+                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl') %}
+                                <div class="
+                                    flex
+                                    flex-row
+                                    mb-2
+                                    w-full
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                        justify-start
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                        justify-center
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                        justify-end
+                                    {% endif %}
+                                ">
+                                    <img
+                                            class="w-56"
+                                            src="{{ element.textContent }}"
+                                    >
+                                </div>
+                            {% endif %}
+
+                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
+                                <div class="
+                                    flex
+                                    flex-row
+                                    mb-2
+                                    w-full
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                        justify-start
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                        justify-center
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                        justify-end
+                                    {% endif %}
+                                ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
 
                 {% endif %}
