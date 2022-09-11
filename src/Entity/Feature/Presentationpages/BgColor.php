@@ -25,4 +25,7 @@ enum BgColor: string
     case _ECEFF1 = '#eceff1';
     case _424242 = '#424242';
     case _37474F = '#37474f';
+    case _888888 = '#888888';
+    case _222222 = '#222222';
+    case _000000 = '#000000';
 }

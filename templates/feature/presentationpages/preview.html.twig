@@ -2,7 +2,7 @@
 {# @var VideoService \App\Service\Feature\Recordings\VideoService #}
 
 <!DOCTYPE html>
-<html class="h-full">
+<html class="h-full" lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,14 +14,32 @@
 
     {{ encore_entry_script_tags('app') }}
 </head>
-<body>
+<body
+    {% if presentationpage.background is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageBackground::BgColor') %}
+        style="
+                background-color: {{ presentationpage.bgColor.value }};
+        "
+    {% else %}
+        style="
+                background-image: url('{{ asset('assets/images/feature/presentationpages/background-images/' ~ presentationpage.background.toAssetName) }}');
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-color: {{ presentationpage.bgColor.value }};
+        "
+    {% endif %}
+>
 
 
-<div class="flex flex-col justify-between shadow-inner p-4 bg-gray-500 shadow-inner">
+<div
+        class=""
+>
 
     <div
-            class="w-full text-left p-8 rounded-md bg-none shadow-2xl shadow-gray-700 max-w-3xl mx-auto"
-            style="background-color: {{ presentationpage.bgColor.value }}; color: {{ presentationpage.textColor.value }};"
+        class="mx-auto max-w-full w-full sm:w-8/12 mt-0 sm:mt-16 p-16"
+        style="
+            background-color: {{ presentationpage.bgColor.value }}DD;
+            color: {{ presentationpage.textColor.value }};
+        "
     >
 
         {% for element in presentationpage.presentationpageElements %}

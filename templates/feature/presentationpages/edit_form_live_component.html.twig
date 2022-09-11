@@ -33,23 +33,23 @@
                         {{ 'feature.presentationpages.editor.edit_form.label_background'|trans }}
                     </label>
 
-                    <div class="mb-6 rounded-md bg-white p-8">
+                    <div class="mb-6 rounded-md bg-white pl-8 p-2 shadow-inner">
                         {% for background in this.presentationpage.possibleBackgrounds %}
                             <button
-                                    class="mr-8"
+                                    class="mr-8 mt-4 mb-4"
                                     type="button"
                                     data-action="live#action"
                                     data-action-name="setBackground(backgroundValue={{ background.value }})"
                             >
                                 {% if background is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageBackground::BgColor') %}
                                     <div
-                                            class="w-28 h-8"
+                                            class="w-24 h-12 rounded-md border-1"
                                             style="background-color: {{ this.presentationpage.bgColor.value }}"
                                     >&nbsp;</div>
 
                                 {% else %}
                                     <img
-                                            class="w-10 h-12"
+                                            class="w-24 h-12 rounded-md object-cover"
                                             src="{{ asset('assets/images/feature/presentationpages/background-images/' ~ background.toAssetName) }}"
                                     >
 
