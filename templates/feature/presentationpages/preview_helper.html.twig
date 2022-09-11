@@ -1,0 +1,22 @@
+{# @var horizontalPosition \App\Entity\Feature\Presentationpages\PresentationpageElementHorizontalPosition #}
+
+{% macro horizontalPositionText(horizontalPosition) %}
+    {% if horizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+        text-left
+    {% elseif horizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+        text-center
+    {% else %}
+        text-right
+    {% endif %}
+{% endmacro %}
+
+{% macro horizontalPositionDiv(horizontalPosition) %}
+    flex flex-row
+    {% if horizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+        justify-start
+    {% elseif horizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+        justify-center
+    {% else %}
+        justify-end
+    {% endif %}
+{% endmacro %}

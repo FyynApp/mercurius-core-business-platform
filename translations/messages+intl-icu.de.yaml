@@ -127,7 +127,8 @@ feature:
         preview_full_note_page: 'Wenn Sie die vollwertige Vorschau dieser Seite in einem neuen Browserfenster sehen möchten, dann klicken Sie bitte hier:'
         preview_full_note_template: 'Wenn Sie die vollwertige Vorschau dieser Vorlage in einem neuen Browserfenster sehen möchten, dann klicken Sie bitte hier:'
         preview_full_note_cta: 'Vollwertige Vorschau öffnen'
-        preview_note_no_elements: 'Fügen Sie Elemente zu Ihrer Vorlage hinzu, um eine Vorschau zu sehen.'
+        preview_note_no_elements_page: 'Fügen Sie Elemente zu Ihrer Seite hinzu, um eine Vorschau zu sehen.'
+        preview_note_no_elements_template: 'Fügen Sie Elemente zu Ihrer Vorlage hinzu, um eine Vorschau zu sehen.'
         label_title_page: 'Name der Seite (nur für Sie sichtbar)'
         label_title_template: 'Name der Vorlage'
         label_background: 'Hintergrund'
@@ -143,6 +144,7 @@ feature:
         label_element_variant:
           mercurius_video: 'Fyyn.io Videoaufnahme'
           mercurius_video_note: 'An der Position dieses Elements wird auf Ihrer Präsentationsseite später das von Ihnen aufgenommene Video eingebettet.'
+          divider: 'Trenner'
           headline: 'Text für Überschrift'
           paragraph: 'Text für Absatz'
           image_url: 'URL des Bildes'
@@ -152,11 +154,12 @@ feature:
           calendly_embed_end: 'und klicken Sie beim gewünschten Termin auf "Share". Es öffnet sich ein Dialog mit der Überschrift "Einen Link teilen" - nutzen Sie dort einfach die Funktion "Link kopieren", und fügen Sie die kopierte URL dann hier ein.'
         cta_remove_element: 'Löschen'
         cta_add_element:
-          mercurius_video: 'Fyyn.io Videoaufnahme'
+          mercuriusVideo: 'Fyyn.io Videoaufnahme'
           headline: 'Überschrift'
           paragraph: 'Absatz'
-          image_url: 'Externes Bild'
-          calendly_embed: 'Calendly Widget'
+          imageUrl: 'Externes Bild'
+          calendlyEmbed: 'Calendly Widget'
+          divider: 'Trenner'
         save_button_page: 'Änderungen speichern'
         save_button_template: 'Änderungen speichern'
 

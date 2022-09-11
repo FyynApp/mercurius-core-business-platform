@@ -39,6 +39,18 @@ class PresentationpageElementType extends AbstractType
                 case PresentationpageElementVariant::MercuriusVideo:
                     return;
 
+                case PresentationpageElementVariant::Divider:
+                    $form->add(
+                        'textContent',
+                        HiddenType::class,
+                        [
+                            'required' => true,
+                            'trim' => false,
+                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.divider'
+                        ]
+                    );
+                    break;
+
                 case PresentationpageElementVariant::Headline:
                     $form->add(
                         'textContent',

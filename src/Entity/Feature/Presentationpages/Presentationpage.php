@@ -252,6 +252,11 @@ class Presentationpage implements UserOwnedEntityInterface
         return false;
     }
 
+    public function getPossibleElementVariants(): array
+    {
+        return PresentationpageElementVariant::cases();
+    }
+
     public function getPossibleBackgrounds(): array
     {
         return PresentationpageBackground::cases();

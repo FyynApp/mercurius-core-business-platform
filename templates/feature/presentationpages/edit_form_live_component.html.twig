@@ -217,6 +217,13 @@
                                                         </p>
                                                     {% endif %}
 
+                                                    {% if presentationpageElement.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Divider') %}
+                                                        <div
+                                                                class="w-full h-1 mt-4 mb-4"
+                                                                style="background-color: {{ this.presentationpage.fgColor.value }}"
+                                                        ></div>
+                                                    {% endif %}
+
                                                     {{ form_help(elementFormRow) }}
                                                     {{ form_errors(elementFormRow) }}
                                                 </div>
@@ -278,68 +285,70 @@
 
                                 </div>
 
-                                <div class="w-full">
+                                {% if presentationpageElement.elementVariant is not same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Divider') %}
+                                    <div class="w-full">
 
-                                    <label class="block text-gray-800 font-bold required mt-4 mb-2">
-                                        {{ 'feature.presentationpages.editor.edit_form.label_horizontal_position'|trans }}
-                                    </label>
-                                    <button
-                                            class="
-                                                p-0
-                                                border-1
-                                                border-indigo-200
-                                                {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
-                                                    bg-indigo-200
-                                                {% endif %}
-                                            "
-                                            data-action="live#action"
-                                            data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left').value }})"
-                                            type="button"
-                                    >
-                                        <!-- bars-3-bottom-left -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pt-1 pb-1 w-8 h-8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
-                                        </svg>
-                                    </button>
+                                        <label class="block text-gray-800 font-bold required mt-4 mb-2">
+                                            {{ 'feature.presentationpages.editor.edit_form.label_horizontal_position'|trans }}
+                                        </label>
+                                        <button
+                                                class="
+                                                    p-0
+                                                    border-1
+                                                    border-indigo-200
+                                                    {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                                        bg-indigo-200
+                                                    {% endif %}
+                                                "
+                                                data-action="live#action"
+                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left').value }})"
+                                                type="button"
+                                        >
+                                            <!-- bars-3-bottom-left -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pt-1 pb-1 w-8 h-8">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+                                            </svg>
+                                        </button>
 
-                                    <button
-                                            class="
-                                                p-0
-                                                border-1
-                                                border-indigo-200
-                                                {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
-                                                    bg-indigo-200
-                                                {% endif %}
-                                            "
-                                            data-action="live#action"
-                                            data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center').value }})"
-                                            type="button"
-                                    >
-                                        <!-- bars-3 -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pt-1 pb-1 w-8 h-8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                                        </svg>
-                                    </button>
+                                        <button
+                                                class="
+                                                    p-0
+                                                    border-1
+                                                    border-indigo-200
+                                                    {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                                        bg-indigo-200
+                                                    {% endif %}
+                                                "
+                                                data-action="live#action"
+                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center').value }})"
+                                                type="button"
+                                        >
+                                            <!-- bars-3 -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pt-1 pb-1 w-8 h-8">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                            </svg>
+                                        </button>
 
-                                    <button
-                                            class="
-                                                p-0
-                                                border-1
-                                                border-indigo-200
-                                                {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
-                                                    bg-indigo-200
-                                                {% endif %}
-                                            "
-                                            data-action="live#action"
-                                            data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right').value }})"
-                                            type="button"
-                                    >
-                                        <!-- bars-3-bottom-right -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pt-1 pb-1 w-8 h-8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
-                                        </svg>
-                                    </button>
-                                </div>
+                                        <button
+                                                class="
+                                                    p-0
+                                                    border-1
+                                                    border-indigo-200
+                                                    {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                                        bg-indigo-200
+                                                    {% endif %}
+                                                "
+                                                data-action="live#action"
+                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right').value }})"
+                                                type="button"
+                                        >
+                                            <!-- bars-3-bottom-right -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pt-1 pb-1 w-8 h-8">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                {% endif %}
 
                             </div>
 
@@ -361,57 +370,30 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
                                 </svg>
-                                {{ 'feature.presentationpages.editor.edit_form.cta_add_element.mercurius_video'|trans }}
+                                {{ 'feature.presentationpages.editor.edit_form.cta_add_element.mercuriusVideo'|trans }}
                             </button>
                         {% endif %}
 
-                        <button
-                                class="cta-link-primary mb-4 w-52"
-                                data-action="live#action"
-                                data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline').value }})"
-                                type="button"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
-                            </svg>
-                            {{ 'feature.presentationpages.editor.edit_form.cta_add_element.headline'|trans }}
-                        </button>
+                        {% for elementVariant in this.presentationpage.possibleElementVariants %}
 
-                        <button
-                                class="cta-link-primary mb-4 w-52"
-                                data-action="live#action"
-                                data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph').value }})"
-                                type="button"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
-                            </svg>
-                            {{ 'feature.presentationpages.editor.edit_form.cta_add_element.paragraph'|trans }}
-                        </button>
+                            {# @var elementVariant \App\Entity\Feature\Presentationpages\PresentationpageElementVariant #}
 
-                        <button
-                                class="cta-link-primary mb-4 w-52"
-                                data-action="live#action"
-                                data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl').value }})"
-                                type="button"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
-                            </svg>
-                            {{ 'feature.presentationpages.editor.edit_form.cta_add_element.image_url'|trans }}
-                        </button>
+                            {% if elementVariant is not same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
+                                <button
+                                        class="cta-link-primary mb-4 w-52"
+                                        data-action="live#action"
+                                        data-action-name="addElement(variant={{ elementVariant.value }})"
+                                        type="button"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
+                                    </svg>
+                                    {{ ('feature.presentationpages.editor.edit_form.cta_add_element.' ~ elementVariant.value)|trans }}
+                                </button>
+                            {% endif %}
 
-                        <button
-                                class="cta-link-primary mb-4 w-52"
-                                data-action="live#action"
-                                data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed').value }})"
-                                type="button"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
-                            </svg>
-                            {{ 'feature.presentationpages.editor.edit_form.cta_add_element.calendly_embed'|trans }}
-                        </button>
+                        {% endfor %}
+
                     {% endif %}
 
                 </div>
@@ -464,15 +446,42 @@
                     </p>
 
                     <div
-                            class="flex flex-col rounded-lg p-4 shadow-inner text-left justify-start"
-                            style="background-color: {{ this.presentationpage.bgColor.value }}; color: {{ this.presentationpage.textColor.value }};"
+                            class="flex flex-col rounded-lg shadow-inner text-left justify-start"
+
+                            {% if this.presentationpage.background is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageBackground::BgColor') %}
+                                style="
+                                        background-color: {{ this.presentationpage.bgColor.value }};
+                                        "
+                            {% else %}
+                                style="
+                                        background-image: url('{{ asset('assets/images/feature/presentationpages/background-images/' ~ presentationpage.background.toAssetName) }}');
+                                        background-repeat: no-repeat;
+                                        background-size: cover;
+                                        background-position: top;
+                                        background-attachment: fixed;
+                                        background-color: {{ this.presentationpage.bgColor.value }};
+                                        "
+                            {% endif %}
                     >
+                        <div
+                            class="p-4"
+                            style="
+                                    background-color: {{ this.presentationpage.bgColor.value }}dd;
+                                    color: {{ this.presentationpage.textColor.value }};
+                            "
+                        >
+                            {% for element in this.presentationpage.presentationpageElements %}
+                                {# @var element \App\Entity\Feature\Presentationpages\PresentationpageElement #}
 
-                        {% for element in this.presentationpage.presentationpageElements %}
-                            {# @var element \App\Entity\Feature\Presentationpages\PresentationpageElement #}
+                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Divider') %}
+                                    <div
+                                            class="w-full h-1 mt-4 mb-4"
+                                            style="background-color: {{ presentationpage.fgColor.value }}"
+                                    ></div>
+                                {% endif %}
 
-                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
-                                <div class="
+                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
+                                    <div class="
                                     flex
                                     flex-row
                                     mb-2
@@ -485,24 +494,25 @@
                                         justify-end
                                     {% endif %}
                                 ">
-                                    {% if element.presentationpage.video is null %}
-                                        <img
-                                                class="w-56 rounded-md"
-                                                src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
-                                        >
-                                    {% else %}
-                                        <img
-                                                class="w-56 rounded-md"
-                                                src="{{ this.videoService.posterStillAssetUrl(this.presentationpage.video) }}"
-                                        >
-                                    {% endif %}
-                                </div>
-                            {% endif %}
+                                        {% if element.presentationpage.video is null %}
+                                            <img
+                                                    class="w-56 rounded-md"
+                                                    src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
+                                            >
+                                        {% else %}
+                                            <img
+                                                    class="w-56 rounded-md"
+                                                    src="{{ this.videoService.posterStillAssetUrl(this.presentationpage.video) }}"
+                                            >
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
 
-                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
-                                <h2 class="
-                                    text-lg
-                                    mt-12
+                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
+                                    <h2 class="
+                                    text-3xl
+                                    mt-6
+                                    mb-6
                                     first:mt-0
                                     {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
                                         text-left
@@ -512,12 +522,12 @@
                                         text-right
                                     {% endif %}
                                 ">
-                                    {{ element.textContent }}
-                                </h2>
-                            {% endif %}
+                                        {{ element.textContent }}
+                                    </h2>
+                                {% endif %}
 
-                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
-                                <p class="
+                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
+                                    <p class="
                                     mb-2
                                     {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
                                         text-left
@@ -527,12 +537,12 @@
                                         text-right
                                     {% endif %}
                                 ">
-                                    {{ element.textContent|nl2br }}
-                                </p>
-                            {% endif %}
+                                        {{ element.textContent|nl2br }}
+                                    </p>
+                                {% endif %}
 
-                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl') %}
-                                <div class="
+                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl') %}
+                                    <div class="
                                     flex
                                     flex-row
                                     mb-2
@@ -545,15 +555,15 @@
                                         justify-end
                                     {% endif %}
                                 ">
-                                    <img
-                                            class="w-56"
-                                            src="{{ element.textContent }}"
-                                    >
-                                </div>
-                            {% endif %}
+                                        <img
+                                                class="w-56"
+                                                src="{{ element.textContent }}"
+                                        >
+                                    </div>
+                                {% endif %}
 
-                            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
-                                <div class="
+                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
+                                    <div class="
                                     flex
                                     flex-row
                                     mb-2
@@ -566,12 +576,13 @@
                                         justify-end
                                     {% endif %}
                                 ">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
 
                 {% endif %}

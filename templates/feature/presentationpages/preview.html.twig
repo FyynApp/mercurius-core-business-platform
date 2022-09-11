@@ -1,6 +1,8 @@
 {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
 {# @var VideoService \App\Service\Feature\Recordings\VideoService #}
 
+{% import 'feature/presentationpages/preview_helper.html.twig' as helperMacros %}
+
 <!DOCTYPE html>
 <html class="h-full" lang="de">
 <head>
@@ -24,6 +26,8 @@
                 background-image: url('{{ asset('assets/images/feature/presentationpages/background-images/' ~ presentationpage.background.toAssetName) }}');
                 background-repeat: no-repeat;
                 background-size: cover;
+                background-position: top;
+                background-attachment: fixed;
                 background-color: {{ presentationpage.bgColor.value }};
         "
     {% endif %}
@@ -37,7 +41,7 @@
     <div
         class="mx-auto max-w-full w-full sm:w-8/12 mt-0 sm:mt-16 p-16"
         style="
-            background-color: {{ presentationpage.bgColor.value }}DD;
+            background-color: {{ presentationpage.bgColor.value }}dd;
             color: {{ presentationpage.textColor.value }};
         "
     >
@@ -46,54 +50,87 @@
 
             {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
 
-                {% if presentationpage.video is null %}
-                    <div class="mx-auto mt-8 w-96 max-w-full">
-                        <img
-                                class="rounded-lg"
-                                src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
-                        >
-                    </div>
-
-                {% else %}
-                    <div class="m-8 p-8">
-                        <video
-                                class="mx-auto rounded-md w-full"
-                                autoplay="autoplay"
-                                controls
-                                poster="{{ VideoService.posterStillAssetUrl(presentationpage.video) }}"
-                        >
-                            <source
-                                    src="{{ VideoService.getFullAssetUrl(presentationpage.video) }}"
+                <div class="
+                    mb-8
+                    {{ helperMacros.horizontalPositionDiv(element.elementHorizontalPosition) }}
+                ">
+                    {% if presentationpage.video is null %}
+                        <div class="mt-8 w-96 max-w-full">
+                            <img
+                                    class="rounded-lg"
+                                    src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
                             >
-                        </video>
-                    </div>
-                {% endif %}
+                        </div>
+
+                    {% else %}
+                        <div class="m-8 p-8">
+                            <video
+                                    class="mx-auto rounded-md w-full"
+                                    autoplay="autoplay"
+                                    controls
+                                    poster="{{ VideoService.posterStillAssetUrl(presentationpage.video) }}"
+                            >
+                                <source
+                                        src="{{ VideoService.getFullAssetUrl(presentationpage.video) }}"
+                                >
+                            </video>
+                        </div>
+                    {% endif %}
+                </div>
 
             {% endif %}
 
+            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Divider') %}
+                <div
+                    class="w-full h-1 mt-4 mb-4"
+                    style="background-color: {{ presentationpage.fgColor.value }}"
+                ></div>
+            {% endif %}
+
             {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
-                <h2 class="text-xl font-bold mt-8 first:mt-0">
+                <h2 class="
+                    text-4xl
+                    font-bold
+                    mt-8
+                    first:mt-0
+                    {{ helperMacros.horizontalPositionText(element.elementHorizontalPosition) }}
+                ">
                     {{ element.textContent }}
                 </h2>
             {% endif %}
 
             {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
-                <p class="text-md">
+                <p class="
+                    text-md
+                    {{ helperMacros.horizontalPositionText(element.elementHorizontalPosition) }}
+                ">
                     {{ element.textContent|nl2br }}
                 </p>
             {% endif %}
 
             {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl') %}
-                <div class="mt-8 mb-8 p-0 mx-auto w-36 max-w-full">
-                    <img
-                            class="rounded-md"
+                <div class="
+                    mt-8
+                    mb-8
+                    p-0
+                    {{ helperMacros.horizontalPositionDiv(element.elementHorizontalPosition) }}
+                ">
+                    <div>
+                        <img
+                            class="max-h-32 aspect-auto"
                             src="{{ element.textContent }}"
                     >
+                    </div>
                 </div>
             {% endif %}
 
             {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
-                <div class="mt-8 mb-8 p-0">
+                <div class="
+                    mt-8
+                    mb-8
+                    p-0
+                    {{ helperMacros.horizontalPositionDiv(element.elementHorizontalPosition) }}
+                ">
                     <!-- Calendly Inline-Widget Beginn -->
                     <div
                             class="calendly-inline-widget w-full"
