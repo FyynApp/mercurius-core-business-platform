@@ -130,7 +130,14 @@ feature:
         preview_note_no_elements: 'Fügen Sie Elemente zu Ihrer Vorlage hinzu, um eine Vorschau zu sehen.'
         label_title_page: 'Name der Seite (nur für Sie sichtbar)'
         label_title_template: 'Name der Vorlage'
-        label_bg_color: 'Hintergrundfarbe der Seite'
+        label_background: 'Hintergrund'
+        background_name:
+          bg-color: 'Uni'
+          image-office-one: 'Büro'
+          image-library-one: 'Bücherwand'
+          image-store-one: 'Shop'
+        label_bg_color: 'Hintergrundfarbe'
+        label_fg_color: 'Vordergrundfarbe'
         label_text_color: 'Textfarbe'
         label_horizontal_position: 'Ausrichtung'
         label_element_variant:

@@ -3,7 +3,9 @@
 namespace App\Components\Feature\Presentationpages;
 
 use App\Entity\Feature\Presentationpages\BgColor;
+use App\Entity\Feature\Presentationpages\FgColor;
 use App\Entity\Feature\Presentationpages\Presentationpage;
+use App\Entity\Feature\Presentationpages\PresentationpageBackground;
 use App\Entity\Feature\Presentationpages\PresentationpageElement;
 use App\Entity\Feature\Presentationpages\PresentationpageElementHorizontalPosition;
 use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
@@ -68,11 +70,31 @@ class PresentationspageEditFormLiveComponent extends AbstractController
     }
 
     #[LiveAction]
+    public function setBackground(#[LiveArg] string $backgroundValue): void
+    {
+        $this->submitForm();
+
+        $this->presentationpage->setBackground(PresentationpageBackground::from($backgroundValue));
+
+        $this->storeDataAndRebuildForm();
+    }
+
+    #[LiveAction]
     public function setBgColor(#[LiveArg] string $bgColorValue): void
     {
         $this->submitForm();
 
         $this->presentationpage->setBgColor(BgColor::from($bgColorValue));
+
+        $this->storeDataAndRebuildForm();
+    }
+
+    #[LiveAction]
+    public function setFgColor(#[LiveArg] string $fgColorValue): void
+    {
+        $this->submitForm();
+
+        $this->presentationpage->setFgColor(FgColor::from($fgColorValue));
 
         $this->storeDataAndRebuildForm();
     }

@@ -29,6 +29,38 @@
                         }
                     }) }}
 
+                    <label class="block text-gray-800 font-bold required mb-2">
+                        {{ 'feature.presentationpages.editor.edit_form.label_background'|trans }}
+                    </label>
+
+                    <div class="mb-6 rounded-md bg-white p-8">
+                        {% for background in this.presentationpage.possibleBackgrounds %}
+                            <button
+                                    class="mr-8"
+                                    type="button"
+                                    data-action="live#action"
+                                    data-action-name="setBackground(backgroundValue={{ background.value }})"
+                            >
+                                {% if background is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageBackground::BgColor') %}
+                                    <div
+                                            class="w-28 h-8"
+                                            style="background-color: {{ this.presentationpage.bgColor.value }}"
+                                    >&nbsp;</div>
+
+                                {% else %}
+                                    <img
+                                            class="w-10 h-12"
+                                            src="{{ asset('assets/images/feature/presentationpages/background-images/' ~ background.toAssetName) }}"
+                                    >
+
+                                {% endif %}
+
+
+                                {{ ('feature.presentationpages.editor.edit_form.background_name.' ~ background.value)|trans }}
+                            </button>
+                        {% endfor %}
+                    </div>
+
                     <label class="block text-gray-800 font-bold required">
                         {{ 'feature.presentationpages.editor.edit_form.label_bg_color'|trans }}
                     </label>
@@ -62,6 +94,40 @@
                         {% endfor %}
                     </div>
 
+                    
+                    <label class="block text-gray-800 font-bold required">
+                        {{ 'feature.presentationpages.editor.edit_form.label_fg_color'|trans }}
+                    </label>
+                    <div class="mt-2 mb-4">
+                        {% for fgColor in this.presentationpage.possibleFgColors %}
+                            <button
+                                    style="background-color: {{ fgColor.value }}"
+                                    class="
+                                        {% apply spaceless %}
+                                            {% if this.presentationpage.fgColor.value is same as fgColor.value %}
+                                                border-gray-700
+                                                shadow-neutral-700
+                                                outline-2
+                                                outline-white
+                                                shadow-sm
+                                            {% endif %}
+                                            border-1
+                                            w-8
+                                            h-8
+                                            inline-flex
+                                            rounded-full
+                                            cursor-pointer
+                                            focus:outline-none
+                                            focus:shadow-outline
+                                        {% endapply %}
+                                    "
+                                    type="button"
+                                    data-action="live#action"
+                                    data-action-name="setFgColor(fgColorValue={{ fgColor.value }})"
+                            ></button>
+                        {% endfor %}
+                    </div>
+                    
 
                     <label class="block text-gray-800 font-bold required">
                         {{ 'feature.presentationpages.editor.edit_form.label_text_color'|trans }}

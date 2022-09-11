@@ -155,6 +155,20 @@ class Presentationpage implements UserOwnedEntityInterface
         $this->title = $title;
     }
 
+    
+    #[ORM\Column(type: 'string', length: 64, nullable: false, enumType: PresentationpageBackground::class)]
+    private PresentationpageBackground $background = PresentationpageBackground::BgColor;
+
+    public function getBackground(): PresentationpageBackground
+    {
+        return $this->background;
+    }
+
+    public function setBackground(PresentationpageBackground $background): void
+    {
+        $this->background = $background;
+    }
+    
 
     #[ORM\Column(type: 'string', length: 7, nullable: false, enumType: BgColor::class)]
     private BgColor $bgColor = BgColor::_FFFFFF;
@@ -167,6 +181,19 @@ class Presentationpage implements UserOwnedEntityInterface
     public function setBgColor(BgColor $bgColor): void
     {
         $this->bgColor = $bgColor;
+    }
+
+    #[ORM\Column(type: 'string', length: 7, nullable: false, enumType: FgColor::class)]
+    private FgColor $fgColor = FgColor::_37474F;
+
+    public function getFgColor(): FgColor
+    {
+        return $this->fgColor;
+    }
+
+    public function setFgColor(FgColor $fgColor): void
+    {
+        $this->fgColor = $fgColor;
     }
 
     #[ORM\Column(type: 'string', length: 7, nullable: false, enumType: TextColor::class)]
@@ -225,9 +252,19 @@ class Presentationpage implements UserOwnedEntityInterface
         return false;
     }
 
+    public function getPossibleBackgrounds(): array
+    {
+        return PresentationpageBackground::cases();
+    }
+
     public function getPossibleBgColors(): array
     {
         return BgColor::cases();
+    }
+
+    public function getPossibleFgColors(): array
+    {
+        return FgColor::cases();
     }
 
     public function getPossibleTextColors(): array

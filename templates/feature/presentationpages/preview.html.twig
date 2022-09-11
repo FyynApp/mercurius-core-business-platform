@@ -1,82 +1,96 @@
 {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
 {# @var VideoService \App\Service\Feature\Recordings\VideoService #}
 
-{% extends 'base_naked.html.twig' %}
+<!DOCTYPE html>
+<html class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block body %}
+    <title>Fyyn</title>
 
-    <div class="flex flex-col justify-between shadow-inner p-4 bg-gray-500 shadow-inner">
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('tailwind') }}
 
-        <div
-                class="w-full text-left p-8 rounded-md bg-none shadow-2xl shadow-gray-700 max-w-3xl mx-auto"
-                style="background-color: {{ presentationpage.bgColor.value }}; color: {{ presentationpage.textColor.value }};"
-        >
+    {{ encore_entry_script_tags('app') }}
+</head>
+<body>
 
-            {% for element in presentationpage.presentationpageElements %}
 
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
+<div class="flex flex-col justify-between shadow-inner p-4 bg-gray-500 shadow-inner">
 
-                    {% if presentationpage.video is null %}
-                        <div class="mx-auto mt-8 w-96 max-w-full">
-                            <img
-                                    class="rounded-lg"
-                                    src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
-                            >
-                        </div>
+    <div
+            class="w-full text-left p-8 rounded-md bg-none shadow-2xl shadow-gray-700 max-w-3xl mx-auto"
+            style="background-color: {{ presentationpage.bgColor.value }}; color: {{ presentationpage.textColor.value }};"
+    >
 
-                    {% else %}
-                        <div class="m-8 p-8">
-                            <video
-                                    class="mx-auto rounded-md w-full"
-                                    autoplay="autoplay"
-                                    controls
-                                    poster="{{ VideoService.posterStillAssetUrl(presentationpage.video) }}"
-                            >
-                                <source
-                                        src="{{ VideoService.getFullAssetUrl(presentationpage.video) }}"
-                                >
-                            </video>
-                        </div>
-                    {% endif %}
+        {% for element in presentationpage.presentationpageElements %}
 
-                {% endif %}
+            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
 
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
-                    <h2 class="text-xl font-bold mt-8 first:mt-0">
-                        {{ element.textContent }}
-                    </h2>
-                {% endif %}
-
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
-                    <p class="text-md">
-                        {{ element.textContent|nl2br }}
-                    </p>
-                {% endif %}
-
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl') %}
-                    <div class="mt-8 mb-8 p-0 mx-auto w-36 max-w-full">
+                {% if presentationpage.video is null %}
+                    <div class="mx-auto mt-8 w-96 max-w-full">
                         <img
-                                class="rounded-md"
-                                src="{{ element.textContent }}"
+                                class="rounded-lg"
+                                src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
                         >
                     </div>
-                {% endif %}
 
-                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
-                    <div class="mt-8 mb-8 p-0">
-                        <!-- Calendly Inline-Widget Beginn -->
-                        <div
-                                class="calendly-inline-widget w-full"
-                                data-url="{{ element.textContent|trim }}"
-                                style="height: 900px;"
-                        ></div>
-                        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-                        <!-- Calendly Inline-Widget Ende -->
+                {% else %}
+                    <div class="m-8 p-8">
+                        <video
+                                class="mx-auto rounded-md w-full"
+                                autoplay="autoplay"
+                                controls
+                                poster="{{ VideoService.posterStillAssetUrl(presentationpage.video) }}"
+                        >
+                            <source
+                                    src="{{ VideoService.getFullAssetUrl(presentationpage.video) }}"
+                            >
+                        </video>
                     </div>
                 {% endif %}
 
-            {% endfor %}
+            {% endif %}
 
-        </div>
+            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
+                <h2 class="text-xl font-bold mt-8 first:mt-0">
+                    {{ element.textContent }}
+                </h2>
+            {% endif %}
 
-{% endblock %}
+            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
+                <p class="text-md">
+                    {{ element.textContent|nl2br }}
+                </p>
+            {% endif %}
+
+            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl') %}
+                <div class="mt-8 mb-8 p-0 mx-auto w-36 max-w-full">
+                    <img
+                            class="rounded-md"
+                            src="{{ element.textContent }}"
+                    >
+                </div>
+            {% endif %}
+
+            {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
+                <div class="mt-8 mb-8 p-0">
+                    <!-- Calendly Inline-Widget Beginn -->
+                    <div
+                            class="calendly-inline-widget w-full"
+                            data-url="{{ element.textContent|trim }}"
+                            style="height: 900px;"
+                    ></div>
+                    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+                    <!-- Calendly Inline-Widget Ende -->
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+</div>
+
+</body>
+</html>

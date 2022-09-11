@@ -4,6 +4,7 @@ namespace App\Service\Feature\Presentationpages;
 
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\BgColor;
+use App\Entity\Feature\Presentationpages\FgColor;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Presentationpages\PresentationpageElement;
 use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
@@ -42,6 +43,7 @@ class PresentationpagesService
             )
         );
         $presentationpage->setBgColor(BgColor::_FFFFFF);
+        $presentationpage->setFgColor(FgColor::_37474F);
         $presentationpage->setTextColor(TextColor::_000000);
 
         $element = new PresentationpageElement();
@@ -71,6 +73,7 @@ class PresentationpagesService
             )
         );
         $presentationpage->setBgColor(BgColor::_FFFFFF);
+        $presentationpage->setFgColor(FgColor::_37474F);
         $presentationpage->setTextColor(TextColor::_000000);
 
         $element = new PresentationpageElement();
