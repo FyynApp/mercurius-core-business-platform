@@ -32,7 +32,7 @@
                         <label for="email-address" class="sr-only">Email address</label>
                         <input
                             id="email-address"
-                            name="registration_form[email]"
+                            name="registration[email]"
                             type="email"
                             autocomplete="email"
                             required
@@ -44,7 +44,7 @@
                         <label for="password" class="sr-only">Password</label>
                         <input
                             id="password"
-                            name="registration_form[plainPassword]"
+                            name="registration[plainPassword]"
                             type="password"
                             autocomplete="current-password"
                             required
@@ -56,7 +56,7 @@
 
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <input id="remember-me" name="registration_form[agreeTerms]" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <input id="remember-me" name="registration[agreeTerms]" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
                         <label for="remember-me" class="ml-2 block text-sm text-gray-900">
                             {{ 'feature.account.register.cta.accept_terms'|trans }}
                         </label>
