@@ -21,17 +21,14 @@
     </head>
     <body class="h-full">
 
-        {% set is_logged_in = (app.user is not null) %}
 
-        <div class="{% if is_logged_in %} flex flex-row justify-start {% endif %}">
+        <div class="flex flex-row justify-start">
 
-            {% if is_logged_in %}
-                <div class="w-1/12">
-                    {% include 'side_nav.html.twig' %}
-                </div>
-            {% endif %}
+            <div class="w-0 md:w-1/12">
+                {% include 'side_nav.html.twig' %}
+            </div>
 
-            <div class="min-h-full flex flex-col h-screen {% if is_logged_in %} w-11/12 {% endif %}">
+            <div class="min-h-full flex flex-col h-screen w-full md:w-11/12">
 
                 {% include 'top_nav.html.twig' %}
 
