@@ -1,0 +1,105 @@
+<nav
+        {{ stimulus_controller('navMobileMenuSwitch') }}
+        class="bg-gray-800"
+>
+    <div class="mx-auto px-4 sm:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <a href="{{ path('feature.landingpages.homepage') }}">
+                        <img class="h-10" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn">
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+
+                        {{ component(
+                            'main_navigation',
+                            {
+                                user: app.user,
+                                request: app.request,
+                                type: 'wide'
+                            })
+                        }}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden md:block">
+                <div class="ml-4 flex items-center md:ml-6">
+
+                    {{ component(
+                        'side_navigation',
+                        {
+                            user: app.user,
+                            request: app.request,
+                            type: 'wide'
+                        })
+                    }}
+
+                </div>
+            </div>
+
+
+            <div class="-mr-2 flex md:hidden">
+                <!-- Mobile menu button -->
+                <button
+                        {{ stimulus_action('navMobileMenuSwitch', 'click') }}
+                        type="button"
+                        class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                        aria-controls="mobile-menu"
+                        aria-expanded="false"
+                >
+                    <span class="sr-only">Open main menu</span>
+                    <!--
+                      Heroicon name: outline/menu
+
+                      Menu open: "hidden", Menu closed: "block"
+                    -->
+                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <!--
+                      Heroicon name: outline/x
+
+                      Menu open: "block", Menu closed: "hidden"
+                    -->
+                    <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu, show/hide based on menu state. -->
+    <div
+            {{ stimulus_target('navMobileMenuSwitch', 'menu') }}
+            class="hidden md:hidden"
+            id="mobile-menu"
+    >
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+
+            {{ component(
+                'main_navigation',
+                {
+                    user: app.user,
+                    request: app.request,
+                    type: 'stacked'
+                })
+            }}
+
+            {{ component(
+                'side_navigation',
+                {
+                    user: app.user,
+                    request: app.request,
+                    type: 'stacked'
+                })
+            }}
+
+        </div>
+
+    </div>
+</nav>

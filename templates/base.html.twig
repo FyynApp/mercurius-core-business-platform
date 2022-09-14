@@ -21,148 +21,57 @@
     </head>
     <body class="h-full">
 
-        <div class="min-h-full flex flex-col h-screen justify-between">
-            <header>
-                <nav
-                    {{ stimulus_controller('navMobileMenuSwitch') }}
-                    class="bg-gray-800"
-                >
-                    <div class="mx-auto px-4 sm:px-8">
-                        <div class="flex items-center justify-between h-16">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                                    <a href="{{ path('feature.landingpages.homepage') }}">
-                                        <img class="h-10" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn">
-                                    </a>
-                                </div>
-                                <div class="hidden md:block">
-                                    <div class="ml-10 flex items-baseline space-x-4">
+        {% set is_logged_in = (app.user is not null) %}
 
-                                        {{ component(
-                                            'main_navigation',
-                                            {
-                                                user: app.user,
-                                                request: app.request,
-                                                type: 'wide'
-                                            })
-                                        }}
+        <div class="{% if is_logged_in %} flex flex-row justify-start {% endif %}">
 
-                                    </div>
-                                </div>
-                            </div>
+            {% if is_logged_in %}
+                <div class="w-1/12">
+                    {% include 'side_nav.html.twig' %}
+                </div>
+            {% endif %}
 
-                            <div class="hidden md:block">
-                                <div class="ml-4 flex items-center md:ml-6">
+            <div class="min-h-full flex flex-col h-screen {% if is_logged_in %} w-11/12 {% endif %}">
 
-                                    {{ component(
-                                        'side_navigation',
-                                        {
-                                            user: app.user,
-                                            request: app.request,
-                                            type: 'wide'
-                                        })
-                                    }}
+                {% include 'top_nav.html.twig' %}
 
-                                </div>
-                            </div>
+                <div class="flex flex-col h-screen">
+                    <h1 class="padded-content-box shadow text-3xl font-bold text-gray-200 bg-gray-900">
+                        {% block contentTitle %}{% endblock %}
+                    </h1>
 
+                    <main class="mb-auto">
+                        {% block body %}{% endblock %}
+                    </main>
 
-                            <div class="-mr-2 flex md:hidden">
-                                <!-- Mobile menu button -->
-                                <button
-                                    {{ stimulus_action('navMobileMenuSwitch', 'click') }}
-                                    type="button"
-                                    class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                                    aria-controls="mobile-menu"
-                                    aria-expanded="false"
-                                >
-                                    <span class="sr-only">Open main menu</span>
-                                    <!--
-                                      Heroicon name: outline/menu
+                    <footer class="bg-gray-800 min-h-max w-full bottom-0 p-4 md:pt-20 shadow-inner shadow-black md:flex md:items-center md:justify-between md:p-6 md:pt-20">
+                    <span class="text-sm text-gray-500 sm:text-center">
+                        © {{ "now"|date("Y") }} smart DSGVO GmbH
+                    </span>
+                        <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 sm:mt-0">
+                            <li>
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="mr-4 hover:underline md:mr-6">{{ 'footernav.german'|trans }}</a>
+                            </li>
+                        </ul>
 
-                                      Menu open: "hidden", Menu closed: "block"
-                                    -->
-                                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                                    </svg>
-                                    <!--
-                                      Heroicon name: outline/x
+                        <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 sm:mt-0">
+                            <li>
+                                <a href="#" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.imprint'|trans }}</a>
+                            </li>
+                            <li>
+                                <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.terms'|trans }}</a>
+                            </li>
+                            <li>
+                                <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.contact'|trans }}</a>
+                            </li>
+                        </ul>
+                    </footer>
+                </div>
 
-                                      Menu open: "block", Menu closed: "hidden"
-                                    -->
-                                    <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mobile menu, show/hide based on menu state. -->
-                    <div
-                        {{ stimulus_target('navMobileMenuSwitch', 'menu') }}
-                        class="hidden md:hidden"
-                        id="mobile-menu"
-                    >
-                        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-
-                            {{ component(
-                                'main_navigation',
-                                {
-                                    user: app.user,
-                                    request: app.request,
-                                    type: 'stacked'
-                                })
-                            }}
-
-                            {{ component(
-                                'side_navigation',
-                                {
-                                    user: app.user,
-                                    request: app.request,
-                                    type: 'stacked'
-                                })
-                            }}
-
-                        </div>
-
-                    </div>
-                </nav>
-
-                <h1 class="padded-content-box shadow text-3xl font-bold text-gray-200 bg-gray-900">
-                    {% block contentTitle %}{% endblock %}
-                </h1>
-            </header>
-
-            <main class="mb-auto">
-                {% block body %}{% endblock %}
-            </main>
-
-            <footer class="bg-gray-800 min-h-max w-full bottom-0 p-4 md:pt-20 shadow-inner shadow-black md:flex md:items-center md:justify-between md:p-6 md:pt-20">
-                <span class="text-sm text-gray-500 sm:text-center">
-                    © {{ "now"|date("Y") }} smart DSGVO GmbH
-                </span>
-                <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 sm:mt-0">
-                    <li>
-                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
-                    </li>
-                    <li>
-                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="mr-4 hover:underline md:mr-6">{{ 'footernav.german'|trans }}</a>
-                    </li>
-                </ul>
-
-                <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 sm:mt-0">
-                    <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.imprint'|trans }}</a>
-                    </li>
-                    <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.terms'|trans }}</a>
-                    </li>
-                    <li>
-                        <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.contact'|trans }}</a>
-                    </li>
-                </ul>
-            </footer>
+            </div>
 
         </div>
 
