@@ -19,15 +19,19 @@
         {% block contentBoxContent %}
             <div class="collection-box">
 
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
-                    {% block contentLeft %}
-                        {{ 'feature.dashboard.show.your_name'|trans }}
-                    {% endblock %}
-                    {% block contentRight %}
-                        {{ DashboardService.firstName(app.user) }}
-                        {{ DashboardService.lastName(app.user) }}
-                    {% endblock %}
-                {% endembed %}
+                {% if DashboardService.firstName(app.user) is not null
+                    and DashboardService.lastName(app.user) is not null
+                %}
+                    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
+                        {% block contentLeft %}
+                            {{ 'feature.dashboard.show.your_name'|trans }}
+                        {% endblock %}
+                        {% block contentRight %}
+                            {{ DashboardService.firstName(app.user) }}
+                            {{ DashboardService.lastName(app.user) }}
+                        {% endblock %}
+                    {% endembed %}
+                {% endif %}
 
                 {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
                     {% block contentLeft %}

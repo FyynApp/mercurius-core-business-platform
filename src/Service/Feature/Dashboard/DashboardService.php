@@ -23,12 +23,12 @@ class DashboardService
         $this->videoService = $videoService;
     }
 
-    public function getFirstName(User $user): string
+    public function getFirstName(User $user): ?string
     {
         return $user->getFirstName();
     }
 
-    public function getLastName(User $user): string
+    public function getLastName(User $user): ?string
     {
         return $user->getLastName();
     }
