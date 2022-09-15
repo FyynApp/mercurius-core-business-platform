@@ -1,21 +1,25 @@
-<nav class="min-h-full bg-gray-900">
+<nav class="flex flex-col justify-between h-full">
 
-    {{ component(
-        'main_navigation',
-        {
-            user: app.user,
-            request: app.request,
-            type: 'stacked'
-        })
-    }}
+    <div>
+        {{ component(
+            'main_navigation',
+            {
+                user: app.user,
+                request: app.request,
+                type: 'stacked'
+            })
+        }}
+    </div>
 
-    {{ component(
-        'side_navigation',
-        {
-            user: app.user,
-            request: app.request,
-            type: 'stacked'
-        })
-    }}
+    <div>
+        {{ component(
+            'side_navigation',
+            {
+                user: app.user,
+                request: app.request,
+                type: 'stacked'
+            })
+        }}
+    </div>
 
 </nav>

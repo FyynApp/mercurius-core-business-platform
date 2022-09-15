@@ -24,13 +24,17 @@
 
         <div class="flex flex-row justify-start">
 
-            <div class="hidden md:block md:w-1/12 md:w-96">
-                {% include 'nav_left.html.twig' %}
-            </div>
+            {% if app.user is not null %}
+                <div class="min-h-full bg-gray-800 p-4 hidden md:block md:w-1/12 md:w-96 border-0 border-r-2 border-r-gray-900 shadow-lg shadow-gray-700">
+                    {% include 'nav_left.html.twig' %}
+                </div>
+            {% endif %}
 
-            <div class="min-h-full flex flex-col h-screen w-full md:w-11/12">
+            <div class="min-h-full flex flex-col h-screen w-full {% if app.user is not null %}md:w-11/12{% endif %}">
 
-                {% include 'nav_top.html.twig' %}
+                <div class="{% if app.user is not null %}md:hidden{% endif %}">
+                    {% include 'nav_top.html.twig' %}
+                </div>
 
                 <div class="flex flex-col h-screen">
                     <h1 class="padded-content-box shadow text-3xl font-bold text-gray-200 bg-gray-900">
@@ -42,10 +46,13 @@
                     </main>
 
                     <footer class="bg-gray-800 min-h-max w-full bottom-0 p-4 md:pt-20 shadow-inner shadow-black md:flex md:items-center md:justify-between md:p-6 md:pt-20">
-                    <span class="text-sm text-gray-500 sm:text-center">
-                        © {{ "now"|date("Y") }} smart DSGVO GmbH
-                    </span>
-                        <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 sm:mt-0">
+                        <ul class="flex flex-wrap items-center mt-3 mr-6 text-sm text-gray-500">
+                            <li>
+                                © {{ "now"|date("Y") }} smart DSGVO GmbH
+                            </li>
+                        </ul>
+
+                        <ul class="flex flex-wrap items-center mt-3 mr-6 text-sm text-gray-500">
                             <li>
                                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
                             </li>
@@ -54,7 +61,7 @@
                             </li>
                         </ul>
 
-                        <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 sm:mt-0">
+                        <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500">
                             <li>
                                 <a href="#" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.imprint'|trans }}</a>
                             </li>
