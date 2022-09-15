@@ -7,6 +7,7 @@ use App\Enum\FlashMessageLabel;
 use App\Form\Type\Feature\Account\RegistrationType;
 use App\Repository\Feature\Account\UserRepository;
 use App\Security\Feature\Account\EmailVerifier;
+use App\Service\Feature\Account\AccountService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +28,13 @@ class RegistrationController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
-    public function registerAction(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function registerAction(
+        Request $request,
+        UserPasswordHasherInterface
+        $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        AccountService $accountService
+    ): Response
     {
         $user = $this->getUser();
 
@@ -38,6 +45,16 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
+
+        if (   $form->isSubmitted()
+            && !is_null($user->getEmail())
+            && $accountService
+                ->userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(
+                    $user->getEmail()
+                )
+        ) {
+            return $this->redirectToRoute('feature.account.3rdpartyauth.linkedin.start');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
