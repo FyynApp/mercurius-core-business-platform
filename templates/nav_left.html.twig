@@ -1,0 +1,21 @@
+<nav class="min-h-full bg-gray-900">
+
+    {{ component(
+        'main_navigation',
+        {
+            user: app.user,
+            request: app.request,
+            type: 'stacked'
+        })
+    }}
+
+    {{ component(
+        'side_navigation',
+        {
+            user: app.user,
+            request: app.request,
+            type: 'stacked'
+        })
+    }}
+
+</nav>
