@@ -20,5 +20,6 @@ rsync \
 
 ssh www-data@preprod.fyyn.io -C ' \
 cd ~/mercurius-core-business-platform/preprod; \
-/usr/bin/env php bin/console --env=preprod cache:clear \
+/usr/bin/env php bin/console --env=preprod cache:clear; \
+/usr/bin/env php bin/console --env=preprod doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing;
 '
