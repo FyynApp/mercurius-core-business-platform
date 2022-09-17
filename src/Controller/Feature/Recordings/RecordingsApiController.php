@@ -99,6 +99,9 @@ class RecordingsApiController extends AbstractController
                     'againBtn' => [
                         'text' => 'Aufnahme wiederholen'
                     ],
+                    'waitingBtn' => [
+                        'text' => 'verarbeite...'
+                    ],
                     'workingtext' => 'Cooles Video - wir benötigen noch einige Sekunden, wir sind gleich fertig...',
                     'titletext' => 'Dein geniales Video ist bereit um die Welt zu erobern!',
                     'headline' => 'Aufnahme beendet',
