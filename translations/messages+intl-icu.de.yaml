@@ -100,7 +100,7 @@ feature:
         create_template: 'Neue Vorlage anlegen'
         edit_template: 'Bearbeiten'
         preview_template: 'Vorschau'
-        create_page_from_template: 'Neue Seite von dieser Vorlage'
+        create_page_from_template: 'Erstellen'
     create_page_from_video_form:
       templates_headline: 'Präsentationsseite aus Vorlage erstellen'
     flash:

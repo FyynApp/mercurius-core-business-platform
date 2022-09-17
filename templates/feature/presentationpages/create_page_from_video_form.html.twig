@@ -22,7 +22,7 @@
 
             <div class="collection-box">
 
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { colspanLeft: 6, colspanRight: 6 } %}
+                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { colspanLeft: 3, colspanRight: 9 } %}
                     {% block contentLeft %}
 
                         <video
@@ -39,35 +39,39 @@
                     {% endblock %}
                     {% block contentRight %}
 
-                        <h2 class="text-xl font-bold mb-4">
-                            {{ 'feature.presentationpages.create_page_from_video_form.templates_headline'|trans }}
-                        </h2>
+                        {% if PresentationpagesService.userHasTemplates(app.user) %}
+                            <h2 class="text-xl font-bold mb-4">
+                                {{ 'feature.presentationpages.create_page_from_video_form.templates_headline'|trans }}
+                            </h2>
 
-                        {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
-                            {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
+                            <div class="border-1 border-gray-200 rounded-lg flex flex-col divide-y divide-amber-300">
+                                {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
+                                    {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
 
-                            <div class="mb-4 p-4 bg-indigo-50 rounded-md">
-                                <h3 class="text-lg font-bold">
-                                    {{ presentationpage.title }}
-                                </h3>
+                                    <div class="flex flex-row p-4 justify-between items-center gap-4">
+                                        <h3 class="text-md">
+                                            {{ presentationpage.title }}
+                                        </h3>
 
-                                <div>
-                                    <form
-                                            action="{{ path('feature.presentationpages.create_page_from_video_and_template', { videoId: video.id, templateId: presentationpage.id }) }}"
-                                            method="post"
-                                            class="inline-block"
-                                    >
-                                        <button
-                                                class="cta-link-primary-small"
-                                                type="submit"
-                                        >
-                                            {{ 'feature.presentationpages.overview.cta.create_page_from_template'|trans }}
-                                        </button>
-                                    </form>
-                                </div>
+                                        <div>
+                                            <form
+                                                    action="{{ path('feature.presentationpages.create_page_from_video_and_template', { videoId: video.id, templateId: presentationpage.id }) }}"
+                                                    method="post"
+                                                    class="inline-block"
+                                            >
+                                                <button
+                                                        class="cta-link-primary-small"
+                                                        type="submit"
+                                                >
+                                                    {{ 'feature.presentationpages.overview.cta.create_page_from_template'|trans }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                {% endfor %}
                             </div>
-
-                        {% endfor %}
+                        {% endif %}
 
                     {% endblock %}
                 {% endembed %}

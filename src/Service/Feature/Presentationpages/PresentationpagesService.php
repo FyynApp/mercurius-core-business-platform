@@ -220,4 +220,13 @@ class PresentationpagesService
 
         return $results;
     }
+
+    public function userHasTemplates(User $user): bool
+    {
+        return sizeof(
+            $this->getPresentationpagesForUser(
+                $user,
+                PresentationpageType::Template
+            )) > 0;
+    }
 }

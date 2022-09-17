@@ -35,6 +35,9 @@
 
                     <div class="mb-6 rounded-md bg-white pl-8 p-2 shadow-inner">
                         {% for background in this.presentationpage.possibleBackgrounds %}
+
+                            {# @var background \App\Entity\Feature\Presentationpages\PresentationpageBackground #}
+
                             <button
                                     class="mr-8 mt-4 mb-4"
                                     type="button"
@@ -50,7 +53,7 @@
                                 {% else %}
                                     <img
                                             class="w-24 h-12 rounded-md object-cover"
-                                            src="{{ asset('assets/images/feature/presentationpages/background-images/' ~ background.toAssetName) }}"
+                                            src="{{ asset('assets/images/feature/presentationpages/background-images/' ~ background.toPreviewAssetName) }}"
                                     >
 
                                 {% endif %}
