@@ -45,17 +45,38 @@
                                     data-action-name="setBackground(backgroundValue={{ background.value }})"
                             >
                                 {% if background is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageBackground::BgColor') %}
-                                    <div
-                                            class="w-24 h-12 rounded-md border-1"
-                                            style="background-color: {{ this.presentationpage.bgColor.value }}"
-                                    >&nbsp;</div>
-
+                                    <div class="
+                                                {% if this.presentationpage.background is same as background %}
+                                                        border-1 border-black p-2 rounded-md
+                                                {% else %}
+                                                        border-1 border-gray-100 p-2 rounded-md
+                                                {% endif %}
+                                             ">
+                                        <div
+                                                class="
+                                                    w-24 h-12 rounded-md border-1
+                                                    {% if this.presentationpage.background is same as background %}
+                                                        shadow-gray-600 shadow-md
+                                                    {% endif %}
+                                                "
+                                                style="background-color: {{ this.presentationpage.bgColor.value }}"
+                                        >&nbsp;</div>
+                                    </div>
                                 {% else %}
-                                    <img
-                                            class="w-24 h-12 rounded-md object-cover"
-                                            src="{{ asset('assets/images/feature/presentationpages/background-images/' ~ background.toPreviewAssetName) }}"
-                                    >
-
+                                    <div class="
+                                            {% if this.presentationpage.background is same as background %}
+                                                    border-1 border-black p-2 rounded-md
+                                            {% else %}
+                                                    border-1 border-gray-100 p-2 rounded-md
+                                            {% endif %}
+                                         ">
+                                        <img
+                                                class="
+                                                w-24 h-12 rounded-md object-cover
+                                            "
+                                                src="{{ asset('assets/images/feature/presentationpages/background-images/' ~ background.toPreviewAssetName) }}"
+                                        >
+                                    </div>
                                 {% endif %}
 
 
@@ -415,6 +436,8 @@
         {% endblock %}
 
 
+
+
         {% block contentRight %}
 
             <div class="sm:fixed sm:top-16 bg-gray-100 p-8 rounded-l-lg shadow shadow-2xl shadow-gray-700 h-full overflow-scroll">
@@ -449,12 +472,10 @@
                     </p>
 
                     <div
-                            class="flex flex-col rounded-lg shadow-inner text-left justify-start"
+                            class="flex flex-col rounded-lg shadow-inner text-left justify-start pt-8 pl-8 pr-8 pb-0"
 
                             {% if this.presentationpage.background is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageBackground::BgColor') %}
-                                style="
-                                        background-color: {{ this.presentationpage.bgColor.value }};
-                                        "
+                                style="background-color: {{ this.presentationpage.bgColor.value }};"
                             {% else %}
                                 style="
                                         background-image: url('{{ asset('assets/images/feature/presentationpages/background-images/' ~ presentationpage.background.toAssetName) }}');
@@ -462,8 +483,7 @@
                                         background-size: cover;
                                         background-position: top;
                                         background-attachment: fixed;
-                                        background-color: {{ this.presentationpage.bgColor.value }};
-                                        "
+                                "
                             {% endif %}
                     >
                         <div

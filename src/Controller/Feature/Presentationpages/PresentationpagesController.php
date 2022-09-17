@@ -2,6 +2,7 @@
 
 namespace App\Controller\Feature\Presentationpages;
 
+use App\Controller\AbstractController;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Recordings\Video;
 use App\Enum\FlashMessageLabel;
@@ -10,7 +11,6 @@ use App\Security\VotingAttribute;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -209,7 +209,6 @@ class PresentationpagesController extends AbstractController
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::View->value, $presentationpage);
-
 
         return $this->render(
             'feature/presentationpages/preview.html.twig',
