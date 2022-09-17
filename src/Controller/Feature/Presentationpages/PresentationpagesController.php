@@ -52,6 +52,7 @@ class PresentationpagesController extends AbstractController
         return $this->redirectToRoute(
             'feature.presentationpages.editor',
             [
+                'originalPresentationpageId' => $originalpresentationpage->getId(),
                 'presentationpageId' => $draftPresentationpage->getId()
             ]
         );
