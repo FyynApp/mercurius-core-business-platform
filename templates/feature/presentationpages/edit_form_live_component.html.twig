@@ -478,11 +478,11 @@
                                 style="background-color: {{ this.presentationpage.bgColor.value }};"
                             {% else %}
                                 style="
-                                        background-image: url('{{ asset('assets/images/feature/presentationpages/background-images/' ~ presentationpage.background.toAssetName) }}');
+                                        background-image: url('{{ asset('assets/images/feature/presentationpages/background-images/' ~ this.presentationpage.background.toPreviewAssetName) }}');
                                         background-repeat: no-repeat;
                                         background-size: cover;
                                         background-position: top;
-                                        background-attachment: fixed;
+                                        background-attachment: local;
                                 "
                             {% endif %}
                     >
