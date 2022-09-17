@@ -53,12 +53,7 @@
                                                 {% endif %}
                                              ">
                                         <div
-                                                class="
-                                                    w-24 h-12 rounded-md border-1
-                                                    {% if this.presentationpage.background is same as background %}
-                                                        shadow-gray-600 shadow-md
-                                                    {% endif %}
-                                                "
+                                                class="w-24 h-12 rounded-md border-1"
                                                 style="background-color: {{ this.presentationpage.bgColor.value }}"
                                         >&nbsp;</div>
                                     </div>
@@ -71,10 +66,9 @@
                                             {% endif %}
                                          ">
                                         <img
-                                                class="
-                                                w-24 h-12 rounded-md object-cover
-                                            "
+                                                class="w-24 h-12 rounded-md object-cover"
                                                 src="{{ asset('assets/images/feature/presentationpages/background-images/' ~ background.toPreviewAssetName) }}"
+                                                alt="{{ background.value }}"
                                         >
                                     </div>
                                 {% endif %}
