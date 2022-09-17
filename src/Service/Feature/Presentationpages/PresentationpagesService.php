@@ -33,8 +33,8 @@ class PresentationpagesService
 
     public function createPage(
         User $user
-    ): Presentationpage {
-
+    ): Presentationpage
+    {
         $presentationpage = new Presentationpage($user);
         $presentationpage->setTitle(
             $this->translator->trans(
@@ -46,9 +46,9 @@ class PresentationpagesService
         $presentationpage->setFgColor(FgColor::_37474F);
         $presentationpage->setTextColor(TextColor::_000000);
 
-        $element = new PresentationpageElement();
-        $element->setElementVariant(PresentationpageElementVariant::MercuriusVideo);
-        $element->setPosition(0);
+        $element = new PresentationpageElement(
+            PresentationpageElementVariant::MercuriusVideo
+        );
 
         $presentationpage->addPresentationpageElement($element);
 
@@ -62,8 +62,8 @@ class PresentationpagesService
 
     public function createTemplate(
         User $user
-    ): Presentationpage {
-
+    ): Presentationpage
+    {
         $presentationpage = new Presentationpage($user);
         $presentationpage->setType(PresentationpageType::Template);
         $presentationpage->setTitle(
@@ -76,11 +76,35 @@ class PresentationpagesService
         $presentationpage->setFgColor(FgColor::_37474F);
         $presentationpage->setTextColor(TextColor::_000000);
 
-        $element = new PresentationpageElement();
-        $element->setElementVariant(PresentationpageElementVariant::MercuriusVideo);
-        $element->setPosition(0);
+        $element = new PresentationpageElement(PresentationpageElementVariant::MercuriusVideo);
+        $presentationpage->addPresentationpageElement($element);
+
+        $this->entityManager->persist($element);
+        $this->entityManager->persist($presentationpage);
+        $this->entityManager->flush();
+
+        return $presentationpage;
+    }
+
+    public function createPageFromVideo(
+        Video $video,
+    ): Presentationpage
+    {
+        $presentationpage = new Presentationpage($video->getUser());
+        $presentationpage->setVideo($video);
+
+        $element = new PresentationpageElement(
+            PresentationpageElementVariant::MercuriusVideo
+        );
 
         $presentationpage->addPresentationpageElement($element);
+
+        $presentationpage->setTitle(
+            $this->translator->trans(
+                'feature.presentationpages.create_page.new_title',
+                ['index' => sizeof($this->getPresentationpagesForUser($video->getUser(), PresentationpageType::Page)) + 1]
+            )
+        );
 
         $this->entityManager->persist($element);
         $this->entityManager->persist($presentationpage);
@@ -95,8 +119,8 @@ class PresentationpagesService
     public function createPageFromVideoAndTemplate(
         Video $video,
         Presentationpage $template
-    ): Presentationpage {
-
+    ): Presentationpage
+    {
         if ($video->getUser()->getId() !== $template->getUser()->getId()) {
             throw new InvalidArgumentException("Video belongs to user '{$video->getUser()->getId()}' while template belongs to user '{$template->getUser()->getId()}'.");
         }

@@ -73,6 +73,20 @@ class PresentationpagesController extends AbstractController
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $video);
 
+        $user = $this->getUser();
+
+        if (!$presentationpagesService->userHasTemplates($user)) {
+            $originalpresentationpage = $presentationpagesService->createPageFromVideo($video);
+            $draftPresentationpage = $presentationpagesService->createDraft($originalpresentationpage);
+            return $this->redirectToRoute(
+                'feature.presentationpages.editor',
+                [
+                    'originalPresentationpageId' => $originalpresentationpage->getId(),
+                    'presentationpageId' => $draftPresentationpage->getId()
+                ]
+            );
+        }
+
         return $this->render(
             'feature/presentationpages/create_page_from_video_form.html.twig',
             [

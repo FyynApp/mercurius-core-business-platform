@@ -119,9 +119,10 @@ class PresentationspageEditFormLiveComponent extends AbstractController
 
         $this->submitForm();
 
-        $element = new PresentationpageElement();
-        $element->setPosition(sizeof($this->presentationpage->getPresentationpageElements()));
-        $element->setElementVariant($resolvedVariant);
+        $element = new PresentationpageElement(
+            $resolvedVariant,
+            sizeof($this->presentationpage->getPresentationpageElements())
+        );
         $this->presentationpage->addPresentationpageElement($element);
         $this->entityManager->persist($element);
 
