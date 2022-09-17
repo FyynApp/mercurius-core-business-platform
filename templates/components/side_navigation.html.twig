@@ -129,10 +129,10 @@
         {% for entry in this.entries %}
             <a
                 {% if entry.active %}
-                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium z-50"
+                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium z-50 mr-2"
                     aria-current="page"
                 {% else %}
-                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium mr-2"
                 {% endif %}
 
                 href="{{ path(entry.routeName) }}"
