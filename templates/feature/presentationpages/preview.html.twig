@@ -1,4 +1,4 @@
-{# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
+{# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
 {# @var VideoService \App\Service\Feature\Recordings\VideoService #}
 
 {% import 'feature/presentationpages/preview_helper.html.twig' as helperMacros %}
@@ -57,7 +57,7 @@
                     {% if presentationpage.video is null %}
                         <div class="mt-8 w-96 max-w-full">
                             <img
-                                    class="rounded-lg"
+                                    class="rounded-md"
                                     src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
                             >
                         </div>

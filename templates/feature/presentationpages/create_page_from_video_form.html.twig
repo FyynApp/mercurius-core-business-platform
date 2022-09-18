@@ -44,9 +44,9 @@
                                 {{ 'feature.presentationpages.create_page_from_video_form.templates_headline'|trans }}
                             </h2>
 
-                            <div class="border-1 border-gray-200 rounded-lg flex flex-col divide-y divide-amber-300">
+                            <div class="border-1 border-gray-200 rounded-md flex flex-col divide-y divide-amber-300">
                                 {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
-                                    {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
+                                    {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
 
                                     <div class="flex flex-row p-4 justify-between items-center gap-4">
                                         <h3 class="text-md">

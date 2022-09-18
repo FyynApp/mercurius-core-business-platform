@@ -190,7 +190,7 @@
 
                         {# @var presentationpageElement \App\Entity\Feature\Presentationpages\PresentationpageElement #}
 
-                        <div class="p-4 pt-8 bg-indigo-50 mb-8 rounded-lg">
+                        <div class="p-4 pt-8 bg-indigo-50 mb-8 rounded-md">
 
                             <div class="flex flex-col">
 
@@ -466,7 +466,7 @@
                     </p>
 
                     <div
-                            class="flex flex-col rounded-lg shadow-inner text-left justify-start pt-8 pl-8 pr-8 pb-0"
+                            class="flex flex-col rounded-md shadow-inner text-left justify-start pt-8 pl-8 pr-8 pb-0"
 
                             {% if this.presentationpage.background is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageBackground::BgColor') %}
                                 style="background-color: {{ this.presentationpage.bgColor.value }};"

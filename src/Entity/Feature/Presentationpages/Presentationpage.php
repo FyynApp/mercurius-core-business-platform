@@ -285,4 +285,16 @@ class Presentationpage implements UserOwnedEntityInterface
     {
         return TextColor::cases();
     }
+
+    /** @return string[] */
+    public function getHeadlines(): array
+    {
+        $headlines = [];
+        foreach ($this->getPresentationpageElements() as $presentationpageElement) {
+            if ($presentationpageElement->getElementVariant() === PresentationpageElementVariant::Headline) {
+                $headlines[] = $presentationpageElement->getTextContent();
+            }
+        }
+        return $headlines;
+    }
 }

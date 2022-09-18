@@ -24,7 +24,7 @@
                     {{ 'feature.presentationpages.overview.headline_pages'|trans }}
                 </h2>
 
-                <div class="mb-4 border-1 border-dotted border-gray-400 rounded-lg">
+                <div class="mb-4 border-1 border-dotted border-gray-400 rounded-md">
 
                     <div class="flex justify-center items-center h-full w-full">
                         <form
@@ -53,14 +53,14 @@
                     <div class="
                             border-1
                             border-gray-300
-                            rounded-lg
+                            rounded-md
                             divide-y
                             divide-gray-300
                             bg-white
                     ">
 
                         {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')) %}
-                            {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
+                            {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
 
                             <div class="
                                         grid
@@ -70,9 +70,17 @@
                                         items-start
                                         gap-8
                                 ">
-                                <h3 class="font-bold">
-                                    {{ presentationpage.title }}
-                                </h3>
+                                <div>
+                                    <h3 class="font-bold mb-4">
+                                        {{ presentationpage.title }}
+                                    </h3>
+
+                                    {% for headline in presentationpage.headlines  %}
+                                        <div class="text-gray-600">
+                                            {{ headline }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
 
                                 <div class="col-span-2 flex flex-row gap-4">
                                     <div>
@@ -147,7 +155,7 @@
                     {{ 'feature.presentationpages.overview.headline_templates'|trans }}
                 </h2>
 
-                <div class="mb-4 border-1 border-dotted border-gray-400 rounded-lg">
+                <div class="mb-4 border-1 border-dotted border-gray-400 rounded-md">
 
                     <div class="flex justify-center items-center h-full w-full">
                         <form
@@ -176,14 +184,14 @@
                     <div class="
                             border-1
                             border-gray-300
-                            rounded-lg
+                            rounded-md
                             divide-y
                             divide-gray-300
                             bg-white
                     ">
 
                         {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
-                            {# @var presentationpage \App\Entity\Feature\Presentationpages\presentationpage #}
+                            {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
 
                             <div class="
                                         grid
