@@ -66,6 +66,15 @@ class Presentationpage implements UserOwnedEntityInterface
     }
 
 
+    public function createdOrUpdatedAt(): DateTime
+    {
+        if (is_null($this->updatedAt)) {
+            return $this->createdAt;
+        }
+        return $this->updatedAt;
+    }
+
+
     #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageType::class)]
     private PresentationpageType $type = PresentationpageType::Page;
 

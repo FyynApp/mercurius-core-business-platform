@@ -90,9 +90,15 @@ feature:
   presentationpages:
     overview:
       title: 'Seiten und Vorlagen'
-      subtitle: 'Vorlagen legen fest, wie eine Videolandingpage beim Aufruf durch Ihren Kunden dargestellt wird.'
+      subtitle: 'Legen fest, wie eine Videolandingpage beim Aufruf durch Ihren Kunden dargestellt wird.'
       headline_pages: 'Seiten'
       headline_templates: 'Vorlagen'
+      number_of_elements: >-
+        {num, plural,
+          =0    {keine Seitenelement}
+          one   {1 Seitenelement}
+          other {# Seitenelemente}
+        }
       cta:
         create_page: 'Neue Seite anlegen'
         edit_page: 'Bearbeiten'

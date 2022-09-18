@@ -18,11 +18,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PresentationpagesController extends AbstractController
 {
-    public function overviewAction(PresentationpagesService $presentationpagesService): Response
+    public function overviewAction(
+        PresentationpagesService $presentationpagesService,
+        VideoService $videoService
+    ): Response
     {
         return $this->render(
             'feature/presentationpages/overview.html.twig',
-            ['PresentationpagesService' => $presentationpagesService]
+            [
+                'PresentationpagesService' => $presentationpagesService,
+                'VideoService' => $videoService
+            ]
         );
     }
 
