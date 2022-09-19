@@ -29,8 +29,8 @@ class RecordingsApiController extends AbstractController
         string $recordingSessionId,
         EntityManagerInterface $entityManager,
         RouterInterface $router
-    ): JsonResponse {
-
+    ): JsonResponse
+    {
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {
