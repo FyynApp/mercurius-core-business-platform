@@ -29,7 +29,7 @@ class Video implements UserOwnedEntityInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(type: 'guid', unique: true)]
-    private string $id;
+    private ?string $id = null;
 
     public function getId(): ?string
     {
@@ -202,12 +202,12 @@ class Video implements UserOwnedEntityInterface
 
     /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(mappedBy: 'video', targetEntity: Presentationpage::class, cascade: ['persist'])]
-    private Collection $presentationpages;
+    private array|Collection $presentationpages;
 
     /**
      * @return Presentationpage[]|Collection
      */
-    public function getPresentationpages(): Collection
+    public function getPresentationpages(): array|Collection
     {
         return $this->presentationpages;
     }

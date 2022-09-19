@@ -12,7 +12,7 @@ class PresentationpageElement
 {
     public function __construct(
         PresentationpageElementVariant $elementVariant,
-        int $position = 0,
+        int $position = 0
     )
     {
         $this->elementVariant = $elementVariant;

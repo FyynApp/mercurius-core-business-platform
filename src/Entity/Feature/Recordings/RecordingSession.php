@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_sessions', indexes: [])]
-#[ORM\Index(name: 'created_at_idx', fields: ['createdAt'])]
+#[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
 class RecordingSession implements UserOwnedEntityInterface
 {
     public function __construct(User $user)
@@ -27,7 +27,7 @@ class RecordingSession implements UserOwnedEntityInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(type: 'guid', unique: true)]
-    private string $id;
+    private ?string $id = null;
 
     public function getId(): ?string
     {
@@ -98,12 +98,12 @@ class RecordingSession implements UserOwnedEntityInterface
 
     /** @var RecordingSession[]|Collection */
     #[ORM\OneToMany(mappedBy: 'recordingSession', targetEntity: RecordingSessionVideoChunk::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
-    private Collection $recordingSessionVideoChunks;
+    private array|Collection $recordingSessionVideoChunks;
 
     /**
      * @return RecordingSessionVideoChunk[]|Collection
      */
-    public function getRecordingSessionVideoChunks(): Collection
+    public function getRecordingSessionVideoChunks(): array|Collection
     {
         return $this->recordingSessionVideoChunks;
     }

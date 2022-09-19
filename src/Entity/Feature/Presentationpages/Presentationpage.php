@@ -30,7 +30,7 @@ class Presentationpage implements UserOwnedEntityInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(type: 'guid', unique: true)]
-    private string $id;
+    private ?string $id = null;
 
     public function getId(): ?string
     {
@@ -221,13 +221,13 @@ class Presentationpage implements UserOwnedEntityInterface
 
     /** @var PresentationpageElement[]|Collection */
     #[ORM\OneToMany(mappedBy: 'presentationpage', targetEntity: PresentationpageElement::class, cascade: ['persist'])]
-    private Collection $presentationpageElements;
+    private array|Collection $presentationpageElements;
 
     /**
      * @return PresentationpageElement[]|Collection
      * @throws Exception
      */
-    public function getPresentationpageElements(): Collection
+    public function getPresentationpageElements(): array|Collection
     {
         $iterator = $this->presentationpageElements->getIterator();
         $iterator->uasort(function (PresentationpageElement $first, PresentationpageElement $second) {
@@ -251,6 +251,9 @@ class Presentationpage implements UserOwnedEntityInterface
         $elementToRemove->setPresentationpage(null);
     }
 
+    /**
+     * @throws Exception
+     */
     public function hasMercuriusVideoVariantElement(): bool
     {
         foreach ($this->getPresentationpageElements() as $element) {
@@ -286,7 +289,10 @@ class Presentationpage implements UserOwnedEntityInterface
         return TextColor::cases();
     }
 
-    /** @return string[] */
+    /**
+     * @return string[]
+     * @throws Exception
+     */
     public function getHeadlines(): array
     {
         $headlines = [];
