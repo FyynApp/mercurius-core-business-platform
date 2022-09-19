@@ -232,7 +232,8 @@ class RecordingsApiController extends AbstractController
         EntityManagerInterface $entityManager,
         LoggerInterface $logger,
         VideoService $videoService
-    ): Response {
+    ): Response
+    {
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {
