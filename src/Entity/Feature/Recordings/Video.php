@@ -2,7 +2,9 @@
 
 namespace App\Entity\Feature\Recordings;
 
+use App\Entity\Feature\Account\UnregisteredClient;
 use App\Entity\Feature\Account\User;
+use App\Entity\Feature\Account\UserOrUnregisteredClientOwnedEntity;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\UserOwnedEntityInterface;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
@@ -16,13 +18,17 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity]
 #[ORM\Table(name: 'videos')]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
-class Video implements UserOwnedEntityInterface
+class Video extends UserOrUnregisteredClientOwnedEntity
 {
-    public function __construct(User $user)
+    public function __construct(
+        ?User $user,
+        ?UnregisteredClient $unregisteredClient
+    )
     {
-        $this->user = $user;
         $this->presentationpages = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
+
+        parent::__construct($user, $unregisteredClient);
     }
 
     #[ORM\Id]
@@ -46,14 +52,14 @@ class Video implements UserOwnedEntityInterface
     }
 
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'videos')]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private User $user;
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?User $user;
 
-    public function getUser(): User
-    {
-        return $this->user;
-    }
+
+    #[ORM\ManyToOne(targetEntity: UnregisteredClient::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
+    #[ORM\JoinColumn(name: 'unregistered_clients_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?UnregisteredClient $unregisteredClient;
 
 
     #[ORM\OneToOne(inversedBy: 'video', targetEntity: RecordingSession::class, cascade: ['persist'])]

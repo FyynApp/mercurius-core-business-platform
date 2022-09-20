@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'unregistered_client')]
+#[ORM\Table(name: 'unregistered_clients')]
 class UnregisteredClient
 {
     public function __construct()

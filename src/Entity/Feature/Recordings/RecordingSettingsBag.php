@@ -20,6 +20,16 @@ class RecordingSettingsBag extends UserOrUnregisteredClientOwnedEntity
     }
 
 
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSettingsBags')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?User $user;
+
+
+    #[ORM\ManyToOne(targetEntity: UnregisteredClient::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
+    #[ORM\JoinColumn(name: 'unregistered_clients_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?UnregisteredClient $unregisteredClient;
+
+
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 32)]
     private string $clientId = '';
@@ -47,14 +57,4 @@ class RecordingSettingsBag extends UserOrUnregisteredClientOwnedEntity
     {
         $this->settings = $settings;
     }
-
-
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSettingsBags')]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?User $user;
-
-
-    #[ORM\ManyToOne(targetEntity: UnregisteredClient::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
-    #[ORM\JoinColumn(name: 'unregistered_clients_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?UnregisteredClient $unregisteredClient;
 }

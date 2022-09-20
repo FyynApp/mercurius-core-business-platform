@@ -41,6 +41,16 @@ class RecordingSession extends UserOrUnregisteredClientOwnedEntity
     }
 
 
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?User $user;
+
+
+    #[ORM\ManyToOne(targetEntity: UnregisteredClient::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
+    #[ORM\JoinColumn(name: 'unregistered_clients_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?UnregisteredClient $unregisteredClient;
+
+
     #[ORM\Column(type: 'datetime', nullable: false)]
     private DateTime $createdAt;
 
@@ -90,16 +100,6 @@ class RecordingSession extends UserOrUnregisteredClientOwnedEntity
     {
         $this->isFinished = $isFinished;
     }
-
-
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?User $user;
-
-
-    #[ORM\ManyToOne(targetEntity: UnregisteredClient::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
-    #[ORM\JoinColumn(name: 'unregistered_clients_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
-    protected ?UnregisteredClient $unregisteredClient;
 
 
     /** @var RecordingSession[]|Collection */
