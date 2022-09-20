@@ -41,19 +41,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private string $email;
+    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: true)]
+    private ?string $email = null;
 
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): void
     {
         $this->email = $email;
-
-        return $this;
     }
 
 
@@ -63,17 +61,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
-
-        return $this;
     }
 
 
@@ -85,11 +80,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): void
     {
         $this->password = $password;
-
-        return $this;
     }
 
 
@@ -101,11 +94,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isVerified;
     }
 
-    public function setIsVerified(bool $isVerified): self
+    public function setIsVerified(bool $isVerified): void
     {
         $this->isVerified = $isVerified;
-
-        return $this;
     }
 
 
@@ -120,12 +111,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Presentationpage::class, cascade: ['persist'])]
-    private Collection $presentationpages;
+    private array|Collection $presentationpages;
 
     /**
      * @return Presentationpage[]|Collection
      */
-    public function getPresentationpages(): Collection
+    public function getPresentationpages(): array|Collection
     {
         return $this->presentationpages;
     }
@@ -133,12 +124,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var RecordingSession[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSession::class, cascade: ['persist'])]
-    private Collection $recordingSessions;
+    private array|Collection $recordingSessions;
 
     /**
      * @return RecordingSession[]|Collection
      */
-    public function getRecordingSessions(): Collection
+    public function getRecordingSessions(): array|Collection
     {
         return $this->recordingSessions;
     }
@@ -146,12 +137,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var Video[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Video::class, cascade: ['persist'])]
-    private Collection $videos;
+    private array|Collection $videos;
 
     /**
      * @return Video[]|Collection
      */
-    public function getVideos(): Collection
+    public function getVideos(): array|Collection
     {
         return $this->videos;
     }
@@ -159,19 +150,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var RecordingSettingsBag[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSettingsBag::class, cascade: ['persist'])]
-    private Collection $recordingSettingsBags;
+    private array|Collection $recordingSettingsBags;
 
 
     public function getUserIdentifier(): string
     {
+        if (is_null($this->email)) {
+            return $this->id;
+        }
         return $this->email;
     }
 
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
 
