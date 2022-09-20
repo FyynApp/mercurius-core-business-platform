@@ -42,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private string $email;
+    private ?string $email = null;
 
     public function getEmail(): ?string
     {
@@ -120,12 +120,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Presentationpage::class, cascade: ['persist'])]
-    private Collection $presentationpages;
+    private array|Collection $presentationpages;
 
     /**
      * @return Presentationpage[]|Collection
      */
-    public function getPresentationpages(): Collection
+    public function getPresentationpages(): array|Collection
     {
         return $this->presentationpages;
     }
@@ -133,12 +133,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var RecordingSession[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSession::class, cascade: ['persist'])]
-    private Collection $recordingSessions;
+    private array|Collection $recordingSessions;
 
     /**
      * @return RecordingSession[]|Collection
      */
-    public function getRecordingSessions(): Collection
+    public function getRecordingSessions(): array|Collection
     {
         return $this->recordingSessions;
     }
@@ -146,12 +146,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var Video[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Video::class, cascade: ['persist'])]
-    private Collection $videos;
+    private array|Collection $videos;
 
     /**
      * @return Video[]|Collection
      */
-    public function getVideos(): Collection
+    public function getVideos(): array|Collection
     {
         return $this->videos;
     }
@@ -159,7 +159,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var RecordingSettingsBag[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSettingsBag::class, cascade: ['persist'])]
-    private Collection $recordingSettingsBags;
+    private array|Collection $recordingSettingsBags;
 
 
     public function getUserIdentifier(): string

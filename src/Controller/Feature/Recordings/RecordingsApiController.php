@@ -2,18 +2,19 @@
 
 namespace App\Controller\Feature\Recordings;
 
+use App\Controller\AbstractController;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Security\VotingAttribute;
+use App\Service\Aspect\ContentDelivery\ContentDeliveryService;
 use App\Service\Aspect\Cookies\CookieName;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -308,5 +309,48 @@ class RecordingsApiController extends AbstractController
                 'status' => Response::HTTP_OK
             ]);
         }
+    }
+
+
+    public function createRecordingSessionAction(
+        EntityManagerInterface $entityManager,
+        ContentDeliveryService $contentDeliveryService
+    ): Response
+    {
+        $user = $this->getUser();
+
+        $recordingSession = new RecordingSession($user);
+        $entityManager->persist($recordingSession);
+        $entityManager->flush($recordingSession);
+
+        if (is_null($user)) {
+            $responseBody['settings']['loggedIn']           = false;
+            $responseBody['settings']['userLanguage']       = 'en';
+            $responseBody['settings']['maxRecordingTime']   = 300;
+            $responseBody['settings']['memberPlan']         = 1;
+            $responseBody['settings']['versionExtension']   = 1.2;
+        } else {
+            $responseBody['settings']['loggedIn']           = true;
+            $responseBody['settings']['userName']           = $user->getUserIdentifier();
+            $responseBody['settings']['userFirstName']      = $user->getFirstName();
+            $responseBody['settings']['userLastName']       = $user->getLastName();
+            $responseBody['settings']['userLanguage']       = 'en';
+            $responseBody['settings']['maxRecordingTime']   = 300;
+            $responseBody['settings']['postUrl']            = 'https://preprod.fyyn.io/api/feature/recordings/recording-sessions/1ed37f3d-dd08-61ce-8e68-17af98bb8431/video-chunks/';
+            $responseBody['settings']['postChunkSize']      = 5;
+            $responseBody['settings']['memberPlan']         = 1;
+            $responseBody['settings']['sessionId']          = '';
+            $responseBody['settings']['recordingId']        = $recordingSession->getId();
+            $responseBody['settings']['versionExtension']   = 1.2;
+
+            $responseBody['settings']['userImage'] = $user->hasProfilePhoto()
+                ? $contentDeliveryService->getUrlForUserProfilePhoto($user)
+                : '';
+        }
+
+        return $this->json(
+            $responseBody,
+            Response::HTTP_CREATED
+        );
     }
 }

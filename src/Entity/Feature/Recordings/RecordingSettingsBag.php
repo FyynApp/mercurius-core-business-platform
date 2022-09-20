@@ -2,18 +2,23 @@
 
 namespace App\Entity\Feature\Recordings;
 
+use App\Entity\Feature\Account\UnregisteredClient;
 use App\Entity\Feature\Account\User;
-use App\Entity\UserOwnedEntityInterface;
+use App\Entity\Feature\Account\UserOrUnregisteredClientOwnedEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_settings_bags')]
-class RecordingSettingsBag implements UserOwnedEntityInterface
+class RecordingSettingsBag extends UserOrUnregisteredClientOwnedEntity
 {
-    public function __construct(User $user)
+    public function __construct(
+        ?User $user,
+        ?UnregisteredClient $unregisteredClient
+    )
     {
-        $this->user = $user;
+        parent::__construct($user, $unregisteredClient);
     }
+
 
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: 32)]
@@ -29,15 +34,6 @@ class RecordingSettingsBag implements UserOwnedEntityInterface
         $this->clientId = $clientId;
     }
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSettingsBags')]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private User $user;
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
 
     #[ORM\Column(type: 'text')]
     private string $settings = '';
@@ -51,4 +47,14 @@ class RecordingSettingsBag implements UserOwnedEntityInterface
     {
         $this->settings = $settings;
     }
+
+
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSettingsBags')]
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?User $user;
+
+
+    #[ORM\ManyToOne(targetEntity: UnregisteredClient::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
+    #[ORM\JoinColumn(name: 'unregistered_clients_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?UnregisteredClient $unregisteredClient;
 }

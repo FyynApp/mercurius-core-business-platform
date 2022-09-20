@@ -17,3 +17,9 @@ api.feature.recordings.recording_session.handle_video_chunk:
   path: /feature/recordings/recording-sessions/{recordingSessionId}/video-chunks/
   controller: App\Controller\Feature\Recordings\RecordingsApiController::handleRecordingSessionVideoChunkAction
   methods: [ POST ]
+
+
+api.feature.recordings.recording_session_for_extension.create:
+  path: /feature/recordings/recording-sessions-for-extension/
+  controller: App\Controller\Feature\Recordings\RecordingsApiController::createRecordingSessionAction
+  methods: [ POST ]

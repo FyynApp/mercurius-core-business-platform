@@ -2,8 +2,9 @@
 
 namespace App\Entity\Feature\Recordings;
 
+use App\Entity\Feature\Account\UnregisteredClient;
 use App\Entity\Feature\Account\User;
-use App\Entity\UserOwnedEntityInterface;
+use App\Entity\Feature\Account\UserOrUnregisteredClientOwnedEntity;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,13 +15,18 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_sessions', indexes: [])]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
-class RecordingSession implements UserOwnedEntityInterface
+class RecordingSession extends UserOrUnregisteredClientOwnedEntity
 {
-    public function __construct(User $user)
+    public function __construct(
+        ?User $user,
+        ?UnregisteredClient $unregisteredClient
+    )
     {
         $this->user = $user;
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
         $this->recordingSessionVideoChunks = new ArrayCollection();
+
+        parent::__construct($user, $unregisteredClient);
     }
 
     #[ORM\Id]
@@ -87,13 +93,13 @@ class RecordingSession implements UserOwnedEntityInterface
 
 
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private User $user;
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?User $user;
 
-    public function getUser(): User
-    {
-        return $this->user;
-    }
+
+    #[ORM\ManyToOne(targetEntity: UnregisteredClient::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
+    #[ORM\JoinColumn(name: 'unregistered_clients_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    protected ?UnregisteredClient $unregisteredClient;
 
 
     /** @var RecordingSession[]|Collection */
