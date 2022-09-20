@@ -100,6 +100,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    public function isRegistered(): bool
+    {
+        return !is_null($this->email);
+    }
+
+
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: ThirdPartyAuthLinkedinResourceOwner::class, cascade: ['persist'])]
     private ?ThirdPartyAuthLinkedinResourceOwner $thirdPartyAuthLinkedinResourceOwner = null;
 

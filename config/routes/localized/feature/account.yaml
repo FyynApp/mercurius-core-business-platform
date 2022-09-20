@@ -30,3 +30,8 @@ feature.account.3rdpartyauth.linkedin.return:
   path: /3rdpartyauth/linkedin/return
   controller: App\Controller\Feature\Account\ThirdPartyAuthController::linkedinReturnAction
   methods: [ GET, POST ]
+
+feature.account.create_unregistered_user:
+  path: /create-unregistered-user
+  controller: App\Controller\Feature\Account\LoginController::createUnregisteredUserAction
+  methods: [ GET, POST ]
