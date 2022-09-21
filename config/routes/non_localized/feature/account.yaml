@@ -1,0 +1,4 @@
+feature.account.create_unregistered_user:
+  path: /create-unregistered-user
+  controller: App\Controller\Feature\Account\LoginController::createUnregisteredUserAction
+  methods: [ GET, POST ]

@@ -30,6 +30,14 @@ security:
                 path: feature.account.logout
                 target: feature.account.login
 
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 31536000
+                samesite: strict
+                secure: true
+                always_remember_me: true
+                token_provider:
+                    doctrine: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -42,6 +50,14 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: /my/, roles: ROLE_USER }
+
+
+when@dev:
+    security:
+        firewalls:
+            main:
+                remember_me:
+                    secure: false
 
 when@test:
     security:

@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: true)]
+    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
     private ?string $email = null;
 
     public function getEmail(): ?string
