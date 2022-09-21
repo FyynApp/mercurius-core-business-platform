@@ -12,18 +12,23 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RecordingsController extends AbstractController
 {
-    public function recordingStudioAction(EntityManagerInterface $entityManager): Response
+    public function recordingStudioAction(
+        RecordingSessionService $recordingSessionService
+    ): Response
     {
-        /** @var User $user */
+        /** @var ?User $user */
         $user = $this->getUser();
 
-        $recordingSession = new RecordingSession($user);
-        $entityManager->persist($recordingSession);
-        $entityManager->flush($recordingSession);
+        if (is_null($user)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $recordingSession = $recordingSessionService->createRecordingSession($user);
 
         return $this->render(
             'feature/recordings/recording_studio.html.twig',

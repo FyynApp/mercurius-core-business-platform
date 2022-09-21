@@ -7,7 +7,9 @@ use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Security\VotingAttribute;
+use App\Service\Aspect\ContentDelivery\ContentDeliveryService;
 use App\Service\Aspect\Cookies\CookieName;
+use App\Service\Feature\Account\AccountService;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,6 +38,8 @@ class RecordingsApiController extends AbstractController
         if (is_null($recordingSession)) {
             throw new NotFoundHttpException("A recording session with id '$recordingSessionId' does not exist.");
         }
+
+        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
         $user = $recordingSession->getUser();
 
@@ -148,6 +152,106 @@ class RecordingsApiController extends AbstractController
                 'text' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr,\n\nsed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,\nsed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.\n\nStet clita kasd gubergren.'
             ]
         ];
+
+        return $this->json(
+            $responseBody,
+            Response::HTTP_OK
+        );
+    }
+
+
+    public function createRecordingSessionForBrowserExtensionAction(
+        AccountService $accountService,
+        RecordingSessionService $recordingSessionService
+    ): Response
+    {
+        $user = $this->getUser();
+
+        $createdUnregisteredUser = false;
+        if (is_null($user)) {
+            $user = $accountService->createUnregisteredUser();
+            $createdUnregisteredUser = true;
+        }
+
+        $recordingSession = $recordingSessionService->createRecordingSession($user);
+
+        if ($createdUnregisteredUser) {
+            return $this->redirectToRoute(
+                'api.feature.recordings.recording_session.get_browser_extension_info',
+                [
+                    'recordingSessionId' => $recordingSession->getId(),
+                    'unregisteredUserId' => $user->getId(),
+                    'unregisteredUserAuthHash' => $user->getAuthHash()
+                ]
+            );
+        } else {
+            return $this->redirectToRoute(
+                'api.feature.recordings.recording_session.get_browser_extension_info',
+                [
+                    'recordingSessionId' => $recordingSession->getId()
+                ]
+            );
+        }
+    }
+
+
+    public function getRecordingSessionBrowserExtensionInfoAction(
+        string $recordingSessionId,
+        EntityManagerInterface $entityManager,
+        RouterInterface $router,
+        ContentDeliveryService $contentDeliveryService,
+    ): JsonResponse
+    {
+        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new NotFoundHttpException("A recording session with id '$recordingSessionId' does not exist.");
+        }
+
+        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
+
+        $user = $recordingSession->getUser();
+
+        $settings = [
+            'userLanguage' => 'en',
+            'recordingSessionId' => $recordingSession->getId(),
+
+            'postUrl' => $router->generate(
+                'api.feature.recordings.recording_session.handle_video_chunk',
+                ['recordingSessionId' => $recordingSession->getId()]
+            ),
+
+            'postChunkSize' => 5,
+            'memberPlan' => 1,
+            'versionExtension' => 1.2
+        ];
+
+        if ($user->isRegistered()) {
+            $responseBody = [
+                'settings' => array_merge(
+                    $settings,
+                    [
+                        'userIsRegistered' => true,
+                        'userName' => $user->getUserIdentifier(),
+                        'userFirstName' => $user->getFirstName(),
+                        'userLastName' => $user->getLastName(),
+                        'userImage' => $contentDeliveryService->getUrlForUserProfilePhoto($user),
+                        'maxRecordingTime' => 300
+                    ]
+                )
+            ];
+        } else {
+            $responseBody = [
+                'settings' => array_merge(
+                    $settings,
+                    [
+                        'userIsRegistered' => false,
+                        'maxRecordingTime' => 60,
+                        'memberPlan' => 0,
+                    ]
+                )
+            ];
+        }
 
         return $this->json(
             $responseBody,

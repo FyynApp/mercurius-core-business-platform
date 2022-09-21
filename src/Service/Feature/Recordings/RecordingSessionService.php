@@ -34,6 +34,16 @@ class RecordingSessionService
     }
 
 
+    public function createRecordingSession(User $user): RecordingSession
+    {
+        $recordingSession = new RecordingSession($user);
+        $this->entityManager->persist($recordingSession);
+        $this->entityManager->flush($recordingSession);
+
+        return $recordingSession;
+    }
+
+
     public function handleRecordingSessionFinished(
         RecordingSession $recordingSession,
         VideoService $videoService
