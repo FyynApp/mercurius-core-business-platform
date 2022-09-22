@@ -3,6 +3,7 @@
 namespace App\Tests\Integration\Feature\Dashboard;
 
 use App\DataFixtures\Feature\Account\UserFixture;
+use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Repository\Feature\Account\UserRepository;
 use App\Service\Feature\Dashboard\DashboardService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -20,7 +21,10 @@ class DashboardTest extends KernelTestCase
 
         $this->assertEquals(
             0,
-            $dashboardService->getNumberOfPresentationpages($user)
+            $dashboardService->getNumberOfPresentationpages(
+                $user,
+                PresentationpageType::Page
+            )
         );
     }
 }
