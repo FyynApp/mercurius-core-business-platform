@@ -4,6 +4,7 @@ namespace App\Service\Aspect\Filesystem;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
+
 class FilesystemService
 {
     const CONTENT_STORAGE_ROOT_FOLDER_PATH = '/var/tmp/mercurius-core-business-platform';
@@ -22,6 +23,7 @@ class FilesystemService
         if ($path === '') {
             return self::CONTENT_STORAGE_ROOT_FOLDER_PATH;
         }
+
         return self::CONTENT_STORAGE_ROOT_FOLDER_PATH . '/' . $path;
     }
 
@@ -32,6 +34,7 @@ class FilesystemService
         if ($path === '') {
             return $this->parameterBag->get('kernel.project_dir') . '/public/generated-content';
         }
+
         return $this->parameterBag->get('kernel.project_dir') . '/public/generated-content/' . $path;
     }
 }

@@ -6,6 +6,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_session_video_chunks')]
 #[ORM\UniqueConstraint(name: 'session_name', columns: ['recording_sessions_id', 'name'])]

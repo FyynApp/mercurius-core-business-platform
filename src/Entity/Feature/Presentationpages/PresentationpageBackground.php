@@ -4,6 +4,7 @@ namespace App\Entity\Feature\Presentationpages;
 
 use InvalidArgumentException;
 
+
 enum PresentationpageBackground: string
 {
     case BgColor = 'bg-color';

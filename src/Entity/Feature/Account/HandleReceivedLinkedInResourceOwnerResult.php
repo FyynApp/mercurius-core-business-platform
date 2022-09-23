@@ -4,12 +4,18 @@ namespace App\Entity\Feature\Account;
 
 use InvalidArgumentException;
 
+
 class HandleReceivedLinkedInResourceOwnerResult
 {
     const ERROR_MISSING_ID_OR_EMAIL = 0;
     const ERROR_RETRIEVED_EMAIL_DIFFERS_FROM_STORED_EMAIL = 1;
 
-    public function __construct(bool $successful, ?int $error = null, ?ThirdPartyAuthLinkedinResourceOwner $linkedInResourceOwner = null, ?string $loginLinkUrl = null)
+    public function __construct(
+        bool                                 $successful,
+        ?int                                 $error = null,
+        ?ThirdPartyAuthLinkedinResourceOwner $linkedInResourceOwner = null,
+        ?string                              $loginLinkUrl = null
+    )
     {
         $this->successful = $successful;
 

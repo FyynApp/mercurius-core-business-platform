@@ -6,9 +6,10 @@ use App\DataFixtures\Feature\Account\UserFixture;
 use App\Repository\Feature\Account\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+
 class HomepageTest extends WebTestCase
 {
-    public function testVisitingWhileNotLoggedIn()
+    public function testVisitingWhileNotLoggedIn ()
     {
         $client = static::createClient();
         $client->request('GET', '/en/');
@@ -16,7 +17,7 @@ class HomepageTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'About');
     }
 
-    public function testVisitingWhileLoggedIn()
+    public function testVisitingWhileLoggedIn ()
     {
         $client = static::createClient();
         $container = static::getContainer();

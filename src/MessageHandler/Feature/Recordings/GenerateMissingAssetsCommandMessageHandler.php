@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
+
 #[AsMessageHandler]
 class GenerateMissingAssetsCommandMessageHandler
 {
@@ -22,9 +23,10 @@ class GenerateMissingAssetsCommandMessageHandler
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        LoggerInterface $logger,
-        VideoService $videoService
-    ) {
+        LoggerInterface        $logger,
+        VideoService           $videoService
+    )
+    {
         $this->entityManager = $entityManager;
         $this->logger = $logger;
         $this->videoService = $videoService;

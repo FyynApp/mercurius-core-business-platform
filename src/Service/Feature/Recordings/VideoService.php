@@ -16,6 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+
 class VideoService
 {
     private const ASSETS_SUBFOLDER_NAME = 'video-assets';
@@ -34,13 +35,14 @@ class VideoService
 
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        FilesystemService $filesystemService,
+        EntityManagerInterface  $entityManager,
+        FilesystemService       $filesystemService,
         RecordingSessionService $recordingSessionService,
-        RouterInterface $router,
-        MessageBusInterface $messageBus,
-        LoggerInterface $logger
-    ) {
+        RouterInterface         $router,
+        MessageBusInterface     $messageBus,
+        LoggerInterface         $logger
+    )
+    {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
         $this->recordingSessionService = $recordingSessionService;
@@ -55,8 +57,10 @@ class VideoService
      */
     public function getAvailableVideos(User $user): array
     {
-        $arr = $user->getVideos()->toArray();
+        $arr = $user->getVideos()
+                    ->toArray();
         rsort($arr);
+
         return $arr;
     }
 
@@ -130,7 +134,10 @@ class VideoService
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
 
-        if (is_null($recordingSession->getRecordingSessionVideoChunks()->first())) {
+        if (is_null(
+            $recordingSession->getRecordingSessionVideoChunks()
+                             ->first()
+        )) {
             throw new Exception("Cannot generate poster assets for video '{$video->getId()}' because its recording session '{$recordingSession->getId()}' does not have any video chunks.");
         }
 
@@ -231,12 +238,14 @@ class VideoService
 
         $video->setAssetFullWebmFps(
             $this->getAssetFullFps(
-                $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm))
+                $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)
+            )
         );
 
         $video->setAssetFullWebmSeconds(
             $this->getAssetFullSeconds(
-                $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm))
+                $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)
+            )
         );
 
 
@@ -255,12 +264,14 @@ class VideoService
 
         $video->setAssetFullMp4Fps(
             $this->getAssetFullFps(
-                $this->getFullAssetFilePath($video, AssetMimeType::VideoMp4))
+                $this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)
+            )
         );
 
         $video->setAssetFullMp4Seconds(
             $this->getAssetFullSeconds(
-                $this->getFullAssetFilePath($video, AssetMimeType::VideoMp4))
+                $this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)
+            )
         );
 
         $this->entityManager->persist($video);
@@ -304,45 +315,64 @@ class VideoService
     {
         $fs = new Filesystem();
         $fs->mkdir(
-            $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-                self::ASSETS_SUBFOLDER_NAME,
-                $video->getId()
-            ])
+            $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+                [
+                    self::ASSETS_SUBFOLDER_NAME,
+                    $video->getId()
+                ]
+            )
         );
     }
 
-    private function getPosterStillAssetFilePath(Video $video, AssetMimeType $mimeType): string
+    private function getPosterStillAssetFilePath(
+        Video         $video,
+        AssetMimeType $mimeType
+    ): string
     {
         if ($mimeType !== AssetMimeType::ImageWebp) {
             throw new InvalidArgumentException();
         }
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            self::ASSETS_SUBFOLDER_NAME,
-            $video->getId(),
-            'poster-still.' . $this->mimeTypeToFileSuffix($mimeType)
-        ]);
+
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                self::ASSETS_SUBFOLDER_NAME,
+                $video->getId(),
+                'poster-still.' . $this->mimeTypeToFileSuffix($mimeType)
+            ]
+        );
     }
 
-    private function getPosterAnimatedAssetFilePath(Video $video, AssetMimeType $mimeType): string
+    private function getPosterAnimatedAssetFilePath(
+        Video         $video,
+        AssetMimeType $mimeType
+    ): string
     {
-        if (   $mimeType !== AssetMimeType::ImageWebp
+        if ($mimeType !== AssetMimeType::ImageWebp
             && $mimeType !== AssetMimeType::ImageGif
         ) {
             throw new InvalidArgumentException();
         }
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            self::ASSETS_SUBFOLDER_NAME,
-            $video->getId(),
-            'poster-animated.' . $this->mimeTypeToFileSuffix($mimeType)
-        ]);
+
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                self::ASSETS_SUBFOLDER_NAME,
+                $video->getId(),
+                'poster-animated.' . $this->mimeTypeToFileSuffix($mimeType)
+            ]
+        );
     }
 
-    private function getFullAssetFilePath(Video $video, AssetMimeType $mimeType): string
+    private function getFullAssetFilePath(
+        Video         $video,
+        AssetMimeType $mimeType
+    ): string
     {
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            self::ASSETS_SUBFOLDER_NAME,
-            $video->getId(),
-            'full.' . $this->mimeTypeToFileSuffix($mimeType)
-        ]);
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                self::ASSETS_SUBFOLDER_NAME,
+                $video->getId(),
+                'full.' . $this->mimeTypeToFileSuffix($mimeType)
+            ]
+        );
     }
 }

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+
 class RecordingsController extends AbstractController
 {
     public function recordingStudioAction(EntityManagerInterface $entityManager): Response
@@ -32,11 +33,12 @@ class RecordingsController extends AbstractController
     }
 
     public function returnFromRecordingStudioAction(
-        Request $request,
-        EntityManagerInterface $entityManager,
+        Request                 $request,
+        EntityManagerInterface  $entityManager,
         RecordingSessionService $recordingSessionService,
-        VideoService $videoService
-    ): Response {
+        VideoService            $videoService
+    ): Response
+    {
         $recordingSessionId = $request->get('recordingSessionId');
 
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
@@ -69,12 +71,13 @@ class RecordingsController extends AbstractController
     }
 
     public function recordingPreviewAssetRedirectAction(
-        string $recordingSessionId,
-        Request $request,
+        string                  $recordingSessionId,
+        Request                 $request,
         RecordingSessionService $recordingSessionService,
-        EntityManagerInterface $entityManager,
-        VideoService $videoService
-    ): Response {
+        EntityManagerInterface  $entityManager,
+        VideoService            $videoService
+    ): Response
+    {
 
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
@@ -103,6 +106,7 @@ class RecordingsController extends AbstractController
 
         if ($counter > 0) {
             sleep(1);
+
             return $this->redirectToRoute(
                 'feature.recordings.recording_session.recording_preview.asset-redirect',
                 [

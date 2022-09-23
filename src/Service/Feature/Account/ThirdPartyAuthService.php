@@ -11,6 +11,7 @@ use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
+
 class ThirdPartyAuthService
 {
     private EntityManagerInterface $entityManager;
@@ -20,10 +21,11 @@ class ThirdPartyAuthService
     private LoginLinkHandlerInterface $loginLinkHandler;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
+        EntityManagerInterface      $entityManager,
         UserPasswordHasherInterface $userPasswordHasher,
-        LoginLinkHandlerInterface $loginLinkHandler
-    ) {
+        LoginLinkHandlerInterface   $loginLinkHandler
+    )
+    {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
         $this->loginLinkHandler = $loginLinkHandler;
@@ -32,9 +34,11 @@ class ThirdPartyAuthService
     /**
      * @throws Exception
      */
-    public function handleReceivedLinkedInResourceOwner(LinkedInResourceOwner $receivedResourceOwner): HandleReceivedLinkedInResourceOwnerResult
+    public function handleReceivedLinkedInResourceOwner(
+        LinkedInResourceOwner $receivedResourceOwner
+    ): HandleReceivedLinkedInResourceOwnerResult
     {
-        if (   is_null($receivedResourceOwner->getId())
+        if (is_null($receivedResourceOwner->getId())
             || is_null($receivedResourceOwner->getEmail())
         ) {
             return new HandleReceivedLinkedInResourceOwnerResult(
@@ -65,7 +69,8 @@ class ThirdPartyAuthService
         }
 
         if (is_null($resourceOwner->getUser())) {
-            $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $resourceOwner->getEmail()]);
+            $user = $this->entityManager->getRepository(User::class)
+                                        ->findOneBy(['email' => $resourceOwner->getEmail()]);
             if (is_null($user)) {
                 $user = new User();
                 $user->setEmail($resourceOwner->getEmail());

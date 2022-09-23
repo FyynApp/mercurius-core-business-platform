@@ -16,7 +16,11 @@ class NavigationEntry
     /**
      * @param string[] $additionalRouteNames
      */
-    public function __construct(string $displayNameTransId, string $routeName, array $additionalRouteNames = [])
+    public function __construct(
+        string $displayNameTransId,
+        string $routeName,
+        array  $additionalRouteNames = []
+    )
     {
         $this->displayNameTransId = $displayNameTransId;
         $this->routeName = $routeName;

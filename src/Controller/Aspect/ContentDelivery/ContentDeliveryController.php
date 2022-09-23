@@ -7,9 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class ContentDeliveryController extends AbstractController
 {
-    public function serveExternalAssetAction(Request $request, ContentDeliveryService $contentDeliveryService): Response
+    public function serveExternalAssetAction(
+        Request                $request,
+        ContentDeliveryService $contentDeliveryService
+    ): Response
     {
         $checksum = $request->get('checksum');
         $externalAssetUrl = $request->get('externalAssetUrl');

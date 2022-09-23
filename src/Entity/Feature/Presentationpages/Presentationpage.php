@@ -15,6 +15,7 @@ use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'presentationpages')]
 class Presentationpage implements UserOwnedEntityInterface
@@ -25,6 +26,7 @@ class Presentationpage implements UserOwnedEntityInterface
         $this->presentationpageElements = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
+
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -71,6 +73,7 @@ class Presentationpage implements UserOwnedEntityInterface
         if (is_null($this->updatedAt)) {
             return $this->createdAt;
         }
+
         return $this->updatedAt;
     }
 
@@ -164,7 +167,7 @@ class Presentationpage implements UserOwnedEntityInterface
         $this->title = $title;
     }
 
-    
+
     #[ORM\Column(type: 'string', length: 64, nullable: false, enumType: PresentationpageBackground::class)]
     private PresentationpageBackground $background = PresentationpageBackground::BgColor;
 
@@ -177,7 +180,7 @@ class Presentationpage implements UserOwnedEntityInterface
     {
         $this->background = $background;
     }
-    
+
 
     #[ORM\Column(type: 'string', length: 7, nullable: false, enumType: BgColor::class)]
     private BgColor $bgColor = BgColor::_FFFFFF;
@@ -230,9 +233,15 @@ class Presentationpage implements UserOwnedEntityInterface
     public function getPresentationpageElements(): array|Collection
     {
         $iterator = $this->presentationpageElements->getIterator();
-        $iterator->uasort(function (PresentationpageElement $first, PresentationpageElement $second) {
-            return $first->getPosition() > $second->getPosition() ? 1 : -1;
-        });
+        $iterator->uasort(
+            function (
+                PresentationpageElement $first,
+                PresentationpageElement $second
+            ) {
+                return $first->getPosition() > $second->getPosition() ? 1 : -1;
+            }
+        );
+
         return new ArrayCollection($iterator->getArrayCopy());
     }
 
@@ -261,6 +270,7 @@ class Presentationpage implements UserOwnedEntityInterface
                 return true;
             }
         }
+
         return false;
     }
 
@@ -301,6 +311,7 @@ class Presentationpage implements UserOwnedEntityInterface
                 $headlines[] = $presentationpageElement->getTextContent();
             }
         }
+
         return $headlines;
     }
 }

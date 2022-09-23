@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class LandingpagesController extends AbstractController
 {
     public function homepageAction(): Response
@@ -13,6 +14,7 @@ class LandingpagesController extends AbstractController
         if (!is_null($this->getUser())) {
             return $this->redirectToRoute('feature.dashboard.show');
         }
+
         return $this->render(
             'feature/landingpages/homepage.html.twig',
             ['kernel_environment' => $this->getParameter('kernel.environment')]

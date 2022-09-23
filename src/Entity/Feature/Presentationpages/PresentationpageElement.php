@@ -6,13 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'presentationpage_elements')]
 class PresentationpageElement
 {
     public function __construct(
         PresentationpageElementVariant $elementVariant,
-        int $position = 0
+        int                            $position = 0
     )
     {
         $this->elementVariant = $elementVariant;

@@ -8,6 +8,7 @@ use App\Entity\Feature\Recordings\Video;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
 
+
 class DashboardService
 {
     private PresentationpagesService $presentationpagesService;
@@ -47,10 +48,14 @@ class DashboardService
     public function getLatestVideos(User $user): array
     {
         $videos = $this->videoService->getAvailableVideos($user);
+
         return array_slice($videos, 0, 3);
     }
 
-    public function getNumberOfPresentationpages(User $user, PresentationpageType $type): int
+    public function getNumberOfPresentationpages(
+        User                 $user,
+        PresentationpageType $type
+    ): int
     {
         return sizeof($this->presentationpagesService->getPresentationpagesForUser($user, $type));
     }

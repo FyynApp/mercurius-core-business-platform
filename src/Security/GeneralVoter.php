@@ -7,11 +7,12 @@ use App\Entity\UserOwnedEntityInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+
 class GeneralVoter extends Voter
 {
     protected function supports(
         string $attribute,
-        mixed $subject
+        mixed  $subject
     ): bool
     {
         $resolvedAttribute = VotingAttribute::tryFrom($attribute);
@@ -27,8 +28,8 @@ class GeneralVoter extends Voter
     }
 
     protected function voteOnAttribute(
-        string $attribute,
-        mixed $subject,
+        string         $attribute,
+        mixed          $subject,
         TokenInterface $token
     ): bool
     {
@@ -41,7 +42,8 @@ class GeneralVoter extends Voter
         /** @var UserOwnedEntityInterface $typedSubject */
         $typedSubject = $subject;
 
-        if ($typedSubject->getUser()->getId() === $user->getId()) {
+        if ($typedSubject->getUser()
+                         ->getId() === $user->getId()) {
             return true;
         }
 
