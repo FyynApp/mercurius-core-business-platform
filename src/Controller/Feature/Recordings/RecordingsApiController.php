@@ -236,7 +236,8 @@ class RecordingsApiController extends AbstractController
                         'userFirstName' => $user->getFirstName(),
                         'userLastName' => $user->getLastName(),
                         'userImage' => $contentDeliveryService->getUrlForUserProfilePhoto($user),
-                        'maxRecordingTime' => 300
+                        'maxRecordingTime' => 300,
+                        'memberPlan' => 1
                     ]
                 )
             ];
