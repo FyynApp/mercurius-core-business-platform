@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_sessions', indexes: [])]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]

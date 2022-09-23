@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -192,6 +193,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (is_null($this->email)) {
             return $this->id;
         }
+
         return $this->email;
     }
 
@@ -204,7 +206,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getFirstName(): ?string
     {
         if (!is_null($this->getThirdPartyAuthLinkedinResourceOwner())) {
-            return $this->getThirdPartyAuthLinkedinResourceOwner()->getFirstName();
+            return $this->getThirdPartyAuthLinkedinResourceOwner()
+                        ->getFirstName();
         }
 
         return null;
@@ -213,7 +216,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getLastName(): ?string
     {
         if (!is_null($this->getThirdPartyAuthLinkedinResourceOwner())) {
-            return $this->getThirdPartyAuthLinkedinResourceOwner()->getLastName();
+            return $this->getThirdPartyAuthLinkedinResourceOwner()
+                        ->getLastName();
         }
 
         return null;
@@ -223,7 +227,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function hasProfilePhoto(): bool
     {
         if (!is_null($this->getThirdPartyAuthLinkedinResourceOwner())
-            && !is_null($this->getThirdPartyAuthLinkedinResourceOwner()->getSortedProfilePicture800Url())
+            && !is_null(
+                $this->getThirdPartyAuthLinkedinResourceOwner()
+                     ->getSortedProfilePicture800Url()
+            )
         ) {
             return true;
         }
@@ -234,7 +241,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getProfilePhotoUrl(): ?string
     {
         if ($this->hasProfilePhoto()) {
-            return $this->getThirdPartyAuthLinkedinResourceOwner()->getSortedProfilePicture800Url();
+            return $this->getThirdPartyAuthLinkedinResourceOwner()
+                        ->getSortedProfilePicture800Url();
         }
 
         return null;
@@ -243,7 +251,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getProfilePhotoContentType(): ?string
     {
         if ($this->hasProfilePhoto()) {
-            return $this->getThirdPartyAuthLinkedinResourceOwner()->getSortedProfilePicture800ContentType();
+            return $this->getThirdPartyAuthLinkedinResourceOwner()
+                        ->getSortedProfilePicture800ContentType();
         }
 
         return null;

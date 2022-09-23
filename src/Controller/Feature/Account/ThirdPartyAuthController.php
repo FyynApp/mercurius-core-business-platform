@@ -10,18 +10,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+
 class ThirdPartyAuthController extends AbstractController
 {
     public function linkedinStartAction(ClientRegistry $clientRegistry): Response
     {
         return $clientRegistry
             ->getClient('linkedin')
-            ->redirect([
-                'r_liteprofile', 'r_emailaddress'
-            ]);
+            ->redirect(
+                [
+                    'r_liteprofile', 'r_emailaddress'
+                ]
+            );
     }
 
-    public function linkedinReturnAction(ClientRegistry $clientRegistry, ThirdPartyAuthService $thirdPartyAuthService): Response
+    public function linkedinReturnAction(
+        ClientRegistry        $clientRegistry,
+        ThirdPartyAuthService $thirdPartyAuthService
+    ): Response
     {
         try {
             /** @var LinkedInClient $client */

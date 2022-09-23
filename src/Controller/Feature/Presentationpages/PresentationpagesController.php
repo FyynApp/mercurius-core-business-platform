@@ -16,11 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+
 class PresentationpagesController extends AbstractController
 {
     public function overviewAction(
         PresentationpagesService $presentationpagesService,
-        VideoService $videoService
+        VideoService             $videoService
     ): Response
     {
         return $this->render(
@@ -33,7 +34,7 @@ class PresentationpagesController extends AbstractController
     }
 
     public function createPageAction(
-        VideoService $videoService,
+        VideoService        $videoService,
         TranslatorInterface $translator
     ): Response
     {
@@ -65,10 +66,10 @@ class PresentationpagesController extends AbstractController
     }
 
     public function createPageFromVideoFormAction(
-        string $videoId,
-        EntityManagerInterface $entityManager,
+        string                   $videoId,
+        EntityManagerInterface   $entityManager,
         PresentationpagesService $presentationpagesService,
-        VideoService $videoService
+        VideoService             $videoService
     ): Response
     {
         $video = $entityManager->find(Video::class, $videoId);
@@ -84,6 +85,7 @@ class PresentationpagesController extends AbstractController
         if (!$presentationpagesService->userHasTemplates($user)) {
             $originalpresentationpage = $presentationpagesService->createPageFromVideo($video);
             $draftPresentationpage = $presentationpagesService->createDraft($originalpresentationpage);
+
             return $this->redirectToRoute(
                 'feature.presentationpages.editor',
                 [
@@ -104,10 +106,10 @@ class PresentationpagesController extends AbstractController
     }
 
     public function createPageFromVideoAndTemplateAction(
-        string $videoId,
-        string $templateId,
+        string                   $videoId,
+        string                   $templateId,
         PresentationpagesService $presentationpagesService,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface   $entityManager
     ): Response
     {
         $video = $entityManager->find(Video::class, $videoId);
@@ -141,8 +143,8 @@ class PresentationpagesController extends AbstractController
     }
 
     public function createDraftAction(
-        string $presentationpageId,
-        EntityManagerInterface $entityManager,
+        string                   $presentationpageId,
+        EntityManagerInterface   $entityManager,
         PresentationpagesService $presentationpagesService
     ): Response
     {

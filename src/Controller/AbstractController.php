@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Feature\Account\User;
 use LogicException;
 
+
 abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
     public function getUser(): ?User

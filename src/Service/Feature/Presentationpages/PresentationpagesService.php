@@ -17,6 +17,7 @@ use Exception;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+
 class PresentationpagesService
 {
     private EntityManagerInterface $entityManager;
@@ -25,40 +26,12 @@ class PresentationpagesService
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        TranslatorInterface $translator,
-    ) {
+        TranslatorInterface    $translator,
+    )
+    {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
     }
-
-    public function createPage(
-        User $user
-    ): Presentationpage
-    {
-        $presentationpage = new Presentationpage($user);
-        $presentationpage->setTitle(
-            $this->translator->trans(
-                'feature.presentationpages.create_page.new_title',
-                ['index' => sizeof($this->getPresentationpagesForUser($user, PresentationpageType::Page)) + 1]
-            )
-        );
-        $presentationpage->setBgColor(BgColor::_FFFFFF);
-        $presentationpage->setFgColor(FgColor::_37474F);
-        $presentationpage->setTextColor(TextColor::_000000);
-
-        $element = new PresentationpageElement(
-            PresentationpageElementVariant::MercuriusVideo
-        );
-
-        $presentationpage->addPresentationpageElement($element);
-
-        $this->entityManager->persist($element);
-        $this->entityManager->persist($presentationpage);
-        $this->entityManager->flush();
-
-        return $presentationpage;
-    }
-
 
     public function createTemplate(
         User $user
@@ -117,11 +90,13 @@ class PresentationpagesService
      * @throws Exception
      */
     public function createPageFromVideoAndTemplate(
-        Video $video,
+        Video            $video,
         Presentationpage $template
     ): Presentationpage
     {
-        if ($video->getUser()->getId() !== $template->getUser()->getId()) {
+        if ($video->getUser()
+                  ->getId() !== $template->getUser()
+                                         ->getId()) {
             throw new InvalidArgumentException("Video belongs to user '{$video->getUser()->getId()}' while template belongs to user '{$template->getUser()->getId()}'.");
         }
 
@@ -228,14 +203,15 @@ class PresentationpagesService
 
     /** @return Presentationpage[] */
     public function getPresentationpagesForUser(
-        User $user,
+        User                 $user,
         PresentationpageType $type
     ): array
     {
         $results = [];
 
         /** @var Presentationpage[] $pages */
-        $pages = $user->getPresentationpages()->toArray();
+        $pages = $user->getPresentationpages()
+                      ->toArray();
         foreach ($pages as $page) {
             if ($page->getType() === $type && !$page->isDraft()) {
                 $results[] = $page;
@@ -248,9 +224,10 @@ class PresentationpagesService
     public function userHasTemplates(User $user): bool
     {
         return sizeof(
-            $this->getPresentationpagesForUser(
-                $user,
-                PresentationpageType::Template
-            )) > 0;
+                $this->getPresentationpagesForUser(
+                    $user,
+                    PresentationpageType::Template
+                )
+            ) > 0;
     }
 }

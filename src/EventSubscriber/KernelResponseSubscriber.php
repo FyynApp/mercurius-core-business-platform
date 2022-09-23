@@ -7,9 +7,10 @@ use App\Service\Aspect\Cookies\CookiesService;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
+
 
 class KernelResponseSubscriber implements EventSubscriberInterface
 {
@@ -19,8 +20,9 @@ class KernelResponseSubscriber implements EventSubscriberInterface
 
     public function __construct(
         LoggerInterface $logger,
-        CookiesService $cookiesService
-    ) {
+        CookiesService  $cookiesService
+    )
+    {
         $this->logger = $logger;
         $this->cookiesService = $cookiesService;
     }

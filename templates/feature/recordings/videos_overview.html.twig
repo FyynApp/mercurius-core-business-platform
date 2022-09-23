@@ -51,7 +51,9 @@
                         {# @var video \App\Entity\Feature\Recordings\Video #}
                         <div class="
                                 grid
-                                grid-cols-4
+                                flex
+                                flex-col
+                                md:grid-cols-3
                                 p-4
                                 items-start
                                 gap-8
@@ -62,7 +64,6 @@
                                         rounded-md
                                         shadow-md
                                         shadow-gray-100
-                                        w-64
                                     "
 
                                     {{ stimulus_controller('feature/recordings/videoPreview') }}
@@ -75,14 +76,14 @@
                                         "
                             >
                                 <div {{ stimulus_target('feature/recordings/videoPreview', 'stillImage') }}>
-                                    <img class="rounded-md object-cover sm:h-44 sm:w-96" src="{{ VideoService.posterStillAssetUrl(video) }}" alt=""/>
+                                    <img class="rounded-md object-cover w-full" src="{{ VideoService.posterStillAssetUrl(video) }}" alt=""/>
                                 </div>
                                 <div class="hidden" {{ stimulus_target('feature/recordings/videoPreview', 'animatedImage') }}>
-                                    <img class="rounded-md object-cover sm:h-44 sm:w-96" src="{{ VideoService.posterAnimatedAssetUrl(video) }}" alt=""/>
+                                    <img class="rounded-md object-cover w-full" src="{{ VideoService.posterAnimatedAssetUrl(video) }}" alt=""/>
                                 </div>
                             </div>
 
-                            <div class="flex-grow flex flex-col col-span-2">
+                            <div class="flex flex-col">
                                 <p>
                                     {{ 'dateformat.datetime_normal'|trans({ 'date': video.createdAt|format_datetime('long', 'short', locale=app.request.locale, timezone=client_timezone) }) }}
                                 </p>

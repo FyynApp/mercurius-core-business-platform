@@ -7,19 +7,21 @@ use DateInterval;
 use DateTime;
 use Symfony\Component\HttpFoundation\Cookie;
 
+
 class CookiesService
 {
     public static function createCookieObject(
-        CookieName $name,
-        $value = null,
-        $expire = 0,
-        string $path = '/',
-        ?string $domain = null,
-        bool $secure = true,
-        bool $httpOnly = true,
-        bool $raw = false,
-        string $sameSite = Cookie::SAMESITE_STRICT
-    ): Cookie {
+        CookieName   $name,
+        string       $value = null,
+        DateTime|int $expire = 0,
+        string       $path = '/',
+        ?string      $domain = null,
+        bool         $secure = true,
+        bool         $httpOnly = true,
+        bool         $raw = false,
+        string       $sameSite = Cookie::SAMESITE_STRICT
+    ): Cookie
+    {
         return new Cookie(
             $name->value,
             $value,
@@ -42,6 +44,7 @@ class CookiesService
         } else {
             return 0; // Cookie is valid until end of session
         }
+
         return $expireAt;
     }
 }

@@ -27,6 +27,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
+
 #[AsLiveComponent(
     'feature_presentationpages_edit_form',
     'feature/presentationpages/edit_form_live_component.html.twig'
@@ -35,6 +36,7 @@ class PresentationspageEditFormLiveComponent extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
+
 
     #[LiveProp(fieldName: 'data')]
     public ?Presentationpage $presentationpage = null;
@@ -47,9 +49,9 @@ class PresentationspageEditFormLiveComponent extends AbstractController
 
 
     public function __construct(
-        LoggerInterface $logger,
+        LoggerInterface        $logger,
         EntityManagerInterface $entityManager,
-        VideoService $videoService
+        VideoService           $videoService
     )
     {
         $this->logger = $logger;
@@ -198,7 +200,8 @@ class PresentationspageEditFormLiveComponent extends AbstractController
             throw new NotFoundHttpException("Could not find element with id '$elementId'.");
         }
 
-        if ($elementToMove->getPosition() === $this->presentationpage->getPresentationpageElements()->count() - 1) {
+        if ($elementToMove->getPosition() === $this->presentationpage->getPresentationpageElements()
+                                                                     ->count() - 1) {
             throw new BadRequestHttpException("Element '$elementId' is already at the last position.");
         }
 
@@ -273,7 +276,10 @@ class PresentationspageEditFormLiveComponent extends AbstractController
         $this->entityManager->flush();
         $form = $this->createForm(PresentationpageType::class, $this->presentationpage);
         $this->formView = $form->createView();
-        $this->formValues = $this->extractFormValues($this->instantiateForm()->createView());
+        $this->formValues = $this->extractFormValues(
+            $this->instantiateForm()
+                 ->createView()
+        );
     }
 
     protected function instantiateForm(): FormInterface

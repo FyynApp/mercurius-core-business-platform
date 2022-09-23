@@ -2,6 +2,7 @@
 
 namespace App\Controller\Feature\Recordings;
 
+use App\Controller\AbstractController;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
@@ -15,7 +16,6 @@ use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,12 +25,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+
 class RecordingsApiController extends AbstractController
 {
     public function getRecordingSessionInfoAction(
-        string $recordingSessionId,
+        string                 $recordingSessionId,
         EntityManagerInterface $entityManager,
-        RouterInterface $router
+        RouterInterface        $router
     ): JsonResponse
     {
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
@@ -262,7 +263,7 @@ class RecordingsApiController extends AbstractController
 
 
     public function getRecordingSettingsBagAction(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager
     ): JsonResponse
     {
@@ -296,7 +297,7 @@ class RecordingsApiController extends AbstractController
 
 
     public function setRecordingSettingsBagAction(
-        Request $request,
+        Request                $request,
         EntityManagerInterface $entityManager
     ): JsonResponse
     {
@@ -317,10 +318,14 @@ class RecordingsApiController extends AbstractController
 
         $contentAsArray = json_decode($content, true);
 
-        $settingsBag->setSettings(json_encode([
-            'audio' => $contentAsArray['audio'],
-            'video' => $contentAsArray['video']
-        ]));
+        $settingsBag->setSettings(
+            json_encode(
+                [
+                    'audio' => $contentAsArray['audio'],
+                    'video' => $contentAsArray['video']
+                ]
+            )
+        );
 
         $entityManager->persist($settingsBag);
         $entityManager->flush();
@@ -330,13 +335,13 @@ class RecordingsApiController extends AbstractController
 
 
     public function handleRecordingSessionVideoChunkAction(
-        string $recordingSessionId,
-        Request $request,
-        RouterInterface $router,
+        string                  $recordingSessionId,
+        Request                 $request,
+        RouterInterface         $router,
         RecordingSessionService $recordingSessionService,
-        EntityManagerInterface $entityManager,
-        LoggerInterface $logger,
-        VideoService $videoService
+        EntityManagerInterface  $entityManager,
+        LoggerInterface         $logger,
+        VideoService            $videoService
     ): Response
     {
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
@@ -350,37 +355,39 @@ class RecordingsApiController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        if (   !is_null($request->get('recordingDone'))
+        if (!is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
         ) {
             $recordingSessionService->handleRecordingDone($recordingSession);
 
-            return $this->json([
-                'status' => Response::HTTP_OK,
-                'preview' => $router->generate(
-                    'feature.recordings.recording_session.recording_preview.poster.asset',
-                    [
-                        'recordingSessionId' => $recordingSessionId,
-                        'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)
-                    ]
-                ),
+            return $this->json(
+                [
+                    'status' => Response::HTTP_OK,
+                    'preview' => $router->generate(
+                        'feature.recordings.recording_session.recording_preview.poster.asset',
+                        [
+                            'recordingSessionId' => $recordingSessionId,
+                            'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)
+                        ]
+                    ),
 
-                // We receive the 'recordingDone' request BEFORE the final video chunk is received.
-                // This creates a chicken-and-egg problem: We need to return the recording preview asset
-                // url for the recordingDone request, but only the next video chunk request handling (which
-                // follows only after the 'recordingDone' request) can actually create the full video preview
-                // (because only at this point do we have all the chunks).
-                // Thus, we do not return the actual asset url here - instead, we return the url to a
-                // controller action which will wait until the recording preview asset has been generated,
-                // and redirects to the actual asset url afterwards.
-                'previewVideo' => $router->generate(
-                    'feature.recordings.recording_session.recording_preview.asset-redirect',
-                    [
-                        'recordingSessionId' => $recordingSessionId,
-                        'random' => bin2hex(random_bytes(8))
-                    ]
-                )
-            ]);
+                    // We receive the 'recordingDone' request BEFORE the final video chunk is received.
+                    // This creates a chicken-and-egg problem: We need to return the recording preview asset
+                    // url for the recordingDone request, but only the next video chunk request handling (which
+                    // follows only after the 'recordingDone' request) can actually create the full video preview
+                    // (because only at this point do we have all the chunks).
+                    // Thus, we do not return the actual asset url here - instead, we return the url to a
+                    // controller action which will wait until the recording preview asset has been generated,
+                    // and redirects to the actual asset url afterwards.
+                    'previewVideo' => $router->generate(
+                        'feature.recordings.recording_session.recording_preview.asset-redirect',
+                        [
+                            'recordingSessionId' => $recordingSessionId,
+                            'random' => bin2hex(random_bytes(8))
+                        ]
+                    )
+                ]
+            );
 
         } else {
             $chunkName = $request->get('video');
@@ -409,9 +416,11 @@ class RecordingsApiController extends AbstractController
                 $videoService
             );
 
-            return $this->json([
-                'status' => Response::HTTP_OK
-            ]);
+            return $this->json(
+                [
+                    'status' => Response::HTTP_OK
+                ]
+            );
         }
     }
 }

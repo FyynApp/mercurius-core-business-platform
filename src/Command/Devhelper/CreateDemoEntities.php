@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+
 #[AsCommand(name: 'app:devhelper:create-demo-entities')]
 class CreateDemoEntities extends Command
 {
@@ -19,18 +20,25 @@ class CreateDemoEntities extends Command
 
     private UserPasswordHasherInterface $userPasswordHasher;
 
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher)
+    public function __construct(
+        EntityManagerInterface      $entityManager,
+        UserPasswordHasherInterface $userPasswordHasher
+    )
     {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
         parent::__construct();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(
+        InputInterface  $input,
+        OutputInterface $output
+    ): int
     {
         $email = 'j.doe@example.com';
         $password = 'test123';
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+        $user = $this->entityManager->getRepository(User::class)
+                                    ->findOneBy(['email' => $email]);
 
         if (is_null($user)) {
             $user = new User();

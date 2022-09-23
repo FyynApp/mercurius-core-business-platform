@@ -6,6 +6,7 @@ use App\Service\Feature\Recordings\VideoService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class VideosController extends AbstractController
 {
     public function videosOverviewAction(VideoService $videoService): Response

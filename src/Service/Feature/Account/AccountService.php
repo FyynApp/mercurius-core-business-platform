@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\Role;
 use App\Entity\Feature\Account\User;
 use Doctrine\ORM\EntityManagerInterface;
 
+
 class AccountService
 {
     private EntityManagerInterface $entityManager;
@@ -22,9 +23,10 @@ class AccountService
     public function userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(string $email): bool
     {
         /** @var ?User $user */
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(
-            ['email' => $email]
-        );
+        $user = $this->entityManager->getRepository(User::class)
+                                    ->findOneBy(
+                                        ['email' => $email]
+                                    );
 
         if (is_null($user)) {
             return false;

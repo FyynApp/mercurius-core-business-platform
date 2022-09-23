@@ -4,6 +4,7 @@ namespace App\Entity\Feature\Account;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'thirdpartyauth_linkedin_resourceowners')]
 class ThirdPartyAuthLinkedinResourceOwner
@@ -13,7 +14,8 @@ class ThirdPartyAuthLinkedinResourceOwner
         string $email,
         string $firstName,
         string $lastName,
-    ) {
+    )
+    {
         $this->id = $id;
         $this->email = $email;
         $this->firstName = $firstName;

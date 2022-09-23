@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
+
 #[ORM\Entity]
 #[ORM\Table(name: 'videos')]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
@@ -24,6 +25,7 @@ class Video implements UserOwnedEntityInterface
         $this->presentationpages = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
+
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -67,7 +69,9 @@ class Video implements UserOwnedEntityInterface
 
     public function setRecordingSession(?RecordingSession $recordingSession): void
     {
-        if ($recordingSession->getUser()->getId() !== $this->getUser()->getId()) {
+        if ($recordingSession->getUser()
+                             ->getId() !== $this->getUser()
+                                                ->getId()) {
             throw new InvalidArgumentException("Trying to set recording session '{$recordingSession->getId()}' which belongs to user '{$recordingSession->getUser()->getId()}', while the video belongs to user '{$this->getUser()->getId()}'.");
         }
         $this->recordingSession = $recordingSession;

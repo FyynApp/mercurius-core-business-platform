@@ -20,6 +20,7 @@ use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+
 class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
@@ -32,11 +33,10 @@ class RegistrationController extends AbstractController
 
 
     public function registerAction(
-        Request $request,
-        UserPasswordHasherInterface
-        $userPasswordHasher,
-        EntityManagerInterface $entityManager,
-        AccountService $accountService
+        Request                     $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface      $entityManager,
+        AccountService              $accountService
     ): Response
     {
         $user = $this->getUser();
@@ -49,7 +49,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
 
-        if (   $form->isSubmitted()
+        if ($form->isSubmitted()
             && !is_null($user->getEmail())
             && $accountService
                 ->userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(
@@ -66,7 +66,8 @@ class RegistrationController extends AbstractController
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('plainPassword')
+                         ->getData()
                 )
             );
 
@@ -86,13 +87,20 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('feature.landingpages.homepage');
         }
 
-        return $this->render('feature/account/registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        return $this->render(
+            'feature/account/registration/register.html.twig', [
+                                                                 'registrationForm' => $form->createView(),
+                                                             ]
+        );
     }
 
 
-    public function verifyEmailAction(Request $request, TranslatorInterface $translator, UserRepository $userRepository, LoginLinkHandlerInterface $loginLinkHandler): Response
+    public function verifyEmailAction(
+        Request                   $request,
+        TranslatorInterface       $translator,
+        UserRepository            $userRepository,
+        LoginLinkHandlerInterface $loginLinkHandler
+    ): Response
     {
         $id = $request->get('id');
 
@@ -117,6 +125,9 @@ class RegistrationController extends AbstractController
 
         $this->addFlash(FlashMessageLabel::Success->value, 'Your email address has been verified.');
 
-        return $this->redirect($loginLinkHandler->createLoginLink($user)->getUrl());
+        return $this->redirect(
+            $loginLinkHandler->createLoginLink($user)
+                             ->getUrl()
+        );
     }
 }

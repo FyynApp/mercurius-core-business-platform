@@ -15,6 +15,7 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+
 class RecordingSessionService
 {
     private EntityManagerInterface $entityManager;
@@ -25,9 +26,10 @@ class RecordingSessionService
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        FilesystemService $filesystemService,
-        LoggerInterface $logger
-    ) {
+        FilesystemService      $filesystemService,
+        LoggerInterface        $logger
+    )
+    {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
         $this->logger = $logger;
@@ -46,7 +48,7 @@ class RecordingSessionService
 
     public function handleRecordingSessionFinished(
         RecordingSession $recordingSession,
-        VideoService $videoService
+        VideoService     $videoService
     ): Video
     {
         $recordingSession->setIsFinished(true);
@@ -59,20 +61,23 @@ class RecordingSessionService
     /** @throws Exception */
     public function handleRecordingSessionVideoChunk(
         RecordingSession $recordingSession,
-        User $user,
-        string $chunkName,
-        string $videoChunkFilePath,
-        string $mimeType,
-        VideoService $videoService
-    ): RecordingSessionVideoChunk {
+        User             $user,
+        string           $chunkName,
+        string           $videoChunkFilePath,
+        string           $mimeType,
+        VideoService     $videoService
+    ): RecordingSessionVideoChunk
+    {
 
-        if ($user->getId() !== $recordingSession->getUser()->getId()) {
+        if ($user->getId() !== $recordingSession->getUser()
+                                                ->getId()) {
             throw new Exception("User id '{$user->getId()}' does not match the user id of session '{$recordingSession->getId()}'.");
         }
 
         if ($chunkName === '1.webm') {
 
-            if ($recordingSession->getRecordingSessionVideoChunks()->count() > 0) {
+            if ($recordingSession->getRecordingSessionVideoChunks()
+                                 ->count() > 0) {
 
                 $this->logger->info('Received 1.webm chunk while there already are existing chunks for this session - we assume this is a repeated recording, and remove all traces of the existing one.');
 
@@ -98,21 +103,25 @@ class RecordingSessionService
         $fs = new Filesystem();
 
         $fs->mkdir(
-            $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-                'recording-sessions',
-                $recordingSession->getId(),
-                'video-chunks'
-            ])
+            $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+                [
+                    'recording-sessions',
+                    $recordingSession->getId(),
+                    'video-chunks'
+                ]
+            )
         );
 
         $fs->copy(
             $videoChunkFilePath,
-            $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-                'recording-sessions',
-                $recordingSession->getId(),
-                'video-chunks',
-                $chunk->getId()
-            ])
+            $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+                [
+                    'recording-sessions',
+                    $recordingSession->getId(),
+                    'video-chunks',
+                    $chunk->getId()
+                ]
+            )
         );
 
 
@@ -142,11 +151,11 @@ class RecordingSessionService
         return $chunk;
     }
 
-
     /** @throws Exception */
     public function handleRecordingDone(RecordingSession $recordingSession): void
     {
-        if ($recordingSession->getRecordingSessionVideoChunks()->count() < 1) {
+        if ($recordingSession->getRecordingSessionVideoChunks()
+                             ->count() < 1) {
             throw new Exception("Recording session '{$recordingSession->getId()}' needs at least one video chunk.");
         }
 
@@ -168,11 +177,13 @@ class RecordingSessionService
 
     public function generateVideoChunksFilesListFile(RecordingSession $recordingSession): string
     {
-        $chunkFilesListPath = $this->filesystemService->getContentStoragePath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'video-chunks-files.' . bin2hex(random_bytes(8)) . '.list'
-        ]);
+        $chunkFilesListPath = $this->filesystemService->getContentStoragePath(
+            [
+                'recording-sessions',
+                $recordingSession->getId(),
+                'video-chunks-files.' . bin2hex(random_bytes(8)) . '.list'
+            ]
+        );
         $chunkFilesListContent = '';
 
         $sql = "
@@ -182,7 +193,8 @@ class RecordingSessionService
                 ;
             ";
 
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $this->entityManager->getConnection()
+                                    ->prepare($sql);
         $resultSet = $stmt->executeQuery([':rsid' => $recordingSession->getId()]);
 
         foreach ($resultSet->fetchAllAssociative() as $row) {
@@ -197,39 +209,47 @@ class RecordingSessionService
 
     public function getVideoChunkContentStorageFilePath(RecordingSessionVideoChunk $chunk): string
     {
-        return $this->filesystemService->getContentStoragePath([
-            'recording-sessions',
-            $chunk->getRecordingSession()->getId(),
-            'video-chunks',
-            $chunk->getId() . '.webm'
-        ]);
+        return $this->filesystemService->getContentStoragePath(
+            [
+                'recording-sessions',
+                $chunk->getRecordingSession()
+                      ->getId(),
+                'video-chunks',
+                $chunk->getId() . '.webm'
+            ]
+        );
     }
 
     public function getVideoChunkContentStorageFolderPath(RecordingSession $recordingSession): string
     {
-        return $this->filesystemService->getContentStoragePath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'video-chunks'
-        ]);
+        return $this->filesystemService->getContentStoragePath(
+            [
+                'recording-sessions',
+                $recordingSession->getId(),
+                'video-chunks'
+            ]
+        );
     }
-
 
     public function getRecordingPreviewVideoFilePath(RecordingSession $recordingSession): string
     {
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'recording-preview-video.webm'
-        ]);
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                'recording-sessions',
+                $recordingSession->getId(),
+                'recording-preview-video.webm'
+            ]
+        );
     }
 
     private function getRecordingPreviewVideoPosterFilePath(RecordingSession $recordingSession): string
     {
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath([
-            'recording-sessions',
-            $recordingSession->getId(),
-            'recording-preview-video-poster.webp'
-        ]);
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                'recording-sessions',
+                $recordingSession->getId(),
+                'recording-preview-video-poster.webp'
+            ]
+        );
     }
 }

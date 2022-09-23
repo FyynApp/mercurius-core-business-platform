@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
+
 /**
  * @extends ServiceEntityRepository<User>
  *
@@ -24,28 +25,41 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
-    public function add(User $entity, bool $flush = false): void
+    public function add(
+        User $entity,
+        bool $flush = false
+    ): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()
+             ->persist($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getEntityManager()
+                 ->flush();
         }
     }
 
-    public function remove(User $entity, bool $flush = false): void
+    public function remove(
+        User $entity,
+        bool $flush = false
+    ): void
     {
-        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()
+             ->remove($entity);
 
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getEntityManager()
+                 ->flush();
         }
     }
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    public function upgradePassword(
+        PasswordAuthenticatedUserInterface $user,
+        string                             $newHashedPassword
+    ): void
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
+
 #[AsTwigComponent('main_navigation')]
 class MainNavigationComponent
 {
@@ -18,7 +19,11 @@ class MainNavigationComponent
     #[ExposeInTemplate]
     private array $entries = [];
 
-    public function mount(?User $user, Request $request, string $type = 'wide'): void
+    public function mount(
+        ?User   $user,
+        Request $request,
+        string  $type = 'wide'
+    ): void
     {
         if (!in_array($type, ['wide', 'stacked'])) {
             throw new InvalidArgumentException("type must be 'wide' or 'stacked', got '$type'.");
@@ -65,7 +70,7 @@ class MainNavigationComponent
         }
 
         foreach ($this->entries as $entry) {
-            if (   $request->attributes->get('_route') === $entry->getRouteName()
+            if ($request->attributes->get('_route') === $entry->getRouteName()
                 || in_array($request->attributes->get('_route'), $entry->getAdditionalRouteNames())
             ) {
                 $entry->setIsActive(true);
