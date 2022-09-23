@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\Feature\Account;
 
+use App\Entity\Feature\Account\Role;
 use App\Entity\Feature\Account\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -24,6 +25,7 @@ class UserFixture extends Fixture
         $user = new User();
         $user->setEmail(self::TEST_USER_EMAIL);
         $user->setIsVerified(true);
+        $user->addRole(Role::REGISTERED_USER);
         $user->setPassword($this->userPasswordHasher->hashPassword($user, 'test123'));
 
         $manager->persist($user);

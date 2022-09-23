@@ -31,8 +31,6 @@ class RecordingSessionForBrowserExtensionTest extends WebTestCase
         );
         $this->assertResponseRedirects();
 
-        print_r($client->getResponse()->headers);
-
         $sessions = $em->getRepository(RecordingSession::class)->findAll();
 
         $this->assertCount(1, $sessions);
@@ -47,7 +45,10 @@ class RecordingSessionForBrowserExtensionTest extends WebTestCase
         $structuredResponse = json_decode($client->getResponse()->getContent(), true);
 
         $this->assertTrue($structuredResponse['settings']['userIsRegistered']);
-        $this->assertTrue($structuredResponse['settings']['userName']);
+        $this->assertSame(
+            UserFixture::TEST_USER_EMAIL,
+            $structuredResponse['settings']['userName']
+        );
     }
 
     public function testUnregisteredUser()
