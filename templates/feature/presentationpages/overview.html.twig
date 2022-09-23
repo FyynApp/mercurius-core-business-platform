@@ -63,12 +63,13 @@
                             {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
 
                             <div class="
-                                        grid
-                                        grid-cols-4
-                                        p-4
-                                        justify-between
-                                        items-start
-                                        gap-8
+                                    grid
+                                    flex
+                                    flex-col
+                                    md:grid-cols-4
+                                    p-4
+                                    items-start
+                                    gap-8
                                 ">
                                 <div>
                                     <h3 class="font-bold mb-4">
@@ -82,39 +83,38 @@
                                     {% endfor %}
                                 </div>
 
-                                <div class="col-span-2 flex flex-row gap-4">
-                                    <div>
-                                        {% if presentationpage.video is not null %}
-                                            <div
-                                                    {{ stimulus_controller('feature/recordings/videoPreview') }}
-                                                    data-action="
+                                <div>
+                                    {% if presentationpage.video is not null %}
+                                        <div
+                                                class="flex-grow"
+                                                {{ stimulus_controller('feature/recordings/videoPreview') }}
+                                                data-action="
                                                     focus->feature--recordings--videoPreview#showAnimated
                                                     click->feature--recordings--videoPreview#showAnimated
                                                     mouseover->feature--recordings--videoPreview#showAnimated
                                                     mouseout->feature--recordings--videoPreview#showStill
                                                     blur->feature--recordings--videoPreview#showStill
                                                 "
-                                            >
-                                                <div {{ stimulus_target('feature/recordings/videoPreview', 'stillImage') }}>
-                                                    <img class="rounded-md object-cover w-32" src="{{ VideoService.posterStillAssetUrl(presentationpage.video) }}" alt=""/>
-                                                </div>
-                                                <div class="hidden" {{ stimulus_target('feature/recordings/videoPreview', 'animatedImage') }}>
-                                                    <img class="rounded-md object-cover w-32" src="{{ VideoService.posterAnimatedAssetUrl(presentationpage.video) }}" alt=""/>
-                                                </div>
+                                        >
+                                            <div {{ stimulus_target('feature/recordings/videoPreview', 'stillImage') }}>
+                                                <img class="rounded-md object-cover w-32" src="{{ VideoService.posterStillAssetUrl(presentationpage.video) }}" alt=""/>
                                             </div>
-                                        {% endif %}
+                                            <div class="hidden" {{ stimulus_target('feature/recordings/videoPreview', 'animatedImage') }}>
+                                                <img class="rounded-md object-cover w-32" src="{{ VideoService.posterAnimatedAssetUrl(presentationpage.video) }}" alt=""/>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <div>
+                                        {{ 'dateformat.datetime_normal'|trans({ 'date': presentationpage.createdOrUpdatedAt|format_datetime('long', 'short', locale=app.request.locale, timezone=client_timezone) }) }}
                                     </div>
 
                                     <div>
-                                        <div>
-                                            {{ 'dateformat.datetime_normal'|trans({ 'date': presentationpage.createdOrUpdatedAt|format_datetime('long', 'short', locale=app.request.locale, timezone=client_timezone) }) }}
-                                        </div>
-
-                                        <div>
-                                            {{ 'feature.presentationpages.overview.number_of_elements'|trans(
-                                                {num: presentationpage.presentationpageElements.count }
-                                            ) }}
-                                        </div>
+                                        {{ 'feature.presentationpages.overview.number_of_elements'|trans(
+                                            {num: presentationpage.presentationpageElements.count }
+                                        ) }}
                                     </div>
                                 </div>
 
