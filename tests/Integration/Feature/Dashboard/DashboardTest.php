@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class DashboardTest extends KernelTestCase
 {
-    public function test ()
+    public function test()
     {
         self::bootKernel();
         $container = static::getContainer();
