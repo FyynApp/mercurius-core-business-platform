@@ -12,25 +12,33 @@ use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Presentationpages\TextColor;
 use App\Entity\Feature\Recordings\Video;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
+use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class PresentationpagesService
 {
+    private const ASSETS_SUBFOLDER_NAME = 'presentationpage-assets';
+
     private EntityManagerInterface $entityManager;
 
     private TranslatorInterface $translator;
 
+    private FilesystemService $filesystemService;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         TranslatorInterface    $translator,
+        FilesystemService      $filesystemService
     )
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
+        $this->filesystemService = $filesystemService;
     }
 
     public function createTemplate(
@@ -229,5 +237,25 @@ class PresentationpagesService
                     PresentationpageType::Template
                 )
             ) > 0;
+    }
+
+    public function generateScreenshot(Presentationpage $presentationpage): void
+    {
+        $this->createFilesystemStructureForAssets($presentationpage);
+
+
+    }
+
+    private function createFilesystemStructureForAssets(Presentationpage $presentationpage): void
+    {
+        $fs = new Filesystem();
+        $fs->mkdir(
+            $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+                [
+                    self::ASSETS_SUBFOLDER_NAME,
+                    $presentationpage->getId()
+                ]
+            )
+        );
     }
 }

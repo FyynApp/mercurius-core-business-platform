@@ -106,6 +106,34 @@ class Presentationpage implements UserOwnedEntityInterface
     }
 
 
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private bool $hasScreenshot = false;
+
+    public function hasScreenshot(): bool
+    {
+        return $this->hasScreenshot;
+    }
+
+    public function setHasScreenshot(bool $hasScreenshot): void
+    {
+        $this->hasScreenshot = $hasScreenshot;
+    }
+
+
+    #[ORM\Column(type: 'boolean', nullable: false)]
+    private bool $screenshotCaptureOutstanding = false;
+
+    public function screenshotCaptureOutstanding(): bool
+    {
+        return $this->screenshotCaptureOutstanding;
+    }
+
+    public function setScreenshotCaptureOutstanding(bool $screenshotCaptureOutstanding): void
+    {
+        $this->screenshotCaptureOutstanding = $screenshotCaptureOutstanding;
+    }
+
+
     #[ORM\ManyToOne(targetEntity: Presentationpage::class, cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'draft_of_presentationpages_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
     private ?Presentationpage $draftOfPresentationpage;

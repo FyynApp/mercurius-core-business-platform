@@ -35,7 +35,7 @@ class GenerateMissingAssetsCommandMessageHandler
     /** @throws Exception */
     public function __invoke(GenerateMissingAssetsCommandMessage $message): void
     {
-        $this->logger->debug("Received VideoCreatedMessage for video {$message->getVideoId()}.");
+        $this->logger->debug("Received GenerateMissingAssetsCommandMessage for video {$message->getVideoId()}.");
 
         $video = $this->entityManager->find(Video::class, $message->getVideoId());
 
