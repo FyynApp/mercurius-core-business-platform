@@ -175,6 +175,8 @@ class PresentationpagesService
         $draft->setType($presentationpage->getType());
         $draft->setBgColor($presentationpage->getBgColor());
         $draft->setTextColor($presentationpage->getTextColor());
+        $draft->setFgColor($presentationpage->getFgColor());
+        $draft->setBackground($presentationpage->getBackground());
         $draft->setVideo($presentationpage->getVideo());
 
         foreach ($presentationpage->getPresentationpageElements() as $element) {
@@ -207,6 +209,8 @@ class PresentationpagesService
             $originalPresentationpage->setTitle($presentationpage->getTitle());
             $originalPresentationpage->setBgColor($presentationpage->getBgColor());
             $originalPresentationpage->setTextColor($presentationpage->getTextColor());
+            $originalPresentationpage->setFgColor($presentationpage->getFgColor());
+            $originalPresentationpage->setBackground($presentationpage->getBackground());
 
             foreach ($originalPresentationpage->getPresentationpageElements() as $element) {
                 $originalPresentationpage->removePresentationpageElement($element);
