@@ -13,6 +13,7 @@ use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -225,5 +226,36 @@ class PresentationpagesController extends AbstractController
                 'VideoService' => $videoService
             ]
         );
+    }
+
+    public function screenshotCaptureViewAction(
+        string                   $presentationpageId,
+        Request                  $request,
+        EntityManagerInterface   $entityManager,
+        VideoService             $videoService,
+        PresentationpagesService $presentationpagesService
+    ): Response
+    {
+        $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
+
+        if (is_null($presentationpage)) {
+            throw new NotFoundHttpException("No presentationpage with id '$presentationpageId' found.");
+        }
+
+        if (    $request->get('presentationpageHash')
+            !== $presentationpagesService->generatePresentationpageHash($presentationpage)
+        ) {
+            throw new AccessDeniedHttpException("Hash {$request->get('presentationpageHash')} is invalid.");
+        }
+
+        {
+            return $this->render(
+                'feature/presentationpages/preview.html.twig',
+                [
+                    'presentationpage' => $presentationpage,
+                    'VideoService' => $videoService
+                ]
+            );
+        }
     }
 }

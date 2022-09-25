@@ -8,7 +8,7 @@ const puppeteer = require('puppeteer');
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.setViewport({width: 1366, height: 768});
+    await page.setViewport({width: 1366, height: 2000});
     await page.setUserAgent('Mercurius Webpage Screenshot Capture Agent using Chromium and Puppeteer');
 
     await page.authenticate({'username':'preprod', 'password': 'Juhnbd73Ztg!hd'});

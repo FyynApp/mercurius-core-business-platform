@@ -37,3 +37,8 @@ feature.presentationpages.preview:
   path: /my/presentationpages/{presentationpageId}/preview
   controller: App\Controller\Feature\Presentationpages\PresentationpagesController::previewAction
   methods: [ GET ]
+
+feature.presentationpages.screenshot_capture_view:
+  path: /presentationpages/{presentationpageId}/screenshot-capture-view
+  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::screenshotCaptureViewAction
+  methods: [ GET ]

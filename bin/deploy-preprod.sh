@@ -2,9 +2,12 @@
 
 SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-pushd "$SCRIPT_FOLDER"/../
-  npm run build
-popd
+if [ "$1" != "--quick" ]
+then
+  pushd "$SCRIPT_FOLDER"/../
+    npm run build
+  popd
+fi
 
 rsync \
   -avc \

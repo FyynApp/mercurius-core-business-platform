@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -272,9 +273,12 @@ class PresentationpagesService
         $this->createFilesystemStructuresForScreenshots($presentationpage);
 
         $targetUrl = $this->router->generate(
-            'feature.presentationpages.preview',
-            ['presentationpageId' => $presentationpage->getId()],
-            RouterInterface::ABSOLUTE_URL
+            'feature.presentationpages.screenshot_capture_view',
+            [
+                'presentationpageId' => $presentationpage->getId(),
+                'presentationpageHash' => $this->generatePresentationpageHash($presentationpage)
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
 
         $contentStoragePath = $this->filesystemService->getContentStoragePath(
@@ -306,11 +310,7 @@ class PresentationpagesService
 
         $commandLine = mb_ereg_replace("\n", " ", $commandLine);
 
-        $this->logger->debug("Commandline: '$commandLine'");
-
-        $output = shell_exec($commandLine);
-
-        $this->logger->debug("Command output: '$output'");
+        shell_exec($commandLine);
 
         $fs = new Filesystem();
         $fs->copy(
@@ -329,6 +329,26 @@ class PresentationpagesService
         $presentationpage->setScreenshotCaptureOutstanding(false);
         $this->entityManager->persist($presentationpage);
         $this->entityManager->flush();
+
+        // Docker Container user owns the generated file, therefore he must delete it
+        $commandLine = '
+            docker run 
+                -i
+                --init
+                --cap-add=SYS_ADMIN
+                --rm
+                -v ' . $contentStoragePath . ':/host ghcr.io/puppeteer/puppeteer:latest
+                rm -f /host/screenshot.png
+        ';
+
+        $commandLine = mb_ereg_replace("\n", " ", $commandLine);
+
+        shell_exec($commandLine);
+    }
+
+    public function generatePresentationpageHash(Presentationpage $presentationpage): string
+    {
+        return sha1('MUI/hdu78764$5uidfrhrfi==478' . $presentationpage->getId());
     }
 
     private function createFilesystemStructuresForScreenshots(Presentationpage $presentationpage): void
