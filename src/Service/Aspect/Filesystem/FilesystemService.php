@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class FilesystemService
 {
-    const CONTENT_STORAGE_ROOT_FOLDER_PATH = '/var/tmp/mercurius-core-business-platform';
+    private const CONTENT_STORAGE_ROOT_FOLDER_PATH = '/var/tmp/mercurius-core-business-platform';
 
     private ParameterBagInterface $parameterBag;
 
