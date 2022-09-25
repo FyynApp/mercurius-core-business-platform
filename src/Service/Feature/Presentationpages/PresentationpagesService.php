@@ -17,6 +17,7 @@ use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -40,6 +41,8 @@ class PresentationpagesService
 
     private ParameterBagInterface $parameterBag;
 
+    private LoggerInterface $logger;
+
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -47,7 +50,8 @@ class PresentationpagesService
         FilesystemService      $filesystemService,
         MessageBusInterface    $messageBus,
         RouterInterface        $router,
-        ParameterBagInterface  $parameterBag
+        ParameterBagInterface  $parameterBag,
+        LoggerInterface        $logger
     )
     {
         $this->entityManager = $entityManager;
@@ -56,6 +60,7 @@ class PresentationpagesService
         $this->messageBus = $messageBus;
         $this->router = $router;
         $this->parameterBag = $parameterBag;
+        $this->logger = $logger;
     }
 
     public function createTemplate(
@@ -272,8 +277,20 @@ class PresentationpagesService
             RouterInterface::ABSOLUTE_URL
         );
 
-        $contentStoragePath = $this->filesystemService->getContentStoragePath([self::ASSETS_SUBFOLDER_NAME, $presentationpage->getId()]);
-        $generatedScreenshotFilePath = $contentStoragePath . 'screenshot.png';
+        $contentStoragePath = $this->filesystemService->getContentStoragePath(
+            [
+                self::ASSETS_SUBFOLDER_NAME,
+                $presentationpage->getId()
+            ]
+        );
+
+        $generatedScreenshotFilePath = $this->filesystemService->getContentStoragePath(
+            [
+                self::ASSETS_SUBFOLDER_NAME,
+                $presentationpage->getId(),
+                'screenshot.png'
+            ]
+        );
 
         $commandLine = '
             docker run 
@@ -284,19 +301,26 @@ class PresentationpagesService
                 --env TARGET_URL="' . $targetUrl . '"
                 --env SCREENSHOT_FILE_PATH="/host/screenshot.png"
                 -v ' . $contentStoragePath . ':/host ghcr.io/puppeteer/puppeteer:latest
-                node -e "\`cat ' . $this->parameterBag->get('kernel.project_dir') . '/resources/webpage-screenshot-capture/capture.js' . '\`"
+                node -e "`cat ' . $this->parameterBag->get('kernel.project_dir') . '/resources/webpage-screenshot-capture/capture.js' . '`"
         ';
 
         $commandLine = mb_ereg_replace("\n", " ", $commandLine);
 
-        shell_exec($commandLine);
+        $this->logger->debug("Commandline: '$commandLine'");
+
+        $output = shell_exec($commandLine);
+
+        $this->logger->debug("Command output: '$output'");
 
         $fs = new Filesystem();
-        $fs->chown($generatedScreenshotFilePath, 'www-data');
-        $fs->rename(
+        $fs->copy(
             $generatedScreenshotFilePath,
             $this->filesystemService->getPublicWebfolderGeneratedContentPath(
-                [self::ASSETS_SUBFOLDER_NAME, 'screenshot.png']
+                [
+                    self::ASSETS_SUBFOLDER_NAME,
+                    $presentationpage->getId(),
+                    'screenshot.png'
+                ]
             ),
             true
         );
