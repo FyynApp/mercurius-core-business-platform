@@ -7,9 +7,11 @@ use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Entity\Feature\Recordings\Video;
 use App\Repository\Feature\Account\UserRepository;
+use App\Security\Feature\Account\UnregisteredUserAuthenticator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -42,7 +44,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: true)]
+    /**
+     * @throws Exception
+     */
+    public function getAuthHash(): string
+    {
+        if (is_null($this->id)) {
+            throw new Exception('Cannot generate auth has for user without id.');
+        }
+        return UnregisteredUserAuthenticator::generateAuthHash($this->id);
+    }
+
+
+    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
     private ?string $email = null;
 
     public function getEmail(): ?string
@@ -62,14 +76,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
+        $roles[] = Role::USER->value;
 
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): void
+    public function hasRole(Role $role): bool
     {
-        $this->roles = $roles;
+        return in_array(
+            strtoupper($role->value),
+            $this->getRoles(),
+            true
+        );
+    }
+
+    public function addRole(Role $role): void
+    {
+        $role = $role->value;
+        $role = strtoupper($role);
+
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
     }
 
 
@@ -103,7 +131,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function isRegistered(): bool
     {
-        return !is_null($this->email);
+        return $this->hasRole(Role::REGISTERED_USER);
     }
 
 

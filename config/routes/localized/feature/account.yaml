@@ -13,6 +13,9 @@ feature.account.login:
   controller: App\Controller\Feature\Account\LoginController::indexAction
   methods: [ GET, POST ]
 
+# There is no controller behind this route because
+# Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator
+# intercepts requests to this route
 feature.account.login_link_check:
   path: /login-link-check
   methods: [ GET, POST ]
@@ -29,9 +32,4 @@ feature.account.3rdpartyauth.linkedin.start:
 feature.account.3rdpartyauth.linkedin.return:
   path: /3rdpartyauth/linkedin/return
   controller: App\Controller\Feature\Account\ThirdPartyAuthController::linkedinReturnAction
-  methods: [ GET, POST ]
-
-feature.account.create_unregistered_user:
-  path: /create-unregistered-user
-  controller: App\Controller\Feature\Account\LoginController::createUnregisteredUserAction
   methods: [ GET, POST ]

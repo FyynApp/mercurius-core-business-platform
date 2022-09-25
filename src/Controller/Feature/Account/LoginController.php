@@ -2,10 +2,9 @@
 
 namespace App\Controller\Feature\Account;
 
+use App\Controller\AbstractController;
 use App\Service\Feature\Account\AccountService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
@@ -31,14 +30,5 @@ class LoginController extends AbstractController
                                                        'error' => $error,
                                                    ]
         );
-    }
-
-
-    public function createUnregisteredUserAction(): Response
-    {
-        // @TODO: Own symfony role for unregistered!
-        // https://symfony.com/doc/current/security/custom_authenticator.html
-
-        throw new NotFoundHttpException();
     }
 }

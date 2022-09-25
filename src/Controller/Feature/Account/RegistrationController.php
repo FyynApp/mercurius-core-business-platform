@@ -2,6 +2,7 @@
 
 namespace App\Controller\Feature\Account;
 
+use App\Entity\Feature\Account\Role;
 use App\Entity\Feature\Account\User;
 use App\Enum\FlashMessageLabel;
 use App\Form\Type\Feature\Account\RegistrationType;
@@ -24,10 +25,12 @@ class RegistrationController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
 
+
     public function __construct(EmailVerifier $emailVerifier)
     {
         $this->emailVerifier = $emailVerifier;
     }
+
 
     public function registerAction(
         Request                     $request,
@@ -57,7 +60,9 @@ class RegistrationController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+
+            $user->addRole(Role::REGISTERED_USER);
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -88,6 +93,7 @@ class RegistrationController extends AbstractController
                                                              ]
         );
     }
+
 
     public function verifyEmailAction(
         Request                   $request,

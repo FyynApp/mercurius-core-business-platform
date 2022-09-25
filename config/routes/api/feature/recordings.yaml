@@ -3,6 +3,19 @@ api.feature.recordings.recording_session.get_info:
   controller: App\Controller\Feature\Recordings\RecordingsApiController::getRecordingSessionInfoAction
   methods: [ GET ]
 
+
+api.feature.recordings.recording_session.create_for_browser_extension:
+  path: /feature/recordings/browser-extension-recording-sessions/
+  controller: App\Controller\Feature\Recordings\RecordingsApiController::createRecordingSessionForBrowserExtensionAction
+  methods: [ POST ]
+
+
+api.feature.recordings.recording_session.get_browser_extension_info:
+  path: /feature/recordings/recording-sessions/{recordingSessionId}/browser-extension-info
+  controller: App\Controller\Feature\Recordings\RecordingsApiController::getRecordingSessionBrowserExtensionInfoAction
+  methods: [ GET ]
+
+
 api.feature.recordings.recording_settings_bag.get:
   path: /feature/recordings/recording-settings-bag
   controller: App\Controller\Feature\Recordings\RecordingsApiController::getRecordingSettingsBagAction
@@ -12,6 +25,7 @@ api.feature.recordings.recording_settings_bag.set:
   path: /feature/recordings/recording-settings-bag
   controller: App\Controller\Feature\Recordings\RecordingsApiController::setRecordingSettingsBagAction
   methods: [ POST ]
+
 
 api.feature.recordings.recording_session.handle_video_chunk:
   path: /feature/recordings/recording-sessions/{recordingSessionId}/video-chunks/
