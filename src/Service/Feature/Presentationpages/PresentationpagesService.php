@@ -11,12 +11,14 @@ use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Presentationpages\TextColor;
 use App\Entity\Feature\Recordings\Video;
+use App\Message\Feature\Recordings\GeneratePresentationpageScreenshotCommandMessage;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
@@ -30,15 +32,19 @@ class PresentationpagesService
 
     private FilesystemService $filesystemService;
 
+    private MessageBusInterface $messageBus;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         TranslatorInterface    $translator,
-        FilesystemService      $filesystemService
+        FilesystemService      $filesystemService,
+        MessageBusInterface    $messageBus
     )
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
         $this->filesystemService = $filesystemService;
+        $this->messageBus = $messageBus;
     }
 
     public function createTemplate(
@@ -205,6 +211,12 @@ class PresentationpagesService
             }
             $this->entityManager->remove($presentationpage);
 
+            $originalPresentationpage->setScreenshotCaptureOutstanding(true);
+            $this->entityManager->persist($originalPresentationpage);
+            $this->messageBus->dispatch(
+                new GeneratePresentationpageScreenshotCommandMessage($originalPresentationpage)
+            );
+
             $this->entityManager->flush();
         }
     }
@@ -244,6 +256,8 @@ class PresentationpagesService
         $this->createFilesystemStructureForAssets($presentationpage);
 
 
+        $presentationpage->setHasScreenshot(true);
+        $presentationpage->setScreenshotCaptureOutstanding(false);
     }
 
     private function createFilesystemStructureForAssets(Presentationpage $presentationpage): void
