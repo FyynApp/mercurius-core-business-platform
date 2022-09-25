@@ -3,10 +3,11 @@
 namespace App\Message\Feature\Recordings;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
+use App\Message\AsyncMessageInterface;
 use InvalidArgumentException;
 
 
-class GeneratePresentationpageScreenshotCommandMessage
+class GeneratePresentationpageScreenshotCommandMessage implements AsyncMessageInterface
 {
     private string $presentationpageId;
 

@@ -3,10 +3,11 @@
 namespace App\Message\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
+use App\Message\AsyncMessageInterface;
 use InvalidArgumentException;
 
 
-class GenerateMissingAssetsCommandMessage
+class GenerateMissingAssetsCommandMessage implements AsyncMessageInterface
 {
     private string $videoId;
 
