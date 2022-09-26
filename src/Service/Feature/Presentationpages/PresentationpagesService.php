@@ -11,7 +11,7 @@ use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Presentationpages\TextColor;
 use App\Entity\Feature\Recordings\Video;
-use App\Message\Feature\Recordings\GeneratePresentationpageScreenshotCommandMessage;
+use App\Message\Feature\Presentationpages\GeneratePresentationpageScreenshotCommandMessage;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -296,7 +296,7 @@ class PresentationpagesService
             [
                 self::ASSETS_SUBFOLDER_NAME,
                 $presentationpage->getId(),
-                'screenshot.png'
+                'screenshot.webp'
             ]
         );
 
@@ -307,7 +307,7 @@ class PresentationpagesService
                 --cap-add=SYS_ADMIN
                 --rm
                 --env TARGET_URL="' . $targetUrl . '"
-                --env SCREENSHOT_FILE_PATH="/host/screenshot.png"
+                --env SCREENSHOT_FILE_PATH="/host/screenshot.webp"
                 -v ' . $contentStoragePath . ':/host ghcr.io/puppeteer/puppeteer:latest
                 node -e "`cat ' . $this->parameterBag->get('kernel.project_dir') . '/resources/webpage-screenshot-capture/capture.js' . '`"
         ';
@@ -323,7 +323,7 @@ class PresentationpagesService
                 [
                     self::ASSETS_SUBFOLDER_NAME,
                     $presentationpage->getId(),
-                    'screenshot.png'
+                    'screenshot.webp'
                 ]
             ),
             true
@@ -342,7 +342,7 @@ class PresentationpagesService
                 --cap-add=SYS_ADMIN
                 --rm
                 -v ' . $contentStoragePath . ':/host ghcr.io/puppeteer/puppeteer:latest
-                rm -f /host/screenshot.png
+                rm -f /host/screenshot.webp
         ';
 
         $commandLine = mb_ereg_replace("\n", " ", $commandLine);

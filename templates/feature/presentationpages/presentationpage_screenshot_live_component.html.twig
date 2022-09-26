@@ -12,11 +12,19 @@
     {% if this.presentationpage.screenshot %}
         <img
                 class="rounded rounded-md border-1 {% if this.presentationpage.screenshotCaptureOutstanding %}opacity-50 blur-sm{% endif %}"
-                src="{{ asset(path('feature.presentationpages.presentationpage_screenshot.asset', { presentationpageId: this.presentationpage.id })) }}"
+                src="{{ asset(path('feature.presentationpages.presentationpage_screenshot.asset', { presentationpageId: this.presentationpage.id, random: random() })) }}"
         >
 
         {% if this.presentationpage.screenshotCaptureOutstanding %}
             <div class="absolute top-0 text-center text-gray-700 bg-white p-4 m-4 rounded-md">
+                <small>{{ 'feature.presentationpages.overview.screenshot_recapture_outstanding'|trans }}</small>
+            </div>
+        {% endif %}
+
+    {% else %}
+
+        {% if this.presentationpage.screenshotCaptureOutstanding %}
+            <div class="text-center text-gray-700 m-4">
                 <small>{{ 'feature.presentationpages.overview.screenshot_capture_outstanding'|trans }}</small>
             </div>
         {% endif %}
