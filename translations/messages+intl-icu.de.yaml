@@ -107,6 +107,7 @@ feature:
         edit_template: 'Bearbeiten'
         preview_template: 'Vorschau'
         create_page_from_template: 'Erstellen'
+      screenshot_capture_outstanding: 'Vorschau wird neu berechnet'
     create_page_from_video_form:
       templates_headline: 'Präsentationsseite aus Vorlage erstellen'
     flash:
