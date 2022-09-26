@@ -3,7 +3,7 @@
 namespace App\MessageHandler\Feature\Recordings;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
-use App\Message\Feature\Recordings\GeneratePresentationpageScreenshotCommandMessage;
+use App\Message\Feature\Presentationpages\GeneratePresentationpageScreenshotCommandMessage;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;

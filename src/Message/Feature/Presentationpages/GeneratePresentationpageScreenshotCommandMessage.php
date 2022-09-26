@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Message\Feature\Recordings;
+namespace App\Message\Feature\Presentationpages;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Message\AsyncMessageInterface;
