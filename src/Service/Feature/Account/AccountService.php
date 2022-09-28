@@ -44,18 +44,17 @@ class AccountService
     {
         $user = new User();
         $user->setEmail(
-            password_hash(
+            sha1(
                 'fh45897z784787h!8997/%drh==iuh'
                 . random_int(PHP_INT_MIN,  PHP_INT_MAX)
-                . random_int(PHP_INT_MIN,  PHP_INT_MAX),
-                PASSWORD_DEFAULT
+                . random_int(PHP_INT_MIN,  PHP_INT_MAX)
             )
             . '@unregistered.fyyn.io'
         );
 
         $user->addRole(Role::UNREGISTERED_USER);
 
-        $user->setPassword(password_hash(rand(PHP_INT_MIN, PHP_INT_MAX), PASSWORD_DEFAULT));
+        $user->setPassword(password_hash(random_int(PHP_INT_MIN,  PHP_INT_MAX), PASSWORD_DEFAULT));
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
