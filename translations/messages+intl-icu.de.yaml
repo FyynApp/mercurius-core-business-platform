@@ -8,7 +8,7 @@ mainnav:
   dashboard: 'Übersicht'
   recordings: 'Aufnahmen'
   recording_studio: 'Aufnahmestudio'
-  presentationpages: 'Präsentationsseiten'
+  presentationpages: 'Landingpages'
 
 sidenav:
   signin: 'Einloggen'
@@ -59,12 +59,12 @@ feature:
           title: 'Paket M'
           description: '4,99 EUR/Monat — bis zu 10 Aufnahmen pro Monat'
       your_latest_videos: 'Neueste Videos'
-      your_presentationpages: 'Präsentationsseiten'
+      your_presentationpages: 'Landingpages'
       your_presentationpages.info: >-
         {numberOfPresentationpages, plural,
-          =0    {Sie haben bisher keine Präsentationsseiten.}
-          one   {Sie haben aktuell eine Präsentationsseite.}
-          other {Sie haben aktuell # Präsentationsseiten.}
+          =0    {Sie haben bisher keine Landingpages.}
+          one   {Sie haben aktuell eine Landingpage.}
+          other {Sie haben aktuell # Landingpages.}
         }
       cta:
         manage_video: 'Verwalten'
@@ -79,7 +79,7 @@ feature:
       }
     videos_overview:
       title: Übersicht der bisherigen Aufnahmen
-      subtitle: Aufnahmen können in Form einer Präsentationsseite per E-Mail oder Messenger versendet werden.
+      subtitle: Aufnahmen können in Form einer Landingpage per E-Mail oder Messenger versendet werden.
       cta:
         add: 'Neue Aufnahme erstellen'
         create_presentationpage: 'Seite erstellen'
@@ -110,10 +110,10 @@ feature:
       screenshot_capture_outstanding: 'Vorschau wird berechnet...'
       screenshot_recapture_outstanding: 'Vorschau wird neu berechnet...'
     create_page_from_video_form:
-      templates_headline: 'Präsentationsseite aus Vorlage erstellen'
+      templates_headline: 'Landingpage aus Vorlage erstellen'
     flash:
-      need_to_create_video_to_create_presentationpage: 'Sie müssen zuerst ein Video aufzeichnen, um dann eine Präsentationsseite mit diesem Video erstellen zu können.'
-      need_choose_video_to_create_presentationpage: 'Bitte wählen Sie ein Video aus, für das Sie eine Präsentationsseite erstellen möchten.'
+      need_to_create_video_to_create_presentationpage: 'Sie müssen zuerst ein Video aufzeichnen, um dann eine Landingpage mit diesem Video erstellen zu können.'
+      need_choose_video_to_create_presentationpage: 'Bitte wählen Sie ein Video aus, für das Sie eine Landingpage erstellen möchten.'
 
     create_page:
       new_title: 'Seite {index}'
@@ -130,8 +130,8 @@ feature:
         subheadline_basesettings: 'Basiswerte'
         preview_headline_page: 'Vorschau Seitenaufbau'
         preview_headline_template: 'Vorschau Seitenaufbau'
-        preview_note_page: 'Hier sehen Sie vereinfacht dargestellt wie Ihre Präsentationsseite aufgebaut ist.'
-        preview_note_template: 'Hier sehen Sie vereinfacht dargestellt wie Präsentationsseiten, die aus dieser Vorlage erstellt werden, aufgebaut sind.'
+        preview_note_page: 'Hier sehen Sie vereinfacht dargestellt wie Ihre Landingpage aufgebaut ist.'
+        preview_note_template: 'Hier sehen Sie vereinfacht dargestellt wie Landingpages, die aus dieser Vorlage erstellt werden, aufgebaut sind.'
         preview_full_note_page: 'Wenn Sie die vollwertige Vorschau dieser Seite in einem neuen Browserfenster sehen möchten, dann klicken Sie bitte hier:'
         preview_full_note_template: 'Wenn Sie die vollwertige Vorschau dieser Vorlage in einem neuen Browserfenster sehen möchten, dann klicken Sie bitte hier:'
         preview_full_note_cta: 'Vollwertige Vorschau öffnen'
@@ -151,7 +151,7 @@ feature:
         label_horizontal_position: 'Ausrichtung'
         label_element_variant:
           mercurius_video: 'Fyyn.io Videoaufnahme'
-          mercurius_video_note: 'An der Position dieses Elements wird auf Ihrer Präsentationsseite später das von Ihnen aufgenommene Video eingebettet.'
+          mercurius_video_note: 'An der Position dieses Elements wird auf Ihrer Landingpage später das von Ihnen aufgenommene Video eingebettet.'
           divider: 'Trenner'
           headline: 'Text für Überschrift'
           paragraph: 'Text für Absatz'
