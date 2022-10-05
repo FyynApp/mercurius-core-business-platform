@@ -92,6 +92,20 @@ class Presentationpage implements UserOwnedEntityInterface
     }
 
 
+    #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageCategory::class)]
+    private PresentationpageCategory $category = PresentationpageCategory::Default;
+
+    public function getCategory(): PresentationpageCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(PresentationpageCategory $category): void
+    {
+        $this->category = $category;
+    }
+
+
     #[ORM\Column(type: 'boolean', nullable: false)]
     private bool $isDraft = false;
 
