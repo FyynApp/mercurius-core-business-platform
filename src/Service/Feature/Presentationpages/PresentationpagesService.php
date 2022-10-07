@@ -125,9 +125,13 @@ class PresentationpagesService
         Presentationpage $template
     ): Presentationpage
     {
-        if ($video->getUser()
-                  ->getId() !== $template->getUser()
-                                         ->getId()
+        if ($video
+                ->getUser()
+                ->getId()
+            !==
+            $template
+                ->getUser()
+                ->getId()
         ) {
             throw new InvalidArgumentException("Video belongs to user '{$video->getUser()->getId()}' while template belongs to user '{$template->getUser()->getId()}'.");
         }
