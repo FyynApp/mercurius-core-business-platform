@@ -69,9 +69,13 @@ class Video implements UserOwnedEntityInterface
 
     public function setRecordingSession(?RecordingSession $recordingSession): void
     {
-        if ($recordingSession->getUser()
-                             ->getId() !== $this->getUser()
-                                                ->getId()
+        if ($recordingSession
+                ->getUser()
+                ->getId()
+            !==
+            $this
+                ->getUser()
+                ->getId()
         ) {
             throw new InvalidArgumentException("Trying to set recording session '{$recordingSession->getId()}' which belongs to user '{$recordingSession->getUser()->getId()}', while the video belongs to user '{$this->getUser()->getId()}'.");
         }
