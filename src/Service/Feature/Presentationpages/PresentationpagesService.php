@@ -127,7 +127,8 @@ class PresentationpagesService
     {
         if ($video->getUser()
                   ->getId() !== $template->getUser()
-                                         ->getId()) {
+                                         ->getId()
+        ) {
             throw new InvalidArgumentException("Video belongs to user '{$video->getUser()->getId()}' while template belongs to user '{$template->getUser()->getId()}'.");
         }
 
