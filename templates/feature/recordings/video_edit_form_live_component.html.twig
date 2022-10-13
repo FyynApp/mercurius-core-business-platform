@@ -14,14 +14,15 @@
                 attr: {
                     'data-model': 'on(input)|debounce(250)|' ~ this.form.title.vars.full_name,
                     'data-action': 'live#action',
-                    'data-action-name': "debounce(300)|save"
+                    'data-action-name': 'debounce(300)|save'
                 }
             }) }}
 
             {{ form_row(this.form.videoOnlyPresentationpageTemplate, {
                 attr: {
+                    'data-model': this.form.videoOnlyPresentationpageTemplate.vars.full_name,
                     'data-action': 'live#action',
-                    'data-action-name': "save"
+                    'data-action-name': 'save'
                 }
             }) }}
 
@@ -36,6 +37,18 @@
 
 
         {% block contentRight %}
+
+            <pre>{{ this.video.title }}</pre>
+
+            {% if this.video.videoOnlyPresentationpageTemplate is not null %}
+                <pre>{{ this.video.videoOnlyPresentationpageTemplate.title }}</pre>
+            {% endif %}
+
+
+            {{ component(
+                'feature_recordings_video_player_embedded',
+                { video: this.video }
+            ) }}
 
         {% endblock %}
 

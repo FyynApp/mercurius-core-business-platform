@@ -3,6 +3,7 @@ twig:
 
     globals:
         ContentDeliveryService: '@App\Service\Aspect\ContentDelivery\ContentDeliveryService'
+        VideoService: '@App\Service\Feature\Recordings\VideoService'
 
 when@test:
     twig:

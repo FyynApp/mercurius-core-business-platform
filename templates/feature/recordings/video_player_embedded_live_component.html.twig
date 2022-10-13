@@ -1,0 +1,30 @@
+{# @var this \App\Components\Feature\Recordings\VideoPlayerEmbeddedLiveComponent #}
+<div
+        class="relative"
+
+        {{ attributes }}
+
+        {% if not this.video.fullAssetAvailable %}
+            data-poll
+        {% endif %}
+>
+
+    {% if this.video.fullAssetAvailable %}
+        <video
+                class="mx-auto rounded-md w-full"
+                controls
+                poster="{{ VideoService.posterStillAssetUrl(video) }}"
+        >
+            <source
+                    src="{{ VideoService.getFullAssetUrl(video) }}"
+            >
+        </video>
+    {% else %}
+
+        <div class="text-center text-gray-700 m-4">
+            <small>{{ 'feature.recordings.video_player_embedded.full_asset_outstanding'|trans }}</small>
+        </div>
+
+    {% endif %}
+
+</div>

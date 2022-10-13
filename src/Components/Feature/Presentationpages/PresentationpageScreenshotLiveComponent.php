@@ -9,7 +9,10 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 
-#[AsLiveComponent('feature_presentationpages_presentationpage_screenshot', 'feature/presentationpages/presentationpage_screenshot_live_component.html.twig')]
+#[AsLiveComponent(
+    'feature_presentationpages_presentationpage_screenshot',
+    'feature/presentationpages/presentationpage_screenshot_live_component.html.twig'
+)]
 class PresentationpageScreenshotLiveComponent extends AbstractController
 {
     use DefaultActionTrait;

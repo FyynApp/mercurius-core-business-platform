@@ -248,4 +248,10 @@ class Video implements UserOwnedEntityInterface
     {
         $this->videoOnlyPresentationpageTemplate = $videoOnlyPresentationpageTemplate;
     }
+
+
+    public function isFullAssetAvailable(): bool
+    {
+        return $this->hasAssetFullMp4 || $this->hasAssetFullWebm();
+    }
 }

@@ -82,6 +82,9 @@ feature:
       title: 'Video anpassen'
       subtitle: ''
       cta_submit: 'Weiter'
+      label:
+        title: 'Titel der Aufnahme'
+        video_only_presentationpage_template: 'Anzeige-Vorlage'
     videos_overview:
       title: Übersicht der bisherigen Aufnahmen
       subtitle: Aufnahmen können in Form einer Landingpage per E-Mail oder Messenger versendet werden.
@@ -90,7 +93,8 @@ feature:
         create_presentationpage: 'Seite erstellen'
         edit_presentationpage: 'Seite bearbeiten'
         remove_video: 'Aufnahme löschen'
-
+    video_player_embedded:
+      full_asset_outstanding: 'Aufnahme wird verarbeitet...'
 
   presentationpages:
     video_only_presentationpage_template_title:
