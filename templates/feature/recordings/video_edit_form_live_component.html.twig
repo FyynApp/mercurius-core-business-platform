@@ -7,25 +7,29 @@
 
             {% form_theme form 'form_themes/form_theme_default.html.twig' %}
 
-            {{ form_start(form) }}
+            {{ form_start(this.form) }}
 
 
-            {{ form_row(form.title, {
+            {{ form_row(this.form.title, {
                 attr: {
-                    'data-model': 'on(input)|debounce(250)|' ~ form.title.vars.full_name,
+                    'data-model': 'on(input)|debounce(250)|' ~ this.form.title.vars.full_name,
                     'data-action': 'live#action',
                     'data-action-name': "debounce(300)|save"
                 }
             }) }}
 
+            {{ form_row(this.form.videoOnlyPresentationpageTemplate, {
+                attr: {
+                    'data-action': 'live#action',
+                    'data-action-name': "save"
+                }
+            }) }}
+
             <button class="cta-link-success">
-                <svg xmlns="http://www.w3.org/2000/svg" class="heroicon-next-to-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                </svg>
                 {{ 'feature.recordings.video_edit_form.cta_submit'|trans }}
             </button>
 
-            {{ form_end(form) }}
+            {{ form_end(this.form) }}
 
         {% endblock %}
 

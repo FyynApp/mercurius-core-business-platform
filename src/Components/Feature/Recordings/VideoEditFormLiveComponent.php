@@ -60,15 +60,6 @@ class VideoEditFormLiveComponent extends AbstractController
         $this->storeDataAndRebuildForm();
     }
 
-    #[LiveAction]
-    public function setTitle(#[LiveArg] string $titleValue): void
-    {
-        $this->submitForm();
-        $this->video->setTitle($titleValue);
-        $this->storeDataAndRebuildForm();
-    }
-
-
     private function storeDataAndRebuildForm(): void
     {
         $this->entityManager->persist($this->video);
