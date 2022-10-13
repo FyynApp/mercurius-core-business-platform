@@ -58,6 +58,20 @@ class Video implements UserOwnedEntityInterface
     }
 
 
+    #[ORM\Column(type: 'string', length: 512, nullable: false)]
+    private string $title = '';
+
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+
     #[ORM\OneToOne(inversedBy: 'video', targetEntity: RecordingSession::class, cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'recording_sessions_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?RecordingSession $recordingSession;
@@ -219,5 +233,19 @@ class Video implements UserOwnedEntityInterface
     public function getPresentationpages(): array|Collection
     {
         return $this->presentationpages;
+    }
+
+    #[ORM\ManyToOne(targetEntity: Presentationpage::class, cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'video_only_presentationpage_template_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?Presentationpage $videoOnlyPresentationpageTemplate = null;
+
+    public function getVideoOnlyPresentationpageTemplate(): ?Presentationpage
+    {
+        return $this->videoOnlyPresentationpageTemplate;
+    }
+
+    public function setVideoOnlyPresentationpageTemplate(?Presentationpage $videoOnlyPresentationpageTemplate): void
+    {
+        $this->videoOnlyPresentationpageTemplate = $videoOnlyPresentationpageTemplate;
     }
 }

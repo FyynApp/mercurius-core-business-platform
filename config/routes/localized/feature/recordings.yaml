@@ -12,3 +12,8 @@ feature.recordings.videos.overview:
   path: /my/recordings/videos/
   controller: App\Controller\Feature\Recordings\VideosController::videosOverviewAction
   methods: [ GET ]
+
+feature.recordings.video.edit_form:
+  path: /my/recordings/videos/{videoId}/edit-form
+  controller: App\Controller\Feature\Recordings\VideosController::videoEditFormAction
+  methods: [ GET ]

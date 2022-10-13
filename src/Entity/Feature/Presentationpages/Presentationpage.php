@@ -197,7 +197,7 @@ class Presentationpage implements UserOwnedEntityInterface
     #[Assert\NotBlank]
     #[Assert\Length(max: 256)]
     #[ORM\Column(type: 'string', length: 256, unique: false, nullable: true)]
-    private ?string $title;
+    private ?string $title = null;
 
     public function getTitle(): ?string
     {

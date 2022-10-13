@@ -15,6 +15,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class VideoService
@@ -33,6 +34,8 @@ class VideoService
 
     private LoggerInterface $logger;
 
+    private TranslatorInterface $translator;
+
 
     public function __construct(
         EntityManagerInterface  $entityManager,
@@ -40,7 +43,8 @@ class VideoService
         RecordingSessionService $recordingSessionService,
         RouterInterface         $router,
         MessageBusInterface     $messageBus,
-        LoggerInterface         $logger
+        LoggerInterface         $logger,
+        TranslatorInterface     $translator
     )
     {
         $this->entityManager = $entityManager;
@@ -49,6 +53,7 @@ class VideoService
         $this->router = $router;
         $this->messageBus = $messageBus;
         $this->logger = $logger;
+        $this->translator = $translator;
     }
 
 
@@ -127,6 +132,13 @@ class VideoService
         }
 
         $video = new Video($recordingSession->getUser());
+        $video->setTitle(
+            $this->translator->trans(
+                'feature.recordings.new_video_title',
+                ['{num}' => $recordingSession->getUser()->getVideos()->count()]
+            )
+        );
+
         $video->setRecordingSession($recordingSession);
         $recordingSession->setVideo($video);
         $recordingSession->setIsFinished(true);

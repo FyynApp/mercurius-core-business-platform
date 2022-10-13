@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{# @var video \App\Entity\Feature\Recordings\Video #}
+{# @var PresentationpagesService \App\Service\Feature\Presentationpages\PresentationpagesService #}
+{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
+
+{% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed 'embeds/default_content_box.html.twig' %}
+        {% block contentBoxTitle %}
+            {{ 'feature.recordings.video_edit_form.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'feature.recordings.video_edit_form.subtitle'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            {{ component('feature_recordings_video_edit_form', {
+                video: video
+            }) }}
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

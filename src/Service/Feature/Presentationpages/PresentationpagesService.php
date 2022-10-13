@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Presentationpages\BgColor;
 use App\Entity\Feature\Presentationpages\FgColor;
 use App\Entity\Feature\Presentationpages\Presentationpage;
+use App\Entity\Feature\Presentationpages\PresentationpageCategory;
 use App\Entity\Feature\Presentationpages\PresentationpageElement;
 use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
@@ -249,8 +250,9 @@ class PresentationpagesService
 
     /** @return Presentationpage[] */
     public function getPresentationpagesForUser(
-        User                 $user,
-        PresentationpageType $type
+        User                     $user,
+        PresentationpageType     $type,
+        PresentationpageCategory $category = PresentationpageCategory::Default
     ): array
     {
         $results = [];
@@ -259,12 +261,33 @@ class PresentationpagesService
         $pages = $user->getPresentationpages()
                       ->toArray();
         foreach ($pages as $page) {
-            if ($page->getType() === $type && !$page->isDraft()) {
+            if (    $page->getType() === $type
+                &&  $page->getCategory() === $category
+                && !$page->isDraft()
+            ) {
                 $results[] = $page;
             }
         }
 
         return $results;
+    }
+
+    /** @return Presentationpage[] */
+    public function getVideoOnlyPresentationpageTemplatesForUser(
+        User $user
+    ): array
+    {
+        $templates = $this->getPresentationpagesForUser(
+            $user,
+            PresentationpageType::Template,
+            PresentationpageCategory::VideoOnly
+        );
+
+        if (sizeof($templates) === 0) {
+            $templates = $this->createBasicSetOfVideoOnlyPresentationpageTemplatesForUser($user);
+        }
+
+        return $templates;
     }
 
     public function userHasTemplates(User $user): bool
@@ -381,5 +404,51 @@ class PresentationpagesService
                 ]
             )
         );
+    }
+
+    /** @return Presentationpage[] */
+    private function createBasicSetOfVideoOnlyPresentationpageTemplatesForUser(
+        User $user
+    ): array
+    {
+        $template1 = new Presentationpage($user);
+        $template1->setType(PresentationpageType::Template);
+        $template1->setCategory(PresentationpageCategory::VideoOnly);
+        $template1->setTitle(
+            $this
+                ->translator
+                ->trans(
+                    'feature.presentationpages.video_only_presentationpage_template_title.1'
+                )
+        );
+        $template1->setBgColor(BgColor::_4A148C);
+        $template1->setFgColor(FgColor::_3E2723);
+        $template1->setTextColor(TextColor::_EDE7F6);
+        $template1->addPresentationpageElement(
+            new PresentationpageElement(PresentationpageElementVariant::MercuriusVideo)
+        );
+
+        $template2 = new Presentationpage($user);
+        $template2->setType(PresentationpageType::Template);
+        $template2->setCategory(PresentationpageCategory::VideoOnly);
+        $template2->setTitle(
+            $this
+                ->translator
+                ->trans(
+                    'feature.presentationpages.video_only_presentationpage_template_title.2'
+                )
+        );
+        $template2->setBgColor(BgColor::_FFF8E1);
+        $template2->setFgColor(FgColor::_0D47A1);
+        $template2->setTextColor(TextColor::_1B5E20);
+        $template2->addPresentationpageElement(
+            new PresentationpageElement(PresentationpageElementVariant::MercuriusVideo)
+        );
+
+        $this->entityManager->persist($template1);
+        $this->entityManager->persist($template2);
+        $this->entityManager->flush();
+
+        return [$template1, $template2];
     }
 }

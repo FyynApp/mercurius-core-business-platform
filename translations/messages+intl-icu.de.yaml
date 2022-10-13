@@ -70,6 +70,7 @@ feature:
         manage_video: 'Verwalten'
 
   recordings:
+    new_video_title: 'Aufnahme {num}'
     frames_per_second: 'Bilder pro Sekunde'
     seconds: >-
       {seconds, plural,
@@ -77,6 +78,10 @@ feature:
         one   {Länge: 1 Sekunde}
         other {Länge: # Sekunden}
       }
+    video_edit_form:
+      title: 'Video anpassen'
+      subtitle: ''
+      cta_submit: 'Weiter'
     videos_overview:
       title: Übersicht der bisherigen Aufnahmen
       subtitle: Aufnahmen können in Form einer Landingpage per E-Mail oder Messenger versendet werden.
@@ -88,6 +93,9 @@ feature:
 
 
   presentationpages:
+    video_only_presentationpage_template_title:
+      1: 'Vorlage #1'
+      2: 'Vorlage #2'
     overview:
       title: 'Seiten und Vorlagen'
       subtitle: 'Legen fest, wie eine Videolandingpage beim Aufruf durch Ihren Kunden dargestellt wird.'
