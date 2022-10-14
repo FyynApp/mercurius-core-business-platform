@@ -4,6 +4,7 @@ twig:
     globals:
         ContentDeliveryService: '@App\Service\Aspect\ContentDelivery\ContentDeliveryService'
         VideoService: '@App\Service\Feature\Recordings\VideoService'
+        ShortIdService: '@App\Service\Aspect\ShortId\ShortIdService'
 
 when@test:
     twig:

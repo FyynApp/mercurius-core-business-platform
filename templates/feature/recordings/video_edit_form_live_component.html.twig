@@ -37,7 +37,7 @@
                            type="text"
                            disabled="disabled"
                            size="36"
-                           value="{{ url('feature.recordings.video.share_link', { videoId: this.video.id }) }}"
+                           value="{{ url('feature.recordings.video.share_link', { videoShortId: ShortIdService.encodeObjectId(this.video) }) }}"
                     >
                     <button class="
                         bg-indigo-900 text-indigo-200 p-2 flex flex-row gap-1

@@ -53,4 +53,11 @@ class VideosController extends AbstractController
             ]
         );
     }
+
+    public function videoShareLinkAction(
+        string $videoShortId
+    ): Response
+    {
+
+    }
 }

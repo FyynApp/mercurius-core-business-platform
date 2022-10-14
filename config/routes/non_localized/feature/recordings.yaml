@@ -52,6 +52,6 @@ legacy.feature.recordings.recording_settings.set:
 
 
 feature.recordings.video.share_link:
-  path: /v/{videoId}
+  path: /v/{videoShortId}
   controller: App\Controller\Feature\Recordings\VideosController::videoShareLinkAction
   methods: [ GET ]
