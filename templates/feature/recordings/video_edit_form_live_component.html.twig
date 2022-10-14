@@ -32,18 +32,22 @@
                         </svg>
                     </button>
                 </div>
-                <div class="flex flex-row mb-8">
+                <div class="flex flex-row mb-8" data-controller="clipboard">
+
                     <input class="w-full text-indigo-500 bg-gray-200 rounded-tl-md rounded-bl-md"
                            type="text"
                            disabled="disabled"
                            size="36"
                            value="{{ url('feature.recordings.video.share_link', { videoShortId: ShortIdService.encodeObjectId(this.video) }) }}"
+                           data-clipboard-target="source"
                     >
                     <button class="
-                        bg-indigo-900 text-indigo-200 p-2 flex flex-row gap-1
-                        rounded-tr-md
-                        rounded-br-md
-                    ">
+                                bg-indigo-900 text-indigo-200 p-2 flex flex-row gap-1
+                                rounded-tr-md
+                                rounded-br-md
+                            "
+                            data-action="clipboard#copy"
+                    >
                         Copy
                         {# Heroicon: document-duplicate solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
