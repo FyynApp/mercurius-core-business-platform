@@ -32,7 +32,7 @@ class VideoEditFormLiveComponent extends AbstractController
     public ?Video $video = null;
 
     #[LiveProp]
-    public bool $shareModalIsOpen = false;
+    public bool $shareModalIsOpen = true;
 
     private LoggerInterface $logger;
 

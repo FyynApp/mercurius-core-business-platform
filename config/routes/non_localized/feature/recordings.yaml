@@ -49,3 +49,9 @@ legacy.feature.recordings.recording_settings.set:
     permanent: false
     keepQueryParams: true
     keepRequestMethod: true
+
+
+feature.recordings.video.share_link:
+  path: /v/{videoId}
+  controller: App\Controller\Feature\Recordings\VideosController::videoShareLinkAction
+  methods: [ GET ]
