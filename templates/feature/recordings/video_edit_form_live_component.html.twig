@@ -1,6 +1,33 @@
 {# @var this \App\Components\Feature\Recordings\VideoEditFormLiveComponent #}
 <div {{ attributes }}>
 
+    {% if this.shareModalIsOpen %}
+        <div class="
+            fixed w-full h-full top-0 left-0 bg-opacity-60 backdrop-blur-lg bg-neutral-300
+            z-50 flex flex-row justify-center items-center
+        ">
+            <div class="
+                bg-white shadow-2xl shadow-gray-500 max-w-screen-lg max-h-screen max-w-full
+                rounded-md shadow-gray-500 shadow-lg p-0
+                flex flex-col justify-start
+            ">
+                <div class="flex flex-row justify-end">
+                    <button
+                            data-action="live#action"
+                            data-action-name="hideShareModal"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+                <div>
+                    Hulenj
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 6, colspanRight: 6 } %}
 
         {% block contentLeft %}
@@ -102,7 +129,21 @@
                 }
             }) }}
 
-            <button class="cta-link-primary mb-4">
+            <a href="{{ path('feature.recordings.videos.overview') }}" class="cta-link-success mb-4">
+                {# Heroicon: arrow-circle-right solid #}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z" clip-rule="evenodd" />
+                </svg>
+                {{ 'feature.recordings.video_edit_form.cta_next'|trans }}
+            </a>
+
+            {{ form_end(this.form) }}
+
+            <button
+                    class="cta-link-primary mb-4"
+                    data-action="live#action"
+                    data-action-name="showShareModal"
+            >
                 {# Heroicon: share solid #}
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                     <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
@@ -110,24 +151,15 @@
                 {{ 'feature.recordings.video_edit_form.cta_share'|trans }}
             </button>
 
-            <button class="cta-link-primary mb-4">
+            <a href="#" class="cta-link-primary mb-4">
                 {# Heroicon: eye solid #}
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                     <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
                     <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
                 </svg>
                 {{ 'feature.recordings.video_edit_form.cta_preview'|trans }}
-            </button>
+            </a>
 
-            <button class="cta-link-success mb-4">
-                {# Heroicon: arrow-circle-right solid #}
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z" clip-rule="evenodd" />
-                </svg>
-                {{ 'feature.recordings.video_edit_form.cta_next'|trans }}
-            </button>
-
-            {{ form_end(this.form) }}
 
         {% endblock %}
 

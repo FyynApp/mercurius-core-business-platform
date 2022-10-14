@@ -31,6 +31,9 @@ class VideoEditFormLiveComponent extends AbstractController
     #[LiveProp(fieldName: 'data')]
     public ?Video $video = null;
 
+    #[LiveProp]
+    public bool $shareModalIsOpen = false;
+
     private LoggerInterface $logger;
 
     private EntityManagerInterface $entityManager;
@@ -65,6 +68,18 @@ class VideoEditFormLiveComponent extends AbstractController
     {
         $this->submitForm();
         $this->storeDataAndRebuildForm();
+    }
+
+    #[LiveAction]
+    public function showShareModal(): void
+    {
+        $this->shareModalIsOpen = true;
+    }
+
+    #[LiveAction]
+    public function hideShareModal(): void
+    {
+        $this->shareModalIsOpen = false;
     }
 
     private function storeDataAndRebuildForm(): void
