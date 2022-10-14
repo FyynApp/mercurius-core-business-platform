@@ -8,6 +8,7 @@ use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\Video;
 use App\Message\Feature\Recordings\GenerateMissingAssetsCommandMessage;
 use App\Service\Aspect\Filesystem\FilesystemService;
+use App\Service\Feature\Presentationpages\PresentationpagesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
@@ -36,15 +37,18 @@ class VideoService
 
     private TranslatorInterface $translator;
 
+    private PresentationpagesService $presentationpagesService;
+
 
     public function __construct(
-        EntityManagerInterface  $entityManager,
-        FilesystemService       $filesystemService,
-        RecordingSessionService $recordingSessionService,
-        RouterInterface         $router,
-        MessageBusInterface     $messageBus,
-        LoggerInterface         $logger,
-        TranslatorInterface     $translator
+        EntityManagerInterface   $entityManager,
+        FilesystemService        $filesystemService,
+        RecordingSessionService  $recordingSessionService,
+        RouterInterface          $router,
+        MessageBusInterface      $messageBus,
+        LoggerInterface          $logger,
+        TranslatorInterface      $translator,
+        PresentationpagesService $presentationpagesService
     )
     {
         $this->entityManager = $entityManager;
@@ -54,6 +58,7 @@ class VideoService
         $this->messageBus = $messageBus;
         $this->logger = $logger;
         $this->translator = $translator;
+        $this->presentationpagesService = $presentationpagesService;
     }
 
 
@@ -146,9 +151,18 @@ class VideoService
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
 
+        $templates = $this
+            ->presentationpagesService
+            ->getVideoOnlyPresentationpageTemplatesForUser(
+                $recordingSession->getUser()
+            );
+
+        $video->setVideoOnlyPresentationpageTemplate($templates[0]);
+
         if (is_null(
-            $recordingSession->getRecordingSessionVideoChunks()
-                             ->first()
+            $recordingSession
+                ->getRecordingSessionVideoChunks()
+                ->first()
         )) {
             throw new Exception("Cannot generate poster assets for video '{$video->getId()}' because its recording session '{$recordingSession->getId()}' does not have any video chunks.");
         }

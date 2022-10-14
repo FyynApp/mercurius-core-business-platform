@@ -81,13 +81,18 @@ feature:
     video_edit_form:
       title: 'Video anpassen'
       subtitle: ''
-      cta_submit: 'Weiter'
+      cta_share: 'Teilen'
+      cta_preview: 'Vorschau'
+      cta_next: 'Weiter'
+      cta_download: 'Herunterladen'
+      cta_copy: 'Kopieren'
+      cta_cut: 'Schneiden'
       label:
         title: 'Titel der Aufnahme'
         video_only_presentationpage_template: 'Anzeige-Vorlage'
     videos_overview:
-      title: Übersicht der bisherigen Aufnahmen
-      subtitle: Aufnahmen können in Form einer Landingpage per E-Mail oder Messenger versendet werden.
+      title: 'Übersicht der bisherigen Aufnahmen'
+      subtitle: 'Aufnahmen können in Form einer Landingpage per E-Mail oder Messenger versendet werden.'
       cta:
         add: 'Neue Aufnahme erstellen'
         create_presentationpage: 'Seite erstellen'

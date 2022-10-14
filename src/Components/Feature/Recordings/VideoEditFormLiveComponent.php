@@ -6,6 +6,7 @@ use App\Entity\Feature\Recordings\Video;
 use App\Form\Type\Feature\Recordings\VideoType;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -48,8 +49,14 @@ class VideoEditFormLiveComponent extends AbstractController
         $this->videoService = $videoService;
     }
 
+    /**
+     * @throws Exception
+     */
     public function mount(?Video $video = null)
     {
+        if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
+            throw new Exception("Video '{$video->getId()}' does not have a video-only presentationpage template.");
+        }
         $this->video = $video;
     }
 

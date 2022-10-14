@@ -1,9 +1,85 @@
 {# @var this \App\Components\Feature\Recordings\VideoEditFormLiveComponent #}
 <div {{ attributes }}>
 
-    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 7, colspanRight: 5 } %}
+    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 6, colspanRight: 6 } %}
 
         {% block contentLeft %}
+
+            <div class="mb-16">
+                <div
+                        class="rounded-md p-6"
+                        style="
+                                background-color: {{ this.video.videoOnlyPresentationpageTemplate.bgColor.value }};
+                                color: {{ this.video.videoOnlyPresentationpageTemplate.textColor.value }};
+                                "
+                >
+                    <h2 class="text-lg text-center">
+                        {{ this.video.title }}
+                    </h2>
+
+                    <div
+                            class="h-1 w-full mt-2 mb-4"
+                            style="
+                                    background-color: {{ this.video.videoOnlyPresentationpageTemplate.fgColor.value }};
+                                    "
+                    >
+
+                    </div>
+
+                    {{ component(
+                        'feature_recordings_video_player_embedded',
+                        { video: this.video }
+                    ) }}
+                </div>
+
+                <div class="rounded-md p-6 bg-white flex flex-row flex-wrap gap-4 justify-start items-center mt-8">
+
+                    <div class="flex flex-row gap-4 flex-wrap">
+                        <div>{{ 'dateformat.datetime_normal'|trans({ 'date': this.video.createdAt|format_datetime('long', 'short', locale=app.request.locale) }) }}</div>
+                        <div>{{ component('feature_recordings_video_seconds', { video: video }) }}</div>
+                    </div>
+
+                    <div class="flex flex-row gap-4 flex-wrap">
+                        <div>
+                            <button class="cta-link-primary">
+                                {# Heroicon: document-duplicate solid #}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                    <path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 013.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0121 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 017.5 16.125V3.375z" />
+                                    <path d="M15 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0017.25 7.5h-1.875A.375.375 0 0115 7.125V5.25zM4.875 6H6v10.125A3.375 3.375 0 009.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V7.875C3 6.839 3.84 6 4.875 6z" />
+                                </svg>
+                                {{ 'feature.recordings.video_edit_form.cta_copy'|trans }}
+                            </button>
+                        </div>
+                        <div>
+                            <button class="cta-link-primary">
+                                {# Heroicon: scissors solid #}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                    <path fill-rule="evenodd" d="M8.128 9.155a3.751 3.751 0 11.713-1.321l1.136.656a.75.75 0 01.222 1.104l-.006.007a.75.75 0 01-1.032.157 1.421 1.421 0 00-.113-.072l-.92-.531zm-4.827-3.53a2.25 2.25 0 013.994 2.063.756.756 0 00-.122.23 2.25 2.25 0 01-3.872-2.293zM13.348 8.272a5.073 5.073 0 00-3.428 3.57c-.101.387-.158.79-.165 1.202a1.415 1.415 0 01-.707 1.201l-.96.554a3.751 3.751 0 10.734 1.309l13.729-7.926a.75.75 0 00-.181-1.374l-.803-.215a5.25 5.25 0 00-2.894.05l-5.325 1.629zm-9.223 7.03a2.25 2.25 0 102.25 3.897 2.25 2.25 0 00-2.25-3.897zM12 12.75a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                                    <path d="M16.372 12.615a.75.75 0 01.75 0l5.43 3.135a.75.75 0 01-.182 1.374l-.802.215a5.25 5.25 0 01-2.894-.051l-5.147-1.574a.75.75 0 01-.156-1.367l3-1.732z" />
+                                </svg>
+
+                                {{ 'feature.recordings.video_edit_form.cta_cut'|trans }}
+                            </button>
+                        </div>
+                        <div>
+                            <button class="cta-link-primary mb-4">
+                                {# Heroicon: folder-arrow-down solid #}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                    <path fill-rule="evenodd" d="M19.5 21a3 3 0 003-3V9a3 3 0 00-3-3h-5.379a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H4.5a3 3 0 00-3 3v12a3 3 0 003 3h15zm-6.75-10.5a.75.75 0 00-1.5 0v4.19l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V10.5z" clip-rule="evenodd" />
+                                </svg>
+                                {{ 'feature.recordings.video_edit_form.cta_download'|trans }}
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        {% endblock %}
+
+
+
+        {% block contentRight %}
 
             {% form_theme form 'form_themes/form_theme_default.html.twig' %}
 
@@ -26,29 +102,32 @@
                 }
             }) }}
 
-            <button class="cta-link-success">
-                {{ 'feature.recordings.video_edit_form.cta_submit'|trans }}
+            <button class="cta-link-primary mb-4">
+                {# Heroicon: share solid #}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
+                </svg>
+                {{ 'feature.recordings.video_edit_form.cta_share'|trans }}
+            </button>
+
+            <button class="cta-link-primary mb-4">
+                {# Heroicon: eye solid #}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                    <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
+                </svg>
+                {{ 'feature.recordings.video_edit_form.cta_preview'|trans }}
+            </button>
+
+            <button class="cta-link-success mb-4">
+                {# Heroicon: arrow-circle-right solid #}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z" clip-rule="evenodd" />
+                </svg>
+                {{ 'feature.recordings.video_edit_form.cta_next'|trans }}
             </button>
 
             {{ form_end(this.form) }}
-
-        {% endblock %}
-
-
-
-        {% block contentRight %}
-
-            <pre>{{ this.video.title }}</pre>
-
-            {% if this.video.videoOnlyPresentationpageTemplate is not null %}
-                <pre>{{ this.video.videoOnlyPresentationpageTemplate.title }}</pre>
-            {% endif %}
-
-
-            {{ component(
-                'feature_recordings_video_player_embedded',
-                { video: this.video }
-            ) }}
 
         {% endblock %}
 

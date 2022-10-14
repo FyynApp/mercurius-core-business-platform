@@ -56,7 +56,14 @@ class RecordingsController extends AbstractController
 
         // Edge case, if the user came here twice
         if ($recordingSession->isFinished()) {
-            return $this->redirectToRoute('feature.recordings.videos.overview');
+            if (!is_null($recordingSession->getVideo())) {
+                return $this->redirectToRoute(
+                    'feature.recordings.video.edit_form',
+                    ['videoId' => $recordingSession->getVideo()->getId()]
+                );
+            } else {
+                return $this->redirectToRoute('feature.recordings.videos.overview');
+            }
         }
 
         $video = $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
