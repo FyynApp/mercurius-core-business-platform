@@ -1,0 +1,13 @@
+{# @var this \App\Components\Feature\Recordings\VideoDurationLiveComponent #}
+<span
+        {{ attributes }}
+        {% if this.shouldPoll %}
+            data-poll
+        {% endif %}
+>
+    {% if this.duration is not null %}
+        {{ this.duration }}
+    {% else %}
+        ...
+    {% endif %}
+</span>

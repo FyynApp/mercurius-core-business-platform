@@ -269,4 +269,20 @@ class Video implements UserOwnedEntityInterface
     {
         return $this->hasAssetFullMp4 || $this->hasAssetFullWebm();
     }
+
+    public function getDuration(): ?string
+    {
+        $seconds = null;
+        if (!is_null($this->getAssetFullMp4Seconds())) {
+            $seconds = $this->getAssetFullMp4Seconds();
+        } elseif (!is_null($this->getAssetFullWebmSeconds())) {
+            $seconds = $this->getAssetFullWebmSeconds();
+        }
+
+        if (is_null($seconds)) {
+            return null;
+        } else {
+            return gmdate('i:s', $seconds);
+        }
+    }
 }

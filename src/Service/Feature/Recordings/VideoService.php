@@ -263,13 +263,13 @@ class VideoService
         $video->setHasAssetFullWebm(true);
 
         $video->setAssetFullWebmFps(
-            $this->getAssetFullFps(
+            $this->calculateAssetFullFps(
                 $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)
             )
         );
 
         $video->setAssetFullWebmSeconds(
-            $this->getAssetFullSeconds(
+            $this->calculateAssetFullSeconds(
                 $this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)
             )
         );
@@ -289,13 +289,13 @@ class VideoService
         $video->setHasAssetFullMp4(true);
 
         $video->setAssetFullMp4Fps(
-            $this->getAssetFullFps(
+            $this->calculateAssetFullFps(
                 $this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)
             )
         );
 
         $video->setAssetFullMp4Seconds(
-            $this->getAssetFullSeconds(
+            $this->calculateAssetFullSeconds(
                 $this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)
             )
         );
@@ -308,7 +308,7 @@ class VideoService
     /**
      * @throws Exception
      */
-    private function getAssetFullFps(string $filepath): float
+    private function calculateAssetFullFps(string $filepath): float
     {
         $output = shell_exec("/usr/bin/env ffprobe -v error -select_streams v -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate $filepath");
 
@@ -325,7 +325,7 @@ class VideoService
     /**
      * @throws Exception
      */
-    private function getAssetFullSeconds(string $filepath): float
+    private function calculateAssetFullSeconds(string $filepath): float
     {
         $output = shell_exec("/usr/bin/env ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $filepath");
 
