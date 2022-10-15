@@ -103,8 +103,8 @@ feature:
 
   presentationpages:
     video_only_presentationpage_template_title:
-      1: 'Vorlage #1'
-      2: 'Vorlage #2'
+      1: 'Helles Layout'
+      2: 'Dunkles Layout'
     overview:
       title: 'Seiten und Vorlagen'
       subtitle: 'Legen fest, wie eine Videolandingpage beim Aufruf durch Ihren Kunden dargestellt wird.'

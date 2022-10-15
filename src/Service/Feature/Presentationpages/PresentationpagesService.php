@@ -421,9 +421,9 @@ class PresentationpagesService
                     'feature.presentationpages.video_only_presentationpage_template_title.1'
                 )
         );
-        $template1->setBgColor(BgColor::_4A148C);
-        $template1->setFgColor(FgColor::_3E2723);
-        $template1->setTextColor(TextColor::_EDE7F6);
+        $template1->setBgColor(BgColor::_FAFAFA);
+        $template1->setFgColor(FgColor::_888888);
+        $template1->setTextColor(TextColor::_444444);
         $template1->addPresentationpageElement(
             new PresentationpageElement(PresentationpageElementVariant::MercuriusVideo)
         );
@@ -438,9 +438,9 @@ class PresentationpagesService
                     'feature.presentationpages.video_only_presentationpage_template_title.2'
                 )
         );
-        $template2->setBgColor(BgColor::_FFF8E1);
-        $template2->setFgColor(FgColor::_0D47A1);
-        $template2->setTextColor(TextColor::_1B5E20);
+        $template2->setBgColor(BgColor::_444444);
+        $template2->setFgColor(FgColor::_CCCCCC);
+        $template2->setTextColor(TextColor::_ECEFF1);
         $template2->addPresentationpageElement(
             new PresentationpageElement(PresentationpageElementVariant::MercuriusVideo)
         );

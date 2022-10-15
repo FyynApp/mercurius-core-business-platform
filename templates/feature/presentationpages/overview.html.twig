@@ -172,7 +172,13 @@
                             bg-white
                     ">
 
-                        {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
+                        {% for presentationpage
+                            in PresentationpagesService.presentationpagesForUser(
+                                app.user,
+                                constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
+                                constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::VideoOnly')
+                            )
+                        %}
                             {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
 
                             <div class="
