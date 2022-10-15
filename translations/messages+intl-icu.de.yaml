@@ -78,7 +78,7 @@ feature:
         one   {Länge: 1 Sekunde}
         other {Länge: # Sekunden}
       }
-    video_edit_form:
+    video_manage_widget:
       title: 'Video anpassen'
       subtitle: ''
       cta_share: 'Teilen'

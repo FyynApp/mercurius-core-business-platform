@@ -12,17 +12,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
-use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 
 #[AsLiveComponent(
-    'feature_recordings_video_edit_form',
-    'feature/recordings/video_edit_form_live_component.html.twig'
+    'feature_recordings_video_manage_widget',
+    'feature/recordings/video_manage_widget_live_component.html.twig'
 )]
-class VideoEditFormLiveComponent extends AbstractController
+class VideoManageWidgetLiveComponent extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
@@ -32,7 +31,10 @@ class VideoEditFormLiveComponent extends AbstractController
     public ?Video $video = null;
 
     #[LiveProp]
-    public bool $shareModalIsOpen = true;
+    public bool $editModalIsOpen = false;
+
+    #[LiveProp]
+    public bool $shareModalIsOpen = false;
 
     private LoggerInterface $logger;
 
@@ -68,6 +70,18 @@ class VideoEditFormLiveComponent extends AbstractController
     {
         $this->submitForm();
         $this->storeDataAndRebuildForm();
+    }
+
+    #[LiveAction]
+    public function showEditModal(): void
+    {
+        $this->editModalIsOpen = true;
+    }
+
+    #[LiveAction]
+    public function hideEditModal(): void
+    {
+        $this->editModalIsOpen = false;
     }
 
     #[LiveAction]

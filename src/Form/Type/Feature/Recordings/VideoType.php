@@ -44,7 +44,7 @@ class VideoType extends AbstractType
                 'title',
                 TextType::class,
                 [
-                    'label' => 'feature.recordings.video_edit_form.label.title',
+                    'label' => 'feature.recordings.video_manage_widget.label.title',
                     'trim' => false,
                     'empty_data' => ''
                 ],
@@ -54,7 +54,7 @@ class VideoType extends AbstractType
                 'videoOnlyPresentationpageTemplate',
                 EntityType::class,
                 [
-                    'label' => 'feature.recordings.video_edit_form.label.video_only_presentationpage_template',
+                    'label' => 'feature.recordings.video_manage_widget.label.video_only_presentationpage_template',
                     'class' => Presentationpage::class,
                     'choices' => $this
                         ->presentationpagesService

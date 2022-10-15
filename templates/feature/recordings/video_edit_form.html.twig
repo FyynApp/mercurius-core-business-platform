@@ -11,16 +11,16 @@
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.recordings.video_edit_form.title'|trans }}
+            {{ 'feature.recordings.video_manage_widget.title'|trans }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'feature.recordings.video_edit_form.subtitle'|trans }}
+            {{ 'feature.recordings.video_manage_widget.subtitle'|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}
 
-            {{ component('feature_recordings_video_edit_form', {
+            {{ component('feature_recordings_video_manage_widget', {
                 video: video
             }) }}
 
