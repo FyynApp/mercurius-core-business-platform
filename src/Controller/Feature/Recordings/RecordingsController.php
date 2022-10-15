@@ -55,22 +55,15 @@ class RecordingsController extends AbstractController
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
         // Edge case, if the user came here twice
-        if ($recordingSession->isFinished()) {
-            if (!is_null($recordingSession->getVideo())) {
-                return $this->redirectToRoute(
-                    'feature.recordings.video.edit_form',
-                    ['videoId' => $recordingSession->getVideo()->getId()]
-                );
-            } else {
-                return $this->redirectToRoute('feature.recordings.videos.overview');
-            }
+        if (!$recordingSession->isFinished()) {
+            $video = $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
+        } else {
+            $video = $recordingSession->getVideo();
         }
 
-        $video = $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
-
         return $this->redirectToRoute(
-            'feature.recordings.video.edit_form',
-            ['videoId' => $video->getId()]
+            'feature.recordings.videos.overview',
+            ['showEditModalForVideoId' => $video->getId()]
         );
     }
 

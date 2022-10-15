@@ -91,8 +91,8 @@ feature:
         title: 'Titel der Aufnahme'
         video_only_presentationpage_template: 'Anzeige-Vorlage'
     videos_overview:
-      title: 'Übersicht der bisherigen Aufnahmen'
-      subtitle: 'Aufnahmen können in Form einer Landingpage per E-Mail oder Messenger versendet werden.'
+      title: 'Übersicht Ihrer Aufnahmen'
+      subtitle: 'Hier können Aufnahmen bearbeitet und geteilt werden.'
       cta:
         add: 'Neue Aufnahme erstellen'
         create_presentationpage: 'Seite erstellen'

@@ -4,6 +4,8 @@ namespace App\Components\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
 use App\Form\Type\Feature\Recordings\VideoType;
+use App\Security\VotingAttribute;
+use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -40,29 +42,44 @@ class VideoManageWidgetLiveComponent extends AbstractController
 
     private EntityManagerInterface $entityManager;
 
+    private PresentationpagesService $presentationpagesService;
+
     public VideoService $videoService;
 
 
     public function __construct(
-        LoggerInterface        $logger,
-        EntityManagerInterface $entityManager,
-        VideoService           $videoService
+        LoggerInterface          $logger,
+        EntityManagerInterface   $entityManager,
+        VideoService             $videoService,
+        PresentationpagesService $presentationpagesService
     )
     {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
         $this->videoService = $videoService;
+        $this->presentationpagesService = $presentationpagesService;
     }
 
     /**
      * @throws Exception
      */
-    public function mount(?Video $video = null)
+    public function mount(
+        Video $video,
+        bool $showEditModal
+    )
     {
+        $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $video);
+
         if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
-            throw new Exception("Video '{$video->getId()}' does not have a video-only presentationpage template.");
+            $video->setVideoOnlyPresentationpageTemplate(
+                $this->presentationpagesService->getVideoOnlyPresentationpageTemplatesForUser($video->getUser())[0]
+            );
         }
         $this->video = $video;
+
+        if ($showEditModal) {
+            $this->showEditModal();
+        }
     }
 
     #[LiveAction]

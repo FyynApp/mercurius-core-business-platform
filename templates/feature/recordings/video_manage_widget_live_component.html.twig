@@ -2,7 +2,7 @@
 <div {{ attributes }}>
 
 
-    <div class="flex flex-col rounded-lg shadow-2xl shadow-neutral-300 p-0 bg-white border-1 border-neutral-200">
+    <div class="flex flex-col rounded-lg shadow-2xl shadow-neutral-300 p-0 bg-white border-1 border-neutral-200 h-full">
         <div class="relative">
             <button
                     class="h-40 w-full p-0 m-0"
@@ -34,9 +34,8 @@
                             style="background-image: url('{{ VideoService.posterAnimatedAssetUrl(this.video) }}')"
                     ></div>
                 </div>
-
-
             </button>
+
             <div class="absolute bottom-0 left-0 p-2">
                 <button class="w-full h-full">
                     <!-- Heroicon: Play -->
@@ -58,7 +57,7 @@
         </div>
 
         <div class="flex-grow pt-4 pb-4 ml-4 mr-4 overflow-y-clip">
-            <p class="text-xl font-bold mb-1 break-words flex flex-row gap-2">
+            <p class="text-xl font-bold mb-1 break-words flex flex-row justify-between items-start gap-2">
                 {{ this.video.title }}
                 <button
                         class="text-gray-300 hover:text-black"
@@ -66,11 +65,14 @@
                         data-action-name="showEditModal"
                 >
                     {# Heroicon: pencil-square solid #}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mt-1 w-5 h-5">
                         <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
                         <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
                     </svg>
                 </button>
+            </p>
+            <p class="text-sm text-gray-600">
+                {{ this.video.videoOnlyPresentationpageTemplate.title }}
             </p>
         </div>
 
@@ -117,12 +119,6 @@
         </div>
 
     </div>
-
-
-
-
-
-
 
 
 
@@ -202,6 +198,8 @@
             </div>
         </div>
     {% endif %}
+
+
 
     {% if this.editModalIsOpen %}
         <div class="
