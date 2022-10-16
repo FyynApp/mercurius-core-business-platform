@@ -142,7 +142,7 @@
             ">
                 <div class="flex flex-row justify-between mb-8">
 
-                    <div class="flex flex-row gap-2 items-center">
+                    <div class="flex flex-row gap-2 items-center text-gray-700">
                         {# Heroicon: share solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                             <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
@@ -161,9 +161,14 @@
                         </svg>
                     </button>
                 </div>
-                <div class="flex flex-row mb-8" data-controller="clipboard">
 
-                    <input class="w-full text-indigo-500 bg-gray-200 rounded-tl-md rounded-bl-md"
+                <div
+                        class="flex flex-row mb-8"
+                        data-controller="clipboard"
+                        data-clipboard-success-content='Kopiert!'
+                >
+
+                    <input class="w-full text-indigo-500 bg-gray-200 rounded-tl-md border-0 rounded-bl-md"
                            type="text"
                            disabled="disabled"
                            size="36"
@@ -175,33 +180,29 @@
                                 rounded-tr-md
                                 rounded-br-md
                             "
+                            data-clipboard-target="button"
                             data-action="clipboard#copy"
                     >
-                        Copy
-                        {# Heroicon: document-duplicate solid #}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 013.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0121 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 017.5 16.125V3.375z" />
-                            <path d="M15 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0017.25 7.5h-1.875A.375.375 0 0115 7.125V5.25zM4.875 6H6v10.125A3.375 3.375 0 009.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V7.875C3 6.839 3.84 6 4.875 6z" />
-                        </svg>
+                        Kopieren
                     </button>
                 </div>
-                <div class="flex flex-row justify-evenly items-end gap-4">
-                    <div class="flex flex-col justify-center items-center">
+                <div class="flex flex-row justify-evenly items-end gap-4 text-sm font-semibold text-gray-700">
+                    <button class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-indigo-200">
                         <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-facebook.svg') }}">
                         Facebook
-                    </div>
-                    <div class="flex flex-col justify-center items-center">
+                    </button>
+                    <button class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-indigo-200">
                         <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-instagram.svg') }}">
                         Instagram
-                    </div>
-                    <div class="flex flex-col justify-center items-center">
+                    </button>
+                    <button class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-indigo-200">
                         <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-twitter.svg') }}">
                         Twitter
-                    </div>
-                    <div class="flex flex-col justify-center items-center">
+                    </button>
+                    <button class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-indigo-200">
                         <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-linkedin.svg') }}">
                         LinkedIn
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>
