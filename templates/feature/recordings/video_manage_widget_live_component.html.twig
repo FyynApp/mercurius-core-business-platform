@@ -59,11 +59,11 @@
         <div class="flex-grow pt-4 pb-4 ml-4 mr-4 overflow-y-clip">
             <p
                     style="
-                            background-color: {{ this.video.videoOnlyPresentationpageTemplate.bgColor.value }};
                             color: {{ this.video.videoOnlyPresentationpageTemplate.textColor.value }};
+                            background-color: {{ this.video.videoOnlyPresentationpageTemplate.bgColor.value }};
                             border-color: {{ this.video.videoOnlyPresentationpageTemplate.fgColor.value }};
                             "
-                    class="text-xs text-gray-600 w-fit rounded-sm p-1 pt-0 pb-0 border-1 mb-1"
+                    class="text-xs text-gray-600 w-fit rounded-sm p-1 pt-0 pb-0 border-1 mb-1 opacity-30 hover:opacity-100"
             >
                 {{ this.video.videoOnlyPresentationpageTemplate.title }}
             </p>
@@ -255,22 +255,23 @@
                                 <div
                                         class="rounded-bl-xl rounded-br-xl p-6 border-2 border-t-0 border-neutral-500"
                                         style="
+                                                font-family: 'Tiro Gurmukhi', 'Times New Roman', serif;
                                                 background-color: {{ this.video.videoOnlyPresentationpageTemplate.bgColor.value }};
                                                 color: {{ this.video.videoOnlyPresentationpageTemplate.textColor.value }};
-                                                "
+                                        "
                                 >
-                                    <h2 class="text-lg text-center">
+                                    <h2 class="text-3xl text-center">
                                         {{ this.video.title }}
                                     </h2>
 
                                     <div
-                                            class="h-0.5 w-full mt-2 mb-4"
+                                            class="h-0.5 w-8/12 mt-2 mb-4 mx-auto"
                                             style="background-color: {{ this.video.videoOnlyPresentationpageTemplate.fgColor.value }};"
                                     >
 
                                     </div>
 
-                                    <div class="w-10/12 mx-auto">
+                                    <div class="w-8/12 mx-auto">
                                         {{ component(
                                             'feature_recordings_video_player_embedded',
                                             { video: this.video }
@@ -369,7 +370,11 @@
                             {{ 'feature.recordings.video_manage_widget.cta_share'|trans }}
                         </button>
 
-                        <a href="#" class="cta-with-icon-primary">
+                        <a
+                                href="{{ path('feature.recordings.video.show_with_video_only_presentationpage_template', { videoId: this.video.id }) }}"
+                                target="_blank"
+                                class="cta-with-icon-primary"
+                        >
                             {# Heroicon: eye solid #}
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                                 <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />

@@ -1,0 +1,61 @@
+{% extends 'base_naked.html.twig' %}
+
+{# @var video \App\Entity\Feature\Recordings\Video #}
+
+{% block title %}{{ video.title }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Gurmukhi&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+    <div
+            class="w-full h-full min-h-screen p-0 m-0"
+            style="
+                    font-family: 'Tiro Gurmukhi', 'Times New Roman', serif;
+                    color: {{ video.videoOnlyPresentationpageTemplate.textColor.value }};
+                    background-color: {{ video.videoOnlyPresentationpageTemplate.bgColor.value }};
+            "
+    >
+        <div class="flex flex-col justify-start items-center p-8 pt-24 w-fit mx-auto">
+
+            <div
+                    class="text-7xl pb-8 border-b-2 mb-12 break-normal"
+                    style="border-color: {{ video.videoOnlyPresentationpageTemplate.fgColor.value }}"
+            >
+                {{ video.title }}
+            </div>
+
+            <div class="w-full shadow-2xl shadow-neutral-800">
+                {{ component(
+                    'feature_recordings_video_player_embedded',
+                    { video }
+                ) }}
+            </div>
+        </div>
+    </div>
+
+    <a
+            href="{{ path('feature.landingpages.homepage') }}"
+            target="_blank"
+            class="
+                        absolute top-8 right-8 flex flex-row gap-2 justify-start items-center
+                        p-2 pr-4 pl-4 rounded-md opacity-20
+                        hover:opacity-100
+                        bg-neutral-500 text-neutral-300 font-semibold
+                    "
+    >
+        <span>hosted by Fyyn.io</span>
+        <img
+                class="h-6"
+                src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
+                alt="Fyyn.io"
+        >
+    </a>
+
+
+{% endblock %}

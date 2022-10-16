@@ -13,7 +13,7 @@ feature.recordings.videos.overview:
   controller: App\Controller\Feature\Recordings\VideosController::videosOverviewAction
   methods: [ GET ]
 
-feature.recordings.video.edit_form:
-  path: /my/recordings/videos/{videoId}/edit-form
-  controller: App\Controller\Feature\Recordings\VideosController::videoEditFormAction
+feature.recordings.video.show_with_video_only_presentationpage_template:
+  path: /video/{videoId}/wvopt
+  controller: App\Controller\Feature\Recordings\VideosController::showWithVideoOnlyPresentationpageTemplateAction
   methods: [ GET ]

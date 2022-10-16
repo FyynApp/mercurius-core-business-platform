@@ -2,17 +2,19 @@
 
 namespace App\Controller\Feature\Recordings;
 
-use App\Service\Feature\Recordings\VideoService;
+use App\Entity\Feature\Recordings\Video;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class VideosController extends AbstractController
 {
     public function videosOverviewAction(
-        Request $request,
-        VideoService $videoService
+        Request $request
     ): Response
     {
         return $this->render(
@@ -22,9 +24,45 @@ class VideosController extends AbstractController
     }
 
     public function videoShareLinkAction(
-        string $videoShortId
+        string $videoShortId,
+        EntityManagerInterface $entityManager
     ): Response
     {
+        /** @var EntityRepository $r */
+        $r = $entityManager->getRepository(Video::class);
 
+        /** @var null|Video $video */
+        $video = $r->findOneBy(['shortId' => $videoShortId]);
+
+        if (is_null($video)) {
+            throw new NotFoundHttpException("No video with short id '$videoShortId' found.");
+        }
+
+        return $this->redirectToRoute(
+            'feature.recordings.video.show_with_video_only_presentationpage_template',
+            ['videoId' => $video->getId()]
+        );
+    }
+
+    public function showWithVideoOnlyPresentationpageTemplateAction(
+        string $videoId,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        /** @var null|Video $video */
+        $video = $entityManager->find(Video::class, $videoId);
+
+        if (is_null($video)) {
+            throw new NotFoundHttpException("No video with id '$videoId'.");
+        }
+
+        if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
+            throw new NotFoundHttpException("Video '$videoId' does not have a video only presentationpage template.");
+        }
+
+        return $this->render(
+            'feature/recordings/video_show_with_video_only_presentationpage_template.html.twig',
+            ['video' => $video]
+        );
     }
 }
