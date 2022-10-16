@@ -131,7 +131,7 @@
 
     {% if this.shareModalIsOpen %}
         <div class="
-            fixed w-full h-full top-0 left-0 bg-opacity-60 backdrop-blur-sm bg-neutral-300
+            fixed w-full h-full top-0 left-0 bg-opacity-60 backdrop-blur-sm backdrop-grayscale bg-neutral-300
             z-50 flex flex-row justify-center items-center
         ">
             <div class="
@@ -211,17 +211,20 @@
 
     {% if this.editModalIsOpen %}
         <div class="
-            fixed w-full h-full top-0 left-0 bg-opacity-60 backdrop-blur-sm bg-neutral-300
+            fixed w-full h-full top-0 left-0 bg-opacity-60 backdrop-blur-sm backdrop-grayscale bg-neutral-300
             z-40 flex flex-row justify-center items-center
         ">
-            <div class="bg-white rounded-md p-8 m-64 border-1 border-gray-300">
+            <div class="bg-white rounded-md p-8 m-16 border-1 border-gray-300">
                 {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 6, colspanRight: 6 } %}
 
                     {% block contentLeft %}
 
                         <div class="mb-16">
+
+                            <img src="{{ asset('assets/images/ui/browser_head.png') }}" class="w-full">
+
                             <div
-                                    class="rounded-md p-6"
+                                    class="rounded-bl-md rounded-br-md p-6 border-1 border-neutral-700"
                                     style="
                                             background-color: {{ this.video.videoOnlyPresentationpageTemplate.bgColor.value }};
                                             color: {{ this.video.videoOnlyPresentationpageTemplate.textColor.value }};
@@ -232,18 +235,18 @@
                                 </h2>
 
                                 <div
-                                        class="h-1 w-full mt-2 mb-4"
-                                        style="
-                                                background-color: {{ this.video.videoOnlyPresentationpageTemplate.fgColor.value }};
-                                                "
+                                        class="h-0.5 w-full mt-2 mb-4"
+                                        style="background-color: {{ this.video.videoOnlyPresentationpageTemplate.fgColor.value }};"
                                 >
 
                                 </div>
 
-                                {{ component(
-                                    'feature_recordings_video_player_embedded',
-                                    { video: this.video }
-                                ) }}
+                                <div class="w-10/12 mx-auto">
+                                    {{ component(
+                                        'feature_recordings_video_player_embedded',
+                                        { video: this.video }
+                                    ) }}
+                                </div>
                             </div>
 
                             <div class="rounded-md p-6 bg-white flex flex-row flex-wrap gap-4 justify-start items-center mt-8">
@@ -319,18 +322,6 @@
                         {{ form_end(this.form) }}
 
                         <button
-                                class="cta-link-success mb-4"
-                                data-action="live#action"
-                                data-action-name="hideEditModal"
-                        >
-                            {# Heroicon: arrow-circle-right solid #}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z" clip-rule="evenodd" />
-                            </svg>
-                            {{ 'feature.recordings.video_manage_widget.cta_next'|trans }}
-                        </button>
-
-                        <button
                                 class="cta-link-primary mb-4"
                                 data-action="live#action"
                                 data-action-name="showShareModal"
@@ -351,6 +342,17 @@
                             {{ 'feature.recordings.video_manage_widget.cta_preview'|trans }}
                         </a>
 
+                        <button
+                                class="cta-link-success mb-4"
+                                data-action="live#action"
+                                data-action-name="hideEditModal"
+                        >
+                            {# Heroicon: check-circle solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                            </svg>
+                            {{ 'feature.recordings.video_manage_widget.cta_done'|trans }}
+                        </button>
 
                     {% endblock %}
 

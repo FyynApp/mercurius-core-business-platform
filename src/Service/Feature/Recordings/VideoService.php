@@ -140,7 +140,7 @@ class VideoService
         $video->setTitle(
             $this->translator->trans(
                 'feature.recordings.new_video_title',
-                ['{num}' => $recordingSession->getUser()->getVideos()->count()]
+                ['{num}' => $recordingSession->getUser()->getVideos()->count() + 1]
             )
         );
 
