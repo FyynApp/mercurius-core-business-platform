@@ -100,7 +100,7 @@ feature:
         edit_presentationpage: 'Seite bearbeiten'
         remove_video: 'Aufnahme löschen'
     video_player_embedded:
-      full_asset_outstanding: 'Aufnahme wird verarbeitet...'
+      full_asset_outstanding: 'Video wird verarbeitet · · ·'
 
   presentationpages:
     video_only_presentationpage_template_title:
