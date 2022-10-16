@@ -43,6 +43,25 @@
     }
 
 
+
+    .cta-with-icon-primary {
+        @apply flex flex-row gap-2 font-medium hover:font-bold text-indigo-900 p-3 bg-indigo-100 mb-4 border-indigo-200 border-1 rounded-md w-full;
+    }
+
+    .cta-with-icon-success {
+        @apply cta-with-icon-primary text-lime-900 bg-lime-100 border-lime-400;
+    }
+
+    .cta-with-icon-inline-primary {
+        @apply flex flex-row gap-1 hover:underline text-indigo-900;
+    }
+
+    .cta-with-icon-inline-danger {
+        @apply flex flex-row gap-1 hover:underline text-red-800;
+    }
+
+
+
     .cta-link-primary-small {
         @apply
         inline-block

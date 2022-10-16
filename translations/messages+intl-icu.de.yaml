@@ -85,6 +85,7 @@ feature:
       cta_preview: 'Vorschau'
       cta_done: 'Fertig'
       cta_download: 'Herunterladen'
+      cta_delete: 'Löschen'
       cta_copy: 'Kopieren'
       cta_cut: 'Schneiden'
       label:
