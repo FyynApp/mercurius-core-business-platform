@@ -52,6 +52,10 @@
         @apply cta-with-icon-primary text-lime-900 bg-lime-100 border-lime-400;
     }
 
+    .cta-with-icon-danger {
+        @apply cta-with-icon-primary text-red-900 bg-red-100 border-red-200;
+    }
+
     .cta-with-icon-inline-primary {
         @apply flex flex-row gap-1 hover:underline text-indigo-900;
     }

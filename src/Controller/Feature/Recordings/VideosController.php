@@ -65,4 +65,11 @@ class VideosController extends AbstractController
             ['video' => $video]
         );
     }
+
+    public function deleteVideoAction(
+        string $videoId,
+    ): Response
+    {
+        return new Response('tbd: Video löschen implementieren.', Response::HTTP_NOT_IMPLEMENTED);
+    }
 }

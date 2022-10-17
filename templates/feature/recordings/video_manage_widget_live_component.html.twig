@@ -233,6 +233,59 @@
     {% endif %}
 
 
+    {% if this.deleteModalIsOpen %}
+        <div class="
+            fixed w-full h-full top-0 left-0 bg-opacity-60 backdrop-blur-sm backdrop-grayscale bg-neutral-300
+            z-50 flex flex-row justify-center items-center
+        ">
+            <div class="
+                bg-white shadow-2xl shadow-gray-500 max-w-screen-lg max-h-screen max-w-full
+                p-4 w-fit rounded-md shadow-gray-500 shadow-lg
+                flex flex-col justify-start
+                border-1 border-gray-400
+            ">
+                <div class="flex flex-row justify-between mb-8">
+
+                    <div class="flex flex-row gap-2 items-center text-red-700">
+                        {# Heroicon: trash solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-bold">Video löschen</span>
+                    </div>
+
+                    <button
+                            class=""
+                            data-action="live#action"
+                            data-action-name="hideDeleteModal"
+                    >
+                        {# Heroicon: x-mark solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div
+                        class="flex flex-col gap-6"
+                >
+                    Möchten Sie dieses Video wirklich löschen?
+
+                    <form method="post" action="{{ path('feature.recordings.video.delete', { videoId: this.video.id }) }}">
+                        <button class="cta-with-icon-danger"
+                        >
+                            {# Heroicon: check-circle solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                            </svg>
+                            Ja, Video löschen
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
 
     {% if this.editModalIsOpen %}
         <div class="
@@ -307,15 +360,22 @@
                                         {{ 'feature.recordings.video_manage_widget.cta_cut'|trans }}
                                     </button>
 
-                                    <button class="cta-with-icon-inline-primary">
+                                    <a
+                                            href="{{ VideoService.fullAssetUrl(this.video) }}"
+                                            class="cta-with-icon-inline-primary"
+                                    >
                                         {# Heroicon: folder-arrow-down solid #}
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                                             <path fill-rule="evenodd" d="M19.5 21a3 3 0 003-3V9a3 3 0 00-3-3h-5.379a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H4.5a3 3 0 00-3 3v12a3 3 0 003 3h15zm-6.75-10.5a.75.75 0 00-1.5 0v4.19l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V10.5z" clip-rule="evenodd" />
                                         </svg>
                                         {{ 'feature.recordings.video_manage_widget.cta_download'|trans }}
-                                    </button>
+                                    </a>
 
-                                    <button class="cta-with-icon-inline-danger">
+                                    <button
+                                            class="cta-with-icon-inline-danger"
+                                            data-action="live#action"
+                                            data-action-name="showDeleteModal"
+                                    >
                                         {# Heroicon: trash solid #}
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                                             <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />

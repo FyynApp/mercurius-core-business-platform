@@ -42,6 +42,9 @@ class VideoManageWidgetLiveComponent extends AbstractController
     public bool $shareModalIsOpen = false;
 
     #[LiveProp]
+    public bool $deleteModalIsOpen = false;
+
+    #[LiveProp]
     public string $shareUrl = '';
 
     private LoggerInterface $logger;
@@ -105,6 +108,7 @@ class VideoManageWidgetLiveComponent extends AbstractController
         $this->storeDataAndRebuildForm();
     }
 
+    
     #[LiveAction]
     public function showEditModal(): void
     {
@@ -117,6 +121,7 @@ class VideoManageWidgetLiveComponent extends AbstractController
         $this->editModalIsOpen = false;
     }
 
+    
     #[LiveAction]
     public function showShareModal(): void
     {
@@ -129,6 +134,20 @@ class VideoManageWidgetLiveComponent extends AbstractController
         $this->shareModalIsOpen = false;
     }
 
+    
+    #[LiveAction]
+    public function showDeleteModal(): void
+    {
+        $this->deleteModalIsOpen = true;
+    }
+
+    #[LiveAction]
+    public function hideDeleteModal(): void
+    {
+        $this->deleteModalIsOpen = false;
+    }
+
+    
     #[LiveAction]
     public function switchShareUrlDirectLink(): void
     {
