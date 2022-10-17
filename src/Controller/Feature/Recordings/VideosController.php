@@ -90,7 +90,10 @@ class VideosController extends AbstractController
 
         $this->addFlash(
             FlashMessageLabel::Success->value,
-            $translator->trans('feature.recordings.video_successfully_deleted')
+            $translator->trans(
+                'feature.recordings.video_successfully_deleted',
+                ['title' => $video->getTitle()]
+            )
         );
 
         return $this->redirectToRoute('feature.recordings.videos.overview');

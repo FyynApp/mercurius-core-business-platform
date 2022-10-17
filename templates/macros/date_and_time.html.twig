@@ -12,3 +12,18 @@
             })
     }}
 {% endmacro %}
+
+{% macro shortDateAndTime(dateAndTime) %}
+    {{
+    'dateformat.datetime_normal'
+    |trans({
+        'date': dateAndTime
+        |format_datetime(
+            'short',
+            'short',
+            locale=app.request.locale,
+            timezone=CookiesService.clientTimezone(app.request)
+        )
+    })
+    }}
+{% endmacro %}
