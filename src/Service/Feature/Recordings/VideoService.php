@@ -67,11 +67,20 @@ class VideoService
      */
     public function getAvailableVideos(User $user): array
     {
-        $arr = $user->getVideos()
+        /** @var Video[] $allVideos */
+        $allVideos = $user->getVideos()
                     ->toArray();
-        rsort($arr);
 
-        return $arr;
+        $videos = [];
+        foreach ($allVideos as $video) {
+            if (!$video->isDeleted()) {
+                $videos[] = $video;
+            }
+        }
+
+        rsort($videos);
+
+        return $videos;
     }
 
 
@@ -208,6 +217,14 @@ class VideoService
             $this->generateAssetFullWebm($video);
         }
         */
+    }
+
+
+    public function deleteVideo(Video $video): void
+    {
+        $video->setIsDeleted(true);
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
     }
 
 

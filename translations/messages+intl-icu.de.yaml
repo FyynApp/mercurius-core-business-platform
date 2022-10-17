@@ -78,6 +78,7 @@ feature:
         one   {Länge: 1 Sekunde}
         other {Länge: # Sekunden}
       }
+    video_successfully_deleted: 'Das Video wurde erfolgreich gelöscht'
     video_manage_widget:
       title: 'Video anpassen'
       subtitle: ''

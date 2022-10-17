@@ -73,6 +73,20 @@ class Video implements UserOwnedEntityInterface
     }
 
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isDeleted = false;
+
+    public function isDeleted(): bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): void
+    {
+        $this->isDeleted = $isDeleted;
+    }
+
+
     #[ORM\Column(type: 'string', length: 512, nullable: false)]
     private string $title = '';
 

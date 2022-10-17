@@ -1,0 +1,14 @@
+{% macro full(dateAndTime) %}
+    {{
+        'dateformat.datetime_normal'
+            |trans({
+                'date': dateAndTime
+                |format_datetime(
+                    'long',
+                    'short',
+                    locale=app.request.locale,
+                    timezone=CookiesService.clientTimezone(app.request)
+                )
+            })
+    }}
+{% endmacro %}

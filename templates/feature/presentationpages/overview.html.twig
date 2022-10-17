@@ -90,7 +90,8 @@
 
                                 <div>
                                     <div>
-                                        {{ 'dateformat.datetime_normal'|trans({ 'date': presentationpage.createdOrUpdatedAt|format_datetime('long', 'short', locale=app.request.locale, timezone=client_timezone) }) }}
+                                        {% import 'macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                                        {{ dateAndTimeMacros.full(presentationpage.createdOrUpdatedAt) }}
                                     </div>
 
                                     <div>
@@ -195,7 +196,7 @@
 
                                 <div class="col-span-2">
                                     <div>
-                                        {{ 'dateformat.datetime_normal'|trans({ 'date': presentationpage.createdOrUpdatedAt|format_datetime('long', 'short', locale=app.request.locale, timezone=client_timezone) }) }}
+                                        {{ dateAndTimeMacros.full(presentationpage.createdOrUpdatedAt) }}
                                     </div>
 
                                     <div>

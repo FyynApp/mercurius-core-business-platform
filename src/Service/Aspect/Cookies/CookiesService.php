@@ -5,7 +5,9 @@ namespace App\Service\Aspect\Cookies;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use DateInterval;
 use DateTime;
+use Exception;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class CookiesService
@@ -35,6 +37,9 @@ class CookiesService
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public static function getCookieExpireValue(CookieName $cookieName): DateTime|int
     {
         $expireAt = DateAndTimeService::getDateTimeUtc();
@@ -46,5 +51,16 @@ class CookiesService
         }
 
         return $expireAt;
+    }
+
+    public function getClientTimezone(Request $request): string
+    {
+        $clientTimezone = $request->cookies->get(CookieName::ClientTimezone->value);
+
+        if (is_null($clientTimezone)) {
+            return 'Europe/Berlin';
+        } else {
+            return $clientTimezone;
+        }
     }
 }

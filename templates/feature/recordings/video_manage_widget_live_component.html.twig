@@ -320,9 +320,7 @@
                                     <div
                                             class="h-0.5 w-8/12 mt-2 mb-4 mx-auto"
                                             style="background-color: {{ this.video.videoOnlyPresentationpageTemplate.fgColor.value }};"
-                                    >
-
-                                    </div>
+                                    ></div>
 
                                     <div class="w-8/12 mx-auto">
                                         {{ component(
@@ -335,8 +333,9 @@
 
                             <div class="rounded-md p-4 bg-gray-200 flex flex-row flex-wrap gap-4 justify-between items-center">
 
-                                <div class="flex flex-row gap-4 flex-wrap text-gray-600">
-                                    <div>{{ 'dateformat.datetime_normal'|trans({ 'date': this.video.createdAt|format_datetime('long', 'short', locale=app.request.locale) }) }}</div>
+                                <div class="text-gray-600">
+                                    {% import 'macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                                    {{ dateAndTimeMacros.full(video.createdAt) }}
                                 </div>
 
                                 <div class="flex flex-row gap-4 flex-wrap justify-start">

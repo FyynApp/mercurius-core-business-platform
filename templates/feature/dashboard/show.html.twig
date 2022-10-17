@@ -64,15 +64,22 @@
 
                                 {% for video in DashboardService.latestVideos(app.user) %}
                                     {# @var video \App\Entity\Feature\Recordings\Video  #}
-                                    <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                                        <div class="w-0 flex-1 flex items-center">
-                                            <!-- Heroicon name: outline/film -->
+                                    <li class="pl-3 pr-4 py-3 flex flex-row items-center justify-between text-sm">
+                                        <div class="w-0 flex-1 flex flex-row items-start gap-2">
+                                            {# Heroicon: film outline #}
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
                                             </svg>
-                                            <span class="ml-2 flex-1 w-0 truncate">
-                                            {{ 'dateformat.datetime_normal'|trans({ 'date': video.createdAt|format_datetime('long', 'short', locale=app.request.locale, timezone=client_timezone) }) }}
-                                        </span>
+
+                                            <div class="flex flex-col flex-1 w-0 truncate">
+                                                <div class="font-bold">
+                                                    {{ video.title }}
+                                                </div>
+                                                <div class="text-gray-600">
+                                                    {% import 'macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                                                    {{ dateAndTimeMacros.full(video.createdAt) }}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="ml-4 flex-shrink-0">
                                             <a href="{{ path('feature.recordings.videos.overview') }}" class="font-medium text-indigo-600 hover:text-indigo-500">

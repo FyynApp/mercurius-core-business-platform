@@ -3,12 +3,16 @@
 namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
+use App\Enum\FlashMessageLabel;
+use App\Security\VotingAttribute;
+use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class VideosController extends AbstractController
@@ -68,8 +72,27 @@ class VideosController extends AbstractController
 
     public function deleteVideoAction(
         string $videoId,
+        EntityManagerInterface $entityManager,
+        VideoService $videoService,
+        TranslatorInterface $translator
     ): Response
     {
-        return new Response('tbd: Video löschen implementieren.', Response::HTTP_NOT_IMPLEMENTED);
+        /** @var null|Video $video */
+        $video = $entityManager->find(Video::class, $videoId);
+
+        if (is_null($video)) {
+            throw new NotFoundHttpException("No video with id '$videoId'.");
+        }
+
+        $this->denyAccessUnlessGranted(VotingAttribute::Delete->value, $video);
+
+        $videoService->deleteVideo($video);
+
+        $this->addFlash(
+            FlashMessageLabel::Success->value,
+            $translator->trans('feature.recordings.video_successfully_deleted')
+        );
+
+        return $this->redirectToRoute('feature.recordings.videos.overview');
     }
 }

@@ -7,6 +7,8 @@
         "@tailwindcss/forms": "^0.5.2",
         "autoprefixer": "^10.4.7",
         "core-js": "^3.23.0",
+        "js-cookie": "^3.0.1",
+        "jstimezonedetect": "^1.0.7",
         "postcss-loader": "^7.0.1",
         "regenerator-runtime": "^0.13.9",
         "sass": "^1.53.0",

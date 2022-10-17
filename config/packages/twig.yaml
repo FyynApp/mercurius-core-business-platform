@@ -2,6 +2,7 @@ twig:
     default_path: '%kernel.project_dir%/templates'
 
     globals:
+        CookiesService: '@App\Service\Aspect\Cookies\CookiesService'
         ContentDeliveryService: '@App\Service\Aspect\ContentDelivery\ContentDeliveryService'
         VideoService: '@App\Service\Feature\Recordings\VideoService'
         ShortIdService: '@App\Service\Aspect\ShortId\ShortIdService'
