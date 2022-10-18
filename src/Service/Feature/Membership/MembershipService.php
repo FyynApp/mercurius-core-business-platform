@@ -29,6 +29,28 @@ class MembershipService
         return $this->getMembershipPlanByName(MembershipPlanName::Basic);
     }
 
+    public function userIsSubscribed(User $user): bool
+    {
+        foreach ($user->getSubscriptions() as $subscription) {
+            if ($subscription->getStatus() === SubscriptionStatus::Active) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return MembershipPlan[]
+     */
+    public function getAvailablePlansForUser(User $user): array
+    {
+        $plans = [];
+        foreach (MembershipPlanName::cases() as $name) {
+            $plans[] = $this->getMembershipPlanByName($name);
+        }
+        return $plans;
+    }
+
     public function getMembershipPlanByName(MembershipPlanName $name): MembershipPlan
     {
         return match ($name) {

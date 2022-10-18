@@ -48,6 +48,24 @@ feature:
         get_started: 'Jetzt anmelden'
         live_demo: 'Live Demo'
 
+  membership:
+    overview:
+      title: 'Ihre Mitgliedschaft'
+      subtitle: 'Hier verwalten Sie Ihr Abonnement'
+      current_plan: 'Ihre aktuelles Paket:'
+      available_plans: 'Folgende Pakete stehen Ihnen zur Verfügung:'
+      currently_no_subscription: 'Sie haben aktuell kein Abonnement abgeschlossen'
+      plan:
+        basic:
+          title: 'Basis-Paket'
+          description: 'Mit diesem Paket können Sie maximal 3 Videos mit einer Länge von bis zu einer Minute aufzeichnen.'
+        plus:
+          title: 'Plus-Paket'
+          description: 'Mit diesem Paket können Sie maximal 20 Videos mit einer Länge von bis zu 10 Minuten aufzeichnen.'
+        pro:
+          title: 'Plus-Paket'
+          description: 'Mit diesem Paket können Sie maximal 500 Videos mit einer Länge von bis zu 20 Minuten aufzeichnen.'
+
   dashboard:
     show:
       your_info: 'Ihre Daten'
