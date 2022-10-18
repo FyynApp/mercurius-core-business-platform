@@ -2,6 +2,7 @@
 
 namespace App\Entity\Feature\Account;
 
+use App\Entity\Feature\Membership\Subscription;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
@@ -141,6 +142,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getThirdPartyAuthLinkedinResourceOwner(): ?ThirdPartyAuthLinkedinResourceOwner
     {
         return $this->thirdPartyAuthLinkedinResourceOwner;
+    }
+
+
+    /** @var Subscription[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class, cascade: ['persist'])]
+    private array|Collection $subscriptions;
+
+    /**
+     * @return Subscription[]|Collection
+     */
+    public function getSubscriptions(): array|Collection
+    {
+        return $this->subscriptions;
     }
 
 
