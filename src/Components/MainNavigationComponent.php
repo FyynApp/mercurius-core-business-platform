@@ -56,6 +56,12 @@ class MainNavigationComponent
                 ),
 
                 new NavigationEntry(
+                    'mainnav.membership',
+                    'feature.membership.overview',
+                    []
+                ),
+
+                new NavigationEntry(
                     'mainnav.recordings',
                     'feature.recordings.videos.overview',
                     ['feature.recordings.recording_studio']

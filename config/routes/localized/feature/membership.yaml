@@ -1,0 +1,4 @@
+feature.membership.overview:
+  path: /my/membership
+  controller: App\Controller\Feature\Membership\MembershipController::overviewAction
+  methods: [ GET ]
