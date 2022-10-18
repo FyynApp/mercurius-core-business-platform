@@ -61,11 +61,13 @@ class MainNavigationComponent
                     ['feature.recordings.recording_studio']
                 ),
 
+                /*
                 new NavigationEntry(
                     'mainnav.presentationpages',
                     'feature.presentationpages.overview',
                     ['feature.presentationpages.editor']
                 ),
+                */
             ];
         }
 

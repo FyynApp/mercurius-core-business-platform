@@ -162,7 +162,8 @@
 
                 {% if PresentationpagesService.presentationpagesForUser(
                     app.user,
-                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')
+                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
+                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::Default')
                 )|length > 0 %}
                     <div class="
                             border-1
@@ -177,7 +178,7 @@
                             in PresentationpagesService.presentationpagesForUser(
                                 app.user,
                                 constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
-                                constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::VideoOnly')
+                                constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::Default')
                             )
                         %}
                             {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
@@ -192,6 +193,87 @@
                                 ">
                                 <h3 class="font-bold">
                                     {{ presentationpage.title }}
+                                </h3>
+
+                                <div class="col-span-2">
+                                    <div>
+                                        {{ dateAndTimeMacros.full(presentationpage.createdOrUpdatedAt) }}
+                                    </div>
+
+                                    <div>
+                                        {{ 'feature.presentationpages.overview.number_of_elements'|trans(
+                                            {num: presentationpage.presentationpageElements.count }
+                                        ) }}
+                                    </div>
+                                </div>
+
+                                <div class="
+                                    text-right
+                                    items-end
+                                    flex
+                                    flex-col
+                                    ">
+                                    <form
+                                            class="inline-block"
+                                            action="{{ path('feature.presentationpages.draft.create', { presentationpageId: presentationpage.id }) }}"
+                                            method="post"
+                                    >
+                                        <button
+                                                class="cta-link-primary-small"
+                                        >
+                                            {{ 'feature.presentationpages.overview.cta.edit_template'|trans }}
+                                        </button>
+                                    </form>
+
+                                    <a
+                                            class="cta-link-primary-small"
+                                            target="_blank"
+                                            href="{{ path('feature.presentationpages.preview', { presentationpageId: presentationpage.id }) }}">
+                                        {{ 'feature.presentationpages.overview.cta.preview_template'|trans }}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if PresentationpagesService.presentationpagesForUser(
+                    app.user,
+                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
+                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::VideoOnly')
+                )|length > 0 %}
+                    <div class="
+                            mt-4
+                            border-1
+                            border-gray-300
+                            rounded-md
+                            divide-y
+                            divide-gray-300
+                            bg-white
+                    ">
+
+                        {% for presentationpage
+                            in PresentationpagesService.presentationpagesForUser(
+                            app.user,
+                            constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
+                            constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::VideoOnly')
+                        )
+                        %}
+                            {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+
+                            <div class="
+                                        grid
+                                        grid-cols-4
+                                        p-4
+                                        justify-between
+                                        items-start
+                                        gap-8
+                                ">
+                                <h3 class="font-bold">
+                                    {{ presentationpage.title }}
+                                    <div class="mt-2 font-light text-xs text-gray-400 border-1 border-gray-200 p-0.5 w-fit">
+                                        {{ presentationpage.category.value }}
+                                    </div>
                                 </h3>
 
                                 <div class="col-span-2">
