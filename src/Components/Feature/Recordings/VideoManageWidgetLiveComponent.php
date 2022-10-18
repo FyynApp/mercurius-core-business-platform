@@ -35,17 +35,13 @@ class VideoManageWidgetLiveComponent extends AbstractController
     #[LiveProp(fieldName: 'data')]
     public ?Video $video = null;
 
-    #[LiveProp]
-    public bool $editModalIsOpen = false;
+    private bool $editModalIsOpen = false;
 
-    #[LiveProp]
-    public bool $shareModalIsOpen = false;
+    private bool $shareModalIsOpen = false;
 
-    #[LiveProp]
-    public bool $deleteModalIsOpen = false;
+    private bool $deleteModalIsOpen = false;
 
-    #[LiveProp]
-    public string $shareUrl = '';
+    private string $shareUrl = '';
 
     private LoggerInterface $logger;
 
@@ -66,7 +62,6 @@ class VideoManageWidgetLiveComponent extends AbstractController
         PresentationpagesService $presentationpagesService,
         RouterInterface          $router,
         ShortIdService           $shortIdService
-
     )
     {
         $this->logger = $logger;
@@ -110,6 +105,12 @@ class VideoManageWidgetLiveComponent extends AbstractController
 
     
     #[LiveAction]
+    public function getEditModalIsOpen(): bool
+    {
+        return $this->editModalIsOpen;
+    }
+
+    #[LiveAction]
     public function showEditModal(): void
     {
         $this->editModalIsOpen = true;
@@ -121,7 +122,13 @@ class VideoManageWidgetLiveComponent extends AbstractController
         $this->editModalIsOpen = false;
     }
 
-    
+
+    #[LiveAction]
+    public function getShareModalIsOpen(): bool
+    {
+        return $this->shareModalIsOpen;
+    }
+
     #[LiveAction]
     public function showShareModal(): void
     {
@@ -134,7 +141,13 @@ class VideoManageWidgetLiveComponent extends AbstractController
         $this->shareModalIsOpen = false;
     }
 
-    
+
+    #[LiveAction]
+    public function getDeleteModalIsOpen(): bool
+    {
+        return $this->deleteModalIsOpen;
+    }
+
     #[LiveAction]
     public function showDeleteModal(): void
     {
