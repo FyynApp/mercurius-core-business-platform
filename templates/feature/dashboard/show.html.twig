@@ -47,9 +47,9 @@
                         {{ 'feature.dashboard.show.your_subscription'|trans }}
                     {% endblock %}
                     {% block contentRight %}
-                        {{ ('feature.dashboard.show.subscription.' ~ DashboardService.subscriptionPlan(app.user) ~ '.title')|trans }}
+                        {{ ('feature.membership.overview.plan.' ~ MembershipService.membershipPlanForUser(app.user).name.value ~ '.title')|trans }}
                         <div class="mt-1 text-sm text-gray-500 sm:mt-0 sm:col-span-2">
-                            {{ ('feature.dashboard.show.subscription.' ~ DashboardService.subscriptionPlan(app.user) ~ '.description')|trans }}
+                            {{ ('feature.membership.overview.plan.' ~ MembershipService.membershipPlanForUser(app.user).name.value ~ '.description')|trans }}
                         </div>
                     {% endblock %}
                 {% endembed %}

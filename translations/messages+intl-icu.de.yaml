@@ -55,6 +55,8 @@ feature:
       current_plan: 'Ihre aktuelles Paket:'
       available_plans: 'Folgende Pakete stehen Ihnen zur Verfügung:'
       currently_no_subscription: 'Sie haben aktuell kein Abonnement abgeschlossen'
+      cta_book: 'Paket buchen'
+      this_is_current_plan: 'Dies ist Ihr aktuelles Paket'
       plan:
         basic:
           title: 'Basis-Paket'
@@ -65,6 +67,9 @@ feature:
         pro:
           title: 'Plus-Paket'
           description: 'Mit diesem Paket können Sie maximal 500 Videos mit einer Länge von bis zu 20 Minuten aufzeichnen.'
+    subscription_checkout:
+      success_flash_message: 'Das Paket wurde erfolgreich gebucht.'
+      cancel_flash_message: 'Vorgang abgebrochen. Eine Zahlung hat nicht stattgefunden, und es wurde kein Abo gebucht.'
 
   dashboard:
     show:
@@ -73,10 +78,6 @@ feature:
       your_name: 'Name'
       your_email_address: 'E-Mail Adresse'
       your_subscription: 'Ihr aktuelles Paket'
-      subscription:
-        m:
-          title: 'Paket M'
-          description: '4,99 EUR/Monat — bis zu 10 Aufnahmen pro Monat'
       your_latest_videos: 'Neueste Videos'
       your_presentationpages: 'Landingpages'
       your_presentationpages.info: >-

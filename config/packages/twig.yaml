@@ -4,6 +4,7 @@ twig:
     globals:
         CookiesService: '@App\Service\Aspect\Cookies\CookiesService'
         ContentDeliveryService: '@App\Service\Aspect\ContentDelivery\ContentDeliveryService'
+        MembershipService: '@App\Service\Feature\Membership\MembershipService'
         VideoService: '@App\Service\Feature\Recordings\VideoService'
         ShortIdService: '@App\Service\Aspect\ShortId\ShortIdService'
 

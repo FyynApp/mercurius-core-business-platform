@@ -2,3 +2,13 @@ feature.membership.overview:
   path: /my/membership
   controller: App\Controller\Feature\Membership\MembershipController::overviewAction
   methods: [ GET ]
+
+feature.membership.subscription.checkout.success:
+  path: /my/membership/subscription/checkout/success
+  controller: App\Controller\Feature\Membership\MembershipController::subscriptionCheckoutSuccessAction
+  methods: [ GET ]
+
+feature.membership.subscription.checkout.cancel:
+  path: /my/membership/subscription/checkout/cancel
+  controller: App\Controller\Feature\Membership\MembershipController::subscriptionCheckoutCancelAction
+  methods: [ GET ]

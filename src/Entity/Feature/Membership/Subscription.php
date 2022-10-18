@@ -19,8 +19,9 @@ class Subscription
         SubscriptionStatus $status
     )
     {
-        $this->user = $user;
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
+        $this->user = $user;
+        $this->membershipPlanName = $membershipPlan->getName();
         $this->status = $status;
     }
 
