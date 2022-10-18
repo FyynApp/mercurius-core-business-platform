@@ -51,7 +51,8 @@
 
                     {{ component('feature_recordings_video_manage_widget', {
                         video: video,
-                        showEditModal: showEditModalForVideoId is same as video.id
+                        showEditModal: showEditModalForVideoId is same as video.id,
+                        doneCtaMustRedirectToOverview: showEditModalForVideoId is same as video.id,
                     }) }}
                 {% endfor %}
 

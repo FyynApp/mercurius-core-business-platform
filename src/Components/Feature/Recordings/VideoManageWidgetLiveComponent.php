@@ -47,6 +47,10 @@ class VideoManageWidgetLiveComponent extends AbstractController
     #[LiveProp]
     public string $shareUrl = '';
 
+    #[LiveProp]
+    public bool $doneCtaMustRedirectToOverview = false;
+
+
     private LoggerInterface $logger;
 
     private EntityManagerInterface $entityManager;
@@ -58,6 +62,7 @@ class VideoManageWidgetLiveComponent extends AbstractController
     private RouterInterface $router;
 
     private ShortIdService $shortIdService;
+
 
     public function __construct(
         LoggerInterface          $logger,
@@ -81,7 +86,8 @@ class VideoManageWidgetLiveComponent extends AbstractController
      */
     public function mount(
         Video $video,
-        bool $showEditModal
+        bool $showEditModal,
+        bool $doneCtaMustRedirectToOverview = false
     )
     {
         $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $video);
@@ -96,6 +102,8 @@ class VideoManageWidgetLiveComponent extends AbstractController
         if ($showEditModal) {
             $this->showEditModal();
         }
+
+        $this->doneCtaMustRedirectToOverview = $doneCtaMustRedirectToOverview;
 
         $this->switchShareUrlDirectLink();
     }
