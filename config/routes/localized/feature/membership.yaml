@@ -3,6 +3,11 @@ feature.membership.overview:
   controller: App\Controller\Feature\Membership\MembershipController::overviewAction
   methods: [ GET ]
 
+feature.membership.subscription.checkout.start:
+  path: /my/membership/subscription/checkout/{planName}/start
+  controller: App\Controller\Feature\Membership\MembershipController::subscriptionCheckoutStartAction
+  methods: [ GET ]
+
 feature.membership.subscription.checkout.success:
   path: /my/membership/subscription/checkout/success
   controller: App\Controller\Feature\Membership\MembershipController::subscriptionCheckoutSuccessAction

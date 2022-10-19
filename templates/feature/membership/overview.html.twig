@@ -54,14 +54,7 @@
 
                         {% if plan.name is not same as currentPlan.name and plan.bookable %}
                             <a
-                                    href="{{
-                                        MembershipService.subscriptionCheckoutUrl(
-                                            app.user,
-                                            plan,
-                                            url('feature.membership.subscription.checkout.success'),
-                                            url('feature.membership.subscription.checkout.cancel')
-                                        )
-                                    }}"
+                                    href="{{ path('feature.membership.subscription.checkout.start', { 'planName': plan.name.value }) }}"
                                     class="
                                         mt-4 p-4 bg-lime-700 text-lime-100 font-bold text-center rounded-md shadow-md
                                         hover:bg-lime-600 hover:text-lime-50
