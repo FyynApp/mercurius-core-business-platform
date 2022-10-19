@@ -65,7 +65,7 @@ feature:
           title: 'Plus-Paket'
           description: 'Mit diesem Paket können Sie maximal 20 Videos mit einer Länge von bis zu 10 Minuten aufzeichnen.'
         pro:
-          title: 'Plus-Paket'
+          title: 'Pro-Paket'
           description: 'Mit diesem Paket können Sie maximal 500 Videos mit einer Länge von bis zu 20 Minuten aufzeichnen.'
     subscription_checkout:
       success_flash_message: 'Das Paket wurde erfolgreich gebucht.'

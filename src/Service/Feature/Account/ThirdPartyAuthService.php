@@ -3,6 +3,7 @@
 namespace App\Service\Feature\Account;
 
 use App\Entity\Feature\Account\HandleReceivedLinkedInResourceOwnerResult;
+use App\Entity\Feature\Account\Role;
 use App\Entity\Feature\Account\ThirdPartyAuthLinkedinResourceOwner;
 use App\Entity\Feature\Account\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -82,6 +83,7 @@ class ThirdPartyAuthService
                 );
             }
             $user->setIsVerified(true);
+            $user->addRole(Role::REGISTERED_USER);
             $resourceOwner->setUser($user);
 
             $this->entityManager->persist($resourceOwner);

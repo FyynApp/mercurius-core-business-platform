@@ -44,7 +44,7 @@ class MembershipController extends AbstractController
         );
 
         $this->addFlash(
-            FlashMessageLabel::Success->value, $translator->trans('feature.membership.subscription_checkout.cancel_flash_message')
+            FlashMessageLabel::Success->value, $translator->trans('feature.membership.subscription_checkout.success_flash_message')
         );
         return $this->redirectToRoute('feature.membership.overview');
     }
