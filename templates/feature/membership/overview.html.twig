@@ -52,7 +52,7 @@
                             </div>
                         {% endif %}
 
-                        {% if plan.name is not same as currentPlan.name and plan.bookable %}
+                        {% if MembershipService.planBookableForUser(plan, app.user) %}
                             <a
                                     href="{{ path('feature.membership.subscription.checkout.start', { 'planName': plan.name.value }) }}"
                                     class="

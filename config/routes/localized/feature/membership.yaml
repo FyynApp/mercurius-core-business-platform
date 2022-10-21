@@ -8,12 +8,18 @@ feature.membership.subscription.checkout.start:
   controller: App\Controller\Feature\Membership\MembershipController::subscriptionCheckoutStartAction
   methods: [ GET ]
 
-feature.membership.subscription.checkout.success:
-  path: /my/membership/subscription/checkout/success
-  controller: App\Controller\Feature\Membership\MembershipController::subscriptionCheckoutSuccessAction
+
+feature.membership.subscription.checkout_with_payment_processor_stripe.start:
+  path: /my/membership/subscription/checkout-with-stripe/{planName}/start
+  controller: App\Controller\Feature\Membership\PaymentProcessorStripeCheckoutController::subscriptionCheckoutStartAction
   methods: [ GET ]
 
-feature.membership.subscription.checkout.cancel:
+feature.membership.subscription.checkout_with_payment_processor_stripe.success:
+  path: /my/membership/subscription/checkout/success
+  controller: App\Controller\Feature\Membership\PaymentProcessorStripeCheckoutController::subscriptionCheckoutSuccessAction
+  methods: [ GET ]
+
+feature.membership.subscription.checkout_with_payment_processor_stripe.cancel:
   path: /my/membership/subscription/checkout/cancel
-  controller: App\Controller\Feature\Membership\MembershipController::subscriptionCheckoutCancelAction
+  controller: App\Controller\Feature\Membership\PaymentProcessorStripeCheckoutController::subscriptionCheckoutCancelAction
   methods: [ GET ]
