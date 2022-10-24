@@ -1,0 +1,4 @@
+api.feature.account.get_extension_session_info:
+  path: /feature/account/extension-session-info
+  controller: App\Controller\Feature\Account\ApiController::getExtensionSessionInfoAction
+  methods: [ GET ]
