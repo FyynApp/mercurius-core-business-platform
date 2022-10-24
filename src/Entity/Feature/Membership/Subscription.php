@@ -3,6 +3,7 @@
 namespace App\Entity\Feature\Membership;
 
 use App\Entity\Feature\Account\User;
+use App\Entity\UserOwnedEntityInterface;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use DateTime;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'subscriptions')]
-class Subscription
+class Subscription implements UserOwnedEntityInterface
 {
     public function __construct(
         User $user,

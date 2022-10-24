@@ -22,17 +22,13 @@ class PaymentProcessorStripeService
 
     private RouterInterface $router;
 
-    private MembershipService $membershipService;
-
     public function __construct(
         EntityManagerInterface $entityManager,
-        RouterInterface        $router,
-        MembershipService      $membershipService
+        RouterInterface        $router
     )
     {
         $this->entityManager = $entityManager;
         $this->router = $router;
-        $this->membershipService = $membershipService;
     }
 
     public function getSubscriptionCheckoutUrl(
@@ -40,6 +36,15 @@ class PaymentProcessorStripeService
         MembershipPlan $membershipPlan
     ): string
     {
+        $subscription = new Subscription(
+            $user,
+            $membershipPlan,
+            SubscriptionStatus::Pending
+        );
+
+        $this->entityManager->persist($subscription);
+        $this->entityManager->flush();
+
         Stripe::setApiKey('sk_test_T7k8gX5WJjJNGYYRSsmck4wR');
 
         $checkoutSession = Session::create(
@@ -48,6 +53,7 @@ class PaymentProcessorStripeService
                     'user_id' => $user->getId(),
                     'membership_plan_name' => $membershipPlan->getName()->value
                 ],
+
                 'line_items' => [[
                     'price' => match ($membershipPlan->getName()) {
                         MembershipPlanName::Plus => 'price_1LuAWFKfVD7HZWQX0Crxe0WY',
@@ -56,21 +62,24 @@ class PaymentProcessorStripeService
                     },
                     'quantity' => 1,
                 ]],
+
                 'mode' => 'subscription',
+
                 'success_url' => $this->router->generate(
-                        'feature.membership.subscription.checkout.success',
-                        [],
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    )
-                    . '?planName='
-                    . urlencode($membershipPlan->getName()->value)
-                    . '&successHash='
-                    . urlencode($this->getSubscriptionSuccessHash($user, $membershipPlan)),
-                'cancel_url' => $this->router->generate(
-                    'feature.membership.subscription.checkout.cancel',
-                    [],
+                    'feature.membership.subscription.checkout_with_payment_processor_stripe.success',
+                    [
+                        'subscriptionId' => $subscription->getId(),
+                        'subscriptionHash' => $this->getSubscriptionHash($subscription)
+                    ],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
+
+                'cancel_url' => $this->router->generate(
+                    'feature.membership.subscription.checkout_with_payment_processor_stripe.cancel',
+                    ['subscriptionId' => $subscription->getId()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+
                 'automatic_tax' => [
                     'enabled' => true,
                 ]
@@ -83,28 +92,24 @@ class PaymentProcessorStripeService
     /**
      * @throws Exception
      */
-    public function handleSubscriptionCheckoutSuccess(User $user, string $planName, string $successHash): Subscription
+    public function handleSubscriptionCheckoutSuccess(
+        Subscription $subscription,
+        string $subscriptionHash
+    ): bool
     {
-        if (is_null(MembershipPlanName::tryFrom($planName))) {
-            throw new Exception("Unknown plan name '$planName'.");
+        if ($subscriptionHash !== $this->getSubscriptionHash($subscription)) {
+            return false;
         }
 
-        $membershipPlan = $this->membershipService->getMembershipPlanByName(MembershipPlanName::from($planName));
-
-        if ($successHash !== $this->getSubscriptionSuccessHash($user, $membershipPlan)) {
-            throw new Exception("Invalid hash.");
-        }
-
-        $subscription = new Subscription($user, $membershipPlan, SubscriptionStatus::Active);
+        $subscription->setStatus(SubscriptionStatus::Active);
         $this->entityManager->persist($subscription);
         $this->entityManager->flush();
 
-        return $subscription;
+        return true;
     }
 
-    public function getSubscriptionSuccessHash(User $user, MembershipPlan $membershipPlan): string
+    public function getSubscriptionHash(Subscription $subscription): string
     {
-        // @TODO: Make this safe against repeated bookings by creating a pending subscription on start and adding its id here
-        return sha1("hfu537/%69348=894;9 {$user->getId()} {$membershipPlan->getName()->value}");
+        return sha1("hfu537/%69348=894;9 {$subscription->getId()}");
     }
 }

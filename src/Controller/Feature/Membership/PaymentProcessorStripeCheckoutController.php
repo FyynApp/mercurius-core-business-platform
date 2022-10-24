@@ -5,15 +5,18 @@ namespace App\Controller\Feature\Membership;
 use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Membership\MembershipPlanName;
 use App\Entity\Feature\Membership\PaymentProcessor;
+use App\Entity\Feature\Membership\Subscription;
 use App\Enum\FlashMessageLabel;
+use App\Security\VotingAttribute;
 use App\Service\Feature\Membership\MembershipService;
 use App\Service\Feature\Membership\PaymentProcessorStripeService;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
@@ -22,8 +25,7 @@ class PaymentProcessorStripeCheckoutController extends AbstractController
     public function subscriptionCheckoutStartAction(
         string $planName,
         MembershipService $membershipService,
-        PaymentProcessorStripeService $stripeService,
-        RouterInterface $router
+        PaymentProcessorStripeService $stripeService
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
@@ -41,26 +43,38 @@ class PaymentProcessorStripeCheckoutController extends AbstractController
         ));
     }
 
+    /**
+     * @throws Exception
+     */
     public function subscriptionCheckoutSuccessAction(
+        string $subscriptionId,
         Request $request,
-        MembershipService $membershipService,
         PaymentProcessorStripeService $stripeService,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        EntityManagerInterface $entityManager
     ): Response
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $subscription = $entityManager->find(Subscription::class, $subscriptionId);
 
-        $stripeService->handleSubscriptionCheckoutSuccess(
-            $user,
-            $request->get('planName'),
-            $request->get('successHash')
+        if (is_null($subscription)) {
+            throw new NotFoundHttpException("No subscription with id '$subscriptionId'.");
+        }
+
+        $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $subscription);
+
+        $success = $stripeService->handleSubscriptionCheckoutSuccess(
+            $subscription,
+            $request->get('subscriptionHash')
         );
 
-        $this->addFlash(
-            FlashMessageLabel::Success->value, $translator->trans('feature.membership.subscription_checkout.success_flash_message')
-        );
-        return $this->redirectToRoute('feature.membership.overview');
+        if ($success) {
+            $this->addFlash(
+                FlashMessageLabel::Success->value, $translator->trans('feature.membership.subscription_checkout.success_flash_message')
+            );
+            return $this->redirectToRoute('feature.membership.overview');
+        } else {
+            throw new BadRequestHttpException('Successful checkout return did not result in an active subscription.');
+        }
     }
 
     public function subscriptionCheckoutCancelAction(

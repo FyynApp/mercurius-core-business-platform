@@ -15,11 +15,11 @@ feature.membership.subscription.checkout_with_payment_processor_stripe.start:
   methods: [ GET ]
 
 feature.membership.subscription.checkout_with_payment_processor_stripe.success:
-  path: /my/membership/subscription/checkout/success
+  path: /my/membership/subscription/{subscriptionId}/checkout/success
   controller: App\Controller\Feature\Membership\PaymentProcessorStripeCheckoutController::subscriptionCheckoutSuccessAction
   methods: [ GET ]
 
 feature.membership.subscription.checkout_with_payment_processor_stripe.cancel:
-  path: /my/membership/subscription/checkout/cancel
+  path: /my/membership/subscription/{subscriptionId}/checkout/cancel
   controller: App\Controller\Feature\Membership\PaymentProcessorStripeCheckoutController::subscriptionCheckoutCancelAction
   methods: [ GET ]

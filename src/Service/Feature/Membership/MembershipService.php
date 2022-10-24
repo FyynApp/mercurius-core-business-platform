@@ -32,6 +32,10 @@ class MembershipService
         User $user
     ): bool
     {
+        if (!$membershipPlan->mustBeBought()) {
+            return false;
+        }
+
         if (!in_array($membershipPlan, $this->getAvailablePlansForUser($user))) {
             return false;
         }
@@ -71,18 +75,20 @@ class MembershipService
             MembershipPlanName::Basic =>
                 new MembershipPlan(
                     $name,
-                    0.0
+                    false
                 ),
 
             MembershipPlanName::Plus =>
                 new MembershipPlan(
                     $name,
+                    true,
                     9.99
                 ),
 
             MembershipPlanName::Pro =>
                 new MembershipPlan(
                     $name,
+                    true,
                     19.99
                 ),
         };
