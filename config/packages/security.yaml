@@ -33,7 +33,7 @@ security:
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 31536000
-                samesite: strict
+                samesite: 'none'
                 secure: true
                 always_remember_me: true
                 token_provider:

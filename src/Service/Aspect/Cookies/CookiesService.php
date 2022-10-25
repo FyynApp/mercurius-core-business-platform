@@ -21,7 +21,7 @@ class CookiesService
         bool         $secure = true,
         bool         $httpOnly = true,
         bool         $raw = false,
-        string       $sameSite = Cookie::SAMESITE_STRICT
+        string       $sameSite = Cookie::SAMESITE_NONE
     ): Cookie
     {
         return new Cookie(
