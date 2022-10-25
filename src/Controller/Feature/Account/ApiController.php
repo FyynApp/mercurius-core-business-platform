@@ -11,6 +11,6 @@ class ApiController extends AbstractController
 {
     public function getExtensionSessionInfoAction(Request $request): Response
     {
-        return new Response();
+        return new Response("User: {$this->getUser()?->getUserIdentifier()}");
     }
 }
