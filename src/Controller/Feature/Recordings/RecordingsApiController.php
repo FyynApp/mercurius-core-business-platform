@@ -340,7 +340,6 @@ class RecordingsApiController extends AbstractController
         RouterInterface         $router,
         RecordingSessionService $recordingSessionService,
         EntityManagerInterface  $entityManager,
-        LoggerInterface         $logger,
         VideoService            $videoService
     ): Response
     {
@@ -403,17 +402,12 @@ class RecordingsApiController extends AbstractController
                 throw new BadRequestHttpException("Missing request file part 'video-blob'.");
             }
 
-            $logger->info('Dies ist ein Test');
-            $logger->warning('Dies ist ein Test');
-            $logger->info("Uploaded file path is '{$uploadedFile->getPathname()}'.");
-
             $recordingSessionService->handleRecordingSessionVideoChunk(
                 $recordingSession,
                 $user,
                 $chunkName,
                 $uploadedFile->getPathname(),
-                $uploadedFile->getMimeType(),
-                $videoService
+                $uploadedFile->getMimeType()
             );
 
             return $this->json(

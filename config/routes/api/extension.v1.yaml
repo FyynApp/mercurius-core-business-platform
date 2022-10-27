@@ -1,0 +1,14 @@
+api.extension.v1.get_session_info:
+  path: /extension/v1/session-info
+  controller: App\Controller\Api\Extension\V1\ExtensionApiV1Controller::getSessionInfoAction
+  methods: [ GET ]
+
+api.extension.v1.create_recording_session:
+  path: /extension/v1/recording-sessions/
+  controller: App\Controller\Api\Extension\V1\ExtensionApiV1Controller::createRecordingSessionAction
+  methods: [ POST ]
+
+api.extension.v1.recording_session.handle_video_chunk:
+  path: /extension/v1/recording-sessions/{recordingSessionId}/video-chunks/
+  controller: App\Controller\Api\Extension\V1\ExtensionApiV1Controller::handleRecordingSessionVideoChunkAction
+  methods: [ POST ]

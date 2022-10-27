@@ -3,6 +3,7 @@
 namespace App\Service\Aspect\ContentDelivery;
 
 use App\Entity\Feature\Account\User;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 
@@ -34,7 +35,8 @@ class ContentDeliveryService
                 'externalAssetUrl' => $externalAssetUrl,
                 'contentType' => $contentType,
                 'checksum' => $this->getChecksumForServingExternalAsset($externalAssetUrl, $contentType)
-            ]
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
     }
 
@@ -47,10 +49,13 @@ class ContentDeliveryService
                 return null;
             }
 
-            if (mb_substr($url, 0, 7) === 'http://'
+            if (   mb_substr($url, 0, 7) === 'http://'
                 || mb_substr($url, 0, 8) === 'https://'
             ) {
-                return $this->getServeUrlForExternalAsset($url, $user->getProfilePhotoContentType());
+                return $this->getServeUrlForExternalAsset(
+                    $url,
+                    $user->getProfilePhotoContentType()
+                );
             }
         }
 

@@ -46,6 +46,9 @@ class RecordingSessionService
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function handleRecordingSessionFinished(
         RecordingSession $recordingSession,
         VideoService     $videoService
@@ -64,8 +67,7 @@ class RecordingSessionService
         User             $user,
         string           $chunkName,
         string           $videoChunkFilePath,
-        string           $mimeType,
-        VideoService     $videoService
+        string           $mimeType
     ): RecordingSessionVideoChunk
     {
 
