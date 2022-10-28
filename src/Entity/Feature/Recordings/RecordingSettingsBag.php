@@ -25,6 +25,11 @@ class RecordingSettingsBag implements UserOwnedEntityInterface
         return $this->clientId;
     }
 
+    public function getId(): ?string
+    {
+        return $this->getClientId();
+    }
+
     public function setClientId(string $clientId): void
     {
         $this->clientId = $clientId;

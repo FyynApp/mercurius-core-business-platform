@@ -7,5 +7,7 @@ use App\Entity\Feature\Account\User;
 
 interface UserOwnedEntityInterface
 {
+    public function getId(): ?string;
+
     public function getUser(): User;
 }
