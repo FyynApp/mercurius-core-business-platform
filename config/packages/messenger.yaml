@@ -4,6 +4,7 @@ framework:
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
+            sync: 'sync://'
             async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
@@ -13,7 +14,12 @@ framework:
                     max_retries: 3
                     multiplier: 2
             failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
 
         routing:
+            App\Message\SyncMessageInterface: sync
             App\Message\AsyncMessageInterface: async
+
+        buses:
+            messenger.bus.default:
+                middleware:
+                    - 'App\Message\EventLoggerMiddleware'

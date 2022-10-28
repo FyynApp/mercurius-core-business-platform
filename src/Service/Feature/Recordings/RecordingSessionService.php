@@ -6,6 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Entity\Feature\Recordings\Video;
+use App\Message\Feature\Recordings\RecordingSessionCreatedEventMessage;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 
 class RecordingSessionService
@@ -24,15 +26,19 @@ class RecordingSessionService
 
     private LoggerInterface $logger;
 
+    private MessageBusInterface $messageBus;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         FilesystemService      $filesystemService,
-        LoggerInterface        $logger
+        LoggerInterface        $logger,
+        MessageBusInterface    $messageBus
     )
     {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
         $this->logger = $logger;
+        $this->messageBus = $messageBus;
     }
 
 
@@ -41,6 +47,12 @@ class RecordingSessionService
         $recordingSession = new RecordingSession($user);
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush($recordingSession);
+
+        $this->messageBus->dispatch(
+            new RecordingSessionCreatedEventMessage(
+                $recordingSession
+            )
+        );
 
         return $recordingSession;
     }

@@ -3,5 +3,3 @@
 namespace App\Message;
 
 interface AsyncMessageInterface { }
-
-;
