@@ -6,7 +6,7 @@ use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Entity\Feature\Recordings\Video;
-use App\Message\Feature\Recordings\RecordingSessionCreatedEventMessage;
+use App\Message\Feature\Recordings\RecordingSessionCreatedEntityLifecycleEventMessage;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use App\Service\Aspect\Filesystem\FilesystemService;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -42,14 +42,14 @@ class RecordingSessionService
     }
 
 
-    public function createRecordingSession(User $user): RecordingSession
+    public function startRecordingSession(User $user): RecordingSession
     {
         $recordingSession = new RecordingSession($user);
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush($recordingSession);
 
         $this->messageBus->dispatch(
-            new RecordingSessionCreatedEventMessage(
+            new RecordingSessionCreatedEntityLifecycleEventMessage(
                 $recordingSession
             )
         );

@@ -27,11 +27,6 @@ class EventLoggerMiddleware implements MiddlewareInterface
             $message = $envelope->getMessage();
 
             $this->logger->debug("Middleware received message of class " . get_class($message));
-
-            if ($message instanceof UserOwnedEntitySyncEventMessageInterface) {
-                $this->logger->debug("Entity class is " . get_class($message->getEntity()));
-                $this->logger->debug("Entity class is owned by user '{$message->getEntity()->getUser()->getUserIdentifier()}'.");
-            }
         }
 
         return $stack

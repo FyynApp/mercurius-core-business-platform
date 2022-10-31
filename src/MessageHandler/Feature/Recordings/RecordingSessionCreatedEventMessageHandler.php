@@ -2,7 +2,7 @@
 
 namespace App\MessageHandler\Feature\Recordings;
 
-use App\Message\Feature\Recordings\RecordingSessionCreatedEventMessage;
+use App\Message\Feature\Recordings\RecordingSessionCreatedEntityLifecycleEventMessage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -20,7 +20,7 @@ class RecordingSessionCreatedEventMessageHandler
     }
 
     public function __invoke(
-        RecordingSessionCreatedEventMessage $message
+        RecordingSessionCreatedEntityLifecycleEventMessage $message
     ): void
     {
         $this->logger->debug('This is the RecordingSessionCreatedEventMessageHandler.');

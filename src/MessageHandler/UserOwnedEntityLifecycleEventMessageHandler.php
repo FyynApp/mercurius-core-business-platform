@@ -2,13 +2,13 @@
 
 namespace App\MessageHandler;
 
-use App\Message\UserOwnedEntitySyncEventMessageInterface;
+use App\Message\UserOwnedEntityLifecycleEventMessageInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 
 #[AsMessageHandler]
-class UserOwnedEntitySyncEventMessageHandler
+class UserOwnedEntityLifecycleEventMessageHandler
 {
     private LoggerInterface $logger;
 
@@ -20,7 +20,7 @@ class UserOwnedEntitySyncEventMessageHandler
     }
 
     public function __invoke(
-        UserOwnedEntitySyncEventMessageInterface $message
+        UserOwnedEntityLifecycleEventMessageInterface $message
     ): void
     {
         $this->logger->debug(

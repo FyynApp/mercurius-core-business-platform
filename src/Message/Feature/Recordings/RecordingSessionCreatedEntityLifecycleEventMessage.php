@@ -4,10 +4,10 @@ namespace App\Message\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\UserOwnedEntityInterface;
-use App\Message\UserOwnedEntitySyncEventMessageInterface;
+use App\Message\UserOwnedEntityLifecycleEventMessageInterface;
 
 
-class RecordingSessionCreatedEventMessage implements UserOwnedEntitySyncEventMessageInterface
+class RecordingSessionCreatedEntityLifecycleEventMessage implements UserOwnedEntityLifecycleEventMessageInterface
 {
     private RecordingSession $recordingSession;
 

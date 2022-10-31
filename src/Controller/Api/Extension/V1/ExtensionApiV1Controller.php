@@ -72,7 +72,7 @@ class ExtensionApiV1Controller extends AbstractController
             );
         }
 
-        $recordingSession = $recordingSessionService->createRecordingSession($user);
+        $recordingSession = $recordingSessionService->startRecordingSession($user);
 
         $responseContent = [
             'settings' => [

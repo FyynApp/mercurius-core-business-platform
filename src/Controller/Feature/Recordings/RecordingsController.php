@@ -29,7 +29,7 @@ class RecordingsController extends AbstractController
             throw new AccessDeniedHttpException();
         }
 
-        $recordingSession = $recordingSessionService->createRecordingSession($user);
+        $recordingSession = $recordingSessionService->startRecordingSession($user);
 
         return $this->render(
             'feature/recordings/recording_studio.html.twig',
