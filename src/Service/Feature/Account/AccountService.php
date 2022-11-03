@@ -5,6 +5,7 @@ namespace App\Service\Feature\Account;
 use App\Entity\Feature\Account\Role;
 use App\Entity\Feature\Account\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 
 class AccountService
@@ -20,7 +21,9 @@ class AccountService
     }
 
 
-    public function userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(string $email): bool
+    public function userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(
+        string $email
+    ): bool
     {
         /** @var ?User $user */
         $user = $this->entityManager->getRepository(User::class)
@@ -40,6 +43,9 @@ class AccountService
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function createUnregisteredUser(): User
     {
         $user = new User();
@@ -54,7 +60,11 @@ class AccountService
 
         $user->addRole(Role::UNREGISTERED_USER);
 
-        $user->setPassword(password_hash(random_int(PHP_INT_MIN,  PHP_INT_MAX), PASSWORD_DEFAULT));
+        $user->setPassword(
+            password_hash(
+                random_int(PHP_INT_MIN, PHP_INT_MAX),
+                PASSWORD_DEFAULT)
+        );
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

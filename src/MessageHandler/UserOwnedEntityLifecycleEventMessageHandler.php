@@ -26,7 +26,8 @@ class UserOwnedEntityLifecycleEventMessageHandler
         $this->logger->debug(
             "This is the UserOwnedEntitySyncEventMessageHandler
              with entity '{$message->getEntity()->getId()}'
-             owned by '{$message->getEntity()->getUser()->getUserIdentifier()}'."
+             of class '" . get_class($message->getEntity()) . "'
+             owned by user '{$message->getEntity()->getUser()->getUserIdentifier()}'."
         );
 
         // TODO: write application event to DWH
