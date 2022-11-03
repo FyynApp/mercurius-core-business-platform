@@ -1,29 +1,32 @@
-dateformat:
-  datetime_normal: '{date} Uhr'
+application:
 
-mainnav:
-  homepage: 'Über'
-  features: 'Funktionen'
-  pricing: 'Preise'
-  dashboard: 'Übersicht'
-  membership: 'Mitgliedschaft'
-  recordings: 'Aufnahmen'
-  recording_studio: 'Aufnahmestudio'
-  presentationpages: 'Landingpages'
+  dateformat:
+    datetime_normal: '{date} Uhr'
 
-sidenav:
-  signin: 'Einloggen'
-  signup: 'Registrieren'
-  signout: 'Ausloggen'
+  mainnav:
+    homepage: 'Über'
+    features: 'Funktionen'
+    pricing: 'Preise'
+    dashboard: 'Übersicht'
+    membership: 'Mitgliedschaft'
+    recordings: 'Aufnahmen'
+    recording_studio: 'Aufnahmestudio'
+    presentationpages: 'Landingpages'
 
-footernav:
-  german: 'Deutsch'
-  english: 'English'
-  imprint: 'Impressum'
-  terms: 'AGB'
-  contact: 'Kontakt'
+  sidenav:
+    signin: 'Einloggen'
+    signup: 'Registrieren'
+    signout: 'Ausloggen'
 
-feature:
+  footernav:
+    german: 'Deutsch'
+    english: 'English'
+    imprint: 'Impressum'
+    terms: 'AGB'
+    contact: 'Kontakt'
+
+
+bounded_context:
 
   landingpages:
     homepage:

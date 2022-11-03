@@ -3,7 +3,7 @@
 namespace App\Security\Feature\Account;
 
 
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+
 
 class UnregisteredUserAuthenticator
     extends AbstractAuthenticator
@@ -61,7 +62,7 @@ class UnregisteredUserAuthenticator
             throw new CustomUserMessageAuthenticationException('Auth hash does not match');
         }
 
-        /** @var ?User $user */
+        /** @var ?\App\BoundedContext\Account\Domain\Entity\User $user */
         $user = $this->entityManager->find(User::class, $unregisteredUserId);
 
         if (is_null($user)) {

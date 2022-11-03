@@ -2,7 +2,7 @@
 
 namespace App\Controller\Feature\Recordings;
 
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Domain\Entity\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Security\VotingAttribute;
@@ -23,7 +23,7 @@ class RecordingsController
         RecordingSessionService $recordingSessionService
     ): Response
     {
-        /** @var ?User $user */
+        /** @var ?\App\BoundedContext\Account\Domain\Entity\User $user */
         $user = $this->getUser();
 
         if (is_null($user)) {

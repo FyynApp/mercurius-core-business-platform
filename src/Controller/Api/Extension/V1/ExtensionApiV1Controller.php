@@ -2,13 +2,13 @@
 
 namespace App\Controller\Api\Extension\V1;
 
+use App\BoundedContext\Account\Domain\Entity\User;
+use App\BoundedContext\Membership\Domain\Service\MembershipService;
 use App\Controller\AbstractController;
-use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Security\VotingAttribute;
 use App\Service\Aspect\ContentDelivery\ContentDeliveryService;
-use App\Service\Feature\Membership\MembershipService;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;

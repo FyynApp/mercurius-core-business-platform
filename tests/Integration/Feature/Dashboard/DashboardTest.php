@@ -2,9 +2,9 @@
 
 namespace App\Tests\Integration\Feature\Dashboard;
 
-use App\DataFixtures\Feature\Account\UserFixture;
+use App\BoundedContext\Account\Application\DataFixture\UserFixture;
+use App\BoundedContext\Account\Domain\Repository\UserRepository;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
-use App\Repository\Feature\Account\UserRepository;
 use App\Service\Feature\Dashboard\DashboardService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

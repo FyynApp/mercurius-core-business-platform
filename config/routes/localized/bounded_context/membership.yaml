@@ -1,0 +1,25 @@
+bounded_context.membership.overview:
+  path: /my/membership
+  controller: App\BoundedContext\Membership\Application\Controller\MembershipController::overviewAction
+  methods: [ GET ]
+
+bounded_context.membership.subscription.checkout.start:
+  path: /my/membership/subscription/checkout/{planName}/start
+  controller: App\BoundedContext\Membership\Application\Controller\MembershipController::subscriptionCheckoutStartAction
+  methods: [ GET ]
+
+
+bounded_context.membership.subscription.checkout_with_payment_processor_stripe.start:
+  path: /my/membership/subscription/checkout-with-stripe/{planName}/start
+  controller: App\BoundedContext\Membership\Application\Controller\PaymentProcessorStripeCheckoutController::subscriptionCheckoutStartAction
+  methods: [ GET ]
+
+bounded_context.membership.subscription.checkout_with_payment_processor_stripe.success:
+  path: /my/membership/subscription/{subscriptionId}/checkout/success
+  controller: App\BoundedContext\Membership\Application\Controller\PaymentProcessorStripeCheckoutController::subscriptionCheckoutSuccessAction
+  methods: [ GET ]
+
+bounded_context.membership.subscription.checkout_with_payment_processor_stripe.cancel:
+  path: /my/membership/subscription/{subscriptionId}/checkout/cancel
+  controller: App\BoundedContext\Membership\Application\Controller\PaymentProcessorStripeCheckoutController::subscriptionCheckoutCancelAction
+  methods: [ GET ]

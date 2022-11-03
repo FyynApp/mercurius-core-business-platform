@@ -2,8 +2,8 @@
 
 namespace App\Service\Feature\Account;
 
-use App\Entity\Feature\Account\Role;
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Domain\Entity\Role;
+use App\BoundedContext\Account\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 

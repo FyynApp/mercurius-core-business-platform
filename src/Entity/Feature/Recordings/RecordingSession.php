@@ -2,8 +2,8 @@
 
 namespace App\Entity\Feature\Recordings;
 
-use App\Entity\Feature\Account\User;
-use App\Entity\UserOwnedEntityInterface;
+use App\BoundedContext\Account\Domain\Entity\User;
+use App\BoundedContext\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;

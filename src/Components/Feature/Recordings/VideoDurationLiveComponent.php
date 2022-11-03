@@ -2,12 +2,10 @@
 
 namespace App\Components\Feature\Recordings;
 
-use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\Video;
 use App\Security\VotingAttribute;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;

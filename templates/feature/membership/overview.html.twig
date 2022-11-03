@@ -5,27 +5,27 @@
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.membership.overview.title'|trans }}
+            {{ 'bounded_context.membership.overview.title'|trans }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'feature.membership.overview.subtitle'|trans }}
+            {{ 'bounded_context.membership.overview.subtitle'|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}
 
             <div class="mb-8">
                 <span>
-                    {{ 'feature.membership.overview.current_plan'|trans }}
+                    {{ 'bounded_context.membership.overview.current_plan'|trans }}
                 </span>
                 <span class="font-bold">
-                    {{ ('feature.membership.overview.plan.' ~ currentPlan.name.value ~ '.title')|trans }}
+                    {{ ('bounded_context.membership.overview.plan.' ~ currentPlan.name.value ~ '.title')|trans }}
                 </span>
 
             </div>
 
             <div class="mb-4">
-                {{ 'feature.membership.overview.available_plans'|trans }}
+                {{ 'bounded_context.membership.overview.available_plans'|trans }}
             </div>
 
             <div class="grid grid-cols-none md:grid-cols-3 justify-between items-start gap-8 max-w-fit">
@@ -37,30 +37,30 @@
                             "
                     >
                         <div class="text-lg font-bold mb-2">
-                            {{ ('feature.membership.overview.plan.' ~ plan.name.value ~ '.title')|trans }}
+                            {{ ('bounded_context.membership.overview.plan.' ~ plan.name.value ~ '.title')|trans }}
                         </div>
 
                         <div class="text-sm">
-                            {{ ('feature.membership.overview.plan.' ~ plan.name.value ~ '.description')|trans }}
+                            {{ ('bounded_context.membership.overview.plan.' ~ plan.name.value ~ '.description')|trans }}
                         </div>
 
                         {% if plan.name is same as currentPlan.name %}
                             <div
                                 class="mt-4 bg-green-800 text-green-100 p-1"
                             >
-                                {{ 'feature.membership.overview.this_is_current_plan'|trans }}
+                                {{ 'bounded_context.membership.overview.this_is_current_plan'|trans }}
                             </div>
                         {% endif %}
 
                         {% if MembershipService.planBookableForUser(plan, app.user) %}
                             <a
-                                    href="{{ path('feature.membership.subscription.checkout.start', { 'planName': plan.name.value }) }}"
+                                    href="{{ path('bounded_context.membership.subscription.checkout.start', { 'planName': plan.name.value }) }}"
                                     class="
                                         mt-4 p-4 bg-lime-700 text-lime-100 font-bold text-center rounded-md shadow-md
                                         hover:bg-lime-600 hover:text-lime-50
                                     "
                             >
-                                {{ 'feature.membership.overview.cta_book'|trans }}
+                                {{ 'bounded_context.membership.overview.cta_book'|trans }}
                             </a>
                         {% endif %}
 

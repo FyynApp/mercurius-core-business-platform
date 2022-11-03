@@ -2,7 +2,7 @@
 
 namespace App\Service\Aspect\ContentDelivery;
 
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Domain\Entity\User;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 

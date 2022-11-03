@@ -2,8 +2,8 @@
 
 namespace App\Message\Feature\Recordings;
 
+use App\BoundedContext\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\UserOwnedEntityInterface;
 use App\Message\UserOwnedEntityLifecycleEventMessageInterface;
 
 

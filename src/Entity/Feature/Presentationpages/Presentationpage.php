@@ -2,9 +2,9 @@
 
 namespace App\Entity\Feature\Presentationpages;
 
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Domain\Entity\User;
+use App\BoundedContext\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\Entity\Feature\Recordings\Video;
-use App\Entity\UserOwnedEntityInterface;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;

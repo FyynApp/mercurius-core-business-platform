@@ -2,9 +2,9 @@
 
 namespace App\Tests\Application\Feature\Recordings;
 
-use App\DataFixtures\Feature\Account\UserFixture;
+use App\BoundedContext\Account\Application\DataFixture\UserFixture;
+use App\BoundedContext\Account\Domain\Repository\UserRepository;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Repository\Feature\Account\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

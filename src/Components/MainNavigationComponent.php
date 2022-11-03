@@ -2,7 +2,7 @@
 
 namespace App\Components;
 
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Domain\Entity\User;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -57,7 +57,7 @@ class MainNavigationComponent
 
                 new NavigationEntry(
                     'mainnav.membership',
-                    'feature.membership.overview',
+                    'bounded_context.membership.overview',
                     []
                 ),
 

@@ -2,7 +2,7 @@
 
 namespace App\Service\Feature\Presentationpages;
 
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Domain\Entity\User;
 use App\Entity\Feature\Presentationpages\BgColor;
 use App\Entity\Feature\Presentationpages\FgColor;
 use App\Entity\Feature\Presentationpages\Presentationpage;

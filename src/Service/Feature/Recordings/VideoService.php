@@ -2,7 +2,7 @@
 
 namespace App\Service\Feature\Recordings;
 
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Domain\Entity\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\Video;

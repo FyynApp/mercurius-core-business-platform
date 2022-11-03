@@ -2,20 +2,17 @@
 
 namespace App\Controller\Feature\Recordings;
 
+use App\BoundedContext\Account\Domain\Entity\User;
 use App\Controller\AbstractController;
-use App\Entity\Feature\Account\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Security\VotingAttribute;
-use App\Service\Aspect\ContentDelivery\ContentDeliveryService;
 use App\Service\Aspect\Cookies\CookieName;
-use App\Service\Feature\Account\AccountService;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -251,7 +248,7 @@ class RecordingsApiController
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
-        /** @var User $user */
+        /** @var \App\BoundedContext\Account\Domain\Entity\User $user */
         $user = $this->getUser();
 
         if (!is_null($request->get('recordingDone'))

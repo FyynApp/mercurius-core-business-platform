@@ -2,7 +2,7 @@
 
 namespace App\Service\Feature\Dashboard;
 
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Domain\Entity\User;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Recordings\Video;
 use App\Service\Feature\Presentationpages\PresentationpagesService;

@@ -15,4 +15,4 @@ import './bootstrap';
 import jsTimezoneDetect from 'jstimezonedetect';
 import jsCookie from 'js-cookie';
 const tz = jsTimezoneDetect.determine();
-jsCookie.set('mercuriusCoreBusinessPlatformClientTimezone', tz.name(), { secure: true, sameSite: 'None' });
+jsCookie.set('mercuriusBoundedContextClientTimezone', tz.name(), { secure: true, sameSite: 'None' });

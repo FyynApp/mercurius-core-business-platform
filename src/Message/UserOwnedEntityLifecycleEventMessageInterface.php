@@ -2,7 +2,7 @@
 
 namespace App\Message;
 
-use App\Entity\UserOwnedEntityInterface;
+use App\BoundedContext\Account\Domain\Entity\UserOwnedEntityInterface;
 
 
 interface UserOwnedEntityLifecycleEventMessageInterface

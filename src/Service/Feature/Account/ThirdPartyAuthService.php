@@ -2,10 +2,10 @@
 
 namespace App\Service\Feature\Account;
 
-use App\Entity\Feature\Account\HandleReceivedLinkedInResourceOwnerResult;
-use App\Entity\Feature\Account\Role;
-use App\Entity\Feature\Account\ThirdPartyAuthLinkedinResourceOwner;
-use App\Entity\Feature\Account\User;
+use App\BoundedContext\Account\Application\Entity\HandleReceivedLinkedInResourceOwnerResult;
+use App\BoundedContext\Account\Application\Entity\ThirdPartyAuthLinkedinResourceOwner;
+use App\BoundedContext\Account\Domain\Entity\Role;
+use App\BoundedContext\Account\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
@@ -37,14 +37,14 @@ class ThirdPartyAuthService
      */
     public function handleReceivedLinkedInResourceOwner(
         LinkedInResourceOwner $receivedResourceOwner
-    ): HandleReceivedLinkedInResourceOwnerResult
+    ): \App\BoundedContext\Account\Application\Entity\HandleReceivedLinkedInResourceOwnerResult
     {
         if (is_null($receivedResourceOwner->getId())
             || is_null($receivedResourceOwner->getEmail())
         ) {
             return new HandleReceivedLinkedInResourceOwnerResult(
                 false,
-                HandleReceivedLinkedInResourceOwnerResult::ERROR_MISSING_ID_OR_EMAIL
+                \App\BoundedContext\Account\Application\Entity\HandleReceivedLinkedInResourceOwnerResult::ERROR_MISSING_ID_OR_EMAIL
             );
         }
 
@@ -59,9 +59,9 @@ class ThirdPartyAuthService
             );
         } else {
             if ($receivedResourceOwner->getEmail() !== $resourceOwner->getEmail()) {
-                return new HandleReceivedLinkedInResourceOwnerResult(
+                return new \App\BoundedContext\Account\Application\Entity\HandleReceivedLinkedInResourceOwnerResult(
                     false,
-                    HandleReceivedLinkedInResourceOwnerResult::ERROR_RETRIEVED_EMAIL_DIFFERS_FROM_STORED_EMAIL
+                    \App\BoundedContext\Account\Application\Entity\HandleReceivedLinkedInResourceOwnerResult::ERROR_RETRIEVED_EMAIL_DIFFERS_FROM_STORED_EMAIL
                 );
             }
 

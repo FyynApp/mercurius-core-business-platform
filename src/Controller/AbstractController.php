@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Feature\Account\User;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
+use App\BoundedContext\Account\Domain\Entity\User;
 use LogicException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
 
 
 abstract class AbstractController
