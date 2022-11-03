@@ -11,7 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 
-class ThirdPartyAuthController extends AbstractController
+class ThirdPartyAuthController
+    extends AbstractController
 {
     public function linkedinStartAction(ClientRegistry $clientRegistry): Response
     {

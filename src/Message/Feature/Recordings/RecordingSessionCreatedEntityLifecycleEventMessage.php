@@ -7,7 +7,8 @@ use App\Entity\UserOwnedEntityInterface;
 use App\Message\UserOwnedEntityLifecycleEventMessageInterface;
 
 
-class RecordingSessionCreatedEntityLifecycleEventMessage implements UserOwnedEntityLifecycleEventMessageInterface
+class RecordingSessionCreatedEntityLifecycleEventMessage
+    implements UserOwnedEntityLifecycleEventMessageInterface
 {
     private RecordingSession $recordingSession;
 

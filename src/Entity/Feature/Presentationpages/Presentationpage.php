@@ -18,7 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'presentationpages')]
-class Presentationpage implements UserOwnedEntityInterface
+class Presentationpage
+    implements UserOwnedEntityInterface
 {
     public function __construct(User $user)
     {

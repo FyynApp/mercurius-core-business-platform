@@ -12,7 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'subscriptions')]
-class Subscription implements UserOwnedEntityInterface
+class Subscription
+    implements UserOwnedEntityInterface
 {
     public function __construct(
         User $user,

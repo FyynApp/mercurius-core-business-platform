@@ -7,7 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class DashboardController extends AbstractController
+class DashboardController
+    extends AbstractController
 {
     public function showAction(DashboardService $dashboardService): Response
     {

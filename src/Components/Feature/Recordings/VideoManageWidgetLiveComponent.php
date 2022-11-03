@@ -26,7 +26,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
     'feature_recordings_video_manage_widget',
     'feature/recordings/video_manage_widget_live_component.html.twig'
 )]
-class VideoManageWidgetLiveComponent extends AbstractController
+class VideoManageWidgetLiveComponent
+    extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;

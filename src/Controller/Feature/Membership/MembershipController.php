@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Polyfill\Intl\Icu\Exception\NotImplementedException;
 
 
-class MembershipController extends AbstractController
+class MembershipController
+    extends AbstractController
 {
     public function overviewAction(MembershipService $membershipService): Response
     {

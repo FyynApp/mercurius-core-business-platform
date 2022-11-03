@@ -20,7 +20,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
-class PaymentProcessorStripeCheckoutController extends AbstractController
+class PaymentProcessorStripeCheckoutController
+extends AbstractController
 {
     public function subscriptionCheckoutStartAction(
         string $planName,

@@ -9,7 +9,8 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
-class UserFixture extends Fixture
+class UserFixture
+    extends Fixture
 {
     const TEST_USER_EMAIL = 'j.doe@example.com';
 

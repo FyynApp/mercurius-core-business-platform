@@ -7,7 +7,8 @@ use App\Repository\Feature\Account\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
-class HomepageTest extends WebTestCase
+class HomepageTest
+    extends WebTestCase
 {
     public function testVisitingWhileNotLoggedIn()
     {

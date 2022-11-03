@@ -9,7 +9,8 @@ use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 
 
-class EventLoggerMiddleware implements MiddlewareInterface
+class EventLoggerMiddleware
+    implements MiddlewareInterface
 {
     private LoggerInterface $logger;
 

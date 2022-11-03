@@ -15,7 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 
 
-class VideoType extends AbstractType
+class VideoType
+    extends AbstractType
 {
     private PresentationpagesService $presentationpagesService;
 

@@ -14,7 +14,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 #[AsCommand(name: 'app:devhelper:create-demo-entities')]
-class CreateDemoEntities extends Command
+class CreateDemoEntities
+    extends Command
 {
     private EntityManagerInterface $entityManager;
 

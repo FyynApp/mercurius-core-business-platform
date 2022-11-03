@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 
-class CatchallController extends AbstractController
+class CatchallController
+    extends AbstractController
 {
     public function indexAction(
         RouterInterface $router,

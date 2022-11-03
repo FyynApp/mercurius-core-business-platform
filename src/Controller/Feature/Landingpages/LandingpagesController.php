@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class LandingpagesController extends AbstractController
+class LandingpagesController
+    extends AbstractController
 {
     public function homepageAction(): Response
     {

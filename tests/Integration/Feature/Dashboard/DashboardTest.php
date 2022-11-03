@@ -9,7 +9,8 @@ use App\Service\Feature\Dashboard\DashboardService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 
-class DashboardTest extends KernelTestCase
+class DashboardTest
+    extends KernelTestCase
 {
     public function test()
     {

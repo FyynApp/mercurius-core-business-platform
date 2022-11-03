@@ -13,7 +13,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
     'feature_recordings_video_player_embedded',
     'feature/recordings/video_player_embedded_live_component.html.twig'
 )]
-class VideoPlayerEmbeddedLiveComponent extends AbstractController
+class VideoPlayerEmbeddedLiveComponent
+    extends AbstractController
 {
     use DefaultActionTrait;
 

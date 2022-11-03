@@ -13,7 +13,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
     'feature_presentationpages_presentationpage_screenshot',
     'feature/presentationpages/presentationpage_screenshot_live_component.html.twig'
 )]
-class PresentationpageScreenshotLiveComponent extends AbstractController
+class PresentationpageScreenshotLiveComponent
+    extends AbstractController
 {
     use DefaultActionTrait;
 

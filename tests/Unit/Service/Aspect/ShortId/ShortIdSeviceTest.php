@@ -6,7 +6,8 @@ use App\Service\Aspect\ShortId\ShortIdService;
 use PHPUnit\Framework\TestCase;
 
 
-class ShortIdSeviceTest extends TestCase
+class ShortIdSeviceTest
+    extends TestCase
 {
     public function test()
     {

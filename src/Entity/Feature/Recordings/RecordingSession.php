@@ -15,7 +15,8 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_sessions', indexes: [])]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
-class RecordingSession implements UserOwnedEntityInterface
+class RecordingSession
+    implements UserOwnedEntityInterface
 {
     public function __construct(User $user)
     {

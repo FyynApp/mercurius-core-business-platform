@@ -7,7 +7,8 @@ use App\Message\AsyncMessageInterface;
 use InvalidArgumentException;
 
 
-class GeneratePresentationpageScreenshotCommandMessage implements AsyncMessageInterface
+class GeneratePresentationpageScreenshotCommandMessage
+    implements AsyncMessageInterface
 {
     private string $presentationpageId;
 

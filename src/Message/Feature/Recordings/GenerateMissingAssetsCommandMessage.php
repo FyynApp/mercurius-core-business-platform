@@ -7,7 +7,8 @@ use App\Message\AsyncMessageInterface;
 use InvalidArgumentException;
 
 
-class GenerateMissingAssetsCommandMessage implements AsyncMessageInterface
+class GenerateMissingAssetsCommandMessage
+    implements AsyncMessageInterface
 {
     private string $videoId;
 

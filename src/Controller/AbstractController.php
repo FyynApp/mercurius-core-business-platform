@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Feature\Account\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
 use LogicException;
 
 
-abstract class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
+abstract class AbstractController
+    extends SymfonyAbstractController
 {
     public function getUser(): ?User
     {

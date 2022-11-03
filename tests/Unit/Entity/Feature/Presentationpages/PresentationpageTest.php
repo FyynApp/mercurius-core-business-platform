@@ -7,7 +7,8 @@ use App\Entity\Feature\Presentationpages\Presentationpage;
 use PHPUnit\Framework\TestCase;
 
 
-class PresentationpageTest extends TestCase
+class PresentationpageTest
+    extends TestCase
 {
     public function test()
     {

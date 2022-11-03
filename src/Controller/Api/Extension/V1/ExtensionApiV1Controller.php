@@ -22,7 +22,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 
-class ExtensionApiV1Controller extends AbstractController
+class ExtensionApiV1Controller
+    extends AbstractController
 {
     public function getSessionInfoAction(
         ContentDeliveryService $contentDeliveryService,

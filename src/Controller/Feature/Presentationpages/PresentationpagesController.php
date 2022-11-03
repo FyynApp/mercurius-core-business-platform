@@ -18,7 +18,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
-class PresentationpagesController extends AbstractController
+class PresentationpagesController
+    extends AbstractController
 {
     public function overviewAction(
         PresentationpagesService $presentationpagesService,

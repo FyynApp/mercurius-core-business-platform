@@ -15,7 +15,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
-class VideosController extends AbstractController
+class VideosController
+    extends AbstractController
 {
     public function videosOverviewAction(
         Request $request

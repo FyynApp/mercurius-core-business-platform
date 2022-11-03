@@ -8,7 +8,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 
-class GeneralVoter extends Voter
+class GeneralVoter
+    extends Voter
 {
     protected function supports(
         string $attribute,

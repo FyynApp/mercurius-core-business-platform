@@ -16,7 +16,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
-class PresentationpageElementType extends AbstractType
+class PresentationpageElementType
+    extends AbstractType
 {
     public function buildForm(
         FormBuilderInterface $builder,

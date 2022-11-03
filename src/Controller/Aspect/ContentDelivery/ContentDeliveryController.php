@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class ContentDeliveryController extends AbstractController
+class ContentDeliveryController
+    extends AbstractController
 {
     public function serveExternalAssetAction(
         Request                $request,

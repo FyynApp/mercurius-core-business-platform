@@ -17,7 +17,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
     'feature_recordings_video_duration',
     'feature/recordings/video_duration_live_component.html.twig'
 )]
-class VideoDurationLiveComponent extends AbstractController
+class VideoDurationLiveComponent
+    extends AbstractController
 {
     use DefaultActionTrait;
 

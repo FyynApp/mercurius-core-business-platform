@@ -12,7 +12,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 
-class KernelResponseSubscriber implements EventSubscriberInterface
+class KernelResponseSubscriber
+    implements EventSubscriberInterface
 {
     private LoggerInterface $logger;
 

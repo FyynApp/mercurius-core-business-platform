@@ -17,7 +17,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class UnregisteredUserAuthenticator extends AbstractAuthenticator
+class UnregisteredUserAuthenticator
+    extends AbstractAuthenticator
 {
     private EntityManagerInterface $entityManager;
 

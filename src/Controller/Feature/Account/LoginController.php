@@ -8,7 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
-class LoginController extends AbstractController
+class LoginController
+    extends AbstractController
 {
     public function indexAction(
         AuthenticationUtils $authenticationUtils,

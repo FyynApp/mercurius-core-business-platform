@@ -32,7 +32,8 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
     'feature_presentationpages_edit_form',
     'feature/presentationpages/edit_form_live_component.html.twig'
 )]
-class PresentationspageEditFormLiveComponent extends AbstractController
+class PresentationspageEditFormLiveComponent
+    extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;

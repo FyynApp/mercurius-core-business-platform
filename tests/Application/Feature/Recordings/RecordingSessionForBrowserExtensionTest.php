@@ -9,7 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
-class RecordingSessionForBrowserExtensionTest extends WebTestCase
+class RecordingSessionForBrowserExtensionTest
+    extends WebTestCase
 {
     public function testRegisteredUser()
     {

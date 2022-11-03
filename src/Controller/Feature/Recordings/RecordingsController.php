@@ -16,7 +16,8 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
-class RecordingsController extends AbstractController
+class RecordingsController
+    extends AbstractController
 {
     public function recordingStudioAction(
         RecordingSessionService $recordingSessionService

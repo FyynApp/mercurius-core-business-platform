@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'recording_settings_bags')]
-class RecordingSettingsBag implements UserOwnedEntityInterface
+class RecordingSettingsBag
+    implements UserOwnedEntityInterface
 {
     public function __construct(User $user)
     {
