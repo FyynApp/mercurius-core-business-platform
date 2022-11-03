@@ -7,7 +7,9 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20220731103605 extends AbstractMigration
+
+final class Version20220731103605
+    extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -18,7 +20,8 @@ final class Version20220731103605 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE presentationpages DROP FOREIGN KEY FK_7BF635218FE1B5D0');
 
-        $this->addSql('
+        $this->addSql(
+            '
             CREATE TABLE videos (
                 id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\',
                 users_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\',
@@ -37,7 +40,8 @@ final class Version20220731103605 extends AbstractMigration
             DEFAULT CHARACTER SET utf8mb4
             COLLATE `utf8mb4_unicode_ci`
             ENGINE = InnoDB
-        ');
+        '
+        );
 
         $this->addSql('ALTER TABLE videos ADD CONSTRAINT FK_29AA643267B3B43D FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE videos ADD CONSTRAINT FK_29AA6432D98B1C16 FOREIGN KEY (recording_sessions_id) REFERENCES recording_sessions (id) ON DELETE SET NULL');

@@ -8,7 +8,9 @@ use App\Entity\Feature\Presentationpages\PresentationpageCategory;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20221010203059 extends AbstractMigration
+
+final class Version20221010203059
+    extends AbstractMigration
 {
     public function getDescription(): string
     {
