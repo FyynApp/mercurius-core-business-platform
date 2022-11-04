@@ -5,7 +5,7 @@ knpu_oauth2_client:
             type: linkedin
             client_id: '%env(OAUTH_LINKEDIN_CLIENT_ID)%'
             client_secret: '%env(OAUTH_LINKEDIN_CLIENT_SECRET)%'
-            redirect_route: feature.account.3rdpartyauth.linkedin.return
+            redirect_route: videobasedmarketing.account.thirdpartyauth.linkedin.return
             redirect_params: {}
             # Optional value to specify Linkedin's API version to use. As the time of writing, v1 is still used by default by league/oauth2-linkedin.
             # api_version: null

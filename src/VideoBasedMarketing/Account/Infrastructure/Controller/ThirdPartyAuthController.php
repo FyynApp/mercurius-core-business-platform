@@ -7,6 +7,7 @@ use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Throwable;
@@ -15,8 +16,15 @@ use Throwable;
 class ThirdPartyAuthController
     extends AbstractController
 {
-    #[Route('account/3rdpartyauth/linkedin/start')]
-    public function linkedinStartAction(ClientRegistry $clientRegistry): Response
+    #[Route(
+        path        : 'account/thirdpartyauth/linkedin/start',
+        name        : 'videobasedmarketing.account.thirdpartyauth.linkedin.start',
+        requirements: ['_locale' => '%app.route_locale_requirement%'],
+        methods     : [Request::METHOD_GET, Request::METHOD_POST]
+    )]
+    public function linkedinStartAction(
+        ClientRegistry $clientRegistry
+    ): Response
     {
         return $clientRegistry
             ->getClient('linkedin')
@@ -27,6 +35,12 @@ class ThirdPartyAuthController
             );
     }
 
+    #[Route(
+        path        : 'account/thirdpartyauth/linkedin/return',
+        name        : 'videobasedmarketing.account.thirdpartyauth.linkedin.return',
+        requirements: ['_locale' => '%app.route_locale_requirement%'],
+        methods     : [Request::METHOD_GET, Request::METHOD_POST]
+    )]
     public function linkedinReturnAction(
         ClientRegistry        $clientRegistry,
         ThirdPartyAuthService $thirdPartyAuthService

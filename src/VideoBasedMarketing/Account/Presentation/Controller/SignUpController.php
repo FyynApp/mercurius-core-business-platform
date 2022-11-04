@@ -7,7 +7,6 @@ use App\Security\Feature\Account\EmailVerifier;
 use App\VideoBasedMarketing\Account\Domain\Entity\Role;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Repository\UserRepository;
-use App\VideoBasedMarketing\Account\Domain\Service\AccountService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\SignUpType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,7 +34,10 @@ class SignUpController
     }
 
     #[Route(
-        path        : '{_locale}/account/sign-up',
+        path        : [
+            'en' => '{_locale}/account/sign-up',
+            'de' => '{_locale}/konto/neu-registrieren',
+        ],
         name        : 'videobasedmarketing.account.sign_up',
         requirements: ['_locale' => '%app.route_locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
@@ -64,7 +66,7 @@ class SignUpController
                     $user->getEmail()
                 )
         ) {
-            return $this->redirectToRoute('feature.account.3rdpartyauth.linkedin.start');
+            return $this->redirectToRoute('videobasedmarketing.account.thirdpartyauth.linkedin.start');
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -135,8 +137,9 @@ class SignUpController
         $this->addFlash(FlashMessageLabel::Success->value, 'Your email address has been verified.');
 
         return $this->redirect(
-            $loginLinkHandler->createLoginLink($user)
-                             ->getUrl()
+            $loginLinkHandler
+                ->createLoginLink($user)
+                ->getUrl()
         );
     }
 }

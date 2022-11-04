@@ -13,23 +13,4 @@ feature.account.login:
   controller: App\VideoBasedMarketing\Account\Infrastructure\Controller\LoginController::indexAction
   methods: [ GET, POST ]
 
-# There is no controller behind this route because
-# Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator
-# intercepts requests to this route
-feature.account.login_link_check:
-  path: /sign_in-link-check
-  methods: [ GET, POST ]
 
-feature.account.logout:
-  path: /sign-out
-  methods: [ GET, POST ]
-
-feature.account.3rdpartyauth.linkedin.start:
-  path: /3rdpartyauth/linkedin/start
-  controller: App\VideoBasedMarketing\Account\Infrastructure\Controller\ThirdPartyAuthController::linkedinStartAction
-  methods: [ GET, POST ]
-
-feature.account.3rdpartyauth.linkedin.return:
-  path: /3rdpartyauth/linkedin/return
-  controller: App\VideoBasedMarketing\Account\Infrastructure\Controller\ThirdPartyAuthController::linkedinReturnAction
-  methods: [ GET, POST ]

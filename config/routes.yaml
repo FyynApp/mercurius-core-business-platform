@@ -1,3 +1,6 @@
+account:
+    resource: '../src/VideoBasedMarketing/Account/Infrastructure/Resources/config/routes.yaml'
+
 localized:
     resource: 'routes/localized/**/*.yaml'
     prefix: /{_locale}

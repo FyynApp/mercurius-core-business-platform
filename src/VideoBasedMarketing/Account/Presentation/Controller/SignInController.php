@@ -14,7 +14,10 @@ class SignInController
     extends AbstractController
 {
     #[Route(
-        path        : '{_locale}/account/sign-in',
+        path        : [
+            'en' => '{_locale}/account/sign-in',
+            'de' => '{_locale}/konto/einloggen',
+        ],
         name        : 'videobasedmarketing.account.sign_in',
         requirements: ['_locale' => '%app.route_locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
@@ -30,7 +33,7 @@ class SignInController
         if (   !is_null($error)
             && $thirdPartyAuthService->userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint($lastUsername)
         ) {
-            return $this->redirectToRoute('feature.account.3rdpartyauth.linkedin.start');
+            return $this->redirectToRoute('videobasedmarketing.account.thirdpartyauth.linkedin.start');
         }
 
         return $this->render(

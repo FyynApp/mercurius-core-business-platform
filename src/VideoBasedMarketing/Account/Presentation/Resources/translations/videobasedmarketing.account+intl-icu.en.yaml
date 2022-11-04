@@ -1,0 +1,30 @@
+login:
+  placeholder:
+    email: 'E-Mail Adresse'
+    password: 'Passwort'
+  cta:
+    sign_in: 'Sign in'
+    sign_in_with_linkedin: 'Sign in with LinkedIn'
+  or: 'or'
+  sign_in_with_linkedin_question: 'Sind Sie LinkedIn-Nutzer?'
+  sign_in_with_linkedin_info: 'Dann können Sie sich hier mit nur einem Klick direkt bei Fyyn.io einloggen - eine vorherige Registrierung ist nicht erforderlich!'
+
+register:
+  placeholder:
+    email: 'E-Mail Adresse'
+    password: 'Passwort'
+  cta:
+    accept_terms: 'AGB akzeptieren'
+    sign_up: 'Registrieren'
+    sign_up_with_linkedin: 'Registrieren mit LinkedIn'
+  or: 'oder'
+  sign_up_with_linkedin_question: 'Sind Sie LinkedIn-Nutzer?'
+  sign_up_with_linkedin_info: 'Dann können Sie sich hier mit nur einem Klick direkt bei Fyyn.io registrieren!'
+
+thirdpartyauth:
+  errorpage:
+    title: 'Ein Fehler ist aufgetreten.'
+    cta_back_to_login: 'Zurück zum Login'
+    cta_back_to_registration: 'Zurück zur Registrierung'
+    linkedin:
+      infotext: 'Leider ist bei der Kommmunikation mit LinkedIn ein unerwarteter Fehler aufgetreten (Fehler {error}). Bitte wiederholen Sie den Vorgang.'
