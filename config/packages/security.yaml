@@ -18,17 +18,17 @@ security:
             provider: app_user_provider
 
             form_login:
-                login_path: feature.account.sign_in
-                check_path: feature.account.sign_in
+                login_path: videobasedmarketing.account.sign_in
+                check_path: videobasedmarketing.account.sign_in
                 enable_csrf: true
 
             login_link:
-                check_route: feature.account.login_link_check
+                check_route: videobasedmarketing.account.sign_in_link_check
                 signature_properties: ['id']
 
             logout:
                 path: feature.account.logout
-                target: feature.account.sign_in
+                target: videobasedmarketing.account.sign_in
 
             remember_me:
                 secret: '%kernel.secret%'

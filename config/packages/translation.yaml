@@ -2,6 +2,8 @@ framework:
     default_locale: en
     translator:
         default_path: '%kernel.project_dir%/translations'
+        paths:
+            - '%kernel.project_dir%/src/VideoBasedMarketing/Account/Presentation/Resources/translations'
         fallbacks:
             - en
             - de

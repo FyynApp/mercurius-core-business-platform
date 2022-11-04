@@ -3,7 +3,6 @@
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
 use App\Controller\AbstractController;
-use App\VideoBasedMarketing\Account\Domain\Service\AccountService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,20 +15,20 @@ class SignInController
 {
     #[Route(
         path        : '{_locale}/account/sign-in',
-        name        : '@videobasedmarketing.account.sign_in',
+        name        : 'videobasedmarketing.account.sign_in',
         requirements: ['_locale' => '%app.route_locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
     public function indexAction(
-        AuthenticationUtils $authenticationUtils,
-        AccountService      $accountService
+        AuthenticationUtils   $authenticationUtils,
+        ThirdPartyAuthService $thirdPartyAuthService
     ): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        if (!is_null($error)
-            && ThirdPartyAuthService::userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint($lastUsername, $accountService)
+        if (   !is_null($error)
+            && $thirdPartyAuthService->userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint($lastUsername)
         ) {
             return $this->redirectToRoute('feature.account.3rdpartyauth.linkedin.start');
         }

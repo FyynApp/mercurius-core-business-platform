@@ -4,11 +4,12 @@ namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
 use App\Enum\FlashMessageLabel;
 use App\Security\Feature\Account\EmailVerifier;
+use App\VideoBasedMarketing\Account\Domain\Entity\Role;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Repository\UserRepository;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
-use App\VideoBasedMarketing\Account\Presentation\Form\Type\RegistrationType;
+use App\VideoBasedMarketing\Account\Presentation\Form\Type\SignUpType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,7 +36,7 @@ class SignUpController
 
     #[Route(
         path        : '{_locale}/account/sign-up',
-        name        : '@videobasedmarketing.account.sign_up',
+        name        : 'videobasedmarketing.account.sign_up',
         requirements: ['_locale' => '%app.route_locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
@@ -43,7 +44,7 @@ class SignUpController
         Request                     $request,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface      $entityManager,
-        AccountService              $accountService
+        ThirdPartyAuthService       $thirdPartyAuthService
     ): Response
     {
         $user = $this->getUser();
@@ -53,14 +54,14 @@ class SignUpController
         }
 
         $user = new User();
-        $form = $this->createForm(RegistrationType::class, $user);
+        $form = $this->createForm(SignUpType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()
             && !is_null($user->getEmail())
-            && ThirdPartyAuthService
-                ::userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(
-                    $user->getEmail(), $accountService
+            && $thirdPartyAuthService
+                ->userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(
+                    $user->getEmail()
                 )
         ) {
             return $this->redirectToRoute('feature.account.3rdpartyauth.linkedin.start');
@@ -68,7 +69,7 @@ class SignUpController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user->addRole(\App\VideoBasedMarketing\Account\Domain\Entity\Role::REGISTERED_USER);
+            $user->addRole(Role::REGISTERED_USER);
 
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -97,7 +98,7 @@ class SignUpController
         return $this->render(
             '@videobasedmarketing.account/sign_up/form.html.twig',
             [
-                'registrationForm' => $form->createView(),
+                'signUpForm' => $form->createView(),
             ]
         );
     }

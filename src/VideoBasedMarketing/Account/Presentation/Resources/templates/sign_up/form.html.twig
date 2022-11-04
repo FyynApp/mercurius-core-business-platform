@@ -1,4 +1,4 @@
-{% extends '../../../../../../../templates/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}{{ 'sidenav.signup'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'sidenav.signup'|trans }}{% endblock %}
@@ -11,18 +11,18 @@
     <div>
         <div class="min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8">
             <div class="max-w-md w-full space-y-8">
-                {{ form_start(registrationForm) }}
+                {{ form_start(signUpForm) }}
 
                 <div class="mt-8 space-y-6">
 
-                    {% if form_errors(registrationForm.email) %}
-                        {% for error in registrationForm.email.vars.errors.form.getErrors(true) %}
+                    {% if form_errors(signUpForm.email) %}
+                        {% for error in signUpForm.email.vars.errors.form.getErrors(true) %}
                             <p class="text-red-800">{{ error.message|trans }}</p>
                         {% endfor %}
                     {% endif %}
 
-                    {% if form_errors(registrationForm.plainPassword) %}
-                        {% for error in registrationForm.plainPassword.vars.errors.form.getErrors(true) %}
+                    {% if form_errors(signUpForm.plainPassword) %}
+                        {% for error in signUpForm.plainPassword.vars.errors.form.getErrors(true) %}
                             <p class="text-red-800">{{ error.message|trans }}</p>
                         {% endfor %}
                     {% endif %}
@@ -30,10 +30,10 @@
                     <input type="hidden" name="remember" value="true">
                     <div class="rounded-md shadow-sm -space-y-px">
                         <div>
-                            <label for="{{ registrationForm.children.email.vars.id }}" class="sr-only">Email address</label>
+                            <label for="{{ signUpForm.children.email.vars.id }}" class="sr-only">Email address</label>
                             <input
-                                id="{{ registrationForm.children.email.vars.id }}"
-                                name="{{ registrationForm.children.email.vars.full_name }}"
+                                id="{{ signUpForm.children.email.vars.id }}"
+                                name="{{ signUpForm.children.email.vars.full_name }}"
                                 type="email"
                                 autocomplete="email"
                                 required
@@ -42,10 +42,10 @@
                             />
                         </div>
                         <div>
-                            <label for="{{ registrationForm.children.plainPassword.vars.id }}" class="sr-only">Password</label>
+                            <label for="{{ signUpForm.children.plainPassword.vars.id }}" class="sr-only">Password</label>
                             <input
-                                id="{{ registrationForm.children.plainPassword.vars.id }}"
-                                name="{{ registrationForm.children.plainPassword.vars.full_name }}"
+                                id="{{ signUpForm.children.plainPassword.vars.id }}"
+                                name="{{ signUpForm.children.plainPassword.vars.full_name }}"
                                 type="password"
                                 autocomplete="current-password"
                                 required
@@ -56,19 +56,19 @@
                     </div>
 
                     <div class="flex items-center justify-between">
-                        {% if form_errors(registrationForm.agreeTerms) %}
-                            {% for error in registrationForm.agreeTerms.vars.errors.form.getErrors(true) %}
+                        {% if form_errors(signUpForm.agreeTerms) %}
+                            {% for error in signUpForm.agreeTerms.vars.errors.form.getErrors(true) %}
                                 <p class="text-red-800">{{ error.message|trans }}</p>
                             {% endfor %}
                         {% endif %}
                         <div class="flex items-center">
                             <input
-                                    id="{{ registrationForm.children.agreeTerms.vars.id }}"
-                                    name="{{ registrationForm.children.agreeTerms.vars.full_name }}"
+                                    id="{{ signUpForm.children.agreeTerms.vars.id }}"
+                                    name="{{ signUpForm.children.agreeTerms.vars.full_name }}"
                                     type="checkbox"
                                     class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                             >
-                            <label for="{{ registrationForm.children.agreeTerms.vars.id }}" class="ml-2 block text-sm text-gray-900">
+                            <label for="{{ signUpForm.children.agreeTerms.vars.id }}" class="ml-2 block text-sm text-gray-900">
                                 {{ 'feature.account.register.cta.accept_terms'|trans }}
                             </label>
                         </div>
@@ -84,9 +84,9 @@
                     </div>
                 </div>
 
-                {{ form_row(registrationForm._token) }}
+                {{ form_row(signUpForm._token) }}
 
-                {{ form_end(registrationForm, {'render_rest': false}) }}
+                {{ form_end(signUpForm, {'render_rest': false}) }}
 
             </div>
         </div>
