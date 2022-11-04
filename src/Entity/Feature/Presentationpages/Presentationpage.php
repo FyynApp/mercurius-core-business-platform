@@ -2,8 +2,8 @@
 
 namespace App\Entity\Feature\Presentationpages;
 
-use App\BoundedContext\Account\Domain\Entity\User;
-use App\BoundedContext\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\Entity\Feature\Recordings\Video;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
 use DateTime;

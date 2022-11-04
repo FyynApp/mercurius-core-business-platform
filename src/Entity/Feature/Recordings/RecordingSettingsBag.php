@@ -2,8 +2,8 @@
 
 namespace App\Entity\Feature\Recordings;
 
-use App\BoundedContext\Account\Domain\Entity\User;
-use App\BoundedContext\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 

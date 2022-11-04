@@ -2,8 +2,8 @@
 
 namespace App\Tests\Application\Feature\Landingpages;
 
-use App\BoundedContext\Account\Application\DataFixture\UserFixture;
-use App\BoundedContext\Account\Domain\Repository\UserRepository;
+use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
+use App\VideoBasedMarketing\Account\Domain\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 

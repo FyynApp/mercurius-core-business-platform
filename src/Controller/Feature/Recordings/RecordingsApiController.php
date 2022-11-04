@@ -2,7 +2,7 @@
 
 namespace App\Controller\Feature\Recordings;
 
-use App\BoundedContext\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Controller\AbstractController;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
@@ -248,7 +248,7 @@ class RecordingsApiController
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
-        /** @var \App\BoundedContext\Account\Domain\Entity\User $user */
+        /** @var \App\VideoBasedMarketing\Account\Domain\Entity\User $user */
         $user = $this->getUser();
 
         if (!is_null($request->get('recordingDone'))

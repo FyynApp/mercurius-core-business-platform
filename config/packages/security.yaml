@@ -7,7 +7,7 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\BoundedContext\Account\Domain\Entity\User
+                class: App\VideoBasedMarketing\Account\Domain\Entity\User
                 property: email
     firewalls:
         dev:
@@ -18,8 +18,8 @@ security:
             provider: app_user_provider
 
             form_login:
-                login_path: feature.account.login
-                check_path: feature.account.login
+                login_path: feature.account.sign_in
+                check_path: feature.account.sign_in
                 enable_csrf: true
 
             login_link:
@@ -28,7 +28,7 @@ security:
 
             logout:
                 path: feature.account.logout
-                target: feature.account.login
+                target: feature.account.sign_in
 
             remember_me:
                 secret: '%kernel.secret%'
@@ -40,7 +40,7 @@ security:
                     doctrine: true
 
             custom_authenticators:
-                - App\Security\Feature\Account\UnregisteredUserAuthenticator
+                - App\VideoBasedMarketing\Account\Infrastructure\Security\UnregisteredUserAuthenticator
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used

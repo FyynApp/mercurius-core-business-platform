@@ -1,10 +1,14 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
 
+    paths:
+        'src/VideoBasedMarketing/Account/Presentation/Resources/templates': 'videobasedmarketing.account'
+        'src/VideoBasedMarketing/Membership/Presentation/Resources/templates': 'videobasedmarketing.membership'
+
     globals:
         CookiesService: '@App\Service\Aspect\Cookies\CookiesService'
         ContentDeliveryService: '@App\Service\Aspect\ContentDelivery\ContentDeliveryService'
-        MembershipService: '@App\BoundedContext\Membership\Domain\Service\MembershipService'
+        MembershipService: '@App\VideoBasedMarketing\Membership\Domain\Service\MembershipService'
         VideoService: '@App\Service\Feature\Recordings\VideoService'
         ShortIdService: '@App\Service\Aspect\ShortId\ShortIdService'
 

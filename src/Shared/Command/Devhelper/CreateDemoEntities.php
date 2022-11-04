@@ -2,7 +2,7 @@
 
 namespace App\Shared\Command\Devhelper;
 
-use App\BoundedContext\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
 use Doctrine\ORM\EntityManagerInterface;

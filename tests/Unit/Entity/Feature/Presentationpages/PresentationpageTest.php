@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\Entity\Feature\Presentationpages;
 
-use App\BoundedContext\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use PHPUnit\Framework\TestCase;
 

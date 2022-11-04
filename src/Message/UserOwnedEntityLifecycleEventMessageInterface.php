@@ -2,7 +2,7 @@
 
 namespace App\Message;
 
-use App\BoundedContext\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 
 
 interface UserOwnedEntityLifecycleEventMessageInterface

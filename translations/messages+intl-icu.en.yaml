@@ -102,7 +102,7 @@ feature:
         sign_in_with_linkedin: 'Sign in with LinkedIn'
       or: 'or'
       sign_in_with_linkedin_question: 'Already using LinkedIn?'
-      sign_in_with_linkedin_info: 'Use your existing LinkedIn account to sign in with Fyyn.io with a simple click - no registration needed!'
+      sign_in_with_linkedin_info: 'Use your existing LinkedIn account to sign in with Fyyn.io with a simple click - no sign_up needed!'
 
     register:
       placeholder:

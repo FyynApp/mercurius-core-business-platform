@@ -2,7 +2,7 @@
 
 namespace App\Service\Feature\Recordings;
 
-use App\BoundedContext\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Entity\Feature\Recordings\Video;

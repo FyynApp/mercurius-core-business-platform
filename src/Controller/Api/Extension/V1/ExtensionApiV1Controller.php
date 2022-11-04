@@ -2,8 +2,8 @@
 
 namespace App\Controller\Api\Extension\V1;
 
-use App\BoundedContext\Account\Domain\Entity\User;
-use App\BoundedContext\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\Controller\AbstractController;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;

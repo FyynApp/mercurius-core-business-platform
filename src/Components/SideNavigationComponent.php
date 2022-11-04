@@ -2,7 +2,7 @@
 
 namespace App\Components;
 
-use App\BoundedContext\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -37,8 +37,8 @@ class SideNavigationComponent
 
         if (is_null($this->user)) {
             $this->entries = [
-                new NavigationEntry('sidenav.signin', 'feature.account.login'),
-                new NavigationEntry('sidenav.signup', 'feature.account.register'),
+                new NavigationEntry('sidenav.sign_in', '@videobasedmarketing.account.sign_in'),
+                new NavigationEntry('sidenav.sign_up', '@videobasedmarketing.account.sign_up'),
             ];
         } else {
             $this->entries = [
