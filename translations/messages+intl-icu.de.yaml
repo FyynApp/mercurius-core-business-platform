@@ -50,27 +50,7 @@ bounded_context:
         live_demo: 'Live Demo'
 
   membership:
-    overview:
-      title: 'Ihre Mitgliedschaft'
-      subtitle: 'Hier verwalten Sie Ihr Abonnement'
-      current_plan: 'Ihre aktuelles Paket:'
-      available_plans: 'Folgende Pakete stehen Ihnen zur Verfügung:'
-      currently_no_subscription: 'Sie haben aktuell kein Abonnement abgeschlossen'
-      cta_book: 'Paket buchen'
-      this_is_current_plan: 'Dies ist Ihr aktuelles Paket'
-      plan:
-        basic:
-          title: 'Basis-Paket'
-          description: 'Mit diesem Paket können Sie maximal 3 Videos mit einer Länge von bis zu einer Minute aufzeichnen.'
-        plus:
-          title: 'Plus-Paket'
-          description: 'Mit diesem Paket können Sie maximal 20 Videos mit einer Länge von bis zu 10 Minuten aufzeichnen.'
-        pro:
-          title: 'Pro-Paket'
-          description: 'Mit diesem Paket können Sie maximal 500 Videos mit einer Länge von bis zu 20 Minuten aufzeichnen.'
-    subscription_checkout:
-      success_flash_message: 'Das Paket wurde erfolgreich gebucht.'
-      cancel_flash_message: 'Vorgang abgebrochen. Eine Zahlung hat nicht stattgefunden, und es wurde kein Abo gebucht.'
+
 
   dashboard:
     show:

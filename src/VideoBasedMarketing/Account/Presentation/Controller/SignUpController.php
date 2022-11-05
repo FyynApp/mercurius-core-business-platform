@@ -36,7 +36,7 @@ class SignUpController
     #[Route(
         path        : [
             'en' => '{_locale}/account/sign-up',
-            'de' => '{_locale}/konto/neu-registrieren',
+            'de' => '{_locale}/benutzerkonto/neu-registrieren',
         ],
         name        : 'videobasedmarketing.account.sign_up',
         requirements: ['_locale' => '%app.route_locale_requirement%'],

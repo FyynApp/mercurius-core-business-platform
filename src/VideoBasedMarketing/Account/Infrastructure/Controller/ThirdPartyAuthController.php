@@ -19,7 +19,6 @@ class ThirdPartyAuthController
     #[Route(
         path        : 'account/thirdpartyauth/linkedin/start',
         name        : 'videobasedmarketing.account.thirdpartyauth.linkedin.start',
-        requirements: ['_locale' => '%app.route_locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
     public function linkedinStartAction(
@@ -38,7 +37,6 @@ class ThirdPartyAuthController
     #[Route(
         path        : 'account/thirdpartyauth/linkedin/return',
         name        : 'videobasedmarketing.account.thirdpartyauth.linkedin.return',
-        requirements: ['_locale' => '%app.route_locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
     public function linkedinReturnAction(

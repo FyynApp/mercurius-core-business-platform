@@ -1,22 +1,24 @@
 {% extends 'base.html.twig' %}
 
+{% trans_default_domain 'videobasedmarketing.membership' %}
+
 {% block body %}
 
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'bounded_context.membership.overview.title'|trans }}
+            {{ 'overview.title'|trans }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'bounded_context.membership.overview.subtitle'|trans }}
+            {{ 'overview.subtitle'|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}
 
             <div class="mb-8">
                 <span>
-                    {{ 'bounded_context.membership.overview.current_plan'|trans }}
+                    {{ 'overview.current_plan'|trans }}
                 </span>
                 <span class="font-bold">
                     {{ ('bounded_context.membership.overview.plan.' ~ currentPlan.name.value ~ '.title')|trans }}
@@ -25,7 +27,7 @@
             </div>
 
             <div class="mb-4">
-                {{ 'bounded_context.membership.overview.available_plans'|trans }}
+                {{ 'overview.available_plans'|trans }}
             </div>
 
             <div class="grid grid-cols-none md:grid-cols-3 justify-between items-start gap-8 max-w-fit">
@@ -48,7 +50,7 @@
                             <div
                                 class="mt-4 bg-green-800 text-green-100 p-1"
                             >
-                                {{ 'bounded_context.membership.overview.this_is_current_plan'|trans }}
+                                {{ 'overview.this_is_current_plan'|trans }}
                             </div>
                         {% endif %}
 
@@ -60,7 +62,7 @@
                                         hover:bg-lime-600 hover:text-lime-50
                                     "
                             >
-                                {{ 'bounded_context.membership.overview.cta_book'|trans }}
+                                {{ 'overview.cta_book'|trans }}
                             </a>
                         {% endif %}
 

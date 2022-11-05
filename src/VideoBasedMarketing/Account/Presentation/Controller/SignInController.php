@@ -16,7 +16,7 @@ class SignInController
     #[Route(
         path        : [
             'en' => '{_locale}/account/sign-in',
-            'de' => '{_locale}/konto/einloggen',
+            'de' => '{_locale}/benutzerkonto/einloggen',
         ],
         name        : 'videobasedmarketing.account.sign_in',
         requirements: ['_locale' => '%app.route_locale_requirement%'],
