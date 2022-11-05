@@ -7,17 +7,15 @@ parameters:
     app.timezone: '%env(APP_TIMEZONE)%'
 
     app.routing.locale_requirement: 'en|de'
+
+    app.routing.route_prefix.without_locale.unprotected: ''
+    app.routing.route_prefix.without_locale.protected: 'my'
+
     app.routing.route_prefix.with_locale.unprotected.en: '{_locale}'
     app.routing.route_prefix.with_locale.unprotected.de: '{_locale}'
 
     app.routing.route_prefix.with_locale.protected.en: '{_locale}/my'
     app.routing.route_prefix.with_locale.protected.de: '{_locale}/mein-bereich'
-
-    app.routing.route_prefix.without_locale.unprotected.en: ''
-    app.routing.route_prefix.without_locale.unprotected.de: ''
-
-    app.routing.route_prefix.without_locale.protected.en: 'my'
-    app.routing.route_prefix.without_locale.protected.de: 'mein-bereich'
 
 services:
     # default configuration for services in *this* file

@@ -25,8 +25,8 @@ extends AbstractController
 {
     #[Route(
         path        : [
-            'en' => '{_locale}/membership/overview',
-            'de' => '{_locale}/mitgliedschaft/überblick',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout-with-stripe/{planName}/start',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kaufen-mit-stripe/{planName}/starten',
         ],
         name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
