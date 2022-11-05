@@ -2,13 +2,13 @@
 
 namespace App\Service\Feature\Recordings;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\Video;
 use App\Message\Feature\Recordings\GenerateMissingAssetsCommandMessage;
-use App\Service\Aspect\Filesystem\FilesystemService;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
+use App\Shared\Filesystem\Infrastructure\Service\FilesystemService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;

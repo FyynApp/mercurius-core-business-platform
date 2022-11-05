@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Aspect\Cookies;
+namespace App\Shared\Cookies\Infrastructure\Enum;
 
 enum CookieName: string
 {

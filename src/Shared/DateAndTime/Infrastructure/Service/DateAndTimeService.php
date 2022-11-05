@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Service\Aspect\DateAndTime;
+namespace App\Shared\DateAndTime\Infrastructure\Service;
 
 use DateTime;
-use DateTimeInterface;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
 
 
 class DateAndTimeService

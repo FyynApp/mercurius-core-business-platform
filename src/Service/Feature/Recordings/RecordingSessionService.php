@@ -2,13 +2,13 @@
 
 namespace App\Service\Feature\Recordings;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Entity\Feature\Recordings\Video;
 use App\Message\Feature\Recordings\RecordingSessionCreatedEntityLifecycleEventMessage;
-use App\Service\Aspect\DateAndTime\DateAndTimeService;
-use App\Service\Aspect\Filesystem\FilesystemService;
+use App\Shared\DateAndTime\Infrastructure\Service\DateAndTimeService;
+use App\Shared\Filesystem\Infrastructure\Service\FilesystemService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;

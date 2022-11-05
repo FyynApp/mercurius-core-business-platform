@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Service\Aspect\Cookies;
+namespace App\Shared\Cookies\Infrastructure\Service;
 
-use App\Service\Aspect\DateAndTime\DateAndTimeService;
+use App\Shared\Cookies\Infrastructure\Enum\CookieName;
+use App\Shared\DateAndTime\Infrastructure\Service\DateAndTimeService;
 use DateInterval;
 use DateTime;
 use Exception;

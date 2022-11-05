@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\ContentDelivery\Infrastructure\Service;
+namespace App\Shared\Infrastructure\Service;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;

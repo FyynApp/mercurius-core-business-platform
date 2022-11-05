@@ -2,19 +2,19 @@
 
 namespace App\Shared\Twig\Presentation\Service;
 
-use App\Service\Aspect\Cookies\CookiesService;
-use App\Service\Aspect\ShortId\ShortIdService;
 use App\Service\Feature\Dashboard\DashboardService;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
-use App\Shared\ContentDelivery\Infrastructure\Service\ContentDeliveryService;
+use App\Shared\Cookies\Infrastructure\Service\CookiesService;
+use App\Shared\Entities\Infrastructure\Service\ShortIdService;
+use App\Shared\Infrastructure\Service\ContentDeliveryService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 
 
 class TwigHelperService
 {
-    private ContentDeliveryService $contentDeliveryService;
+    private \App\Shared\Infrastructure\Service\ContentDeliveryService $contentDeliveryService;
 
     private AccountAssetsService $accountAssetsService;
 

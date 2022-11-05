@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Aspect\ShortId;
+namespace App\Shared\Entities\Infrastructure\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;

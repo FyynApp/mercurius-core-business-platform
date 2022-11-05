@@ -2,7 +2,6 @@
 
 namespace App\Service\Feature\Presentationpages;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Entity\Feature\Presentationpages\BgColor;
 use App\Entity\Feature\Presentationpages\FgColor;
 use App\Entity\Feature\Presentationpages\Presentationpage;
@@ -13,8 +12,9 @@ use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Presentationpages\TextColor;
 use App\Entity\Feature\Recordings\Video;
 use App\Message\Feature\Presentationpages\GeneratePresentationpageScreenshotCommandMessage;
-use App\Service\Aspect\DateAndTime\DateAndTimeService;
-use App\Service\Aspect\Filesystem\FilesystemService;
+use App\Shared\DateAndTime\Infrastructure\Service\DateAndTimeService;
+use App\Shared\Filesystem\Infrastructure\Service\FilesystemService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;

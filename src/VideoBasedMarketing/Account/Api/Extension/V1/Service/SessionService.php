@@ -2,7 +2,6 @@
 
 namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Service;
 
-use App\Shared\ContentDelivery\Infrastructure\Service\ContentDeliveryService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use InvalidArgumentException;
@@ -10,13 +9,13 @@ use InvalidArgumentException;
 
 class SessionService
 {
-    private ContentDeliveryService $contentDeliveryService;
+    private \App\Shared\Infrastructure\Service\ContentDeliveryService $contentDeliveryService;
 
     private MembershipService $membershipService;
 
     public function __construct(
-        ContentDeliveryService $contentDeliveryService,
-        MembershipService      $membershipService
+        \App\Shared\Infrastructure\Service\ContentDeliveryService $contentDeliveryService,
+        MembershipService                                         $membershipService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;

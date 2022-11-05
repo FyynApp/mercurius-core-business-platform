@@ -4,7 +4,7 @@ namespace App\Components\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
 use App\Security\VotingAttribute;
-use App\Service\Aspect\DateAndTime\DateAndTimeService;
+use App\Shared\DateAndTime\Infrastructure\Service\DateAndTimeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;

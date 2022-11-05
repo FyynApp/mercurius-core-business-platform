@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Account\Infrastructure\Service;
 
-use App\Shared\ContentDelivery\Infrastructure\Service\ContentDeliveryService;
+use App\Shared\Infrastructure\Service\ContentDeliveryService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 
 

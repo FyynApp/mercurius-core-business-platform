@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Aspect\Filesystem;
+namespace App\Shared\Filesystem\Infrastructure\Service;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 

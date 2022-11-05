@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Shared\ContentDelivery\Infrastructure\Controller;
+namespace App\Shared\Infrastructure\Controller;
 
-use App\Shared\ContentDelivery\Infrastructure\Service\ContentDeliveryService;
+use App\Shared\Infrastructure\Service\ContentDeliveryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
