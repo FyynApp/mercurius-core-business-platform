@@ -56,7 +56,7 @@
 
                         {% if MembershipService.planBookableForUser(plan, app.user) %}
                             <a
-                                    href="{{ path('bounded_context.membership.subscription.checkout.start', { 'planName': plan.name.value }) }}"
+                                    href="{{ path('videobasedmarketing.membership.subscription.checkout.start', { 'planName': plan.name.value }) }}"
                                     class="
                                         mt-4 p-4 bg-lime-700 text-lime-100 font-bold text-center rounded-md shadow-md
                                         hover:bg-lime-600 hover:text-lime-50

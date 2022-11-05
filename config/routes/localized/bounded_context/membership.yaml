@@ -1,14 +1,3 @@
-bounded_context.membership.overview:
-  path: /my/membership
-  controller: App\VideoBasedMarketing\Membership\Presentation\Controller\MembershipController::overviewAction
-  methods: [ GET ]
-
-bounded_context.membership.subscription.checkout.start:
-  path: /my/membership/subscription/checkout/{planName}/start
-  controller: App\VideoBasedMarketing\Membership\Presentation\Controller\MembershipController::subscriptionCheckoutStartAction
-  methods: [ GET ]
-
-
 bounded_context.membership.subscription.checkout_with_payment_processor_stripe.start:
   path: /my/membership/subscription/checkout-with-stripe/{planName}/start
   controller: App\VideoBasedMarketing\Membership\Application\Controller\PaymentProcessorStripeCheckoutController::subscriptionCheckoutStartAction
