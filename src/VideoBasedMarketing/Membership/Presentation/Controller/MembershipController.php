@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Membership\Application\Controller;
+namespace App\VideoBasedMarketing\Membership\Presentation\Controller;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Membership\Domain\Entity\PaymentProcessor;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Membership\Application\Service;
+namespace App\VideoBasedMarketing\Membership\Infrastructure\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan;

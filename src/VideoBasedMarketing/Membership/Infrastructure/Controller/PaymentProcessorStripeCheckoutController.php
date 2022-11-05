@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Membership\Application\Controller;
+namespace App\VideoBasedMarketing\Membership\Infrastructure\Controller;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Membership\Application\Service\PaymentProcessorStripeService;

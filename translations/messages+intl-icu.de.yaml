@@ -12,9 +12,9 @@ mainnav:
   presentationpages: 'Landingpages'
 
 sidenav:
-  signin: 'Einloggen'
-  signup: 'Registrieren'
-  signout: 'Ausloggen'
+  sign_in: 'Einloggen'
+  sign_up: 'Registrieren'
+  sign_out: 'Ausloggen'
 
 footernav:
   german: 'Deutsch'

@@ -1,11 +1,11 @@
 bounded_context.membership.overview:
   path: /my/membership
-  controller: App\VideoBasedMarketing\Membership\Application\Controller\MembershipController::overviewAction
+  controller: App\VideoBasedMarketing\Membership\Presentation\Controller\MembershipController::overviewAction
   methods: [ GET ]
 
 bounded_context.membership.subscription.checkout.start:
   path: /my/membership/subscription/checkout/{planName}/start
-  controller: App\VideoBasedMarketing\Membership\Application\Controller\MembershipController::subscriptionCheckoutStartAction
+  controller: App\VideoBasedMarketing\Membership\Presentation\Controller\MembershipController::subscriptionCheckoutStartAction
   methods: [ GET ]
 
 

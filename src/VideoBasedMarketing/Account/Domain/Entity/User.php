@@ -147,7 +147,7 @@ class User
     }
 
 
-    /** @var \App\VideoBasedMarketing\Membership\Domain\Entity\Subscription[]|Collection */
+    /** @var Subscription[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class, cascade: ['persist'])]
     private array|Collection $subscriptions;
 

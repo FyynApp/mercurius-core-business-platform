@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Membership\Domain\Entity;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
+use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity]
 #[ORM\Table(name: 'subscriptions')]
 class Subscription
-    implements \App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface
+    implements UserOwnedEntityInterface
 {
     public function __construct(
         User $user,
