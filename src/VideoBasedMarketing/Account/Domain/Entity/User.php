@@ -6,6 +6,7 @@ use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Entity\Feature\Recordings\Video;
+use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Account\Infrastructure\Security\UnregisteredUserAuthenticator;

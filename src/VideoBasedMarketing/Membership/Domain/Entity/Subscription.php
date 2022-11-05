@@ -2,9 +2,11 @@
 
 namespace App\VideoBasedMarketing\Membership\Domain\Entity;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Service\Aspect\DateAndTime\DateAndTimeService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
+use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;

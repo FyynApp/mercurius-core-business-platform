@@ -2,12 +2,12 @@
 
 namespace App\VideoBasedMarketing\Membership\Infrastructure\Controller;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlanName;
-use App\VideoBasedMarketing\Membership\Domain\Entity\PaymentProcessor;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
-use App\Enum\FlashMessageLabel;
 use App\Security\VotingAttribute;
+use App\Shared\Twig\Presentation\Enum\FlashMessageLabel;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
+use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Membership\Infrastructure\Service\PaymentProcessorStripeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -2,8 +2,8 @@
 
 namespace App\VideoBasedMarketing\Account\Infrastructure\DataFixture;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\Role;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;

@@ -4,10 +4,10 @@ namespace App\VideoBasedMarketing\Membership\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan;
-use App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlanName;
-use App\VideoBasedMarketing\Membership\Domain\Entity\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
-use App\VideoBasedMarketing\Membership\Domain\Entity\SubscriptionStatus;
+use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
+use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
+use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 

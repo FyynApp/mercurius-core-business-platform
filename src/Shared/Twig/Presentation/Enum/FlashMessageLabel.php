@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enum;
+namespace App\Shared\Twig\Presentation\Enum;
 
 enum FlashMessageLabel: string
 {

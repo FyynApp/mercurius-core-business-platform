@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Membership\Domain\Entity;
+namespace App\VideoBasedMarketing\Membership\Domain\Enum;
 
 enum SubscriptionStatus: string
 {

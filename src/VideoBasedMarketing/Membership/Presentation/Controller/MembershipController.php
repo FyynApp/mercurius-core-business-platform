@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Membership\Presentation\Controller;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Membership\Domain\Entity\PaymentProcessor;
+use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

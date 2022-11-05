@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Account\Domain\Entity;
+namespace App\VideoBasedMarketing\Account\Domain\Enum;
 
 enum Role: string
 {

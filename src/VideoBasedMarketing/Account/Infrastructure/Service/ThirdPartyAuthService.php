@@ -2,8 +2,8 @@
 
 namespace App\VideoBasedMarketing\Account\Infrastructure\Service;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\Role;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\HandleReceivedLinkedInResourceOwnerResult;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use Doctrine\ORM\EntityManagerInterface;

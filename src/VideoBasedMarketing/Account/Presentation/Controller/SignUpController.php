@@ -2,10 +2,10 @@
 
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
-use App\Enum\FlashMessageLabel;
 use App\Security\Feature\Account\EmailVerifier;
-use App\VideoBasedMarketing\Account\Domain\Entity\Role;
+use App\Shared\Twig\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\SignUpType;

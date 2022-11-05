@@ -3,6 +3,9 @@
 namespace App\VideoBasedMarketing\Membership\Domain\Entity;
 
 
+use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
+
+
 class MembershipPlan
 {
     private MembershipPlanName $name;

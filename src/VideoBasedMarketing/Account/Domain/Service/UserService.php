@@ -2,8 +2,8 @@
 
 namespace App\VideoBasedMarketing\Account\Domain\Service;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\Role;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
