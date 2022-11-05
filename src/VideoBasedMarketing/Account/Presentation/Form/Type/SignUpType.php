@@ -26,11 +26,12 @@ class SignUpType
             ->add(
                 'agreeTerms',
                 CheckboxType::class, [
+                    'translation_domain' => 'videobasedmarketing.account',
                     'mapped' => false,
                     'constraints' => [
                         new IsTrue(
                             [
-                                'message' => 'You should agree to our terms.',
+                                'message' => 'validation.agree_terms.must_be_true',
                             ]
                         ),
                     ],
@@ -41,18 +42,19 @@ class SignUpType
                 PasswordType::class, [
                     // instead of being set onto the object directly,
                     // this is read and encoded in the controller
+                    'translation_domain' => 'videobasedmarketing.account',
                     'mapped' => false,
                     'attr' => ['autocomplete' => 'new-password'],
                     'constraints' => [
                         new NotBlank(
                             [
-                                'message' => 'Please enter a password',
+                                'message' => 'validation.password.not_blank',
                             ]
                         ),
                         new Length(
                             [
                                 'min' => 6,
-                                'minMessage' => 'Your password should be at least {{ limit }} characters',
+                                'minMessage' => 'sign_up.validation.password.min_length',
                                 // max length allowed by Symfony for security reasons
                                 'max' => 4096,
                             ]

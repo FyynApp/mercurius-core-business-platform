@@ -1,4 +1,6 @@
-login:
+sign_in:
+  title: 'Einloggen'
+  content_title: 'In das Benutzerkonto einloggen'
   placeholder:
     email: 'E-Mail Adresse'
     password: 'Passwort'
@@ -9,7 +11,9 @@ login:
   sign_in_with_linkedin_question: 'Sind Sie LinkedIn-Nutzer?'
   sign_in_with_linkedin_info: 'Dann können Sie sich hier mit nur einem Klick direkt bei Fyyn.io einloggen - eine vorherige Registrierung ist nicht erforderlich!'
 
-register:
+sign_up:
+  title: 'Registrieren'
+  content_title: 'Ein Benutzerkonto anlegen'
   placeholder:
     email: 'E-Mail Adresse'
     password: 'Passwort'
@@ -20,11 +24,15 @@ register:
   or: 'oder'
   sign_up_with_linkedin_question: 'Sind Sie LinkedIn-Nutzer?'
   sign_up_with_linkedin_info: 'Dann können Sie sich hier mit nur einem Klick direkt bei Fyyn.io registrieren!'
+  validation:
+    password:
+      not_blank: 'Das Passwort darf nicht leer sein.'
+      min_length: 'Das Passwort muss mindestens 6 Zeichen lang sein.'
 
 thirdpartyauth:
   errorpage:
     title: 'Ein Fehler ist aufgetreten.'
-    cta_back_to_login: 'Zurück zum Login'
-    cta_back_to_registration: 'Zurück zur Registrierung'
+    cta_back_to_sign_in: 'Zurück zum Login'
+    cta_back_to_sign_up: 'Zurück zur Registrierung'
     linkedin:
       infotext: 'Leider ist bei der Kommmunikation mit LinkedIn ein unerwarteter Fehler aufgetreten (Fehler {error}). Bitte wiederholen Sie den Vorgang.'

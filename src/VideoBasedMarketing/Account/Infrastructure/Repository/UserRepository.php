@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Account\Domain\Repository;
+namespace App\VideoBasedMarketing\Account\Infrastructure\Repository;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

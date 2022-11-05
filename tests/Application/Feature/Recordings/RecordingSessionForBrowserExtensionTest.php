@@ -2,9 +2,9 @@
 
 namespace App\Tests\Application\Feature\Recordings;
 
-use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
-use App\VideoBasedMarketing\Account\Domain\Repository\UserRepository;
 use App\Entity\Feature\Recordings\RecordingSession;
+use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
+use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

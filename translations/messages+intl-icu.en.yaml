@@ -91,35 +91,3 @@ feature:
         text_color_sample_headline: 'Example headline'
         text_color_sample_paragraph: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a commodo ipsum, sed hendrerit nulla. Donec at malesuada nisi. Etiam in egestas urna. Proin nec eleifend nibh, in dapibus libero.'
         submit_cta: 'Create presentation page'
-
-  account:
-    login:
-      placeholder:
-        email: 'E-mail address'
-        password: 'Password'
-      cta:
-        sign_in: 'Sign in'
-        sign_in_with_linkedin: 'Sign in with LinkedIn'
-      or: 'or'
-      sign_in_with_linkedin_question: 'Already using LinkedIn?'
-      sign_in_with_linkedin_info: 'Use your existing LinkedIn account to sign in with Fyyn.io with a simple click - no sign_up needed!'
-
-    register:
-      placeholder:
-        email: 'E-mail address'
-        password: 'Password'
-      cta:
-        accept_terms: 'Accept terms'
-        sign_up: 'Sign up'
-        sign_up_with_linkedin: 'Sign up with LinkedIn'
-      or: 'or'
-      sign_up_with_linkedin_question: 'Already using LinkedIn?'
-      sign_up_with_linkedin_info: 'Use your existing LinkedIn account to sign up with Fyyn.io with a simple click!'
-
-    thirdpartyauth:
-      errorpage:
-        title: 'An error occured.'
-        cta_back_to_login: 'Back to sign in'
-        cta_back_to_registration: 'Back to sign up'
-        linkedin:
-          infotext: 'We are afraid there was a problem while exchanging data with LinkedIn (Code {error}). Please try again.'

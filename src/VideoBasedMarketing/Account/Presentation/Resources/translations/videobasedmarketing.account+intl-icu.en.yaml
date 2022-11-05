@@ -1,30 +1,40 @@
-login:
+sign_in:
+  title: 'Sign in'
+  content_title: 'Sign into your user account'
   placeholder:
-    email: 'E-Mail Adresse'
-    password: 'Passwort'
+    email: 'E-mail address'
+    password: 'Password'
   cta:
     sign_in: 'Sign in'
     sign_in_with_linkedin: 'Sign in with LinkedIn'
   or: 'or'
-  sign_in_with_linkedin_question: 'Sind Sie LinkedIn-Nutzer?'
-  sign_in_with_linkedin_info: 'Dann können Sie sich hier mit nur einem Klick direkt bei Fyyn.io einloggen - eine vorherige Registrierung ist nicht erforderlich!'
+  sign_in_with_linkedin_question: 'Already on LinkedIn?'
+  sign_in_with_linkedin_info: 'Use LinkedIn to sign in to Fyyn.io with a single click - no sign up required!'
 
-register:
+sign_up:
+  title: 'Sign up'
+  content_title: 'Sign up for a user account'
   placeholder:
-    email: 'E-Mail Adresse'
-    password: 'Passwort'
+    email: 'E-mail address'
+    password: 'Password'
   cta:
-    accept_terms: 'AGB akzeptieren'
-    sign_up: 'Registrieren'
-    sign_up_with_linkedin: 'Registrieren mit LinkedIn'
-  or: 'oder'
-  sign_up_with_linkedin_question: 'Sind Sie LinkedIn-Nutzer?'
-  sign_up_with_linkedin_info: 'Dann können Sie sich hier mit nur einem Klick direkt bei Fyyn.io registrieren!'
+    accept_terms: 'Accept Terms & Conditions'
+    sign_up: 'Sign up'
+    sign_up_with_linkedin: 'Sign up with LinkedIn'
+  or: 'or'
+  sign_up_with_linkedin_question: 'Already on LinkedIn?'
+  sign_up_with_linkedin_info: 'Use LinkedIn to sign up on Fyyn.io with a single click!'
+  validation:
+    agree_terms:
+      must_be_true: 'Please accept our Terms & Conditions.'
+    password:
+      not_blank: 'The password must not be empty.'
+      min_length: 'The password must be at least 6 characters long.'
 
 thirdpartyauth:
   errorpage:
-    title: 'Ein Fehler ist aufgetreten.'
-    cta_back_to_login: 'Zurück zum Login'
-    cta_back_to_registration: 'Zurück zur Registrierung'
+    title: 'An error occurred.'
+    cta_back_to_sign_in: 'Back to sign in form'
+    cta_back_to_sign_up: 'Back to sign up form'
     linkedin:
-      infotext: 'Leider ist bei der Kommmunikation mit LinkedIn ein unerwarteter Fehler aufgetreten (Fehler {error}). Bitte wiederholen Sie den Vorgang.'
+      infotext: 'While exchaning data with LinkedIn, an unexpected error occurred (error {error}). Please try again.'

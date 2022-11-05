@@ -16,6 +16,16 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
+            App\VideoBasedMarketing\Account\Domain:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/VideoBasedMarketing/Account/Domain/Entity'
+                prefix: 'App\VideoBasedMarketing\Account\Domain'
+
+            App\VideoBasedMarketing\Account\Infrastructure:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/VideoBasedMarketing/Account/Infrastructure/Entity'
+                prefix: 'App\VideoBasedMarketing\Account\Infrastructure'
+
 when@test:
     doctrine:
         dbal:

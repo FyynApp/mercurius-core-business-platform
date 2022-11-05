@@ -2,14 +2,14 @@
 
 namespace App\VideoBasedMarketing\Account\Domain\Entity;
 
-use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
-use App\VideoBasedMarketing\Account\Infrastructure\Security\UnregisteredUserAuthenticator;
-use App\VideoBasedMarketing\Account\Domain\Repository\UserRepository;
-use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Entity\Feature\Recordings\Video;
+use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
+use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
+use App\VideoBasedMarketing\Account\Infrastructure\Security\UnregisteredUserAuthenticator;
+use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

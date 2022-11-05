@@ -2,10 +2,10 @@
 
 namespace App\Tests\Integration\Feature\Dashboard;
 
-use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
-use App\VideoBasedMarketing\Account\Domain\Repository\UserRepository;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Service\Feature\Dashboard\DashboardService;
+use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
+use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 

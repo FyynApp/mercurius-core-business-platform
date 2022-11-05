@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'sidenav.signup'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'sidenav.signup'|trans }}{% endblock %}
+{% trans_default_domain 'videobasedmarketing.account' %}
+
+{% block title %}{{ 'sign_up.title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'sign_up.content_title'|trans }}{% endblock %}
 
 {% block body %}
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <div>
+    <div class="mt-16">
         <div class="min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8">
             <div class="max-w-md w-full space-y-8">
                 {{ form_start(signUpForm) }}
@@ -30,27 +32,31 @@
                     <input type="hidden" name="remember" value="true">
                     <div class="rounded-md shadow-sm -space-y-px">
                         <div>
-                            <label for="{{ signUpForm.children.email.vars.id }}" class="sr-only">Email address</label>
+                            <label for="{{ signUpForm.children.email.vars.id }}" class="sr-only">
+                                {{ 'sign_up.placeholder.email'|trans }}
+                            </label>
                             <input
-                                id="{{ signUpForm.children.email.vars.id }}"
-                                name="{{ signUpForm.children.email.vars.full_name }}"
-                                type="email"
-                                autocomplete="email"
-                                required
-                                class="appearance-none rounded-none relative block h-16 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="{{ 'feature.account.register.placeholder.email'|trans }}"
+                                    id="{{ signUpForm.children.email.vars.id }}"
+                                    name="{{ signUpForm.children.email.vars.full_name }}"
+                                    type="email"
+                                    autocomplete="email"
+                                    required
+                                    class="appearance-none rounded-none relative block h-16 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="{{ 'sign_up.placeholder.email'|trans }}"
                             />
                         </div>
                         <div>
-                            <label for="{{ signUpForm.children.plainPassword.vars.id }}" class="sr-only">Password</label>
+                            <label for="{{ signUpForm.children.plainPassword.vars.id }}" class="sr-only">
+                                {{ 'sign_up.placeholder.password'|trans }}
+                            </label>
                             <input
-                                id="{{ signUpForm.children.plainPassword.vars.id }}"
-                                name="{{ signUpForm.children.plainPassword.vars.full_name }}"
-                                type="password"
-                                autocomplete="current-password"
-                                required
-                                class="appearance-none rounded-none relative block h-16 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="{{ 'feature.account.register.placeholder.password'|trans }}"
+                                    id="{{ signUpForm.children.plainPassword.vars.id }}"
+                                    name="{{ signUpForm.children.plainPassword.vars.full_name }}"
+                                    type="password"
+                                    autocomplete="current-password"
+                                    required
+                                    class="appearance-none rounded-none relative block h-16 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="{{ 'sign_up.placeholder.password'|trans }}"
                             />
                         </div>
                     </div>
@@ -69,7 +75,7 @@
                                     class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                             >
                             <label for="{{ signUpForm.children.agreeTerms.vars.id }}" class="ml-2 block text-sm text-gray-900">
-                                {{ 'feature.account.register.cta.accept_terms'|trans }}
+                                {{ 'sign_up.cta.accept_terms'|trans }}
                             </label>
                         </div>
                     </div>
@@ -79,7 +85,7 @@
                             type="submit"
                             class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
                         >
-                            {{ 'feature.account.register.cta.sign_up'|trans }}
+                            {{ 'sign_up.cta.sign_up'|trans }}
                         </button>
                     </div>
                 </div>
@@ -91,8 +97,8 @@
             </div>
         </div>
 
-        <div class="mt-16 min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8 text-gray-500">
-            —&nbsp;&nbsp;&nbsp;{{ 'feature.account.register.or'|trans }}&nbsp;&nbsp;&nbsp;—
+        <div class="mt-16 min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8 text-gray-500 font-light">
+            —&nbsp;&nbsp;&nbsp;{{ 'sign_up.or'|trans }}&nbsp;&nbsp;&nbsp;—
         </div>
 
         <div class="mt-16 mb-16 min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8">
@@ -103,10 +109,10 @@
                             <div class="w-0 flex-1 flex items-center">
                                 <div class="ml-2 flex-1 w-0">
                                     <p class="font-bold mb-2">
-                                        {{ 'feature.account.register.sign_up_with_linkedin_question'|trans }}
+                                        {{ 'sign_up.sign_up_with_linkedin_question'|trans }}
                                     </p>
                                     <p>
-                                        {{ 'feature.account.register.sign_up_with_linkedin_info'|trans }}
+                                        {{ 'sign_up.sign_up_with_linkedin_info'|trans }}
                                     </p>
                                 </div>
                             </div>
@@ -115,7 +121,7 @@
                                         href="{{ path('videobasedmarketing.account.thirdpartyauth.linkedin.start') }}"
                                         class="text-center flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-6 text-xs font-medium text-white shadow-sm hover:bg-indigo-700"
                                 >
-                                    {{ 'feature.account.register.cta.sign_up_with_linkedin'|trans }}
+                                    {{ 'sign_up.cta.sign_up_with_linkedin'|trans }}
                                 </a>
                             </div>
                         </div>
