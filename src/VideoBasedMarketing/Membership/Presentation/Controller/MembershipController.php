@@ -42,7 +42,7 @@ class MembershipController
     #[Route(
         path        : [
             'en' => '{_locale}/my/membership/subscription/checkout/{planName}/start',
-            'de' => '{_locale}/mitgliedschaft/abonnement/kaufen/{planName}/starten',
+            'de' => '{_locale}/mitgliedschaft/abonnement/kauf/{planName}/start',
         ],
         name        : 'videobasedmarketing.membership.subscription.checkout.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],

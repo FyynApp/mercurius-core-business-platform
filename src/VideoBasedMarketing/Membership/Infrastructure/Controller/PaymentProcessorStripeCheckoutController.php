@@ -10,7 +10,6 @@ use App\Enum\FlashMessageLabel;
 use App\Security\VotingAttribute;
 use App\VideoBasedMarketing\Membership\Infrastructure\Service\PaymentProcessorStripeService;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,7 @@ extends AbstractController
     #[Route(
         path        : [
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout-with-stripe/{planName}/start',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kaufen-mit-stripe/{planName}/starten',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kauf-über-stripe/{planName}/start',
         ],
         name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -53,9 +52,15 @@ extends AbstractController
         ));
     }
 
-    /**
-     * @throws Exception
-     */
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout-with-stripe/success',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kauf-über-stripe/erfolg',
+        ],
+        name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.success',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function subscriptionCheckoutSuccessAction(
         string $subscriptionId,
         Request $request,
@@ -79,21 +84,40 @@ extends AbstractController
 
         if ($success) {
             $this->addFlash(
-                FlashMessageLabel::Success->value, $translator->trans('bounded_context.membership.subscription_checkout.success_flash_message')
+                FlashMessageLabel::Success->value,
+                $translator->trans(
+                    'subscription_checkout.success_flash_message',
+                    [],
+                    'videobasedmarketing.membership'
+                )
             );
-            return $this->redirectToRoute('bounded_context.membership.overview');
+            return $this->redirectToRoute('videobasedmarketing.membership.overview');
         } else {
             throw new BadRequestHttpException('Successful checkout return did not result in an active subscription.');
         }
     }
 
-    public function subscriptionCheckoutCancelAction(
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout-with-stripe/cancellation',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kauf-über-stripe/abbruch',
+        ],
+        name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.cancellation',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function subscriptionCheckoutCancellationAction(
         TranslatorInterface $translator
     ): Response
     {
         $this->addFlash(
-            FlashMessageLabel::Warning->value, $translator->trans('bounded_context.membership.subscription_checkout.cancel_flash_message')
+            FlashMessageLabel::Warning->value,
+            $translator->trans(
+                'subscription_checkout.cancel_flash_message',
+                [],
+                'videobasedmarketing.membership'
+            )
         );
-        return $this->redirectToRoute('bounded_context.membership.overview');
+        return $this->redirectToRoute('videobasedmarketing.membership.overview');
     }
 }
