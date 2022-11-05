@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% trans_default_domain 'videobasedmarketing.membership' %}
-
 {% block body %}
 
-
     {% embed 'embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.membership' %}
+
         {% block contentBoxTitle %}
             {{ 'overview.title'|trans }}
         {% endblock %}
@@ -21,7 +21,7 @@
                     {{ 'overview.current_plan'|trans }}
                 </span>
                 <span class="font-bold">
-                    {{ ('bounded_context.membership.overview.plan.' ~ currentPlan.name.value ~ '.title')|trans }}
+                    {{ ('overview.plan.' ~ currentPlan.name.value ~ '.title')|trans }}
                 </span>
 
             </div>
@@ -39,11 +39,11 @@
                             "
                     >
                         <div class="text-lg font-bold mb-2">
-                            {{ ('bounded_context.membership.overview.plan.' ~ plan.name.value ~ '.title')|trans }}
+                            {{ ('overview.plan.' ~ plan.name.value ~ '.title')|trans }}
                         </div>
 
                         <div class="text-sm">
-                            {{ ('bounded_context.membership.overview.plan.' ~ plan.name.value ~ '.description')|trans }}
+                            {{ ('overview.plan.' ~ plan.name.value ~ '.description')|trans }}
                         </div>
 
                         {% if plan.name is same as currentPlan.name %}

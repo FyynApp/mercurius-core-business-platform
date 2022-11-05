@@ -57,7 +57,7 @@ class MainNavigationComponent
 
                 new NavigationEntry(
                     'mainnav.membership',
-                    'bounded_context.membership.overview',
+                    'videobasedmarketing.membership.overview',
                     []
                 ),
 

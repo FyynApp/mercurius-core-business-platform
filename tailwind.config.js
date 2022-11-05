@@ -3,7 +3,10 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-  content: ['./templates/**/*.html.twig', './assets/**/*.ts'],
+  content: [
+      './assets/**/*.ts',
+      './**/templates/**/*.html.twig'
+  ],
   safelist: [
     'md:col-span-1',
     'md:col-span-2',

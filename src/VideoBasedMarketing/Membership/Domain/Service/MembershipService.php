@@ -16,6 +16,11 @@ class MembershipService
 {
     private EntityManagerInterface $entityManager;
 
+    public static function foo(): string
+    {
+        return 'bar';
+    }
+
     public function __construct(
         EntityManagerInterface $entityManager
     )

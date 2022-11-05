@@ -47,6 +47,7 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: /my/, roles: ROLE_REGISTERED_USER }
+        - { path: /mein-bereich/, roles: ROLE_REGISTERED_USER }
 
 
 when@dev:

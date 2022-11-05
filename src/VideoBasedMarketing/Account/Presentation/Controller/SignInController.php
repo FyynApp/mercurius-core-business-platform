@@ -15,11 +15,11 @@ class SignInController
 {
     #[Route(
         path        : [
-            'en' => '{_locale}/account/sign-in',
-            'de' => '{_locale}/benutzerkonto/einloggen',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen',
         ],
         name        : 'videobasedmarketing.account.sign_in',
-        requirements: ['_locale' => '%app.route_locale_requirement%'],
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
     public function indexAction(

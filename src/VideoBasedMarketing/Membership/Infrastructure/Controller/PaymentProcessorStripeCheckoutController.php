@@ -16,12 +16,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class PaymentProcessorStripeCheckoutController
 extends AbstractController
 {
+    #[Route(
+        path        : [
+            'en' => '{_locale}/membership/overview',
+            'de' => '{_locale}/mitgliedschaft/überblick',
+        ],
+        name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.start',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function subscriptionCheckoutStartAction(
         string                        $planName,
         MembershipService             $membershipService,

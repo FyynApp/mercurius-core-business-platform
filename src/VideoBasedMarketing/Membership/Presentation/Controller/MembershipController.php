@@ -17,11 +17,11 @@ class MembershipController
 {
     #[Route(
         path        : [
-            'en' => '{_locale}/membership/overview',
-            'de' => '{_locale}/mitgliedschaft/überblick',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/overview',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/überblick',
         ],
         name        : 'videobasedmarketing.membership.overview',
-        requirements: ['_locale' => '%app.route_locale_requirement%'],
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
     public function overviewAction(MembershipService $membershipService): Response
@@ -41,11 +41,11 @@ class MembershipController
 
     #[Route(
         path        : [
-            'en' => '{_locale}/membership/subscription/checkout/{planName}/start',
+            'en' => '{_locale}/my/membership/subscription/checkout/{planName}/start',
             'de' => '{_locale}/mitgliedschaft/abonnement/abschluss/{planName}/starten',
         ],
         name        : 'videobasedmarketing.membership.subscription.checkout.start',
-        requirements: ['_locale' => '%app.route_locale_requirement%'],
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
     public function subscriptionCheckoutStartAction(

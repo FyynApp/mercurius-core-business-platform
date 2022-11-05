@@ -35,11 +35,11 @@ class SignUpController
 
     #[Route(
         path        : [
-            'en' => '{_locale}/account/sign-up',
-            'de' => '{_locale}/benutzerkonto/neu-registrieren',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-up',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/neu-registrieren',
         ],
         name        : 'videobasedmarketing.account.sign_up',
-        requirements: ['_locale' => '%app.route_locale_requirement%'],
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
     public function registerAction(
