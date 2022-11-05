@@ -3,12 +3,10 @@
 namespace App\Controller\Api\Extension\V1;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\Controller\AbstractController;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Security\VotingAttribute;
-use App\Service\Aspect\ContentDelivery\ContentDeliveryService;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,38 +23,6 @@ use Symfony\Component\Routing\RouterInterface;
 class ExtensionApiV1Controller
     extends AbstractController
 {
-    public function getSessionInfoAction(
-        ContentDeliveryService $contentDeliveryService,
-        MembershipService      $membershipService
-    ): Response
-    {
-        /** @var null|User $user */
-        $user = $this->getUser();
-
-        if (is_null($user)) {
-            return new JsonResponse(
-                'Requires an active session on fyyn.io in this browser.',
-                Response::HTTP_UNAUTHORIZED
-            );
-        }
-
-        $responseContent = [
-            'settings' => [
-                'userIsLoggedIn' => true,
-                'userIsRegistered' => $user->isRegistered(),
-                'userName' => $user->getUserIdentifier(),
-                'userFirstName' => $user->getFirstName(),
-                'userLastName' => $user->getLastName(),
-                'userImage' => $contentDeliveryService->getUrlForUserProfilePhoto($user),
-                'membershipPlan' => $membershipService
-                    ->getCurrentlySubscribedMembershipPlanForUser($user)
-                    ->getName()
-                    ->value
-            ]
-        ];
-
-        return new JsonResponse($responseContent);
-    }
 
     public function createRecordingSessionAction(
         RecordingSessionService $recordingSessionService,

@@ -11,7 +11,6 @@ use App\Entity\Feature\Presentationpages\PresentationpageElementHorizontalPositi
 use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use App\Entity\Feature\Presentationpages\TextColor;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
-use App\Service\Feature\Recordings\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,18 +45,14 @@ class PresentationspageEditFormLiveComponent
 
     private EntityManagerInterface $entityManager;
 
-    public VideoService $videoService;
-
 
     public function __construct(
         LoggerInterface        $logger,
-        EntityManagerInterface $entityManager,
-        VideoService           $videoService
+        EntityManagerInterface $entityManager
     )
     {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
-        $this->videoService = $videoService;
     }
 
     public function mount(?Presentationpage $presentationpage = null)

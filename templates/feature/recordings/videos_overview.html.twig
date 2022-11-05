@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
+{# @var TwigHelperService \App\Shared\Twig\Presentation\Service\TwigHelperService #}
 
 {% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
@@ -15,7 +15,7 @@
 
     {% embed 'embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
-            {{ 'feature.recordings.videos_overview.title'|trans({ numberOfRecordingSessions: VideoService.availableVideos(app.user)|length}) }}
+            {{ 'feature.recordings.videos_overview.title'|trans({ numberOfRecordingSessions: TwigHelperService.videoService.availableVideos(app.user)|length}) }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
@@ -46,7 +46,7 @@
                     </a>
                 </div>
 
-                {% for video in VideoService.availableVideos(app.user) %}
+                {% for video in TwigHelperService.videoService.availableVideos(app.user) %}
                     {# @var video \App\Entity\Feature\Recordings\Video #}
 
                     {{ component('feature_recordings_video_manage_widget', {

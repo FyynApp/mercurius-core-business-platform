@@ -1,4 +1,6 @@
 {# @var this \App\Components\Feature\Presentationpages\PresentationspageEditFormLiveComponent #}
+{# @var TwigHelperService \App\Shared\Twig\Presentation\Service\TwigHelperService #}
+
 <div {{ attributes }}>
 
     {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 7, colspanRight: 5 } %}
@@ -519,7 +521,7 @@
                                         {% else %}
                                             <img
                                                     class="w-56 rounded-md"
-                                                    src="{{ this.videoService.posterStillAssetUrl(this.presentationpage.video) }}"
+                                                    src="{{ TwigHelperService.videoService.posterStillAssetUrl(this.presentationpage.video) }}"
                                             >
                                         {% endif %}
                                     </div>

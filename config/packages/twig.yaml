@@ -6,11 +6,7 @@ twig:
         'src/VideoBasedMarketing/Membership/Presentation/Resources/templates': 'videobasedmarketing.membership'
 
     globals:
-        CookiesService: '@App\Service\Aspect\Cookies\CookiesService'
-        ContentDeliveryService: '@App\Service\Aspect\ContentDelivery\ContentDeliveryService'
-        MembershipService: '@App\VideoBasedMarketing\Membership\Domain\Service\MembershipService'
-        VideoService: '@App\Service\Feature\Recordings\VideoService'
-        ShortIdService: '@App\Service\Aspect\ShortId\ShortIdService'
+        TwigHelperService: '@App\Shared\Twig\Presentation\Service\TwigHelperService'
 
 when@test:
     twig:

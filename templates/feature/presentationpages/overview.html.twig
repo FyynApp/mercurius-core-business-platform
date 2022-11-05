@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {# @var PresentationpagesService \App\Service\Feature\Presentationpages\PresentationpagesService #}
-{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
+{# @var TwigHelperService \App\Shared\Twig\Presentation\Service\TwigHelperService #}
 
 {% block title %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
@@ -46,7 +46,7 @@
 
                 </div>
 
-                {% if PresentationpagesService.presentationpagesForUser(
+                {% if TwigHelperService.presentationpagesService.presentationpagesForUser(
                     app.user,
                     constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')
                 )|length > 0 %}
@@ -59,7 +59,7 @@
                             bg-white
                     ">
 
-                        {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')) %}
+                        {% for presentationpage in TwigHelperService.presentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')) %}
                             {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
 
                             <div class="
@@ -160,7 +160,7 @@
 
                 </div>
 
-                {% if PresentationpagesService.presentationpagesForUser(
+                {% if TwigHelperService.presentationpagesService.presentationpagesForUser(
                     app.user,
                     constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
                     constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::Default')
@@ -175,7 +175,7 @@
                     ">
 
                         {% for presentationpage
-                            in PresentationpagesService.presentationpagesForUser(
+                            in TwigHelperService.presentationpagesService.presentationpagesForUser(
                                 app.user,
                                 constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
                                 constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::Default')
@@ -237,7 +237,7 @@
                     </div>
                 {% endif %}
 
-                {% if PresentationpagesService.presentationpagesForUser(
+                {% if TwigHelperService.presentationpagesService.presentationpagesForUser(
                     app.user,
                     constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
                     constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::VideoOnly')
@@ -253,7 +253,7 @@
                     ">
 
                         {% for presentationpage
-                            in PresentationpagesService.presentationpagesForUser(
+                            in TwigHelperService.presentationpagesService.presentationpagesForUser(
                             app.user,
                             constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
                             constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::VideoOnly')

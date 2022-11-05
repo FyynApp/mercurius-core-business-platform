@@ -71,8 +71,7 @@ class RecordingsController
     public function videosOverviewAction(VideoService $videoService): Response
     {
         return $this->render(
-            'feature/recordings/videos_overview.html.twig',
-            ['VideoService' => $videoService]
+            'feature/recordings/videos_overview.html.twig'
         );
     }
 

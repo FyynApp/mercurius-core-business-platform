@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Aspect\ContentDelivery;
+namespace App\Shared\ContentDelivery\Infrastructure\Controller;
 
-use App\Service\Aspect\ContentDelivery\ContentDeliveryService;
+use App\Shared\ContentDelivery\Infrastructure\Service\ContentDeliveryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +19,17 @@ class ContentDeliveryController
         $checksum = $request->get('checksum');
         $externalAssetUrl = $request->get('externalAssetUrl');
         $contentType = $request->get('contentType');
-        if ($checksum !== $contentDeliveryService->getChecksumForServingExternalAsset($externalAssetUrl, $contentType)) {
-            return new Response('Bad request', Response::HTTP_BAD_REQUEST);
+
+        if ($checksum !== $contentDeliveryService
+                ->getChecksumForServingExternalAsset(
+                    $externalAssetUrl,
+                    $contentType
+                )
+        ) {
+            return new Response(
+                'Bad request',
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
         $assetContent = file_get_contents($externalAssetUrl);

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{# @var DashboardService \App\Service\Feature\Dashboard\DashboardService #}
+{# @var TwigHelperService \App\Shared\Twig\Presentation\Service\TwigHelperService #}
 
 {% block title %}{{ 'mainnav.dashboard'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.dashboard'|trans }}{% endblock %}
@@ -19,16 +19,16 @@
         {% block contentBoxContent %}
             <div class="collection-box">
 
-                {% if DashboardService.firstName(app.user) is not null
-                    and DashboardService.lastName(app.user) is not null
+                {% if TwigHelperService.dashboardService.firstName(app.user) is not null
+                    and TwigHelperService.dashboardService.lastName(app.user) is not null
                 %}
                     {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
                         {% block contentLeft %}
                             {{ 'feature.dashboard.show.your_name'|trans }}
                         {% endblock %}
                         {% block contentRight %}
-                            {{ DashboardService.firstName(app.user) }}
-                            {{ DashboardService.lastName(app.user) }}
+                            {{ TwigHelperService.dashboardService.firstName(app.user) }}
+                            {{ TwigHelperService.dashboardService.lastName(app.user) }}
                         {% endblock %}
                     {% endembed %}
                 {% endif %}
@@ -38,7 +38,7 @@
                         {{ 'feature.dashboard.show.your_email_address'|trans }}
                     {% endblock %}
                     {% block contentRight %}
-                        {{ DashboardService.email(app.user) }}
+                        {{ TwigHelperService.dashboardService.email(app.user) }}
                     {% endblock %}
                 {% endembed %}
 
@@ -47,14 +47,14 @@
                         {{ 'feature.dashboard.show.your_subscription'|trans }}
                     {% endblock %}
                     {% block contentRight %}
-                        {{ ('overview.plan.' ~ MembershipService.currentlySubscribedMembershipPlanForUser(app.user).name.value ~ '.title')|trans }}
+                        {{ ('overview.plan.' ~ TwigHelperService.membershipService.currentlySubscribedMembershipPlanForUser(app.user).name.value ~ '.title')|trans }}
                         <div class="mt-1 text-sm text-gray-500 sm:mt-0 sm:col-span-2">
-                            {{ ('overview.plan.' ~ MembershipService.currentlySubscribedMembershipPlanForUser(app.user).name.value ~ '.description')|trans }}
+                            {{ ('overview.plan.' ~ TwigHelperService.membershipService.currentlySubscribedMembershipPlanForUser(app.user).name.value ~ '.description')|trans }}
                         </div>
                     {% endblock %}
                 {% endembed %}
 
-                {% if DashboardService.latestVideos(app.user)|length > 0 %}
+                {% if TwigHelperService.dashboardService.latestVideos(app.user)|length > 0 %}
                     {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
                         {% block contentLeft %}
                             {{ 'feature.dashboard.show.your_latest_videos'|trans }}
@@ -62,7 +62,7 @@
                         {% block contentRight %}
                             <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
 
-                                {% for video in DashboardService.latestVideos(app.user) %}
+                                {% for video in TwigHelperService.dashboardService.latestVideos(app.user) %}
                                     {# @var video \App\Entity\Feature\Recordings\Video  #}
                                     <li class="pl-3 pr-4 py-3 flex flex-row items-center justify-between text-sm">
                                         <div class="w-0 flex-1 flex flex-row items-start gap-2">
@@ -101,7 +101,7 @@
                     {% block contentRight %}
                         <a href="{{ path('feature.presentationpages.overview') }}">
                             {{ 'feature.dashboard.show.your_presentationpages.info'|trans(
-                                { numberOfPresentationpages: DashboardService.numberOfPresentationpages(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')) }
+                                { numberOfPresentationpages: TwigHelperService.dashboardService.numberOfPresentationpages(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')) }
                             ) }}
                         </a>
                     {% endblock %}

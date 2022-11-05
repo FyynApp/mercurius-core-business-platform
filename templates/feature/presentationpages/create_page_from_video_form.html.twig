@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {# @var video \App\Entity\Feature\Recordings\Video #}
-{# @var PresentationpagesService \App\Service\Feature\Presentationpages\PresentationpagesService #}
-{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
+{# @var TwigHelperService \App\Shared\Twig\Presentation\Service\TwigHelperService #}
 
 {% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
@@ -29,23 +28,23 @@
                                 class="mx-auto rounded-md w-full"
                                 autoplay="autoplay"
                                 controls
-                                poster="{{ VideoService.posterStillAssetUrl(video) }}"
+                                poster="{{ TwigHelperService.videoService.posterStillAssetUrl(video) }}"
                         >
                             <source
-                                    src="{{ VideoService.getFullAssetUrl(video) }}"
+                                    src="{{ TwigHelperService.videoService.getFullAssetUrl(video) }}"
                             >
                         </video>
 
                     {% endblock %}
                     {% block contentRight %}
 
-                        {% if PresentationpagesService.userHasTemplates(app.user) %}
+                        {% if TwigHelperService.presentationpagesService.userHasTemplates(app.user) %}
                             <h2 class="text-xl font-bold mb-4">
                                 {{ 'feature.presentationpages.create_page_from_video_form.templates_headline'|trans }}
                             </h2>
 
                             <div class="border-1 border-gray-200 rounded-md flex flex-col divide-y divide-amber-300">
-                                {% for presentationpage in PresentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
+                                {% for presentationpage in TwigHelperService.presentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
                                     {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
 
                                     <div class="flex flex-row p-4 justify-between items-center gap-4">

@@ -1,3 +1,5 @@
+{# @var TwigHelperService \App\Shared\Twig\Presentation\Service\TwigHelperService #}
+
 {% macro full(dateAndTime) %}
     {{
         'dateformat.datetime_normal'
@@ -7,7 +9,7 @@
                     'long',
                     'short',
                     locale=app.request.locale,
-                    timezone=CookiesService.clientTimezone(app.request)
+                    timezone=TwigHelperService.cookiesService.clientTimezone(app.request)
                 )
             })
     }}
@@ -22,7 +24,7 @@
             'short',
             'short',
             locale=app.request.locale,
-            timezone=CookiesService.clientTimezone(app.request)
+            timezone=TwigHelperService.cookiesService.clientTimezone(app.request)
         )
     })
     }}

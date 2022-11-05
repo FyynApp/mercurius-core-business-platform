@@ -8,7 +8,8 @@ parameters:
 
     app.routing.locale_requirement: 'en|de'
 
-    app.routing.route_prefix.without_locale.unprotected: ''
+    app.routing.route_prefix.api: 'api'
+
     app.routing.route_prefix.without_locale.protected: 'my'
 
     app.routing.route_prefix.with_locale.unprotected.en: '{_locale}'

@@ -40,7 +40,9 @@ class CookiesService
     /**
      * @throws Exception
      */
-    public static function getCookieExpireValue(CookieName $cookieName): DateTime|int
+    public static function getCookieExpireValue(
+        CookieName $cookieName
+    ): DateTime|int
     {
         $expireAt = DateAndTimeService::getDateTimeUtc();
 
@@ -53,7 +55,9 @@ class CookiesService
         return $expireAt;
     }
 
-    public function getClientTimezone(Request $request): string
+    public function getClientTimezone(
+        Request $request
+    ): string
     {
         $clientTimezone = $request->cookies->get(CookieName::ClientTimezone->value);
 

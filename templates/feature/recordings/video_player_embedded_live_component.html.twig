@@ -1,4 +1,5 @@
 {# @var this \App\Components\Feature\Recordings\VideoPlayerEmbeddedLiveComponent #}
+{# @var TwigHelperService \App\Shared\Twig\Presentation\Service\TwigHelperService #}
 
 <div
         class="relative"
@@ -15,10 +16,10 @@
         <video
                 class="mx-auto rounded-md w-full"
                 controls
-                poster="{{ VideoService.posterStillAssetUrl(video) }}"
+                poster="{{ TwigHelperService.videoService.posterStillAssetUrl(video) }}"
         >
             <source
-                    src="{{ VideoService.getFullAssetUrl(video) }}"
+                    src="{{ TwigHelperService.videoService.getFullAssetUrl(video) }}"
             >
         </video>
     {% else %}

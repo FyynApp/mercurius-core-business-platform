@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
 
-class AccountService
+class UserService
 {
     private EntityManagerInterface $entityManager;
 

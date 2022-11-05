@@ -1,5 +1,5 @@
 {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
-{# @var VideoService \App\Service\Feature\Recordings\VideoService #}
+{# @var TwigHelperService \App\Shared\Twig\Presentation\Service\TwigHelperService #}
 
 {% import 'feature/presentationpages/preview_helper.html.twig' as helperMacros %}
 
@@ -68,10 +68,10 @@
                                     class="mx-auto rounded-md w-full"
                                     autoplay="autoplay"
                                     controls
-                                    poster="{{ VideoService.posterStillAssetUrl(presentationpage.video) }}"
+                                    poster="{{ TwigHelperService.videoService.posterStillAssetUrl(presentationpage.video) }}"
                             >
                                 <source
-                                        src="{{ VideoService.getFullAssetUrl(presentationpage.video) }}"
+                                        src="{{ TwigHelperService.videoService.getFullAssetUrl(presentationpage.video) }}"
                                 >
                             </video>
                         </div>

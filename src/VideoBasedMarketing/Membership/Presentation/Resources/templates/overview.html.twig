@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{# @var TwigHelperService \App\Shared\Twig\Presentation\Service\TwigHelperService #}
+
 {% block body %}
 
     {% embed 'embeds/default_content_box.html.twig' %}
@@ -54,7 +56,7 @@
                             </div>
                         {% endif %}
 
-                        {% if MembershipService.planBookableForUser(plan, app.user) %}
+                        {% if TwigHelperService.membershipService.planBookableForUser(plan, app.user) %}
                             <a
                                     href="{{ path('videobasedmarketing.membership.subscription.checkout.start', { 'planName': plan.name.value }) }}"
                                     class="
