@@ -1,9 +1,0 @@
-bounded_context.membership.subscription.checkout_with_payment_processor_stripe.success:
-  path: /my/membership/subscription/{subscriptionId}/checkout/success
-  controller: App\VideoBasedMarketing\Membership\Application\Controller\PaymentProcessorStripeCheckoutController::subscriptionCheckoutSuccessAction
-  methods: [ GET ]
-
-bounded_context.membership.subscription.checkout_with_payment_processor_stripe.cancel:
-  path: /my/membership/subscription/{subscriptionId}/checkout/cancel
-  controller: App\VideoBasedMarketing\Membership\Application\Controller\PaymentProcessorStripeCheckoutController::subscriptionCheckoutCancelAction
-  methods: [ GET ]

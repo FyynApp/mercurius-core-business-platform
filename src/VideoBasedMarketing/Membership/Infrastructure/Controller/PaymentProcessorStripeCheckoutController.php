@@ -54,8 +54,8 @@ extends AbstractController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout-with-stripe/success',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kauf-über-stripe/erfolg',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/{subscriptionId}/checkout-with-stripe/success',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/{subscriptionId}/kauf-über-stripe/erfolg',
         ],
         name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.success',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -99,8 +99,8 @@ extends AbstractController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout-with-stripe/cancellation',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kauf-über-stripe/abbruch',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/{subscriptionId}/checkout-with-stripe/cancellation',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/{subscriptionId}/kauf-über-stripe/abbruch',
         ],
         name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.cancellation',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],

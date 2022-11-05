@@ -71,7 +71,7 @@ class PaymentProcessorStripeService
                 'mode' => 'subscription',
 
                 'success_url' => $this->router->generate(
-                    'bounded_context.membership.subscription.checkout_with_payment_processor_stripe.success',
+                    'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.success',
                     [
                         'subscriptionId' => $subscription->getId(),
                         'subscriptionHash' => $this->getSubscriptionHash($subscription)
@@ -80,7 +80,7 @@ class PaymentProcessorStripeService
                 ),
 
                 'cancel_url' => $this->router->generate(
-                    'bounded_context.membership.subscription.checkout_with_payment_processor_stripe.cancel',
+                    'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.cancellation',
                     ['subscriptionId' => $subscription->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),

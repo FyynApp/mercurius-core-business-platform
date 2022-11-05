@@ -59,7 +59,7 @@ class MembershipController
 
         if ($paymentProcessor === PaymentProcessor::Stripe) {
             return $this->redirectToRoute(
-                'bounded_context.membership.subscription.checkout_with_payment_processor_stripe.start',
+                'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.start',
                 ['planName' => $planName]
             );
         } else {
