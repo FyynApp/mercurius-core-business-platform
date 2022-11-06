@@ -16,8 +16,8 @@ framework:
             failed: 'doctrine://default?queue_name=failed'
 
         routing:
-            App\Message\SyncMessageInterface: sync
-            App\Message\AsyncMessageInterface: async
+            App\Shared\Infrastructure\Message\SyncMessageInterface: sync
+            App\Shared\Infrastructure\Message\AsyncMessageInterface: async
 
         buses:
             messenger.bus.default:
