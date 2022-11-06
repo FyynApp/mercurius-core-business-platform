@@ -2,15 +2,15 @@
 
 namespace App\VideoBasedMarketing\Account\Domain\Entity;
 
-use App\Entity\Feature\Presentationpages\Presentationpage;
-use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\RecordingSettingsBag;
-use App\Entity\Feature\Recordings\Video;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Account\Infrastructure\Security\UnregisteredUserAuthenticator;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
+use App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity\RecordingSettingsBag;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -174,12 +174,12 @@ class User
     }
 
 
-    /** @var RecordingSession[]|Collection */
+    /** @var \App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSession::class, cascade: ['persist'])]
     private array|Collection $recordingSessions;
 
     /**
-     * @return RecordingSession[]|Collection
+     * @return \App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession[]|Collection
      */
     public function getRecordingSessions(): array|Collection
     {
@@ -187,12 +187,12 @@ class User
     }
 
 
-    /** @var Video[]|Collection */
+    /** @var \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Video::class, cascade: ['persist'])]
     private array|Collection $videos;
 
     /**
-     * @return Video[]|Collection
+     * @return \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[]|Collection
      */
     public function getVideos(): array|Collection
     {

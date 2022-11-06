@@ -2,13 +2,13 @@
 
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
-use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
-use App\Entity\Feature\Recordings\Video;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\RecordingSessionCreatedEntityLifecycleEventMessage;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Domain\Message\RecordingSessionCreatedEventMessage;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,7 +49,7 @@ class RecordingSessionService
         $this->entityManager->flush($recordingSession);
 
         $this->messageBus->dispatch(
-            new RecordingSessionCreatedEntityLifecycleEventMessage(
+            new RecordingSessionCreatedEventMessage(
                 $recordingSession
             )
         );

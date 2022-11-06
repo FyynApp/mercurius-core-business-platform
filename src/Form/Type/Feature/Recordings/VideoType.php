@@ -2,8 +2,7 @@
 
 namespace App\Form\Type\Feature\Recordings;
 
-use App\Entity\Feature\Presentationpages\Presentationpage;
-use App\Entity\Feature\Recordings\Video;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -71,7 +70,7 @@ class VideoType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Video::class,
+                'data_class' => \App\VideoBasedMarketing\Recordings\Domain\Entity\Video::class,
             ]
         );
     }

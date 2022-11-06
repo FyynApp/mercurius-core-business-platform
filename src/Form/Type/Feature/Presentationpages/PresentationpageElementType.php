@@ -2,8 +2,7 @@
 
 namespace App\Form\Type\Feature\Presentationpages;
 
-use App\Entity\Feature\Presentationpages\PresentationpageElement;
-use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement;
 use InvalidArgumentException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -42,10 +41,10 @@ class PresentationpageElementType
 
             switch ($presentationpageElement->getElementVariant()) {
 
-                case PresentationpageElementVariant::MercuriusVideo:
+                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::MercuriusVideo:
                     return;
 
-                case PresentationpageElementVariant::Divider:
+                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::Divider:
                     $form->add(
                         'textContent',
                         HiddenType::class,
@@ -57,7 +56,7 @@ class PresentationpageElementType
                     );
                     break;
 
-                case PresentationpageElementVariant::Headline:
+                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::Headline:
                     $form->add(
                         'textContent',
                         TextType::class,
@@ -69,7 +68,7 @@ class PresentationpageElementType
                     );
                     break;
 
-                case PresentationpageElementVariant::Paragraph:
+                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::Paragraph:
                     $form->add(
                         'textContent',
                         TextareaType::class,
@@ -81,7 +80,7 @@ class PresentationpageElementType
                     );
                     break;
 
-                case PresentationpageElementVariant::ImageUrl:
+                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::ImageUrl:
                     $form->add(
                         'textContent',
                         UrlType::class,
@@ -93,7 +92,7 @@ class PresentationpageElementType
                     );
                     break;
 
-                case PresentationpageElementVariant::CalendlyEmbed:
+                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::CalendlyEmbed:
                     $form->add(
                         'textContent',
                         UrlType::class,
@@ -116,7 +115,7 @@ class PresentationpageElementType
     {
         $resolver->setDefaults(
             [
-                'data_class' => PresentationpageElement::class,
+                'data_class' => \App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement::class,
             ]
         );
     }

@@ -10,15 +10,15 @@ feature.recordings.return_from_recording_studio:
 
 feature.recordings.videos.overview:
   path: /my/recordings/videos/
-  controller: App\Controller\Feature\Recordings\VideosController::videosOverviewAction
+  controller: App\VideoBasedMarketing\Recordings\Presentation\Controller\VideosController::videosOverviewAction
   methods: [ GET ]
 
 feature.recordings.video.show_with_video_only_presentationpage_template:
   path: /video/{videoId}/wvopt
-  controller: App\Controller\Feature\Recordings\VideosController::showWithVideoOnlyPresentationpageTemplateAction
+  controller: App\VideoBasedMarketing\Recordings\Presentation\Controller\VideosController::showWithVideoOnlyPresentationpageTemplateAction
   methods: [ GET ]
 
 feature.recordings.video.delete:
   path: /video-deletion/{videoId}
-  controller: App\Controller\Feature\Recordings\VideosController::deleteVideoAction
+  controller: App\VideoBasedMarketing\Recordings\Presentation\Controller\VideosController::deleteVideoAction
   methods: [ POST ]

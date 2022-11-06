@@ -63,7 +63,7 @@
                             <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
 
                                 {% for video in TwigHelperService.dashboardService.latestVideos(app.user) %}
-                                    {# @var video \App\Entity\Feature\Recordings\Video  #}
+                                    {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video  #}
                                     <li class="pl-3 pr-4 py-3 flex flex-row items-center justify-between text-sm">
                                         <div class="w-0 flex-1 flex flex-row items-start gap-2">
                                             {# Heroicon: film outline #}
@@ -101,7 +101,7 @@
                     {% block contentRight %}
                         <a href="{{ path('feature.presentationpages.overview') }}">
                             {{ 'feature.dashboard.show.your_presentationpages.info'|trans(
-                                { numberOfPresentationpages: TwigHelperService.dashboardService.numberOfPresentationpages(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')) }
+                                { numberOfPresentationpages: TwigHelperService.dashboardService.numberOfPresentationpages(app.user, constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Page')) }
                             ) }}
                         </a>
                     {% endblock %}

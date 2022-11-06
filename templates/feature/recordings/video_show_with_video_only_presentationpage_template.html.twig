@@ -1,6 +1,6 @@
 {% extends 'base_naked.html.twig' %}
 
-{# @var video \App\Entity\Feature\Recordings\Video #}
+{# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
 {% block title %}{{ video.title }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
@@ -32,7 +32,7 @@
 
             <div class="w-full max-w-2xl shadow-2xl shadow-neutral-800">
                 {{ component(
-                    'feature_recordings_video_player_embedded',
+                    'videobasedmarketing_recordings_video_player_embedded',
                     { video }
                 ) }}
             </div>

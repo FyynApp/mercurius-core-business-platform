@@ -2,9 +2,9 @@
 
 namespace App\Tests\Integration\Feature\Dashboard;
 
-use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 

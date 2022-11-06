@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Presentationpages\Infrastructure\MessageHandler;
 
-use App\Entity\Feature\Presentationpages\Presentationpage;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Presentationpages\Infrastructure\Message\GeneratePresentationpageScreenshotCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;

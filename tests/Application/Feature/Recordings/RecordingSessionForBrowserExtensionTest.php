@@ -2,9 +2,9 @@
 
 namespace App\Tests\Application\Feature\Recordings;
 
-use App\Entity\Feature\Recordings\RecordingSession;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -59,7 +59,7 @@ class RecordingSessionForBrowserExtensionTest
         $container = static::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
-        $this->assertCount(0, $em->getRepository(RecordingSession::class)->findAll());
+        $this->assertCount(0, $em->getRepository(\App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession::class)->findAll());
 
         $client->request(
             'POST',
@@ -67,7 +67,7 @@ class RecordingSessionForBrowserExtensionTest
         );
         $this->assertResponseRedirects();
 
-        $sessions = $em->getRepository(RecordingSession::class)->findAll();
+        $sessions = $em->getRepository(\App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession::class)->findAll();
 
         $this->assertCount(1, $sessions);
 

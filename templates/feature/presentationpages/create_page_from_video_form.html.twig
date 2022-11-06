@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{# @var video \App\Entity\Feature\Recordings\Video #}
+{# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
 {% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
@@ -44,8 +44,8 @@
                             </h2>
 
                             <div class="border-1 border-gray-200 rounded-md flex flex-col divide-y divide-amber-300">
-                                {% for presentationpage in TwigHelperService.presentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template')) %}
-                                    {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+                                {% for presentationpage in TwigHelperService.presentationpagesService.presentationpagesForUser(app.user, constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Template')) %}
+                                    {# @var presentationpage \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage #}
 
                                     <div class="flex flex-row p-4 justify-between items-center gap-4">
                                         <h3 class="text-md">

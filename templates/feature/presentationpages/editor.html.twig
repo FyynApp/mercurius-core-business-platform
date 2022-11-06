@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+{# @var presentationpage \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage #}
 {# @var PresentationpagesService \App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService #}
 
 {% block title %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
@@ -18,7 +18,7 @@
         {% endblock %}
 
         {% block contentBoxContent %}
-            {{ component('feature_presentationpages_edit_form', {
+            {{ component('videobasedmarketing_presentationpages_edit_form', {
                 presentationpage: presentationpage,
                 form: form
             }) }}

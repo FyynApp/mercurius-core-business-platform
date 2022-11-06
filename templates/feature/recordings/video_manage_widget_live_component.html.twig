@@ -1,4 +1,4 @@
-{# @var this \App\Components\Feature\Recordings\VideoManageWidgetLiveComponent #}
+{# @var this \App\VideoBasedMarketing\Recordings\Presentation\Component\VideoManageWidgetLiveComponent #}
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
 <div {{ attributes }}>
@@ -64,7 +64,7 @@
 
             <div class="absolute bottom-0 right-0 p-4">
                 <div class="p-1 pl-2 pr-2 rounded-md bg-black bg-opacity-75 text-neutral-200 text-xs font-light">
-                    {{ component('feature_recordings_video_duration', { 'video': this.video }) }}
+                    {{ component('videobasedmarketing_recordings_video_duration', { 'video': this.video }) }}
                 </div>
             </div>
         </div>
@@ -376,7 +376,7 @@
 
                                     <div class="w-8/12 mx-auto">
                                         {{ component(
-                                            'feature_recordings_video_player_embedded',
+                                            'videobasedmarketing_recordings_video_player_embedded',
                                             { video: this.video }
                                         ) }}
                                     </div>

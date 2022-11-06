@@ -2,19 +2,19 @@
 
 namespace App\VideoBasedMarketing\Presentationpages\Domain\Service;
 
-use App\Entity\Feature\Presentationpages\BgColor;
-use App\Entity\Feature\Presentationpages\FgColor;
-use App\Entity\Feature\Presentationpages\Presentationpage;
-use App\Entity\Feature\Presentationpages\PresentationpageCategory;
-use App\Entity\Feature\Presentationpages\PresentationpageElement;
-use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
-use App\Entity\Feature\Presentationpages\PresentationpageType;
-use App\Entity\Feature\Presentationpages\TextColor;
-use App\Entity\Feature\Recordings\Video;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\BgColor;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\FgColor;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageCategory;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageType;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\TextColor;
 use App\VideoBasedMarketing\Presentationpages\Infrastructure\Message\GeneratePresentationpageScreenshotCommandMessage;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
@@ -248,7 +248,7 @@ class PresentationpagesService
         }
     }
 
-    /** @return Presentationpage[] */
+    /** @return \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[] */
     public function getPresentationpagesForUser(
         User                     $user,
         PresentationpageType     $type,
@@ -257,7 +257,7 @@ class PresentationpagesService
     {
         $results = [];
 
-        /** @var Presentationpage[] $pages */
+        /** @var \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[] $pages */
         $pages = $user->getPresentationpages()
                       ->toArray();
         foreach ($pages as $page) {
@@ -272,7 +272,7 @@ class PresentationpagesService
         return $results;
     }
 
-    /** @return Presentationpage[] */
+    /** @return \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[] */
     public function getVideoOnlyPresentationpageTemplatesForUser(
         User $user
     ): array
@@ -406,7 +406,7 @@ class PresentationpagesService
         );
     }
 
-    /** @return Presentationpage[] */
+    /** @return \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[] */
     private function createBasicSetOfVideoOnlyPresentationpageTemplatesForUser(
         User $user
     ): array

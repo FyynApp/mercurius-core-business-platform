@@ -48,7 +48,7 @@
 
                 {% if TwigHelperService.presentationpagesService.presentationpagesForUser(
                     app.user,
-                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')
+                    constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Page')
                 )|length > 0 %}
                     <div class="
                             border-1
@@ -59,8 +59,8 @@
                             bg-white
                     ">
 
-                        {% for presentationpage in TwigHelperService.presentationpagesService.presentationpagesForUser(app.user, constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Page')) %}
-                            {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+                        {% for presentationpage in TwigHelperService.presentationpagesService.presentationpagesForUser(app.user, constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Page')) %}
+                            {# @var presentationpage \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage #}
 
                             <div class="
                                     grid
@@ -84,7 +84,7 @@
                                 </div>
 
                                 {{ component(
-                                    'feature_presentationpages_presentationpage_screenshot',
+                                    'videobasedmarketing_presentationpages_presentationpage_screenshot',
                                     { presentationpage: presentationpage }
                                 ) }}
 
@@ -162,8 +162,8 @@
 
                 {% if TwigHelperService.presentationpagesService.presentationpagesForUser(
                     app.user,
-                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
-                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::Default')
+                    constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Template'),
+                    constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageCategory::Default')
                 )|length > 0 %}
                     <div class="
                             border-1
@@ -177,11 +177,11 @@
                         {% for presentationpage
                             in TwigHelperService.presentationpagesService.presentationpagesForUser(
                                 app.user,
-                                constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
-                                constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::Default')
+                                constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Template'),
+                                constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageCategory::Default')
                             )
                         %}
-                            {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+                            {# @var presentationpage \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage #}
 
                             <div class="
                                         grid
@@ -239,8 +239,8 @@
 
                 {% if TwigHelperService.presentationpagesService.presentationpagesForUser(
                     app.user,
-                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
-                    constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::VideoOnly')
+                    constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Template'),
+                    constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageCategory::VideoOnly')
                 )|length > 0 %}
                     <div class="
                             mt-4
@@ -255,11 +255,11 @@
                         {% for presentationpage
                             in TwigHelperService.presentationpagesService.presentationpagesForUser(
                             app.user,
-                            constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageType::Template'),
-                            constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageCategory::VideoOnly')
+                            constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Template'),
+                            constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageCategory::VideoOnly')
                         )
                         %}
-                            {# @var presentationpage \App\Entity\Feature\Presentationpages\Presentationpage #}
+                            {# @var presentationpage \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage #}
 
                             <div class="
                                         grid

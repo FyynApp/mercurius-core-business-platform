@@ -1,4 +1,4 @@
-{# @var this \App\Components\Feature\Presentationpages\PresentationspageEditFormLiveComponent #}
+{# @var this \App\VideoBasedMarketing\Presentationpages\Presentation\Component\PresentationspageEditFormLiveComponent #}
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
 <div {{ attributes }}>
@@ -38,7 +38,7 @@
                     <div class="mb-6 rounded-md bg-white pl-8 p-2 shadow-inner">
                         {% for background in this.presentationpage.possibleBackgrounds %}
 
-                            {# @var background \App\Entity\Feature\Presentationpages\PresentationpageBackground #}
+                            {# @var background \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageBackground #}
 
                             <button
                                     class="mr-8 mt-4 mb-4"
@@ -46,7 +46,7 @@
                                     data-action="live#action"
                                     data-action-name="setBackground(backgroundValue={{ background.value }})"
                             >
-                                {% if background is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageBackground::BgColor') %}
+                                {% if background is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageBackground::BgColor') %}
                                     <div class="
                                                 {% if this.presentationpage.background is same as background %}
                                                         border-1 border-black p-2 rounded-md
@@ -190,7 +190,7 @@
 
                         {% set presentationpageElement = elementForm.vars.value %}
 
-                        {# @var presentationpageElement \App\Entity\Feature\Presentationpages\PresentationpageElement #}
+                        {# @var presentationpageElement \App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement #}
 
                         <div class="p-4 pt-8 bg-indigo-50 mb-8 rounded-md">
 
@@ -200,7 +200,7 @@
 
                                     <div class="w-full mr-8">
 
-                                        {% if presentationpageElement.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
+                                        {% if presentationpageElement.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::MercuriusVideo') %}
                                             <p class="font-bold">
                                                 {{ 'feature.presentationpages.editor.edit_form.label_element_variant.mercurius_video'|trans }}
                                             </p>
@@ -227,7 +227,7 @@
                                                         }) }}
                                                     </div>
 
-                                                    {% if presentationpageElement.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
+                                                    {% if presentationpageElement.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::CalendlyEmbed') %}
                                                         <p class="font-light mt-4 text-gray-500">
                                                             {{ 'feature.presentationpages.editor.edit_form.help_element_variant.calendly_embed_start'|trans }}
                                                             <a href="https://calendly.com/event_types/user/me" target="_blank">
@@ -237,7 +237,7 @@
                                                         </p>
                                                     {% endif %}
 
-                                                    {% if presentationpageElement.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Divider') %}
+                                                    {% if presentationpageElement.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::Divider') %}
                                                         <div
                                                                 class="w-full h-1 mt-4 mb-4"
                                                                 style="background-color: {{ this.presentationpage.fgColor.value }}"
@@ -305,7 +305,7 @@
 
                                 </div>
 
-                                {% if presentationpageElement.elementVariant is not same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Divider') %}
+                                {% if presentationpageElement.elementVariant is not same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::Divider') %}
                                     <div class="w-full">
 
                                         <label class="block text-gray-800 font-bold required mt-4 mb-2">
@@ -316,12 +316,12 @@
                                                     p-0
                                                     border-1
                                                     border-indigo-200
-                                                    {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                                    {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left') %}
                                                         bg-indigo-200
                                                     {% endif %}
                                                 "
                                                 data-action="live#action"
-                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left').value }})"
+                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left').value }})"
                                                 type="button"
                                         >
                                             <!-- bars-3-bottom-left -->
@@ -335,12 +335,12 @@
                                                     p-0
                                                     border-1
                                                     border-indigo-200
-                                                    {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                                    {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center') %}
                                                         bg-indigo-200
                                                     {% endif %}
                                                 "
                                                 data-action="live#action"
-                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center').value }})"
+                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center').value }})"
                                                 type="button"
                                         >
                                             <!-- bars-3 -->
@@ -354,12 +354,12 @@
                                                     p-0
                                                     border-1
                                                     border-indigo-200
-                                                    {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                                    {% if presentationpageElement.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Right') %}
                                                         bg-indigo-200
                                                     {% endif %}
                                                 "
                                                 data-action="live#action"
-                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right').value }})"
+                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Right').value }})"
                                                 type="button"
                                         >
                                             <!-- bars-3-bottom-right -->
@@ -384,7 +384,7 @@
                             <button
                                     class="cta-link-primary mb-4 w-52"
                                     data-action="live#action"
-                                    data-action-name="addElement(variant={{ constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo').value }})"
+                                    data-action-name="addElement(variant={{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::MercuriusVideo').value }})"
                                     type="button"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -396,9 +396,9 @@
 
                         {% for elementVariant in this.presentationpage.possibleElementVariants %}
 
-                            {# @var elementVariant \App\Entity\Feature\Presentationpages\PresentationpageElementVariant #}
+                            {# @var elementVariant \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant #}
 
-                            {% if elementVariant is not same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
+                            {% if elementVariant is not same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::MercuriusVideo') %}
                                 <button
                                         class="cta-link-primary mb-4 w-52"
                                         data-action="live#action"
@@ -470,7 +470,7 @@
                     <div
                             class="flex flex-col rounded-md shadow-inner text-left justify-start pt-8 pl-8 pr-8 pb-0"
 
-                            {% if this.presentationpage.background is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageBackground::BgColor') %}
+                            {% if this.presentationpage.background is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageBackground::BgColor') %}
                                 style="background-color: {{ this.presentationpage.bgColor.value }};"
                             {% else %}
                                 style="
@@ -490,26 +490,26 @@
                             "
                         >
                             {% for element in this.presentationpage.presentationpageElements %}
-                                {# @var element \App\Entity\Feature\Presentationpages\PresentationpageElement #}
+                                {# @var element \App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement #}
 
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Divider') %}
+                                {% if element.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::Divider') %}
                                     <div
                                             class="w-full h-1 mt-4 mb-4"
                                             style="background-color: {{ presentationpage.fgColor.value }}"
                                     ></div>
                                 {% endif %}
 
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::MercuriusVideo') %}
+                                {% if element.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::MercuriusVideo') %}
                                     <div class="
                                     flex
                                     flex-row
                                     mb-2
                                     w-full
-                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left') %}
                                         justify-start
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center') %}
                                         justify-center
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Right') %}
                                         justify-end
                                     {% endif %}
                                 ">
@@ -527,17 +527,17 @@
                                     </div>
                                 {% endif %}
 
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Headline') %}
+                                {% if element.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::Headline') %}
                                     <h2 class="
                                     text-3xl
                                     mt-6
                                     mb-6
                                     first:mt-0
-                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left') %}
                                         text-left
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center') %}
                                         text-center
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Right') %}
                                         text-right
                                     {% endif %}
                                 ">
@@ -545,14 +545,14 @@
                                     </h2>
                                 {% endif %}
 
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::Paragraph') %}
+                                {% if element.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::Paragraph') %}
                                     <p class="
                                     mb-2
-                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left') %}
                                         text-left
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center') %}
                                         text-center
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Right') %}
                                         text-right
                                     {% endif %}
                                 ">
@@ -560,17 +560,17 @@
                                     </p>
                                 {% endif %}
 
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::ImageUrl') %}
+                                {% if element.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::ImageUrl') %}
                                     <div class="
                                     flex
                                     flex-row
                                     mb-2
                                     w-full
-                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left') %}
                                         justify-start
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center') %}
                                         justify-center
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Right') %}
                                         justify-end
                                     {% endif %}
                                 ">
@@ -581,17 +581,17 @@
                                     </div>
                                 {% endif %}
 
-                                {% if element.elementVariant is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementVariant::CalendlyEmbed') %}
+                                {% if element.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::CalendlyEmbed') %}
                                     <div class="
                                     flex
                                     flex-row
                                     mb-2
                                     w-full
-                                    {% if element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+                                    {% if element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left') %}
                                         justify-start
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center') %}
                                         justify-center
-                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Right') %}
+                                    {% elseif element.elementHorizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Right') %}
                                         justify-end
                                     {% endif %}
                                 ">

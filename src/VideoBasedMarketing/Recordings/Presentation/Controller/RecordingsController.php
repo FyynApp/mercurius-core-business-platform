@@ -2,11 +2,12 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
-use App\Entity\Feature\Recordings\AssetMimeType;
-use App\Entity\Feature\Recordings\RecordingSession;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class RecordingsController
         RecordingSessionService $recordingSessionService
     ): Response
     {
-        /** @var ?\App\VideoBasedMarketing\Account\Domain\Entity\User $user */
+        /** @var ?User $user */
         $user = $this->getUser();
 
         if (is_null($user)) {

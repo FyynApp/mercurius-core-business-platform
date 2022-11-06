@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\MessageHandler;
 
-use App\Entity\Feature\Recordings\Video;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingAssetsCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;

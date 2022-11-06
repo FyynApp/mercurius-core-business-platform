@@ -2,8 +2,8 @@
 
 namespace App\VideoBasedMarketing\Presentationpages\Infrastructure\Message;
 
-use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Shared\Infrastructure\Message\AsyncMessageInterface;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use InvalidArgumentException;
 
 

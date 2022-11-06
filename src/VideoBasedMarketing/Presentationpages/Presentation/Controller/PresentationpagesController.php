@@ -2,13 +2,13 @@
 
 namespace App\VideoBasedMarketing\Presentationpages\Presentation\Controller;
 
-use App\Entity\Feature\Presentationpages\Presentationpage;
-use App\Entity\Feature\Recordings\Video;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -188,7 +188,7 @@ class PresentationpagesController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Presentationpage $presentationpage */
+            /** @var \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage $presentationpage */
             $presentationpage = $form->getData();
 
             $presentationpagesService->handleEdited($presentationpage);

@@ -2,8 +2,8 @@
 
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\Message;
 
-use App\Entity\Feature\Recordings\Video;
 use App\Shared\Infrastructure\Message\AsyncMessageInterface;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use InvalidArgumentException;
 
 

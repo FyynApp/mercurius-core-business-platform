@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
-use App\Entity\Feature\Presentationpages\PresentationpageCategory;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageCategory;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 

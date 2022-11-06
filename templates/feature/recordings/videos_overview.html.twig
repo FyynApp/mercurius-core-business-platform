@@ -47,9 +47,9 @@
                 </div>
 
                 {% for video in TwigHelperService.videoService.availableVideos(app.user) %}
-                    {# @var video \App\Entity\Feature\Recordings\Video #}
+                    {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
-                    {{ component('feature_recordings_video_manage_widget', {
+                    {{ component('videobasedmarketing_recordings_video_manage_widget', {
                         video: video,
                         showEditModal: showEditModalForVideoId is same as video.id,
                         doneCtaMustRedirectToOverview: showEditModalForVideoId is same as video.id,

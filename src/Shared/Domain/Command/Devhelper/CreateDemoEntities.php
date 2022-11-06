@@ -2,9 +2,9 @@
 
 namespace App\Shared\Domain\Command\Devhelper;
 
-use App\Entity\Feature\Presentationpages\Presentationpage;
-use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

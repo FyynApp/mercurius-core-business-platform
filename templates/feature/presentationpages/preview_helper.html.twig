@@ -1,9 +1,9 @@
-{# @var horizontalPosition \App\Entity\Feature\Presentationpages\PresentationpageElementHorizontalPosition #}
+{# @var horizontalPosition \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementHorizontalPosition #}
 
 {% macro horizontalPositionText(horizontalPosition) %}
-    {% if horizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+    {% if horizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left') %}
         text-left
-    {% elseif horizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+    {% elseif horizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center') %}
         text-center
     {% else %}
         text-right
@@ -12,9 +12,9 @@
 
 {% macro horizontalPositionDiv(horizontalPosition) %}
     flex flex-row
-    {% if horizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Left') %}
+    {% if horizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left') %}
         justify-start
-    {% elseif horizontalPosition is same as constant('\\App\\Entity\\Feature\\Presentationpages\\PresentationpageElementHorizontalPosition::Center') %}
+    {% elseif horizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center') %}
         justify-center
     {% else %}
         justify-end

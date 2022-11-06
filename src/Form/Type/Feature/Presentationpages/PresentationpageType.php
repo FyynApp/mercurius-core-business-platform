@@ -2,7 +2,7 @@
 
 namespace App\Form\Type\Feature\Presentationpages;
 
-use App\Entity\Feature\Presentationpages\Presentationpage;
+use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,7 +22,7 @@ class PresentationpageType
     {
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            /** @var Presentationpage $presentationpage */
+            /** @var \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage $presentationpage */
             $presentationpage = $event->getData();
             $form = $event->getForm();
 
@@ -54,7 +54,7 @@ class PresentationpageType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Presentationpage::class,
+                'data_class' => \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage::class,
             ]
         );
     }

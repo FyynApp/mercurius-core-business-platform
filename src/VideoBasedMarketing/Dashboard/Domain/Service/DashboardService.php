@@ -2,10 +2,10 @@
 
 namespace App\VideoBasedMarketing\Dashboard\Domain\Service;
 
-use App\Entity\Feature\Presentationpages\PresentationpageType;
-use App\Entity\Feature\Recordings\Video;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageType;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 
 

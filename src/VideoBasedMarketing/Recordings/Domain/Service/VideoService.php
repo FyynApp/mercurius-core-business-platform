@@ -2,12 +2,12 @@
 
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
-use App\Entity\Feature\Recordings\AssetMimeType;
-use App\Entity\Feature\Recordings\RecordingSession;
-use App\Entity\Feature\Recordings\Video;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingAssetsCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -63,7 +63,7 @@ class VideoService
 
 
     /**
-     * @return Video[]
+     * @return \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[]
      */
     public function getAvailableVideos(User $user): array
     {
