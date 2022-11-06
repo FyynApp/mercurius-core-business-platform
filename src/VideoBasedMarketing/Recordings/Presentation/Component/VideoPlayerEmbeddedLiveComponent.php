@@ -11,7 +11,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent(
     'videobasedmarketing_recordings_video_player_embedded',
-    'feature/recordings/video_player_embedded_live_component.html.twig'
+    '@videobasedmarketing.recordings/video_player_embedded_live_component.html.twig'
 )]
 class VideoPlayerEmbeddedLiveComponent
     extends AbstractController

@@ -196,7 +196,7 @@ class PresentationpagesController
             return $this->redirectToRoute('feature.presentationpages.overview');
         } else {
             return $this->renderForm(
-                'feature/presentationpages/editor.html.twig',
+                '@videobasedmarketing.presentationpages/editor.html.twig',
                 [
                     'presentationpage' => $presentationpage,
                     'form' => $form,

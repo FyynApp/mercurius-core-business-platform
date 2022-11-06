@@ -24,7 +24,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent(
     'videobasedmarketing_recordings_video_manage_widget',
-    'feature/recordings/video_manage_widget_live_component.html.twig'
+    '@videobasedmarketing.recordings/video_manage_widget_live_component.html.twig'
 )]
 class VideoManageWidgetLiveComponent
     extends AbstractController

@@ -1,5 +1,7 @@
 import { startStimulusApp } from '@symfony/stimulus-bridge';
 import Clipboard from 'stimulus-clipboard';
+import VideoPreview
+    from '../src/VideoBasedMarketing/Recordings/Presentation/Resources/stimulus-controller/videoPreview';
 
 // Registers Stimulus controllers from controllers.json and in the controllers/ directory
 export const app = startStimulusApp(require.context(
@@ -12,3 +14,8 @@ export const app = startStimulusApp(require.context(
 // app.register('some_controller_name', SomeImportedController);
 
 app.register('clipboard', Clipboard);
+
+app.register(
+    'videoBasedMarketingRecordingsVideoPreview',
+    VideoPreview
+);

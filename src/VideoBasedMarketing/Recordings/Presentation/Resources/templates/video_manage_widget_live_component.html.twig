@@ -14,23 +14,24 @@
                 <div
                         class="p-0 m-0"
 
-                        {{ stimulus_controller('feature/recordings/videoPreview') }}
+                        {{ stimulus_controller('videoBasedMarketingRecordingsVideoPreview') }}
+
                         data-action="
-                            focus->feature--recordings--videoPreview#showAnimated
-                            click->feature--recordings--videoPreview#showAnimated
-                            mouseover->feature--recordings--videoPreview#showAnimated
-                            mouseout->feature--recordings--videoPreview#showStill
-                            blur->feature--recordings--videoPreview#showStill
+                            focus->videoBasedMarketingRecordingsVideoPreview#showAnimated
+                            click->videoBasedMarketingRecordingsVideoPreview#showAnimated
+                            mouseover->videoBasedMarketingRecordingsVideoPreview#showAnimated
+                            mouseout->videoBasedMarketingRecordingsVideoPreview#showStill
+                            blur->videoBasedMarketingRecordingsVideoPreview#showStill
                         "
                 >
                     <div
-                            {{ stimulus_target('feature/recordings/videoPreview', 'stillImage') }}
+                            {{ stimulus_target('videoBasedMarketingRecordingsVideoPreview', 'stillImage') }}
                             class="bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-lg rounded-tr-lg"
                             style="background-image: url('{{ TwigHelperService.videoService.posterStillAssetUrl(this.video) }}')"
                     ></div>
 
                     <div
-                            {{ stimulus_target('feature/recordings/videoPreview', 'animatedImage') }}
+                            {{ stimulus_target('videoBasedMarketingRecordingsVideoPreview', 'animatedImage') }}
                             class="hidden bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-lg rounded-tr-lg"
                             style="background-image: url('{{ TwigHelperService.videoService.posterAnimatedAssetUrl(this.video) }}')"
                     ></div>
@@ -444,7 +445,7 @@
                     {% block contentRight %}
 
                         <div class="bg-white rounded-md p-4 pb-1 mb-4">
-                            {% form_theme form 'form_themes/form_theme_default.html.twig' %}
+                            {% form_theme form '@shared/form_themes/form_theme_default.html.twig' %}
 
                             {{ form_start(this.form) }}
 

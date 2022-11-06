@@ -13,7 +13,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent(
     'videobasedmarketing_recordings_video_duration',
-    'feature/recordings/video_duration_live_component.html.twig'
+    '@videobasedmarketing.recordings/video_duration_live_component.html.twig'
 )]
 class VideoDurationLiveComponent
     extends AbstractController

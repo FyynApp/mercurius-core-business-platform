@@ -11,7 +11,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent(
     'videobasedmarketing_presentationpages_presentationpage_screenshot',
-    'feature/presentationpages/presentationpage_screenshot_live_component.html.twig'
+    '@videobasedmarketing.presentationpages/presentationpage_screenshot_live_component.html.twig'
 )]
 class PresentationpageScreenshotLiveComponent
     extends AbstractController

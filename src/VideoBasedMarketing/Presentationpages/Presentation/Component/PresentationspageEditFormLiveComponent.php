@@ -29,7 +29,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent(
     'videobasedmarketing_presentationpages_edit_form',
-    'feature/presentationpages/edit_form_live_component.html.twig'
+    '@videobasedmarketing.presentationpages/edit_form_live_component.html.twig'
 )]
 class PresentationspageEditFormLiveComponent
     extends AbstractController
