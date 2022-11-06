@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Form\Type\Feature\Recordings;
+namespace App\VideoBasedMarketing\Recordings\Presentation\Form\Type;
 
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -70,7 +71,7 @@ class VideoType
     {
         $resolver->setDefaults(
             [
-                'data_class' => \App\VideoBasedMarketing\Recordings\Domain\Entity\Video::class,
+                'data_class' => Video::class,
             ]
         );
     }

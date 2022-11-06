@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Type\Feature\Presentationpages;
+namespace App\VideoBasedMarketing\Presentationpages\Presentation\Form\Type;
 
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement;
 use InvalidArgumentException;

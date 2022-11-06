@@ -2,7 +2,6 @@
 
 namespace App\VideoBasedMarketing\Presentationpages\Presentation\Component;
 
-use App\Form\Type\Feature\Presentationpages\PresentationpageType;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\BgColor;
@@ -11,6 +10,7 @@ use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageBackgr
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementHorizontalPosition;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\TextColor;
+use App\VideoBasedMarketing\Presentationpages\Presentation\Form\Type\PresentationpageType;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

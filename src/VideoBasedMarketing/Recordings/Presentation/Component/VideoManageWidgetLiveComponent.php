@@ -2,12 +2,12 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Component;
 
-use App\Form\Type\Feature\Recordings\VideoType;
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
+use App\VideoBasedMarketing\Recordings\Presentation\Form\Type\VideoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
