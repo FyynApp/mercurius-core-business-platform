@@ -42,7 +42,7 @@ class SideNavigationComponent
             ];
         } else {
             $this->entries = [
-                new NavigationEntry('sidenav.signout', 'feature.account.logout'),
+                new NavigationEntry('sidenav.sign_out', 'videobasedmarketing.account.sign_out'),
             ];
         }
 

@@ -27,7 +27,7 @@ security:
                 signature_properties: ['id']
 
             logout:
-                path: feature.account.logout
+                path: videobasedmarketing.account.sign_out
                 target: videobasedmarketing.account.sign_in
 
             remember_me:

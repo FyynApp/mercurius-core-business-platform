@@ -22,14 +22,14 @@ tailwind_playground:
     defaults:
         template: /tailwind_playground.html.twig
 
-catchall:
+catchall.pattern:
     path:     /{catchall}
     controller: App\Shared\Presentation\Controller\CatchallController::indexAction
     methods:  [GET]
     requirements:
         catchall: ".+"
 
-root:
+catchall.root:
     path:     /
     controller: App\Shared\Presentation\Controller\CatchallController::indexAction
     methods:  [GET]

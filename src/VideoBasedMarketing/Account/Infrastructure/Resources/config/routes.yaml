@@ -5,6 +5,6 @@ videobasedmarketing.account.sign_in_link_check:
   path: /account/sign-in-link-check
   methods: [ GET, POST ]
 
-feature.account.logout:
+videobasedmarketing.account.sign_out:
   path: /account/sign-out
   methods: [ GET, POST ]
