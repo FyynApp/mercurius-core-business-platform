@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Service\Feature\Dashboard;
+namespace App\VideoBasedMarketing\Dashboard\Domain\Service;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Recordings\Video;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 
 
 class DashboardService
@@ -37,11 +37,6 @@ class DashboardService
     public function getEmail(User $user): string
     {
         return $user->getEmail();
-    }
-
-    public function getSubscriptionPlan(User $user): string
-    {
-        return 'm';
     }
 
     /** @return Video[] */

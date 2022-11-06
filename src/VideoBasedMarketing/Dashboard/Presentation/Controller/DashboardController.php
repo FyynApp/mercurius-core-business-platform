@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Feature\Dashboard;
+namespace App\VideoBasedMarketing\Dashboard\Presentation\Controller;
 
-use App\Service\Feature\Dashboard\DashboardService;
+use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 

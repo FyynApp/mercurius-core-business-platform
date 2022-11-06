@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Message;
+namespace App\Shared\Infrastructure\Message;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;

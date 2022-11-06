@@ -2,9 +2,9 @@
 
 namespace App\Message\Feature\Recordings;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Message\UserOwnedEntityLifecycleEventMessageInterface;
+use App\Shared\Domain\Message\UserOwnedEntityLifecycleEventMessageInterface;
+use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 
 
 class RecordingSessionCreatedEntityLifecycleEventMessage

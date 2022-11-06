@@ -22,4 +22,4 @@ framework:
         buses:
             messenger.bus.default:
                 middleware:
-                    - 'App\Message\EventLoggerMiddleware'
+                    - 'App\Shared\Infrastructure\Message\EventLoggerMiddleware'

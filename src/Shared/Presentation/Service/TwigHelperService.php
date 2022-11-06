@@ -2,13 +2,13 @@
 
 namespace App\Shared\Presentation\Service;
 
-use App\Service\Feature\Dashboard\DashboardService;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
 use App\Shared\Infrastructure\Service\ContentDeliveryService;
 use App\Shared\Infrastructure\Service\CookiesService;
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
+use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 
 

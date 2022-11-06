@@ -3,7 +3,7 @@
 namespace App\Message\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
-use App\Message\AsyncMessageInterface;
+use App\Shared\Infrastructure\Message\AsyncMessageInterface;
 use InvalidArgumentException;
 
 

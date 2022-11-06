@@ -3,7 +3,7 @@
 namespace App\Message\Feature\Presentationpages;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
-use App\Message\AsyncMessageInterface;
+use App\Shared\Infrastructure\Message\AsyncMessageInterface;
 use InvalidArgumentException;
 
 
