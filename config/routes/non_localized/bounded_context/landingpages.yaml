@@ -1,4 +1,4 @@
 feature.landingpages.wrapped_external_content:
   path: /_content
-  controller: App\Controller\Feature\Landingpages\LandingpagesController::wrappedExternalContentAction
+  controller: App\VideoBasedMarketing\Landingpages\Presentation\Controller\LandingpagesController::wrappedExternalContentAction
   methods: [ GET ]

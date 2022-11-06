@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MessageHandler\Feature\Recordings;
+namespace App\VideoBasedMarketing\Presentationpages\Infrastructure\MessageHandler;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
-use App\Message\Feature\Presentationpages\GeneratePresentationpageScreenshotCommandMessage;
-use App\Service\Feature\Presentationpages\PresentationpagesService;
+use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Presentationpages\Infrastructure\Message\GeneratePresentationpageScreenshotCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;

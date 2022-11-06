@@ -4,9 +4,8 @@ namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Service\Feature\Recordings\RecordingSessionService;
-use App\Service\Feature\Recordings\VideoService;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +18,7 @@ class RecordingsController
     extends AbstractController
 {
     public function recordingStudioAction(
-        RecordingSessionService $recordingSessionService
+        \App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService $recordingSessionService
     ): Response
     {
         /** @var ?\App\VideoBasedMarketing\Account\Domain\Entity\User $user */
@@ -38,10 +37,10 @@ class RecordingsController
     }
 
     public function returnFromRecordingStudioAction(
-        Request                 $request,
-        EntityManagerInterface  $entityManager,
-        RecordingSessionService $recordingSessionService,
-        VideoService            $videoService
+        Request                                                                    $request,
+        EntityManagerInterface                                                     $entityManager,
+        \App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService $recordingSessionService,
+        VideoService                                                               $videoService
     ): Response
     {
         $recordingSessionId = $request->get('recordingSessionId');
@@ -67,7 +66,7 @@ class RecordingsController
         );
     }
 
-    public function videosOverviewAction(VideoService $videoService): Response
+    public function videosOverviewAction(\App\VideoBasedMarketing\Recordings\Domain\Service\VideoService $videoService): Response
     {
         return $this->render(
             'feature/recordings/videos_overview.html.twig'
@@ -75,11 +74,11 @@ class RecordingsController
     }
 
     public function recordingPreviewAssetRedirectAction(
-        string                  $recordingSessionId,
-        Request                 $request,
-        RecordingSessionService $recordingSessionService,
-        EntityManagerInterface  $entityManager,
-        VideoService            $videoService
+        string                                                                     $recordingSessionId,
+        Request                                                                    $request,
+        \App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService $recordingSessionService,
+        EntityManagerInterface                                                     $entityManager,
+        \App\VideoBasedMarketing\Recordings\Domain\Service\VideoService $videoService
     ): Response
     {
 

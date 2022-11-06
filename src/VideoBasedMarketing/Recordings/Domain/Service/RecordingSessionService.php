@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Service\Feature\Recordings;
+namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSessionVideoChunk;
 use App\Entity\Feature\Recordings\Video;
-use App\Message\Feature\Recordings\RecordingSessionCreatedEntityLifecycleEventMessage;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Message\RecordingSessionCreatedEntityLifecycleEventMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;

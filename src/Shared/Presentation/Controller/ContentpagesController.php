@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Controller\Feature\Landingpages;
+namespace App\Shared\Presentation\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class LandingpagesController
+class ContentpagesController
     extends AbstractController
 {
     public function homepageAction(): Response

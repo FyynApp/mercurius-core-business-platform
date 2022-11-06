@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Controller\Feature\Presentationpages;
+namespace App\VideoBasedMarketing\Presentationpages\Presentation\Controller;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Recordings\Video;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
-use App\Service\Feature\Presentationpages\PresentationpagesService;
-use App\Service\Feature\Recordings\VideoService;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,10 +68,10 @@ class PresentationpagesController
     }
 
     public function createPageFromVideoFormAction(
-        string                   $videoId,
-        EntityManagerInterface   $entityManager,
+        string                                                                             $videoId,
+        EntityManagerInterface                                                             $entityManager,
         PresentationpagesService $presentationpagesService,
-        VideoService             $videoService
+        VideoService                                                                       $videoService
     ): Response
     {
         $video = $entityManager->find(Video::class, $videoId);
@@ -108,10 +108,10 @@ class PresentationpagesController
     }
 
     public function createPageFromVideoAndTemplateAction(
-        string                   $videoId,
-        string                   $templateId,
+        string                                                                             $videoId,
+        string                                                                             $templateId,
         PresentationpagesService $presentationpagesService,
-        EntityManagerInterface   $entityManager
+        EntityManagerInterface                                                             $entityManager
     ): Response
     {
         $video = $entityManager->find(Video::class, $videoId);

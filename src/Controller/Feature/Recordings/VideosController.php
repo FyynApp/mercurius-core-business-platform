@@ -3,9 +3,9 @@
 namespace App\Controller\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
-use App\Service\Feature\Recordings\VideoService;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

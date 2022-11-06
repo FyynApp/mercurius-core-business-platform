@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Message\Feature\Presentationpages;
+namespace App\VideoBasedMarketing\Presentationpages\Infrastructure\Message;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Shared\Infrastructure\Message\AsyncMessageInterface;

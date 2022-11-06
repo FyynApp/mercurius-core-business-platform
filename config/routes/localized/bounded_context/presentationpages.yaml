@@ -1,44 +1,44 @@
 feature.presentationpages.overview:
   path: /my/presentationpages/
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::overviewAction
+  controller: App\VideoBasedMarketing\Presentationpages\Presentation\Controller\PresentationpagesController::overviewAction
   methods: [ GET ]
 
 feature.presentationpages.create_page:
   path: /my/presentationpages-of-type-page/
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createPageAction
+  controller: App\VideoBasedMarketing\Presentationpages\Presentation\Controller\PresentationpagesController::createPageAction
   methods: [ POST ]
 
 feature.presentationpages.create_template:
   path: /my/presentationpages-of-type-template/
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createTemplateAction
+  controller: App\VideoBasedMarketing\Presentationpages\Presentation\Controller\PresentationpagesController::createTemplateAction
   methods: [ POST ]
 
 feature.presentationpages.create_page_from_video_form:
   path: /my/presentationpages/create-from-video-'{videoId}'-form
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createPageFromVideoFormAction
+  controller: App\VideoBasedMarketing\Presentationpages\Presentation\Controller\PresentationpagesController::createPageFromVideoFormAction
   methods: [ GET ]
 
 feature.presentationpages.create_page_from_video_and_template:
   path: /my/presentationpages-from-video-'{videoId}'-and-template-'{templateId}'/
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createPageFromVideoAndTemplateAction
+  controller: App\VideoBasedMarketing\Presentationpages\Presentation\Controller\PresentationpagesController::createPageFromVideoAndTemplateAction
   methods: [ POST ]
 
 feature.presentationpages.draft.create:
   path: /my/presentationpages/{presentationpageId}/drafts/
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::createDraftAction
+  controller: App\VideoBasedMarketing\Presentationpages\Presentation\Controller\PresentationpagesController::createDraftAction
   methods: [ POST ]
 
 feature.presentationpages.editor:
   path: /my/presentationpages/{originalPresentationpageId}/draft/{presentationpageId}/editor
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::editorAction
+  controller: App\VideoBasedMarketing\Presentationpages\Presentation\Controller\PresentationpagesController::editorAction
   methods: [ GET, POST ]
 
 feature.presentationpages.preview:
   path: /my/presentationpages/{presentationpageId}/preview
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::previewAction
+  controller: App\VideoBasedMarketing\Presentationpages\Presentation\Controller\PresentationpagesController::previewAction
   methods: [ GET ]
 
 feature.presentationpages.screenshot_capture_view:
   path: /presentationpages/{presentationpageId}/screenshot-capture-view
-  controller: App\Controller\Feature\Presentationpages\PresentationpagesController::screenshotCaptureViewAction
+  controller: App\VideoBasedMarketing\Presentationpages\Presentation\Controller\PresentationpagesController::screenshotCaptureViewAction
   methods: [ GET ]

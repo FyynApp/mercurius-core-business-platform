@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Service\Feature\Recordings;
+namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\Video;
-use App\Message\Feature\Recordings\GenerateMissingAssetsCommandMessage;
-use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingAssetsCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;

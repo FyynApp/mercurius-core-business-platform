@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Controller\Feature\Recordings;
+namespace App\VideoBasedMarketing\Recordings\Api\Controller;
 
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
-use App\Service\Feature\Recordings\RecordingSessionService;
-use App\Service\Feature\Recordings\VideoService;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Infrastructure\Enum\CookieName;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

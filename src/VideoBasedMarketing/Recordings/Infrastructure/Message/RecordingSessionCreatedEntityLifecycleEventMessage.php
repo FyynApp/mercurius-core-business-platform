@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Message\Feature\Recordings;
+namespace App\VideoBasedMarketing\Recordings\Infrastructure\Message;
 
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Shared\Domain\Message\UserOwnedEntityLifecycleEventMessageInterface;

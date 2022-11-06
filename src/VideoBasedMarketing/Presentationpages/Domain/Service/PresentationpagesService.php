@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Feature\Presentationpages;
+namespace App\VideoBasedMarketing\Presentationpages\Domain\Service;
 
 use App\Entity\Feature\Presentationpages\BgColor;
 use App\Entity\Feature\Presentationpages\FgColor;
@@ -11,10 +11,10 @@ use App\Entity\Feature\Presentationpages\PresentationpageElementVariant;
 use App\Entity\Feature\Presentationpages\PresentationpageType;
 use App\Entity\Feature\Presentationpages\TextColor;
 use App\Entity\Feature\Recordings\Video;
-use App\Message\Feature\Presentationpages\GeneratePresentationpageScreenshotCommandMessage;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Presentationpages\Infrastructure\Message\GeneratePresentationpageScreenshotCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;

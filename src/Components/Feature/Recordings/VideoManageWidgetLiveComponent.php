@@ -4,10 +4,10 @@ namespace App\Components\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
 use App\Form\Type\Feature\Recordings\VideoType;
-use App\Service\Feature\Presentationpages\PresentationpagesService;
-use App\Service\Feature\Recordings\VideoService;
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -58,7 +58,7 @@ class VideoManageWidgetLiveComponent
 
     private PresentationpagesService $presentationpagesService;
 
-    private VideoService $videoService;
+    private \App\VideoBasedMarketing\Recordings\Domain\Service\VideoService $videoService;
 
     private RouterInterface $router;
 

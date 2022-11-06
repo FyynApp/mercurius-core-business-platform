@@ -4,7 +4,7 @@ namespace App\Form\Type\Feature\Recordings;
 
 use App\Entity\Feature\Presentationpages\Presentationpage;
 use App\Entity\Feature\Recordings\Video;
-use App\Service\Feature\Presentationpages\PresentationpagesService;
+use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

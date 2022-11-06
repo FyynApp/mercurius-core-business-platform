@@ -1,10 +1,10 @@
 <?php
 
-namespace App\MessageHandler\Feature\Recordings;
+namespace App\VideoBasedMarketing\Recordings\Infrastructure\MessageHandler;
 
 use App\Entity\Feature\Recordings\Video;
-use App\Message\Feature\Recordings\GenerateMissingAssetsCommandMessage;
-use App\Service\Feature\Recordings\VideoService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingAssetsCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
