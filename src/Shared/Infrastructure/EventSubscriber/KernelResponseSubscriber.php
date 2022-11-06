@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventSubscriber;
+namespace App\Shared\Infrastructure\EventSubscriber;
 
 use App\Shared\Infrastructure\Enum\CookieName;
 use App\Shared\Infrastructure\Service\CookiesService;

@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 class SessionController
-    extends \App\Shared\Presentation\Controller\AbstractController
+    extends \App\Shared\Infrastructure\Controller\AbstractController
 {
     #[Route(
         path        : '%app.routing.route_prefix.api%/extension/v1/account/session-info',

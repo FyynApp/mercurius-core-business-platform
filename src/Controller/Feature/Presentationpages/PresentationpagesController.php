@@ -7,7 +7,7 @@ use App\Entity\Feature\Recordings\Video;
 use App\Form\Type\Feature\Presentationpages\PresentationpageType;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
-use App\Shared\Presentation\Controller\AbstractController;
+use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use Doctrine\ORM\EntityManagerInterface;

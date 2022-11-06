@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
 class SignInController
-    extends \App\Shared\Presentation\Controller\AbstractController
+    extends \App\Shared\Infrastructure\Controller\AbstractController
 {
     #[Route(
         path        : [

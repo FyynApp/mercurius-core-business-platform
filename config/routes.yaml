@@ -24,12 +24,12 @@ tailwind_playground:
 
 catchall:
     path:     /{catchall}
-    controller: App\Controller\CatchallController::indexAction
+    controller: App\Shared\Presentation\Controller\CatchallController::indexAction
     methods:  [GET]
     requirements:
         catchall: ".+"
 
 root:
     path:     /
-    controller: App\Controller\CatchallController::indexAction
+    controller: App\Shared\Presentation\Controller\CatchallController::indexAction
     methods:  [GET]
