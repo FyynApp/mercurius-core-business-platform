@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Controller\Feature\Recordings;
+namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,7 @@ class RecordingsController
     extends AbstractController
 {
     public function recordingStudioAction(
-        \App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService $recordingSessionService
+        RecordingSessionService $recordingSessionService
     ): Response
     {
         /** @var ?\App\VideoBasedMarketing\Account\Domain\Entity\User $user */
@@ -39,7 +40,7 @@ class RecordingsController
     public function returnFromRecordingStudioAction(
         Request                                                                    $request,
         EntityManagerInterface                                                     $entityManager,
-        \App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService $recordingSessionService,
+        RecordingSessionService $recordingSessionService,
         VideoService                                                               $videoService
     ): Response
     {
@@ -76,7 +77,7 @@ class RecordingsController
     public function recordingPreviewAssetRedirectAction(
         string                                                                     $recordingSessionId,
         Request                                                                    $request,
-        \App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService $recordingSessionService,
+        RecordingSessionService $recordingSessionService,
         EntityManagerInterface                                                     $entityManager,
         \App\VideoBasedMarketing\Recordings\Domain\Service\VideoService $videoService
     ): Response

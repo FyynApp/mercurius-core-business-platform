@@ -1,11 +1,11 @@
 feature.recordings.recording_studio:
   path: /my/recordings/recording-studio
-  controller: App\Controller\Feature\Recordings\RecordingsController::recordingStudioAction
+  controller: App\VideoBasedMarketing\Recordings\Presentation\Controller\RecordingsController::recordingStudioAction
   methods: [ GET ]
 
 feature.recordings.return_from_recording_studio:
   path: /my/recordings/return-from-recording-session
-  controller: App\Controller\Feature\Recordings\RecordingsController::returnFromRecordingStudioAction
+  controller: App\VideoBasedMarketing\Recordings\Presentation\Controller\RecordingsController::returnFromRecordingStudioAction
   methods: [ GET ]
 
 feature.recordings.videos.overview:

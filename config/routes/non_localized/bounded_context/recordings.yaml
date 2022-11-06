@@ -3,7 +3,7 @@ feature.recordings.recording_session.video_chunk.asset:
 
 feature.recordings.recording_session.recording_preview.asset-redirect:
   path: /my/recordings/recording-sessions/{recordingSessionId}/recording-preview-asset-redirect
-  controller: App\Controller\Feature\Recordings\RecordingsController::recordingPreviewAssetRedirectAction
+  controller: App\VideoBasedMarketing\Recordings\Presentation\Controller\RecordingsController::recordingPreviewAssetRedirectAction
   methods: [ GET ]
 
 feature.recordings.recording_session.recording_preview.asset:
