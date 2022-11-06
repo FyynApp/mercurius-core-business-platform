@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Shared\Presentation\Controller;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use LogicException;

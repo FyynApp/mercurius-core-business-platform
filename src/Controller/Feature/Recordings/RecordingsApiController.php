@@ -2,13 +2,13 @@
 
 namespace App\Controller\Feature\Recordings;
 
-use App\Controller\AbstractController;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
 use App\Shared\Infrastructure\Enum\CookieName;
+use App\Shared\Presentation\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;

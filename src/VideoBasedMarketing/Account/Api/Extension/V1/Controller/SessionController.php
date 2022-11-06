@@ -2,7 +2,6 @@
 
 namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Controller;
 
-use App\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Api\Extension\V1\Service\SessionService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 class SessionController
-    extends AbstractController
+    extends \App\Shared\Presentation\Controller\AbstractController
 {
     #[Route(
         path        : '%app.routing.route_prefix.api%/extension/v1/account/session-info',
