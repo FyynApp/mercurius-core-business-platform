@@ -17,25 +17,25 @@ class ContentpagesController
         }
 
         return $this->render(
-            'feature/landingpages/homepage.html.twig',
+            '@shared/content_pages/homepage.html.twig',
             ['kernel_environment' => $this->getParameter('kernel.environment')]
         );
     }
 
     public function featuresAction(): Response
     {
-        return $this->render('feature/landingpages/features.html.twig');
+        return $this->render('@shared/content_pages/features.html.twig');
     }
 
     public function pricingAction(): Response
     {
-        return $this->render('feature/landingpages/pricing.html.twig');
+        return $this->render('@shared/content_pages/pricing.html.twig');
     }
 
     public function wrappedExternalContentAction(Request $request): Response
     {
         return $this->render(
-            'feature/landingpages/wrapped_external_content.html.twig',
+            '@shared/content_pages/wrapped_external_content.html.twig',
             ['externalContent' => file_get_contents($request->get('externalContentUrl'))]
         );
     }
