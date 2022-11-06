@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Aspect\ValueFormats;
+namespace App\Shared\Infrastructure\Service;
 
 use InvalidArgumentException;
 

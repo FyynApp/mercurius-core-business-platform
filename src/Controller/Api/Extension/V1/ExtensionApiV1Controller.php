@@ -2,13 +2,13 @@
 
 namespace App\Controller\Api\Extension\V1;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Controller\AbstractController;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Security\VotingAttribute;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;

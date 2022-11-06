@@ -4,10 +4,10 @@ namespace App\Components\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
 use App\Form\Type\Feature\Recordings\VideoType;
-use App\Security\VotingAttribute;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
 use App\Shared\Infrastructure\Service\ShortIdService;
+use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;

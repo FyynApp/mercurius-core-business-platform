@@ -2,12 +2,11 @@
 
 namespace App\Controller\Feature\Recordings;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\Entity\Feature\Recordings\AssetMimeType;
 use App\Entity\Feature\Recordings\RecordingSession;
-use App\Security\VotingAttribute;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
+use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

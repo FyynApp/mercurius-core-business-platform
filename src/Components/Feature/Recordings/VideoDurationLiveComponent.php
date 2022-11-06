@@ -3,8 +3,8 @@
 namespace App\Components\Feature\Recordings;
 
 use App\Entity\Feature\Recordings\Video;
-use App\Security\VotingAttribute;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
+use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;

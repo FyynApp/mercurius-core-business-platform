@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Feature\Account;
+namespace App\VideoBasedMarketing\Account\Infrastructure\Security;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;

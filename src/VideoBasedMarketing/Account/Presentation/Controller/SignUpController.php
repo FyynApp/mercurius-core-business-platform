@@ -2,11 +2,11 @@
 
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
-use App\Security\Feature\Account\EmailVerifier;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
+use App\VideoBasedMarketing\Account\Infrastructure\Security\EmailVerifier;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\SignUpType;
 use Doctrine\ORM\EntityManagerInterface;

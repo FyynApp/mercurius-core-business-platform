@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Components;
+namespace App\Shared\Presentation\Component;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use InvalidArgumentException;

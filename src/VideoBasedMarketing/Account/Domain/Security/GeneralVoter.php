@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Security;
+namespace App\VideoBasedMarketing\Account\Domain\Security;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace App\VideoBasedMarketing\Account\Domain\Enum;
 
 enum VotingAttribute: string
 {
