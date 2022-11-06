@@ -22,7 +22,7 @@
                 {% if TwigHelperService.dashboardService.firstName(app.user) is not null
                     and TwigHelperService.dashboardService.lastName(app.user) is not null
                 %}
-                    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
+                    {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
                         {% block contentLeft %}
                             {{ 'feature.dashboard.show.your_name'|trans }}
                         {% endblock %}
@@ -33,7 +33,7 @@
                     {% endembed %}
                 {% endif %}
 
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
+                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_email_address'|trans }}
                     {% endblock %}
@@ -42,7 +42,7 @@
                     {% endblock %}
                 {% endembed %}
 
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
+                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_subscription'|trans }}
                     {% endblock %}
@@ -55,7 +55,7 @@
                 {% endembed %}
 
                 {% if TwigHelperService.dashboardService.latestVideos(app.user)|length > 0 %}
-                    {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
+                    {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
                         {% block contentLeft %}
                             {{ 'feature.dashboard.show.your_latest_videos'|trans }}
                         {% endblock %}
@@ -76,7 +76,7 @@
                                                     {{ video.title }}
                                                 </div>
                                                 <div class="text-gray-600">
-                                                    {% import 'macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                                                    {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
                                                     {{ dateAndTimeMacros.full(video.createdAt) }}
                                                 </div>
                                             </div>
@@ -94,7 +94,7 @@
                     {% endembed %}
                 {% endif %}
 
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
+                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
                     {% block contentLeft %}
                         {{ 'feature.dashboard.show.your_presentationpages'|trans }}
                     {% endblock %}

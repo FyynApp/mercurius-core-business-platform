@@ -83,7 +83,7 @@
 
         <div class="flex-grow pt-4 pb-4 ml-4 mr-4 mt-3 overflow-y-clip">
             <p class="text-xs text-gray-400 mb-1">
-                {% import 'macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
                 {{ dateAndTimeMacros.shortDateAndTime(this.video.createdAt) }}
             </p>
             <p class="text-xl font-bold mb-1 break-words flex flex-row justify-between items-start gap-2">
@@ -346,7 +346,7 @@
                 h-full md:w-10/12 overflow-y-scroll relative bg-gray-100 p-8 pt-4 border-1 border-gray-400
                 shadow-gray-900 shadow-2xl
             ">
-                {% embed 'embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 8, colspanRight: 4 } %}
+                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 8, colspanRight: 4 } %}
 
                     {% block contentLeft %}
 
@@ -386,7 +386,7 @@
                             <div class="rounded-md p-4 bg-gray-200 flex flex-row flex-wrap gap-4 justify-between items-center">
 
                                 <div class="text-gray-600">
-                                    {% import 'macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                                    {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
                                     {{ dateAndTimeMacros.full(video.createdAt) }}
                                 </div>
 

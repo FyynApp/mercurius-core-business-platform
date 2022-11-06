@@ -27,6 +27,29 @@ doctrine:
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Membership/Domain/Entity'
                 prefix: 'App\VideoBasedMarketing\Membership\Domain'
 
+
+            App\VideoBasedMarketing\Presentationpages\Domain:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/VideoBasedMarketing/Presentationpages/Domain/Entity'
+                prefix: 'App\VideoBasedMarketing\Presentationpages\Domain'
+
+
+            App\VideoBasedMarketing\Recordings\Domain:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/VideoBasedMarketing/Recordings/Domain/Entity'
+                prefix: 'App\VideoBasedMarketing\Recordings\Domain'
+
+            App\VideoBasedMarketing\Recordings\Infrastructure:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/VideoBasedMarketing/Recordings/Infrastructure/Entity'
+                prefix: 'App\VideoBasedMarketing\Recordings\Infrastructure'
+
+            App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/VideoBasedMarketing/Recordings/Api/Recorder/V1/Entity'
+                prefix: 'App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity'
+
+
 when@test:
     doctrine:
         dbal:
