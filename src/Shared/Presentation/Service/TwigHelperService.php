@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Shared\Twig\Presentation\Service;
+namespace App\Shared\Presentation\Service;
 
 use App\Service\Feature\Dashboard\DashboardService;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
-use App\Shared\Cookies\Infrastructure\Service\CookiesService;
-use App\Shared\Entities\Infrastructure\Service\ShortIdService;
 use App\Shared\Infrastructure\Service\ContentDeliveryService;
+use App\Shared\Infrastructure\Service\CookiesService;
+use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 
 
 class TwigHelperService
 {
-    private \App\Shared\Infrastructure\Service\ContentDeliveryService $contentDeliveryService;
+    private ContentDeliveryService $contentDeliveryService;
 
     private AccountAssetsService $accountAssetsService;
 
@@ -31,14 +31,14 @@ class TwigHelperService
     private PresentationpagesService $presentationpagesService;
 
     public function __construct(
-        ContentDeliveryService   $contentDeliveryService,
-        AccountAssetsService     $accountAssetsService,
-        MembershipService        $membershipService,
-        CookiesService           $cookiesService,
-        VideoService             $videoService,
-        ShortIdService           $shortIdService,
-        DashboardService         $dashboardService,
-        PresentationpagesService $presentationpagesService
+        ContentDeliveryService                            $contentDeliveryService,
+        AccountAssetsService                              $accountAssetsService,
+        MembershipService                                 $membershipService,
+        CookiesService $cookiesService,
+        VideoService                                      $videoService,
+        ShortIdService                                    $shortIdService,
+        DashboardService                                  $dashboardService,
+        PresentationpagesService                          $presentationpagesService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;

@@ -9,7 +9,7 @@ use App\Entity\Feature\Recordings\RecordingSettingsBag;
 use App\Security\VotingAttribute;
 use App\Service\Feature\Recordings\RecordingSessionService;
 use App\Service\Feature\Recordings\VideoService;
-use App\Shared\Cookies\Infrastructure\Enum\CookieName;
+use App\Shared\Infrastructure\Enum\CookieName;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

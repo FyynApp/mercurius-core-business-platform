@@ -7,7 +7,7 @@ use App\Entity\Feature\Recordings\RecordingSession;
 use App\Entity\Feature\Recordings\Video;
 use App\Message\Feature\Recordings\GenerateMissingAssetsCommandMessage;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
-use App\Shared\Filesystem\Infrastructure\Service\FilesystemService;
+use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;

@@ -9,7 +9,7 @@ use App\Form\Type\Feature\Presentationpages\PresentationpageType;
 use App\Security\VotingAttribute;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
-use App\Shared\Twig\Presentation\Enum\FlashMessageLabel;
+use App\Shared\Presentation\Enum\FlashMessageLabel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

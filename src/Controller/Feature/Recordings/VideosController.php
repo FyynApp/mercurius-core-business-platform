@@ -5,7 +5,7 @@ namespace App\Controller\Feature\Recordings;
 use App\Entity\Feature\Recordings\Video;
 use App\Security\VotingAttribute;
 use App\Service\Feature\Recordings\VideoService;
-use App\Shared\Twig\Presentation\Enum\FlashMessageLabel;
+use App\Shared\Presentation\Enum\FlashMessageLabel;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

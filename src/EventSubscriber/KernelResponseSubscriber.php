@@ -2,8 +2,8 @@
 
 namespace App\EventSubscriber;
 
-use App\Shared\Cookies\Infrastructure\Enum\CookieName;
-use App\Shared\Cookies\Infrastructure\Service\CookiesService;
+use App\Shared\Infrastructure\Enum\CookieName;
+use App\Shared\Infrastructure\Service\CookiesService;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

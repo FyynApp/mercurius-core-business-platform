@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Entities\Infrastructure\Service;
+namespace App\Shared\Infrastructure\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;

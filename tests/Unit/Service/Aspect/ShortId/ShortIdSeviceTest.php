@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\Service\Aspect\ShortId;
 
-use App\Shared\Entities\Infrastructure\Service\ShortIdService;
+use App\Shared\Infrastructure\Service\ShortIdService;
 use PHPUnit\Framework\TestCase;
 
 
@@ -13,7 +13,7 @@ class ShortIdSeviceTest
     {
         $this->assertSame(
             '3',
-            \App\Shared\Entities\Infrastructure\Service\ShortIdService::encode(1)
+            \App\Shared\Infrastructure\Service\ShortIdService::encode(1)
         );
 
         $this->assertSame(

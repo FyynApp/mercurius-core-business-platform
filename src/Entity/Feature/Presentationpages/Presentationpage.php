@@ -3,7 +3,7 @@
 namespace App\Entity\Feature\Presentationpages;
 
 use App\Entity\Feature\Recordings\Video;
-use App\Shared\DateAndTime\Infrastructure\Service\DateAndTimeService;
+use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use DateTime;

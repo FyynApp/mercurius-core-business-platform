@@ -7,7 +7,7 @@ use App\Form\Type\Feature\Recordings\VideoType;
 use App\Security\VotingAttribute;
 use App\Service\Feature\Presentationpages\PresentationpagesService;
 use App\Service\Feature\Recordings\VideoService;
-use App\Shared\Entities\Infrastructure\Service\ShortIdService;
+use App\Shared\Infrastructure\Service\ShortIdService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;

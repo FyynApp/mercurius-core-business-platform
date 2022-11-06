@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\DateAndTime\Infrastructure\Service;
+namespace App\Shared\Infrastructure\Service;
 
 use DateTime;
 use Exception;

@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Membership\Domain\Entity;
 
-use App\Shared\DateAndTime\Infrastructure\Service\DateAndTimeService;
+use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;

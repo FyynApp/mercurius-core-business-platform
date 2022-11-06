@@ -6,7 +6,7 @@ twig:
         'src/VideoBasedMarketing/Membership/Presentation/Resources/templates': 'videobasedmarketing.membership'
 
     globals:
-        TwigHelperService: '@App\Shared\Twig\Presentation\Service\TwigHelperService'
+        TwigHelperService: '@App\Shared\Presentation\Service\TwigHelperService'
 
 when@test:
     twig:

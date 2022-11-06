@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
 use App\Security\Feature\Account\EmailVerifier;
-use App\Shared\Twig\Presentation\Enum\FlashMessageLabel;
+use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
