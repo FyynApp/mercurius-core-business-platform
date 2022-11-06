@@ -1,14 +1,14 @@
 feature.landingpages.homepage:
   path: /
-  controller: App\VideoBasedMarketing\Landingpages\Presentation\Controller\LandingpagesController::homepageAction
+  controller: App\Shared\Presentation\Controller\ContentpagesController::homepageAction
   methods: [ GET ]
 
 feature.landingpages.features:
   path: /features
-  controller: App\VideoBasedMarketing\Landingpages\Presentation\Controller\LandingpagesController::featuresAction
+  controller: App\Shared\Presentation\Controller\ContentpagesController::featuresAction
   methods: [ GET ]
 
 feature.landingpages.pricing:
   path: /pricing
-  controller: App\VideoBasedMarketing\Landingpages\Presentation\Controller\LandingpagesController::pricingAction
+  controller: App\Shared\Presentation\Controller\ContentpagesController::pricingAction
   methods: [ GET ]

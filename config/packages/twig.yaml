@@ -2,8 +2,13 @@ twig:
     default_path: '%kernel.project_dir%/templates'
 
     paths:
+        'src/Shared/Presentation/Resources/templates': 'shared'
+
         'src/VideoBasedMarketing/Account/Presentation/Resources/templates': 'videobasedmarketing.account'
         'src/VideoBasedMarketing/Membership/Presentation/Resources/templates': 'videobasedmarketing.membership'
+        'src/VideoBasedMarketing/Dashboard/Presentation/Resources/templates': 'videobasedmarketing.dashboard'
+        'src/VideoBasedMarketing/Presentationpages/Presentation/Resources/templates': 'videobasedmarketing.presentationpages'
+        'src/VideoBasedMarketing/Recordings/Presentation/Resources/templates': 'videobasedmarketing.recordings'
 
     globals:
         TwigHelperService: '@App\Shared\Presentation\Service\TwigHelperService'

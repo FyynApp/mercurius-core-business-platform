@@ -2,6 +2,7 @@
 
 namespace App\Shared\Presentation\Component;
 
+use App\Shared\Presentation\Entity\NavigationEntry;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,7 +10,10 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 
-#[AsTwigComponent('side_navigation')]
+#[AsTwigComponent(
+    'side_navigation',
+    '@shared/navigation/side_navigation.component.html.twig'
+)]
 class SideNavigationComponent
 {
     #[ExposeInTemplate]

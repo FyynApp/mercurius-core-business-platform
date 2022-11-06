@@ -1,4 +1,4 @@
-{% extends '../../../../../../templates/base.html.twig' %}
+{% extends '@shared/base.html.twig' %}
 
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
@@ -8,7 +8,7 @@
 
 {% block body %}
 
-    {% embed 'embeds/default_content_box.html.twig' %}
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
             {{ 'feature.presentationpages.overview.title'|trans }}
         {% endblock %}

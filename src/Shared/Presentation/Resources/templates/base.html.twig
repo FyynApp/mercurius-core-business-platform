@@ -25,14 +25,14 @@
 
             {% if app.user is not null %}
                 <div class="min-h-full bg-gray-800 p-4 hidden md:block md:w-1/12 md:w-96 border-0 border-r-2 border-r-gray-900 shadow-lg shadow-gray-700 max-w-fit">
-                    {% include 'nav_left.html.twig' %}
+                    {% include '@shared/navigation/nav_left.html.twig' %}
                 </div>
             {% endif %}
 
             <div class="min-h-screen flex flex-col w-full {% if app.user is not null %}md:w-11/12{% endif %}">
 
                 <div class="{% if app.user is not null %}md:hidden{% endif %}">
-                    {% include 'nav_top.html.twig' %}
+                    {% include '@shared/navigation/nav_top.html.twig' %}
                 </div>
 
                 <div class="flex flex-col flex-grow">

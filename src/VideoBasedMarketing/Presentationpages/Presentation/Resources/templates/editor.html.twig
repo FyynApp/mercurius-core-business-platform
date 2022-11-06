@@ -1,4 +1,4 @@
-{% extends '../../../../../../templates/base.html.twig' %}
+{% extends '@shared/base.html.twig' %}
 
 {# @var presentationpage \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage #}
 {# @var PresentationpagesService \App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService #}
@@ -8,7 +8,7 @@
 
 {% block body %}
 
-    {% embed 'embeds/default_content_box.html.twig' %}
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
         {% block contentBoxTitle %}
             {{ ('feature.presentationpages.editor.title_' ~ presentationpage.type.value)|trans }}
         {% endblock %}

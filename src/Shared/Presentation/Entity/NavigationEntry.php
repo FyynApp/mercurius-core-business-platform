@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Presentation\Component;
+namespace App\Shared\Presentation\Entity;
 
 class NavigationEntry
 {
