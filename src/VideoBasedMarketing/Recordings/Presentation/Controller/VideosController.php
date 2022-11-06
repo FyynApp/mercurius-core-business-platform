@@ -23,7 +23,7 @@ class VideosController
     ): Response
     {
         return $this->render(
-            'feature/recordings/videos_overview.html.twig',
+            '@videobasedmarketing.recordings/videos_overview.html.twig',
             ['showEditModalForVideoId' => $request->get('showEditModalForVideoId')]
         );
     }
@@ -66,7 +66,7 @@ class VideosController
         }
 
         return $this->render(
-            'feature/recordings/video_show_with_video_only_presentationpage_template.html.twig',
+            '@videobasedmarketing.recordings/video_show_with_video_only_presentationpage_template.html.twig',
             ['video' => $video]
         );
     }

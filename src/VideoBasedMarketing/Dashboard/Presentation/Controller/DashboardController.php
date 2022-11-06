@@ -13,7 +13,7 @@ class DashboardController
     public function showAction(DashboardService $dashboardService): Response
     {
         return $this->render(
-            'feature/dashboard/show.html.twig',
+            '@videobasedmarketing.dashboard/show.html.twig',
             [
                 'DashboardService' => $dashboardService
             ]

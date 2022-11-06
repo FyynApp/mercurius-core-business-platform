@@ -27,7 +27,7 @@ class PresentationpagesController
     ): Response
     {
         return $this->render(
-            'feature/presentationpages/overview.html.twig',
+            '@videobasedmarketing.presentationpages/overview.html.twig',
             [
                 'PresentationpagesService' => $presentationpagesService,
                 'VideoService' => $videoService
@@ -98,7 +98,7 @@ class PresentationpagesController
         }
 
         return $this->render(
-            'feature/presentationpages/create_page_from_video_form.html.twig',
+            '@videobasedmarketing.presentationpages/create_page_from_video_form.html.twig',
             [
                 'video' => $video,
                 'PresentationpagesService' => $presentationpagesService,
@@ -221,7 +221,7 @@ class PresentationpagesController
         $this->denyAccessUnlessGranted(VotingAttribute::View->value, $presentationpage);
 
         return $this->render(
-            'feature/presentationpages/preview.html.twig',
+            '@videobasedmarketing.presentationpages/preview.html.twig',
             [
                 'presentationpage' => $presentationpage,
                 'VideoService' => $videoService
@@ -251,7 +251,7 @@ class PresentationpagesController
 
         {
             return $this->render(
-                'feature/presentationpages/preview.html.twig',
+                '@videobasedmarketing.presentationpages/preview.html.twig',
                 [
                     'presentationpage' => $presentationpage,
                     'VideoService' => $videoService

@@ -33,7 +33,7 @@ class RecordingsController
         $recordingSession = $recordingSessionService->startRecordingSession($user);
 
         return $this->render(
-            'feature/recordings/recording_studio.html.twig',
+            '@videobasedmarketing.recordings/recording_studio.html.twig',
             ['recordingSession' => $recordingSession]
         );
     }
@@ -71,7 +71,7 @@ class RecordingsController
     public function videosOverviewAction(\App\VideoBasedMarketing\Recordings\Domain\Service\VideoService $videoService): Response
     {
         return $this->render(
-            'feature/recordings/videos_overview.html.twig'
+            '@videobasedmarketing.recordings/videos_overview.html.twig'
         );
     }
 
