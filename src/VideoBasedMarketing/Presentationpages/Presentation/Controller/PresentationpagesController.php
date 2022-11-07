@@ -15,12 +15,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class PresentationpagesController
     extends AbstractController
 {
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/landingpages/overview',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/seiten/übersicht',
+        ],
+        name        : 'videobasedmarketing.presentationpages.overview',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function overviewAction(
         PresentationpagesService $presentationpagesService,
         VideoService             $videoService
@@ -35,6 +45,15 @@ class PresentationpagesController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/landingpages-of-type-page/',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/seiten-vom-typ-seite/',
+        ],
+        name        : 'videobasedmarketing.presentationpages.create_type_page',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
     public function createPageAction(
         VideoService        $videoService,
         TranslatorInterface $translator
@@ -51,6 +70,15 @@ class PresentationpagesController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/landingpages-of-type-template/',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/seiten-vom-typ-vorlage/',
+        ],
+        name        : 'videobasedmarketing.presentationpages.create_type_template',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
     public function createTemplateAction(
         PresentationpagesService $presentationpagesService
     ): Response
@@ -59,7 +87,7 @@ class PresentationpagesController
         $draftPresentationpage = $presentationpagesService->createDraft($originalpresentationpage);
 
         return $this->redirectToRoute(
-            'feature.presentationpages.editor',
+            'videobasedmarketing.presentationpages.draft.editor',
             [
                 'originalPresentationpageId' => $originalpresentationpage->getId(),
                 'presentationpageId' => $draftPresentationpage->getId()
@@ -67,6 +95,15 @@ class PresentationpagesController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/landingpages/create-from-video-\'{videoId}\'-form',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/seiten/anlegen-basierend-auf-video-\'{videoId}\'-formular',
+        ],
+        name        : 'videobasedmarketing.presentationpages.create_page_from_video_form',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function createPageFromVideoFormAction(
         string                                                                             $videoId,
         EntityManagerInterface                                                             $entityManager,
@@ -89,7 +126,7 @@ class PresentationpagesController
             $draftPresentationpage = $presentationpagesService->createDraft($originalpresentationpage);
 
             return $this->redirectToRoute(
-                'feature.presentationpages.editor',
+                'videobasedmarketing.presentationpages.draft.editor',
                 [
                     'originalPresentationpageId' => $originalpresentationpage->getId(),
                     'presentationpageId' => $draftPresentationpage->getId()
@@ -107,6 +144,15 @@ class PresentationpagesController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/landingpages/create-from-video-\'{videoId}\'-and-template-\'{templateId}\'-form',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/seiten/anlegen-basierend-auf-video-\'{videoId}\'-und-vorlage-\'{templateId}\'-formular',
+        ],
+        name        : 'videobasedmarketing.presentationpages.create_page_from_video_and_template',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function createPageFromVideoAndTemplateAction(
         string                                                                             $videoId,
         string                                                                             $templateId,
@@ -136,7 +182,7 @@ class PresentationpagesController
         $draftPresentationpage = $presentationpagesService->createDraft($originalPresentationpage);
 
         return $this->redirectToRoute(
-            'feature.presentationpages.editor',
+            'videobasedmarketing.presentationpages.draft.editor',
             [
                 'originalPresentationpageId' => $originalPresentationpage->getId(),
                 'presentationpageId' => $draftPresentationpage->getId()
@@ -144,6 +190,15 @@ class PresentationpagesController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/landingpages/{presentationpageId}/drafts/',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/seiten/{presentationpageId}/entwürfe/',
+        ],
+        name        : 'videobasedmarketing.presentationpages.draft.create',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
     public function createDraftAction(
         string                   $presentationpageId,
         EntityManagerInterface   $entityManager,
@@ -161,7 +216,7 @@ class PresentationpagesController
         $draft = $presentationpagesService->createDraft($presentationpage);
 
         return $this->redirectToRoute(
-            'feature.presentationpages.editor',
+            'videobasedmarketing.presentationpages.draft.editor',
             [
                 'originalPresentationpageId' => $presentationpage->getId(),
                 'presentationpageId' => $draft->getId()
@@ -169,6 +224,15 @@ class PresentationpagesController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/landingpages/{originalPresentationpageId}/drafts/{presentationpageId}/editor',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/seiten/{originalPresentationpageId}/entwürfe/{presentationpageId}/bearbeitungs-formular',
+        ],
+        name        : 'videobasedmarketing.presentationpages.draft.editor',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET, Request::METHOD_POST]
+    )]
     public function editorAction(
         string                   $presentationpageId,
         Request                  $request,
@@ -193,7 +257,7 @@ class PresentationpagesController
 
             $presentationpagesService->handleEdited($presentationpage);
 
-            return $this->redirectToRoute('feature.presentationpages.overview');
+            return $this->redirectToRoute('videobasedmarketing.presentationpages.overview');
         } else {
             return $this->renderForm(
                 '@videobasedmarketing.presentationpages/editor.html.twig',
@@ -206,6 +270,15 @@ class PresentationpagesController
         }
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/landingpages/{presentationpageId}/preview',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/seiten/{presentationpageId}/vorschau',
+        ],
+        name        : 'videobasedmarketing.presentationpages.preview',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function previewAction(
         string                 $presentationpageId,
         EntityManagerInterface $entityManager,
@@ -229,6 +302,15 @@ class PresentationpagesController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/landingpages/{presentationpageId}/screenshot-capture-view',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/seiten/{presentationpageId}/bildschirmfoto-erstellen-ansicht',
+        ],
+        name        : 'videobasedmarketing.presentationpages.screenshot_capture_view',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function screenshotCaptureViewAction(
         string                   $presentationpageId,
         Request                  $request,

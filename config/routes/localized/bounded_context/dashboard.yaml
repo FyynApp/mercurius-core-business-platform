@@ -1,4 +1,0 @@
-feature.dashboard.show:
-  path: /my/dashboard
-  controller: App\VideoBasedMarketing\Dashboard\Presentation\Controller\DashboardController::showAction
-  methods: [ GET ]

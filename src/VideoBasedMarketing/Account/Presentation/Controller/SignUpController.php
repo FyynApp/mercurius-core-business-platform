@@ -52,7 +52,7 @@ class SignUpController
         $user = $this->getUser();
 
         if (!is_null($user)) {
-            return $this->redirectToRoute('feature.landingpages.homepage');
+            return $this->redirectToRoute('shared.contentpages.homepage');
         }
 
         $user = new User();
@@ -85,7 +85,7 @@ class SignUpController
             $entityManager->flush();
 
             $this->emailVerifier->sendEmailConfirmation(
-                'feature.account.verify_email',
+                'videobasedmarketing.account.sign_up.email_verification',
                 $user,
                 (new TemplatedEmail())
                     ->from(new Address('no-reply@fyyn.io', 'Fyyn.io'))
@@ -94,7 +94,7 @@ class SignUpController
                     ->htmlTemplate('feature/account/sign_up/confirmation_email.html.twig')
             );
 
-            return $this->redirectToRoute('feature.landingpages.homepage');
+            return $this->redirectToRoute('shared.contentpages.homepage');
         }
 
         return $this->render(
@@ -106,6 +106,15 @@ class SignUpController
     }
 
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-up/email-verification',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/neu-registrieren/email-verifikation',
+        ],
+        name        : 'videobasedmarketing.account.sign_up.email_verification',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET, Request::METHOD_POST]
+    )]
     public function verifyEmailAction(
         Request                   $request,
         TranslatorInterface       $translator,
@@ -116,13 +125,13 @@ class SignUpController
         $id = $request->get('id');
 
         if (null === $id) {
-            return $this->redirectToRoute('feature.account.register');
+            return $this->redirectToRoute('videobasedmarketing.account.sign_up');
         }
 
         $user = $userRepository->find($id);
 
         if (null === $user) {
-            return $this->redirectToRoute('feature.account.register');
+            return $this->redirectToRoute('videobasedmarketing.account.sign_up');
         }
 
         // validate email confirmation link, sets User::isVerified=true and persists
@@ -131,7 +140,7 @@ class SignUpController
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-            return $this->redirectToRoute('feature.account.register');
+            return $this->redirectToRoute('videobasedmarketing.account.sign_up');
         }
 
         $this->addFlash(FlashMessageLabel::Success->value, 'Your email address has been verified.');

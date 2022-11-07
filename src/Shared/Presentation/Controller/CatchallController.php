@@ -25,14 +25,14 @@ class CatchallController
         ) {
             return new RedirectResponse(
                 $router->generate(
-                    'feature.landingpages.homepage',
+                    'shared.contentpages.homepage',
                     ['_locale' => 'de']
                 )
             );
         } else {
             return new RedirectResponse(
                 $router->generate(
-                    'feature.landingpages.homepage',
+                    'shared.contentpages.homepage',
                     ['_locale' => 'en']
                 )
             );

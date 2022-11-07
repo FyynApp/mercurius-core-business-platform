@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
+use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +11,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 
 class SignInController
-    extends \App\Shared\Infrastructure\Controller\AbstractController
+    extends AbstractController
 {
     #[Route(
         path        : [

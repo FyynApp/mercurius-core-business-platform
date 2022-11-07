@@ -39,24 +39,24 @@ class MainNavigationComponent
             $this->entries = [
                 new NavigationEntry(
                     'mainnav.homepage',
-                    'feature.landingpages.homepage'
+                    'shared.contentpages.homepage'
                 ),
 
                 new NavigationEntry(
                     'mainnav.features',
-                    'feature.landingpages.features'
+                    'shared.contentpages.features'
                 ),
 
                 new NavigationEntry(
                     'mainnav.pricing',
-                    'feature.landingpages.pricing'
+                    'shared.contentpages.pricing'
                 ),
             ];
         } else {
             $this->entries = [
                 new NavigationEntry(
                     'mainnav.dashboard',
-                    'feature.dashboard.show'
+                    'videobasedmarketing.dashboard.show'
                 ),
 
                 new NavigationEntry(
@@ -74,8 +74,8 @@ class MainNavigationComponent
                 /*
                 new NavigationEntry(
                     'mainnav.presentationpages',
-                    'feature.presentationpages.overview',
-                    ['feature.presentationpages.editor']
+                    'videobasedmarketing.presentationpages.overview',
+                    ['videobasedmarketing.presentationpages.draft.editor']
                 ),
                 */
             ];

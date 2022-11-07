@@ -99,7 +99,7 @@
                         {{ 'feature.dashboard.show.your_presentationpages'|trans }}
                     {% endblock %}
                     {% block contentRight %}
-                        <a href="{{ path('feature.presentationpages.overview') }}">
+                        <a href="{{ path('videobasedmarketing.presentationpages.overview') }}">
                             {{ 'feature.dashboard.show.your_presentationpages.info'|trans(
                                 { numberOfPresentationpages: TwigHelperService.dashboardService.numberOfPresentationpages(app.user, constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Page')) }
                             ) }}

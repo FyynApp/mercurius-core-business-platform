@@ -5,15 +5,25 @@ namespace App\Shared\Presentation\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 class ContentpagesController
     extends AbstractController
 {
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/',
+        ],
+        name        : 'shared.contentpages.homepage',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function homepageAction(): Response
     {
         if (!is_null($this->getUser())) {
-            return $this->redirectToRoute('feature.dashboard.show');
+            return $this->redirectToRoute('videobasedmarketing.dashboard.show');
         }
 
         return $this->render(
@@ -22,11 +32,29 @@ class ContentpagesController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/features',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/funktionen',
+        ],
+        name        : 'shared.contentpages.features',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function featuresAction(): Response
     {
         return $this->render('@shared/content_pages/features.html.twig');
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/pricing',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/preise',
+        ],
+        name        : 'shared.contentpages.pricing',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function pricingAction(): Response
     {
         return $this->render('@shared/content_pages/pricing.html.twig');

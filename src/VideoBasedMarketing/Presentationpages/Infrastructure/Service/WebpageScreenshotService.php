@@ -42,12 +42,14 @@ class WebpageScreenshotService
         $this->presentationpagesService = $presentationpagesService;
     }
 
-    public function generateScreenshot(Presentationpage $presentationpage): void
+    public function generateScreenshot(
+        Presentationpage $presentationpage
+    ): void
     {
         $this->createFilesystemStructuresForScreenshots($presentationpage);
 
         $targetUrl = $this->router->generate(
-            'feature.presentationpages.screenshot_capture_view',
+            'videobasedmarketing.presentationpages.screenshot_capture_view',
             [
                 'presentationpageId' => $presentationpage->getId(),
                 'presentationpageHash' => $this
@@ -125,7 +127,9 @@ class WebpageScreenshotService
         shell_exec($commandLine);
     }
 
-    private function createFilesystemStructuresForScreenshots(Presentationpage $presentationpage): void
+    private function createFilesystemStructuresForScreenshots(
+        Presentationpage $presentationpage
+    ): void
     {
         $fs = new Filesystem();
 
