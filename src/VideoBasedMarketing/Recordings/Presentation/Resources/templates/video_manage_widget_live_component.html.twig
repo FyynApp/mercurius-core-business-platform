@@ -14,24 +14,24 @@
                 <div
                         class="p-0 m-0"
 
-                        {{ stimulus_controller('videoBasedMarketingRecordingsVideoPreview') }}
+                        {{ stimulus_controller('videoBasedMarketing-recordings-videoPreview') }}
 
                         data-action="
-                            focus->videoBasedMarketingRecordingsVideoPreview#showAnimated
-                            click->videoBasedMarketingRecordingsVideoPreview#showAnimated
-                            mouseover->videoBasedMarketingRecordingsVideoPreview#showAnimated
-                            mouseout->videoBasedMarketingRecordingsVideoPreview#showStill
-                            blur->videoBasedMarketingRecordingsVideoPreview#showStill
+                            focus->videoBasedMarketing-recordings-videoPreview#showAnimated
+                            click->videoBasedMarketing-recordings-videoPreview#showAnimated
+                            mouseover->videoBasedMarketing-recordings-videoPreview#showAnimated
+                            mouseout->videoBasedMarketing-recordings-videoPreview#showStill
+                            blur->videoBasedMarketing-recordings-videoPreview#showStill
                         "
                 >
                     <div
-                            {{ stimulus_target('videoBasedMarketingRecordingsVideoPreview', 'stillImage') }}
+                            {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'stillImage') }}
                             class="bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-lg rounded-tr-lg"
                             style="background-image: url('{{ TwigHelperService.videoService.posterStillAssetUrl(this.video) }}')"
                     ></div>
 
                     <div
-                            {{ stimulus_target('videoBasedMarketingRecordingsVideoPreview', 'animatedImage') }}
+                            {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'animatedImage') }}
                             class="hidden bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-lg rounded-tr-lg"
                             style="background-image: url('{{ TwigHelperService.videoService.posterAnimatedAssetUrl(this.video) }}')"
                     ></div>
