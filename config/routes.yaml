@@ -1,14 +1,12 @@
+shared:
+    resource: '../src/Shared/Presentation/Resources/config/routes.yaml'
+
 videobasedmarketing.account:
     resource: '../src/VideoBasedMarketing/Account/Infrastructure/Resources/config/routes.yaml'
 
 videobasedmarketing.presentationpages:
     resource: '../src/VideoBasedMarketing/Presentationpages/Infrastructure/Resources/config/routes.yaml'
 
-shared.tailwind_playground:
-    path: /tailwind-playground
-    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-    defaults:
-        template: /tailwind_playground.html.twig
 
 non_localized:
     resource: 'routes/non_localized/**/*.yaml'
