@@ -16,7 +16,7 @@ class SessionController
     #[Route(
         path        : '%app.routing.route_prefix.api%/extension/v1/account/session-info',
         name        : 'videobasedmarketing.account.api.extension.v1.session_info',
-        methods     : [Request::METHOD_GET, Request::METHOD_POST]
+        methods     : [Request::METHOD_GET]
     )]
     public function getSessionInfoAction(
         SessionService $sessionService

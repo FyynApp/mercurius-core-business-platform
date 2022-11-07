@@ -60,6 +60,11 @@ class ContentpagesController
         return $this->render('@shared/content_pages/pricing.html.twig');
     }
 
+    #[Route(
+        path        : '_content',
+        name        : 'shared.contentpages.wrapped_external_content',
+        methods     : [Request::METHOD_GET]
+    )]
     public function wrappedExternalContentAction(Request $request): Response
     {
         return $this->render(

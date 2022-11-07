@@ -18,13 +18,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 
-class RecorderApiV1Controller
+class RecordingSessionController
     extends AbstractController
 {
+    #[Route(
+        path        : '%app.routing.route_prefix.api%/recorder/v1/recordings/recording-sessions/{recordingSessionId}/info',
+        name        : 'videobasedmarketing.recordings.api.recorder.v1.recording_session.info',
+        methods     : [Request::METHOD_GET]
+    )]
     public function getRecordingSessionInfoAction(
         string                 $recordingSessionId,
         EntityManagerInterface $entityManager,
@@ -79,7 +85,7 @@ class RecorderApiV1Controller
                 'post' => [
                     'ios_upload_url' => 'https://c1.staffapply.com/iOS_upload.php',
                     'mediaPostUrl' => $router->generate(
-                        'api.feature.recordings.recording_session.handle_video_chunk',
+                        'videobasedmarketing.recordings.api.recorder.v1.recording_session.video_chunk.handle',
                         ['recordingSessionId' => $recordingSessionId],
                         UrlGeneratorInterface::ABSOLUTE_URL
                     )
@@ -157,79 +163,11 @@ class RecorderApiV1Controller
         );
     }
 
-
-    public function getRecordingSettingsBagAction(
-        Request                $request,
-        EntityManagerInterface $entityManager
-    ): JsonResponse
-    {
-        $clientId = $request->cookies->get(CookieName::ClientId->value);
-
-        /** @var EntityRepository $repo */
-        $repo = $entityManager->getRepository(RecordingSettingsBag::class);
-
-        /** @var ?RecordingSettingsBag $settingsBag */
-        $settingsBag = $repo->findOneBy(['clientId' => $clientId]);
-
-        if (is_null($settingsBag)) {
-            $responseBody = [
-                'status' => Response::HTTP_OK,
-                'userSessionId' => $request->get('userSessionId'),
-                'audio' => true,
-                'video' => true
-            ];
-        } else {
-            $settings = json_decode($settingsBag->getSettings(), true);
-            $responseBody = [
-                'status' => Response::HTTP_OK,
-                'userSessionId' => $request->get('userSessionId'),
-                'audio' => $settings['audio'],
-                'video' => $settings['video']
-            ];
-        }
-
-        return $this->json($responseBody);
-    }
-
-
-    public function setRecordingSettingsBagAction(
-        Request                $request,
-        EntityManagerInterface $entityManager
-    ): JsonResponse
-    {
-        $clientId = $request->cookies->get(CookieName::ClientId->value);
-
-        /** @var EntityRepository $repo */
-        $repo = $entityManager->getRepository(RecordingSettingsBag::class);
-
-        /** @var ?RecordingSettingsBag $settingsBag */
-        $settingsBag = $repo->findOneBy(['clientId' => $clientId]);
-
-        if (is_null($settingsBag)) {
-            $settingsBag = new RecordingSettingsBag($this->getUser());
-            $settingsBag->setClientId($clientId);
-        }
-
-        $content = $request->getContent();
-
-        $contentAsArray = json_decode($content, true);
-
-        $settingsBag->setSettings(
-            json_encode(
-                [
-                    'audio' => $contentAsArray['audio'],
-                    'video' => $contentAsArray['video']
-                ]
-            )
-        );
-
-        $entityManager->persist($settingsBag);
-        $entityManager->flush();
-
-        return $this->json(['status' => Response::HTTP_OK]);
-    }
-
-
+    #[Route(
+        path        : '%app.routing.route_prefix.api%/recorder/v1/recordings/recording-sessions/{recordingSessionId}/video-chunks/',
+        name        : 'videobasedmarketing.recordings.api.recorder.v1.recording_session.video_chunk.handle',
+        methods     : [Request::METHOD_POST]
+    )]
     public function handleRecordingSessionVideoChunkAction(
         string                  $recordingSessionId,
         Request                 $request,

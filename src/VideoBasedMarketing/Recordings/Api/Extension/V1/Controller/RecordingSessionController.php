@@ -16,14 +16,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 
-class ExtensionApiV1Controller
+class RecordingSessionController
     extends AbstractController
 {
-
+    #[Route(
+        path        : '%app.routing.route_prefix.api%/extension/v1/recordings/recording-sessions/',
+        name        : 'videobasedmarketing.recordings.api.extension.v1.create_recording_session',
+        methods     : [Request::METHOD_POST]
+    )]
     public function createRecordingSessionAction(
         RecordingSessionService $recordingSessionService,
         RouterInterface $router
@@ -45,7 +50,7 @@ class ExtensionApiV1Controller
             'settings' => [
                 'recordingSessionId' => $recordingSession->getId(),
                 'postUrl' => $router->generate(
-                    'api.extension.v1.recording_session.handle_video_chunk',
+                    'videobasedmarketing.recordings.api.extension.v1.recording_session.handle_video_chunk',
                     ['recordingSessionId' => $recordingSession->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
@@ -60,6 +65,11 @@ class ExtensionApiV1Controller
         );
     }
 
+    #[Route(
+        path        : '%app.routing.route_prefix.api%/extension/v1/recordings/recording-sessions/{recordingSessionId}/video-chunks/',
+        name        : 'videobasedmarketing.recordings.api.extension.v1.recording_session.handle_video_chunk',
+        methods     : [Request::METHOD_POST]
+    )]
     public function handleRecordingSessionVideoChunkAction(
         string                  $recordingSessionId,
         Request                 $request,
