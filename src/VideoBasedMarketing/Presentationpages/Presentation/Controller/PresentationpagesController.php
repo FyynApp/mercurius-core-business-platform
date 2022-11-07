@@ -66,7 +66,7 @@ class PresentationpagesController
         }
 
         return $this->redirectToRoute(
-            'feature.recordings.videos.overview'
+            'videobasedmarketing.recordings.videos.overview'
         );
     }
 

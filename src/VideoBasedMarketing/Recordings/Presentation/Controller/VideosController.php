@@ -12,12 +12,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class VideosController
     extends AbstractController
 {
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/videos/',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/videos/',
+        ],
+        name        : 'videobasedmarketing.recordings.videos.overview',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function videosOverviewAction(
         Request $request
     ): Response
@@ -36,7 +46,7 @@ class VideosController
         /** @var EntityRepository $r */
         $r = $entityManager->getRepository(Video::class);
 
-        /** @var null|\App\VideoBasedMarketing\Recordings\Domain\Entity\Video $video */
+        /** @var null|Video $video */
         $video = $r->findOneBy(['shortId' => $videoShortId]);
 
         if (is_null($video)) {
@@ -44,17 +54,26 @@ class VideosController
         }
 
         return $this->redirectToRoute(
-            'feature.recordings.video.show_with_video_only_presentationpage_template',
+            'videobasedmarketing.recordings.video.show_with_video_only_presentationpage_template',
             ['videoId' => $video->getId()]
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/videos/{videoId}/wvopt',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/videos/{videoId}/wvopt',
+        ],
+        name        : 'videobasedmarketing.recordings.video.show_with_video_only_presentationpage_template',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function showWithVideoOnlyPresentationpageTemplateAction(
         string $videoId,
         EntityManagerInterface $entityManager
     ): Response
     {
-        /** @var null|\App\VideoBasedMarketing\Recordings\Domain\Entity\Video $video */
+        /** @var null|Video $video */
         $video = $entityManager->find(Video::class, $videoId);
 
         if (is_null($video)) {
@@ -71,6 +90,15 @@ class VideosController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/videos/{videoId}/deletion',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/videos/{videoId}/löschung',
+        ],
+        name        : 'videobasedmarketing.recordings.video.deletion',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function deleteVideoAction(
         string $videoId,
         EntityManagerInterface $entityManager,
@@ -78,7 +106,7 @@ class VideosController
         TranslatorInterface $translator
     ): Response
     {
-        /** @var null|\App\VideoBasedMarketing\Recordings\Domain\Entity\Video $video */
+        /** @var null|Video $video */
         $video = $entityManager->find(Video::class, $videoId);
 
         if (is_null($video)) {
@@ -97,6 +125,6 @@ class VideosController
             )
         );
 
-        return $this->redirectToRoute('feature.recordings.videos.overview');
+        return $this->redirectToRoute('videobasedmarketing.recordings.videos.overview');
     }
 }

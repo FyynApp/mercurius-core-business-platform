@@ -67,8 +67,8 @@ class MainNavigationComponent
 
                 new NavigationEntry(
                     'mainnav.recordings',
-                    'feature.recordings.videos.overview',
-                    ['feature.recordings.recording_studio']
+                    'videobasedmarketing.recordings.videos.overview',
+                    ['videobasedmarketing.recordings.recording_studio']
                 ),
 
                 /*

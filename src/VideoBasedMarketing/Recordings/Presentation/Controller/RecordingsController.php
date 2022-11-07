@@ -14,11 +14,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 class RecordingsController
     extends AbstractController
 {
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/recording-studio',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/aufnahmestudio',
+        ],
+        name        : 'videobasedmarketing.recordings.recording_studio',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function recordingStudioAction(
         RecordingSessionService $recordingSessionService
     ): Response
@@ -38,6 +48,15 @@ class RecordingsController
         );
     }
 
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/recording-studio/return',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/aufnahmestudio/rückkehr',
+        ],
+        name        : 'videobasedmarketing.recordings.return_from_recording_studio',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function returnFromRecordingStudioAction(
         Request                                                                    $request,
         EntityManagerInterface                                                     $entityManager,
@@ -63,12 +82,12 @@ class RecordingsController
         }
 
         return $this->redirectToRoute(
-            'feature.recordings.videos.overview',
+            'videobasedmarketing.recordings.videos.overview',
             ['showEditModalForVideoId' => $video->getId()]
         );
     }
 
-    public function videosOverviewAction(\App\VideoBasedMarketing\Recordings\Domain\Service\VideoService $videoService): Response
+    public function videosOverviewAction(VideoService $videoService): Response
     {
         return $this->render(
             '@videobasedmarketing.recordings/videos_overview.html.twig'
@@ -76,11 +95,11 @@ class RecordingsController
     }
 
     public function recordingPreviewAssetRedirectAction(
-        string                                                                     $recordingSessionId,
-        Request                                                                    $request,
+        string                  $recordingSessionId,
+        Request                 $request,
         RecordingSessionService $recordingSessionService,
-        EntityManagerInterface                                                     $entityManager,
-        \App\VideoBasedMarketing\Recordings\Domain\Service\VideoService $videoService
+        EntityManagerInterface  $entityManager,
+        VideoService            $videoService
     ): Response
     {
 
