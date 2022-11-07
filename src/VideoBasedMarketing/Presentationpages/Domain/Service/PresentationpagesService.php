@@ -248,7 +248,7 @@ class PresentationpagesService
         }
     }
 
-    /** @return \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[] */
+    /** @return Presentationpage[] */
     public function getPresentationpagesForUser(
         User                     $user,
         PresentationpageType     $type,
@@ -257,7 +257,7 @@ class PresentationpagesService
     {
         $results = [];
 
-        /** @var \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[] $pages */
+        /** @var Presentationpage[] $pages */
         $pages = $user->getPresentationpages()
                       ->toArray();
         foreach ($pages as $page) {
@@ -272,7 +272,7 @@ class PresentationpagesService
         return $results;
     }
 
-    /** @return \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[] */
+    /** @return Presentationpage[] */
     public function getVideoOnlyPresentationpageTemplatesForUser(
         User $user
     ): array
@@ -300,113 +300,12 @@ class PresentationpagesService
             ) > 0;
     }
 
-    public function generateScreenshot(Presentationpage $presentationpage): void
-    {
-        $this->createFilesystemStructuresForScreenshots($presentationpage);
-
-        $targetUrl = $this->router->generate(
-            'feature.presentationpages.screenshot_capture_view',
-            [
-                'presentationpageId' => $presentationpage->getId(),
-                'presentationpageHash' => $this->generatePresentationpageHash($presentationpage)
-            ],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
-
-        $contentStoragePath = $this->filesystemService->getContentStoragePath(
-            [
-                self::ASSETS_SUBFOLDER_NAME,
-                $presentationpage->getId()
-            ]
-        );
-
-        $generatedScreenshotFilePath = $this->filesystemService->getContentStoragePath(
-            [
-                self::ASSETS_SUBFOLDER_NAME,
-                $presentationpage->getId(),
-                'screenshot.webp'
-            ]
-        );
-
-        $commandLine = '
-            docker run 
-                -i
-                --init
-                --cap-add=SYS_ADMIN
-                --rm
-                --env TARGET_URL="' . $targetUrl . '"
-                --env SCREENSHOT_FILE_PATH="/host/screenshot.webp"
-                -v ' . $contentStoragePath . ':/host ghcr.io/puppeteer/puppeteer:latest
-                node -e "`cat ' . $this->parameterBag->get('kernel.project_dir') . '/resources/webpage-screenshot-capture/capture.js' . '`"
-        ';
-
-        $commandLine = mb_ereg_replace("\n", " ", $commandLine);
-
-        shell_exec($commandLine);
-
-        $fs = new Filesystem();
-        $fs->copy(
-            $generatedScreenshotFilePath,
-            $this->filesystemService->getPublicWebfolderGeneratedContentPath(
-                [
-                    self::ASSETS_SUBFOLDER_NAME,
-                    $presentationpage->getId(),
-                    'screenshot.webp'
-                ]
-            ),
-            true
-        );
-
-        $presentationpage->setHasScreenshot(true);
-        $presentationpage->setScreenshotCaptureOutstanding(false);
-        $this->entityManager->persist($presentationpage);
-        $this->entityManager->flush();
-
-        // Docker Container user owns the generated file, therefore he must delete it
-        $commandLine = '
-            docker run 
-                -i
-                --init
-                --cap-add=SYS_ADMIN
-                --rm
-                -v ' . $contentStoragePath . ':/host ghcr.io/puppeteer/puppeteer:latest
-                rm -f /host/screenshot.webp
-        ';
-
-        $commandLine = mb_ereg_replace("\n", " ", $commandLine);
-
-        shell_exec($commandLine);
-    }
-
     public function generatePresentationpageHash(Presentationpage $presentationpage): string
     {
         return sha1('MUI/hdu78764$5uidfrhrfi==478' . $presentationpage->getId());
     }
 
-    private function createFilesystemStructuresForScreenshots(Presentationpage $presentationpage): void
-    {
-        $fs = new Filesystem();
-
-        $fs->mkdir(
-            $this->filesystemService->getContentStoragePath(
-                [
-                    self::ASSETS_SUBFOLDER_NAME,
-                    $presentationpage->getId()
-                ]
-            )
-        );
-
-        $fs->mkdir(
-            $this->filesystemService->getPublicWebfolderGeneratedContentPath(
-                [
-                    self::ASSETS_SUBFOLDER_NAME,
-                    $presentationpage->getId()
-                ]
-            )
-        );
-    }
-
-    /** @return \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[] */
+    /** @return Presentationpage[] */
     private function createBasicSetOfVideoOnlyPresentationpageTemplatesForUser(
         User $user
     ): array

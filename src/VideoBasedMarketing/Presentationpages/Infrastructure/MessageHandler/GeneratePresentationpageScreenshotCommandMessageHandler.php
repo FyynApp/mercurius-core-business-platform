@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Presentationpages\Infrastructure\MessageHandler;
 
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
-use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Presentationpages\Infrastructure\Service\WebpageScreenshotService;
 use App\VideoBasedMarketing\Presentationpages\Infrastructure\Message\GeneratePresentationpageScreenshotCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -19,17 +19,17 @@ class GeneratePresentationpageScreenshotCommandMessageHandler
 
     private LoggerInterface $logger;
 
-    private PresentationpagesService $presentationpageService;
+    private WebpageScreenshotService $webpageScreenshotService;
 
     public function __construct(
         EntityManagerInterface   $entityManager,
         LoggerInterface          $logger,
-        PresentationpagesService $presentationpageService
+        WebpageScreenshotService $webpageScreenshotService
     )
     {
         $this->entityManager = $entityManager;
         $this->logger = $logger;
-        $this->presentationpageService = $presentationpageService;
+        $this->webpageScreenshotService = $webpageScreenshotService;
     }
 
     /** @throws Exception */
@@ -43,6 +43,8 @@ class GeneratePresentationpageScreenshotCommandMessageHandler
             throw new UnrecoverableMessageHandlingException("Could not find presentationpage with id '{$message->getPresentationpageId()}'.");
         }
 
-        $this->presentationpageService->generateScreenshot($presentationpage);
+        $this
+            ->webpageScreenshotService
+            ->generateScreenshot($presentationpage);
     }
 }
