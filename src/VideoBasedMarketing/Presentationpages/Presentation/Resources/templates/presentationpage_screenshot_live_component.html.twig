@@ -12,7 +12,12 @@
     {% if this.presentationpage.screenshot %}
         <img
                 class="rounded rounded-md border-1 {% if this.presentationpage.screenshotCaptureOutstanding %}opacity-50 blur-sm{% endif %}"
-                src="{{ asset(path('feature.presentationpages.presentationpage_screenshot.asset', { presentationpageId: this.presentationpage.id, random: random() })) }}"
+                src="{{ asset(
+                    path(
+                        'videobasedmarketing.presentationpages.presentationpage_screenshot.asset',
+                        { presentationpageId: this.presentationpage.id, random: random() }
+                    ))
+                }}"
         >
 
         {% if this.presentationpage.screenshotCaptureOutstanding %}
