@@ -13,7 +13,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
-#[AsCommand(name: 'app:shared:devhelper:create-demo-entities')]
+#[AsCommand(
+    name: 'app:shared:domain:devhelper:create-demo-entities',
+    description: 'Create a set of demo entities',
+    aliases: ['create-demo-entities']
+)]
 class CreateDemoEntities
     extends Command
 {
@@ -63,6 +67,8 @@ class CreateDemoEntities
         $this->entityManager->persist($presentationpage);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        $output->writeln("Created/updated user '{$user->getUserIdentifier()}'.");
 
         return Command::SUCCESS;
     }
