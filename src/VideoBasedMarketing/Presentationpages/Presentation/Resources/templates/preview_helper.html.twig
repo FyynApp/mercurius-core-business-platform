@@ -1,5 +1,7 @@
 {# @var horizontalPosition \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementHorizontalPosition #}
 
+{% trans_default_domain 'videobasedmarketing.presentationpages' %}
+
 {% macro horizontalPositionText(horizontalPosition) %}
     {% if horizontalPosition is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left') %}
         text-left

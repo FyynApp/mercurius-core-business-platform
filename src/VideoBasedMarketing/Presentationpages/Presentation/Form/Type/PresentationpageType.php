@@ -30,7 +30,7 @@ class PresentationpageType
                 'title',
                 TextType::class,
                 [
-                    'label' => 'feature.presentationpages.editor.edit_form.label_title_' . $presentationpage->getType()->value,
+                    'label' => 'editor.edit_form.label_title_' . $presentationpage->getType()->value,
                     'trim' => false,
                 ],
             );

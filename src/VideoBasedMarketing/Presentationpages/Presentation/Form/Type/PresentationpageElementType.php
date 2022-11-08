@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Presentationpages\Presentation\Form\Type;
 
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement;
-use InvalidArgumentException;
+use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -41,71 +41,73 @@ class PresentationpageElementType
 
             switch ($presentationpageElement->getElementVariant()) {
 
-                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::MercuriusVideo:
+                case PresentationpageElementVariant::MercuriusVideo:
                     return;
 
-                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::Divider:
+                case PresentationpageElementVariant::Divider:
                     $form->add(
                         'textContent',
                         HiddenType::class,
                         [
                             'required' => true,
                             'trim' => false,
-                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.divider'
+                            'translation_domain' => 'videobasedmarketing.presentationpages',
+                            'label' => 'editor.edit_form.label_element_variant.divider'
                         ]
                     );
                     break;
 
-                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::Headline:
+                case PresentationpageElementVariant::Headline:
                     $form->add(
                         'textContent',
                         TextType::class,
                         [
                             'required' => true,
                             'trim' => false,
-                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.headline'
+                            'translation_domain' => 'videobasedmarketing.presentationpages',
+                            'label' => 'editor.edit_form.label_element_variant.headline'
                         ]
                     );
                     break;
 
-                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::Paragraph:
+                case PresentationpageElementVariant::Paragraph:
                     $form->add(
                         'textContent',
                         TextareaType::class,
                         [
                             'required' => true,
                             'trim' => false,
-                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.paragraph'
+                            'translation_domain' => 'videobasedmarketing.presentationpages',
+                            'label' => 'editor.edit_form.label_element_variant.paragraph'
                         ]
                     );
                     break;
 
-                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::ImageUrl:
+                case PresentationpageElementVariant::ImageUrl:
                     $form->add(
                         'textContent',
                         UrlType::class,
                         [
                             'required' => true,
                             'trim' => false,
-                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.image_url'
+                            'translation_domain' => 'videobasedmarketing.presentationpages',
+                            'label' => 'editor.edit_form.label_element_variant.image_url'
                         ]
                     );
                     break;
 
-                case \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant::CalendlyEmbed:
+                case PresentationpageElementVariant::CalendlyEmbed:
                     $form->add(
                         'textContent',
                         UrlType::class,
                         [
                             'required' => true,
                             'trim' => true,
-                            'label' => 'feature.presentationpages.editor.edit_form.label_element_variant.calendly_embed'
+                            'translation_domain' => 'videobasedmarketing.presentationpages',
+                            'label' => 'editor.edit_form.label_element_variant.calendly_embed'
                         ]
                     );
                     break;
-
-                default:
-                    throw new InvalidArgumentException($presentationpageElement->getElementVariant()->value);
             }
         }
         );
@@ -115,7 +117,7 @@ class PresentationpageElementType
     {
         $resolver->setDefaults(
             [
-                'data_class' => \App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement::class,
+                'data_class' => PresentationpageElement::class,
             ]
         );
     }

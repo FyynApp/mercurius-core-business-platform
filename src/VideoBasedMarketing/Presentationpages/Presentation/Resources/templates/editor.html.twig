@@ -1,7 +1,7 @@
 {% extends '@shared/base.html.twig' %}
 
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 {# @var presentationpage \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage #}
-{# @var PresentationpagesService \App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService #}
 
 {% block title %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
@@ -9,12 +9,15 @@
 {% block body %}
 
     {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.presentationpages' %}
+
         {% block contentBoxTitle %}
-            {{ ('feature.presentationpages.editor.title_' ~ presentationpage.type.value)|trans }}
+            {{ ('editor.title_' ~ presentationpage.type.value)|trans }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ ('feature.presentationpages.editor.subtitle_' ~ presentationpage.type.value)|trans }}
+            {{ ('editor.subtitle_' ~ presentationpage.type.value)|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}

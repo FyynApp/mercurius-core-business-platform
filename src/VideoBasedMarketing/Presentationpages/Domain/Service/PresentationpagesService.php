@@ -73,7 +73,7 @@ class PresentationpagesService
         $presentationpage->setType(PresentationpageType::Template);
         $presentationpage->setTitle(
             $this->translator->trans(
-                'feature.presentationpages.create_template.new_title',
+                'create_template.new_title',
                 ['index' => sizeof($this->getPresentationpagesForUser($user, PresentationpageType::Template)) + 1]
             )
         );
@@ -106,7 +106,7 @@ class PresentationpagesService
 
         $presentationpage->setTitle(
             $this->translator->trans(
-                'feature.presentationpages.create_page.new_title',
+                'create_page.new_title',
                 ['index' => sizeof($this->getPresentationpagesForUser($video->getUser(), PresentationpageType::Page)) + 1]
             )
         );
@@ -140,7 +140,7 @@ class PresentationpagesService
         $presentationpage = new Presentationpage($video->getUser());
         $presentationpage->setTitle(
             $this->translator->trans(
-                'feature.presentationpages.create_page.new_title',
+                'create_page.new_title',
                 ['index' => sizeof($this->getPresentationpagesForUser($video->getUser(), PresentationpageType::Page)) + 1]
             )
         );
@@ -317,7 +317,7 @@ class PresentationpagesService
             $this
                 ->translator
                 ->trans(
-                    'feature.presentationpages.video_only_presentationpage_template_title.1'
+                    'video_only_presentationpage_template_title.1'
                 )
         );
         $template1->setBgColor(BgColor::_FAFAFA);
@@ -334,7 +334,7 @@ class PresentationpagesService
             $this
                 ->translator
                 ->trans(
-                    'feature.presentationpages.video_only_presentationpage_template_title.2'
+                    'video_only_presentationpage_template_title.2'
                 )
         );
         $template2->setBgColor(BgColor::_444444);

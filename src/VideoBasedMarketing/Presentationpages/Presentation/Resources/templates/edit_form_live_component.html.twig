@@ -5,17 +5,19 @@
 
     {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 7, colspanRight: 5 } %}
 
+        {% trans_default_domain 'videobasedmarketing.presentationpages' %}
+
         {% block contentLeft %}
 
             <div class="mb-16">
                 <div class="mb-8 font-bold text-xl">
-                    {{ 'feature.presentationpages.editor.edit_form.form_headline'|trans }}
+                    {{ 'editor.edit_form.form_headline'|trans }}
                 </div>
 
 
                 <div class="mb-8">
                     <h2 class="text-lg mt-8 mb-4">
-                        {{ 'feature.presentationpages.editor.edit_form.subheadline_basesettings'|trans }}
+                        {{ 'editor.edit_form.subheadline_basesettings'|trans }}
                     </h2>
 
                     {% form_theme form '@shared/form_themes/form_theme_default.html.twig' %}
@@ -32,7 +34,7 @@
                     }) }}
 
                     <label class="block text-gray-800 font-bold required mb-2">
-                        {{ 'feature.presentationpages.editor.edit_form.label_background'|trans }}
+                        {{ 'editor.edit_form.label_background'|trans }}
                     </label>
 
                     <div class="mb-6 rounded-md bg-white pl-8 p-2 shadow-inner">
@@ -76,13 +78,13 @@
                                 {% endif %}
 
 
-                                {{ ('feature.presentationpages.editor.edit_form.background_name.' ~ background.value)|trans }}
+                                {{ ('editor.edit_form.background_name.' ~ background.value)|trans }}
                             </button>
                         {% endfor %}
                     </div>
 
                     <label class="block text-gray-800 font-bold required">
-                        {{ 'feature.presentationpages.editor.edit_form.label_bg_color'|trans }}
+                        {{ 'editor.edit_form.label_bg_color'|trans }}
                     </label>
                     <div class="mt-2 mb-4">
                         {% for bgColor in this.presentationpage.possibleBgColors %}
@@ -116,7 +118,7 @@
 
                     
                     <label class="block text-gray-800 font-bold required">
-                        {{ 'feature.presentationpages.editor.edit_form.label_fg_color'|trans }}
+                        {{ 'editor.edit_form.label_fg_color'|trans }}
                     </label>
                     <div class="mt-2 mb-4">
                         {% for fgColor in this.presentationpage.possibleFgColors %}
@@ -150,7 +152,7 @@
                     
 
                     <label class="block text-gray-800 font-bold required">
-                        {{ 'feature.presentationpages.editor.edit_form.label_text_color'|trans }}
+                        {{ 'editor.edit_form.label_text_color'|trans }}
                     </label>
                     <div class="mt-2 mb-4">
                         {% for textColor in this.presentationpage.possibleTextColors %}
@@ -183,7 +185,7 @@
                     </div>
 
                     <h2 class="text-lg mt-8 mb-4">
-                        {{ 'feature.presentationpages.editor.edit_form.subheadline_elements'|trans }}
+                        {{ 'editor.edit_form.subheadline_elements'|trans }}
                     </h2>
 
                     {% for elementForm in form.presentationpageElements %}
@@ -202,10 +204,10 @@
 
                                         {% if presentationpageElement.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::MercuriusVideo') %}
                                             <p class="font-bold">
-                                                {{ 'feature.presentationpages.editor.edit_form.label_element_variant.mercurius_video'|trans }}
+                                                {{ 'editor.edit_form.label_element_variant.mercurius_video'|trans }}
                                             </p>
                                             <p class="max-w-md">
-                                                {{ 'feature.presentationpages.editor.edit_form.label_element_variant.mercurius_video_note'|trans }}
+                                                {{ 'editor.edit_form.label_element_variant.mercurius_video_note'|trans }}
                                             </p>
                                         {% endif %}
 
@@ -229,11 +231,11 @@
 
                                                     {% if presentationpageElement.elementVariant is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::CalendlyEmbed') %}
                                                         <p class="font-light mt-4 text-gray-500">
-                                                            {{ 'feature.presentationpages.editor.edit_form.help_element_variant.calendly_embed_start'|trans }}
+                                                            {{ 'editor.edit_form.help_element_variant.calendly_embed_start'|trans }}
                                                             <a href="https://calendly.com/event_types/user/me" target="_blank">
                                                                 https://calendly.com/event_types/user/me
                                                             </a>
-                                                            {{ 'feature.presentationpages.editor.edit_form.help_element_variant.calendly_embed_end'|trans }}
+                                                            {{ 'editor.edit_form.help_element_variant.calendly_embed_end'|trans }}
                                                         </p>
                                                     {% endif %}
 
@@ -309,7 +311,7 @@
                                     <div class="w-full">
 
                                         <label class="block text-gray-800 font-bold required mt-4 mb-2">
-                                            {{ 'feature.presentationpages.editor.edit_form.label_horizontal_position'|trans }}
+                                            {{ 'editor.edit_form.label_horizontal_position'|trans }}
                                         </label>
                                         <button
                                                 class="
@@ -390,7 +392,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
                                 </svg>
-                                {{ 'feature.presentationpages.editor.edit_form.cta_add_element.mercuriusVideo'|trans }}
+                                {{ 'editor.edit_form.cta_add_element.mercuriusVideo'|trans }}
                             </button>
                         {% endif %}
 
@@ -408,7 +410,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m9-9H3" />
                                     </svg>
-                                    {{ ('feature.presentationpages.editor.edit_form.cta_add_element.' ~ elementVariant.value)|trans }}
+                                    {{ ('editor.edit_form.cta_add_element.' ~ elementVariant.value)|trans }}
                                 </button>
                             {% endif %}
 
@@ -423,7 +425,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="heroicon-next-to-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                     </svg>
-                    {{ ('feature.presentationpages.editor.edit_form.save_button_' ~ this.presentationpage.type.value)|trans }}
+                    {{ ('editor.edit_form.save_button_' ~ this.presentationpage.type.value)|trans }}
                 </button>
 
                 {{ form_end(form) }}
@@ -439,23 +441,23 @@
             <div class="sm:fixed sm:top-16 bg-gray-100 p-8 rounded-l-lg shadow shadow-2xl shadow-gray-700 h-full overflow-scroll">
 
                 <h1 class="mb-6 font-bold text-xl">
-                    {{ ('feature.presentationpages.editor.edit_form.preview_headline_' ~ this.presentationpage.type.value)|trans }}
+                    {{ ('editor.edit_form.preview_headline_' ~ this.presentationpage.type.value)|trans }}
                 </h1>
 
                 {% if this.presentationpage.presentationpageElements.count is same as 0 %}
 
                     <p>
-                        {{ ('feature.presentationpages.editor.edit_form.preview_note_no_elements_' ~ this.presentationpage.type.value)|trans }}
+                        {{ ('editor.edit_form.preview_note_no_elements_' ~ this.presentationpage.type.value)|trans }}
                     </p>
 
                 {% else %}
 
                     <p class="mb-6">
-                        {{ ('feature.presentationpages.editor.edit_form.preview_note_' ~ this.presentationpage.type.value)|trans }}
+                        {{ ('editor.edit_form.preview_note_' ~ this.presentationpage.type.value)|trans }}
                     </p>
 
                     <p class="mb-2">
-                        {{ ('feature.presentationpages.editor.edit_form.preview_full_note_' ~ this.presentationpage.type.value)|trans }}
+                        {{ ('editor.edit_form.preview_full_note_' ~ this.presentationpage.type.value)|trans }}
                     </p>
                     <p class="mb-6">
                         <a
@@ -463,7 +465,7 @@
                                 target="_blank"
                                 href="{{ path('videobasedmarketing.presentationpages.presentation.preview', { presentationpageId: this.presentationpage.id }) }}"
                         >
-                            {{ 'feature.presentationpages.editor.edit_form.preview_full_note_cta'|trans }}
+                            {{ 'editor.edit_form.preview_full_note_cta'|trans }}
                         </a>
                     </p>
 

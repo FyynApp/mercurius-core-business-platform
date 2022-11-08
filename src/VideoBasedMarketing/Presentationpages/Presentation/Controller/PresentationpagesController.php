@@ -60,9 +60,9 @@ class PresentationpagesController
     ): Response
     {
         if (sizeof($videoService->getAvailableVideos($this->getUser())) === 0) {
-            $this->addFlash(FlashMessageLabel::Info->value, $translator->trans('feature.presentationpages.flash.need_to_create_video_to_create_presentationpage'));
+            $this->addFlash(FlashMessageLabel::Info->value, $translator->trans('flash.need_to_create_video_to_create_presentationpage'));
         } else {
-            $this->addFlash(FlashMessageLabel::Info->value, $translator->trans('feature.presentationpages.flash.need_choose_video_to_create_presentationpage'));
+            $this->addFlash(FlashMessageLabel::Info->value, $translator->trans('flash.need_choose_video_to_create_presentationpage'));
         }
 
         return $this->redirectToRoute(

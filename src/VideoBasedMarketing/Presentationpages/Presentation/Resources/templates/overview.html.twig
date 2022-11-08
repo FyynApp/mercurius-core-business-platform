@@ -1,6 +1,5 @@
 {% extends '@shared/base.html.twig' %}
 
-{# @var PresentationpagesService \App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService #}
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
 {% block title %}{{ 'mainnav.presentationpages'|trans }}{% endblock %}
@@ -9,19 +8,22 @@
 {% block body %}
 
     {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.presentationpages' %}
+
         {% block contentBoxTitle %}
-            {{ 'feature.presentationpages.overview.title'|trans }}
+            {{ 'overview.title'|trans }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'feature.presentationpages.overview.subtitle'|trans }}
+            {{ 'overview.subtitle'|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}
 
             <div class="mb-16">
                 <h2 class="text-xl font-bold mb-4">
-                    {{ 'feature.presentationpages.overview.headline_pages'|trans }}
+                    {{ 'overview.headline_pages'|trans }}
                 </h2>
 
                 <div class="mb-4 border-1 border-dotted border-gray-400 rounded-md">
@@ -39,7 +41,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
                                 </svg>
-                                {{ 'feature.presentationpages.overview.cta.create_page'|trans }}
+                                {{ 'overview.cta.create_page'|trans }}
                             </button>
                         </form>
                     </div>
@@ -95,7 +97,7 @@
                                     </div>
 
                                     <div>
-                                        {{ 'feature.presentationpages.overview.number_of_elements'|trans(
+                                        {{ 'overview.number_of_elements'|trans(
                                             {num: presentationpage.presentationpageElements.count }
                                         ) }}
                                     </div>
@@ -115,7 +117,7 @@
                                         <button
                                                 class="cta-link-primary-small"
                                         >
-                                            {{ 'feature.presentationpages.overview.cta.edit_page'|trans }}
+                                            {{ 'overview.cta.edit_page'|trans }}
                                         </button>
                                     </form>
 
@@ -123,7 +125,7 @@
                                             class="cta-link-primary-small"
                                             target="_blank"
                                             href="{{ path('videobasedmarketing.presentationpages.presentation.preview', { presentationpageId: presentationpage.id }) }}">
-                                        {{ 'feature.presentationpages.overview.cta.preview_page'|trans }}
+                                        {{ 'overview.cta.preview_page'|trans }}
                                     </a>
                                 </div>
                             </div>
@@ -135,7 +137,7 @@
 
             <div class="mb-16">
                 <h2 class="text-xl font-bold mb-4">
-                    {{ 'feature.presentationpages.overview.headline_templates'|trans }}
+                    {{ 'overview.headline_templates'|trans }}
                 </h2>
 
                 <div class="mb-4 border-1 border-dotted border-gray-400 rounded-md">
@@ -153,7 +155,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-indigo-600 hover:text-indigo-700" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
                                 </svg>
-                                {{ 'feature.presentationpages.overview.cta.create_template'|trans }}
+                                {{ 'overview.cta.create_template'|trans }}
                             </button>
                         </form>
                     </div>
@@ -201,7 +203,7 @@
                                     </div>
 
                                     <div>
-                                        {{ 'feature.presentationpages.overview.number_of_elements'|trans(
+                                        {{ 'overview.number_of_elements'|trans(
                                             {num: presentationpage.presentationpageElements.count }
                                         ) }}
                                     </div>
@@ -221,7 +223,7 @@
                                         <button
                                                 class="cta-link-primary-small"
                                         >
-                                            {{ 'feature.presentationpages.overview.cta.edit_template'|trans }}
+                                            {{ 'overview.cta.edit_template'|trans }}
                                         </button>
                                     </form>
 
@@ -229,7 +231,7 @@
                                             class="cta-link-primary-small"
                                             target="_blank"
                                             href="{{ path('videobasedmarketing.presentationpages.presentation.preview', { presentationpageId: presentationpage.id }) }}">
-                                        {{ 'feature.presentationpages.overview.cta.preview_template'|trans }}
+                                        {{ 'overview.cta.preview_template'|trans }}
                                     </a>
                                 </div>
                             </div>
@@ -282,7 +284,7 @@
                                     </div>
 
                                     <div>
-                                        {{ 'feature.presentationpages.overview.number_of_elements'|trans(
+                                        {{ 'overview.number_of_elements'|trans(
                                             {num: presentationpage.presentationpageElements.count }
                                         ) }}
                                     </div>
@@ -302,7 +304,7 @@
                                         <button
                                                 class="cta-link-primary-small"
                                         >
-                                            {{ 'feature.presentationpages.overview.cta.edit_template'|trans }}
+                                            {{ 'overview.cta.edit_template'|trans }}
                                         </button>
                                     </form>
 
@@ -310,7 +312,7 @@
                                             class="cta-link-primary-small"
                                             target="_blank"
                                             href="{{ path('videobasedmarketing.presentationpages.presentation.preview', { presentationpageId: presentationpage.id }) }}">
-                                        {{ 'feature.presentationpages.overview.cta.preview_template'|trans }}
+                                        {{ 'overview.cta.preview_template'|trans }}
                                     </a>
                                 </div>
                             </div>
