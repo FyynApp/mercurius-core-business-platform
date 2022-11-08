@@ -6,10 +6,10 @@ videobasedmarketing.recordings.presentation.recording_session.recording_preview.
 
 
 videobasedmarketing.recordings.presentation.video.missing_poster_asset_placeholder:
-  path: /assets/images/feature/recordings/video/missing_poster_asset_placeholder.gif
+  path: '/assets/images/videobasedmarketing/recordings/video/missing_poster_asset_placeholder.gif'
 
 videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder:
-  path: /assets/images/feature/recordings/video/missing_full_asset_placeholder.mp4
+  path: '/assets/images/videobasedmarketing/recordings/video/missing_full_asset_placeholder.mp4'
 
 
 videobasedmarketing.recordings.presentation.video.poster_still.asset:

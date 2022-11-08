@@ -71,7 +71,7 @@
                                          ">
                                         <img
                                                 class="w-24 h-12 rounded-md object-cover"
-                                                src="{{ asset('assets/images/feature/presentationpages/background-images/' ~ background.toPreviewAssetName) }}"
+                                                src="{{ asset('assets/images/videobasedmarketing/presentationpages/background-images/' ~ background.toPreviewAssetName) }}"
                                                 alt="{{ background.value }}"
                                         >
                                     </div>
@@ -476,7 +476,7 @@
                                 style="background-color: {{ this.presentationpage.bgColor.value }};"
                             {% else %}
                                 style="
-                                        background-image: url('{{ asset('assets/images/feature/presentationpages/background-images/' ~ this.presentationpage.background.toPreviewAssetName) }}');
+                                        background-image: url('{{ asset('assets/images/videobasedmarketing/presentationpages/background-images/' ~ this.presentationpage.background.toPreviewAssetName) }}');
                                         background-repeat: no-repeat;
                                         background-size: cover;
                                         background-position: top;
@@ -518,7 +518,7 @@
                                         {% if element.presentationpage.video is null %}
                                             <img
                                                     class="w-56 rounded-md"
-                                                    src="{{ asset('assets/images/feature/presentationpages/video-placeholder-768x432.png') }}"
+                                                    src="{{ asset('assets/images/videobasedmarketing/presentationpages/video-placeholder-768x432.png') }}"
                                             >
                                         {% else %}
                                             <img
