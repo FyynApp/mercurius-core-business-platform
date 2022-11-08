@@ -91,7 +91,7 @@ class SignUpController
                     ->from(new Address('no-reply@fyyn.io', 'Fyyn.io'))
                     ->to($user->getEmail())
                     ->subject('Please confirm your email')
-                    ->htmlTemplate('feature/account/sign_up/confirmation_email.html.twig')
+                    ->htmlTemplate('@videobasedmarketing.account/sign_up/confirmation_email.html.twig')
             );
 
             return $this->redirectToRoute('shared.presentation.contentpages.homepage');

@@ -1,14 +1,16 @@
 {% extends '@shared/base.html.twig' %}
 
-{% block title %}{{ 'feature.account.thirdpartyauth.errorpage.title'|trans }}{% endblock %}
+{% trans_default_domain 'videobasedmarketing.account' %}
+
+{% block title %}{{ 'thirdpartyauth.errorpage.title'|trans }}{% endblock %}
 
 {% block body %}
-    {{ 'feature.account.thirdpartyauth.errorpage.linkedin.infotext'|trans({'error': error}) }}
+    {{ 'thirdpartyauth.errorpage.linkedin.infotext'|trans({'error': error}) }}
 
     {% if gotThrowable %}
         <!-- Got throwable: {{ throwable.message }} -->
     {% endif %}
 
-    <a href="{{ path('videobasedmarketing.account.presentation.sign_up') }}">{{ 'feature.account.thirdpartyauth.errorpage.cta_back_to_registration'|trans }}</a>
-    <a href="{{ path('videobasedmarketing.account.presentation.sign_in') }}">{{ 'feature.account.thirdpartyauth.errorpage.cta_back_to_login'|trans }}</a>
+    <a href="{{ path('videobasedmarketing.account.presentation.sign_up') }}">{{ 'thirdpartyauth.errorpage.cta_back_to_sign_up'|trans }}</a>
+    <a href="{{ path('videobasedmarketing.account.presentation.sign_in') }}">{{ 'thirdpartyauth.errorpage.cta_back_to_sign_in'|trans }}</a>
 {% endblock %}

@@ -51,25 +51,6 @@ bounded_context:
 
   membership:
 
-
-  dashboard:
-    show:
-      your_info: 'Ihre Daten'
-      your_info_subtitle: 'Kontoinformationen und Inhalte'
-      your_name: 'Name'
-      your_email_address: 'E-Mail Adresse'
-      your_subscription: 'Ihr aktuelles Paket'
-      your_latest_videos: 'Neueste Videos'
-      your_presentationpages: 'Landingpages'
-      your_presentationpages.info: >-
-        {numberOfPresentationpages, plural,
-          =0    {Sie haben bisher keine Landingpages.}
-          one   {Sie haben aktuell eine Landingpage.}
-          other {Sie haben aktuell # Landingpages.}
-        }
-      cta:
-        manage_video: 'Verwalten'
-
   presentationpages:
     video_only_presentationpage_template_title:
       1: 'Helles Layout'

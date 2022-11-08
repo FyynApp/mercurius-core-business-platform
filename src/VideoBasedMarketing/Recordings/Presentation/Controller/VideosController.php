@@ -126,8 +126,9 @@ class VideosController
         $this->addFlash(
             FlashMessageLabel::Success->value,
             $translator->trans(
-                'feature.recordings.video_successfully_deleted',
-                ['title' => $video->getTitle()]
+                'video_successfully_deleted',
+                ['title' => $video->getTitle()],
+                'videobasedmarketing.recordings'
             )
         );
 
