@@ -41,7 +41,7 @@
             <div class="absolute bottom-1 left-0 p-2">
                 <a
                         href="{{ path(
-                            'videobasedmarketing.recordings.video.show_with_video_only_presentationpage_template',
+                            'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
                             { 'videoId': this.video.id })
                         }}"
                         target="_blank"
@@ -320,7 +320,7 @@
                 >
                     Möchten Sie dieses Video wirklich löschen?
 
-                    <form method="post" action="{{ path('videobasedmarketing.recordings.video.deletion', { videoId: this.video.id }) }}">
+                    <form method="post" action="{{ path('videobasedmarketing.recordings.presentation.video.deletion', { videoId: this.video.id }) }}">
                         <button class="cta-with-icon-danger"
                         >
                             {# Heroicon: check-circle solid #}
@@ -483,7 +483,7 @@
                         </button>
 
                         <a
-                                href="{{ path('videobasedmarketing.recordings.video.show_with_video_only_presentationpage_template', { videoId: this.video.id }) }}"
+                                href="{{ path('videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template', { videoId: this.video.id }) }}"
                                 target="_blank"
                                 class="cta-with-icon-primary"
                         >
@@ -498,7 +498,7 @@
                         {% if this.doneCtaMustRedirectToOverview %}
                             <a
                                     class="cta-with-icon-success"
-                                    href="{{ path('videobasedmarketing.recordings.videos.overview') }}"
+                                    href="{{ path('videobasedmarketing.recordings.presentation.videos.overview') }}"
                             >
                                 {# Heroicon: check-circle solid #}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">

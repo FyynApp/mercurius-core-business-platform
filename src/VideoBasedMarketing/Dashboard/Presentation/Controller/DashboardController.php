@@ -17,7 +17,7 @@ class DashboardController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/dashboard',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/übersicht',
         ],
-        name        : 'videobasedmarketing.dashboard.show',
+        name        : 'videobasedmarketing.dashboard.presentation.show',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]

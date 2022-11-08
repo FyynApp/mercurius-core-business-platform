@@ -38,7 +38,7 @@ class SignUpController
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-up',
             'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/neu-registrieren',
         ],
-        name        : 'videobasedmarketing.account.sign_up',
+        name        : 'videobasedmarketing.account.presentation.sign_up',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
@@ -52,7 +52,7 @@ class SignUpController
         $user = $this->getUser();
 
         if (!is_null($user)) {
-            return $this->redirectToRoute('shared.contentpages.homepage');
+            return $this->redirectToRoute('shared.presentation.contentpages.homepage');
         }
 
         $user = new User();
@@ -66,7 +66,7 @@ class SignUpController
                     $user->getEmail()
                 )
         ) {
-            return $this->redirectToRoute('videobasedmarketing.account.thirdpartyauth.linkedin.start');
+            return $this->redirectToRoute('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start');
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -85,7 +85,7 @@ class SignUpController
             $entityManager->flush();
 
             $this->emailVerifier->sendEmailConfirmation(
-                'videobasedmarketing.account.sign_up.email_verification',
+                'videobasedmarketing.account.presentation.sign_up.email_verification',
                 $user,
                 (new TemplatedEmail())
                     ->from(new Address('no-reply@fyyn.io', 'Fyyn.io'))
@@ -94,7 +94,7 @@ class SignUpController
                     ->htmlTemplate('feature/account/sign_up/confirmation_email.html.twig')
             );
 
-            return $this->redirectToRoute('shared.contentpages.homepage');
+            return $this->redirectToRoute('shared.presentation.contentpages.homepage');
         }
 
         return $this->render(
@@ -111,7 +111,7 @@ class SignUpController
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-up/email-verification',
             'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/neu-registrieren/email-verifikation',
         ],
-        name        : 'videobasedmarketing.account.sign_up.email_verification',
+        name        : 'videobasedmarketing.account.presentation.sign_up.email_verification',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
@@ -125,13 +125,13 @@ class SignUpController
         $id = $request->get('id');
 
         if (null === $id) {
-            return $this->redirectToRoute('videobasedmarketing.account.sign_up');
+            return $this->redirectToRoute('videobasedmarketing.account.presentation.sign_up');
         }
 
         $user = $userRepository->find($id);
 
         if (null === $user) {
-            return $this->redirectToRoute('videobasedmarketing.account.sign_up');
+            return $this->redirectToRoute('videobasedmarketing.account.presentation.sign_up');
         }
 
         // validate email confirmation link, sets User::isVerified=true and persists
@@ -140,7 +140,7 @@ class SignUpController
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-            return $this->redirectToRoute('videobasedmarketing.account.sign_up');
+            return $this->redirectToRoute('videobasedmarketing.account.presentation.sign_up');
         }
 
         $this->addFlash(FlashMessageLabel::Success->value, 'Your email address has been verified.');

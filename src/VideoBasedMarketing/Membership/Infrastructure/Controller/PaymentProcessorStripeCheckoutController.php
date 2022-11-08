@@ -27,7 +27,7 @@ extends AbstractController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout-with-stripe/{planName}/start',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kauf-über-stripe/{planName}/start',
         ],
-        name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.start',
+        name        : 'videobasedmarketing.membership.infrastructure.subscription.checkout_with_payment_processor_stripe.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -57,7 +57,7 @@ extends AbstractController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/{subscriptionId}/checkout-with-stripe/success',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/{subscriptionId}/kauf-über-stripe/erfolg',
         ],
-        name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.success',
+        name        : 'videobasedmarketing.membership.infrastructure.subscription.checkout_with_payment_processor_stripe.success',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -91,7 +91,7 @@ extends AbstractController
                     'videobasedmarketing.membership'
                 )
             );
-            return $this->redirectToRoute('videobasedmarketing.membership.overview');
+            return $this->redirectToRoute('videobasedmarketing.membership.presentation.overview');
         } else {
             throw new BadRequestHttpException('Successful checkout return did not result in an active subscription.');
         }
@@ -102,7 +102,7 @@ extends AbstractController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/{subscriptionId}/checkout-with-stripe/cancellation',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/{subscriptionId}/kauf-über-stripe/abbruch',
         ],
-        name        : 'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.cancellation',
+        name        : 'videobasedmarketing.membership.infrastructure.subscription.checkout_with_payment_processor_stripe.cancellation',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -118,6 +118,6 @@ extends AbstractController
                 'videobasedmarketing.membership'
             )
         );
-        return $this->redirectToRoute('videobasedmarketing.membership.overview');
+        return $this->redirectToRoute('videobasedmarketing.membership.presentation.overview');
     }
 }

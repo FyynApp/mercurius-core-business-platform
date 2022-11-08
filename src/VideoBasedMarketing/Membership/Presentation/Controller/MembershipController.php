@@ -20,7 +20,7 @@ class MembershipController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/overview',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/überblick',
         ],
-        name        : 'videobasedmarketing.membership.overview',
+        name        : 'videobasedmarketing.membership.presentation.overview',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -44,7 +44,7 @@ class MembershipController
             'en' => '{_locale}/my/membership/subscription/checkout/{planName}/start',
             'de' => '{_locale}/mitgliedschaft/abonnement/kauf/{planName}/start',
         ],
-        name        : 'videobasedmarketing.membership.subscription.checkout.start',
+        name        : 'videobasedmarketing.membership.presentation.subscription.checkout.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -59,7 +59,7 @@ class MembershipController
 
         if ($paymentProcessor === PaymentProcessor::Stripe) {
             return $this->redirectToRoute(
-                'videobasedmarketing.membership.subscription.checkout_with_payment_processor_stripe.start',
+                'videobasedmarketing.membership.infrastructure.subscription.checkout_with_payment_processor_stripe.start',
                 ['planName' => $planName]
             );
         } else {

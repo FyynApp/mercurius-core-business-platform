@@ -18,8 +18,8 @@ security:
             provider: app_user_provider
 
             form_login:
-                login_path: videobasedmarketing.account.sign_in
-                check_path: videobasedmarketing.account.sign_in
+                login_path: videobasedmarketing.account.presentation.sign_in
+                check_path: videobasedmarketing.account.presentation.sign_in
                 enable_csrf: true
 
             login_link:
@@ -28,7 +28,7 @@ security:
 
             logout:
                 path: videobasedmarketing.account.infrastructure.sign_out
-                target: videobasedmarketing.account.sign_in
+                target: videobasedmarketing.account.presentation.sign_in
 
             remember_me:
                 secret: '%kernel.secret%'

@@ -18,7 +18,7 @@ class ThirdPartyAuthController
 {
     #[Route(
         path        : 'account/thirdpartyauth/linkedin/start',
-        name        : 'videobasedmarketing.account.thirdpartyauth.linkedin.start',
+        name        : 'videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start',
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
     public function linkedinStartAction(
@@ -36,7 +36,7 @@ class ThirdPartyAuthController
 
     #[Route(
         path        : 'account/thirdpartyauth/linkedin/return',
-        name        : 'videobasedmarketing.account.thirdpartyauth.linkedin.return',
+        name        : 'videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.return',
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
     public function linkedinReturnAction(

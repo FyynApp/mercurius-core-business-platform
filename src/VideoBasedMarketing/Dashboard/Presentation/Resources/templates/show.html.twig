@@ -82,7 +82,7 @@
                                             </div>
                                         </div>
                                         <div class="ml-4 flex-shrink-0">
-                                            <a href="{{ path('videobasedmarketing.recordings.videos.overview') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                            <a href="{{ path('videobasedmarketing.recordings.presentation.videos.overview') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
                                                 {{ 'feature.dashboard.show.cta.manage_video'|trans }}
                                             </a>
                                         </div>
@@ -99,7 +99,7 @@
                         {{ 'feature.dashboard.show.your_presentationpages'|trans }}
                     {% endblock %}
                     {% block contentRight %}
-                        <a href="{{ path('videobasedmarketing.presentationpages.overview') }}">
+                        <a href="{{ path('videobasedmarketing.presentationpages.presentation.overview') }}">
                             {{ 'feature.dashboard.show.your_presentationpages.info'|trans(
                                 { numberOfPresentationpages: TwigHelperService.dashboardService.numberOfPresentationpages(app.user, constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageType::Page')) }
                             ) }}

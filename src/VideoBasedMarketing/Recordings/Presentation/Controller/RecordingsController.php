@@ -25,7 +25,7 @@ class RecordingsController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/recording-studio',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/aufnahmestudio',
         ],
-        name        : 'videobasedmarketing.recordings.recording_studio',
+        name        : 'videobasedmarketing.recordings.presentation.recording_studio',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -53,7 +53,7 @@ class RecordingsController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/recording-studio/return',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/aufnahmestudio/rückkehr',
         ],
-        name        : 'videobasedmarketing.recordings.return_from_recording_studio',
+        name        : 'videobasedmarketing.recordings.presentation.return_from_recording_studio',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -82,7 +82,7 @@ class RecordingsController
         }
 
         return $this->redirectToRoute(
-            'videobasedmarketing.recordings.videos.overview',
+            'videobasedmarketing.recordings.presentation.videos.overview',
             ['showEditModalForVideoId' => $video->getId()]
         );
     }

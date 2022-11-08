@@ -39,43 +39,43 @@ class MainNavigationComponent
             $this->entries = [
                 new NavigationEntry(
                     'mainnav.homepage',
-                    'shared.contentpages.homepage'
+                    'shared.presentation.contentpages.homepage'
                 ),
 
                 new NavigationEntry(
                     'mainnav.features',
-                    'shared.contentpages.features'
+                    'shared.presentation.contentpages.features'
                 ),
 
                 new NavigationEntry(
                     'mainnav.pricing',
-                    'shared.contentpages.pricing'
+                    'shared.presentation.contentpages.pricing'
                 ),
             ];
         } else {
             $this->entries = [
                 new NavigationEntry(
                     'mainnav.dashboard',
-                    'videobasedmarketing.dashboard.show'
+                    'videobasedmarketing.dashboard.presentation.show'
                 ),
 
                 new NavigationEntry(
                     'mainnav.membership',
-                    'videobasedmarketing.membership.overview',
+                    'videobasedmarketing.membership.presentation.overview',
                     []
                 ),
 
                 new NavigationEntry(
                     'mainnav.recordings',
-                    'videobasedmarketing.recordings.videos.overview',
-                    ['videobasedmarketing.recordings.recording_studio']
+                    'videobasedmarketing.recordings.presentation.videos.overview',
+                    ['videobasedmarketing.recordings.presentation.recording_studio']
                 ),
 
                 /*
                 new NavigationEntry(
                     'mainnav.presentationpages',
-                    'videobasedmarketing.presentationpages.overview',
-                    ['videobasedmarketing.presentationpages.draft.editor']
+                    'videobasedmarketing.presentationpages.presentation.overview',
+                    ['videobasedmarketing.presentationpages.presentation.draft.editor']
                 ),
                 */
             ];

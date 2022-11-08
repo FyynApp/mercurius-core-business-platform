@@ -93,7 +93,7 @@ class RecordingSessionController
                 'maxAnswerTimeText' => 'maximale Aufnahmedauer',
                 'maxAnswerTime' => 300,
                 'nextUrl' => $router->generate(
-                    'videobasedmarketing.recordings.return_from_recording_studio',
+                    'videobasedmarketing.recordings.presentation.return_from_recording_studio',
                     ['recordingSessionId' => $recordingSessionId],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),

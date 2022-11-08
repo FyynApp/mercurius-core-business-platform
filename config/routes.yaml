@@ -1,6 +1,3 @@
-shared.presentation:
-    resource: '../src/Shared/Presentation/Resources/config/routes.yaml'
-
 shared.infrastructure:
     resource: '../src/Shared/Infrastructure/Resources/config/routes.yaml'
 
@@ -13,3 +10,8 @@ videobasedmarketing.presentationpages.infrastructure:
 
 non_localized:
     resource: 'routes/non_localized/**/*.yaml'
+
+
+# This needs to be last because it contains the catchall route definitions.
+shared.presentation:
+    resource: '../src/Shared/Presentation/Resources/config/routes.yaml'

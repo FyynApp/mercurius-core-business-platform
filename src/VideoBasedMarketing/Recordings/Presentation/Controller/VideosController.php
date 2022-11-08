@@ -24,7 +24,7 @@ class VideosController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/videos/',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/videos/',
         ],
-        name        : 'videobasedmarketing.recordings.videos.overview',
+        name        : 'videobasedmarketing.recordings.presentation.videos.overview',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -54,7 +54,7 @@ class VideosController
         }
 
         return $this->redirectToRoute(
-            'videobasedmarketing.recordings.video.show_with_video_only_presentationpage_template',
+            'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
             ['videoId' => $video->getId()]
         );
     }
@@ -64,7 +64,7 @@ class VideosController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/videos/{videoId}/wvopt',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/videos/{videoId}/wvopt',
         ],
-        name        : 'videobasedmarketing.recordings.video.show_with_video_only_presentationpage_template',
+        name        : 'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -95,7 +95,7 @@ class VideosController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/videos/{videoId}/deletion',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/videos/{videoId}/löschung',
         ],
-        name        : 'videobasedmarketing.recordings.video.deletion',
+        name        : 'videobasedmarketing.recordings.presentation.video.deletion',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -125,6 +125,6 @@ class VideosController
             )
         );
 
-        return $this->redirectToRoute('videobasedmarketing.recordings.videos.overview');
+        return $this->redirectToRoute('videobasedmarketing.recordings.presentation.videos.overview');
     }
 }

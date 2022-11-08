@@ -16,14 +16,14 @@ class ContentpagesController
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/',
             'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/',
         ],
-        name        : 'shared.contentpages.homepage',
+        name        : 'shared.presentation.contentpages.homepage',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
     public function homepageAction(): Response
     {
         if (!is_null($this->getUser())) {
-            return $this->redirectToRoute('videobasedmarketing.dashboard.show');
+            return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show');
         }
 
         return $this->render(
@@ -37,7 +37,7 @@ class ContentpagesController
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/features',
             'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/funktionen',
         ],
-        name        : 'shared.contentpages.features',
+        name        : 'shared.presentation.contentpages.features',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -51,7 +51,7 @@ class ContentpagesController
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/pricing',
             'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/preise',
         ],
-        name        : 'shared.contentpages.pricing',
+        name        : 'shared.presentation.contentpages.pricing',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -62,7 +62,7 @@ class ContentpagesController
 
     #[Route(
         path        : '_content',
-        name        : 'shared.contentpages.wrapped_external_content',
+        name        : 'shared.presentation.contentpages.wrapped_external_content',
         methods     : [Request::METHOD_GET]
     )]
     public function wrappedExternalContentAction(Request $request): Response

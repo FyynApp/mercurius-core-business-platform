@@ -49,7 +49,7 @@ class WebpageScreenshotService
         $this->createFilesystemStructuresForScreenshots($presentationpage);
 
         $targetUrl = $this->router->generate(
-            'videobasedmarketing.presentationpages.screenshot_capture_view',
+            'videobasedmarketing.presentationpages.presentation.screenshot_capture_view',
             [
                 'presentationpageId' => $presentationpage->getId(),
                 'presentationpageHash' => $this

@@ -18,7 +18,7 @@ class SignInController
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in',
             'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen',
         ],
-        name        : 'videobasedmarketing.account.sign_in',
+        name        : 'videobasedmarketing.account.presentation.sign_in',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
@@ -33,7 +33,7 @@ class SignInController
         if (   !is_null($error)
             && $thirdPartyAuthService->userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint($lastUsername)
         ) {
-            return $this->redirectToRoute('videobasedmarketing.account.thirdpartyauth.linkedin.start');
+            return $this->redirectToRoute('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start');
         }
 
         return $this->render(
