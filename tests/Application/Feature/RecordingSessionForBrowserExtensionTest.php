@@ -28,7 +28,7 @@ class RecordingSessionForBrowserExtensionTest
 
         $client->request(
             'POST',
-            '/api/feature/recordings/browser-extension-recording-sessions/'
+            '/api/extension/v1/recordings/recording-sessions/'
         );
         $this->assertResponseRedirects();
 
@@ -41,14 +41,11 @@ class RecordingSessionForBrowserExtensionTest
 
         $this->assertTrue($session->getUser()->isRegistered());
 
-        $client->followRedirect();
-
         $structuredResponse = json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertTrue($structuredResponse['settings']['userIsRegistered']);
         $this->assertSame(
-            UserFixture::TEST_USER_EMAIL,
-            $structuredResponse['settings']['userName']
+            300,
+            $structuredResponse['settings']['maxRecordingTime']
         );
     }
 
@@ -63,7 +60,7 @@ class RecordingSessionForBrowserExtensionTest
 
         $client->request(
             'POST',
-            '/api/feature/recordings/browser-extension-recording-sessions/'
+            '/api/extension/v1/recordings/recording-sessions/'
         );
         $this->assertResponseRedirects();
 
@@ -80,6 +77,9 @@ class RecordingSessionForBrowserExtensionTest
 
         $structuredResponse = json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertFalse($structuredResponse['settings']['userIsRegistered']);
+        $this->assertSame(
+            60,
+            $structuredResponse['settings']['maxRecordingTime']
+        );
     }
 }
