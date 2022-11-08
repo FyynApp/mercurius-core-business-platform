@@ -88,11 +88,11 @@ class VideoService
     {
         if ($video->hasAssetPosterStillWebp()) {
             return $this->router->generate(
-                'feature.recordings.video.poster_still.asset',
+                'videobasedmarketing.recordings.presentation.video.poster_still.asset',
                 ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)]
             );
         } else {
-            return $this->router->generate('feature.recordings.video.missing_poster_asset_placeholder');
+            return $this->router->generate('videobasedmarketing.recordings.presentation.video.missing_poster_asset_placeholder');
         }
     }
 
@@ -100,11 +100,11 @@ class VideoService
     {
         if ($video->hasAssetPosterAnimatedWebp()) {
             return $this->router->generate(
-                'feature.recordings.video.poster_animated.asset',
+                'videobasedmarketing.recordings.presentation.video.poster_animated.asset',
                 ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)]
             );
         } else {
-            return $this->router->generate('feature.recordings.video.missing_poster_asset_placeholder');
+            return $this->router->generate('videobasedmarketing.recordings.presentation.video.missing_poster_asset_placeholder');
         }
     }
 
@@ -112,16 +112,16 @@ class VideoService
     {
         if ($video->hasAssetFullMp4()) {
             return $this->router->generate(
-                'feature.recordings.video.full.asset',
+                'videobasedmarketing.recordings.presentation.video.full.asset',
                 ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4)]
             );
         } elseif ($video->hasAssetFullWebm()) {
             return $this->router->generate(
-                'feature.recordings.video.full.asset',
+                'videobasedmarketing.recordings.presentation.video.full.asset',
                 ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)]
             );
         } else {
-            return $this->router->generate('feature.recordings.video.missing_full_asset_placeholder');
+            return $this->router->generate('videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder');
         }
     }
 

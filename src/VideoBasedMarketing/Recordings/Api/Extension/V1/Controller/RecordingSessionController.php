@@ -104,7 +104,7 @@ class RecordingSessionController
                 [
                     'status' => Response::HTTP_OK,
                     'preview' => $router->generate(
-                        'feature.recordings.recording_session.recording_preview.poster.asset',
+                        'videobasedmarketing.recordings.presentation.recording_session.recording_preview.poster.asset',
                         [
                             'recordingSessionId' => $recordingSessionId,
                             'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)
@@ -121,7 +121,7 @@ class RecordingSessionController
                     // controller action which will wait until the recording preview asset has been generated,
                     // and redirects to the actual asset url afterwards.
                     'previewVideo' => $router->generate(
-                        'feature.recordings.recording_session.recording_preview.asset-redirect',
+                        'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
                         [
                             'recordingSessionId' => $recordingSessionId,
                             'random' => bin2hex(random_bytes(8))

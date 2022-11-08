@@ -1,0 +1,19 @@
+# TODO: change path in recorder, see https://trello.com/c/9XbHtrku/32-recorder-nutzt-hardcoded-settings-url-muss-dynamisch-per-info-vom-backend-kommen
+videobasedmarketing.recordings.api.recorder.v1.legacy.recording_settings.get:
+  path: /settings/
+  methods: [ GET ]
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+  defaults:
+    route: 'videobasedmarketing.recordings.api.recorder.v1.recording-settings-bag.get'
+    permanent: false
+    keepQueryParams: true
+
+videobasedmarketing.recordings.api.recorder.v1.legacy.recording_settings.set:
+  path: /settings/
+  methods: [ POST ]
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+  defaults:
+    route: 'videobasedmarketing.recordings.api.recorder.v1.recording-settings-bag.set'
+    permanent: false
+    keepQueryParams: true
+    keepRequestMethod: true

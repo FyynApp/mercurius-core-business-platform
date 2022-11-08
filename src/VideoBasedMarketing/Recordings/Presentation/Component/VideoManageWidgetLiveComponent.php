@@ -161,7 +161,7 @@ class VideoManageWidgetLiveComponent
     {
         $this->shareUrl =
             $this->router->generate(
-                'feature.recordings.video.share_link',
+                'videobasedmarketing.recordings.presentation.video.share_link',
                 ['videoShortId' => $this->shortIdService->encodeObjectId($this->video)],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
@@ -174,7 +174,7 @@ class VideoManageWidgetLiveComponent
             'https://www.facebook.com/sharer/sharer.php?u='
             . urlencode(
                 $this->router->generate(
-                    'feature.recordings.video.share_link',
+                    'videobasedmarketing.recordings.presentation.video.share_link',
                     ['videoShortId' => $this->shortIdService->encodeObjectId($this->video)],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 )
@@ -194,7 +194,7 @@ class VideoManageWidgetLiveComponent
             'https://twitter.com/intent/tweet?url='
             . urlencode(
                 $this->router->generate(
-                    'feature.recordings.video.share_link',
+                    'videobasedmarketing.recordings.presentation.video.share_link',
                     ['videoShortId' => $this->shortIdService->encodeObjectId($this->video)],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 )
@@ -210,7 +210,7 @@ class VideoManageWidgetLiveComponent
             'https://www.linkedin.com/sharing/share-offsite/?url='
             . urlencode(
                 $this->router->generate(
-                    'feature.recordings.video.share_link',
+                    'videobasedmarketing.recordings.presentation.video.share_link',
                     ['videoShortId' => $this->shortIdService->encodeObjectId($this->video)],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 )

@@ -1,0 +1,22 @@
+videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset:
+  path: /generated-content/recording-sessions/{recordingSessionId}/recording-preview-video.{extension}
+
+videobasedmarketing.recordings.presentation.recording_session.recording_preview.poster.asset:
+  path: /generated-content/recording-sessions/{recordingSessionId}/recording-preview-video-poster.{extension}
+
+
+videobasedmarketing.recordings.presentation.video.missing_poster_asset_placeholder:
+  path: /assets/images/feature/recordings/video/missing_poster_asset_placeholder.gif
+
+videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder:
+  path: /assets/images/feature/recordings/video/missing_full_asset_placeholder.mp4
+
+
+videobasedmarketing.recordings.presentation.video.poster_still.asset:
+  path: /generated-content/video-assets/{videoId}/poster-still.{extension}
+
+videobasedmarketing.recordings.presentation.video.poster_animated.asset:
+  path: /generated-content/video-assets/{videoId}/poster-animated.{extension}
+
+videobasedmarketing.recordings.presentation.video.full.asset:
+  path: /generated-content/video-assets/{videoId}/full.{extension}

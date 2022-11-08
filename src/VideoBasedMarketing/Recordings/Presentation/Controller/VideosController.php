@@ -38,6 +38,12 @@ class VideosController
         );
     }
 
+    #[Route(
+        path        : '/v/{videoShortId}',
+        name        : 'videobasedmarketing.recordings.presentation.video.share_link',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
     public function videoShareLinkAction(
         string $videoShortId,
         EntityManagerInterface $entityManager

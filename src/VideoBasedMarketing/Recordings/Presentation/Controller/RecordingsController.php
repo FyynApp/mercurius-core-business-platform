@@ -94,6 +94,11 @@ class RecordingsController
         );
     }
 
+    #[Route(
+        path        : '%app.routing.route_prefix.without_locale.protected.en%/recordings/recording-sessions/{recordingSessionId}/recording-preview-asset-redirect',
+        name        : 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
+        methods     : [Request::METHOD_GET]
+    )]
     public function recordingPreviewAssetRedirectAction(
         string                  $recordingSessionId,
         Request                 $request,
@@ -113,7 +118,7 @@ class RecordingsController
 
         if ($recordingSession->hasRecordingPreviewAssetBeenGenerated()) {
             return $this->redirectToRoute(
-                'feature.recordings.recording_session.recording_preview.asset',
+                'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
                     'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
@@ -132,7 +137,7 @@ class RecordingsController
             sleep(1);
 
             return $this->redirectToRoute(
-                'feature.recordings.recording_session.recording_preview.asset-redirect',
+                'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
                 [
                     'counter' => $counter - 1,
                     'recordingSessionId' => $recordingSessionId,
@@ -143,7 +148,7 @@ class RecordingsController
             $recordingSessionService->generateRecordingPreviewVideo($recordingSession);
 
             return $this->redirectToRoute(
-                'feature.recordings.recording_session.recording_preview.asset',
+                'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
                     'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),

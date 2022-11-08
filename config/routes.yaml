@@ -7,6 +7,12 @@ videobasedmarketing.account.infrastructure:
 videobasedmarketing.presentationpages.infrastructure:
     resource: '../src/VideoBasedMarketing/Presentationpages/Infrastructure/Resources/config/routes.yaml'
 
+videobasedmarketing.recordings.presentation:
+    resource: '../src/VideoBasedMarketing/Recordings/Presentation/Resources/config/routes.yaml'
+
+videobasedmarketing.recordings.api.recorder.v1:
+    resource: '../src/VideoBasedMarketing/Recordings/Api/Recorder/V1/Resources/config/routes.yaml'
+
 
 non_localized:
     resource: 'routes/non_localized/**/*.yaml'
