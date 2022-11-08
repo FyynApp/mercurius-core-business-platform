@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
-#[AsCommand(name: 'app:devhelper:create-demo-entities')]
+#[AsCommand(name: 'app:shared:devhelper:create-demo-entities')]
 class CreateDemoEntities
     extends Command
 {

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Shared\Domain\Message;
+namespace App\Shared\Domain\MessageHandler;
 
+use App\Shared\Domain\Message\UserOwnedEntityLifecycleEventMessageInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
