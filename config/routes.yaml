@@ -1,24 +1,15 @@
-shared:
+shared.presentation:
     resource: '../src/Shared/Presentation/Resources/config/routes.yaml'
 
-videobasedmarketing.account:
+shared.infrastructure:
+    resource: '../src/Shared/Infrastructure/Resources/config/routes.yaml'
+
+videobasedmarketing.account.infrastructure:
     resource: '../src/VideoBasedMarketing/Account/Infrastructure/Resources/config/routes.yaml'
 
-videobasedmarketing.presentationpages:
+videobasedmarketing.presentationpages.infrastructure:
     resource: '../src/VideoBasedMarketing/Presentationpages/Infrastructure/Resources/config/routes.yaml'
 
 
 non_localized:
     resource: 'routes/non_localized/**/*.yaml'
-
-catchall.pattern:
-    path:     /{catchall}
-    controller: App\Shared\Presentation\Controller\CatchallController::indexAction
-    methods:  [GET]
-    requirements:
-        catchall: ".+"
-
-catchall.root:
-    path:     /
-    controller: App\Shared\Presentation\Controller\CatchallController::indexAction
-    methods:  [GET]

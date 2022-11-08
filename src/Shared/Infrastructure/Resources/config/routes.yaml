@@ -1,0 +1,4 @@
+shared.infrastructure.content_delivery.serve_external_asset:
+  path: /content-delivery/serve-external-asset
+  controller: App\Shared\Infrastructure\Controller\ContentDeliveryController::serveExternalAssetAction
+  methods: [ GET ]

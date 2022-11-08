@@ -29,7 +29,7 @@ class ContentDeliveryService
     ): string
     {
         return $this->router->generate(
-            'aspect.content_delivery.serve_external_asset',
+            'shared.infrastructure.content_delivery.serve_external_asset',
             [
                 'externalAssetUrl' => $externalAssetUrl,
                 'contentType' => $contentType,

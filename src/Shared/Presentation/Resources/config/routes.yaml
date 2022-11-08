@@ -1,5 +1,17 @@
-shared.tailwind_playground:
+shared.presentation.tailwind_playground:
   path: /tailwind-playground
   controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
   defaults:
     template: '@shared/tailwind_playground.html.twig'
+
+shared.presentation.catchall.pattern:
+  path:     /{catchall}
+  controller: App\Shared\Presentation\Controller\CatchallController::indexAction
+  methods:  [GET]
+  requirements:
+    catchall: ".+"
+
+shared.presentation.catchall.root:
+  path:     /
+  controller: App\Shared\Presentation\Controller\CatchallController::indexAction
+  methods:  [GET]

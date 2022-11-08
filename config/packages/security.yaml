@@ -23,11 +23,11 @@ security:
                 enable_csrf: true
 
             login_link:
-                check_route: videobasedmarketing.account.sign_in_link_check
+                check_route: videobasedmarketing.account.infrastructure.sign_in_link_check
                 signature_properties: ['id']
 
             logout:
-                path: videobasedmarketing.account.sign_out
+                path: videobasedmarketing.account.infrastructure.sign_out
                 target: videobasedmarketing.account.sign_in
 
             remember_me:
