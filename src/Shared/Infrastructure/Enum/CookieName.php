@@ -4,6 +4,6 @@ namespace App\Shared\Infrastructure\Enum;
 
 enum CookieName: string
 {
-    case ClientId = 'mercuriusVideoBasedMarketingClientId';
-    case ClientTimezone = 'mercuriusVideoBasedMarketingClientTimezone';
+    case ClientId = 'mercuriusClientId';
+    case ClientTimezone = 'mercuriusClientTimezone';
 }
