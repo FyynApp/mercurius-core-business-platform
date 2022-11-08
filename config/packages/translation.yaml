@@ -5,6 +5,7 @@ framework:
         paths:
             - '%kernel.project_dir%/src/Shared/Presentation/Resources/translations'
             - '%kernel.project_dir%/src/VideoBasedMarketing/Account/Presentation/Resources/translations'
+            - '%kernel.project_dir%/src/VideoBasedMarketing/Dashboard/Presentation/Resources/translations'
             - '%kernel.project_dir%/src/VideoBasedMarketing/Membership/Presentation/Resources/translations'
             - '%kernel.project_dir%/src/VideoBasedMarketing/Recordings/Presentation/Resources/translations'
         fallbacks:

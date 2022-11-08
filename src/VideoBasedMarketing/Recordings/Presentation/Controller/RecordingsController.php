@@ -95,7 +95,7 @@ class RecordingsController
     }
 
     #[Route(
-        path        : '%app.routing.route_prefix.without_locale.protected.en%/recordings/recording-sessions/{recordingSessionId}/recording-preview-asset-redirect',
+        path        : 'recordings/recording-sessions/{recordingSessionId}/recording-preview-asset-redirect',
         name        : 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
         methods     : [Request::METHOD_GET]
     )]
