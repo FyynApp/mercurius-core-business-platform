@@ -1,0 +1,32 @@
+new_video_title: 'Aufnahme {num}'
+frames_per_second: 'Bilder pro Sekunde'
+seconds: >-
+  {seconds, plural,
+    =0    {Länge: 1 Sekunde}
+    one   {Länge: 1 Sekunde}
+    other {Länge: # Sekunden}
+  }
+video_successfully_deleted: 'Das Video “{title}” wurde erfolgreich gelöscht.'
+video_manage_widget:
+  title: 'Video anpassen'
+  subtitle: ''
+  cta_share: 'Teilen'
+  cta_preview: 'Vorschau'
+  cta_done: 'Fertig'
+  cta_download: 'Herunterladen'
+  cta_delete: 'Löschen'
+  cta_copy: 'Kopieren'
+  cta_cut: 'Schneiden'
+  label:
+    title: 'Titel der Aufnahme'
+    video_only_presentationpage_template: 'Anzeige-Vorlage'
+videos_overview:
+  title: 'Übersicht Ihrer Aufnahmen'
+  subtitle: 'Hier können Aufnahmen bearbeitet und geteilt werden.'
+  cta:
+    add: 'Neue Aufnahme erstellen'
+    create_presentationpage: 'Seite erstellen'
+    edit_presentationpage: 'Seite bearbeiten'
+    remove_video: 'Aufnahme löschen'
+video_player_embedded:
+  full_asset_outstanding: 'Video wird verarbeitet · · ·'

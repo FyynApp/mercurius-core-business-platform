@@ -14,12 +14,15 @@
 {% block body %}
 
     {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.recordings' %}
+
         {% block contentBoxTitle %}
-            {{ 'feature.recordings.videos_overview.title'|trans({ numberOfRecordingSessions: TwigHelperService.videoService.availableVideos(app.user)|length}) }}
+            {{ 'videos_overview.title'|trans({ numberOfRecordingSessions: TwigHelperService.videoService.availableVideos(app.user)|length}) }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'feature.recordings.videos_overview.subtitle'|trans }}
+            {{ 'videos_overview.subtitle'|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}
