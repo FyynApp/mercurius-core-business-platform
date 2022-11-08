@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application\Feature\Recordings;
+namespace App\Tests\Application\Feature;
 
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
@@ -59,7 +59,7 @@ class RecordingSessionForBrowserExtensionTest
         $container = static::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
-        $this->assertCount(0, $em->getRepository(\App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession::class)->findAll());
+        $this->assertCount(0, $em->getRepository(RecordingSession::class)->findAll());
 
         $client->request(
             'POST',
@@ -67,7 +67,7 @@ class RecordingSessionForBrowserExtensionTest
         );
         $this->assertResponseRedirects();
 
-        $sessions = $em->getRepository(\App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession::class)->findAll();
+        $sessions = $em->getRepository(RecordingSession::class)->findAll();
 
         $this->assertCount(1, $sessions);
 

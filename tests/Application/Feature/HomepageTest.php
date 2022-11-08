@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application\Feature\Landingpages;
+namespace App\Tests\Application\Feature;
 
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
