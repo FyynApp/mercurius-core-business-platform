@@ -46,7 +46,7 @@ class VideoType
                 TextType::class,
                 [
                     'translation_domain' => 'videobasedmarketing.recordings',
-                    'label' => 'video_manage_widget.label.title',
+                    'label' => 'video_manage_widget.edit_modal.label.title',
                     'trim' => false,
                     'empty_data' => ''
                 ],
@@ -57,7 +57,7 @@ class VideoType
                 EntityType::class,
                 [
                     'translation_domain' => 'videobasedmarketing.recordings',
-                    'label' => 'video_manage_widget.label.video_only_presentationpage_template',
+                    'label' => 'video_manage_widget.edit_modal.label.video_only_presentationpage_template',
                     'class' => Presentationpage::class,
                     'choices' => $this
                         ->presentationpagesService

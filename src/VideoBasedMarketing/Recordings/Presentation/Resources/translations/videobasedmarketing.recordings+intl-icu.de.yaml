@@ -8,18 +8,21 @@ seconds: >-
   }
 video_successfully_deleted: 'Das Video “{title}” wurde erfolgreich gelöscht.'
 video_manage_widget:
-  title: 'Video anpassen'
-  subtitle: ''
-  cta_share: 'Teilen'
-  cta_preview: 'Vorschau'
-  cta_done: 'Fertig'
-  cta_download: 'Herunterladen'
-  cta_delete: 'Löschen'
-  cta_copy: 'Kopieren'
-  cta_cut: 'Schneiden'
-  label:
-    title: 'Titel der Aufnahme'
-    video_only_presentationpage_template: 'Anzeige-Vorlage'
+  overview_box:
+    cta_share: 'Aufnahme teilen'
+    cta_edit: 'Aufnahme bearbeiten'
+    cta_delete: 'Aufnahme löschen'
+  edit_modal:
+    cta_share: 'Teilen'
+    cta_preview: 'Vorschau'
+    cta_done: 'Fertig'
+    cta_download: 'Herunterladen'
+    cta_delete: 'Löschen'
+    cta_copy: 'Kopieren'
+    cta_cut: 'Schneiden'
+    label:
+      title: 'Titel der Aufnahme'
+      video_only_presentationpage_template: 'Anzeige-Vorlage'
 videos_overview:
   title: 'Übersicht Ihrer Aufnahmen'
   subtitle: 'Hier können Aufnahmen bearbeitet und geteilt werden.'
