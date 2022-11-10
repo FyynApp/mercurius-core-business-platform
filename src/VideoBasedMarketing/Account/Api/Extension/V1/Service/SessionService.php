@@ -2,51 +2,44 @@
 
 namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Service;
 
+use App\VideoBasedMarketing\Account\Api\Extension\V1\Entity\SessionInfo;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\UserService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
-use InvalidArgumentException;
+use Exception;
 
 
 class SessionService
 {
-    private \App\Shared\Infrastructure\Service\ContentDeliveryService $contentDeliveryService;
-
     private MembershipService $membershipService;
 
+    private UserService $userService;
+
     public function __construct(
-        \App\Shared\Infrastructure\Service\ContentDeliveryService $contentDeliveryService,
-        MembershipService                                         $membershipService
+        MembershipService    $membershipService,
+        UserService          $userService
     )
     {
-        $this->contentDeliveryService = $contentDeliveryService;
         $this->membershipService = $membershipService;
+        $this->userService = $userService;
     }
 
-    public function getSessionInfoArray(?User $user): array
+    /**
+     * @throws Exception
+     */
+    public function getSessionInfo(
+        ?User $user
+    ): SessionInfo
     {
         if (is_null($user)) {
-            throw new InvalidArgumentException('User required.');
+            $user = $this->userService->createUnregisteredUser();
         }
 
-        return [
-            'userIsLoggedIn' => true,
-
-            'userIsRegistered' => $user->isRegistered(),
-
-            'userName' => $user->getUserIdentifier(),
-
-            'userFirstName' => $user->getFirstName(),
-
-            'userLastName' => $user->getLastName(),
-
-            'userImage' => $this
-                ->contentDeliveryService
-                ->getUrlForUserProfilePhoto($user),
-
-            'membershipPlan' => $this->membershipService
+        return new SessionInfo(
+            $user,
+            $this
+                ->membershipService
                 ->getCurrentlySubscribedMembershipPlanForUser($user)
-                ->getName()
-                ->value
-        ];
+        );
     }
 }

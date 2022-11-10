@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Account\Infrastructure\Security;
 
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Infrastructure\Enum\RequestParameter;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,10 +37,12 @@ class UnregisteredUserAuthenticator
     }
 
 
-    public function supports(Request $request): ?bool
+    public function supports(
+        Request $request
+    ): ?bool
     {
-        if (   !is_null($request->get('unregisteredUserId'))
-            && !is_null($request->get('unregisteredUserAuthHash'))
+        if (   !is_null($request->get(RequestParameter::UnregisteredUserId->value))
+            && !is_null($request->get(RequestParameter::UnregisteredUserAuthHash->value))
         ) {
             $this->logger->debug('UnregisteredUserAuthenticator supports this request.');
             return true;
@@ -49,20 +52,24 @@ class UnregisteredUserAuthenticator
     }
 
 
-    public function authenticate(Request $request): Passport
+    public function authenticate(
+        Request $request
+    ): Passport
     {
         $this->logger->debug('Trying to authenticate this request using UnregisteredUserAuthenticator.');
 
-        $unregisteredUserId = $request->get('unregisteredUserId');
+        $unregisteredUserId = $request->get(RequestParameter::UnregisteredUserId->value);
         if (is_null($unregisteredUserId)) {
-            throw new CustomUserMessageAuthenticationException('Missing unregisteredUserId');
+            throw new CustomUserMessageAuthenticationException('Missing ' . RequestParameter::UnregisteredUserId->value);
         }
 
-        if (self::generateAuthHash($unregisteredUserId) !== $request->get('unregisteredUserAuthHash')) {
+        if (self::generateAuthHash($unregisteredUserId)
+            !== $request->get(RequestParameter::UnregisteredUserAuthHash->value)
+        ) {
             throw new CustomUserMessageAuthenticationException('Auth hash does not match');
         }
 
-        /** @var ?\App\VideoBasedMarketing\Account\Domain\Entity\User $user */
+        /** @var ?User $user */
         $user = $this->entityManager->find(User::class, $unregisteredUserId);
 
         if (is_null($user)) {
@@ -97,7 +104,9 @@ class UnregisteredUserAuthenticator
     }
 
 
-    public static function generateAuthHash(string $userId): string
+    public static function generateAuthHash(
+        string $userId
+    ): string
     {
         return sha1($userId . '1ed39ac2!46f2?6310%b4b7§874ec8e)800d');
     }

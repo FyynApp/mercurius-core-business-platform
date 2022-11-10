@@ -150,7 +150,7 @@ class User
 
     /** @var Subscription[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class, cascade: ['persist'])]
-    private array|Collection $subscriptions;
+    private array|Collection $subscriptions = [];
 
     /**
      * @return Subscription[]|Collection
