@@ -5,7 +5,7 @@ namespace App\VideoBasedMarketing\Account\Domain\Entity;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
-use App\VideoBasedMarketing\Account\Infrastructure\Security\UnregisteredUserAuthenticator;
+use App\VideoBasedMarketing\Account\Infrastructure\Security\RequestParametersBasedUserAuthenticator;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity\RecordingSettingsBag;
@@ -32,6 +32,7 @@ class User
         $this->presentationpages = new ArrayCollection();
         $this->recordingSessions = new ArrayCollection();
         $this->recordingSettingsBags = new ArrayCollection();
+        $this->subscriptions = new ArrayCollection();
         $this->videos = new ArrayCollection();
     }
 
@@ -45,18 +46,6 @@ class User
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-
-    /**
-     * @throws Exception
-     */
-    public function getAuthHash(): string
-    {
-        if (is_null($this->id)) {
-            throw new Exception('Cannot generate auth has for user without id.');
-        }
-        return UnregisteredUserAuthenticator::generateAuthHash($this->id);
     }
 
 
@@ -150,7 +139,7 @@ class User
 
     /** @var Subscription[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class, cascade: ['persist'])]
-    private array|Collection $subscriptions = [];
+    private array|Collection $subscriptions;
 
     /**
      * @return Subscription[]|Collection

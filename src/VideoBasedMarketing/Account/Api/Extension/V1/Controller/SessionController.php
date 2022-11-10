@@ -3,9 +3,11 @@
 namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
+use App\Shared\Infrastructure\Enum\DateTimeFormat;
+use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Api\Extension\V1\Service\SessionService;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\RequestParameter;
-use App\VideoBasedMarketing\Account\Infrastructure\Security\UnregisteredUserAuthenticator;
+use App\VideoBasedMarketing\Account\Infrastructure\Security\RequestParametersBasedUserAuthenticator;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,13 +37,21 @@ class SessionController
         if (   is_null($this->getUser())
             && !$sessionInfo->getUser()->isRegistered()
         ) {
+            $validUntil = DateAndTimeService::getDateTimeUtc('+1 minutes');
             return $this->redirectToRoute(
                 'videobasedmarketing.account.api.extension.v1.session_info',
                 [
-                    RequestParameter::UnregisteredUserId->value =>
+                    RequestParameter::RequestParametersBasedUserAuthId->value =>
                         $sessionInfo->getUser()->getId(),
-                    RequestParameter::UnregisteredUserAuthHash->value =>
-                        UnregisteredUserAuthenticator::generateAuthHash($sessionInfo->getUser()->getId())
+
+                    RequestParameter::RequestParametersBasedUserAuthValidUntil->value =>
+                        $validUntil->format(DateTimeFormat::SecondsSinceUnixEpoch->value),
+
+                    RequestParameter::RequestParametersBasedUserAuthHash->value =>
+                        RequestParametersBasedUserAuthenticator::generateAuthHash(
+                            $sessionInfo->getUser()->getId(),
+                            $validUntil
+                        )
                 ]
             );
         }

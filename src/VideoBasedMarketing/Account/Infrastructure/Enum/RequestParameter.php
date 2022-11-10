@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Account\Infrastructure\Enum;
 
 enum RequestParameter: string
 {
-    case UnregisteredUserId = 'unregisteredUserId';
-    case UnregisteredUserAuthHash = 'unregisteredUserAuthHash';
+    case RequestParametersBasedUserAuthId = '__requestParametersBasedUserAuthId';
+    case RequestParametersBasedUserAuthValidUntil = '__requestParametersBasedUserAuthValidUntil';
+    case RequestParametersBasedUserAuthHash = '__requestParametersBasedUserAuthHash';
 }
