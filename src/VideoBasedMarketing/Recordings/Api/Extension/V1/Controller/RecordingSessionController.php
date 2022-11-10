@@ -132,7 +132,7 @@ class RecordingSessionController
                     'recordingSessionFinishedUrl' => $router->generate(
                         'videobasedmarketing.recordings.presentation.recording_session.finished',
                         [
-
+                            'recordingSessionId' => $recordingSession->getId()
                         ]
                     )
                 ]
