@@ -174,12 +174,12 @@ class User
     }
 
 
-    /** @var \App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession[]|Collection */
+    /** @var RecordingSession[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSession::class, cascade: ['persist'])]
     private array|Collection $recordingSessions;
 
     /**
-     * @return \App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession[]|Collection
+     * @return RecordingSession[]|Collection
      */
     public function getRecordingSessions(): array|Collection
     {
@@ -187,12 +187,12 @@ class User
     }
 
 
-    /** @var \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[]|Collection */
+    /** @var Video[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Video::class, cascade: ['persist'])]
     private array|Collection $videos;
 
     /**
-     * @return \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[]|Collection
+     * @return Video[]|Collection
      */
     public function getVideos(): array|Collection
     {
