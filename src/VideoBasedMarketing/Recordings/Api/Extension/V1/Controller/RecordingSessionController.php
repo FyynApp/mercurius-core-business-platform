@@ -90,7 +90,7 @@ class RecordingSessionController
         /** @var User $user */
         $user = $this->getUser();
 
-        if (!is_null($request->get('recordingDone'))
+        if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
         ) {
             $recordingSessionService->handleRecordingDone($recordingSession);
@@ -127,6 +127,13 @@ class RecordingSessionController
                             'random' => bin2hex(random_bytes(8))
                         ],
                         UrlGeneratorInterface::ABSOLUTE_URL
+                    ),
+
+                    'recordingSessionFinishedUrl' => $router->generate(
+                        'videobasedmarketing.recordings.presentation.recording_session.finished',
+                        [
+
+                        ]
                     )
                 ]
             );
