@@ -56,7 +56,7 @@ class MainNavigationComponent
             $this->entries = [
                 new NavigationEntry(
                     'mainnav.dashboard',
-                    'videobasedmarketing.dashboard.presentation.show'
+                    'videobasedmarketing.dashboard.presentation.show_registered'
                 ),
 
                 new NavigationEntry(

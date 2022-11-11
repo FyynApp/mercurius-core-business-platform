@@ -2,6 +2,7 @@
 
 namespace App\Shared\Presentation\Controller;
 
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +23,19 @@ class ContentpagesController
     )]
     public function homepageAction(): Response
     {
-        if (!is_null($this->getUser())) {
-            return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show');
+        /** @var User|null $user */
+        $user = $this->getUser();
+
+        if (  !is_null($user)
+            && $user->isRegistered()
+        ) {
+            return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show_registered');
+        }
+
+        if (  !is_null($user)
+            && !$user->isRegistered()
+        ) {
+            return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show_unregistered');
         }
 
         return $this->render(
