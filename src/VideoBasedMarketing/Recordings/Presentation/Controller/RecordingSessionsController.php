@@ -31,15 +31,27 @@ class RecordingSessionsController
     )]
     public function extensionRecordingFinishedAction(
         string $recordingSessionId,
-        RecordingSessionService $recordingSessionService
+        RecordingSessionService $recordingSessionService,
+        EntityManagerInterface $entityManager
     ): Response
     {
         /** @var ?User $user */
         $user = $this->getUser();
 
-        if (is_null($user)) {
-            throw new AccessDeniedHttpException();
+        /** @var RecordingSession|null $recordingSession */
+        $recordingSession = $entityManager
+            ->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new NotFoundHttpException(
+                "No recording session found with id '$recordingSessionId'."
+            );
         }
+
+        $this->denyAccessUnlessGranted(
+            VotingAttribute::Use->value,
+            $recordingSession
+        );
 
         return new Response(Response::HTTP_NOT_IMPLEMENTED);
     }

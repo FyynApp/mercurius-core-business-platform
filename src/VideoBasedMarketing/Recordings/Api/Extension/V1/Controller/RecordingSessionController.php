@@ -49,13 +49,20 @@ class RecordingSessionController
         $responseContent = [
             'settings' => [
                 'recordingSessionId' => $recordingSession->getId(),
+
                 'postUrl' => $router->generate(
                     'videobasedmarketing.recordings.api.extension.v1.recording_session.handle_video_chunk',
                     ['recordingSessionId' => $recordingSession->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
+
                 'postChunkSize' => 5,
-                'maxRecordingTime' => 300
+                'maxRecordingTime' => 300,
+
+                'recordingSessionFinishedTargetUrl' => $router->generate(
+                    'videobasedmarketing.recordings.presentation.recording_session.finished',
+                    ['recordingSessionId' => $recordingSession->getId()]
+                )
             ]
         ];
 
@@ -127,13 +134,6 @@ class RecordingSessionController
                             'random' => bin2hex(random_bytes(8))
                         ],
                         UrlGeneratorInterface::ABSOLUTE_URL
-                    ),
-
-                    'recordingSessionFinishedUrl' => $router->generate(
-                        'videobasedmarketing.recordings.presentation.recording_session.finished',
-                        [
-                            'recordingSessionId' => $recordingSession->getId()
-                        ]
                     )
                 ]
             );
