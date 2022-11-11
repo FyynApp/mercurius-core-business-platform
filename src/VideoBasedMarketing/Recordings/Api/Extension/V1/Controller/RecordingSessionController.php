@@ -61,7 +61,8 @@ class RecordingSessionController
 
                 'recordingSessionFinishedTargetUrl' => $router->generate(
                     'videobasedmarketing.recordings.presentation.recording_session.finished',
-                    ['recordingSessionId' => $recordingSession->getId()]
+                    ['recordingSessionId' => $recordingSession->getId()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
                 )
             ]
         ];
