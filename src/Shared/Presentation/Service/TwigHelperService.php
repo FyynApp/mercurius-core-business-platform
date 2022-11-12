@@ -9,7 +9,8 @@ use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
-use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 
 
 class TwigHelperService
@@ -22,7 +23,9 @@ class TwigHelperService
 
     private CookiesService $cookiesService;
 
-    private VideoService $videoService;
+    private VideoDomainService $videoDomainService;
+
+    private VideoInfrastructureService $videoInfrastructureService;
 
     private ShortIdService $shortIdService;
 
@@ -31,21 +34,23 @@ class TwigHelperService
     private PresentationpagesService $presentationpagesService;
 
     public function __construct(
-        ContentDeliveryService                            $contentDeliveryService,
-        AccountAssetsService                              $accountAssetsService,
-        MembershipService                                 $membershipService,
-        CookiesService $cookiesService,
-        VideoService                                      $videoService,
-        ShortIdService                                    $shortIdService,
-        DashboardService                                  $dashboardService,
-        PresentationpagesService                          $presentationpagesService
+        ContentDeliveryService     $contentDeliveryService,
+        AccountAssetsService       $accountAssetsService,
+        MembershipService          $membershipService,
+        CookiesService             $cookiesService,
+        VideoDomainService         $videoDomainService,
+        VideoInfrastructureService $videoInfrastructureService,
+        ShortIdService             $shortIdService,
+        DashboardService           $dashboardService,
+        PresentationpagesService   $presentationpagesService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
         $this->accountAssetsService = $accountAssetsService;
         $this->membershipService = $membershipService;
         $this->cookiesService = $cookiesService;
-        $this->videoService = $videoService;
+        $this->videoDomainService = $videoDomainService;
+        $this->videoInfrastructureService = $videoInfrastructureService;
         $this->shortIdService = $shortIdService;
         $this->dashboardService = $dashboardService;
         $this->presentationpagesService = $presentationpagesService;
@@ -71,9 +76,14 @@ class TwigHelperService
         return $this->cookiesService;
     }
 
-    public function getVideoService(): VideoService
+    public function getVideoDomainService(): VideoDomainService
     {
-        return $this->videoService;
+        return $this->videoDomainService;
+    }
+
+    public function getVideoInfrastructureService(): VideoInfrastructureService
+    {
+        return $this->videoInfrastructureService;
     }
 
     public function getShortIdService(): ShortIdService

@@ -5,9 +5,9 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
-use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService;
-use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,10 +58,10 @@ class RecordingsController
         methods     : [Request::METHOD_GET]
     )]
     public function returnFromRecordingStudioAction(
-        Request                                                                    $request,
-        EntityManagerInterface                                                     $entityManager,
+        Request                 $request,
+        EntityManagerInterface  $entityManager,
         RecordingSessionService $recordingSessionService,
-        VideoService                                                               $videoService
+        VideoInfrastructureService $videoService
     ): Response
     {
         $recordingSessionId = $request->get('recordingSessionId');
@@ -76,7 +76,10 @@ class RecordingsController
 
         // Edge case, if the user came here twice
         if (!$recordingSession->isFinished()) {
-            $video = $recordingSessionService->handleRecordingSessionFinished($recordingSession, $videoService);
+            $video = $recordingSessionService->handleRecordingSessionFinished(
+                $recordingSession,
+                $videoService
+            );
         } else {
             $video = $recordingSession->getVideo();
         }
@@ -87,24 +90,17 @@ class RecordingsController
         );
     }
 
-    public function videosOverviewAction(VideoService $videoService): Response
-    {
-        return $this->render(
-            '@videobasedmarketing.recordings/videos_overview.html.twig'
-        );
-    }
-
     #[Route(
-        path        : 'recordings/recording-sessions/{recordingSessionId}/recording-preview-asset-redirect',
-        name        : 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
-        methods     : [Request::METHOD_GET]
+        path   : 'recordings/recording-sessions/{recordingSessionId}/recording-preview-asset-redirect',
+        name   : 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
+        methods: [Request::METHOD_GET]
     )]
     public function recordingPreviewAssetRedirectAction(
         string                  $recordingSessionId,
         Request                 $request,
         RecordingSessionService $recordingSessionService,
         EntityManagerInterface  $entityManager,
-        VideoService            $videoService
+        VideoInfrastructureService $videoService
     ): Response
     {
 

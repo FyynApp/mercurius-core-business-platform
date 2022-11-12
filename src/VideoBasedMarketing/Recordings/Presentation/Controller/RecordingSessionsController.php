@@ -5,14 +5,10 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
-use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService;
-use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,13 +21,12 @@ class RecordingSessionsController
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/recording-sessions/{recordingSessionId}/extension-recording-finished',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmesitzungen/{recordingSessionId}/aufnahme-in-browser-erweiterung-abgeschlossen',
         ],
-        name        : 'videobasedmarketing.recordings.presentation.recording_session.finished',
+        name        : 'videobasedmarketing.recordings.presentation.recording_session.extension_finished',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function extensionRecordingFinishedAction(
+    public function extensionRecordingSessionFinishedAction(
         string $recordingSessionId,
-        RecordingSessionService $recordingSessionService,
         EntityManagerInterface $entityManager
     ): Response
     {
@@ -52,6 +47,12 @@ class RecordingSessionsController
             VotingAttribute::Use->value,
             $recordingSession
         );
+
+        if ($user->isRegistered()) {
+            $this->redirectToRoute(
+                'videobasedmarketing.recordings.presentation.return_from_recording_studio'
+            );
+        }
 
         return new Response(Response::HTTP_NOT_IMPLEMENTED);
     }

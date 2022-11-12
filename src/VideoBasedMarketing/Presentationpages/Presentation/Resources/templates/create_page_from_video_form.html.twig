@@ -31,10 +31,10 @@
                                 class="mx-auto rounded-md w-full"
                                 autoplay="autoplay"
                                 controls
-                                poster="{{ TwigHelperService.videoService.posterStillAssetUrl(video) }}"
+                                poster="{{ TwigHelperService.videoInfrastructureService.posterStillAssetUrl(video) }}"
                         >
                             <source
-                                    src="{{ TwigHelperService.videoService.getFullAssetUrl(video) }}"
+                                    src="{{ TwigHelperService.videoInfrastructureService.getFullAssetUrl(video) }}"
                             >
                         </video>
 

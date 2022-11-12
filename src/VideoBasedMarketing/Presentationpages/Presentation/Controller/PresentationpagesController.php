@@ -9,7 +9,8 @@ use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Presentationpages\Presentation\Form\Type\PresentationpageType;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,7 @@ class PresentationpagesController
     )]
     public function overviewAction(
         PresentationpagesService $presentationpagesService,
-        VideoService             $videoService
+        VideoInfrastructureService $videoService
     ): Response
     {
         return $this->render(
@@ -55,14 +56,20 @@ class PresentationpagesController
         methods     : [Request::METHOD_POST]
     )]
     public function createPageAction(
-        VideoService        $videoService,
+        VideoDomainService  $videoDomainService,
         TranslatorInterface $translator
     ): Response
     {
-        if (sizeof($videoService->getAvailableVideos($this->getUser())) === 0) {
-            $this->addFlash(FlashMessageLabel::Info->value, $translator->trans('flash.need_to_create_video_to_create_presentationpage'));
+        if (sizeof($videoDomainService->getAvailableVideos($this->getUser())) === 0) {
+            $this->addFlash(
+                FlashMessageLabel::Info->value,
+                $translator->trans('flash.need_to_create_video_to_create_presentationpage')
+            );
         } else {
-            $this->addFlash(FlashMessageLabel::Info->value, $translator->trans('flash.need_choose_video_to_create_presentationpage'));
+            $this->addFlash(
+                FlashMessageLabel::Info->value,
+                $translator->trans('flash.need_choose_video_to_create_presentationpage')
+            );
         }
 
         return $this->redirectToRoute(
@@ -108,7 +115,7 @@ class PresentationpagesController
         string                                                                             $videoId,
         EntityManagerInterface                                                             $entityManager,
         PresentationpagesService $presentationpagesService,
-        VideoService                                                                       $videoService
+        VideoInfrastructureService $videoService
     ): Response
     {
         $video = $entityManager->find(Video::class, $videoId);
@@ -282,7 +289,7 @@ class PresentationpagesController
     public function previewAction(
         string                 $presentationpageId,
         EntityManagerInterface $entityManager,
-        VideoService           $videoService
+        VideoInfrastructureService $videoService
     ): Response
     {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
@@ -312,11 +319,11 @@ class PresentationpagesController
         methods     : [Request::METHOD_GET]
     )]
     public function screenshotCaptureViewAction(
-        string                   $presentationpageId,
-        Request                  $request,
-        EntityManagerInterface   $entityManager,
-        VideoService             $videoService,
-        PresentationpagesService $presentationpagesService
+        string                     $presentationpageId,
+        Request                    $request,
+        EntityManagerInterface     $entityManager,
+        VideoInfrastructureService $videoService,
+        PresentationpagesService   $presentationpagesService
     ): Response
     {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);

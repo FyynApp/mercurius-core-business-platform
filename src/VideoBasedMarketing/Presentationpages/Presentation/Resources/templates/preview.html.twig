@@ -70,10 +70,10 @@
                                     class="mx-auto rounded-md w-full"
                                     autoplay="autoplay"
                                     controls
-                                    poster="{{ TwigHelperService.videoService.posterStillAssetUrl(presentationpage.video) }}"
+                                    poster="{{ TwigHelperService.videoInfrastructureService.posterStillAssetUrl(presentationpage.video) }}"
                             >
                                 <source
-                                        src="{{ TwigHelperService.videoService.getFullAssetUrl(presentationpage.video) }}"
+                                        src="{{ TwigHelperService.videoInfrastructureService.getFullAssetUrl(presentationpage.video) }}"
                                 >
                             </video>
                         </div>

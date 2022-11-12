@@ -6,7 +6,7 @@ use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Presentation\Form\Type\VideoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -58,7 +58,7 @@ class VideoManageWidgetLiveComponent
 
     private PresentationpagesService $presentationpagesService;
 
-    private \App\VideoBasedMarketing\Recordings\Domain\Service\VideoService $videoService;
+    private \App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService $videoService;
 
     private RouterInterface $router;
 
@@ -66,12 +66,12 @@ class VideoManageWidgetLiveComponent
 
 
     public function __construct(
-        LoggerInterface          $logger,
-        EntityManagerInterface   $entityManager,
-        VideoService             $videoService,
-        PresentationpagesService $presentationpagesService,
-        RouterInterface          $router,
-        ShortIdService           $shortIdService
+        LoggerInterface            $logger,
+        EntityManagerInterface     $entityManager,
+        VideoInfrastructureService $videoService,
+        PresentationpagesService   $presentationpagesService,
+        RouterInterface            $router,
+        ShortIdService             $shortIdService
     )
     {
         $this->logger = $logger;

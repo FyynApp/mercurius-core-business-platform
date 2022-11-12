@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Recordings\Domain\Service;
+namespace App\VideoBasedMarketing\Recordings\Infrastructure\Service;
 
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
-class VideoService
+class VideoInfrastructureService
 {
     private const ASSETS_SUBFOLDER_NAME = 'video-assets';
 
@@ -60,29 +60,6 @@ class VideoService
         $this->translator = $translator;
         $this->presentationpagesService = $presentationpagesService;
     }
-
-
-    /**
-     * @return \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[]
-     */
-    public function getAvailableVideos(User $user): array
-    {
-        /** @var Video[] $allVideos */
-        $allVideos = $user->getVideos()
-                    ->toArray();
-
-        $videos = [];
-        foreach ($allVideos as $video) {
-            if (!$video->isDeleted()) {
-                $videos[] = $video;
-            }
-        }
-
-        rsort($videos);
-
-        return $videos;
-    }
-
 
     public function getPosterStillAssetUrl(Video $video): string
     {
@@ -139,7 +116,9 @@ class VideoService
 
 
     /** @throws Exception */
-    public function createVideoEntityForFinishedRecordingSession(RecordingSession $recordingSession): Video
+    public function createVideoEntityForFinishedRecordingSession(
+        RecordingSession $recordingSession
+    ): Video
     {
         if (!$recordingSession->isFinished()) {
             throw new InvalidArgumentException("Recording session '{$recordingSession->getId()} is not finished'.");

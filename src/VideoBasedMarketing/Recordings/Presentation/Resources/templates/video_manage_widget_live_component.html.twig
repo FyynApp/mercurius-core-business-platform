@@ -29,13 +29,13 @@
                     <div
                             {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'stillImage') }}
                             class="bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-lg rounded-tr-lg"
-                            style="background-image: url('{{ TwigHelperService.videoService.posterStillAssetUrl(this.video) }}')"
+                            style="background-image: url('{{ TwigHelperService.videoInfrastructureService.posterStillAssetUrl(this.video) }}')"
                     ></div>
 
                     <div
                             {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'animatedImage') }}
                             class="hidden bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-lg rounded-tr-lg"
-                            style="background-image: url('{{ TwigHelperService.videoService.posterAnimatedAssetUrl(this.video) }}')"
+                            style="background-image: url('{{ TwigHelperService.videoInfrastructureService.posterAnimatedAssetUrl(this.video) }}')"
                     ></div>
                 </div>
             </button>
@@ -417,7 +417,7 @@
                                     </button>
 
                                     <a
-                                            href="{{ TwigHelperService.videoService.fullAssetUrl(this.video) }}"
+                                            href="{{ TwigHelperService.videoInfrastructureService.fullAssetUrl(this.video) }}"
                                             class="cta-with-icon-inline-primary"
                                     >
                                         {# Heroicon: folder-arrow-down solid #}

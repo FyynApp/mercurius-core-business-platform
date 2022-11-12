@@ -3,15 +3,12 @@
 namespace App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\Shared\Infrastructure\Enum\CookieName;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
-use App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity\RecordingSettingsBag;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
-use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService;
-use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -174,7 +171,7 @@ class RecordingSessionController
         RouterInterface         $router,
         RecordingSessionService $recordingSessionService,
         EntityManagerInterface  $entityManager,
-        VideoService            $videoService
+        VideoInfrastructureService $videoService
     ): Response
     {
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
@@ -185,7 +182,6 @@ class RecordingSessionController
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
-        /** @var \App\VideoBasedMarketing\Account\Domain\Entity\User $user */
         $user = $this->getUser();
 
         if (!is_null($request->get('recordingDone'))

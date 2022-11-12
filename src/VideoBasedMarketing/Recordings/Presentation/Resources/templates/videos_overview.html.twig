@@ -18,7 +18,7 @@
         {% trans_default_domain 'videobasedmarketing.recordings' %}
 
         {% block contentBoxTitle %}
-            {{ 'videos_overview.title'|trans({ numberOfRecordingSessions: TwigHelperService.videoService.availableVideos(app.user)|length}) }}
+            {{ 'videos_overview.title'|trans({ numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideos(app.user)|length}) }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
@@ -49,7 +49,7 @@
                     </a>
                 </div>
 
-                {% for video in TwigHelperService.videoService.availableVideos(app.user) %}
+                {% for video in TwigHelperService.videoDomainService.availableVideos(app.user) %}
                     {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
                     {{ component('videobasedmarketing_recordings_video_manage_widget', {

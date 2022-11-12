@@ -3,8 +3,8 @@
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\MessageHandler;
 
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingAssetsCommandMessage;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -19,12 +19,12 @@ class GenerateMissingAssetsCommandMessageHandler
 
     private LoggerInterface $logger;
 
-    private VideoService $videoService;
+    private VideoInfrastructureService $videoService;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         LoggerInterface        $logger,
-        VideoService           $videoService
+        VideoInfrastructureService $videoService
     )
     {
         $this->entityManager = $entityManager;

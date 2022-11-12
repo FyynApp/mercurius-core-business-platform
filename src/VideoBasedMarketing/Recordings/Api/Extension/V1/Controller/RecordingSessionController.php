@@ -5,9 +5,9 @@ namespace App\VideoBasedMarketing\Recordings\Api\Extension\V1\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
-use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService;
-use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -58,7 +58,7 @@ class RecordingSessionController
                 'maxRecordingTime' => 300,
 
                 'recordingSessionFinishedTargetUrl' => $router->generate(
-                    'videobasedmarketing.recordings.presentation.recording_session.finished',
+                    'videobasedmarketing.recordings.presentation.recording_session.extension_finished',
                     ['recordingSessionId' => $recordingSession->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 )
@@ -82,7 +82,7 @@ class RecordingSessionController
         RouterInterface         $router,
         RecordingSessionService $recordingSessionService,
         EntityManagerInterface  $entityManager,
-        VideoService            $videoService
+        VideoInfrastructureService $videoService
     ): Response
     {
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);

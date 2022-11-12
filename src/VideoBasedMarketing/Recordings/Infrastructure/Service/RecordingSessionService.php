@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Recordings\Domain\Service;
+namespace App\VideoBasedMarketing\Recordings\Infrastructure\Service;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
@@ -63,7 +63,7 @@ class RecordingSessionService
      */
     public function handleRecordingSessionFinished(
         RecordingSession $recordingSession,
-        VideoService     $videoService
+        VideoInfrastructureService $videoService
     ): Video
     {
         $recordingSession->setIsFinished(true);
@@ -83,13 +83,11 @@ class RecordingSessionService
     ): RecordingSessionVideoChunk
     {
 
-        if ($user->getId() !== $recordingSession->getUser()
-                                                ->getId()) {
+        if ($user->getId() !== $recordingSession->getUser()->getId()) {
             throw new Exception("User id '{$user->getId()}' does not match the user id of session '{$recordingSession->getId()}'.");
         }
 
         if ($chunkName === '1.webm') {
-
             if ($recordingSession->getRecordingSessionVideoChunks()
                                  ->count() > 0) {
 
@@ -168,8 +166,7 @@ class RecordingSessionService
     /** @throws Exception */
     public function handleRecordingDone(RecordingSession $recordingSession): void
     {
-        if ($recordingSession->getRecordingSessionVideoChunks()
-                             ->count() < 1) {
+        if ($recordingSession->getRecordingSessionVideoChunks()->count() < 1) {
             throw new Exception("Recording session '{$recordingSession->getId()}' needs at least one video chunk.");
         }
 

@@ -5,7 +5,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Domain\Service\VideoService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -106,10 +106,10 @@ class VideosController
         methods     : [Request::METHOD_GET]
     )]
     public function deleteVideoAction(
-        string $videoId,
-        EntityManagerInterface $entityManager,
-        VideoService $videoService,
-        TranslatorInterface $translator
+        string                     $videoId,
+        EntityManagerInterface     $entityManager,
+        VideoInfrastructureService $videoService,
+        TranslatorInterface        $translator
     ): Response
     {
         /** @var null|Video $video */
