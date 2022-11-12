@@ -4,7 +4,7 @@
 {% if this.type is same as 'stacked' %}
     <div class="pt-4 pb-3 border-t border-gray-700 z-50">
 
-        {% if this.user %}
+        {% if this.user and user.registered %}
             <div class="flex items-center px-3">
                 <div class="flex-shrink-0">
 
@@ -58,7 +58,7 @@
 
 {% else %}
 
-    {% if app.user %}
+    {% if app.user and user.registered %}
         <div class="hidden md:block z-50">
             <div class="ml-4 flex items-center md:ml-6">
 

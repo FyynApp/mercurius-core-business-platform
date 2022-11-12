@@ -35,7 +35,9 @@ class MainNavigationComponent
 
         $this->type = $type;
 
-        if (is_null($user)) {
+        if (    is_null($user)
+            || !$user->isRegistered()
+        ) {
             $this->entries = [
                 new NavigationEntry(
                     'mainnav.homepage',

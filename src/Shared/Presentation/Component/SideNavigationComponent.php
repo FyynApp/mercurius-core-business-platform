@@ -39,7 +39,9 @@ class SideNavigationComponent
         $this->type = $type;
         $this->user = $user;
 
-        if (is_null($this->user)) {
+        if (    is_null($this->user)
+            || !$user->isRegistered()
+        ) {
             $this->entries = [
                 new NavigationEntry('sidenav.sign_in', 'videobasedmarketing.account.presentation.sign_in'),
                 new NavigationEntry('sidenav.sign_up', 'videobasedmarketing.account.presentation.sign_up'),

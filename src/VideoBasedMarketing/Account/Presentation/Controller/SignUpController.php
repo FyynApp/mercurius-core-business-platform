@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
+use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
@@ -11,7 +12,6 @@ use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\SignUpType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -51,7 +51,9 @@ class SignUpController
     {
         $user = $this->getUser();
 
-        if (!is_null($user)) {
+        if (   !is_null($user)
+            && $user->isRegistered()
+        ) {
             return $this->redirectToRoute('shared.presentation.contentpages.homepage');
         }
 

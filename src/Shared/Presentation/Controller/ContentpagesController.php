@@ -26,16 +26,10 @@ class ContentpagesController
         /** @var User|null $user */
         $user = $this->getUser();
 
-        if (  !is_null($user)
+        if (   !is_null($user)
             && $user->isRegistered()
         ) {
             return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show_registered');
-        }
-
-        if (  !is_null($user)
-            && !$user->isRegistered()
-        ) {
-            return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show_unregistered');
         }
 
         return $this->render(
