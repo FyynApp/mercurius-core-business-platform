@@ -3,7 +3,6 @@
 namespace App\VideoBasedMarketing\Recordings\Api\Extension\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionService;
@@ -34,7 +33,6 @@ class RecordingSessionController
         RouterInterface $router
     ): Response
     {
-        /** @var null|User $user */
         $user = $this->getUser();
 
         if (is_null($user)) {
@@ -95,7 +93,6 @@ class RecordingSessionController
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
-        /** @var User $user */
         $user = $this->getUser();
 
         if (   !is_null($request->get('recordingDone'))

@@ -2,15 +2,14 @@
 
 namespace App\VideoBasedMarketing\Membership\Infrastructure\Controller;
 
+use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Membership\Infrastructure\Service\PaymentProcessorStripeService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -36,7 +35,6 @@ extends AbstractController
         MembershipService             $membershipService,
         PaymentProcessorStripeService $stripeService
     ): Response {
-        /** @var User $user */
         $user = $this->getUser();
 
         $plan = $membershipService->getMembershipPlanByName(MembershipPlanName::from($planName));

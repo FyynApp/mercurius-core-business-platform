@@ -2,10 +2,9 @@
 
 namespace App\VideoBasedMarketing\Membership\Presentation\Controller;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +25,6 @@ class MembershipController
     )]
     public function overviewAction(MembershipService $membershipService): Response
     {
-        /** @var User $user */
         $user = $this->getUser();
 
         return $this->render(
@@ -52,7 +50,6 @@ class MembershipController
         string                                                                $planName,
         MembershipService $membershipService,
     ): Response {
-        /** @var User $user */
         $user = $this->getUser();
 
         $paymentProcessor = $membershipService->getPaymentProcessorForUser($user);
