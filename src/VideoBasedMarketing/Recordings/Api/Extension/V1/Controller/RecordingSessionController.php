@@ -107,11 +107,6 @@ class RecordingSessionController
                 $recordingSession
             );
 
-            $recordingSessionDomainService->handleRecordingSessionFinished(
-                $recordingSession,
-                $videoDomainService
-            );
-
             return $this->json(
                 [
                     'status' => Response::HTTP_OK,

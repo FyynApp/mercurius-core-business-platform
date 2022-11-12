@@ -6,7 +6,6 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -21,25 +20,17 @@ class VideoDomainService
 
     private TranslatorInterface $translator;
 
-    private VideoInfrastructureService $videoInfrastructureService;
-
     private PresentationpagesService $presentationpagesService;
-
-    private MessageBusInterface $messageBus;
 
     public function __construct(
         EntityManagerInterface     $entityManager,
         TranslatorInterface        $translator,
-        VideoInfrastructureService $videoInfrastructureService,
         PresentationpagesService   $presentationpagesService,
-        MessageBusInterface        $messageBus
     )
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
-        $this->videoInfrastructureService = $videoInfrastructureService;
         $this->presentationpagesService = $presentationpagesService;
-        $this->messageBus = $messageBus;
     }
 
 
@@ -106,12 +97,6 @@ class VideoDomainService
                 "Cannot generate poster assets for video '{$video->getId()}' because its recording session '{$recordingSession->getId()}' does not have any video chunks."
             );
         }
-
-        $this->videoInfrastructureService->generateAssetPosterStillWebp($video);
-        $this->videoInfrastructureService->generateAssetPosterAnimatedWebp($video);
-
-        // Heavy-lifting stuff like missing video assets generation happens asynchronously
-        $this->messageBus->dispatch(new GenerateMissingVideoAssetsCommandMessage($video));
 
         return $video;
     }

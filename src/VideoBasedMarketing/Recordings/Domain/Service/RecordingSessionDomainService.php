@@ -3,17 +3,12 @@
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Message\RecordingSessionCreatedEventMessage;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use InvalidArgumentException;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class RecordingSessionDomainService
@@ -22,13 +17,17 @@ class RecordingSessionDomainService
 
     private MessageBusInterface $messageBus;
 
+    private VideoDomainService $videoDomainService;
+
     public function __construct(
         EntityManagerInterface $entityManager,
-        MessageBusInterface    $messageBus
+        MessageBusInterface    $messageBus,
+        VideoDomainService     $videoDomainService
     )
     {
         $this->entityManager = $entityManager;
         $this->messageBus = $messageBus;
+        $this->videoDomainService = $videoDomainService;
     }
 
 
@@ -36,15 +35,14 @@ class RecordingSessionDomainService
      * @throws Exception
      */
     public function handleRecordingSessionFinished(
-        RecordingSession   $recordingSession,
-        VideoDomainService $videoDomainService
+        RecordingSession   $recordingSession
     ): Video
     {
         $recordingSession->setIsFinished(true);
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
 
-        return $videoDomainService->createVideoEntityForFinishedRecordingSession(
+        return $this->videoDomainService->createVideoEntityForFinishedRecordingSession(
             $recordingSession
         );
     }

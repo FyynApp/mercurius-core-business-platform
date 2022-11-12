@@ -5,6 +5,8 @@ namespace App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
+use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
@@ -170,6 +172,8 @@ class RecordingSessionController
         Request                               $request,
         RouterInterface                       $router,
         RecordingSessionInfrastructureService $recordingSessionInfrastructureService,
+        RecordingSessionDomainService         $recordingSessionDomainService,
+        VideoDomainService                    $videoDomainService,
         EntityManagerInterface                $entityManager,
         VideoInfrastructureService            $videoService
     ): Response
