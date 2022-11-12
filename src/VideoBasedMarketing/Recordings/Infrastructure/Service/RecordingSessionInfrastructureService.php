@@ -6,8 +6,6 @@ use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
-use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Domain\Message\RecordingSessionCreatedEventMessage;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
@@ -15,10 +13,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 
-class RecordingSessionService
+class RecordingSessionInfrastructureService
 {
     private EntityManagerInterface $entityManager;
 
@@ -26,52 +23,17 @@ class RecordingSessionService
 
     private LoggerInterface $logger;
 
-    private MessageBusInterface $messageBus;
-
     public function __construct(
         EntityManagerInterface $entityManager,
         FilesystemService      $filesystemService,
-        LoggerInterface        $logger,
-        MessageBusInterface    $messageBus
+        LoggerInterface        $logger
     )
     {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
         $this->logger = $logger;
-        $this->messageBus = $messageBus;
     }
 
-
-    public function startRecordingSession(User $user): RecordingSession
-    {
-        $recordingSession = new RecordingSession($user);
-        $this->entityManager->persist($recordingSession);
-        $this->entityManager->flush($recordingSession);
-
-        $this->messageBus->dispatch(
-            new RecordingSessionCreatedEventMessage(
-                $recordingSession
-            )
-        );
-
-        return $recordingSession;
-    }
-
-
-    /**
-     * @throws Exception
-     */
-    public function handleRecordingSessionFinished(
-        RecordingSession $recordingSession,
-        VideoInfrastructureService $videoService
-    ): Video
-    {
-        $recordingSession->setIsFinished(true);
-        $this->entityManager->persist($recordingSession);
-        $this->entityManager->flush();
-
-        return $videoService->createVideoEntityForFinishedRecordingSession($recordingSession);
-    }
 
     /** @throws Exception */
     public function handleRecordingSessionVideoChunk(
@@ -84,14 +46,17 @@ class RecordingSessionService
     {
 
         if ($user->getId() !== $recordingSession->getUser()->getId()) {
-            throw new Exception("User id '{$user->getId()}' does not match the user id of session '{$recordingSession->getId()}'.");
+            throw new Exception(
+                "User id '{$user->getId()}' does not match the user id of session '{$recordingSession->getId()}'."
+            );
         }
 
         if ($chunkName === '1.webm') {
-            if ($recordingSession->getRecordingSessionVideoChunks()
-                                 ->count() > 0) {
+            if ($recordingSession->getRecordingSessionVideoChunks()->count() > 0) {
 
-                $this->logger->info('Received 1.webm chunk while there already are existing chunks for this session - we assume this is a repeated recording, and remove all traces of the existing one.');
+                $this->logger->info(
+                    'Received 1.webm chunk while there already are existing chunks for this session - we assume this is a repeated recording, and remove all traces of the existing one.'
+                );
 
                 foreach ($recordingSession->getRecordingSessionVideoChunks() as $existingChunk) {
                     $this->entityManager->remove($existingChunk);
@@ -164,7 +129,9 @@ class RecordingSessionService
     }
 
     /** @throws Exception */
-    public function handleRecordingDone(RecordingSession $recordingSession): void
+    public function handleDoneChunkArrived(
+        RecordingSession $recordingSession
+    ): void
     {
         if ($recordingSession->getRecordingSessionVideoChunks()->count() < 1) {
             throw new Exception("Recording session '{$recordingSession->getId()}' needs at least one video chunk.");

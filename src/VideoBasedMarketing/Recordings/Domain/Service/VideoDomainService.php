@@ -3,11 +3,46 @@
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use InvalidArgumentException;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class VideoDomainService
 {
+    private EntityManagerInterface $entityManager;
+
+    private TranslatorInterface $translator;
+
+    private VideoInfrastructureService $videoInfrastructureService;
+
+    private PresentationpagesService $presentationpagesService;
+
+    private MessageBusInterface $messageBus;
+
+    public function __construct(
+        EntityManagerInterface     $entityManager,
+        TranslatorInterface        $translator,
+        VideoInfrastructureService $videoInfrastructureService,
+        PresentationpagesService   $presentationpagesService,
+        MessageBusInterface        $messageBus
+    )
+    {
+        $this->entityManager = $entityManager;
+        $this->translator = $translator;
+        $this->videoInfrastructureService = $videoInfrastructureService;
+        $this->presentationpagesService = $presentationpagesService;
+        $this->messageBus = $messageBus;
+    }
+
+
     /**
      * @return Video[]
      */
@@ -26,5 +61,58 @@ class VideoDomainService
         rsort($videos);
 
         return $videos;
+    }
+
+    /** @throws Exception */
+    public function createVideoEntityForFinishedRecordingSession(
+        RecordingSession $recordingSession
+    ): Video
+    {
+        if (!$recordingSession->isFinished()) {
+            throw new InvalidArgumentException(
+                "Recording session '{$recordingSession->getId()} is not finished'."
+            );
+        }
+
+        $video = new Video($recordingSession->getUser());
+        $video->setTitle(
+            $this->translator->trans(
+                'new_video_title',
+                ['{num}' => $recordingSession->getUser()->getVideos()->count() + 1],
+                'videobasedmarketing.recordings'
+            )
+        );
+
+        $video->setRecordingSession($recordingSession);
+        $recordingSession->setVideo($video);
+        $this->entityManager->persist($video);
+        $this->entityManager->persist($recordingSession);
+        $this->entityManager->flush();
+
+        $templates = $this
+            ->presentationpagesService
+            ->getVideoOnlyPresentationpageTemplatesForUser(
+                $recordingSession->getUser()
+            );
+
+        $video->setVideoOnlyPresentationpageTemplate($templates[0]);
+
+        if (is_null(
+            $recordingSession
+                ->getRecordingSessionVideoChunks()
+                ->first()
+        )) {
+            throw new Exception(
+                "Cannot generate poster assets for video '{$video->getId()}' because its recording session '{$recordingSession->getId()}' does not have any video chunks."
+            );
+        }
+
+        $this->videoInfrastructureService->generateAssetPosterStillWebp($video);
+        $this->videoInfrastructureService->generateAssetPosterAnimatedWebp($video);
+
+        // Heavy-lifting stuff like missing video assets generation happens asynchronously
+        $this->messageBus->dispatch(new GenerateMissingVideoAssetsCommandMessage($video));
+
+        return $video;
     }
 }

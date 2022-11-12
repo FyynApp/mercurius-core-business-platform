@@ -7,7 +7,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use InvalidArgumentException;
 
 
-class GenerateMissingAssetsCommandMessage
+class GenerateMissingVideoAssetsCommandMessage
     implements AsyncMessageInterface
 {
     private string $videoId;
@@ -15,7 +15,7 @@ class GenerateMissingAssetsCommandMessage
     public function __construct(Video $video)
     {
         if (is_null($video->getId())) {
-            throw new InvalidArgumentException('recording session needs an id.');
+            throw new InvalidArgumentException('video needs an id.');
         }
         $this->videoId = $video->getId();
     }

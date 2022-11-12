@@ -3,12 +3,9 @@
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\Service;
 
 use App\Shared\Infrastructure\Service\FilesystemService;
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
-use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingAssetsCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
@@ -27,38 +24,26 @@ class VideoInfrastructureService
 
     private FilesystemService $filesystemService;
 
-    private RecordingSessionService $recordingSessionService;
+    private RecordingSessionInfrastructureService $recordingSessionInfrastructureService;
 
     private RouterInterface $router;
 
-    private MessageBusInterface $messageBus;
-
-    private LoggerInterface $logger;
-
-    private TranslatorInterface $translator;
-
-    private PresentationpagesService $presentationpagesService;
-
 
     public function __construct(
-        EntityManagerInterface   $entityManager,
-        FilesystemService        $filesystemService,
-        RecordingSessionService  $recordingSessionService,
-        RouterInterface          $router,
-        MessageBusInterface      $messageBus,
-        LoggerInterface          $logger,
-        TranslatorInterface      $translator,
-        PresentationpagesService $presentationpagesService
+        EntityManagerInterface                $entityManager,
+        FilesystemService                     $filesystemService,
+        RecordingSessionInfrastructureService $recordingSessionInfrastructureService,
+        RouterInterface                       $router,
+        MessageBusInterface                   $messageBus,
+        LoggerInterface                       $logger,
+        TranslatorInterface                   $translator,
+        PresentationpagesService              $presentationpagesService
     )
     {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
-        $this->recordingSessionService = $recordingSessionService;
+        $this->recordingSessionInfrastructureService = $recordingSessionInfrastructureService;
         $this->router = $router;
-        $this->messageBus = $messageBus;
-        $this->logger = $logger;
-        $this->translator = $translator;
-        $this->presentationpagesService = $presentationpagesService;
     }
 
     public function getPosterStillAssetUrl(Video $video): string
@@ -116,58 +101,6 @@ class VideoInfrastructureService
 
 
     /** @throws Exception */
-    public function createVideoEntityForFinishedRecordingSession(
-        RecordingSession $recordingSession
-    ): Video
-    {
-        if (!$recordingSession->isFinished()) {
-            throw new InvalidArgumentException("Recording session '{$recordingSession->getId()} is not finished'.");
-        }
-
-        $video = new Video($recordingSession->getUser());
-        $video->setTitle(
-            $this->translator->trans(
-                'new_video_title',
-                ['{num}' => $recordingSession->getUser()->getVideos()->count() + 1],
-                'videobasedmarketing.recordings'
-            )
-        );
-
-        $video->setRecordingSession($recordingSession);
-        $recordingSession->setVideo($video);
-        $recordingSession->setIsFinished(true);
-        $this->entityManager->persist($video);
-        $this->entityManager->persist($recordingSession);
-        $this->entityManager->flush();
-
-        $templates = $this
-            ->presentationpagesService
-            ->getVideoOnlyPresentationpageTemplatesForUser(
-                $recordingSession->getUser()
-            );
-
-        $video->setVideoOnlyPresentationpageTemplate($templates[0]);
-
-        if (is_null(
-            $recordingSession
-                ->getRecordingSessionVideoChunks()
-                ->first()
-        )) {
-            throw new Exception("Cannot generate poster assets for video '{$video->getId()}' because its recording session '{$recordingSession->getId()}' does not have any video chunks.");
-        }
-
-        $this->generateAssetPosterStillWebp($video);
-
-        $this->generateAssetPosterAnimatedWebp($video);
-
-        // Heavy-lifting stuff like missing video assets generation happens asynchronously
-        $this->messageBus->dispatch(new GenerateMissingAssetsCommandMessage($video));
-
-        return $video;
-    }
-
-
-    /** @throws Exception */
     public function generateMissingAssets(Video $video): void
     {
         if (is_null($video->getRecordingSession())) {
@@ -208,12 +141,12 @@ class VideoInfrastructureService
     }
 
 
-    private function generateAssetPosterStillWebp(Video $video): void
+    public function generateAssetPosterStillWebp(Video $video): void
     {
         $this->createFilesystemStructureForAssets($video);
 
         for ($i = 50; $i > 0; $i--) {
-            shell_exec("/usr/bin/env ffmpeg -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,$i)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
+            shell_exec("/usr/bin/env ffmpeg -i {$this->recordingSessionInfrastructureService->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,$i)\" -q:v 70 -y {$this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
 
             clearstatcache();
             $filesize = filesize($this->getPosterStillAssetFilePath($video, AssetMimeType::ImageWebp));
@@ -227,11 +160,11 @@ class VideoInfrastructureService
         }
     }
 
-    private function generateAssetPosterAnimatedWebp(Video $video): void
+    public function generateAssetPosterAnimatedWebp(Video $video): void
     {
         $this->createFilesystemStructureForAssets($video);
 
-        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}");
+        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionInfrastructureService->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}");
 
         $video->setHasAssetPosterAnimatedWebp(true);
         $this->entityManager->persist($video);
@@ -242,7 +175,7 @@ class VideoInfrastructureService
     {
         $this->createFilesystemStructureForAssets($video);
 
-        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionService->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageGif)}");
+        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->recordingSessionInfrastructureService->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getPosterAnimatedAssetFilePath($video, AssetMimeType::ImageGif)}");
 
         $video->setHasAssetPosterAnimatedGif(true);
         $this->entityManager->persist($video);
@@ -255,7 +188,7 @@ class VideoInfrastructureService
      */
     private function generateAssetFullWebm(Video $video): void
     {
-        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionService->generateVideoChunksFilesListFile($video->getRecordingSession())} -vf \"fps=60\" -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)}");
+        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionInfrastructureService->generateVideoChunksFilesListFile($video->getRecordingSession())} -vf \"fps=60\" -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoWebm)}");
 
         $video->setHasAssetFullWebm(true);
 
@@ -281,7 +214,7 @@ class VideoInfrastructureService
      */
     private function generateAssetFullMp4(Video $video): void
     {
-        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionService->generateVideoChunksFilesListFile($video->getRecordingSession())} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)}");
+        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->recordingSessionInfrastructureService->generateVideoChunksFilesListFile($video->getRecordingSession())} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getFullAssetFilePath($video, AssetMimeType::VideoMp4)}");
 
         $video->setHasAssetFullMp4(true);
 

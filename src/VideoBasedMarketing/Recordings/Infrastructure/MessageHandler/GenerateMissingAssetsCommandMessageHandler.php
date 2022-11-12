@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\MessageHandler;
 
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingAssetsCommandMessage;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -33,7 +33,7 @@ class GenerateMissingAssetsCommandMessageHandler
     }
 
     /** @throws Exception */
-    public function __invoke(GenerateMissingAssetsCommandMessage $message): void
+    public function __invoke(GenerateMissingVideoAssetsCommandMessage $message): void
     {
         $this->logger->debug("Received GenerateMissingAssetsCommandMessage for video {$message->getVideoId()}.");
 

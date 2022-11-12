@@ -5,8 +5,10 @@ namespace App\VideoBasedMarketing\Recordings\Api\Extension\V1\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
+use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -29,8 +31,8 @@ class RecordingSessionController
         methods     : [Request::METHOD_POST]
     )]
     public function createRecordingSessionAction(
-        RecordingSessionService $recordingSessionService,
-        RouterInterface $router
+        RecordingSessionDomainService         $recordingSessionDomainService,
+        RouterInterface                       $router
     ): Response
     {
         $user = $this->getUser();
@@ -42,7 +44,8 @@ class RecordingSessionController
             );
         }
 
-        $recordingSession = $recordingSessionService->startRecordingSession($user);
+        $recordingSession = $recordingSessionDomainService
+            ->startRecordingSession($user);
 
         $responseContent = [
             'settings' => [
@@ -77,12 +80,14 @@ class RecordingSessionController
         methods     : [Request::METHOD_POST]
     )]
     public function handleRecordingSessionVideoChunkAction(
-        string                  $recordingSessionId,
-        Request                 $request,
-        RouterInterface         $router,
-        RecordingSessionService $recordingSessionService,
-        EntityManagerInterface  $entityManager,
-        VideoInfrastructureService $videoService
+        string                                $recordingSessionId,
+        Request                               $request,
+        RouterInterface                       $router,
+        RecordingSessionInfrastructureService $recordingSessionInfrastructureService,
+        RecordingSessionDomainService         $recordingSessionDomainService,
+        EntityManagerInterface                $entityManager,
+        VideoInfrastructureService            $videoInfrastructureService,
+        VideoDomainService                    $videoDomainService,
     ): Response
     {
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
@@ -98,11 +103,13 @@ class RecordingSessionController
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'
         ) {
-            $recordingSessionService->handleRecordingDone($recordingSession);
+            $recordingSessionInfrastructureService->handleDoneChunkArrived(
+                $recordingSession
+            );
 
-            $recordingSessionService->handleRecordingSessionFinished(
+            $recordingSessionDomainService->handleRecordingSessionFinished(
                 $recordingSession,
-                $videoService
+                $videoDomainService
             );
 
             return $this->json(
@@ -112,7 +119,7 @@ class RecordingSessionController
                         'videobasedmarketing.recordings.presentation.recording_session.recording_preview.poster.asset',
                         [
                             'recordingSessionId' => $recordingSessionId,
-                            'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)
+                            'extension' => $videoInfrastructureService->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)
                         ],
                         UrlGeneratorInterface::ABSOLUTE_URL
                     ),
@@ -150,7 +157,7 @@ class RecordingSessionController
                 throw new BadRequestHttpException("Missing request file part 'video-blob'.");
             }
 
-            $recordingSessionService->handleRecordingSessionVideoChunk(
+            $recordingSessionInfrastructureService->handleRecordingSessionVideoChunk(
                 $recordingSession,
                 $user,
                 $chunkName,

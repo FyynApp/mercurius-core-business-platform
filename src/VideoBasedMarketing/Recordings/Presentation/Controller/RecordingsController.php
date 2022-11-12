@@ -5,14 +5,16 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
+use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,7 +32,7 @@ class RecordingsController
         methods     : [Request::METHOD_GET]
     )]
     public function recordingStudioAction(
-        RecordingSessionService $recordingSessionService
+        RecordingSessionDomainService $recordingSessionDomainService
     ): Response
     {
         /** @var ?User $user */
@@ -40,7 +42,8 @@ class RecordingsController
             throw new AccessDeniedHttpException();
         }
 
-        $recordingSession = $recordingSessionService->startRecordingSession($user);
+        $recordingSession = $recordingSessionDomainService
+            ->startRecordingSession($user);
 
         return $this->render(
             '@videobasedmarketing.recordings/recording_studio.html.twig',
@@ -58,10 +61,8 @@ class RecordingsController
         methods     : [Request::METHOD_GET]
     )]
     public function returnFromRecordingStudioAction(
-        Request                 $request,
-        EntityManagerInterface  $entityManager,
-        RecordingSessionService $recordingSessionService,
-        VideoInfrastructureService $videoService
+        Request                               $request,
+        EntityManagerInterface                $entityManager
     ): Response
     {
         $recordingSessionId = $request->get('recordingSessionId');
@@ -74,15 +75,14 @@ class RecordingsController
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
-        // Edge case, if the user came here twice
         if (!$recordingSession->isFinished()) {
-            $video = $recordingSessionService->handleRecordingSessionFinished(
-                $recordingSession,
-                $videoService
+            throw new HttpException(
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                "Recording session '$recordingSessionId' unexpectedly isn't finished."
             );
-        } else {
-            $video = $recordingSession->getVideo();
         }
+
+        $video = $recordingSession->getVideo();
 
         return $this->redirectToRoute(
             'videobasedmarketing.recordings.presentation.videos.overview',
@@ -96,11 +96,11 @@ class RecordingsController
         methods: [Request::METHOD_GET]
     )]
     public function recordingPreviewAssetRedirectAction(
-        string                  $recordingSessionId,
-        Request                 $request,
-        RecordingSessionService $recordingSessionService,
-        EntityManagerInterface  $entityManager,
-        VideoInfrastructureService $videoService
+        string                                $recordingSessionId,
+        Request                               $request,
+        RecordingSessionInfrastructureService $recordingSessionInfrastructureService,
+        EntityManagerInterface                $entityManager,
+        VideoInfrastructureService            $videoService
     ): Response
     {
 
@@ -141,7 +141,8 @@ class RecordingsController
                 ]
             );
         } else {
-            $recordingSessionService->generateRecordingPreviewVideo($recordingSession);
+            $recordingSessionInfrastructureService
+                ->generateRecordingPreviewVideo($recordingSession);
 
             return $this->redirectToRoute(
                 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset',
