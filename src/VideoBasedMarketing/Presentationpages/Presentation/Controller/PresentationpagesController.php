@@ -10,7 +10,6 @@ use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesSe
 use App\VideoBasedMarketing\Presentationpages\Presentation\Form\Type\PresentationpageType;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,17 +31,10 @@ class PresentationpagesController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function overviewAction(
-        PresentationpagesService $presentationpagesService,
-        VideoInfrastructureService $videoService
-    ): Response
+    public function overviewAction(): Response
     {
         return $this->render(
-            '@videobasedmarketing.presentationpages/overview.html.twig',
-            [
-                'PresentationpagesService' => $presentationpagesService,
-                'VideoService' => $videoService
-            ]
+            '@videobasedmarketing.presentationpages/overview.html.twig'
         );
     }
 
@@ -112,10 +104,9 @@ class PresentationpagesController
         methods     : [Request::METHOD_GET]
     )]
     public function createPageFromVideoFormAction(
-        string                                                                             $videoId,
-        EntityManagerInterface                                                             $entityManager,
-        PresentationpagesService $presentationpagesService,
-        VideoInfrastructureService $videoService
+        string                   $videoId,
+        EntityManagerInterface   $entityManager,
+        PresentationpagesService $presentationpagesService
     ): Response
     {
         $video = $entityManager->find(Video::class, $videoId);
@@ -288,8 +279,7 @@ class PresentationpagesController
     )]
     public function previewAction(
         string                 $presentationpageId,
-        EntityManagerInterface $entityManager,
-        VideoInfrastructureService $videoService
+        EntityManagerInterface $entityManager
     ): Response
     {
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
@@ -303,8 +293,7 @@ class PresentationpagesController
         return $this->render(
             '@videobasedmarketing.presentationpages/preview.html.twig',
             [
-                'presentationpage' => $presentationpage,
-                'VideoService' => $videoService
+                'presentationpage' => $presentationpage
             ]
         );
     }
@@ -322,7 +311,6 @@ class PresentationpagesController
         string                     $presentationpageId,
         Request                    $request,
         EntityManagerInterface     $entityManager,
-        VideoInfrastructureService $videoService,
         PresentationpagesService   $presentationpagesService
     ): Response
     {
@@ -342,8 +330,7 @@ class PresentationpagesController
             return $this->render(
                 '@videobasedmarketing.presentationpages/preview.html.twig',
                 [
-                    'presentationpage' => $presentationpage,
-                    'VideoService' => $videoService
+                    'presentationpage' => $presentationpage
                 ]
             );
         }

@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Infrastructure\MessageHandler;
 
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -19,17 +19,17 @@ class GenerateMissingAssetsCommandMessageHandler
 
     private LoggerInterface $logger;
 
-    private VideoInfrastructureService $videoService;
+    private RecordingsInfrastructureService $recordingsInfrastructureService;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        LoggerInterface        $logger,
-        VideoInfrastructureService $videoService
+        EntityManagerInterface          $entityManager,
+        LoggerInterface                 $logger,
+        RecordingsInfrastructureService $recordingsInfrastructureService
     )
     {
         $this->entityManager = $entityManager;
         $this->logger = $logger;
-        $this->videoService = $videoService;
+        $this->recordingsInfrastructureService = $recordingsInfrastructureService;
     }
 
     /** @throws Exception */
@@ -43,6 +43,6 @@ class GenerateMissingAssetsCommandMessageHandler
             throw new UnrecoverableMessageHandlingException("Could not find video with id '{$message->getVideoId()}'.");
         }
 
-        $this->videoService->generateMissingAssets($video);
+        $this->recordingsInfrastructureService->generateMissingAssets($video);
     }
 }

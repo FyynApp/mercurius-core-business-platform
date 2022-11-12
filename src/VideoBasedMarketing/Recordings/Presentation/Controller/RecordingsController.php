@@ -7,8 +7,7 @@ use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionInfrastructureService;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,11 +95,10 @@ class RecordingsController
         methods: [Request::METHOD_GET]
     )]
     public function recordingPreviewAssetRedirectAction(
-        string                                $recordingSessionId,
-        Request                               $request,
-        RecordingSessionInfrastructureService $recordingSessionInfrastructureService,
-        EntityManagerInterface                $entityManager,
-        VideoInfrastructureService            $videoService
+        string                          $recordingSessionId,
+        Request                         $request,
+        RecordingsInfrastructureService $recordingSessionInfrastructureService,
+        EntityManagerInterface          $entityManager
     ): Response
     {
 

@@ -18,10 +18,10 @@
         <video
                 class="mx-auto rounded-md w-full"
                 controls
-                poster="{{ TwigHelperService.videoInfrastructureService.posterStillAssetUrl(video) }}"
+                poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
         >
             <source
-                    src="{{ TwigHelperService.videoInfrastructureService.getFullAssetUrl(video) }}"
+                    src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
             >
         </video>
     {% else %}

@@ -6,11 +6,9 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
@@ -99,5 +97,12 @@ class VideoDomainService
         }
 
         return $video;
+    }
+
+    public function deleteVideo(Video $video): void
+    {
+        $video->setIsDeleted(true);
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
     }
 }

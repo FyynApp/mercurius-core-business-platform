@@ -6,7 +6,6 @@ use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Presentation\Form\Type\VideoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -58,8 +57,6 @@ class VideoManageWidgetLiveComponent
 
     private PresentationpagesService $presentationpagesService;
 
-    private \App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService $videoService;
-
     private RouterInterface $router;
 
     private ShortIdService $shortIdService;
@@ -68,7 +65,6 @@ class VideoManageWidgetLiveComponent
     public function __construct(
         LoggerInterface            $logger,
         EntityManagerInterface     $entityManager,
-        VideoInfrastructureService $videoService,
         PresentationpagesService   $presentationpagesService,
         RouterInterface            $router,
         ShortIdService             $shortIdService
@@ -76,7 +72,6 @@ class VideoManageWidgetLiveComponent
     {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
-        $this->videoService = $videoService;
         $this->presentationpagesService = $presentationpagesService;
         $this->router = $router;
         $this->shortIdService = $shortIdService;

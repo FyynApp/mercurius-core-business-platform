@@ -8,8 +8,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingSessionInfrastructureService;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\VideoInfrastructureService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -168,14 +167,11 @@ class RecordingSessionController
         methods     : [Request::METHOD_POST]
     )]
     public function handleRecordingSessionVideoChunkAction(
-        string                                $recordingSessionId,
-        Request                               $request,
-        RouterInterface                       $router,
-        RecordingSessionInfrastructureService $recordingSessionInfrastructureService,
-        RecordingSessionDomainService         $recordingSessionDomainService,
-        VideoDomainService                    $videoDomainService,
-        EntityManagerInterface                $entityManager,
-        VideoInfrastructureService            $videoService
+        string                          $recordingSessionId,
+        Request                         $request,
+        RouterInterface                 $router,
+        RecordingsInfrastructureService $recordingSessionInfrastructureService,
+        EntityManagerInterface          $entityManager
     ): Response
     {
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
