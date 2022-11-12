@@ -39,7 +39,7 @@ class RecordingSessionController
 
         if (is_null($user)) {
             return new JsonResponse(
-                'Requires an active session on fyyn.io in this browser.',
+                'This requires an active session on fyyn.io in this browser.',
                 Response::HTTP_UNAUTHORIZED
             );
         }
