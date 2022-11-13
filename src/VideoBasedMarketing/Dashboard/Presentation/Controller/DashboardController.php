@@ -21,29 +21,12 @@ class DashboardController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function showRegisteredAction(DashboardService $dashboardService): Response
+    public function showRegisteredAction(
+        DashboardService $dashboardService
+    ): Response
     {
         return $this->render(
             '@videobasedmarketing.dashboard/show_registered.html.twig',
-            [
-                'DashboardService' => $dashboardService
-            ]
-        );
-    }
-
-    #[Route(
-        path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/welcome',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/willkommen',
-        ],
-        name        : 'videobasedmarketing.dashboard.presentation.show_unregistered',
-        requirements: ['_locale' => '%app.routing.locale_requirement%'],
-        methods     : [Request::METHOD_GET]
-    )]
-    public function showUnregisteredAction(DashboardService $dashboardService): Response
-    {
-        return $this->render(
-            '@videobasedmarketing.dashboard/show_unregistered.html.twig',
             [
                 'DashboardService' => $dashboardService
             ]

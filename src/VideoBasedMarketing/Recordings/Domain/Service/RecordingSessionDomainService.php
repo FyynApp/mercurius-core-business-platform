@@ -35,7 +35,7 @@ class RecordingSessionDomainService
      * @throws Exception
      */
     public function handleRecordingSessionFinished(
-        RecordingSession   $recordingSession
+        RecordingSession $recordingSession
     ): Video
     {
         $recordingSession->setIsFinished(true);

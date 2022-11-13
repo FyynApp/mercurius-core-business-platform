@@ -57,7 +57,7 @@ class RecordingSessionController
                 ),
 
                 'postChunkSize' => 5,
-                'maxRecordingTime' => 300,
+                'maxRecordingTime' => $user->isRegistered() ? 300 : 60,
 
                 'recordingSessionFinishedTargetUrl' => $router->generate(
                     'videobasedmarketing.recordings.presentation.recording_session.extension_finished',

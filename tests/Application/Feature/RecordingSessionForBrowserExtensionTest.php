@@ -59,6 +59,12 @@ class RecordingSessionForBrowserExtensionTest
         $this->assertCount(0, $em->getRepository(RecordingSession::class)->findAll());
 
         $client->request(
+            'GET',
+            '/api/extension/v1/account/session-info'
+        );
+        $client->followRedirect();
+
+        $client->request(
             'POST',
             '/api/extension/v1/recordings/recording-sessions/'
         );
@@ -72,8 +78,6 @@ class RecordingSessionForBrowserExtensionTest
         $session = $sessions[0];
 
         $this->assertFalse($session->getUser()->isRegistered());
-
-        $client->followRedirect();
 
         $structuredResponse = json_decode($client->getResponse()->getContent(), true);
 

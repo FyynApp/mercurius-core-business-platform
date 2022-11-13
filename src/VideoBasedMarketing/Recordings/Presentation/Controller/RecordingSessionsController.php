@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,6 +34,10 @@ class RecordingSessionsController
         /** @var ?User $user */
         $user = $this->getUser();
 
+        if (is_null($user)) {
+            throw new AccessDeniedHttpException('A logged-in registered or unregistered user is required.');
+        }
+
         /** @var RecordingSession|null $recordingSession */
         $recordingSession = $entityManager
             ->find(RecordingSession::class, $recordingSessionId);
@@ -50,9 +55,14 @@ class RecordingSessionsController
 
         if ($user->isRegistered()) {
             $this->redirectToRoute(
-                'videobasedmarketing.recordings.presentation.return_from_recording_studio'
+                'videobasedmarketing.recordings.presentation.return_from_recording_studio',
+                ['recordingSessionId' => $recordingSession->getId()]
             );
         }
+
+        $this->redirectToRoute(
+            'videobasedmarketing.account.presentation.claim_unregistered_user_landinpage'
+        );
 
         return new Response(Response::HTTP_NOT_IMPLEMENTED);
     }

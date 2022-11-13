@@ -2,11 +2,10 @@
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
-{% block title %}
-{% endblock %}
-
 {% block body %}
 
-    Welcome, unregistered user.
+    <div>
+        Welcome, unregistered user {{ app.user.userIdentifier }}.
+    </div>
 
 {% endblock %}
