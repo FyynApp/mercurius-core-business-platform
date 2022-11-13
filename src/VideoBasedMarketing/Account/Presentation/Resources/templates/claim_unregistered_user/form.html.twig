@@ -2,10 +2,68 @@
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
+{% trans_default_domain 'videobasedmarketing.account' %}
+
+{% block stylesheets %}
+{% endblock %}
+
 {% block body %}
 
-    <div>
-        Welcome, unregistered user {{ app.user.userIdentifier }}.
+    <div class="bg-white h-full w-full p-8">
+        <div class="flex flex-row justify-end">
+            <a
+                    href="{{ path('shared.presentation.contentpages.homepage') }}"
+                    target="_blank"
+                    class="
+                    flex flex-row gap-2 justify-end items-end
+                    p-2 pr-4 pl-4 rounded-md opacity-20
+                    w-fit
+                    hover:opacity-100
+                    bg-neutral-500 text-neutral-300 font-light
+                "
+            >
+                <span>powered by Fyyn.io</span>
+                <img
+                        class="h-6"
+                        src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
+                        alt="Fyyn.io"
+                >
+            </a>
+        </div>
+
+        <div class="mt-16 mx-auto max-w-5xl md:ml-32 md:mr-32">
+
+            <div class="text-8xl font-extrabold">
+                {{ 'claim_unregistered_user.form.greeting'|trans }}
+            </div>
+
+            <div class="mt-4 text-4xl font-bold">
+                {{ 'claim_unregistered_user.form.note1'|trans }}
+            </div>
+
+            <div class="mt-8 text-2xl font-extralight text-neutral-400">
+                {{ 'claim_unregistered_user.form.note2'|trans }}
+            </div>
+
+            <div class="mt-8 text-2xl font-semibold text-indigo-900">
+                {{ 'claim_unregistered_user.form.note3'|trans }}
+            </div>
+
+            <div class="mt-8">
+
+                {% import '@videobasedmarketing.recordings/macros/video_preview.html.twig' as videoPreviewMacros %}
+
+                {% for video in videos %}
+                    {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+
+                    <div class="aspect-video w-64 shadow-lg shadow-neutral-400">
+                        {{ videoPreviewMacros.interactive(video) }}
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+
     </div>
 
 {% endblock %}

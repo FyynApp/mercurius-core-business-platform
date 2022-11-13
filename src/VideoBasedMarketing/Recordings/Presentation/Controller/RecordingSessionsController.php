@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
+use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,8 +20,8 @@ class RecordingSessionsController
 {
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recording-sessions/{recordingSessionId}/extension-recording-finished',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmesitzungen/{recordingSessionId}/aufnahme-in-browser-erweiterung-abgeschlossen',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-sessions/{recordingSessionId}/extension-recording-finished',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmesitzungen/{recordingSessionId}/aufnahme-in-browser-erweiterung-abgeschlossen',
         ],
         name        : 'videobasedmarketing.recordings.presentation.recording_session.extension_finished',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -28,7 +29,8 @@ class RecordingSessionsController
     )]
     public function extensionRecordingSessionFinishedAction(
         string $recordingSessionId,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        RecordingSessionDomainService $recordingSessionDomainService
     ): Response
     {
         /** @var ?User $user */
@@ -54,16 +56,21 @@ class RecordingSessionsController
         );
 
         if ($user->isRegistered()) {
-            $this->redirectToRoute(
+            return $this->redirectToRoute(
                 'videobasedmarketing.recordings.presentation.return_from_recording_studio',
                 ['recordingSessionId' => $recordingSession->getId()]
             );
         }
 
-        $this->redirectToRoute(
+        if (!$recordingSession->isFinished()) {
+            $recordingSessionDomainService
+                ->handleRecordingSessionFinished(
+                    $recordingSession
+                );
+        }
+
+        return $this->redirectToRoute(
             'videobasedmarketing.account.presentation.claim_unregistered_user_landinpage'
         );
-
-        return new Response(Response::HTTP_NOT_IMPLEMENTED);
     }
 }

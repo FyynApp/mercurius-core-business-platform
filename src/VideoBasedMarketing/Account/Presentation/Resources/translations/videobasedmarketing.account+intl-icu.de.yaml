@@ -36,3 +36,10 @@ thirdpartyauth:
     cta_back_to_sign_up: 'Zurück zur Registrierung'
     linkedin:
       infotext: 'Leider ist bei der Kommmunikation mit LinkedIn ein unerwarteter Fehler aufgetreten (Fehler {error}). Bitte wiederholen Sie den Vorgang.'
+
+claim_unregistered_user:
+  form:
+    greeting: 'Hallo auch,'
+    note1: 'vielen Dank für die Nutzung unserer Browser Extension.'
+    note2: 'Wir haben deine Aufnahmen sicher und zuverlässig zwischengespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
+    note3: 'Sichere dir jetzt dein kostenloses Fyyn.io Konto und verwalte deine Videos!'

@@ -7,10 +7,8 @@ use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +16,6 @@ use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 
@@ -32,26 +29,18 @@ class RecordingsInfrastructureService
 
     private LoggerInterface $logger;
 
-    private RecordingSessionDomainService $recordingSessionDomainService;
-
-    private MessageBusInterface $messageBus;
-
     private RouterInterface $router;
 
     public function __construct(
         EntityManagerInterface        $entityManager,
         FilesystemService             $filesystemService,
         LoggerInterface               $logger,
-        RecordingSessionDomainService $recordingSessionDomainService,
-        MessageBusInterface           $messageBus,
         RouterInterface               $router
     )
     {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
         $this->logger = $logger;
-        $this->recordingSessionDomainService = $recordingSessionDomainService;
-        $this->messageBus = $messageBus;
         $this->router = $router;
     }
 
@@ -157,18 +146,6 @@ class RecordingsInfrastructureService
         if ($recordingSession->getRecordingSessionVideoChunks()->count() < 1) {
             throw new Exception("Recording session '{$recordingSession->getId()}' needs at least one video chunk.");
         }
-
-        $video = $this
-            ->recordingSessionDomainService
-            ->handleRecordingSessionFinished(
-                $recordingSession
-            );
-
-        $this->generateVideoAssetPosterStillWebp($video);
-        $this->generateVideoAssetPosterAnimatedWebp($video);
-
-        // Heavy-lifting stuff like missing video assets generation happens asynchronously
-        $this->messageBus->dispatch(new GenerateMissingVideoAssetsCommandMessage($video));
 
         shell_exec("/usr/bin/env ffmpeg -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getRecordingPreviewVideoPosterFilePath($recordingSession)}");
 

@@ -7,6 +7,7 @@ use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,8 +61,9 @@ class RecordingsController
         methods     : [Request::METHOD_GET]
     )]
     public function returnFromRecordingStudioAction(
-        Request                               $request,
-        EntityManagerInterface                $entityManager
+        Request                       $request,
+        EntityManagerInterface        $entityManager,
+        RecordingSessionDomainService $recordingSessionDomainService
     ): Response
     {
         $recordingSessionId = $request->get('recordingSessionId');
@@ -74,14 +76,10 @@ class RecordingsController
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
 
-        if (!$recordingSession->isFinished()) {
-            throw new HttpException(
-                Response::HTTP_INTERNAL_SERVER_ERROR,
-                "Recording session '$recordingSessionId' unexpectedly isn't finished."
+        $video = $recordingSessionDomainService
+            ->handleRecordingSessionFinished(
+                $recordingSession
             );
-        }
-
-        $video = $recordingSession->getVideo();
 
         return $this->redirectToRoute(
             'videobasedmarketing.recordings.presentation.videos.overview',

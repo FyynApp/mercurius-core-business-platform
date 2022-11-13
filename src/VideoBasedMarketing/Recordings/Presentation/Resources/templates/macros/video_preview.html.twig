@@ -1,0 +1,37 @@
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% macro interactive(video) %}
+
+    {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+
+    <div
+            class="p-0 m-0"
+
+            {{ stimulus_controller('videoBasedMarketing-recordings-videoPreview') }}
+
+            data-action="
+                            focus->videoBasedMarketing-recordings-videoPreview#showAnimated
+                            click->videoBasedMarketing-recordings-videoPreview#showAnimated
+                            mouseover->videoBasedMarketing-recordings-videoPreview#showAnimated
+                            mouseout->videoBasedMarketing-recordings-videoPreview#showStill
+                            blur->videoBasedMarketing-recordings-videoPreview#showStill
+                        "
+    >
+        <div
+                {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'stillImage') }}
+                class="bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-lg rounded-tr-lg"
+                style="background-image: url('{{
+                    TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video)
+                }}')"
+        ></div>
+
+        <div
+                {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'animatedImage') }}
+                class="hidden bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-lg rounded-tr-lg"
+                style="background-image: url('{{
+                    TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(video)
+                }}')"
+        ></div>
+    </div>
+
+{% endmacro %}
