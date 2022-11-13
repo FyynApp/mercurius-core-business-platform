@@ -180,7 +180,6 @@
                 bg-white max-w-screen-lg max-h-screen max-w-full
                 p-4 w-fit rounded-md
                 flex flex-col justify-start
-                border-1 border-gray-400
             ">
                 <div class="flex flex-row justify-between mb-8">
 
@@ -293,7 +292,6 @@
                 bg-white max-w-screen-lg max-h-screen max-w-full
                 p-4 w-fit rounded-md
                 flex flex-col justify-start
-                border-1 border-gray-400
             ">
                 <div class="flex flex-row justify-between mb-8">
 
@@ -341,12 +339,12 @@
     {% if this.editModalIsOpen %}
         <div
                 class="
-                    fixed top-0 left-0 bottom-0 right-0 bg-opacity-60 backdrop-blur-sm backdrop-grayscale bg-neutral-300
+                    fixed top-0 left-0 bottom-0 right-0 bg-opacity-90 bg-neutral-900
                     z-40 flex flex-row justify-center items-center
                 "
         >
             <div class="
-                h-full md:w-10/12 overflow-y-scroll relative bg-gray-100 p-8 pt-4 border-1 border-gray-400
+                h-full md:w-10/12 overflow-y-scroll relative bg-gray-100 p-8 pt-4
             ">
                 {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 8, colspanRight: 4 } %}
 
