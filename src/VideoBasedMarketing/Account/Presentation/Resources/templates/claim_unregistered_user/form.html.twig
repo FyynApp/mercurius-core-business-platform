@@ -56,9 +56,80 @@
                 {% for video in videos %}
                     {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
-                    <div class="aspect-video w-64 shadow-lg shadow-neutral-400">
-                        {{ videoPreviewMacros.interactive(video) }}
-                    </div>
+                    {% if loop.first %}
+                        <div class="
+                            flex
+                            flex-col lg:flex-row
+                            justify-center lg:justify-start
+                            items-center lg:items-start
+                            gap-16
+                            max-w-4xl
+                        ">
+
+                            <div class="
+                                w-full shadow-lg shadow-neutral-400
+                                h-fit
+                            ">
+                                {{ videoPreviewMacros.interactive(video) }}
+                            </div>
+
+                            <div class="
+                                flex flex-col gap-8 w-full
+                                justify-center items-center
+                                lg:items-end
+                            ">
+
+                                <div class="w-full">
+                                    <label for="username" class="sr-only">
+                                        {{ 'sign_in.placeholder.email'|trans }}
+                                    </label>
+                                    <input
+                                            id="username"
+                                            name="_username"
+                                            type="email"
+                                            autocomplete="email"
+                                            required
+                                            class="
+                                                appearance-none relative block
+                                                h-16 w-full px-3 py-2
+                                                border border-gray-300
+                                                placeholder-gray-500 text-gray-900
+                                                rounded-md
+                                                focus:outline-none
+                                                ring-indigo-500
+                                                border-indigo-500
+                                                focus:z-10 sm:text-sm
+                                            "
+                                            placeholder="{{ 'sign_in.placeholder.email'|trans }}"
+                                    />
+                                </div>
+
+                                <div class="w-full">
+                                    <button
+                                            type="submit"
+                                            class="
+                                                w-64 flex items-center justify-center px-8 py-3
+                                                border border-transparent
+                                                text-base font-medium
+                                                rounded-md text-white
+                                                bg-indigo-600 hover:bg-indigo-700
+                                                md:py-4 md:text-lg md:px-10
+                                            "
+                                    >
+                                        {{ 'claim_unregistered_user.form.cta'|trans }}
+                                    </button>
+                                </div>
+
+                                <div class="
+                                    text-xs text-neutral-700 w-full
+                                    font-extralight
+                                ">
+                                    {{ 'claim_unregistered_user.form.fineprint'|trans }}
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endif %}
 
                 {% endfor %}
             </div>
