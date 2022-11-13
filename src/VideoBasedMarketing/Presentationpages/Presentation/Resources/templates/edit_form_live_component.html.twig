@@ -37,7 +37,7 @@
                         {{ 'editor.edit_form.label_background'|trans }}
                     </label>
 
-                    <div class="mb-6 rounded-md bg-white pl-8 p-2 shadow-inner">
+                    <div class="mb-6 rounded-md bg-white pl-8 p-2">
                         {% for background in this.presentationpage.possibleBackgrounds %}
 
                             {# @var background \App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageBackground #}
@@ -94,10 +94,8 @@
                                         {% apply spaceless %}
                                             {% if this.presentationpage.bgColor.value is same as bgColor.value %}
                                                 border-gray-700
-                                                shadow-neutral-700
                                                 outline-2
                                                 outline-white
-                                                shadow-sm
                                             {% endif %}
                                             border-1
                                             w-8
@@ -128,10 +126,8 @@
                                         {% apply spaceless %}
                                             {% if this.presentationpage.fgColor.value is same as fgColor.value %}
                                                 border-gray-700
-                                                shadow-neutral-700
                                                 outline-2
                                                 outline-white
-                                                shadow-sm
                                             {% endif %}
                                             border-1
                                             w-8
@@ -162,10 +158,8 @@
                                         {% apply spaceless %}
                                             {% if this.presentationpage.textColor.value is same as textColor.value %}
                                                 border-gray-700
-                                                shadow-neutral-700
                                                 outline-2
                                                 outline-white
-                                                shadow-sm
                                             {% endif %}
                                             border-1
                                             w-8
@@ -438,7 +432,7 @@
 
         {% block contentRight %}
 
-            <div class="sm:fixed sm:top-16 bg-gray-100 p-8 rounded-l-lg shadow shadow-2xl shadow-gray-700 h-full overflow-scroll">
+            <div class="sm:fixed sm:top-16 bg-gray-100 p-8 rounded-l-lg h-full overflow-scroll">
 
                 <h1 class="mb-6 font-bold text-xl">
                     {{ ('editor.edit_form.preview_headline_' ~ this.presentationpage.type.value)|trans }}
@@ -470,7 +464,7 @@
                     </p>
 
                     <div
-                            class="flex flex-col rounded-md shadow-inner text-left justify-start pt-8 pl-8 pr-8 pb-0"
+                            class="flex flex-col rounded-md text-left justify-start pt-8 pl-8 pr-8 pb-0"
 
                             {% if this.presentationpage.background is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageBackground::BgColor') %}
                                 style="background-color: {{ this.presentationpage.bgColor.value }};"

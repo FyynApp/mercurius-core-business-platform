@@ -8,7 +8,7 @@
         id="{{ formView.vars.id }}"
         value="{{ formView.vars.value|e }}"
         {% if formView.vars.required %}required="required"{% endif %}
-        class="{% if form_errors(formView) %}bg-red-50 border-red-900{% else %}border-gray-300{% endif %} mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm rounded-md"
+        class="{% if form_errors(formView) %}bg-red-50 border-red-900{% else %}border-gray-300{% endif %} mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md"
     />
 
     {% if form_errors(formView) %}

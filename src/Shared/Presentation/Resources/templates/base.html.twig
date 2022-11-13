@@ -19,12 +19,12 @@
 
         {% block javascripts %}{% endblock %}
     </head>
-    <body class="h-full bg-gray-100">
+    <body class="h-full bg-white">
 
         <div class="flex flex-row justify-start">
 
             {% if app.user is not null %}
-                <div class="min-h-full bg-gray-800 p-4 hidden md:block md:w-1/12 md:w-96 border-0 border-r-2 border-r-gray-900 shadow-lg shadow-gray-700 max-w-fit">
+                <div class="min-h-full bg-gray-800 p-4 hidden md:block md:w-1/12 md:w-96 border-0 border-r-2 border-r-gray-900 max-w-fit">
                     {% include '@shared/navigation/nav_left.html.twig' %}
                 </div>
             {% endif %}
@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="flex flex-col flex-grow">
-                    <h1 class="padded-content-box shadow text-3xl font-bold text-gray-200 bg-gray-900">
+                    <h1 class="padded-content-box text-3xl font-bold text-gray-200 bg-gray-900">
                         {% block contentTitle %}{% endblock %}
                     </h1>
 
@@ -44,7 +44,7 @@
                         {% block body %}{% endblock %}
                     </main>
 
-                    <footer class="bg-gray-900 min-h-max w-full bottom-0 p-4 md:pt-20 shadow-inner shadow-black md:flex md:items-center md:justify-between md:p-6 md:pt-20">
+                    <footer class="border-top min-h-max w-full bottom-0 p-4 md:pt-20 md:flex md:items-center md:justify-between md:p-6 md:pt-20">
                         <ul class="flex flex-wrap items-center mt-3 mr-6 text-sm text-gray-500">
                             <li>
                                 © {{ "now"|date("Y") }} smart DSGVO GmbH

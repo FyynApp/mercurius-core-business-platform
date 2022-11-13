@@ -13,7 +13,7 @@
     }
 
     .collection-box {
-        @apply bg-gray-50 p-8 rounded-md shadow-inner shadow-gray-300;
+        @apply bg-gray-50 p-8 rounded-md;
     }
 
     .nav-btn-default {
@@ -31,15 +31,15 @@
     }
 
     .cta-link-primary {
-        @apply flex flex-row gap-2 rounded-md bg-indigo-100 text-indigo-700 p-4 text-start w-full ease-in-out delay-75 duration-100 hover:shadow-md hover:shadow-indigo-300 hover:-translate-y-1 border-indigo-300 border-1;
+        @apply flex flex-row gap-2 rounded-md bg-indigo-100 text-indigo-700 p-4 text-start w-full ease-in-out delay-75 duration-100 border-indigo-300 border-1;
     }
 
     .cta-link-success {
-        @apply flex flex-row gap-2 rounded-md bg-lime-100 text-lime-900 p-4 text-start w-full ease-in-out delay-75 duration-100 hover:shadow-md hover:shadow-lime-300 hover:-translate-y-1 border-lime-300 border-1;
+        @apply flex flex-row gap-2 rounded-md bg-lime-100 text-lime-900 p-4 text-start w-full ease-in-out delay-75 duration-100 border-lime-300 border-1;
     }
 
     .cta-link-danger {
-        @apply flex flex-row gap-2 rounded-md bg-red-100 text-red-700 p-4 text-start w-full ease-in-out delay-75 duration-100 hover:shadow-md hover:shadow-red-300 hover:-translate-y-1 border-red-300 border-1;
+        @apply flex flex-row gap-2 rounded-md bg-red-100 text-red-700 p-4 text-start w-full ease-in-out delay-75 duration-100 border-red-300 border-1;
     }
 
 
@@ -86,9 +86,6 @@
         ease-in-out
         delay-75
         duration-100
-        hover:shadow-md
-        hover:shadow-indigo-300
-        hover:-translate-y-1
         border-indigo-300
         border-1
         ;
@@ -114,9 +111,6 @@
         ease-in-out
         delay-75
         duration-100
-        hover:shadow-md
-        hover:shadow-lime-300
-        hover:-translate-y-1
         border-lime-500
         border-1
         ;
@@ -142,9 +136,6 @@
         ease-in-out
         delay-75
         duration-100
-        hover:shadow-md
-        hover:shadow-red-300
-        hover:-translate-y-1
         border-red-300
         border-1
         ;

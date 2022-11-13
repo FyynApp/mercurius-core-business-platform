@@ -30,7 +30,7 @@
                     {% endif %}
 
                     <input type="hidden" name="remember" value="true">
-                    <div class="rounded-md shadow-sm -space-y-px">
+                    <div class="rounded-md -space-y-px">
                         <div>
                             <label for="{{ signUpForm.children.email.vars.id }}" class="sr-only">
                                 {{ 'sign_up.placeholder.email'|trans }}
@@ -119,7 +119,7 @@
                             <div class="ml-4 flex-shrink-0">
                                 <a
                                         href="{{ path('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start') }}"
-                                        class="text-center flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-6 text-xs font-medium text-white shadow-sm hover:bg-indigo-700"
+                                        class="text-center flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-6 text-xs font-medium text-white hover:bg-indigo-700"
                                 >
                                     {{ 'sign_up.cta.sign_up_with_linkedin'|trans }}
                                 </a>
