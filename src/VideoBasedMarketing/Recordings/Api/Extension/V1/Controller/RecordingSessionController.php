@@ -58,6 +58,18 @@ class RecordingSessionController
                 'postChunkSize' => 5,
                 'maxRecordingTime' => $user->isRegistered() ? 300 : 60,
 
+                'recordingSessionRemoveUrl' => $router->generate(
+                    'videobasedmarketing.recordings.api.extension.v1.remove_recording_session',
+                    ['recordingSessionId' => $recordingSession->getId()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+
+                'recordingSessionEditTargetUrl' => $router->generate(
+                    'videobasedmarketing.recordings.presentation.recording_session.extension_finished',
+                    ['recordingSessionId' => $recordingSession->getId()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+
                 'recordingSessionFinishedTargetUrl' => $router->generate(
                     'videobasedmarketing.recordings.presentation.recording_session.extension_finished',
                     ['recordingSessionId' => $recordingSession->getId()],
@@ -162,5 +174,18 @@ class RecordingSessionController
                 ]
             );
         }
+    }
+
+    #[Route(
+        path        : '%app.routing.route_prefix.api%/extension/v1/recordings/recording-sessions/{recordingSessionId}',
+        name        : 'videobasedmarketing.recordings.api.extension.v1.remove_recording_session',
+        methods     : [Request::METHOD_DELETE]
+    )]
+    public function removeRecordingSessionAction(
+        RecordingSessionDomainService         $recordingSessionDomainService,
+        RouterInterface                       $router
+    ): Response
+    {
+        return new Response('', Response::HTTP_NOT_IMPLEMENTED);
     }
 }

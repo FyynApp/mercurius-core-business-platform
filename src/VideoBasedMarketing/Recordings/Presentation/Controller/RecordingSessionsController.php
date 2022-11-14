@@ -20,6 +20,24 @@ class RecordingSessionsController
 {
     #[Route(
         path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-sessions/{recordingSessionId}/edit-extension-recording',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmesitzungen/{recordingSessionId}/aufnahme-in-browser-erweiterung-bearbeiten',
+        ],
+        name        : 'videobasedmarketing.recordings.presentation.recording_session.extension_edit',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function extensionRecordingSessionEditAction(
+        string $recordingSessionId,
+        EntityManagerInterface $entityManager,
+        RecordingSessionDomainService $recordingSessionDomainService
+    ): Response
+    {
+        return new Response('', Response::HTTP_NOT_IMPLEMENTED);
+    }
+
+    #[Route(
+        path        : [
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-sessions/{recordingSessionId}/extension-recording-finished',
             'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmesitzungen/{recordingSessionId}/aufnahme-in-browser-erweiterung-abgeschlossen',
         ],
