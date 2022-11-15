@@ -66,7 +66,7 @@ class RecordingSessionsController
 
         return $this->render(
             '@videobasedmarketing.recordings/videos_overview.html.twig',
-            ['showEditModalForVideoId' => $recordingSession->getVideo()]
+            ['showEditModalForVideoId' => $recordingSession->getVideo()->getId()]
         );
     }
 
