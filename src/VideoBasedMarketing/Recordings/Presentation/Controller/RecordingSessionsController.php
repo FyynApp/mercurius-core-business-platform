@@ -29,11 +29,45 @@ class RecordingSessionsController
     )]
     public function extensionRecordingSessionEditAction(
         string $recordingSessionId,
-        EntityManagerInterface $entityManager,
-        RecordingSessionDomainService $recordingSessionDomainService
+        EntityManagerInterface $entityManager
     ): Response
     {
-        return new Response('', Response::HTTP_NOT_IMPLEMENTED);
+        /** @var ?User $user */
+        $user = $this->getUser();
+
+        if (is_null($user)) {
+            throw new AccessDeniedHttpException('A logged-in user is required.');
+        }
+
+        if ($user->isRegistered()) {
+            throw new AccessDeniedHttpException('The logged in user must be unregistered.');
+        }
+
+        /** @var RecordingSession|null $recordingSession */
+        $recordingSession = $entityManager
+            ->find(RecordingSession::class, $recordingSessionId);
+
+        if (is_null($recordingSession)) {
+            throw new NotFoundHttpException(
+                "No recording session found with id '$recordingSessionId'."
+            );
+        }
+
+        if (!$recordingSession->isFinished()) {
+            throw new NotFoundHttpException(
+                "Recording session '{$recordingSession->getId()}' is not finished."
+            );
+        }
+
+        $this->denyAccessUnlessGranted(
+            VotingAttribute::Use->value,
+            $recordingSession
+        );
+
+        return $this->render(
+            '@videobasedmarketing.recordings/videos_overview.html.twig',
+            ['showEditModalForVideoId' => $recordingSession->getVideo()]
+        );
     }
 
     #[Route(
@@ -47,6 +81,7 @@ class RecordingSessionsController
     )]
     public function extensionRecordingSessionFinishedAction(
         string $recordingSessionId,
+        Request $request,
         EntityManagerInterface $entityManager,
         RecordingSessionDomainService $recordingSessionDomainService
     ): Response
@@ -80,15 +115,20 @@ class RecordingSessionsController
             );
         }
 
-        if (!$recordingSession->isFinished()) {
-            $recordingSessionDomainService
-                ->handleRecordingSessionFinished(
-                    $recordingSession
-                );
-        }
+        $recordingSessionDomainService
+            ->handleRecordingSessionFinished(
+                $recordingSession
+            );
 
-        return $this->redirectToRoute(
-            'videobasedmarketing.account.presentation.claim_unregistered_user_landinpage'
-        );
+        if ($request->get('userWantsToEdit') === '1') {
+            return $this->redirectToRoute(
+                'videobasedmarketing.recordings.presentation.recording_session.extension_edit',
+                ['recordingSessionId' => $recordingSession->getId()]
+            );
+        } else {
+            return $this->redirectToRoute(
+                'videobasedmarketing.account.presentation.claim_unregistered_user_landinpage'
+            );
+        }
     }
 }
