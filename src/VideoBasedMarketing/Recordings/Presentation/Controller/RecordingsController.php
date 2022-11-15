@@ -7,14 +7,12 @@ use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -113,7 +111,7 @@ class RecordingsController
                 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
-                    'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                    'extension' => $recordingSessionInfrastructureService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
                     'random' => bin2hex(random_bytes(8))
                 ]
             );
@@ -144,7 +142,7 @@ class RecordingsController
                 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
-                    'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                    'extension' => $recordingSessionInfrastructureService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
                     'random' => bin2hex(random_bytes(8))
                 ]
             );
