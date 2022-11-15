@@ -3,7 +3,6 @@
 namespace App\VideoBasedMarketing\Presentationpages\Domain\Service;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\PresentationpageElement;
@@ -18,51 +17,28 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 class PresentationpagesService
 {
-    private const ASSETS_SUBFOLDER_NAME = 'presentationpage-assets';
-
     private EntityManagerInterface $entityManager;
 
     private TranslatorInterface $translator;
 
-    private FilesystemService $filesystemService;
-
     private MessageBusInterface $messageBus;
-
-    private RouterInterface $router;
-
-    private ParameterBagInterface $parameterBag;
-
-    private LoggerInterface $logger;
 
 
     public function __construct(
         EntityManagerInterface $entityManager,
         TranslatorInterface    $translator,
-        FilesystemService      $filesystemService,
-        MessageBusInterface    $messageBus,
-        RouterInterface        $router,
-        ParameterBagInterface  $parameterBag,
-        LoggerInterface        $logger
+        MessageBusInterface    $messageBus
     )
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
-        $this->filesystemService = $filesystemService;
         $this->messageBus = $messageBus;
-        $this->router = $router;
-        $this->parameterBag = $parameterBag;
-        $this->logger = $logger;
     }
 
     public function createTemplate(
@@ -74,7 +50,8 @@ class PresentationpagesService
         $presentationpage->setTitle(
             $this->translator->trans(
                 'create_template.new_title',
-                ['index' => sizeof($this->getPresentationpagesForUser($user, PresentationpageType::Template)) + 1]
+                ['index' => sizeof($this->getPresentationpagesForUser($user, PresentationpageType::Template)) + 1],
+                'videobasedmarketing.presentationpages'
             )
         );
         $presentationpage->setBgColor(BgColor::_FFFFFF);
@@ -107,7 +84,8 @@ class PresentationpagesService
         $presentationpage->setTitle(
             $this->translator->trans(
                 'create_page.new_title',
-                ['index' => sizeof($this->getPresentationpagesForUser($video->getUser(), PresentationpageType::Page)) + 1]
+                ['index' => sizeof($this->getPresentationpagesForUser($video->getUser(), PresentationpageType::Page)) + 1],
+                'videobasedmarketing.presentationpages'
             )
         );
 
@@ -141,7 +119,8 @@ class PresentationpagesService
         $presentationpage->setTitle(
             $this->translator->trans(
                 'create_page.new_title',
-                ['index' => sizeof($this->getPresentationpagesForUser($video->getUser(), PresentationpageType::Page)) + 1]
+                ['index' => sizeof($this->getPresentationpagesForUser($video->getUser(), PresentationpageType::Page)) + 1],
+                'videobasedmarketing.presentationpages'
             )
         );
         $presentationpage->setBgColor($template->getBgColor());
@@ -199,6 +178,9 @@ class PresentationpagesService
         return $draft;
     }
 
+    /**
+     * @throws Exception
+     */
     public function handleEdited(Presentationpage $presentationpage): void
     {
         $presentationpage->setUpdatedAt(DateAndTimeService::getDateTimeUtc());
@@ -317,7 +299,9 @@ class PresentationpagesService
             $this
                 ->translator
                 ->trans(
-                    'video_only_presentationpage_template_title.1'
+                    'video_only_presentationpage_template_title.1',
+                    [],
+                    'videobasedmarketing.presentationpages'
                 )
         );
         $template1->setBgColor(BgColor::_FAFAFA);
@@ -334,7 +318,9 @@ class PresentationpagesService
             $this
                 ->translator
                 ->trans(
-                    'video_only_presentationpage_template_title.2'
+                    'video_only_presentationpage_template_title.2',
+                    [],
+                    'videobasedmarketing.presentationpages'
                 )
         );
         $template2->setBgColor(BgColor::_444444);

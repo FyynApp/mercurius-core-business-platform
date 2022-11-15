@@ -48,6 +48,10 @@ class RecordingSessionDomainService
             return $recordingSession->getVideo();
         }
 
+        $recordingSession->setIsFinished(true);
+        $this->entityManager->persist($recordingSession);
+        $this->entityManager->flush();
+
         $video = $this->videoDomainService->createVideoEntityForFinishedRecordingSession(
             $recordingSession
         );
@@ -62,10 +66,6 @@ class RecordingSessionDomainService
 
         // Heavy-lifting stuff like missing video assets generation happens asynchronously
         $this->messageBus->dispatch(new GenerateMissingVideoAssetsCommandMessage($video));
-
-        $recordingSession->setIsFinished(true);
-        $this->entityManager->persist($recordingSession);
-        $this->entityManager->flush();
 
         return $video;
     }
