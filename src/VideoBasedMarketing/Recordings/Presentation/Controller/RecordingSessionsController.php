@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -48,13 +47,13 @@ class RecordingSessionsController
             ->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {
-            throw new NotFoundHttpException(
+            throw $this->createNotFoundException(
                 "No recording session found with id '$recordingSessionId'."
             );
         }
 
         if (!$recordingSession->isFinished()) {
-            throw new NotFoundHttpException(
+            throw $this->createNotFoundException(
                 "Recording session '{$recordingSession->getId()}' is not finished."
             );
         }
@@ -98,7 +97,7 @@ class RecordingSessionsController
             ->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {
-            throw new NotFoundHttpException(
+            throw $this->createNotFoundException(
                 "No recording session found with id '$recordingSessionId'."
             );
         }

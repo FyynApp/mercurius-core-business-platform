@@ -56,7 +56,7 @@ class VideosController
         $video = $r->findOneBy(['shortId' => $videoShortId]);
 
         if (is_null($video)) {
-            throw new NotFoundHttpException("No video with short id '$videoShortId' found.");
+            throw $this->createNotFoundException("No video with short id '$videoShortId' found.");
         }
 
         return $this->redirectToRoute(
@@ -83,11 +83,11 @@ class VideosController
         $video = $entityManager->find(Video::class, $videoId);
 
         if (is_null($video)) {
-            throw new NotFoundHttpException("No video with id '$videoId'.");
+            throw $this->createNotFoundException("No video with id '$videoId'.");
         }
 
         if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
-            throw new NotFoundHttpException("Video '$videoId' does not have a video only presentationpage template.");
+            throw $this->createNotFoundException("Video '$videoId' does not have a video only presentationpage template.");
         }
 
         return $this->render(
@@ -116,7 +116,7 @@ class VideosController
         $video = $entityManager->find(Video::class, $videoId);
 
         if (is_null($video)) {
-            throw new NotFoundHttpException("No video with id '$videoId'.");
+            throw $this->createNotFoundException("No video with id '$videoId'.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::Delete->value, $video);

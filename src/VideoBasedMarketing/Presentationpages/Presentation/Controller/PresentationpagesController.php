@@ -112,7 +112,7 @@ class PresentationpagesController
         $video = $entityManager->find(Video::class, $videoId);
 
         if (is_null($video)) {
-            throw new NotFoundHttpException("No video with id '$videoId' found.");
+            throw $this->createNotFoundException("No video with id '$videoId' found.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $video);
@@ -161,7 +161,7 @@ class PresentationpagesController
         $video = $entityManager->find(Video::class, $videoId);
 
         if (is_null($video)) {
-            throw new NotFoundHttpException("No video with id '$videoId' found.");
+            throw $this->createNotFoundException("No video with id '$videoId' found.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $video);
@@ -170,7 +170,7 @@ class PresentationpagesController
         $template = $entityManager->find(Presentationpage::class, $templateId);
 
         if (is_null($templateId)) {
-            throw new NotFoundHttpException("No presentationpage with id '$templateId' found.");
+            throw $this->createNotFoundException("No presentationpage with id '$templateId' found.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $template);
@@ -206,7 +206,7 @@ class PresentationpagesController
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {
-            throw new NotFoundHttpException("No presentationpage with id '$presentationpageId'.");
+            throw $this->createNotFoundException("No presentationpage with id '$presentationpageId'.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $presentationpage);
@@ -241,7 +241,7 @@ class PresentationpagesController
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {
-            throw new NotFoundHttpException("No presentationpage with id '$presentationpageId'.");
+            throw $this->createNotFoundException("No presentationpage with id '$presentationpageId'.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $presentationpage);
@@ -285,7 +285,7 @@ class PresentationpagesController
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {
-            throw new NotFoundHttpException("No presentationpage with id '$presentationpageId' found.");
+            throw $this->createNotFoundException("No presentationpage with id '$presentationpageId' found.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::View->value, $presentationpage);
@@ -317,7 +317,7 @@ class PresentationpagesController
         $presentationpage = $entityManager->find(Presentationpage::class, $presentationpageId);
 
         if (is_null($presentationpage)) {
-            throw new NotFoundHttpException("No presentationpage with id '$presentationpageId' found.");
+            throw $this->createNotFoundException("No presentationpage with id '$presentationpageId' found.");
         }
 
         if (    $request->get('presentationpageHash')

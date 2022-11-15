@@ -162,7 +162,7 @@ class PresentationspageEditFormLiveComponent
     {
         $elementToMove = $this->entityManager->find(PresentationpageElement::class, $elementId);
         if (is_null($elementToMove)) {
-            throw new NotFoundHttpException("Could not find element with id '$elementId'.");
+            throw $this->createNotFoundException("Could not find element with id '$elementId'.");
         }
 
         if ($elementToMove->getPosition() === 0) {
@@ -193,7 +193,7 @@ class PresentationspageEditFormLiveComponent
     {
         $elementToMove = $this->entityManager->find(PresentationpageElement::class, $elementId);
         if (is_null($elementToMove)) {
-            throw new NotFoundHttpException("Could not find element with id '$elementId'.");
+            throw $this->createNotFoundException("Could not find element with id '$elementId'.");
         }
 
         if ($elementToMove->getPosition() === $this->presentationpage->getPresentationpageElements()
@@ -232,7 +232,7 @@ class PresentationspageEditFormLiveComponent
 
         $element = $this->entityManager->find(PresentationpageElement::class, $elementId);
         if (is_null($element)) {
-            throw new NotFoundHttpException("Could not find element with id '$elementId'.");
+            throw $this->createNotFoundException("Could not find element with id '$elementId'.");
         }
 
         $this->submitForm();

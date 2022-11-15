@@ -69,7 +69,7 @@ class RecordingsController
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {
-            throw new NotFoundHttpException("No recording session with id '$recordingSessionId'.");
+            throw $this->createNotFoundException("No recording session with id '$recordingSessionId'.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
@@ -101,7 +101,7 @@ class RecordingsController
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {
-            throw new NotFoundHttpException("Could not find recording session with id '$recordingSessionId'.");
+            throw $this->createNotFoundException("Could not find recording session with id '$recordingSessionId'.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);

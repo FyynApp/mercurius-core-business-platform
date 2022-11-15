@@ -70,7 +70,7 @@ extends AbstractController
         $subscription = $entityManager->find(\App\VideoBasedMarketing\Membership\Domain\Entity\Subscription::class, $subscriptionId);
 
         if (is_null($subscription)) {
-            throw new NotFoundHttpException("No subscription with id '$subscriptionId'.");
+            throw $this->createNotFoundException("No subscription with id '$subscriptionId'.");
         }
 
         $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $subscription);
