@@ -53,8 +53,9 @@
 
                 {% import '@videobasedmarketing.recordings/macros/video_preview.html.twig' as videoPreviewMacros %}
 
+                {# @var videos \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[] #}
+
                 {% for video in videos %}
-                    {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
                     {% if loop.first %}
                         <div class="
@@ -132,6 +133,30 @@
                     {% endif %}
 
                 {% endfor %}
+
+                {% if videos|length > 1 %}
+
+                    <div class="mt-32 flex flex-col justify-center items-center">
+                        <div class="flex flex-row justify-evenly gap-8">
+                            {% for video in videos %}
+                                {% if not loop.first %}
+                                    <div class="
+                                        w-48 shadow-md shadow-neutral-300
+                                        h-32 opacity-40 overflow-hidden
+                                    ">
+                                        {{ videoPreviewMacros.interactive(video) }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="text-lg text-neutral-500 mt-6">
+                            {{ 'claim_unregistered_user.form.other_videos_note'|trans({ numberOfVideos: (videos|length - 1) }) }}
+                        </div>
+                    </div>
+
+                {% endif %}
+
             </div>
         </div>
 

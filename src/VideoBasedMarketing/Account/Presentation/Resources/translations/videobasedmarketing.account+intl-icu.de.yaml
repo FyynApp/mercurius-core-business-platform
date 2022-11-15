@@ -45,3 +45,9 @@ claim_unregistered_user:
     note3: 'Erstelle jetzt deinen kostenlosen Fyyn.io Account und verwalte deine Videos!'
     cta: 'Account erstellen'
     fineprint: 'Mit dem Absenden dieses Formulars stimmst du unseren AGBs und der Datenschutzerklärung zu.'
+    other_videos_note: >-
+      {numberOfVideos, plural,
+        =0    {}
+        one   {Deine erste Aufnahme ist selbstverständlich ebenfalls verfügbar!}
+        other {Deine vorherigen Aufnahmen sind selbstverständlich ebenfalls verfügbar!}
+      }
