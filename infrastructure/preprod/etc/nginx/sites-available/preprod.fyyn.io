@@ -2,6 +2,8 @@ server {
 
   server_name preprod.fyyn.io;
 
+  resolver 8.8.8.8 valid=30s;
+
   charset utf-8;
 
   client_max_body_size 50M;
@@ -24,6 +26,11 @@ server {
 
   location ~ /\. { deny all; }
 
+  location ~/helpdesk(.*)$ {
+    proxy_set_header X-Forwarded-For $remote_addr;
+    #proxy_set_header Host $host;
+    proxy_pass http://fyynhelpdesk.kinsta.cloud$1;
+  }
 
   set $auth_basic "Login required";
 
