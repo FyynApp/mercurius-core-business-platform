@@ -8,13 +8,11 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -96,19 +94,18 @@ class RecordingSessionController
         string                          $recordingSessionId,
         Request                         $request,
         RouterInterface                 $router,
-        RecordingsInfrastructureService $recordingSessionInfrastructureService,
-        EntityManagerInterface          $entityManager
+        RecordingsInfrastructureService $recordingSessionInfrastructureService
     ): Response
     {
-        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
+        $r = $this->verifyAndGetUserAndEntity(
+            RecordingSession::class,
+            $recordingSessionId,
+            VotingAttribute::Use
+        );
 
-        if (is_null($recordingSession)) {
-            throw $this->createNotFoundException("Could not find recording session with id '$recordingSessionId'.");
-        }
-
-        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
-
-        $user = $this->getUser();
+        $user = $r->getUser();
+        /** @var RecordingSession $recordingSession */
+        $recordingSession = $r->getEntity();
 
         if (   !is_null($request->get('recordingDone'))
             && (string)$request->get('recordingDone') === 'true'

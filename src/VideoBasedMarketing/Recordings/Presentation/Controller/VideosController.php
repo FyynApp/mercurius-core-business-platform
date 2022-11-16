@@ -2,16 +2,15 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
+use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -103,23 +102,22 @@ class VideosController
         ],
         name        : 'videobasedmarketing.recordings.presentation.video.deletion',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
-        methods     : [Request::METHOD_GET]
+        methods     : [Request::METHOD_POST]
     )]
     public function deleteVideoAction(
         string                 $videoId,
-        EntityManagerInterface $entityManager,
         TranslatorInterface    $translator,
         VideoDomainService     $videoDomainService
     ): Response
     {
-        /** @var null|Video $video */
-        $video = $entityManager->find(Video::class, $videoId);
+        $r = $this->verifyAndGetUserAndEntity(
+            Video::class,
+            $videoId,
+            VotingAttribute::Delete
+        );
 
-        if (is_null($video)) {
-            throw $this->createNotFoundException("No video with id '$videoId'.");
-        }
-
-        $this->denyAccessUnlessGranted(VotingAttribute::Delete->value, $video);
+        /** @var Video $video */
+        $video = $r->getEntity();
 
         $videoDomainService->deleteVideo($video);
 
@@ -132,6 +130,9 @@ class VideosController
             )
         );
 
-        return $this->redirectToRoute('videobasedmarketing.recordings.presentation.videos.overview');
+        return $this
+            ->redirectToRoute(
+                'videobasedmarketing.recordings.presentation.videos.overview'
+            );
     }
 }

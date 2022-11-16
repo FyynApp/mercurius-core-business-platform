@@ -2,12 +2,12 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
+use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -27,28 +27,21 @@ class RecordingSessionsController
         methods     : [Request::METHOD_GET]
     )]
     public function extensionRecordingSessionEditAction(
-        string $recordingSessionId,
-        EntityManagerInterface $entityManager
+        string $recordingSessionId
     ): Response
     {
-        /** @var ?User $user */
-        $user = $this->getUser();
+        $r = $this->verifyAndGetUserAndEntity(
+            RecordingSession::class,
+            $recordingSessionId,
+            VotingAttribute::Use
+        );
 
-        if (is_null($user)) {
-            throw new AccessDeniedHttpException('A logged-in user is required.');
-        }
+        /** @var RecordingSession $recordingSession */
+        $recordingSession = $r->getEntity();
 
-        if ($user->isRegistered()) {
-            throw new AccessDeniedHttpException('The logged in user must be unregistered.');
-        }
-
-        /** @var RecordingSession|null $recordingSession */
-        $recordingSession = $entityManager
-            ->find(RecordingSession::class, $recordingSessionId);
-
-        if (is_null($recordingSession)) {
-            throw $this->createNotFoundException(
-                "No recording session found with id '$recordingSessionId'."
+        if ($r->getUser()->isRegistered()) {
+            throw new AccessDeniedHttpException(
+                'The logged in user must be unregistered.'
             );
         }
 
@@ -57,11 +50,6 @@ class RecordingSessionsController
                 "Recording session '{$recordingSession->getId()}' is not finished."
             );
         }
-
-        $this->denyAccessUnlessGranted(
-            VotingAttribute::Use->value,
-            $recordingSession
-        );
 
         return $this->render(
             '@videobasedmarketing.recordings/videos_overview.html.twig',
