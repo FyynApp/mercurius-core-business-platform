@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Service;
 
 use App\VideoBasedMarketing\Account\Api\Extension\V1\Entity\SessionInfo;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Service\UserService;
+use App\VideoBasedMarketing\Account\Domain\Service\UserDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use Exception;
 
@@ -13,11 +13,11 @@ class SessionService
 {
     private MembershipService $membershipService;
 
-    private UserService $userService;
+    private UserDomainService $userService;
 
     public function __construct(
         MembershipService    $membershipService,
-        UserService          $userService
+        UserDomainService $userService
     )
     {
         $this->membershipService = $membershipService;

@@ -3,7 +3,7 @@
 
 {% trans_default_domain 'videobasedmarketing.recordings' %}
 
-{% set claimUnregisteredUserLandinpagePath = path('videobasedmarketing.account.presentation.claim_unregistered_user_landinpage')%}
+{% set claimUnregisteredUserLandinpagePath = path('videobasedmarketing.account.presentation.claim_unregistered_user.landingpage')%}
 
 <div {{ attributes }}>
 
@@ -568,7 +568,7 @@
 
                             <a
                                     class="cta-with-icon-success"
-                                    href="{{ path('videobasedmarketing.account.presentation.claim_unregistered_user_landinpage') }}"
+                                    href="{{ path('videobasedmarketing.account.presentation.claim_unregistered_user.landingpage') }}"
                             >
                                 {# Heroicon: check-circle solid #}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">

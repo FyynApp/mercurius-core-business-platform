@@ -126,7 +126,7 @@ class RecordingSessionsController
             );
         } else {
             return $this->redirectToRoute(
-                'videobasedmarketing.account.presentation.claim_unregistered_user_landinpage'
+                'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage'
             );
         }
     }

@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Api\Extension\V1\Service\SessionService;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\RequestParameter;
 use App\VideoBasedMarketing\Account\Infrastructure\Security\RequestParametersBasedUserAuthenticator;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
+use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,8 +29,9 @@ class SessionController
         methods     : [Request::METHOD_GET]
     )]
     public function getSessionInfoAction(
-        SessionService       $sessionService,
-        AccountAssetsService $accountAssetsService
+        SessionService                        $sessionService,
+        AccountAssetsService                  $accountAssetsService,
+        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService
     ): Response
     {
         $sessionInfo = $sessionService->getSessionInfo($this->getUser());
@@ -37,23 +39,11 @@ class SessionController
         if (   is_null($this->getUser())
             && !$sessionInfo->getUser()->isRegistered()
         ) {
-            $validUntil = DateAndTimeService::getDateTimeUtc('+1 minutes');
-            return $this->redirectToRoute(
-                'videobasedmarketing.account.api.extension.v1.session_info',
-                [
-                    RequestParameter::RequestParametersBasedUserAuthId->value =>
-                        $sessionInfo->getUser()->getId(),
-
-                    RequestParameter::RequestParametersBasedUserAuthValidUntil->value =>
-                        $validUntil->format(DateTimeFormat::SecondsSinceUnixEpoch->value),
-
-                    RequestParameter::RequestParametersBasedUserAuthHash->value =>
-                        RequestParametersBasedUserAuthenticator::generateAuthHash(
-                            $sessionInfo->getUser()->getId(),
-                            $validUntil
-                        )
-                ]
-            );
+            return $requestParametersBasedUserAuthService
+                ->createRedirectResponse(
+                    'videobasedmarketing.account.api.extension.v1.session_info',
+                    $sessionInfo->getUser()
+                );
         }
 
         return new JsonResponse(

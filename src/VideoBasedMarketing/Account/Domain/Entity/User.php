@@ -93,6 +93,17 @@ class User
         }
     }
 
+    public function removeRole(Role $roleToRemove): void
+    {
+        $remainingRoles = [];
+        foreach ($this->roles as $role) {
+            if ($role !== $roleToRemove->value) {
+                $remainingRoles[] = $role;
+            }
+        }
+        $this->roles = $remainingRoles;
+    }
+
 
     #[ORM\Column(type: 'string')]
     private string $password;
@@ -125,6 +136,15 @@ class User
     public function isRegistered(): bool
     {
         return $this->hasRole(Role::REGISTERED_USER);
+    }
+
+    public function makeRegistered(): void
+    {
+        if ($this->isRegistered()) {
+            return;
+        }
+        $this->removeRole(Role::UNREGISTERED_USER);
+        $this->addRole(Role::REGISTERED_USER);
     }
 
 
