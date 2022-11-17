@@ -6,19 +6,19 @@
         {% if this.type is same as 'wide' %}
 
             {% if entry.active %}
-                class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                class="bg-neutral-600 text-neutral-50 px-3 py-2 rounded-md text-sm font-medium"
                 aria-current="page"
             {% else %}
-                class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                class="text-neutral-800 hover:bg-neutral-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
             {% endif %}
 
         {% else %}
 
             {% if entry.active %}
-                class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium mb-2"
+                class="bg-neutral-600 text-neutral-50 block px-3 py-2 rounded-md text-base font-medium mb-2"
                 aria-current="page"
             {% else %}
-                class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium mb-2"
+                class="text-neutral-800 hover:bg-neutral-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium mb-2"
             {% endif %}
 
         {% endif %}

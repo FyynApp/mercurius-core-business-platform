@@ -24,7 +24,7 @@
         <div class="flex flex-row justify-start">
 
             {% if app.user is not null %}
-                <div class="min-h-full bg-gray-800 p-4 hidden md:block md:w-1/12 md:w-96 border-0 border-r-2 border-r-gray-900 max-w-fit">
+                <div class="min-h-full bg-neutral-50 p-4 hidden md:block md:w-1/12 md:w-96 max-w-fit border-1 border-t-0 border-l-0 border-b-0 border-indigo-400">
                     {% include '@shared/navigation/nav_left.html.twig' %}
                 </div>
             {% endif %}
@@ -36,15 +36,14 @@
                 </div>
 
                 <div class="flex flex-col flex-grow">
-                    <h1 class="padded-content-box text-3xl font-bold text-gray-200 bg-gray-900">
-                        {% block contentTitle %}{% endblock %}
-                    </h1>
-
                     <main class="mb-auto">
                         {% block body %}{% endblock %}
                     </main>
 
-                    <footer class="border-top min-h-max w-full bottom-0 p-4 md:pt-20 md:flex md:items-center md:justify-between md:p-6 md:pt-20">
+                    <footer class="
+                        border-neutral-100 bg-neutral-50 border-1 border-l-0 border-r-0 border-b-0 min-h-max w-full bottom-0 p-4 md:flex md:items-center md:justify-between md:p-6
+                        font-tiro-gurmukhi font-extralight
+                    ">
                         <ul class="flex flex-wrap items-center mt-3 mr-6 text-sm text-gray-500">
                             <li>
                                 © {{ "now"|date("Y") }} smart DSGVO GmbH

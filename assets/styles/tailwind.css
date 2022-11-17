@@ -4,6 +4,11 @@
 
 @layer components {
 
+    .font-tiro-gurmukhi {
+        font-family: 'Tiro Gurmukhi', 'Times New Roman', serif;
+        line-height: 2rem !important;
+    }
+
     .border-1 {
         border-width: 1px;
     }

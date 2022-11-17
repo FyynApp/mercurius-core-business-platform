@@ -2,7 +2,7 @@
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
 {% if this.type is same as 'stacked' %}
-    <div class="pt-4 pb-3 border-t border-gray-700 z-50">
+    <div class="pt-4 pb-3 z-50">
 
         {% if this.user and user.registered %}
             <div class="flex items-center px-3">
@@ -10,7 +10,7 @@
 
                     {% if app.user.hasProfilePhoto() %}
                         <img
-                                class="h-8 w-8 rounded-full ring-2 ring-gray-600"
+                                class="h-8 w-8 rounded-full ring-2 ring-indigo-700"
                                 src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(app.user) }}"
                                 alt=""
                         >
@@ -25,13 +25,13 @@
                 <div class="ml-3">
 
                     {% if app.user.firstName is not null or app.user.lastName is not null %}
-                        <div class="text-base font-medium leading-none text-white">
+                        <div class="text-base font-medium leading-none text-neutral-900">
                             {{ app.user.firstName }}
                             {{ app.user.lastName }}
                         </div>
                     {% endif %}
 
-                    <div class="text-sm font-medium leading-none text-gray-400">{{ app.user.userIdentifier }}</div>
+                    <div class="text-sm font-light leading-none text-neutral-600">{{ app.user.userIdentifier }}</div>
                 </div>
             </div>
         {% endif %}
@@ -41,10 +41,10 @@
             {% for entry in this.entries %}
                 <a
                     {% if entry.active %}
-                        class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                        class="bg-neutral-900 text-white block px-3 py-2 rounded-md text-base font-medium"
                         aria-current="page"
                     {% else %}
-                        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                        class="text-neutral-600 hover:bg-neutral-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                     {% endif %}
 
                     href="{{ path(entry.routeName) }}"
