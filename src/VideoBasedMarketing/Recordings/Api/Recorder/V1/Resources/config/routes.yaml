@@ -17,3 +17,13 @@ videobasedmarketing.recordings.api.recorder.v1.legacy.recording_settings.set:
     permanent: false
     keepQueryParams: true
     keepRequestMethod: true
+
+videobasedmarketing.recordings.api.recorder.v1.legacy.recording_sessions.info:
+  path: /api/feature/recordings/recording-sessions/{recordingSessionId}/info
+  methods: [ GET ]
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+  defaults:
+    route: 'videobasedmarketing.recordings.api.recorder.v1.recording_session.info'
+    permanent: false
+    keepQueryParams: true
+    keepRequestMethod: true

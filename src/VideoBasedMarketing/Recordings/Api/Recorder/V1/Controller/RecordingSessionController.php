@@ -198,7 +198,8 @@ class RecordingSessionController
                         'videobasedmarketing.recordings.presentation.recording_session.recording_preview.poster.asset',
                         [
                             'recordingSessionId' => $recordingSessionId,
-                            'extension' => $videoService->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)
+                            'extension' => $recordingSessionInfrastructureService
+                                ->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)
                         ]
                     ),
 

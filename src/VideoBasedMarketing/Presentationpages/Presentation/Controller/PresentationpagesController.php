@@ -136,8 +136,7 @@ class PresentationpagesController
             '@videobasedmarketing.presentationpages/create_page_from_video_form.html.twig',
             [
                 'video' => $video,
-                'PresentationpagesService' => $presentationpagesService,
-                'VideoService' => $videoService
+                'PresentationpagesService' => $presentationpagesService
             ]
         );
     }
