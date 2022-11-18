@@ -61,7 +61,9 @@ class MembershipService
             return false;
         }
 
-        if ($this->getCurrentlySubscribedMembershipPlanForUser($user) === $membershipPlan) {
+        if ($this->getCurrentlySubscribedMembershipPlanForUser($user)->getName()
+            === $membershipPlan->getName()
+        ) {
             return false;
         }
 

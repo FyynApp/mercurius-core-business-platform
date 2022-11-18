@@ -1,8 +1,8 @@
-<div class="{% if odd is defined and odd == true %}bg-gray-100 {% endif %}px-4 py-5 md:grid md:grid-cols-12 md:gap-4 md:px-6">
-    <dt class="md:mr-4 text-sm font-medium text-gray-800 md:col-span-{% if colspanLeft is defined %}{{ colspanLeft }}{% else %}6{% endif %}">
+<div class="{% if odd is defined and odd == true %}bg-gray-100 {% endif %}pb-12 md:grid md:grid-cols-12 md:gap-4">
+    <dt class="md:mr-4 font-medium text-gray-800 md:col-span-{% if colspanLeft is defined %}{{ colspanLeft }}{% else %}6{% endif %}">
         {% block contentLeft %}{% endblock %}
     </dt>
-    <dd class="md:ml-4 mt-4 text-sm text-gray-800 md:mt-0 md:col-span-{% if colspanRight is defined %}{{ colspanRight }}{% else %}6{% endif %}">
+    <dd class="md:ml-4 mt-4 text-gray-800 md:mt-0 md:col-span-{% if colspanRight is defined %}{{ colspanRight }}{% else %}6{% endif %}">
         {% block contentRight %}{% endblock %}
     </dd>
 </div>

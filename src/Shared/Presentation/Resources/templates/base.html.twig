@@ -25,20 +25,15 @@
 
             {% if app.user is not null %}
                 <div class="
-                    min-h-full bg-neutral-50 p-4
+                    min-h-full bg-gradient-to-t from-fuchsia-50 to-indigo-50 p-4
                     hidden md:block md:w-1/12 md:w-96 max-w-fit
-                    border-1 border-t-0 border-l-0 border-b-0 border-indigo-900
+                    border-0 border-t-0 border-l-0 border-b-0 border-indigo-900
                 ">
                     {% include '@shared/navigation/nav_left.html.twig' %}
                 </div>
             {% endif %}
 
             <div class="min-h-screen flex flex-col w-full">
-
-                {% if app.user is not null %}
-                    <div class="w-full h-8 bg-gradient-to-l from-fuchsia-500 to-indigo-900">
-                    </div>
-                {% endif %}
 
                 <div class="{% if app.user is not null %}md:hidden{% endif %}">
                     {% include '@shared/navigation/nav_top.html.twig' %}
