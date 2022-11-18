@@ -1,7 +1,7 @@
 overview:
   title: 'Ihre Mitgliedschaft'
   subtitle: 'Hier verwalten Sie Ihr Abonnement'
-  current_plan: 'Ihre aktuelles Paket:'
+  current_plan: 'Ihr aktuelles Paket:'
   available_plans: 'Folgende Pakete stehen Ihnen zur Verfügung:'
   currently_no_subscription: 'Sie haben aktuell kein Abonnement abgeschlossen'
   cta_book: 'Paket buchen'
