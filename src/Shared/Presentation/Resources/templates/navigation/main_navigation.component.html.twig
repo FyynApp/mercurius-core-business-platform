@@ -4,21 +4,20 @@
 {% for entry in this.entries %}
     <a
         {% if this.type is same as 'wide' %}
-
             {% if entry.active %}
-                class="bg-neutral-600 text-neutral-50 px-3 py-2 rounded-md text-sm font-medium"
+                class="bg-indigo-900 text-neutral-50 px-3 py-2 rounded-md text-sm font-medium"
                 aria-current="page"
             {% else %}
-                class="text-neutral-800 hover:bg-neutral-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                class="text-neutral-500 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
             {% endif %}
 
         {% else %}
 
             {% if entry.active %}
-                class="bg-neutral-600 text-neutral-50 block px-3 py-2 rounded-md text-base font-medium mb-2"
+                class="bg-indigo-900 text-neutral-50 block px-3 py-2 rounded-md text-base font-medium mb-2"
                 aria-current="page"
             {% else %}
-                class="text-neutral-800 hover:bg-neutral-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium mb-2"
+                class="text-neutral-500 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium mb-2"
             {% endif %}
 
         {% endif %}

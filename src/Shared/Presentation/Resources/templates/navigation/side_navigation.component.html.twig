@@ -41,10 +41,10 @@
             {% for entry in this.entries %}
                 <a
                     {% if entry.active %}
-                        class="bg-neutral-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                        class="bg-indigo-900 text-neutral-50 block px-3 py-2 rounded-md text-base font-medium"
                         aria-current="page"
                     {% else %}
-                        class="text-neutral-600 hover:bg-neutral-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                        class="text-indigo-900 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                     {% endif %}
 
                     href="{{ path(entry.routeName) }}"
@@ -128,10 +128,10 @@
         {% for entry in this.entries %}
             <a
                 {% if entry.active %}
-                    class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium z-50 mr-2"
+                    class="bg-indigo-900 text-neutral-50 px-3 py-2 rounded-md text-sm font-medium z-50 mr-2"
                     aria-current="page"
                 {% else %}
-                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium mr-2"
+                    class="text-indigo-900 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium mr-2"
                 {% endif %}
 
                 href="{{ path(entry.routeName) }}"

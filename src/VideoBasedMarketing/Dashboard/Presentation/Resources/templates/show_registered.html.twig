@@ -20,17 +20,19 @@
         {% endblock %}
 
         {% block contentBoxContent %}
-            <div class="collection-box">
+            <div class="max-w-7xl">
 
                 {% if TwigHelperService.dashboardService.firstName(app.user) is not null
                     and TwigHelperService.dashboardService.lastName(app.user) is not null
                 %}
-                    {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
+                    {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 2, colspanRight: 10 } %}
 
                         {% trans_default_domain 'videobasedmarketing.dashboard' %}
 
                         {% block contentLeft %}
-                            {{ 'show.your_name'|trans }}
+                            <div class="font-bold">
+                                {{ 'show.your_name'|trans }}
+                            </div>
                         {% endblock %}
                         {% block contentRight %}
                             {{ TwigHelperService.dashboardService.firstName(app.user) }}
@@ -40,12 +42,14 @@
                 {% endif %}
 
 
-                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
+                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 2, colspanRight: 10 } %}
 
                     {% trans_default_domain 'videobasedmarketing.dashboard' %}
 
                     {% block contentLeft %}
-                        {{ 'show.your_email_address'|trans }}
+                        <div class="font-bold">
+                            {{ 'show.your_email_address'|trans }}
+                        </div>
                     {% endblock %}
                     {% block contentRight %}
                         {{ TwigHelperService.dashboardService.email(app.user) }}
@@ -53,29 +57,41 @@
                 {% endembed %}
 
 
-                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
+                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 2, colspanRight: 10 } %}
 
                     {% trans_default_domain 'videobasedmarketing.dashboard' %}
 
                     {% block contentLeft %}
-                        {{ 'show.your_subscription'|trans }}
+                        <div class="font-bold">
+                            {{ 'show.your_subscription'|trans }}
+                        </div>
                     {% endblock %}
                     {% block contentRight %}
-                        {{ ('overview.plan.' ~ TwigHelperService.membershipService.currentlySubscribedMembershipPlanForUser(app.user).name.value ~ '.title')|trans }}
+                        {{ ('overview.plan.'
+                            ~ TwigHelperService.membershipService.currentlySubscribedMembershipPlanForUser(app.user).name.value
+                            ~ '.title'
+                            )|trans({}, 'videobasedmarketing.membership')
+                        }}
                         <div class="mt-1 text-sm text-gray-500 sm:mt-0 sm:col-span-2">
-                            {{ ('overview.plan.' ~ TwigHelperService.membershipService.currentlySubscribedMembershipPlanForUser(app.user).name.value ~ '.description')|trans }}
+                            {{ ('overview.plan.'
+                                ~ TwigHelperService.membershipService.currentlySubscribedMembershipPlanForUser(app.user).name.value
+                                ~ '.description'
+                                )|trans({}, 'videobasedmarketing.membership')
+                            }}
                         </div>
                     {% endblock %}
                 {% endembed %}
 
 
                 {% if TwigHelperService.dashboardService.latestVideos(app.user)|length > 0 %}
-                    {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 4, colspanRight: 8 } %}
+                    {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 2, colspanRight: 10 } %}
 
                         {% trans_default_domain 'videobasedmarketing.dashboard' %}
 
                         {% block contentLeft %}
-                            {{ 'show.your_latest_videos'|trans }}
+                            <div class="font-bold">
+                                {{ 'show.your_latest_videos'|trans }}
+                            </div>
                         {% endblock %}
                         {% block contentRight %}
                             <ul role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200">
@@ -113,12 +129,14 @@
                 {% endif %}
 
 
-                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: true, colspanLeft: 4, colspanRight: 8 } %}
+                {% embed '@shared/embeds/two_column_content_box_content_row.html.twig' with { odd: false, colspanLeft: 2, colspanRight: 10 } %}
 
                     {% trans_default_domain 'videobasedmarketing.dashboard' %}
 
                     {% block contentLeft %}
-                        {{ 'show.your_presentationpages'|trans }}
+                        <div class="font-bold">
+                            {{ 'show.your_presentationpages'|trans }}
+                        </div>
                     {% endblock %}
                     {% block contentRight %}
                         <a href="{{ path('videobasedmarketing.presentationpages.presentation.overview') }}">
