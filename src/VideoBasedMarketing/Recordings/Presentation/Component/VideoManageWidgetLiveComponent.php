@@ -107,7 +107,9 @@ class VideoManageWidgetLiveComponent
     #[LiveAction]
     public function save(): void
     {
-        $this->submitForm();
+        if (is_null($this->formView)) {
+            $this->submitForm();
+        }
         $this->storeDataAndRebuildForm();
     }
 
