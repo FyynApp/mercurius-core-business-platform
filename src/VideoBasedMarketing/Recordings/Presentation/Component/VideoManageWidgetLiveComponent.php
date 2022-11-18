@@ -35,16 +35,16 @@ class VideoManageWidgetLiveComponent
     #[LiveProp(fieldName: 'data')]
     public ?Video $video = null;
 
-    #[LiveProp]
+    #[LiveProp(writable: true)]
     public bool $editModalIsOpen = false;
 
-    #[LiveProp]
+    #[LiveProp(writable: true)]
     public bool $shareModalIsOpen = false;
 
-    #[LiveProp]
+    #[LiveProp(writable: true)]
     public bool $deleteModalIsOpen = false;
 
-    #[LiveProp]
+    #[LiveProp(writable: true)]
     public string $shareUrl = '';
 
     #[LiveProp]
