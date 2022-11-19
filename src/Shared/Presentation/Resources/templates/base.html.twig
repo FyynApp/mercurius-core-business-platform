@@ -39,43 +39,85 @@
                     {% include '@shared/navigation/nav_top.html.twig' %}
                 </div>
 
+                {% if app.user and app.user.registered %}
+                    <div class="
+                        hidden md:flex
+                        flex-row justify-end w-full p-4 pr-12 -mb-20
+                    ">
+
+                        <div>
+                            <div class="flex items-end w-fit">
+                                <div class="">
+
+                                    {% if app.user.hasProfilePhoto() %}
+                                        <img
+                                                class="h-8 w-8 rounded-full ring-2 ring-indigo-700"
+                                                src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(app.user) }}"
+                                                alt=""
+                                        >
+                                    {% else %}
+                                        <!-- Heroicon name: outline/user-circle -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    {% endif %}
+
+                                </div>
+                                <div class="ml-3">
+
+                                    {% if app.user.firstName is not null or app.user.lastName is not null %}
+                                        <div class="text-base font-medium leading-none text-neutral-900">
+                                            {{ app.user.firstName }}
+                                            {{ app.user.lastName }}
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="text-sm font-light leading-none text-neutral-600">{{ app.user.userIdentifier }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
                 <div class="flex flex-col flex-grow">
                     <main class="mb-auto">
                         {% block body %}{% endblock %}
                     </main>
 
-                    <footer class="
-                        min-h-max w-full bottom-0 p-4 md:flex md:items-center md:justify-between md:p-6
-                        font-extralight
-                        text-neutral-500 text-sm
-                    ">
-                        <ul class="flex flex-wrap items-center mt-3 mr-6">
-                            <li>
-                                © {{ "now"|date("Y") }} smart DSGVO GmbH
-                            </li>
-                        </ul>
+                    {% if app.user is null %}
+                        <footer class="
+                            min-h-max w-full bottom-0 p-4 md:flex md:items-center md:justify-between md:p-6
+                            font-extralight
+                            text-neutral-500 text-sm
+                        ">
+                            <ul class="flex flex-wrap items-center mt-3 mr-6">
+                                <li>
+                                    © {{ "now"|date("Y") }} smart DSGVO GmbH
+                                </li>
+                            </ul>
 
-                        <ul class="flex flex-wrap items-center mt-3 mr-6">
-                            <li>
-                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="mr-4 hover:underline md:mr-6">{{ 'footernav.german'|trans }}</a>
-                            </li>
-                        </ul>
+                            <ul class="flex flex-wrap items-center mt-3 mr-6">
+                                <li>
+                                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="mr-4 hover:underline md:mr-6">{{ 'footernav.german'|trans }}</a>
+                                </li>
+                            </ul>
 
-                        <ul class="flex flex-wrap items-center mt-3">
-                            <li>
-                                <a href="#" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.imprint'|trans }}</a>
-                            </li>
-                            <li>
-                                <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.terms'|trans }}</a>
-                            </li>
-                            <li>
-                                <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.contact'|trans }}</a>
-                            </li>
-                        </ul>
-                    </footer>
+                            <ul class="flex flex-wrap items-center mt-3">
+                                <li>
+                                    <a href="#" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.imprint'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.terms'|trans }}</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.contact'|trans }}</a>
+                                </li>
+                            </ul>
+                        </footer>
+                    {% endif %}
                 </div>
 
             </div>

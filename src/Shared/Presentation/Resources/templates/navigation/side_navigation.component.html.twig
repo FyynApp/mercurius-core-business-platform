@@ -5,7 +5,7 @@
     <div class="pt-4 pb-3 z-50">
 
         {% if this.user and user.registered %}
-            <div class="flex items-center px-3">
+            <div class="flex items-center px-3 md:hidden">
                 <div class="flex-shrink-0">
 
                     {% if app.user.hasProfilePhoto() %}
@@ -25,7 +25,7 @@
                 <div class="ml-3">
 
                     {% if app.user.firstName is not null or app.user.lastName is not null %}
-                        <div class="text-base font-medium leading-none text-neutral-900">
+                        <div class="text-base font-extralight leading-none text-neutral-900">
                             {{ app.user.firstName }}
                             {{ app.user.lastName }}
                         </div>
@@ -41,10 +41,10 @@
             {% for entry in this.entries %}
                 <a
                     {% if entry.active %}
-                        class="bg-indigo-900 text-neutral-50 block px-3 py-2 rounded-md text-base font-medium"
+                        class="bg-indigo-900 text-neutral-50 block px-3 py-2 rounded-md text-base font-extralight"
                         aria-current="page"
                     {% else %}
-                        class="text-indigo-900 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                        class="text-indigo-900 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-extralight"
                     {% endif %}
 
                     href="{{ path(entry.routeName) }}"
@@ -128,10 +128,10 @@
         {% for entry in this.entries %}
             <a
                 {% if entry.active %}
-                    class="bg-indigo-900 text-neutral-50 px-3 py-2 rounded-md text-sm font-medium z-50 mr-2"
+                    class="bg-indigo-900 text-neutral-50 px-3 py-2 rounded-md text-sm font-extralight z-50 mr-2"
                     aria-current="page"
                 {% else %}
-                    class="text-indigo-900 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium mr-2"
+                    class="text-indigo-900 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-extralight mr-2"
                 {% endif %}
 
                 href="{{ path(entry.routeName) }}"
