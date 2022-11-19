@@ -90,7 +90,11 @@ class VideoManageWidgetLiveComponent
 
         if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
             $video->setVideoOnlyPresentationpageTemplate(
-                $this->presentationpagesService->getVideoOnlyPresentationpageTemplatesForUser($video->getUser())[0]
+                $this
+                    ->presentationpagesService
+                    ->getVideoOnlyPresentationpageTemplatesForUser(
+                        $video->getUser()
+                    )[0]
             );
         }
         $this->video = $video;

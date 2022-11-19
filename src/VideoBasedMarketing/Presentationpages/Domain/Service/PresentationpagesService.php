@@ -266,7 +266,10 @@ class PresentationpagesService
         );
 
         if (sizeof($templates) === 0) {
-            $templates = $this->createBasicSetOfVideoOnlyPresentationpageTemplatesForUser($user);
+            $templates = $this
+                ->createBasicSetOfVideoOnlyPresentationpageTemplatesForUser(
+                    $user
+                );
         }
 
         return $templates;
@@ -285,6 +288,24 @@ class PresentationpagesService
     public function generatePresentationpageHash(Presentationpage $presentationpage): string
     {
         return sha1('MUI/hdu78764$5uidfrhrfi==478' . $presentationpage->getId());
+    }
+
+    public function createBasicSetOfVideoOnlyPresentationpageTemplatesForUserIfNotExist(
+        User $user
+    ): void
+    {
+        $templates = $this->getPresentationpagesForUser(
+            $user,
+            PresentationpageType::Template,
+            PresentationpageCategory::VideoOnly
+        );
+
+        if (sizeof($templates) === 0) {
+            $templates = $this
+                ->createBasicSetOfVideoOnlyPresentationpageTemplatesForUser(
+                    $user
+                );
+        }
     }
 
     /** @return Presentationpage[] */
