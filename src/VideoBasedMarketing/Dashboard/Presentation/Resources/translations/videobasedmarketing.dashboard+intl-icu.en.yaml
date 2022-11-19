@@ -1,16 +1,16 @@
 show:
-  your_info: 'Ihre Daten'
+  your_info: 'Your data'
   your_info_subtitle: 'Kontoinformationen und Inhalte'
   your_name: 'Name'
-  your_email_address: 'E-Mail Adresse'
-  your_subscription: 'Ihr aktuelles Paket'
-  your_latest_videos: 'Neueste Videos'
+  your_email_address: 'E-mail address'
+  your_subscription: 'Your current plan'
+  your_latest_videos: 'Newest recordings'
   your_presentationpages: 'Landingpages'
   your_presentationpages.info: >-
     {numberOfPresentationpages, plural,
-      =0    {Sie haben bisher keine Landingpages.}
-      one   {Sie haben aktuell eine Landingpage.}
-      other {Sie haben aktuell # Landingpages.}
+      =0    {You don't have any landingpages yet.}
+      one   {You currently have one landingpage.}
+      other {You currently have # landingpages.}
     }
   cta:
-    manage_video: 'Verwalten'
+    manage_video: 'manage'

@@ -6,14 +6,16 @@ mainnav:
   features: 'Features'
   pricing: 'Pricing'
   dashboard: 'Dashboard'
+  membership: 'Membership'
   recordings: 'Recordings'
   recording_studio: 'Recording studio'
   presentationpages: 'Landingpages'
 
 sidenav:
-  signin: 'Sign in'
-  signup: 'Sign up'
-  signout: 'Sign out'
+  sign_in: 'Sign in'
+  sign_up: 'Sign up'
+  sign_out: 'Sign out'
+  download_browser_extension_chrome: 'Get Chrome Extension'
 
 footernav:
   german: 'Deutsch'

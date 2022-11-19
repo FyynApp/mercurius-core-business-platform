@@ -15,6 +15,7 @@ sidenav:
   sign_in: 'Einloggen'
   sign_up: 'Registrieren'
   sign_out: 'Ausloggen'
+  download_browser_extension_chrome: 'Hol dir die Chrome Extension'
 
 footernav:
   german: 'Deutsch'
