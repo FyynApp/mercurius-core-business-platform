@@ -121,7 +121,7 @@ class RecordingsInfrastructureService
 
         $this->entityManager->flush();
 
-        // The final video chunk request is sent AFTER the 'recordingDone' request was sent.
+        // When using the recorder, the final video chunk request is sent AFTER the 'recordingDone' request was sent.
         // This is because the 'recordingDone' request is sent the moment the user hits 'Stop recording',
         // but in this moment a 5-second-recording-chunk is still in the making, and it's only sent
         // with the next request. We therefore need to treat the video chunk that is received after
@@ -148,6 +148,8 @@ class RecordingsInfrastructureService
         }
 
         shell_exec("/usr/bin/env ffmpeg -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getRecordingPreviewVideoPosterFilePath($recordingSession)}");
+
+        $this->generateRecordingPreviewVideo($recordingSession);
 
         $recordingSession->setIsDone(true);
         $this->entityManager->persist($recordingSession);
