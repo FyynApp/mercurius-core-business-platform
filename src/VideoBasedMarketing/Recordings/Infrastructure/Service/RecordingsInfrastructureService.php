@@ -321,18 +321,12 @@ class RecordingsInfrastructureService
         }
 
         if (!$video->hasAssetFullMp4()) {
-            $this->generateVideoAssetFullMp4($video);
+            $this->encodeVideoAssetFullMp4($video);
         }
 
         if (!$video->hasAssetPosterAnimatedGif()) {
             $this->generateVideoAssetPosterAnimatedGif($video);
         }
-
-        /* Very expensive and likely not needed
-        if (!$video->hasAssetFullWebm()) {
-            $this->generateAssetFullWebm($video);
-        }
-        */
     }
 
     public function generateVideoAssetPosterStillWebp(Video $video): void
@@ -382,7 +376,37 @@ class RecordingsInfrastructureService
      */
     private function generateVideoAssetFullWebm(Video $video): void
     {
-        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->generateVideoChunksFilesListFile($video->getRecordingSession())} -vf \"fps=60\" -y {$this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)}");
+        $this->createFilesystemStructureForVideoAssets($video);
+
+        $sql = "
+                SELECT id
+                FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
+                WHERE recording_sessions_id = :rsid
+                ORDER BY created_at " . Criteria::ASC . "
+                ;
+            ";
+
+        $stmt = $this
+            ->entityManager
+            ->getConnection()
+            ->prepare($sql);
+
+        $resultSet = $stmt->executeQuery([
+            ':rsid' => $video->getRecordingSession()->getId()
+        ]);
+
+        $filenames = [];
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
+            $filenames[] = $this->getVideoChunkContentStorageFilePath($chunk);
+        }
+        $filenames = implode(' ', $filenames);
+
+        $command = "/usr/bin/env cat $filenames > {$this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)}";
+
+        $this->logger->debug("generateVideoAssetFullWebm command is '$command'");
+
+        shell_exec($command);
 
         $video->setHasAssetFullWebm(true);
 
@@ -398,7 +422,6 @@ class RecordingsInfrastructureService
             )
         );
 
-
         $this->entityManager->persist($video);
         $this->entityManager->flush();
     }
@@ -406,9 +429,28 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function generateVideoAssetFullMp4(Video $video): void
+    private function encodeVideoAssetFullMp4(
+        Video $video
+    ): void
     {
-        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->generateVideoChunksFilesListFile($video->getRecordingSession())} -c:v libx264 -profile:v main -level 4.2 -vf format=yuv420p,fps=60 -c:a aac -movflags +faststart -y {$this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)}");
+        if (!$video->hasAssetFullWebm()) {
+            $this->generateVideoAssetFullWebm($video);
+        }
+
+        // We generate the MP4 asset from the WebM asset that
+        // was created by concatenating the WebM chunks.
+        shell_exec(
+            "/usr/bin/env ffmpeg \
+            -i {$this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)} \
+            -c:v libx264 \
+            -profile:v main \
+            -level 4.2 \
+            -vf format=yuv420p,fps=60 \
+            -c:a aac \
+            -movflags \
+            +faststart \
+            -y {$this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)}
+        ");
 
         $video->setHasAssetFullMp4(true);
 
@@ -434,7 +476,9 @@ class RecordingsInfrastructureService
      */
     private function calculateVideoAssetFullFps(string $filepath): float
     {
-        $output = shell_exec("/usr/bin/env ffprobe -v error -select_streams v -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate $filepath");
+        $command = "/usr/bin/env ffprobe -v error -select_streams v -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate $filepath";
+        $this->logger->debug("calculateVideoAssetFullFps command is '$command'.");
+        $output = shell_exec($command);
 
         $outputParts = explode('/', $output);
 
@@ -449,14 +493,18 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function calculateVideoAssetFullSeconds(string $filepath): float
+    private function calculateVideoAssetFullSeconds(string $filepath): ?float
     {
-        $output = shell_exec("/usr/bin/env ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $filepath");
+        $command = "/usr/bin/env ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $filepath";
+
+        $this->logger->debug("calculateVideoAssetFullSeconds command is '$command'.");
+
+        $output = shell_exec($command);
 
         if (is_numeric($output)) {
             return (float)$output;
         } else {
-            throw new Exception("Did not get numeric seconds value for file at $filepath.");
+            return null;
         }
     }
 
@@ -471,6 +519,24 @@ class RecordingsInfrastructureService
                     $video->getId()
                 ]
             )
+        );
+    }
+
+    private function getConcatenatedVideoChunksAssetFilePath(
+        Video         $video,
+        AssetMimeType $mimeType
+    ): string
+    {
+        if ($mimeType !== AssetMimeType::VideoWebm) {
+            throw new InvalidArgumentException();
+        }
+
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                self::VIDEO_ASSETS_SUBFOLDER_NAME,
+                $video->getId(),
+                'concatenated-video-chunks.' . $this->mimeTypeToFileSuffix($mimeType)
+            ]
         );
     }
 
