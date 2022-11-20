@@ -157,9 +157,14 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    public function generateRecordingPreviewVideo(RecordingSession $recordingSession): void
+    public function generateRecordingPreviewVideo(
+        RecordingSession $recordingSession
+    ): void
     {
-        shell_exec("/usr/bin/env ffmpeg -f concat -safe 0 -i {$this->generateVideoChunksFilesListFile($recordingSession)} -c copy -y {$this->getRecordingPreviewVideoFilePath($recordingSession)}");
+        $this->concatenateChunksIntoFile(
+            $recordingSession,
+            $this->getRecordingPreviewVideoFilePath($recordingSession)
+        );
 
         $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
         $this->entityManager->persist($recordingSession);
@@ -378,35 +383,10 @@ class RecordingsInfrastructureService
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
-        $sql = "
-                SELECT id
-                FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
-                WHERE recording_sessions_id = :rsid
-                ORDER BY created_at " . Criteria::ASC . "
-                ;
-            ";
-
-        $stmt = $this
-            ->entityManager
-            ->getConnection()
-            ->prepare($sql);
-
-        $resultSet = $stmt->executeQuery([
-            ':rsid' => $video->getRecordingSession()->getId()
-        ]);
-
-        $filenames = [];
-        foreach ($resultSet->fetchAllAssociative() as $row) {
-            $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
-            $filenames[] = $this->getVideoChunkContentStorageFilePath($chunk);
-        }
-        $filenames = implode(' ', $filenames);
-
-        $command = "/usr/bin/env cat $filenames > {$this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)}";
-
-        $this->logger->debug("generateVideoAssetFullWebm command is '$command'");
-
-        shell_exec($command);
+        $this->concatenateChunksIntoFile(
+            $video->getRecordingSession(),
+            $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+        );
 
         $video->setHasAssetFullWebm(true);
 
@@ -522,24 +502,6 @@ class RecordingsInfrastructureService
         );
     }
 
-    private function getConcatenatedVideoChunksAssetFilePath(
-        Video         $video,
-        AssetMimeType $mimeType
-    ): string
-    {
-        if ($mimeType !== AssetMimeType::VideoWebm) {
-            throw new InvalidArgumentException();
-        }
-
-        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
-            [
-                self::VIDEO_ASSETS_SUBFOLDER_NAME,
-                $video->getId(),
-                'concatenated-video-chunks.' . $this->mimeTypeToFileSuffix($mimeType)
-            ]
-        );
-    }
-
     private function getVideoPosterStillAssetFilePath(
         Video         $video,
         AssetMimeType $mimeType
@@ -590,5 +552,41 @@ class RecordingsInfrastructureService
                 'full.' . $this->mimeTypeToFileSuffix($mimeType)
             ]
         );
+    }
+
+    private function concatenateChunksIntoFile(
+        RecordingSession $recordingSession,
+        string $targetFilePath
+    ): void
+    {
+        $sql = "
+                SELECT id
+                FROM {$this->entityManager->getClassMetadata(RecordingSessionVideoChunk::class)->getTableName()}
+                WHERE recording_sessions_id = :rsid
+                ORDER BY created_at " . Criteria::ASC . "
+                ;
+            ";
+
+        $stmt = $this
+            ->entityManager
+            ->getConnection()
+            ->prepare($sql);
+
+        $resultSet = $stmt->executeQuery([
+            ':rsid' => $recordingSession->getId()
+        ]);
+
+        $filenames = [];
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
+            $filenames[] = $this->getVideoChunkContentStorageFilePath($chunk);
+        }
+        $filenames = implode(' ', $filenames);
+
+        $command = "/usr/bin/env cat $filenames > $targetFilePath";
+
+        $this->logger->debug("generateVideoAssetFullWebm command is '$command'");
+
+        shell_exec($command);
     }
 }

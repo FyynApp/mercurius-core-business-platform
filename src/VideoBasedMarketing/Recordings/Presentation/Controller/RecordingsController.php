@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
+use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
@@ -9,7 +10,6 @@ use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainServ
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -92,24 +92,24 @@ class RecordingsController
     public function recordingPreviewAssetRedirectAction(
         string                          $recordingSessionId,
         Request                         $request,
-        RecordingsInfrastructureService $recordingSessionInfrastructureService,
-        EntityManagerInterface          $entityManager
+        RecordingsInfrastructureService $recordingsInfrastructureService
     ): Response
     {
-        $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
+        $r = $this->verifyAndGetUserAndEntity(
+            RecordingSession::class,
+            $recordingSessionId,
+            VotingAttribute::Use
+        );
 
-        if (is_null($recordingSession)) {
-            throw $this->createNotFoundException("Could not find recording session with id '$recordingSessionId'.");
-        }
-
-        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
+        /** @var RecordingSession $recordingSession */
+        $recordingSession = $r->getEntity();
 
         if ($recordingSession->hasRecordingPreviewAssetBeenGenerated()) {
             return $this->redirectToRoute(
                 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
-                    'extension' => $recordingSessionInfrastructureService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                    'extension' => $recordingsInfrastructureService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
                     'random' => bin2hex(random_bytes(8))
                 ]
             );
@@ -133,14 +133,14 @@ class RecordingsController
                 ]
             );
         } else {
-            $recordingSessionInfrastructureService
+            $recordingsInfrastructureService
                 ->generateRecordingPreviewVideo($recordingSession);
 
             return $this->redirectToRoute(
                 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
-                    'extension' => $recordingSessionInfrastructureService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                    'extension' => $recordingsInfrastructureService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
                     'random' => bin2hex(random_bytes(8))
                 ]
             );
