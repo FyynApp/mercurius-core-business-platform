@@ -96,7 +96,6 @@ class RecordingsController
         EntityManagerInterface          $entityManager
     ): Response
     {
-
         $recordingSession = $entityManager->find(RecordingSession::class, $recordingSessionId);
 
         if (is_null($recordingSession)) {
