@@ -6,6 +6,7 @@ use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,6 +21,9 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Video
     implements UserOwnedEntityInterface
 {
+    /**
+     * @throws \Exception
+     */
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -122,6 +126,25 @@ class Video
             throw new InvalidArgumentException("Trying to set recording session '{$recordingSession->getId()}' which belongs to user '{$recordingSession->getUser()->getId()}', while the video belongs to user '{$this->getUser()->getId()}'.");
         }
         $this->recordingSession = $recordingSession;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: RecordingRequest::class,
+        cascade: ['persist'],
+        inversedBy: 'videos'
+    )]
+    #[ORM\JoinColumn(name: 'response_to_recording_requests_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?RecordingRequest $responseToRecordingRequest = null;
+
+    public function getResponseToRecordingRequest(): ?RecordingRequest
+    {
+        return $this->responseToRecordingRequest;
+    }
+
+    public function setResponseToRecordingRequest(?RecordingRequest $responseToRecordingRequest): void
+    {
+        $this->responseToRecordingRequest = $responseToRecordingRequest;
     }
 
 
@@ -251,12 +274,12 @@ class Video
     }
 
 
-    /** @var \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[]|Collection */
+    /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(mappedBy: 'video', targetEntity: Presentationpage::class, cascade: ['persist'])]
     private array|Collection $presentationpages;
 
     /**
-     * @return \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage[]|Collection
+     * @return Presentationpage[]|Collection
      */
     public function getPresentationpages(): array|Collection
     {

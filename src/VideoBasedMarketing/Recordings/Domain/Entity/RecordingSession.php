@@ -104,7 +104,7 @@ class RecordingSession
     private array|Collection $recordingSessionVideoChunks;
 
     /**
-     * @return \App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk[]|Collection
+     * @return RecordingSessionVideoChunk[]|Collection
      */
     public function getRecordingSessionVideoChunks(): array|Collection
     {
