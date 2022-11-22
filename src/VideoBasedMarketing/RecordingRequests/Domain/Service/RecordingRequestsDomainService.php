@@ -6,39 +6,24 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
+use InvalidArgumentException;
 
 class RecordingRequestsDomainService
 {
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(
-        EntityManagerInterface $entityManager
-    )
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @throws Exception
-     */
     public function setUserAsRespondentForRecordingRequest(
         User             $user,
         RecordingRequest $recordingRequest
     ): void
     {
         if (!$user->hasRole(Role::RECORDING_REQUEST_RESPONDING_USER)) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 "User '{$user->getUserIdentifier()}' is not a user that can respond to a recording request."
             );
         }
 
         if (!is_null($user->getRespondingToRecordingRequest())) {
-            throw new Exception(
-                "User '{$user->getUserIdentifier()}' is already a responent for recording request '{$user->getRespondingToRecordingRequest()->getId()}'."
+            throw new InvalidArgumentException(
+                "User '{$user->getUserIdentifier()}' is already a respondent for recording request '{$user->getRespondingToRecordingRequest()->getId()}'."
             );
         }
 
@@ -51,15 +36,24 @@ class RecordingRequestsDomainService
         $this->entityManager->flush();
     }
 
+    private EntityManagerInterface $entityManager;
+
     /**
-     * @throws Exception
+     * @param EntityManagerInterface $entityManager
      */
+    public function __construct(
+        EntityManagerInterface $entityManager
+    )
+    {
+        $this->entityManager = $entityManager;
+    }
+
     public function getRecordingRequestForRespondingUser(
         User $user
     ): ?RecordingRequest
     {
         if (!$user->hasRole(Role::RECORDING_REQUEST_RESPONDING_USER)) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 "User '{$user->getUserIdentifier()}' is not a user that can respond to a recording request."
             );
         }

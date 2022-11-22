@@ -29,7 +29,9 @@ class RecordingRequest
     /**
      * @throws Exception
      */
-    public function __construct(User $user)
+    public function __construct(
+        User $user
+    )
     {
         $this->user = $user;
         $this->videos = new ArrayCollection();
@@ -97,7 +99,9 @@ class RecordingRequest
         return $this->respondingUsers;
     }
 
-    public function addRespondingUser(User $user): void
+    public function addRespondingUser(
+        User $user
+    ): void
     {
         $this->respondingUsers->add($user);
     }
@@ -115,7 +119,9 @@ class RecordingRequest
         return $this->videos;
     }
 
-    public function addVideo(Video $video): void
+    public function addVideo(
+        Video $video
+    ): void
     {
         $this->videos->add($video);
     }
