@@ -5,17 +5,14 @@ namespace App\VideoBasedMarketing\Account\Domain\Entity;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
-use App\VideoBasedMarketing\Account\Infrastructure\Security\RequestParametersBasedUserAuthenticator;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
-use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity\RecordingSettingsBag;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -213,25 +210,6 @@ class User
     /** @var RecordingSettingsBag[]|Collection */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSettingsBag::class, cascade: ['persist'])]
     private array|Collection $recordingSettingsBags;
-
-
-    #[ORM\ManyToOne(
-        targetEntity: RecordingRequest::class,
-        cascade: ['persist'],
-        inversedBy: 'videos'
-    )]
-    #[ORM\JoinColumn(name: 'responding_to_recording_requests_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-    private ?RecordingRequest $respondingToRecordingRequest = null;
-
-    public function getRespondingToRecordingRequest(): ?RecordingRequest
-    {
-        return $this->respondingToRecordingRequest;
-    }
-
-    public function setRespondingToRecordingRequest(?RecordingRequest $respondingToRecordingRequest): void
-    {
-        $this->respondingToRecordingRequest = $respondingToRecordingRequest;
-    }
 
 
     public function getUserIdentifier(): string

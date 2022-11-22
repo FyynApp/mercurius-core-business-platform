@@ -16,14 +16,14 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(
-    name: 'recording_requests',
+    name: 'recording_request_responses',
     indexes: []
 )]
 #[ORM\Index(
     fields: ['createdAt'],
     name: 'created_at_idx'
 )]
-class RecordingRequest
+class RecordingRequestResponse
     implements UserOwnedEntityInterface
 {
     /**
@@ -34,7 +34,8 @@ class RecordingRequest
     )
     {
         $this->user = $user;
-        $this->responses = new ArrayCollection();
+        $this->videos = new ArrayCollection();
+        $this->respondingUsers = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
 
@@ -86,22 +87,42 @@ class RecordingRequest
 
 
     #[ORM\OneToMany(
-        mappedBy: 'request',
-        targetEntity: RecordingRequestResponse::class,
+        mappedBy: 'respondingToRecordingRequest',
+        targetEntity: User::class,
         cascade: ['persist']
     )]
-    private array|Collection $responses;
+    private array|Collection $respondingUsers;
 
-    /** @return RecordingRequestResponse[]|Collection */
-    public function getResponses(): array|Collection
+    /** @return User[]|Collection */
+    public function getRespondingUsers(): array|Collection
     {
-        return $this->responses;
+        return $this->respondingUsers;
     }
 
-    public function addResponse(
-        RecordingRequestResponse $response
+    public function addRespondingUser(
+        User $user
     ): void
     {
-        $this->responses->add($response);
+        $this->respondingUsers->add($user);
+    }
+
+
+    #[ORM\OneToMany(
+        mappedBy: 'recordingRequest',
+        targetEntity: Video::class,
+        cascade: ['persist']
+    )]
+    private array|Collection $videos;
+
+    public function getVideos(): array|Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(
+        Video $video
+    ): void
+    {
+        $this->videos->add($video);
     }
 }

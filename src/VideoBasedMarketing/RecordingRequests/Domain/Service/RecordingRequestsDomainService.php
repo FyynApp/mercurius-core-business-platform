@@ -28,7 +28,7 @@ class RecordingRequestsDomainService
         }
 
         $user->setRespondingToRecordingRequest($recordingRequest);
-        $recordingRequest->addRespondingUser($user);
+        $recordingRequest->addResponse($user);
 
         $this->entityManager->persist($user);
         $this->entityManager->persist($recordingRequest);
