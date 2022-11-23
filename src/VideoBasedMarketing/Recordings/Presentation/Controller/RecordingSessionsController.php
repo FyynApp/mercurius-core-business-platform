@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,10 +68,11 @@ class RecordingSessionsController
         methods     : [Request::METHOD_GET]
     )]
     public function extensionRecordingSessionFinishedAction(
-        string $recordingSessionId,
-        Request $request,
-        EntityManagerInterface $entityManager,
-        RecordingSessionDomainService $recordingSessionDomainService
+        string                         $recordingSessionId,
+        Request                        $request,
+        EntityManagerInterface         $entityManager,
+        RecordingSessionDomainService  $recordingSessionDomainService,
+        RecordingRequestsDomainService $recordingRequestsDomainService
     ): Response
     {
         /** @var ?User $user */
@@ -95,26 +97,41 @@ class RecordingSessionsController
             $recordingSession
         );
 
-        if ($user->isRegistered()) {
-            return $this->redirectToRoute(
-                'videobasedmarketing.recordings.presentation.return_from_recording_studio',
-                ['recordingSessionId' => $recordingSession->getId()]
-            );
-        }
-
-        $recordingSessionDomainService
+        $video = $recordingSessionDomainService
             ->handleRecordingSessionFinished(
                 $recordingSession
             );
 
-        if ($request->get('userWantsToEdit') === '1') {
+        if ($user->isRegistered()) {
+            $routeName = 'videobasedmarketing.recordings.presentation.videos.overview';
+            $routeParameters = ['showEditModalForVideoId' => $recordingSession->getVideo()->getId()];
+        } else {
+            if ($request->get('userWantsToEdit') === '1') {
+                $routeName = 'videobasedmarketing.recordings.presentation.recording_session.extension_edit';
+                $routeParameters = ['recordingSessionId' => $recordingSession->getId()];
+            } else {
+                $routeName = 'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage';
+                $routeParameters = [];
+            }
+        }
+
+        if ($recordingRequestsDomainService
+            ->userMustBeAskedToHandleResponsesAfterRecording(
+                $user
+            )
+        ) {
             return $this->redirectToRoute(
-                'videobasedmarketing.recordings.presentation.recording_session.extension_edit',
-                ['recordingSessionId' => $recordingSession->getId()]
+                'videobasedmarketing.recording_requests.ask_to_handle_responses',
+                [
+                    'videoId' => $video->getId(),
+                    'onSkipRouteName' => $routeName,
+                    'onSkipRouteParameters' => $routeParameters
+                ]
             );
         } else {
             return $this->redirectToRoute(
-                'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage'
+                $routeName,
+                $routeParameters
             );
         }
     }

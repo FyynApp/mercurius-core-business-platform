@@ -141,4 +141,57 @@ class RecordingRequestsController
             ]
         );
     }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-requests/please-handle-responses/with-video/{videoId}',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahme-anfragen/bitte-anfrage-antworten-behandeln/mit-aufnahme/{videoId}',
+        ],
+        name        : 'videobasedmarketing.recording_requests.ask_to_handle_responses',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function askToHandleRequestsAction(
+        string                                $recordingRequestId,
+        EntityManagerInterface                $entityManager,
+        UserDomainService                     $userDomainService,
+        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
+        RecordingRequestsDomainService        $recordingRequestsDomainService
+    ): Response
+    {
+        $user = $this->getUser();
+
+        if (is_null($user)) {
+            $user = $userDomainService->createUnregisteredUser();
+            return $requestParametersBasedUserAuthService->createRedirectResponse(
+                $user,
+                'videobasedmarketing.recording_requests.show_response_instructions',
+                ['recordingRequestId' => $recordingRequestId]
+            );
+        }
+
+        $recordingRequest = $entityManager->find(RecordingRequest::class, $recordingRequestId);
+
+        if (is_null($recordingRequest)) {
+            throw $this->createNotFoundException(
+                "Recording request with id '$recordingRequestId' not found."
+            );
+        }
+
+        return $this->render(
+            '@videobasedmarketing.recording_requests/response_instructions.html.twig',
+            [
+                'recordingRequest' => $recordingRequest,
+
+                'isViewedByRequester' =>
+                    $recordingRequest->getUser()->getId() === $this->getUser()->getId(),
+
+                'needToCreateResponse' => $recordingRequestsDomainService
+                    ->needToCreateResponse(
+                        $recordingRequest,
+                        $user
+                    )
+            ]
+        );
+    }
 }

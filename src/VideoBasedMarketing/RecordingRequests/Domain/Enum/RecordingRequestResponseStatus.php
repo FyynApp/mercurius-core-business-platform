@@ -6,4 +6,5 @@ enum RecordingRequestResponseStatus: string
 {
     case UNANSWERED = 'unanswered';
     case ANSWERED = 'answered';
+    case WONTANSWER = 'wontanswer';
 }

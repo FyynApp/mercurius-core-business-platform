@@ -23,13 +23,6 @@ class RecordingRequestsDomainService
         $this->entityManager = $entityManager;
     }
 
-    public function getRecordingRequestForRespondingUser(
-        User $user
-    ): ?RecordingRequest
-    {
-        return null;
-    }
-
     public function needToCreateResponse(
         RecordingRequest $recordingRequest,
         User             $user
@@ -69,6 +62,17 @@ class RecordingRequestsDomainService
         return $response;
     }
 
+    public function userMustBeAskedToHandleResponsesAfterRecording(
+        User $user
+    ): bool
+    {
+        return sizeof(
+            $this->getUnansweredRecordingRequestResponsesForUser($user)
+            )
+            > 0;
+    }
+
+    /** @return RecordingRequestResponse[] */
     public function getUnansweredRecordingRequestResponsesForUser(
         User $user
     ): array
