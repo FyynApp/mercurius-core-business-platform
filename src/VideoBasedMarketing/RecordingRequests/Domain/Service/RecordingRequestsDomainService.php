@@ -5,37 +5,12 @@ namespace App\VideoBasedMarketing\RecordingRequests\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Enum\RecordingRequestResponseStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 
 class RecordingRequestsDomainService
 {
-    public function setUserAsRespondentForRecordingRequest(
-        User             $user,
-        RecordingRequest $recordingRequest
-    ): void
-    {
-        if (!$user->hasRole(Role::RECORDING_REQUEST_RESPONDING_USER)) {
-            throw new InvalidArgumentException(
-                "User '{$user->getUserIdentifier()}' is not a user that can respond to a recording request."
-            );
-        }
-
-        if (!is_null($user->getRespondingToRecordingRequest())) {
-            throw new InvalidArgumentException(
-                "User '{$user->getUserIdentifier()}' is already a respondent for recording request '{$user->getRespondingToRecordingRequest()->getId()}'."
-            );
-        }
-
-        $user->setRespondingToRecordingRequest($recordingRequest);
-        $recordingRequest->addResponse($user);
-
-        $this->entityManager->persist($user);
-        $this->entityManager->persist($recordingRequest);
-
-        $this->entityManager->flush();
-    }
-
     private EntityManagerInterface $entityManager;
 
     /**
@@ -52,19 +27,22 @@ class RecordingRequestsDomainService
         User $user
     ): ?RecordingRequest
     {
-        if (!$user->hasRole(Role::RECORDING_REQUEST_RESPONDING_USER)) {
-            throw new InvalidArgumentException(
-                "User '{$user->getUserIdentifier()}' is not a user that can respond to a recording request."
-            );
-        }
-
-        return $user->getRespondingToRecordingRequest();
+        return null;
     }
 
-    public function userIsRespondentForRecordingRequest(
-        User $user
+    public function needToCreateResponse(
+        RecordingRequest $recordingRequest,
+        User             $user
     ): bool
     {
-        return !is_null($user->getRespondingToRecordingRequest());
+        foreach ($user->getRecordingRequestResponses() as $recordingRequestResponse) {
+            if ($recordingRequestResponse->getRecordingRequest()->getId() === $recordingRequest->getId()) {
+                if ($recordingRequestResponse->getStatus() === RecordingRequestResponseStatus::UNANSWERED) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

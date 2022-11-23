@@ -1,0 +1,17 @@
+{% extends '@shared/base_minimal.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.recording_requests' %}
+
+{% block body %}
+
+    <div class="flex flex-col w-full md:max-w-5xl mx-6">
+
+        {% if isViewedByRequester %}
+            isViewedByRequester note
+        {% endif %}
+
+    </div>
+
+{% endblock %}

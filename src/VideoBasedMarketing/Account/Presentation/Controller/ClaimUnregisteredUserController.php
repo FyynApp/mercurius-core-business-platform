@@ -85,8 +85,8 @@ class ClaimUnregisteredUserController
             if ($success) {
                 return $requestParametersBasedUserAuthService
                     ->createRedirectResponse(
-                        'videobasedmarketing.dashboard.presentation.show_registered',
-                        $user
+                        $user,
+                        'videobasedmarketing.dashboard.presentation.show_registered'
                     );
             } else {
                 return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);

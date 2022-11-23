@@ -7,6 +7,8 @@ use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedin
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity\RecordingSettingsBag;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
@@ -32,6 +34,8 @@ class User
         $this->recordingSettingsBags = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->recordingRequests = new ArrayCollection();
+        $this->recordingRequestResponses = new ArrayCollection();
     }
 
 
@@ -212,6 +216,58 @@ class User
     private array|Collection $recordingSettingsBags;
 
 
+    /** @var RecordingRequest[]|Collection */
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: RecordingRequest::class,
+        cascade: ['persist']
+    )]
+    private array|Collection $recordingRequests;
+
+    /**
+     * @return RecordingRequest[]|Collection
+     */
+    public function getRecordingRequests(): array|Collection
+    {
+        return $this->recordingRequests;
+    }
+
+    public function addRecordingRequest(
+        RecordingRequest $recordingRequest
+    ): void
+    {
+        if (!$this->recordingRequests->contains($recordingRequest)) {
+            $this->recordingRequests->add($recordingRequest);
+        }
+    }
+
+
+    /** @var RecordingRequestResponse[]|Collection */
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: RecordingRequestResponse::class,
+        cascade: ['persist']
+    )]
+    private array|Collection $recordingRequestResponses;
+
+    /**
+     * @return RecordingRequestResponse[]|Collection
+     */
+    public function getRecordingRequestResponses(): array|Collection
+    {
+        return $this->recordingRequestResponses;
+    }
+
+    public function addRecordingRequestResponse(
+        RecordingRequestResponse $recordingRequestResponse
+    ): void
+    {
+        if (!$this->recordingRequestResponses->contains($recordingRequestResponse)) {
+            $this->recordingRequestResponses->add($recordingRequestResponse);
+        }
+    }
+
+    
     public function getUserIdentifier(): string
     {
         if (is_null($this->email)) {

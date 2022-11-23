@@ -41,8 +41,8 @@ class SessionController
         ) {
             return $requestParametersBasedUserAuthService
                 ->createRedirectResponse(
-                    'videobasedmarketing.account.api.extension.v1.session_info',
-                    $sessionInfo->getUser()
+                    $sessionInfo->getUser(),
+                    'videobasedmarketing.account.api.extension.v1.session_info'
                 );
         }
 

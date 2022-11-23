@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\RecordingRequests\Domain\Entity;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Enum\RecordingRequestResponseStatus;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -30,13 +31,15 @@ class RecordingRequestResponse
      * @throws Exception
      */
     public function __construct(
-        User $user
+        User             $user,
+        RecordingRequest $recordingRequest
     )
     {
         $this->user = $user;
+        $this->recordingRequest = $recordingRequest;
         $this->videos = new ArrayCollection();
-        $this->respondingUsers = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
+        $this->status = RecordingRequestResponseStatus::UNANSWERED;
     }
 
 
@@ -58,7 +61,7 @@ class RecordingRequestResponse
     #[ORM\ManyToOne(
         targetEntity: User::class,
         cascade: ['persist'],
-        inversedBy: 'recordingRequests'
+        inversedBy: 'recordingRequestResponses'
     )]
     #[ORM\JoinColumn(
         name: 'users_id',
@@ -74,6 +77,19 @@ class RecordingRequestResponse
     }
 
 
+    #[ORM\ManyToOne(
+        targetEntity: RecordingRequest::class,
+        cascade: ['persist'],
+        inversedBy: 'recordingRequestResponses'
+    )]
+    private RecordingRequest $recordingRequest;
+
+    public function getRecordingRequest(): RecordingRequest
+    {
+        return $this->recordingRequest;
+    }
+
+
     #[ORM\Column(
         type: 'datetime',
         nullable: false
@@ -86,29 +102,17 @@ class RecordingRequestResponse
     }
 
 
-    #[ORM\OneToMany(
-        mappedBy: 'respondingToRecordingRequest',
-        targetEntity: User::class,
-        cascade: ['persist']
-    )]
-    private array|Collection $respondingUsers;
+    #[ORM\Column(type: 'string', nullable: false, enumType: RecordingRequestResponseStatus::class)]
+    private RecordingRequestResponseStatus $status;
 
-    /** @return User[]|Collection */
-    public function getRespondingUsers(): array|Collection
+    public function getStatus(): RecordingRequestResponseStatus
     {
-        return $this->respondingUsers;
-    }
-
-    public function addRespondingUser(
-        User $user
-    ): void
-    {
-        $this->respondingUsers->add($user);
+        return $this->status;
     }
 
 
     #[ORM\OneToMany(
-        mappedBy: 'recordingRequest',
+        mappedBy: 'recordingRequestResponse',
         targetEntity: Video::class,
         cascade: ['persist']
     )]

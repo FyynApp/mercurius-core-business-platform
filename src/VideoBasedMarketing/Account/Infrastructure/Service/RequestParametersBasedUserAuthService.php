@@ -24,8 +24,9 @@ class RequestParametersBasedUserAuthService
     }
 
     public function createRedirectResponse(
+        User   $user,
         string $routeName,
-        User   $user
+        array  $routeParameters = []
     ): Response
     {
         $validUntil = DateAndTimeService::getDateTimeUtc('+1 minutes');
@@ -33,19 +34,22 @@ class RequestParametersBasedUserAuthService
         return new RedirectResponse(
             $this->router->generate(
                 $routeName,
-                [
-                    RequestParameter::RequestParametersBasedUserAuthId->value =>
-                        $user->getId(),
-
-                    RequestParameter::RequestParametersBasedUserAuthValidUntil->value =>
-                        $validUntil->format(DateTimeFormat::SecondsSinceUnixEpoch->value),
-
-                    RequestParameter::RequestParametersBasedUserAuthHash->value =>
-                        RequestParametersBasedUserAuthenticator::generateAuthHash(
+                array_merge(
+                    $routeParameters,
+                    [
+                        RequestParameter::RequestParametersBasedUserAuthId->value =>
                             $user->getId(),
-                            $validUntil
-                        )
-                ]
+
+                        RequestParameter::RequestParametersBasedUserAuthValidUntil->value =>
+                            $validUntil->format(DateTimeFormat::SecondsSinceUnixEpoch->value),
+
+                        RequestParameter::RequestParametersBasedUserAuthHash->value =>
+                            RequestParametersBasedUserAuthenticator::generateAuthHash(
+                                $user->getId(),
+                                $validUntil
+                            )
+                    ]
+                )
             )
         );
     }

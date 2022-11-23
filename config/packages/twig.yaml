@@ -9,6 +9,7 @@ twig:
         'src/VideoBasedMarketing/Dashboard/Presentation/Resources/templates': 'videobasedmarketing.dashboard'
         'src/VideoBasedMarketing/Presentationpages/Presentation/Resources/templates': 'videobasedmarketing.presentationpages'
         'src/VideoBasedMarketing/Recordings/Presentation/Resources/templates': 'videobasedmarketing.recordings'
+        'src/VideoBasedMarketing/RecordingRequests/Presentation/Resources/templates': 'videobasedmarketing.recording_requests'
 
     globals:
         TwigHelperService: '@App\Shared\Presentation\Service\TwigHelperService'
