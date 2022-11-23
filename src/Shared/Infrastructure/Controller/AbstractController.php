@@ -22,12 +22,17 @@ abstract class AbstractController
     }
 
 
-    public function getUser(): ?User
+    public function getUser(bool $throwIfNoUser = false): ?User
     {
         /** @var null|User $user */
         $user = parent::getUser();
 
         if (is_null($user)) {
+
+            if ($throwIfNoUser) {
+                throw $this->createAccessDeniedException('No user.');
+            }
+
             return null;
         }
 

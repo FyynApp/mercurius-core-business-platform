@@ -1,0 +1,29 @@
+{% extends '@shared/base.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.recording_requests' %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.recording_requests' %}
+
+        {% block contentBoxTitle %}
+            {{ 'recording_requests_overview.title'|trans({ numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideos(app.user)|length}) }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'recording_requests_overview.subtitle'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

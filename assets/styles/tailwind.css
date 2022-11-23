@@ -21,6 +21,10 @@
         @apply bg-gray-50 p-8 rounded-md;
     }
 
+    .grid-outer {
+        @apply grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 gap-8 w-full pb-12;
+    }
+
     .nav-btn-default {
         @apply text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium;
     }

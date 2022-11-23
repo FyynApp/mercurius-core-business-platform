@@ -3,11 +3,11 @@
 namespace App\VideoBasedMarketing\RecordingRequests\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Enum\RecordingRequestResponseStatus;
 use Doctrine\ORM\EntityManagerInterface;
-use InvalidArgumentException;
+use Exception;
 
 class RecordingRequestsDomainService
 {
@@ -44,5 +44,43 @@ class RecordingRequestsDomainService
         }
 
         return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function createResponse(
+        RecordingRequest $recordingRequest,
+        User             $user
+    ): RecordingRequestResponse
+    {
+        $response = new RecordingRequestResponse(
+            $user,
+            $recordingRequest
+        );
+
+        $user->addRecordingRequestResponse($response);
+        $recordingRequest->addResponse($response);
+
+        $this->entityManager->persist($response);
+        $this->entityManager->persist($user);
+        $this->entityManager->persist($recordingRequest);
+
+        return $response;
+    }
+
+    public function getUnansweredRecordingRequestResponsesForUser(
+        User $user
+    ): array
+    {
+        $unansweredRecordingRequestResponses = [];
+
+        foreach ($user->getRecordingRequestResponses() as $recordingRequestResponse) {
+            if ($recordingRequestResponse->getStatus() === RecordingRequestResponseStatus::UNANSWERED) {
+                $unansweredRecordingRequestResponses[] = $recordingRequestResponse;
+            }
+        }
+
+        return $unansweredRecordingRequestResponses;
     }
 }

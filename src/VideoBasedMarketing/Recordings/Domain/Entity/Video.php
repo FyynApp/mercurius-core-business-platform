@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Domain\Entity;
 
+use App\Shared\Infrastructure\Entity\SupportsShortIdInterface;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
@@ -18,7 +19,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Table(name: 'videos')]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
 class Video
-    implements UserOwnedEntityInterface
+    implements UserOwnedEntityInterface, SupportsShortIdInterface
 {
     /**
      * @throws \Exception

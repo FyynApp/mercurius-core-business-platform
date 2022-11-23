@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\RecordingRequests\Domain\Entity;
 
+use App\Shared\Infrastructure\Entity\SupportsShortIdInterface;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
@@ -23,7 +24,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
     name: 'created_at_idx'
 )]
 class RecordingRequest
-    implements UserOwnedEntityInterface
+    implements UserOwnedEntityInterface, SupportsShortIdInterface
 {
     /**
      * @throws Exception
@@ -50,6 +51,20 @@ class RecordingRequest
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+
+    #[ORM\Column(type: 'string', length: 12, unique: true, nullable: true)]
+    private ?string $shortId = null;
+
+    public function setShortId(string $shortId): void
+    {
+        $this->shortId = $shortId;
+    }
+
+    public function getShortId(): ?string
+    {
+        return $this->shortId;
     }
 
 
