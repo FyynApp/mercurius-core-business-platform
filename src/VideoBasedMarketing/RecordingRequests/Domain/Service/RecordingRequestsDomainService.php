@@ -153,4 +153,21 @@ class RecordingRequestsDomainService
 
         return $unansweredResponses;
     }
+
+    public function getResponsesThatNeedToBeAnsweredByUser(
+        User $user
+    ): array
+    {
+        $responsesThatNeedToBeAnswered = [];
+
+        foreach ($user->getRecordingRequestResponses() as $recordingRequestResponse) {
+            if (    $recordingRequestResponse->getStatus()
+                === RecordingRequestResponseStatus::UNANSWERED
+            ) {
+                $responsesThatNeedToBeAnswered[] = $recordingRequestResponse;
+            }
+        }
+
+        return $responsesThatNeedToBeAnswered;
+    }
 }

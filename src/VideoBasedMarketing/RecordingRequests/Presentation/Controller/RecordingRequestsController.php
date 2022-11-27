@@ -3,10 +3,12 @@
 namespace App\VideoBasedMarketing\RecordingRequests\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
+use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\UserDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -162,13 +164,6 @@ class RecordingRequestsController
         );
     }
 
-    public function createRecordingRequestResponseAction(
-
-    ): Response
-    {
-
-    }
-
     #[Route(
         path        : [
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-requests/please-handle-responses/with-video/{videoId}',
@@ -179,32 +174,48 @@ class RecordingRequestsController
         methods     : [Request::METHOD_GET]
     )]
     public function askToHandleResponsesAction(
-        string                                $recordingRequestId,
-        EntityManagerInterface                $entityManager,
-        UserDomainService                     $userDomainService,
-        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
-        RecordingRequestsDomainService        $recordingRequestsDomainService
+        string                         $videoId,
+        Request                        $request,
+        RecordingRequestsDomainService $recordingRequestsDomainService
     ): Response
     {
-        $user = $this->getUser();
+        $followUpRouteName = $request->get('followUpRouteName');
+        $followUpRouteParameters = $request->get('followUpRouteParameters');
 
-        if (is_null($user)) {
-            $user = $userDomainService->createUnregisteredUser();
-            return $requestParametersBasedUserAuthService->createRedirectResponse(
-                $user,
-                'videobasedmarketing.recording_requests.show_response_instructions',
-                ['recordingRequestId' => $recordingRequestId]
+        $result = $this->verifyAndGetUserAndEntity(
+            Video::class,
+            $videoId,
+            VotingAttribute::Use
+        );
+
+        $responsesThatNeedToBeAnswered = $recordingRequestsDomainService
+            ->getResponsesThatNeedToBeAnsweredByUser(
+                $result->getUser()
+            );
+
+        if (sizeof($responsesThatNeedToBeAnswered) === 0) {
+            return $this->redirectToRoute(
+                $followUpRouteName,
+                json_decode($followUpRouteParameters, true)
             );
         }
 
-        $recordingRequest = $entityManager->find(RecordingRequest::class, $recordingRequestId);
+        return $this->render(
+            '@videobasedmarketing.recording_requests/ask_to_handle_responses.html.twig',
+            [
+                'video' => $result->getEntity(),
+                'responses' => $responsesThatNeedToBeAnswered
+            ]
+        );
+    }
 
-        if (is_null($recordingRequest)) {
-            throw $this->createNotFoundException(
-                "Recording request with id '$recordingRequestId' not found."
-            );
-        }
+    public function attachVideoToResponseAction(
+        string $videoId,
+        string $recordingRequestResponseId,
+        string $followUpRouteName,
+        array  $followUpRouteParameters,
+    ): Response
+    {
 
-        return new Response('', Response::HTTP_NOT_IMPLEMENTED);
     }
 }

@@ -1,6 +1,7 @@
 overview:
   title: 'Aufnahme-Anfragen'
   cta_add: 'Neue Anfrage erstellen'
+
 response_instructions:
   greeting: 'Ihre Bildschirmaufnahme'
   start_cta: 'Vorgang starten'
@@ -10,3 +11,9 @@ response_instructions:
   step2: 'Schritt 2: Installieren Sie die Erweiterung unter'
   step3: 'Schritt 3: Führen Sie mithilfe der Erweiterung eine Aufnahme durch und folgen Sie den weiteren Anweisungen.'
   extension_download_name: 'Chrome-Extension.zip'
+
+ask_to_handle_responses:
+  greeting: 'Ihre Bildschirmaufnahme'
+  text1:
+    singular: 'Möchten Sie diese Aufnahme nutzen, um die Anfrage von {userIdentifier} zu beantworten?'
+    plural: 'Möchten Sie diese Aufnahme nutzen, um eine der folgenden Anfragen zu beantworten'

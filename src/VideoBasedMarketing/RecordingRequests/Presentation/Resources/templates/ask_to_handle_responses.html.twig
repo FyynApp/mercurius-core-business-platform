@@ -1,0 +1,79 @@
+{% extends '@shared/base_minimal.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{# @var responses \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse[] #}
+
+{% trans_default_domain 'videobasedmarketing.recording_requests' %}
+
+{% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+{% block body %}
+
+    <div class="bg-white h-full w-full p-8">
+
+        <div class="flex flex-row justify-end">
+            <a
+                    href="{{ path('shared.presentation.contentpages.homepage') }}"
+                    target="_blank"
+                    class="
+                        flex flex-row gap-2 justify-end items-end
+                        p-2 pr-4 pl-4 rounded-md opacity-20
+                        w-fit
+                        hover:opacity-100
+                        bg-neutral-500 text-neutral-300 font-light
+                    "
+            >
+                <span>powered by Fyyn.io</span>
+                <img
+                        class="h-6"
+                        src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
+                        alt="Fyyn.io"
+                >
+            </a>
+        </div>
+
+
+        <div class="flex flex-col w-full md:max-w-2xl mx-auto mt-16">
+
+            <h1 class="text-3xl font-tiro-gurmukhi">
+                {{ 'ask_to_handle_responses.greeting'|trans }}
+            </h1>
+
+            {% if responses|length is same as 1 %}
+                <p class="text-xl mt-8 font-extralight">
+                    {{
+                        'ask_to_handle_responses.text1.singular'|trans({
+                            '{userIdentifier}': responses.0.recordingRequest.user.userIdentifier
+                        })
+                    }}
+                </p>
+
+                <form>
+
+                </form>
+
+            {% endif %}
+
+            {% for response in responses %}
+                {{ response.recordingRequest.user.userIdentifier }}
+                {{ dateAndTimeMacros.full(response.createdAt) }}
+            {% endfor %}
+
+            <form method="post">
+                <button
+                        class="cta-with-icon-success mt-8"
+                        type="submit"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd" />
+                    </svg>
+                    {{ 'response_instructions.start_cta'|trans }}
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+{% endblock %}

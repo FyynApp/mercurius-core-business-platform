@@ -124,8 +124,8 @@ class RecordingSessionsController
                 'videobasedmarketing.recording_requests.ask_to_handle_responses',
                 [
                     'videoId' => $video->getId(),
-                    'onSkipRouteName' => $routeName,
-                    'onSkipRouteParameters' => $routeParameters
+                    'followUpRouteName' => $routeName,
+                    'followUpRouteParameters' => json_encode($routeParameters)
                 ]
             );
         } else {

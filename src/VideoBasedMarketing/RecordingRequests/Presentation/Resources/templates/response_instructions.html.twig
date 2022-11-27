@@ -13,12 +13,12 @@
                     href="{{ path('shared.presentation.contentpages.homepage') }}"
                     target="_blank"
                     class="
-                    flex flex-row gap-2 justify-end items-end
-                    p-2 pr-4 pl-4 rounded-md opacity-20
-                    w-fit
-                    hover:opacity-100
-                    bg-neutral-500 text-neutral-300 font-light
-                "
+                        flex flex-row gap-2 justify-end items-end
+                        p-2 pr-4 pl-4 rounded-md opacity-20
+                        w-fit
+                        hover:opacity-100
+                        bg-neutral-500 text-neutral-300 font-light
+                    "
             >
                 <span>powered by Fyyn.io</span>
                 <img
@@ -67,6 +67,7 @@
                                 class="
                                     flex flex-row justify-start items-center
                                     text-indigo-600 hover:text-indigo-900 block
+                                    w-fit
                                 "
                                 href="{{ asset(
                                     'assets/browser-extension-chrome/mercurius-browser-extension-chrome.'
@@ -76,11 +77,11 @@
                         >
                             <div
                                     class="
-                                    flex flex-row justify-start
-                                    mt-4 p-4
-                                    bg-indigo-50 hover:bg-indigo-100
-                                    rounded-md w-fit
-                                "
+                                        flex flex-row justify-start
+                                        mt-4 p-4
+                                        bg-indigo-50 hover:bg-indigo-100
+                                        rounded-md w-fit
+                                    "
                             >
                                 <div class="break-words w-24 text-sm">
                                     {{ 'response_instructions.extension_download_name'|trans }}
@@ -96,12 +97,11 @@
 
                     <li class="mt-8">
                         {{ 'response_instructions.step2'|trans }}
-                        <a
-                                class="font-mono"
-                                href="chrome://extensions/"
+                        <span
+                                class="font-mono bg-neutral-100 p-1 rounded-sm"
                         >
                             chrome://extensions/
-                        </a>
+                        </span>
                     </li>
 
                     <li class="mt-8">
