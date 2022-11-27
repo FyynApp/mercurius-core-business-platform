@@ -8,6 +8,7 @@ mainnav:
   dashboard: 'Übersicht'
   membership: 'Mitgliedschaft'
   recordings: 'Aufnahmen'
+  recording_requests: 'Aufnahme-Anfragen'
   recording_studio: 'Aufnahmestudio'
   presentationpages: 'Landingpages'
 

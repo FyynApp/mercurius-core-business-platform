@@ -138,9 +138,6 @@ class RecordingRequestsController
             [
                 'recordingRequest' => $recordingRequest,
 
-                'isViewedByRequester' =>
-                    $recordingRequest->getUser()->getId() === $this->getUser()->getId(),
-
                 'needToCreateResponse' => $recordingRequestsDomainService
                     ->needToCreateResponse(
                         $recordingRequest,
@@ -148,6 +145,13 @@ class RecordingRequestsController
                     )
             ]
         );
+    }
+
+    public function createRecordingRequestResponseAction(
+
+    ): Response
+    {
+
     }
 
     #[Route(
@@ -159,7 +163,7 @@ class RecordingRequestsController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function askToHandleRequestsAction(
+    public function askToHandleResponsesAction(
         string                                $recordingRequestId,
         EntityManagerInterface                $entityManager,
         UserDomainService                     $userDomainService,
@@ -186,20 +190,6 @@ class RecordingRequestsController
             );
         }
 
-        return $this->render(
-            '@videobasedmarketing.recording_requests/response_instructions.html.twig',
-            [
-                'recordingRequest' => $recordingRequest,
-
-                'isViewedByRequester' =>
-                    $recordingRequest->getUser()->getId() === $this->getUser()->getId(),
-
-                'needToCreateResponse' => $recordingRequestsDomainService
-                    ->needToCreateResponse(
-                        $recordingRequest,
-                        $user
-                    )
-            ]
-        );
+        return new Response('', Response::HTTP_NOT_IMPLEMENTED);
     }
 }

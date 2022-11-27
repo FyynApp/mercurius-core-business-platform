@@ -108,4 +108,47 @@ class RecordingRequestsDomainService
 
         return $unansweredRecordingRequestResponses;
     }
+
+    public function allResponsesAreAnswered(
+        RecordingRequest $recordingRequest
+    ): bool
+    {
+        if (sizeof($recordingRequest->getRecordingRequestResponses()) === 0) {
+            return false;
+        }
+
+        foreach ($recordingRequest->getRecordingRequestResponses() as $recordingRequestResponse) {
+            if (    $recordingRequestResponse->getStatus()
+                === RecordingRequestResponseStatus::UNANSWERED
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function getNumberOfUnansweredResponses(
+        RecordingRequest $recordingRequest
+    ): int
+    {
+        return sizeof($this->getUnansweredResponses($recordingRequest));
+    }
+
+    public function getUnansweredResponses(
+        RecordingRequest $recordingRequest
+    ): array
+    {
+        $unansweredResponses = [];
+
+        foreach ($recordingRequest->getRecordingRequestResponses() as $recordingRequestResponse) {
+            if (    $recordingRequestResponse->getStatus()
+                === RecordingRequestResponseStatus::UNANSWERED
+            ) {
+                $unansweredResponses[] = $recordingRequestResponse;
+            }
+        }
+
+        return $unansweredResponses;
+    }
 }

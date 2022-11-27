@@ -52,6 +52,7 @@
 
                 {# @var recordingRequests \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest[] #}
 
+                {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
                 {% for recordingRequest in recordingRequests %}
                     <a
                             href="{{
@@ -61,7 +62,7 @@
                                 )
                             }}"
                     >
-                        {{ recordingRequest.id }}
+                        {{ dateAndTimeMacros.full(recordingRequest.createdAt) }}
                     </a>
                 {% endfor %}
 

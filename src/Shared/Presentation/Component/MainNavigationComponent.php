@@ -73,6 +73,12 @@ class MainNavigationComponent
                     ['videobasedmarketing.recordings.presentation.recording_studio']
                 ),
 
+                new NavigationEntry(
+                    'mainnav.recording_requests',
+                    'videobasedmarketing.recording_requests.recording_requests_overview',
+                    ['videobasedmarketing.recording_requests.recording_request_share']
+                ),
+
                 /*
                 new NavigationEntry(
                     'mainnav.presentationpages',

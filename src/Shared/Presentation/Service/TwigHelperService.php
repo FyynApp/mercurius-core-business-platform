@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 
@@ -33,6 +34,8 @@ class TwigHelperService
 
     private PresentationpagesService $presentationpagesService;
 
+    private RecordingRequestsDomainService $recordingRequestsDomainService;
+
     public function __construct(
         ContentDeliveryService          $contentDeliveryService,
         AccountAssetsService            $accountAssetsService,
@@ -42,7 +45,8 @@ class TwigHelperService
         RecordingsInfrastructureService $recordingsInfrastructureService,
         ShortIdService                  $shortIdService,
         DashboardService                $dashboardService,
-        PresentationpagesService        $presentationpagesService
+        PresentationpagesService        $presentationpagesService,
+        RecordingRequestsDomainService  $recordingRequestsDomainService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
@@ -54,6 +58,7 @@ class TwigHelperService
         $this->shortIdService = $shortIdService;
         $this->dashboardService = $dashboardService;
         $this->presentationpagesService = $presentationpagesService;
+        $this->recordingRequestsDomainService = $recordingRequestsDomainService;
     }
 
     public function getContentDeliveryService(): ContentDeliveryService
@@ -99,5 +104,10 @@ class TwigHelperService
     public function getPresentationpagesService(): PresentationpagesService
     {
         return $this->presentationpagesService;
+    }
+
+    public function getRecordingRequestsDomainService(): RecordingRequestsDomainService
+    {
+        return $this->recordingRequestsDomainService;
     }
 }

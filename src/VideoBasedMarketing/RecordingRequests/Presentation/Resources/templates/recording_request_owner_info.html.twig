@@ -1,33 +1,47 @@
 {% extends '@shared/base.html.twig' %}
 
-{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
-{# @var recordingRequest \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest #}
-
-{% trans_default_domain 'videobasedmarketing.recording_requests' %}
-
 {% block body %}
 
     {% embed '@shared/embeds/default_content_box.html.twig' %}
 
+        {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+        {# @var recordingRequest \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest #}
+
         {% trans_default_domain 'videobasedmarketing.recording_requests' %}
 
-        {% block contentBoxTitle %}
-            {{ 'recording_requests_overview.title'|trans({ numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideos(app.user)|length}) }}
-        {% endblock %}
+        {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
 
-        {% block contentBoxSubtitle %}
-            {{ 'recording_requests_overview.subtitle'|trans }}
+        {% block contentBoxTitle %}
+            {{ dateAndTimeMacros.full(recordingRequest.createdAt) }}
         {% endblock %}
 
         {% block contentBoxContent %}
 
-            Share URL:
-            {{
-                url(
-                    'videobasedmarketing.recording_requests.recording_request_share',
-                    { 'recordingRequestShortId': recordingRequest.shortId }
-                )
-            }}
+            <p>
+                <label>
+                    Share URL:
+                    <input
+                            name="share_url"
+                            type="text"
+                            disabled
+                            size="24"
+                            value="{{
+                            url(
+                                'videobasedmarketing.recording_requests.recording_request_share',
+                                { 'recordingRequestShortId': recordingRequest.shortId }
+                            )
+                            }}"
+                    >
+                </label>
+            </p>
+
+            {% if TwigHelperService
+                    .recordingRequestsDomainService
+                    .getNumberOfUnansweredResponses(recordingRequest) > 0
+            %}
+                Unbean
+            {% endif %}
 
         {% endblock %}
 
