@@ -11,11 +11,7 @@
         {% trans_default_domain 'videobasedmarketing.recording_requests' %}
 
         {% block contentBoxTitle %}
-            {{ 'recording_requests_overview.title'|trans({ numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideos(app.user)|length}) }}
-        {% endblock %}
-
-        {% block contentBoxSubtitle %}
-            {{ 'recording_requests_overview.subtitle'|trans }}
+            {{ 'overview.title'|trans }}
         {% endblock %}
 
         {% block contentBoxContent %}
@@ -47,7 +43,7 @@
                                 </svg>
                             </div>
                             <span class="mt-2 text-sm">
-                                {{ 'recording_requests_overview.cta_add'|trans }}
+                                {{ 'overview.cta_add'|trans }}
                             </span>
                         </button>
                     </form>
@@ -57,9 +53,21 @@
                 {# @var recordingRequests \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest[] #}
 
                 {% for recordingRequest in recordingRequests %}
-                    {{ recordingRequest.id }}
+                    <a
+                            href="{{
+                                path(
+                                    'videobasedmarketing.recording_requests.recording_request_share',
+                                    { 'recordingRequestShortId': recordingRequest.shortId }
+                                )
+                            }}"
+                    >
+                        {{ recordingRequest.id }}
+                    </a>
                 {% endfor %}
 
             </div>
+        {% endblock %}
+
+    {% endembed %}
 
 {% endblock %}

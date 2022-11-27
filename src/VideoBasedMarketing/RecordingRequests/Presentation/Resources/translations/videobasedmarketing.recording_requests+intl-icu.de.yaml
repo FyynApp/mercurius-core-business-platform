@@ -1,0 +1,11 @@
+overview:
+  title: 'Aufnahme-Anfragen'
+  cta_add: 'Neue Anfrage erstellen'
+response_instructions:
+  greeting: 'Ihre Bildschirmaufnahme'
+  text1: 'Der Benutzer {userIdentifier} benötigt eine Bildschirmaufnahme von Ihnen.'
+  text2: 'Befolgen Sie einfach die untenstehenden Schritte, um eine Aufnahme zu erstellen und zu übermitteln.'
+  step1: 'Schritt 1: Laden Sie die Browser-Erweiterung für Google Chrome herunter:'
+  step2: 'Schritt 2: Installieren Sie die Erweiterung unter'
+  step3: 'Schritt 3: Führen Sie mithilfe der Erweiterung eine Aufnahme durch und folgen Sie den weiteren Anweisungen.'
+  extension_download_name: 'Chrome-Extension.zip'

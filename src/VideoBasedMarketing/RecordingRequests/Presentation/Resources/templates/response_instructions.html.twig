@@ -6,11 +6,98 @@
 
 {% block body %}
 
-    <div class="flex flex-col w-full md:max-w-5xl mx-6">
+    <div class="bg-white h-full w-full p-8">
 
-        {% if isViewedByRequester %}
-            isViewedByRequester note
-        {% endif %}
+        <div class="flex flex-row justify-end">
+            <a
+                    href="{{ path('shared.presentation.contentpages.homepage') }}"
+                    target="_blank"
+                    class="
+                    flex flex-row gap-2 justify-end items-end
+                    p-2 pr-4 pl-4 rounded-md opacity-20
+                    w-fit
+                    hover:opacity-100
+                    bg-neutral-500 text-neutral-300 font-light
+                "
+            >
+                <span>powered by Fyyn.io</span>
+                <img
+                        class="h-6"
+                        src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
+                        alt="Fyyn.io"
+                >
+            </a>
+        </div>
+
+
+        <div class="flex flex-col w-full md:max-w-2xl mx-auto mt-16">
+
+            <h1 class="text-3xl font-tiro-gurmukhi">
+                {{ 'response_instructions.greeting'|trans }}
+            </h1>
+
+            <p class="text-xl mt-8 font-extralight">
+                {{ 'response_instructions.text1'|trans({'userIdentifier': recordingRequest.user.userIdentifier}) }}
+            </p>
+
+            <p class="text-xl mt-8">
+                {{ 'response_instructions.text2'|trans }}
+            </p>
+
+            <ol class="mt-8">
+                <li>
+                    <p>
+                        {{ 'response_instructions.step1'|trans }}
+                    </p>
+                    <a
+                            class="
+                                    flex flex-row justify-start items-center
+                                    text-indigo-600 hover:text-indigo-900 block
+                                "
+                            href="{{ asset(
+                                'assets/browser-extension-chrome/mercurius-browser-extension-chrome.'
+                                ~ app.environment
+                                ~ '.latest.zip'
+                            ) }}"
+                    >
+                        <div
+                                class="
+                                    flex flex-row justify-start
+                                    mt-4 p-4
+                                    bg-indigo-50 hover:bg-indigo-100
+                                    rounded-md w-fit
+                                "
+                        >
+                            <div class="break-words w-24 text-sm">
+                                    {{ 'response_instructions.extension_download_name'|trans }}
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7">
+                                    <path d="M12 1.5a.75.75 0 01.75.75V7.5h-1.5V2.25A.75.75 0 0112 1.5zM11.25 7.5v5.69l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V7.5h3.75a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9a3 3 0 013-3h3.75z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="mt-8">
+                    {{ 'response_instructions.step2'|trans }}
+                    <a
+                            class="font-mono"
+                            href="chrome://extensions/"
+                    >
+                        chrome://extensions/
+                    </a>
+                </li>
+
+                <li class="mt-8">
+                    {{ 'response_instructions.step3'|trans }}
+                </li>
+
+            </ol>
+
+
+        </div>
 
     </div>
 

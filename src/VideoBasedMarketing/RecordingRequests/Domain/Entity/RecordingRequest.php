@@ -34,7 +34,7 @@ class RecordingRequest
     )
     {
         $this->user = $user;
-        $this->responses = new ArrayCollection();
+        $this->recordingRequestResponses = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
 
@@ -54,7 +54,12 @@ class RecordingRequest
     }
 
 
-    #[ORM\Column(type: 'string', length: 12, unique: true, nullable: true)]
+    #[ORM\Column(
+        type: 'string',
+        length: 12,
+        unique: true,
+        nullable: true
+    )]
     private ?string $shortId = null;
 
     public function setShortId(string $shortId): void
@@ -100,22 +105,22 @@ class RecordingRequest
 
 
     #[ORM\OneToMany(
-        mappedBy: 'request',
+        mappedBy: 'recordingRequest',
         targetEntity: RecordingRequestResponse::class,
         cascade: ['persist']
     )]
-    private array|Collection $responses;
+    private array|Collection $recordingRequestResponses;
 
     /** @return RecordingRequestResponse[]|Collection */
-    public function getResponses(): array|Collection
+    public function getRecordingRequestResponses(): array|Collection
     {
-        return $this->responses;
+        return $this->recordingRequestResponses;
     }
 
     public function addResponse(
         RecordingRequestResponse $response
     ): void
     {
-        $this->responses->add($response);
+        $this->recordingRequestResponses->add($response);
     }
 }

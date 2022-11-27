@@ -7,6 +7,7 @@ use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -104,8 +105,17 @@ class Video
     }
 
 
-    #[ORM\OneToOne(inversedBy: 'video', targetEntity: RecordingSession::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'recording_sessions_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\OneToOne(
+        inversedBy: 'video',
+        targetEntity: RecordingSession::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'recording_sessions_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
     private ?RecordingSession $recordingSession;
 
     public function getRecordingSession(): ?RecordingSession
@@ -126,6 +136,44 @@ class Video
             throw new InvalidArgumentException("Trying to set recording session '{$recordingSession->getId()}' which belongs to user '{$recordingSession->getUser()->getId()}', while the video belongs to user '{$this->getUser()->getId()}'.");
         }
         $this->recordingSession = $recordingSession;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: RecordingRequestResponse::class,
+        cascade: ['persist'],
+        inversedBy: 'videos'
+    )]
+    #[ORM\JoinColumn(
+        name: 'recording_request_responses_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?RecordingRequestResponse $recordingRequestResponse;
+
+    public function getRecordingRequestResponse(): ?RecordingRequestResponse
+    {
+        return $this->recordingRequestResponse;
+    }
+
+    public function setRecordingRequestResponse(
+        ?RecordingRequestResponse $recordingRequestResponse
+    ): void
+    {
+        if ($recordingRequestResponse
+                ->getUser()
+                ->getId()
+            !==
+            $this
+                ->getUser()
+                ->getId()
+        ) {
+            throw new InvalidArgumentException(
+                "Trying to set recording request response '{$recordingRequestResponse->getId()}' which belongs to user '{$recordingRequestResponse->getUser()->getId()}', while the video belongs to user '{$this->getUser()->getId()}'."
+            );
+        }
+        $this->recordingRequestResponse = $recordingRequestResponse;
     }
 
 

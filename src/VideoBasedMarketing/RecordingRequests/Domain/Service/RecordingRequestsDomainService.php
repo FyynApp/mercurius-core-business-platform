@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\RecordingRequests\Domain\Service;
 
+use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
@@ -13,14 +14,18 @@ class RecordingRequestsDomainService
 {
     private EntityManagerInterface $entityManager;
 
+    private ShortIdService $shortIdService;
+
     /**
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ShortIdService         $shortIdService
     )
     {
         $this->entityManager = $entityManager;
+        $this->shortIdService = $shortIdService;
     }
 
     public function needToCreateResponse(
@@ -37,6 +42,22 @@ class RecordingRequestsDomainService
         }
 
         return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function createRequest(
+        User $user
+    ): RecordingRequest
+    {
+        $recordingRequest = new RecordingRequest($user);
+        $this->entityManager->persist($recordingRequest);
+        $this->shortIdService->encodeObjectId($recordingRequest);
+
+        $this->entityManager->flush();
+
+        return $recordingRequest;
     }
 
     /**

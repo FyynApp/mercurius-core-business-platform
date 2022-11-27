@@ -36,10 +36,6 @@ abstract class AbstractController
             return null;
         }
 
-        if (get_class($user) !== User::class) {
-            throw new LogicException('Unexpectedly, $user has class ' . get_class($user));
-        }
-
         return $user;
     }
 

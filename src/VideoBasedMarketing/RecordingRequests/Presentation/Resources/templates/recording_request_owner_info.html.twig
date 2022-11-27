@@ -1,6 +1,7 @@
 {% extends '@shared/base.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var recordingRequest \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest #}
 
 {% trans_default_domain 'videobasedmarketing.recording_requests' %}
 
@@ -20,7 +21,13 @@
 
         {% block contentBoxContent %}
 
-
+            Share URL:
+            {{
+                url(
+                    'videobasedmarketing.recording_requests.recording_request_share',
+                    { 'recordingRequestShortId': recordingRequest.shortId }
+                )
+            }}
 
         {% endblock %}
 

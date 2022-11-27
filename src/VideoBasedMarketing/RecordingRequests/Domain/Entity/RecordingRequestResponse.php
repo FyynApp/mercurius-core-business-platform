@@ -82,6 +82,12 @@ class RecordingRequestResponse
         cascade: ['persist'],
         inversedBy: 'recordingRequestResponses'
     )]
+    #[ORM\JoinColumn(
+        name: 'recording_requests_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
     private RecordingRequest $recordingRequest;
 
     public function getRecordingRequest(): RecordingRequest
@@ -102,7 +108,11 @@ class RecordingRequestResponse
     }
 
 
-    #[ORM\Column(type: 'string', nullable: false, enumType: RecordingRequestResponseStatus::class)]
+    #[ORM\Column(
+        type: 'string',
+        nullable: false,
+        enumType: RecordingRequestResponseStatus::class
+    )]
     private RecordingRequestResponseStatus $status;
 
     public function getStatus(): RecordingRequestResponseStatus

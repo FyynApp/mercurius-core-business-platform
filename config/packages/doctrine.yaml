@@ -49,6 +49,10 @@ doctrine:
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Recordings/Api/Recorder/V1/Entity'
                 prefix: 'App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity'
 
+            App\VideoBasedMarketing\RecordingRequests\Domain:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/VideoBasedMarketing/RecordingRequests/Domain/Entity'
+                prefix: 'App\VideoBasedMarketing\RecordingRequests\Domain'
 
 when@test:
     doctrine:

@@ -7,7 +7,6 @@ use App\VideoBasedMarketing\Account\Domain\Service\UserDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
-use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,8 +25,7 @@ class RecordingRequestsController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function recordingRequestsOverviewAction(
-    ): Response
+    public function recordingRequestsOverviewAction(): Response
     {
         $user = $this->getUser(true);
 
@@ -56,20 +54,22 @@ class RecordingRequestsController
 
         $recordingRequest = $recordingRequestsDomainService->createRequest($user);
 
-        return $this->render(
-            '@videobasedmarketing.recording_requests/recording_request_created.html.twig',
-            ['recordingRequest' => $recordingRequest]
+        return $this->redirectToRoute(
+            'videobasedmarketing.recording_requests.recording_request_share',
+            [
+                'recordingRequestShortId' => $recordingRequest->getShortId()
+            ]
         );
     }
 
     #[Route(
-        path        : '/rr/{videoShortId}',
+        path        : '/rr/{recordingRequestShortId}',
         name        : 'videobasedmarketing.recording_requests.recording_request_share',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
     public function recordingRequestShareAction(
-        string                 $shortId,
+        string                 $recordingRequestShortId,
         EntityManagerInterface $entityManager
     ): Response
     {
@@ -77,10 +77,18 @@ class RecordingRequestsController
         $r = $entityManager->getRepository(RecordingRequest::class);
 
         /** @var null|RecordingRequest $recordingRequest */
-        $recordingRequest = $r->findOneBy(['shortId' => $shortId]);
+        $recordingRequest = $r->findOneBy(['shortId' => $recordingRequestShortId]);
 
         if (is_null($recordingRequest)) {
-            throw $this->createNotFoundException("No recording request with short id '$shortId' found.");
+            throw $this->createNotFoundException("No recording request with short id '$recordingRequestShortId' found.");
+        }
+
+        $user = $this->getUser();
+        if (!is_null($user) && $user->getId() === $recordingRequest->getUser()->getId()) {
+            return $this->render(
+                '@videobasedmarketing.recording_requests/recording_request_owner_info.html.twig',
+                ['recordingRequest' => $recordingRequest]
+            );
         }
 
         return $this->redirectToRoute(

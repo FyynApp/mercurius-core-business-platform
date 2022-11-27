@@ -48,6 +48,15 @@ class RequestParametersBasedUserAuthenticator
             && !is_null($request->get(RequestParameter::RequestParametersBasedUserAuthHash->value))
             && !is_null($request->get(RequestParameter::RequestParametersBasedUserAuthValidUntil->value))
         ) {
+            $validUntilDateTime = DateAndTimeService::getDateTimeUtc();
+            $validUntilDateTime->setTimestamp(
+                (int)$request->get(RequestParameter::RequestParametersBasedUserAuthValidUntil->value)
+            );
+
+            if ($validUntilDateTime < DateAndTimeService::getDateTimeUtc()) {
+                return false;
+            }
+
             $this->logger->debug('RequestParametersBasedUserAuthenticator supports this request.');
             return true;
         }
