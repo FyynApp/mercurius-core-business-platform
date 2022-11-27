@@ -104,10 +104,11 @@ class RecordingRequestsController
         ],
         name        : 'videobasedmarketing.recording_requests.show_response_instructions',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
-        methods     : [Request::METHOD_GET]
+        methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
     public function showRecordingRequestResponseInstructionsAction(
         string                                $recordingRequestId,
+        Request                               $request,
         EntityManagerInterface                $entityManager,
         UserDomainService                     $userDomainService,
         RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
@@ -130,6 +131,20 @@ class RecordingRequestsController
         if (is_null($recordingRequest)) {
             throw $this->createNotFoundException(
                 "Recording request with id '$recordingRequestId' not found."
+            );
+        }
+
+        if (   $request->getMethod() === Request::METHOD_POST
+            && $recordingRequestsDomainService
+                ->needToCreateResponse(
+                    $recordingRequest,
+                    $user
+                )
+        ) {
+            $recordingRequestsDomainService->createResponse($recordingRequest, $user);
+            return $this->redirectToRoute(
+                'videobasedmarketing.recording_requests.show_response_instructions',
+                ['recordingRequestId' => $recordingRequestId]
             );
         }
 

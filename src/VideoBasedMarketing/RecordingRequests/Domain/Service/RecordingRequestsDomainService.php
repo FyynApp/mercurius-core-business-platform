@@ -80,6 +80,8 @@ class RecordingRequestsDomainService
         $this->entityManager->persist($user);
         $this->entityManager->persist($recordingRequest);
 
+        $this->entityManager->flush();
+
         return $response;
     }
 

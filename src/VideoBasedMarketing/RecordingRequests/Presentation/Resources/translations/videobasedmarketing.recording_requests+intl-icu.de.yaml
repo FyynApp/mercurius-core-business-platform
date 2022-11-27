@@ -3,6 +3,7 @@ overview:
   cta_add: 'Neue Anfrage erstellen'
 response_instructions:
   greeting: 'Ihre Bildschirmaufnahme'
+  start_cta: 'Vorgang starten'
   text1: 'Der Benutzer {userIdentifier} benötigt eine Bildschirmaufnahme von Ihnen.'
   text2: 'Befolgen Sie einfach die untenstehenden Schritte, um eine Aufnahme zu erstellen und zu übermitteln.'
   step1: 'Schritt 1: Laden Sie die Browser-Erweiterung für Google Chrome herunter:'
