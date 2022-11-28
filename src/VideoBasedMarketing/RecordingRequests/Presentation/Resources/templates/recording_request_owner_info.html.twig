@@ -13,34 +13,75 @@
         {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
 
         {% block contentBoxTitle %}
+            {{ 'recording_request_owner_info.title'|trans }}
             {{ dateAndTimeMacros.full(recordingRequest.createdAt) }}
         {% endblock %}
 
         {% block contentBoxContent %}
 
-            <p>
-                <label>
-                    Share URL:
-                    <input
-                            name="share_url"
-                            type="text"
-                            disabled
-                            size="24"
-                            value="{{
-                            url(
-                                'videobasedmarketing.recording_requests.recording_request_share',
-                                { 'recordingRequestShortId': recordingRequest.shortId }
-                            )
-                            }}"
-                    >
+            <p class="mb-8">
+                <label
+                        for="share_url"
+                >
+                    {{ 'recording_request_owner_info.share_url_label'|trans }}
                 </label>
+                <input
+                        class="ml-2 border-0 bg-indigo-50 rounded-md p-2 font-bold"
+                        id="share_url"
+                        type="text"
+                        disabled
+                        size="26"
+                        value="{{
+                        url(
+                            'videobasedmarketing.recording_requests.recording_request_share',
+                            { 'recordingRequestShortId': recordingRequest.shortId }
+                        )
+                        }}"
+                >
             </p>
 
-            {% if TwigHelperService
-                    .recordingRequestsDomainService
-                    .getNumberOfUnansweredResponses(recordingRequest) > 0
-            %}
-                Unbean
+            {% if TwigHelperService.recordingRequestsDomainService.getNumberOfAnsweredResponses(recordingRequest) is same as 0 %}
+                <div>
+                    {{ 'recording_request_owner_info.no_answered_responses_yet'|trans }}
+                </div>
+
+            {% else %}
+
+                <h2 class="font-bold text-lg mb-4">
+                    {{ 'recording_request_owner_info.responses'|trans }}
+                </h2>
+
+                <div class="grid-outer">
+                    {% for response in TwigHelperService.recordingRequestsDomainService.answeredResponses(recordingRequest) %}
+                        {# @var response \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse #}
+
+                        {% for video in response.videos %}
+                            {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+
+                            <div class="
+                                    flex
+                                    flex-col lg:flex-row
+                                    justify-center lg:justify-start
+                                    items-center lg:items-start
+                                    gap-16
+                                    w-48
+                                 "
+                            >
+                                <video
+                                        class="mx-auto rounded-md w-full"
+                                        controls
+                                        poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
+                                >
+                                    <source
+                                            src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
+                                    >
+                                </video>
+                            </div>
+
+                        {% endfor %}
+
+                    {% endfor %}
+                </div>
             {% endif %}
 
         {% endblock %}

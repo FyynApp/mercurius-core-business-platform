@@ -7,6 +7,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Enum\RecordingRequestResponseStatus;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
@@ -154,6 +155,30 @@ class RecordingRequestsDomainService
         return $unansweredResponses;
     }
 
+    public function getNumberOfAnsweredResponses(
+        RecordingRequest $recordingRequest
+    ): int
+    {
+        return sizeof($this->getAnsweredResponses($recordingRequest));
+    }
+
+    public function getAnsweredResponses(
+        RecordingRequest $recordingRequest
+    ): array
+    {
+        $answeredResponses = [];
+
+        foreach ($recordingRequest->getRecordingRequestResponses() as $recordingRequestResponse) {
+            if (    $recordingRequestResponse->getStatus()
+                === RecordingRequestResponseStatus::ANSWERED
+            ) {
+                $answeredResponses[] = $recordingRequestResponse;
+            }
+        }
+
+        return $answeredResponses;
+    }
+
     public function getResponsesThatNeedToBeAnsweredByUser(
         User $user
     ): array
@@ -169,5 +194,20 @@ class RecordingRequestsDomainService
         }
 
         return $responsesThatNeedToBeAnswered;
+    }
+
+    public function answerResponseWithVideo(
+        RecordingRequestResponse $recordingRequestResponse,
+        Video                    $video
+    ): void
+    {
+        $recordingRequestResponse->addVideo($video);
+        $recordingRequestResponse->setStatus(RecordingRequestResponseStatus::ANSWERED);
+
+        $video->setRecordingRequestResponse($recordingRequestResponse);
+
+        $this->entityManager->persist($recordingRequestResponse);
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
     }
 }

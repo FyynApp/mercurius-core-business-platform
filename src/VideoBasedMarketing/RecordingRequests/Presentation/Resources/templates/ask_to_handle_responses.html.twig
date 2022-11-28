@@ -2,7 +2,10 @@
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
+{# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 {# @var responses \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse[] #}
+{# @var followUpRouteName string #}
+{# @var followUpRouteParameters string #}
 
 {% trans_default_domain 'videobasedmarketing.recording_requests' %}
 
@@ -40,6 +43,28 @@
                 {{ 'ask_to_handle_responses.greeting'|trans }}
             </h1>
 
+            <div>
+                {% import '@videobasedmarketing.recordings/macros/video_preview.html.twig' as videoPreviewMacros %}
+                <div class="
+                        flex
+                        flex-col lg:flex-row
+                        justify-center lg:justify-start
+                        items-center lg:items-start
+                        gap-16
+                        mt-8 mb-16
+                        max-w-4xl
+                     "
+                >
+                    <div class="
+                            w-full shadow-xl shadow-neutral-400
+                            h-fit
+                         "
+                    >
+                        {{ videoPreviewMacros.interactive(video) }}
+                    </div>
+                </div>
+            </div>
+
             {% if responses|length is same as 1 %}
                 <p class="text-xl mt-8 font-extralight">
                     {{
@@ -49,29 +74,38 @@
                     }}
                 </p>
 
-                <form>
-
+                <form
+                    method="post"
+                    action="{{ path(
+                        'videobasedmarketing.recording_requests.answer_response_with_video',
+                        {
+                            'recordingRequestResponseId': responses.0.id,
+                            'videoId': video.id
+                        }
+                    ) }}"
+                >
+                    <input type="hidden" name="followUpRouteName" value="{{ followUpRouteName }}">
+                    <input type="hidden" name="followUpRouteParameters" value="{{ followUpRouteParameters }}">
+                    <button
+                            class="cta-with-icon-success mt-8"
+                            type="submit"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375zm9.586 4.594a.75.75 0 00-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 00-1.06 1.06l1.5 1.5a.75.75 0 001.116-.062l3-3.75z" clip-rule="evenodd" />
+                        </svg>
+                        {{ 'ask_to_handle_responses.cta_attach'|trans }}
+                    </button>
                 </form>
 
+            {% else %}
+
+                {% for response in responses %}
+                    {{ response.recordingRequest.user.userIdentifier }}
+                    {{ dateAndTimeMacros.full(response.createdAt) }}
+                {% endfor %}
+
             {% endif %}
-
-            {% for response in responses %}
-                {{ response.recordingRequest.user.userIdentifier }}
-                {{ dateAndTimeMacros.full(response.createdAt) }}
-            {% endfor %}
-
-            <form method="post">
-                <button
-                        class="cta-with-icon-success mt-8"
-                        type="submit"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd" />
-                    </svg>
-                    {{ 'response_instructions.start_cta'|trans }}
-                </button>
-            </form>
-
         </div>
 
     </div>

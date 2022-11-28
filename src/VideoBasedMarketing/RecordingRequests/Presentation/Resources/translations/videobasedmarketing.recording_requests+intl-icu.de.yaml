@@ -1,6 +1,13 @@
 overview:
   title: 'Aufnahme-Anfragen'
   cta_add: 'Neue Anfrage erstellen'
+  request_title: 'Anfrage vom'
+
+recording_request_owner_info:
+  title: 'Anfrage vom'
+  share_url_label: 'URL für Teilnahme:'
+  no_answered_responses_yet: 'Bisher keine Antworten eingegangen.'
+  responses: 'Eingegangene Antworten'
 
 response_instructions:
   greeting: 'Ihre Bildschirmaufnahme'
@@ -17,3 +24,4 @@ ask_to_handle_responses:
   text1:
     singular: 'Möchten Sie diese Aufnahme nutzen, um die Anfrage von {userIdentifier} zu beantworten?'
     plural: 'Möchten Sie diese Aufnahme nutzen, um eine der folgenden Anfragen zu beantworten'
+  cta_attach: 'Anfrage mit Aufnahme beantworten'

@@ -56,13 +56,25 @@
                 {% for recordingRequest in recordingRequests %}
                     <a
                             href="{{
-                                path(
-                                    'videobasedmarketing.recording_requests.recording_request_share',
-                                    { 'recordingRequestShortId': recordingRequest.shortId }
-                                )
+                            path(
+                                'videobasedmarketing.recording_requests.recording_request_share',
+                                { 'recordingRequestShortId': recordingRequest.shortId }
+                            )
                             }}"
                     >
-                        {{ dateAndTimeMacros.full(recordingRequest.createdAt) }}
+                        <div
+                                class="
+                                    p-12
+                                    flex flex-col rounded-lg p-0 bg-neutral-100
+                                    hover:bg-indigo-200
+                                "
+                        >
+                            {{ 'overview.request_title'|trans }}
+                            <br/>
+                            <strong>
+                                {{ dateAndTimeMacros.full(recordingRequest.createdAt) }}
+                            </strong>
+                        </div>
                     </a>
                 {% endfor %}
 

@@ -120,6 +120,13 @@ class RecordingRequestResponse
         return $this->status;
     }
 
+    public function setStatus(
+        RecordingRequestResponseStatus $status
+    ): void
+    {
+        $this->status = $status;
+    }
+
 
     #[ORM\OneToMany(
         mappedBy: 'recordingRequestResponse',

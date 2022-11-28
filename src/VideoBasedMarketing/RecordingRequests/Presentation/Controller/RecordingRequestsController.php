@@ -7,6 +7,7 @@ use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\UserDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
+use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
@@ -166,8 +167,8 @@ class RecordingRequestsController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-requests/please-handle-responses/with-video/{videoId}',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahme-anfragen/bitte-anfrage-antworten-behandeln/mit-aufnahme/{videoId}',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-requests/handle-responses/with-video/{videoId}',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahme-anfragen/anfrage-antworten-behandeln/mit-aufnahme/{videoId}',
         ],
         name        : 'videobasedmarketing.recording_requests.ask_to_handle_responses',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -204,18 +205,55 @@ class RecordingRequestsController
             '@videobasedmarketing.recording_requests/ask_to_handle_responses.html.twig',
             [
                 'video' => $result->getEntity(),
-                'responses' => $responsesThatNeedToBeAnswered
+                'responses' => $responsesThatNeedToBeAnswered,
+                'followUpRouteName' => $followUpRouteName,
+                'followUpRouteParameters' => $followUpRouteParameters
             ]
         );
     }
 
-    public function attachVideoToResponseAction(
-        string $videoId,
-        string $recordingRequestResponseId,
-        string $followUpRouteName,
-        array  $followUpRouteParameters,
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-requests/responses/{recordingRequestResponseId}/attach-to-video/{videoId}',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahme-anfragen/antworten/{recordingRequestResponseId}/verbinden-mit-aufnahme/{videoId}',
+        ],
+        name        : 'videobasedmarketing.recording_requests.answer_response_with_video',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function answerResponseWithVideoAction(
+        string                         $videoId,
+        string                         $recordingRequestResponseId,
+        Request                        $request,
+        RecordingRequestsDomainService $recordingRequestsDomainService
     ): Response
     {
+        $result = $this->verifyAndGetUserAndEntity(
+            Video::class,
+            $videoId,
+            VotingAttribute::Use
+        );
 
+        /** @var Video $video */
+        $video = $result->getEntity();
+
+        $result = $this->verifyAndGetUserAndEntity(
+            RecordingRequestResponse::class,
+            $recordingRequestResponseId,
+            VotingAttribute::Use
+        );
+
+        /** @var RecordingRequestResponse $recordingRequestResponse */
+        $recordingRequestResponse = $result->getEntity();
+
+        $recordingRequestsDomainService->answerResponseWithVideo(
+            $recordingRequestResponse,
+            $video
+        );
+
+        return $this->redirectToRoute(
+            $request->get('followUpRouteName'),
+            json_decode($request->get('followUpRouteParameters'), true)
+        );
     }
 }
