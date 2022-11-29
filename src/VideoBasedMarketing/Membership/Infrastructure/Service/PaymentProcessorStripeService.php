@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
 use Stripe\Checkout\Session;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -36,6 +37,9 @@ class PaymentProcessorStripeService
         $this->membershipService = $membershipService;
     }
 
+    /**
+     * @throws ApiErrorException
+     */
     public function getSubscriptionCheckoutUrl(
         User           $user,
         MembershipPlan $membershipPlan
