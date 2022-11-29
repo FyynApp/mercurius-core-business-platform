@@ -1,7 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
-  }
+    "lib": ["dom", "es2015"],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "strict": false,
+    "strictPropertyInitialization": false,
+    "target": "es2015",
+    "removeComments": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "noEmit": false,
+    "declaration": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react"
+  },
+  "exclude": ["src/**/dist"],
+  "include": ["src/**/*"]
 }
