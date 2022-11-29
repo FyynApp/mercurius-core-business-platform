@@ -25,9 +25,6 @@ framework:
     enabled_locales: [en, de]
     default_locale: en
 
-    form:
-        legacy_error_messages: false
-
 when@test:
     framework:
         test: true

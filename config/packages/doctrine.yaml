@@ -11,48 +11,48 @@ doctrine:
         auto_mapping: true
         mappings:
 
-            App\VideoBasedMarketing\Account\Domain:
+            App\VideoBasedMarketing\Account\Domain\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Account/Domain/Entity'
-                prefix: 'App\VideoBasedMarketing\Account\Domain'
+                prefix: 'App\VideoBasedMarketing\Account\Domain\Entity'
 
-            App\VideoBasedMarketing\Account\Infrastructure:
+            App\VideoBasedMarketing\Account\Infrastructure\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Account/Infrastructure/Entity'
-                prefix: 'App\VideoBasedMarketing\Account\Infrastructure'
+                prefix: 'App\VideoBasedMarketing\Account\Infrastructure\Entity'
 
 
-            App\VideoBasedMarketing\Membership\Domain:
+            App\VideoBasedMarketing\Membership\Domain\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Membership/Domain/Entity'
-                prefix: 'App\VideoBasedMarketing\Membership\Domain'
+                prefix: 'App\VideoBasedMarketing\Membership\Domain\Entity'
 
 
-            App\VideoBasedMarketing\Presentationpages\Domain:
+            App\VideoBasedMarketing\Presentationpages\Domain\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Presentationpages/Domain/Entity'
-                prefix: 'App\VideoBasedMarketing\Presentationpages\Domain'
+                prefix: 'App\VideoBasedMarketing\Presentationpages\Domain\Entity'
 
 
-            App\VideoBasedMarketing\Recordings\Domain:
+            App\VideoBasedMarketing\Recordings\Domain\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Recordings/Domain/Entity'
-                prefix: 'App\VideoBasedMarketing\Recordings\Domain'
+                prefix: 'App\VideoBasedMarketing\Recordings\Domain\Entity'
 
-            App\VideoBasedMarketing\Recordings\Infrastructure:
+            App\VideoBasedMarketing\Recordings\Infrastructure\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Recordings/Infrastructure/Entity'
-                prefix: 'App\VideoBasedMarketing\Recordings\Infrastructure'
+                prefix: 'App\VideoBasedMarketing\Recordings\Infrastructure\Entity'
 
             App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Recordings/Api/Recorder/V1/Entity'
                 prefix: 'App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity'
 
-            App\VideoBasedMarketing\RecordingRequests\Domain:
+            App\VideoBasedMarketing\RecordingRequests\Domain\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/RecordingRequests/Domain/Entity'
-                prefix: 'App\VideoBasedMarketing\RecordingRequests\Domain'
+                prefix: 'App\VideoBasedMarketing\RecordingRequests\Domain\Entity'
 
 when@test:
     doctrine:

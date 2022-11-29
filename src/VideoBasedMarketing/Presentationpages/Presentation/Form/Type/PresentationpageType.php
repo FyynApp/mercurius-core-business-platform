@@ -22,7 +22,7 @@ class PresentationpageType
     {
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            /** @var \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage $presentationpage */
+            /** @var Presentationpage $presentationpage */
             $presentationpage = $event->getData();
             $form = $event->getForm();
 
@@ -54,7 +54,7 @@ class PresentationpageType
     {
         $resolver->setDefaults(
             [
-                'data_class' => \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage::class,
+                'data_class' => Presentationpage::class,
             ]
         );
     }

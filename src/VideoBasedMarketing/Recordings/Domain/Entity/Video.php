@@ -347,7 +347,7 @@ class Video
         if (is_null($seconds)) {
             return null;
         } else {
-            return gmdate('i:s', $seconds);
+            return gmdate('i:s', (int)$seconds);
         }
     }
 }

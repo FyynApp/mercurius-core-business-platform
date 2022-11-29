@@ -28,6 +28,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Presentationpage
     implements UserOwnedEntityInterface
 {
+    /**
+     * @throws Exception
+     */
     public function __construct(User $user)
     {
         $this->user = $user;

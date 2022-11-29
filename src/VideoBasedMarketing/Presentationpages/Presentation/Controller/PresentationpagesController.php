@@ -168,7 +168,7 @@ class PresentationpagesController
 
         $template = $entityManager->find(Presentationpage::class, $templateId);
 
-        if (is_null($templateId)) {
+        if (is_null($template)) {
             throw $this->createNotFoundException("No presentationpage with id '$templateId' found.");
         }
 
@@ -249,14 +249,14 @@ class PresentationpagesController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var \App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage $presentationpage */
+            /** @var Presentationpage $presentationpage */
             $presentationpage = $form->getData();
 
             $presentationpagesService->handleEdited($presentationpage);
 
             return $this->redirectToRoute('videobasedmarketing.presentationpages.presentation.overview');
         } else {
-            return $this->renderForm(
+            return $this->render(
                 '@videobasedmarketing.presentationpages/editor.html.twig',
                 [
                     'presentationpage' => $presentationpage,
