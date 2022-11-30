@@ -8,6 +8,7 @@ mainnav:
   dashboard: 'Dashboard'
   membership: 'Membership'
   recordings: 'Recordings'
+  recording_requests: 'Recording Requests'
   recording_studio: 'Recording studio'
   presentationpages: 'Landingpages'
 
