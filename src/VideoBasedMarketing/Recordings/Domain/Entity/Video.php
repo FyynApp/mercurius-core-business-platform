@@ -18,7 +18,10 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'videos')]
-#[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
+#[ORM\Index(
+    fields: ['createdAt'],
+    name: 'created_at_idx'
+)]
 class Video
     implements UserOwnedEntityInterface, SupportsShortIdInterface
 {
@@ -36,7 +39,10 @@ class Video
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(
+        type: 'guid',
+        unique: true
+    )]
     private ?string $id = null;
 
     public function getId(): ?string
@@ -44,7 +50,12 @@ class Video
         return $this->id;
     }
 
-    #[ORM\Column(type: 'string', length: 12, unique: true, nullable: true)]
+    #[ORM\Column(
+        type: 'string',
+        length: 12,
+        unique: true,
+        nullable: true
+    )]
     private ?string $shortId = null;
 
     public function setShortId(string $shortId): void
@@ -58,7 +69,10 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(
+        type: 'datetime',
+        nullable: false
+    )]
     private DateTime $createdAt;
 
     public function getCreatedAt(): DateTime
@@ -67,8 +81,17 @@ class Video
     }
 
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'videos')]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        cascade: ['persist'],
+        inversedBy: 'videos'
+    )]
+    #[ORM\JoinColumn(
+        name: 'users_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
     private User $user;
 
     public function getUser(): User
@@ -91,7 +114,11 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'string', length: 512, nullable: false)]
+    #[ORM\Column(
+        type: 'string',
+        length: 512,
+        nullable: false
+    )]
     private string $title = '';
 
     public function setTitle(string $title): void
@@ -133,7 +160,9 @@ class Video
                 ->getUser()
                 ->getId()
         ) {
-            throw new InvalidArgumentException("Trying to set recording session '{$recordingSession->getId()}' which belongs to user '{$recordingSession->getUser()->getId()}', while the video belongs to user '{$this->getUser()->getId()}'.");
+            throw new InvalidArgumentException(
+                "Trying to set recording session '{$recordingSession->getId()}' which belongs to user '{$recordingSession->getUser()->getId()}', while the video belongs to user '{$this->getUser()->getId()}'."
+            );
         }
         $this->recordingSession = $recordingSession;
     }
@@ -233,7 +262,11 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'float', nullable: true)]
+    #[ORM\Column(
+        type: 'float',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
     private ?float $assetFullWebmFps = null;
 
     public function getAssetFullWebmFps(): ?float
@@ -247,7 +280,11 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'float', nullable: true)]
+    #[ORM\Column(
+        type: 'float',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
     private ?float $assetFullWebmSeconds = null;
 
     public function getAssetFullWebmSeconds(): ?float
@@ -258,6 +295,42 @@ class Video
     public function setAssetFullWebmSeconds(?float $val): void
     {
         $this->assetFullWebmSeconds = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetFullWebmWidth = null;
+
+    public function getAssetFullWebmWidth(): ?int
+    {
+        return $this->assetFullWebmWidth;
+    }
+
+    public function setAssetFullWebmWidth(?int $val): void
+    {
+        $this->assetFullWebmWidth = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetFullWebmHeight = null;
+
+    public function getAssetFullWebmHeight(): ?int
+    {
+        return $this->assetFullWebmHeight;
+    }
+
+    public function setAssetFullWebmHeight(?int $val): void
+    {
+        $this->assetFullWebmHeight = $val;
     }
 
 
@@ -275,7 +348,11 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'float', nullable: true)]
+    #[ORM\Column(
+        type: 'float',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
     private ?float $assetFullMp4Fps = null;
 
     public function getAssetFullMp4Fps(): ?float
@@ -289,7 +366,11 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'float', nullable: true)]
+    #[ORM\Column(
+        type: 'float',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
     private ?float $assetFullMp4Seconds = null;
 
     public function getAssetFullMp4Seconds(): ?float
@@ -303,8 +384,48 @@ class Video
     }
 
 
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetFullMp4Width = null;
+
+    public function getAssetFullMp4Width(): ?int
+    {
+        return $this->assetFullMp4Width;
+    }
+
+    public function setAssetFullMp4Width(?int $val): void
+    {
+        $this->assetFullMp4Width = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetFullMp4Height = null;
+
+    public function getAssetFullMp4Height(): ?int
+    {
+        return $this->assetFullMp4Height;
+    }
+
+    public function setAssetFullMp4Height(?int $val): void
+    {
+        $this->assetFullMp4Height = $val;
+    }
+
+
     /** @var Presentationpage[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'video', targetEntity: Presentationpage::class, cascade: ['persist'])]
+    #[ORM\OneToMany(
+        mappedBy: 'video',
+        targetEntity: Presentationpage::class,
+        cascade: ['persist']
+    )]
     private array|Collection $presentationpages;
 
     /**
@@ -315,8 +436,16 @@ class Video
         return $this->presentationpages;
     }
 
-    #[ORM\ManyToOne(targetEntity: Presentationpage::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'video_only_presentationpage_template_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(
+        targetEntity: Presentationpage::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'video_only_presentationpage_template_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
     private ?Presentationpage $videoOnlyPresentationpageTemplate = null;
 
     public function getVideoOnlyPresentationpageTemplate(): ?Presentationpage

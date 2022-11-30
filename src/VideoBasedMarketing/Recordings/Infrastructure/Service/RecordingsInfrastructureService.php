@@ -393,13 +393,25 @@ class RecordingsInfrastructureService
         $video->setHasAssetFullWebm(true);
 
         $video->setAssetFullWebmFps(
-            $this->probeForVideoAssetFullFps(
+            $this->probeForVideoAssetFps(
                 $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
             )
         );
 
         $video->setAssetFullWebmSeconds(
-            $this->probeForVideoAssetFullSeconds(
+            $this->probeForVideoAssetSeconds(
+                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+            )
+        );
+
+        $video->setAssetFullWebmWidth(
+            $this->probeForVideoAssetWidth(
+                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+            )
+        );
+
+        $video->setAssetFullWebmHeight(
+            $this->probeForVideoAssetHeight(
                 $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
             )
         );
@@ -437,13 +449,25 @@ class RecordingsInfrastructureService
         $video->setHasAssetFullMp4(true);
 
         $video->setAssetFullMp4Fps(
-            $this->probeForVideoAssetFullFps(
+            $this->probeForVideoAssetFps(
                 $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
             )
         );
 
         $video->setAssetFullMp4Seconds(
-            $this->probeForVideoAssetFullSeconds(
+            $this->probeForVideoAssetSeconds(
+                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+            )
+        );
+
+        $video->setAssetFullMp4Width(
+            $this->probeForVideoAssetWidth(
+                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+            )
+        );
+
+        $video->setAssetFullMp4Height(
+            $this->probeForVideoAssetHeight(
                 $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
             )
         );
@@ -456,10 +480,10 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function probeForVideoAssetFullFps(string $filepath): float
+    private function probeForVideoAssetFps(string $filepath): float
     {
         $command = "/usr/bin/env ffprobe -v error -select_streams v -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate $filepath";
-        $this->logger->debug("calculateVideoAssetFullFps command is '$command'.");
+        $this->logger->debug("probeForVideoAssetFps command is '$command'.");
         $output = shell_exec($command);
 
         $outputParts = explode('/', $output);
@@ -475,16 +499,50 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function probeForVideoAssetFullSeconds(string $filepath): ?float
+    private function probeForVideoAssetSeconds(string $filepath): ?float
     {
         $command = "/usr/bin/env ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $filepath";
 
-        $this->logger->debug("calculateVideoAssetFullSeconds command is '$command'.");
+        $this->logger->debug("probeForVideoAssetSeconds command is '$command'.");
 
         $output = shell_exec($command);
 
         if (is_numeric($output)) {
             return (float)$output;
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    private function probeForVideoAssetWidth(string $filepath): ?int
+    {
+        $command = "/usr/bin/env ffprobe -v error -select_streams v -show_entries stream=width -of csv=p=0:s=x $filepath";
+
+        $this->logger->debug("probeForVideoAssetWidth command is '$command'.");
+
+        $output = shell_exec($command);
+
+        if (is_numeric($output)) {
+            return (int)$output;
+        } else {
+            return null;
+        }
+    }
+
+    private function probeForVideoAssetHeight(string $filepath): ?int
+    {
+        $command = "/usr/bin/env ffprobe -v error -select_streams v -show_entries stream=height -of csv=p=0:s=x $filepath";
+
+        $this->logger->debug("probeForVideoAssetHeight command is '$command'.");
+
+        $output = shell_exec($command);
+
+        if (is_numeric($output)) {
+            return (int)$output;
         } else {
             return null;
         }
