@@ -328,7 +328,7 @@ class RecordingsInfrastructureService
         }
 
         if (!$video->hasAssetFullMp4()) {
-            $this->encodeVideoAssetFullMp4($video);
+            $this->generateVideoAssetFullMp4($video);
         }
 
         if (!$video->hasAssetPosterAnimatedGif()) {
@@ -411,7 +411,7 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function encodeVideoAssetFullMp4(
+    private function generateVideoAssetFullMp4(
         Video $video
     ): void
     {
@@ -556,6 +556,9 @@ class RecordingsInfrastructureService
         );
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     private function concatenateChunksIntoFile(
         RecordingSession $recordingSession,
         string $targetFilePath
@@ -587,7 +590,7 @@ class RecordingsInfrastructureService
 
         $command = "/usr/bin/env cat $filenames > $targetFilePath";
 
-        $this->logger->debug("generateVideoAssetFullWebm command is '$command'");
+        $this->logger->debug("concatenateChunksIntoFile command is '$command'");
 
         shell_exec($command);
     }
