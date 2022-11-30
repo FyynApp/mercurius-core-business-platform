@@ -45,6 +45,8 @@ class RecordingSessionController
 
         $responseContent = [
             'settings' => [
+                'serviceAvailable' => true,
+
                 'recordingSessionId' => $recordingSession->getId(),
 
                 'postUrl' => $router->generate(
@@ -160,7 +162,7 @@ class RecordingSessionController
                 throw new BadRequestHttpException("Missing request file part 'video-blob'.");
             }
 
-            $recordingSessionInfrastructureService->handleRecordingSessionVideoChunk(
+            $chunk = $recordingSessionInfrastructureService->handleRecordingSessionVideoChunk(
                 $recordingSession,
                 $user,
                 $chunkName,

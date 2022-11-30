@@ -50,6 +50,10 @@ class SessionController
             [
                 'settings' =>
                     [
+                        'serviceAvailable' => true,
+
+                        'userCanStoreVideoOnServer' => true,
+
                         'userIsLoggedIn' => true,
 
                         'userIsRegistered' => $sessionInfo->getUser()->isRegistered(),
