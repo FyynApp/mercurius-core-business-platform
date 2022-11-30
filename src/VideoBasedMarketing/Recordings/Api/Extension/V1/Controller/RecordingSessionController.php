@@ -176,7 +176,7 @@ class RecordingSessionController
                 $user,
                 $chunkName,
                 $uploadedFile->getPathname(),
-                $uploadedFile->getMimeType()
+                AssetMimeType::VideoWebm->value
             );
 
             return $this->json(
