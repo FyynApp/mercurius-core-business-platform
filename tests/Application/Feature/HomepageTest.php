@@ -15,7 +15,7 @@ class HomepageTest
         $client = static::createClient();
         $client->request('GET', '/en/');
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'About');
+        $this->assertSelectorTextContains('h1', 'Increase sales using Video.');
     }
 
     public function testVisitingWhileLoggedIn()
