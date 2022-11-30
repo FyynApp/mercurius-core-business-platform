@@ -393,13 +393,13 @@ class RecordingsInfrastructureService
         $video->setHasAssetFullWebm(true);
 
         $video->setAssetFullWebmFps(
-            $this->calculateVideoAssetFullFps(
+            $this->probeForVideoAssetFullFps(
                 $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
             )
         );
 
         $video->setAssetFullWebmSeconds(
-            $this->calculateVideoAssetFullSeconds(
+            $this->probeForVideoAssetFullSeconds(
                 $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
             )
         );
@@ -437,13 +437,13 @@ class RecordingsInfrastructureService
         $video->setHasAssetFullMp4(true);
 
         $video->setAssetFullMp4Fps(
-            $this->calculateVideoAssetFullFps(
+            $this->probeForVideoAssetFullFps(
                 $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
             )
         );
 
         $video->setAssetFullMp4Seconds(
-            $this->calculateVideoAssetFullSeconds(
+            $this->probeForVideoAssetFullSeconds(
                 $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
             )
         );
@@ -456,7 +456,7 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function calculateVideoAssetFullFps(string $filepath): float
+    private function probeForVideoAssetFullFps(string $filepath): float
     {
         $command = "/usr/bin/env ffprobe -v error -select_streams v -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate $filepath";
         $this->logger->debug("calculateVideoAssetFullFps command is '$command'.");
@@ -475,7 +475,7 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function calculateVideoAssetFullSeconds(string $filepath): ?float
+    private function probeForVideoAssetFullSeconds(string $filepath): ?float
     {
         $command = "/usr/bin/env ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $filepath";
 
