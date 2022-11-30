@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
+use Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,7 +130,7 @@ class RecordingSessionController
                         UrlGeneratorInterface::ABSOLUTE_URL
                     ),
 
-                    // We receive the 'recordingDone' request BEFORE the final video chunk is received.
+                    // We (sometimes) receive the 'recordingDone' request BEFORE the final video chunk is received.
                     // This creates a chicken-and-egg problem: We need to return the recording preview asset
                     // url for the recordingDone request, but only the next video chunk request handling (which
                     // follows only after the 'recordingDone' request) can actually create the full video preview
@@ -162,7 +163,15 @@ class RecordingSessionController
                 throw new BadRequestHttpException("Missing request file part 'video-blob'.");
             }
 
-            $chunk = $recordingSessionInfrastructureService->handleRecordingSessionVideoChunk(
+            if ($uploadedFile->getPathname() === '') {
+                throw new Exception('File path is empty.');
+            }
+
+            if (!$uploadedFile->isValid()) {
+                throw new Exception('File path is empty.');
+            }
+
+            $recordingSessionInfrastructureService->handleRecordingSessionVideoChunk(
                 $recordingSession,
                 $user,
                 $chunkName,
