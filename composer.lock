@@ -7888,7 +7888,7 @@
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v2.6.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
@@ -7953,7 +7953,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v2.6.0"
+                "source": "https://github.com/symfony/ux-live-component/tree/v2.6.1"
             },
             "funding": [
                 {
@@ -7973,7 +7973,7 @@
         },
         {
             "name": "symfony/ux-twig-component",
-            "version": "v2.6.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-twig-component.git",
@@ -8030,7 +8030,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-twig-component/tree/v2.6.0"
+                "source": "https://github.com/symfony/ux-twig-component/tree/v2.6.1"
             },
             "funding": [
                 {
