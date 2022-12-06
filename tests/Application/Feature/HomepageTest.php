@@ -30,4 +30,12 @@ class HomepageTest
         $client->request('GET', '/en/');
         $this->assertResponseRedirects('/en/my/dashboard');
     }
+
+    public function testThatRequestingTheHomepageWithGermanLanguageUrlWorks()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/de/');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Verkaufsergebnisse mit Videos steigern.');
+    }
 }
