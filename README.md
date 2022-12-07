@@ -22,6 +22,10 @@ Now clone this repository and cd into the folder containing this `README.md` fil
 
 - Install PHP dependencies: `composer install`.
 
+- Set up the database: `php bin/console doctrine:database:create`.
+
+- Apply all database migrations: `php bin/console doctrine:migrations:migrate`.
+
 - Set up Node.js: `nvm install && nvm use`.
 
 - Install Node.js dependencies: `npm install --no-save`.
