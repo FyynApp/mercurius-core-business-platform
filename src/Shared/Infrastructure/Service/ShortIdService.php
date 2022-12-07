@@ -4,7 +4,7 @@ namespace App\Shared\Infrastructure\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use InvalidArgumentException;
+use ValueError;
 
 
 class ShortIdService
@@ -25,7 +25,7 @@ class ShortIdService
     public function encodeObject(object $o): string
     {
         if (!$this->entityManager->contains($o)) {
-            throw new InvalidArgumentException('Not an entity.');
+            throw new ValueError('Not an entity.');
         }
 
         if (   method_exists($o, 'getShortId')
@@ -40,14 +40,14 @@ class ShortIdService
             }
             return $shortId;
         } else {
-            throw new InvalidArgumentException('Object of class ' . get_class($o) . ' does not support a short id.');
+            throw new ValueError('Object of class ' . get_class($o) . ' does not support a short id.');
         }
     }
 
     public static function encode(int $num): string
     {
         if ($num < 1) {
-            throw new InvalidArgumentException('Number must be greater than 0.');
+            throw new ValueError('Number must be greater than 0.');
         }
 
         $str = '';
