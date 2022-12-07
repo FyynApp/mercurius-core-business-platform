@@ -163,7 +163,7 @@ class VideoManageWidgetLiveComponent
         $this->shareUrl =
             $this->router->generate(
                 'videobasedmarketing.recordings.presentation.video.share_link',
-                ['videoShortId' => $this->shortIdService->encodeObjectId($this->video)],
+                ['videoShortId' => $this->shortIdService->encodeObject($this->video)],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
     }
@@ -176,7 +176,7 @@ class VideoManageWidgetLiveComponent
             . urlencode(
                 $this->router->generate(
                     'videobasedmarketing.recordings.presentation.video.share_link',
-                    ['videoShortId' => $this->shortIdService->encodeObjectId($this->video)],
+                    ['videoShortId' => $this->shortIdService->encodeObject($this->video)],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 )
             );
@@ -196,7 +196,7 @@ class VideoManageWidgetLiveComponent
             . urlencode(
                 $this->router->generate(
                     'videobasedmarketing.recordings.presentation.video.share_link',
-                    ['videoShortId' => $this->shortIdService->encodeObjectId($this->video)],
+                    ['videoShortId' => $this->shortIdService->encodeObject($this->video)],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 )
             )
@@ -212,7 +212,7 @@ class VideoManageWidgetLiveComponent
             . urlencode(
                 $this->router->generate(
                     'videobasedmarketing.recordings.presentation.video.share_link',
-                    ['videoShortId' => $this->shortIdService->encodeObjectId($this->video)],
+                    ['videoShortId' => $this->shortIdService->encodeObject($this->video)],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 )
             );

@@ -3,6 +3,7 @@
 namespace App\Shared\Infrastructure\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use InvalidArgumentException;
 
 
@@ -18,7 +19,10 @@ class ShortIdService
         $this->entityManager = $entityManager;
     }
 
-    public function encodeObjectId(object $o): string
+    /**
+     * @throws Exception
+     */
+    public function encodeObject(object $o): string
     {
         if (!$this->entityManager->contains($o)) {
             throw new InvalidArgumentException('Not an entity.');
@@ -40,8 +44,12 @@ class ShortIdService
         }
     }
 
-    public static function encode($num): string
+    public static function encode(int $num): string
     {
+        if ($num < 1) {
+            throw new InvalidArgumentException('Number must be greater than 0.');
+        }
+
         $str = '';
 
         while ($num > 0) {

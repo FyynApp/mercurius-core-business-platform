@@ -54,7 +54,7 @@ class RecordingRequestsDomainService
     {
         $recordingRequest = new RecordingRequest($user);
         $this->entityManager->persist($recordingRequest);
-        $this->shortIdService->encodeObjectId($recordingRequest);
+        $this->shortIdService->encodeObject($recordingRequest);
 
         $this->entityManager->flush();
 

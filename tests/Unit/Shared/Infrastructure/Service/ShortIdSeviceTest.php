@@ -17,6 +17,11 @@ class ShortIdSeviceTest
         );
 
         $this->assertSame(
+            '47ShXr-',
+            ShortIdService::encode(37203685477)
+        );
+
+        $this->assertSame(
             '3ywvLyFPhqTx',
             ShortIdService::encode(PHP_INT_MAX)
         );
