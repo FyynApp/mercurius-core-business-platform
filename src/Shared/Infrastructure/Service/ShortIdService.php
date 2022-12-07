@@ -9,7 +9,7 @@ use InvalidArgumentException;
 
 class ShortIdService
 {
-    const ALPHABET = '23456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ-_';
+    const ALPHABET = '0123456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ';
     const BASE = 51;
 
     private EntityManagerInterface $entityManager;
@@ -58,17 +58,5 @@ class ShortIdService
         }
 
         return $str;
-    }
-
-    public static function decode(string $str): string
-    {
-        $num = 0;
-        $len = strlen($str);
-
-        for ($i = 0; $i < $len; $i++) {
-            $num = $num * self::BASE + strpos(self::ALPHABET, $str[$i]);
-        }
-
-        return $num;
     }
 }

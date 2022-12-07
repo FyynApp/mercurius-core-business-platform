@@ -12,17 +12,27 @@ class ShortIdSeviceTest
     public function test()
     {
         $this->assertSame(
-            '3',
+            '1',
             ShortIdService::encode(1)
         );
 
         $this->assertSame(
-            '47ShXr-',
+            'Z',
+            ShortIdService::encode(50)
+        );
+
+        $this->assertSame(
+            '10',
+            ShortIdService::encode(51)
+        );
+
+        $this->assertSame(
+            '25QfVpY',
             ShortIdService::encode(37203685477)
         );
 
         $this->assertSame(
-            '3ywvLyFPhqTx',
+            '1wtsJwCMfnRv',
             ShortIdService::encode(PHP_INT_MAX)
         );
     }
