@@ -26,7 +26,7 @@ class UserOwnedEntityLifecycleEventMessageHandler
         $this->logger->debug(
             "This is the UserOwnedEntitySyncEventMessageHandler
              with entity '{$message->getEntity()->getId()}'
-             of class '" . get_class($message->getEntity()) . "'
+             of class '{$message->getEntity()::class}'
              owned by user '{$message->getEntity()->getUser()->getUserIdentifier()}'."
         );
 

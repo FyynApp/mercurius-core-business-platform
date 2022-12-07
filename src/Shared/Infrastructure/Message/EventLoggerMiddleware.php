@@ -27,7 +27,7 @@ class EventLoggerMiddleware
         if (null !== $envelope->last(ReceivedStamp::class)) {
             $message = $envelope->getMessage();
 
-            $this->logger->debug("Middleware received message of class " . get_class($message));
+            $this->logger->debug("Middleware received message of class '{$message::class}'.");
         }
 
         return $stack

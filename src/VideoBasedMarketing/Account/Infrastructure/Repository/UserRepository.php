@@ -66,7 +66,7 @@ class UserRepository
             throw new UnsupportedUserException(
                 sprintf(
                     'Instances of "%s" are not supported.',
-                    get_class($user)
+                    $user::class
                 )
             );
         }
