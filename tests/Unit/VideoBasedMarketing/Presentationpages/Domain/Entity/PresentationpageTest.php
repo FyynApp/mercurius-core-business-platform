@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class PresentationpageTest
     extends TestCase
 {
-    public function test()
+    public function test(): void
     {
         $u = new User();
         $p = new Presentationpage($u);

@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class RecordingSessionForBrowserExtensionTest
     extends WebTestCase
 {
-    public function testRegisteredUser()
+    public function testRegisteredUser(): void
     {
         $client = static::createClient();
         $container = static::getContainer();
@@ -49,7 +49,7 @@ class RecordingSessionForBrowserExtensionTest
         );
     }
 
-    public function testUnregisteredUser()
+    public function testUnregisteredUser(): void
     {
         $client = static::createClient();
 

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class ShortIdSeviceTest
     extends TestCase
 {
-    public function test()
+    public function test(): void
     {
         $this->assertSame(
             '1',
