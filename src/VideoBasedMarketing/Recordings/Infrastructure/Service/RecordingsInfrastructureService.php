@@ -147,7 +147,13 @@ class RecordingsInfrastructureService
             throw new Exception("Recording session '{$recordingSession->getId()}' needs at least one video chunk.");
         }
 
-        shell_exec("/usr/bin/env ffmpeg -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,50)\" -q:v 70 -y {$this->getRecordingPreviewVideoPosterFilePath($recordingSession)}");
+        shell_exec(
+            "/usr/bin/env ffmpeg \
+            -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} \
+            -vf \"select=eq(n\,50)\" \
+            -q:v 70 \
+            -y {$this->getRecordingPreviewVideoPosterFilePath($recordingSession)}
+        ");
 
         $this->generateRecordingPreviewVideo($recordingSession);
 
@@ -341,7 +347,13 @@ class RecordingsInfrastructureService
         $this->createFilesystemStructureForVideoAssets($video);
 
         for ($i = 50; $i > 0; $i--) {
-            shell_exec("/usr/bin/env ffmpeg -i {$this->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf \"select=eq(n\,$i)\" -q:v 70 -y {$this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}");
+            shell_exec(
+                "/usr/bin/env ffmpeg \
+                -i {$this->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} \
+                -vf \"select=eq(n\,$i)\" \
+                -q:v 70 \
+                -y {$this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}
+            ");
 
             clearstatcache();
             $filesize = filesize($this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp));
@@ -359,7 +371,17 @@ class RecordingsInfrastructureService
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
-        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf scale=520:-1 -r 7 -q:v 80 -loop 0 -y {$this->getVideoPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}");
+        shell_exec(
+            "/usr/bin/env ffmpeg \
+            -ss 1 \
+            -t 3 \
+            -i {$this->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} \
+            -vf scale=520:-1 \
+            -r 7 \
+            -q:v 80 \
+            -loop 0 \
+            -y {$this->getVideoPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}
+        ");
 
         $video->setHasAssetPosterAnimatedWebp(true);
         $this->entityManager->persist($video);
@@ -370,7 +392,17 @@ class RecordingsInfrastructureService
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
-        shell_exec("/usr/bin/env ffmpeg -ss 1 -t 3 -i {$this->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" -r 7 -q:v 20 -loop 0 -y {$this->getVideoPosterAnimatedAssetFilePath($video, AssetMimeType::ImageGif)}");
+        shell_exec(
+            "/usr/bin/env ffmpeg \
+            -ss 1 \
+            -t 3 \
+            -i {$this->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} \
+            -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" \
+            -r 7 \
+            -q:v 20 \
+            -loop 0 \
+            -y {$this->getVideoPosterAnimatedAssetFilePath($video, AssetMimeType::ImageGif)}
+        ");
 
         $video->setHasAssetPosterAnimatedGif(true);
         $this->entityManager->persist($video);
