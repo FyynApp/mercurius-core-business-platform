@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 
@@ -17,16 +18,42 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 class Subscription
     implements UserOwnedEntityInterface
 {
+    /**
+     * @throws Exception
+     */
     public function __construct(
-        User $user,
-        MembershipPlan $membershipPlan,
-        SubscriptionStatus $status
-    )
+
+        #[ORM\ManyToOne(
+            targetEntity: User::class,
+            cascade: ['persist'],
+            inversedBy: 'subscriptions'
+        )]
+        #[ORM\JoinColumn(
+            name: 'users_id',
+            referencedColumnName: 'id',
+            nullable: false,
+            onDelete: 'CASCADE'
+        )]
+        private readonly User $user,
+
+        #[ORM\Column(
+            type: 'string',
+            nullable: false,
+            enumType: MembershipPlanName::class
+        )]
+        private readonly MembershipPlanName $membershipPlanName,
+
+
+        #[ORM\Column(
+            type: 'string',
+            nullable: false,
+            enumType: SubscriptionStatus::class
+        )]
+        private SubscriptionStatus $status,
+
+)
     {
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
-        $this->user = $user;
-        $this->membershipPlanName = $membershipPlan->getName();
-        $this->status = $status;
     }
 
 
@@ -51,32 +78,17 @@ class Subscription
     }
 
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'subscriptions')]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private User $user;
-
     public function getUser(): User
     {
         return $this->user;
     }
 
 
-    #[ORM\Column(type: 'string', nullable: false, enumType: MembershipPlanName::class)]
-    private MembershipPlanName $membershipPlanName;
-
     public function getMembershipPlanName(): MembershipPlanName
     {
         return $this->membershipPlanName;
     }
 
-    public function setMembershipPlanName(MembershipPlanName $membershipPlanName): void
-    {
-        $this->membershipPlanName = $membershipPlanName;
-    }
-
-
-    #[ORM\Column(type: 'string', nullable: false, enumType: SubscriptionStatus::class)]
-    private SubscriptionStatus $status;
 
     public function getStatus(): SubscriptionStatus
     {

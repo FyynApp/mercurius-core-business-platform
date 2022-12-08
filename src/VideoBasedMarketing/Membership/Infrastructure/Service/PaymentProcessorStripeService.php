@@ -39,6 +39,7 @@ class PaymentProcessorStripeService
 
     /**
      * @throws ApiErrorException
+     * @throws Exception
      */
     public function getSubscriptionCheckoutUrl(
         User           $user,
@@ -47,7 +48,7 @@ class PaymentProcessorStripeService
     {
         $subscription = new Subscription(
             $user,
-            $membershipPlan,
+            $membershipPlan->getName(),
             SubscriptionStatus::Pending
         );
 
