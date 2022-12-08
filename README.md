@@ -53,11 +53,11 @@ Coming from the setup described above, you should always be able to get back to 
 
 - Make sure that your Terminal sessions use the right PHP version - `php --version` should show `PHP 8.1.0` or higher (a `PHP 8.2.x` version is fine, too). If not, try to fix this by running `brew unlink php && brew link --force php`.
 
-- Make sure that the MariaDB database Docker container is running: `docker run --name mcbp-db`.
+- Make sure that the MariaDB database Docker container is running: `docker start mcbp-db`.
 
 - Applying database migrations is idempotent and never hurts: `php bin/console doctrine:migrations:migrate`.
 
-- In a dedicated Terminal window, start the NPM-based build watcher: `nvm use && npm run watch`. Keep the terminal window open and running in the background.
+- In a dedicated Terminal window, start the NPM-based build watcher: `nvm install && npm run watch`. Keep the terminal window open and running in the background.
 
 - In the new Terminal window, run the background jobs process: `php bin/console --no-debug messenger:consume async`. Keep the terminal window open and running in the background.
 
