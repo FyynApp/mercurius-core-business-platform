@@ -4,6 +4,8 @@
 
 ### On an Intel-based macOS system
 
+#### Setup
+
 - Install [Homebrew](https://brew.sh/).
 
 - Install [Docker Desktop](https://www.docker.com/products/docker-desktop) (choose " Intel Chip").
@@ -41,6 +43,25 @@ Now clone this repository and cd into the folder containing this `README.md` fil
 - Open a new Terminal window.
 
 - In the new Terminal window, in the project folder, run the background jobs process: `php bin/console --no-debug messenger:consume async`. Keep the terminal window open and running in the background.
+
+- Open `http://127.0.0.1:8000/` in your browser. Enjoy!
+
+
+#### Getting back to work
+
+Coming from the setup described above, you should always be able to get back to work after "destructive" events (like reboots) by doing the following (most command require you to `cd` into the project folder containing this `README.md` file):
+
+- Make sure that your Terminal sessions use the right PHP version - `php --version` should show `PHP 8.1.0` or higher (a `PHP 8.2.x` version is fine, too). If not, try to fix this by running `brew unlink php && brew link --force php`.
+
+- Make sure that the MariaDB database Docker container is running: `docker run --name mcbp-db`.
+
+- Applying database migrations is idempotent and never hurts: `php bin/console doctrine:migrations:migrate`.
+
+- In a dedicated Terminal window, start the NPM-based build watcher: `nvm use && npm run watch`. Keep the terminal window open and running in the background.
+
+- In the new Terminal window, run the background jobs process: `php bin/console --no-debug messenger:consume async`. Keep the terminal window open and running in the background.
+
+- In a dedicated Terminal window, start the Symfony web server: `~/.symfony5/bin/symfony server:start`. Keep the terminal window open and running in the background.
 
 - Open `http://127.0.0.1:8000/` in your browser. Enjoy!
 
