@@ -8,7 +8,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use function get_class;
 
 
 class UserRepository
@@ -66,7 +65,7 @@ class UserRepository
             throw new UnsupportedUserException(
                 sprintf(
                     'Instances of "%s" are not supported.',
-                    get_class($user)
+                    $user::class
                 )
             );
         }

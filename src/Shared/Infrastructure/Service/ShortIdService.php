@@ -40,7 +40,7 @@ class ShortIdService
             }
             return $shortId;
         } else {
-            throw new ValueError('Object of class ' . get_class($o) . ' does not support a short id.');
+            throw new ValueError("Object of class '" . $o::class . "' does not support a short id.");
         }
     }
 
