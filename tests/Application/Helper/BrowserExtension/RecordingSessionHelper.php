@@ -12,15 +12,22 @@ class RecordingSessionHelper
         KernelBrowser $client,
     ): Crawler
     {
+        $isFollowingRedirects = $client->isFollowingRedirects();
+
+        $client->followRedirects(true);
+
         $client->request(
             'GET',
             '/api/extension/v1/account/session-info'
         );
-        $client->followRedirect();
 
-        return $client->request(
+        $crawler = $client->request(
             'POST',
             '/api/extension/v1/recordings/recording-sessions/'
         );
+
+        $client->followRedirects($isFollowingRedirects);
+
+        return $crawler;
     }
 }

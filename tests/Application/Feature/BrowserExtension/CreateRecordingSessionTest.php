@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
-class RecordingSessionForBrowserExtensionTest
+class CreateRecordingSessionTest
     extends WebTestCase
 {
     public function testCreatingRecordingSessionForRegisteredUser(): void
@@ -30,11 +30,7 @@ class RecordingSessionForBrowserExtensionTest
             $em->getRepository(RecordingSession::class)->findAll()
         );
 
-        $client->request(
-            'POST',
-            '/api/extension/v1/recordings/recording-sessions/'
-        );
-        $this->assertResponseRedirects();
+        RecordingSessionHelper::createRecordingSession($client);
 
         $sessions = $em->getRepository(RecordingSession::class)->findAll();
 
