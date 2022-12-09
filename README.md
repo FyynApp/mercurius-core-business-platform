@@ -76,4 +76,3 @@ Coming from the setup described above, you should always be able to get back to 
 ## dev setup
 
     docker run --name mcbp-db -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=secret -d mariadb:10.6.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
