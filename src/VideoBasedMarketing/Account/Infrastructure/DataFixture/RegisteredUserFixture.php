@@ -12,7 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class RegisteredUserFixture
     extends Fixture
 {
-    const EMAIL = 'j.doe@example.com';
+    const EMAIL = 'registered.user@example.com';
 
     private UserPasswordHasherInterface $userPasswordHasher;
 
