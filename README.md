@@ -12,7 +12,7 @@
 
 - Install NVM (Node Version Manager) by running `brew install nvm`.
 
-- Install all required PHP packages: `brew install php@8.1 composer`.
+- Install all required PHP packages: `brew tap shivammathur/php && brew install php@8.2 composer`.
 
 - Install other required packages: `brew install ffmpeg mysql-client`.
 
@@ -51,7 +51,7 @@ Now clone this repository and cd into the folder containing this `README.md` fil
 
 Coming from the setup described above, you should always be able to get back to work after "destructive" events (like reboots) by doing the following (most command require you to `cd` into the project folder containing this `README.md` file):
 
-- Make sure that your Terminal sessions use the right PHP version - `php --version` should show `PHP 8.1.0` or higher (a `PHP 8.2.x` version is fine, too). If not, try to fix this by running `brew unlink php && brew link --force php`.
+- Make sure that your Terminal sessions use the right PHP version - `php --version` should show `PHP 8.2.0` or higher. If not, try to fix this by running `brew unlink php && brew link --force php`.
 
 - Make sure that the MariaDB database Docker container is running: `docker start mcbp-db`.
 
@@ -76,4 +76,3 @@ Coming from the setup described above, you should always be able to get back to 
 ## dev setup
 
     docker run --name mcbp-db -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=secret -d mariadb:10.6.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
