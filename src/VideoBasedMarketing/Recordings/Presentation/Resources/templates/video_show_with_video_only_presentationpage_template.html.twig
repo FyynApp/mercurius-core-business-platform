@@ -1,4 +1,4 @@
-{% extends '@shared/base_naked.html.twig' %}
+{% extends '@shared/base_landingpage.html.twig' %}
 
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
@@ -13,22 +13,46 @@
     <div
             class="w-full h-full min-h-screen p-0 m-0"
             style="
-                    font-family: 'Tiro Gurmukhi', 'Times New Roman', serif;
+                    font-family: 'Inter var', 'Times New Roman', serif;
                     color: {{ video.videoOnlyPresentationpageTemplate.textColor.value }};
                     background-color: {{ video.videoOnlyPresentationpageTemplate.bgColor.value }};
+                    {# background-image: url('{{ asset('assets/images/backgrounds/background-doodle.jpg') }}'); #}
             "
     >
-        <div class="flex flex-col justify-start items-center p-8 pt-24 w-fit mx-auto">
+        <div class="w-full">
+            {#
+            <a
+                    href="{{ path('shared.presentation.contentpages.homepage') }}"
+                    target="_blank"
+                    class="
+                        absolute top-8 right-8 flex flex-row gap-2 justify-start items-center
+                        p-2 pr-4 pl-4 rounded-sm opacity-100
+                        hover:opacity-20
+                        bg-neutral-500 text-neutral-300 font-light
+                    "
+            >
+                <span>This Video is powered by Fyyn.io</span>
+                <img
+                        class="h-6"
+                        src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
+                        alt="Fyyn.io"
+                >
+            </a>
+#}
+
+        </div>
+        <div class="flex flex-col justify-start items-center  w-fit mx-auto">
 
             <div
                     class="text-7xl pb-8 border-b-2 mb-12 break-normal"
                     style="border-color: {{ video.videoOnlyPresentationpageTemplate.fgColor.value }}"
-            >
+            >{#
                 {{ video.title }}
+                #}
             </div>
 
-            <div class="w-full max-w-2xl">
-                {{ component(
+            <div class="w-full max-w-6xl">
+                    {{ component(
                     'videobasedmarketing_recordings_video_player_embedded',
                     { video }
                 ) }}
@@ -36,23 +60,7 @@
         </div>
     </div>
 
-    <a
-            href="{{ path('shared.presentation.contentpages.homepage') }}"
-            target="_blank"
-            class="
-                        absolute top-8 right-8 flex flex-row gap-2 justify-start items-center
-                        p-2 pr-4 pl-4 rounded-md opacity-20
-                        hover:opacity-100
-                        bg-neutral-500 text-neutral-300 font-light
-                    "
-    >
-        <span>hosted by Fyyn.io</span>
-        <img
-                class="h-6"
-                src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
-                alt="Fyyn.io"
-        >
-    </a>
+
 
 
 {% endblock %}
