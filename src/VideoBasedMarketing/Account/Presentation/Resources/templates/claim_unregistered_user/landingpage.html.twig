@@ -5,6 +5,11 @@
 {% trans_default_domain 'videobasedmarketing.account' %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor-static/Video.js/7.20.3/video.min.js') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor-static/Video.js/7.20.3/video.min.js') }}"></script>
 {% endblock %}
 
 {% block body %}
