@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Shared\Infrastructure\Service;
+namespace App\Tests\UnitTests\Shared\Infrastructure\Service;
 
 use App\Shared\Infrastructure\Service\ShortIdService;
 use PHPUnit\Framework\TestCase;

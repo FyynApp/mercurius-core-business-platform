@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Application\Feature\BrowserExtension;
+namespace App\Tests\ApplicationTests\Feature\BrowserExtension;
 
-use App\Tests\Application\Helper\BrowserExtension\RecordingSessionHelper;
+use App\Tests\ApplicationTests\Helper\BrowserExtension\RecordingSessionHelper;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;

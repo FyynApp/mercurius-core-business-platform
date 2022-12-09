@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Application\Helper\BrowserExtension;
+namespace App\Tests\ApplicationTests\Helper\BrowserExtension;
 
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
