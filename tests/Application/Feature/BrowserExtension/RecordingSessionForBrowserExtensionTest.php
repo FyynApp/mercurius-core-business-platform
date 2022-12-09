@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Tests\Application\Feature;
+namespace App\Tests\Application\Feature\BrowserExtension;
 
+use App\Tests\Application\Helper\BrowserExtension\RecordingSessionHelper;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
@@ -24,7 +25,10 @@ class RecordingSessionForBrowserExtensionTest
 
         $em = $container->get(EntityManagerInterface::class);
 
-        $this->assertCount(0, $em->getRepository(RecordingSession::class)->findAll());
+        $this->assertCount(
+            0,
+            $em->getRepository(RecordingSession::class)->findAll()
+        );
 
         $client->request(
             'POST',
@@ -41,7 +45,10 @@ class RecordingSessionForBrowserExtensionTest
 
         $this->assertTrue($session->getUser()->isRegistered());
 
-        $structuredResponse = json_decode($client->getResponse()->getContent(), true);
+        $structuredResponse = json_decode(
+            $client->getResponse()->getContent(),
+            true
+        );
 
         $this->assertSame(
             300,
@@ -56,19 +63,12 @@ class RecordingSessionForBrowserExtensionTest
         $container = static::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
-        $this->assertCount(0, $em->getRepository(RecordingSession::class)->findAll());
-
-        $client->request(
-            'GET',
-            '/api/extension/v1/account/session-info'
+        $this->assertCount(
+            0,
+            $em->getRepository(RecordingSession::class)->findAll()
         );
-        $client->followRedirect();
 
-        $client->request(
-            'POST',
-            '/api/extension/v1/recordings/recording-sessions/'
-        );
-        $this->assertResponseRedirects();
+        RecordingSessionHelper::createRecordingSession($client);
 
         $sessions = $em->getRepository(RecordingSession::class)->findAll();
 
@@ -79,7 +79,10 @@ class RecordingSessionForBrowserExtensionTest
 
         $this->assertFalse($session->getUser()->isRegistered());
 
-        $structuredResponse = json_decode($client->getResponse()->getContent(), true);
+        $structuredResponse = json_decode(
+            $client->getResponse()->getContent(),
+            true
+        );
 
         $this->assertSame(
             60,
