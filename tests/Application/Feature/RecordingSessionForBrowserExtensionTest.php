@@ -2,7 +2,7 @@
 
 namespace App\Tests\Application\Feature;
 
-use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
+use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +18,7 @@ class RecordingSessionForBrowserExtensionTest
         $container = static::getContainer();
 
         $userRepository = $container->get(UserRepository::class);
-        $user = $userRepository->findOneBy(['email' => UserFixture::TEST_USER_EMAIL]);
+        $user = $userRepository->findOneBy(['email' => RegisteredUserFixture::EMAIL]);
 
         $client->loginUser($user);
 

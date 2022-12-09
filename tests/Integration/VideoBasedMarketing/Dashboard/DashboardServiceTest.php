@@ -2,7 +2,7 @@
 
 namespace App\Tests\Integration\VideoBasedMarketing\Dashboard;
 
-use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\UserFixture;
+use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageType;
@@ -17,7 +17,7 @@ class DashboardServiceTest
         self::bootKernel();
         $container = static::getContainer();
         $userRepository = $container->get(UserRepository::class);
-        $user = $userRepository->findOneBy(['email' => UserFixture::TEST_USER_EMAIL]);
+        $user = $userRepository->findOneBy(['email' => RegisteredUserFixture::EMAIL]);
 
         $dashboardService = $container->get(DashboardService::class);
 
