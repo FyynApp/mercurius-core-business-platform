@@ -6,57 +6,34 @@
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor-static/Video.js/7.20.3/video-js.min.css') }}">
+    {{ encore_entry_link_tags('videoplayer') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor-static/Video.js/7.20.3/video.min.js') }}"></script>
 {% endblock %}
 
 {% block body %}
 
     <div
-            class="w-full h-full min-h-screen p-0 m-0"
-            style="
-                    font-family: 'Inter var', 'Times New Roman', serif;
-                    color: {{ video.videoOnlyPresentationpageTemplate.textColor.value }};
-                    background-color: {{ video.videoOnlyPresentationpageTemplate.bgColor.value }};
-                    {# background-image: url('{{ asset('assets/images/backgrounds/background-doodle.jpg') }}'); #}
-            "
+            class="grid md:grid-cols-6 gap-4 h-full min-h-screen p-0 m-0"
     >
-        <div class="w-full">
-            {#
-            <a
-                    href="{{ path('shared.presentation.contentpages.homepage') }}"
-                    target="_blank"
-                    class="
-                        absolute top-8 right-8 flex flex-row gap-2 justify-start items-center
-                        p-2 pr-4 pl-4 rounded-sm opacity-100
-                        hover:opacity-20
-                        bg-neutral-500 text-neutral-300 font-light
-                    "
-            >
-                <span>This Video is powered by Fyyn.io</span>
-                <img
-                        class="h-6"
-                        src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
-                        alt="Fyyn.io"
-                >
-            </a>
-#}
-
-        </div>
-        <div class="flex flex-col justify-start items-center  w-fit mx-auto">
+        <div style="
+                font-family: 'Inter var', 'Times New Roman', serif;
+                color: {{ video.videoOnlyPresentationpageTemplate.textColor.value }};
+                background-color: {{ video.videoOnlyPresentationpageTemplate.bgColor.value }}"
+             class="md:col-start-2 col-span-4 pt-10 md:p-6">
 
             <div
-                    class="text-7xl pb-8 border-b-2 mb-12 break-normal"
-                    style="border-color: {{ video.videoOnlyPresentationpageTemplate.fgColor.value }}"
-            >{#
-                {{ video.title }}
-                #}
-            </div>
-
-            <div class="w-full max-w-6xl">
-                    {{ component(
+                    class="w-full md:p-6" style="max-width: 980px;"
+            >
+                {{ component(
                     'videobasedmarketing_recordings_video_player_embedded',
                     { video }
                 ) }}
             </div>
+
         </div>
     </div>
 

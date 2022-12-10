@@ -23,6 +23,7 @@ Encore
     .addEntry('app', './assets/app.ts')
 
     .addStyleEntry('tailwind', './assets/styles/tailwind.css')
+    .addStyleEntry('videoplayer', './assets/styles/videoplayer.css')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
