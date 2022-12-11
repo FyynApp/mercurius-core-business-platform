@@ -30,41 +30,7 @@ class UnregisteredUserWorkflowTest
             $structuredResponse['settings']['postUrl']
         );
 
-        foreach (['1', '2', '3'] as $videoChunkId) {
-            $fs = new Filesystem();
-            $fs->copy(
-                __DIR__ . "/../../../Resources/fixtures/video-chunks/video-chunk-$videoChunkId",
-                "/var/tmp/video-chunk-$videoChunkId",
-                true
-            );
-            $videoChunkFile = new UploadedFile(
-                "/var/tmp/video-chunk-$videoChunkId",
-                "$videoChunkId.webm",
-                'video/webm;codecs=vp9,opus',
-                null,
-                true
-            );
-
-            $client->request(
-                'POST',
-                $postUrl,
-                ['video' => "$videoChunkId.webm"],
-                ['video-blob' => $videoChunkFile],
-                [
-                    'CONTENT_TYPE' => 'multipart/form-data',
-                ],
-            );
-        }
-
-        $client->request(
-            'POST',
-            $postUrl,
-            ['recordingDone' => 'true'],
-            [],
-            [
-                'CONTENT_TYPE' => 'multipart/form-data',
-            ],
-        );
+        RecordingSessionHelper::uploadChunks($client, $postUrl);
 
         $this->assertFileEquals(
             __DIR__
