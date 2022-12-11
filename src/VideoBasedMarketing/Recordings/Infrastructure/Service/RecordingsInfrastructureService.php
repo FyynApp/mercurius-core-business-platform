@@ -16,6 +16,7 @@ use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\RouterInterface;
 
 
@@ -147,13 +148,22 @@ class RecordingsInfrastructureService
             throw new Exception("Recording session '{$recordingSession->getId()}' needs at least one video chunk.");
         }
 
-        shell_exec(
-            "/usr/bin/env ffmpeg \
-            -i {$this->getVideoChunkContentStorageFilePath($recordingSession->getRecordingSessionVideoChunks()->first())} \
-            -vf \"select=eq(n\,50)\" \
-            -q:v 70 \
-            -y {$this->getRecordingPreviewVideoPosterFilePath($recordingSession)}
-        ");
+        $process = new Process(
+            [
+                'ffmpeg',
+                '-i',
+                $this->getVideoChunkContentStorageFilePath(
+                    $recordingSession->getRecordingSessionVideoChunks()->first()
+                ),
+                '-vf',
+                'select=eq(n\,50)',
+                '-q:v',
+                '70',
+                '-y',
+                $this->getRecordingPreviewVideoPosterFilePath($recordingSession)
+            ]
+        );
+        $process->run();
 
         $this->generateRecordingPreviewVideo($recordingSession);
 
@@ -347,16 +357,35 @@ class RecordingsInfrastructureService
         $this->createFilesystemStructureForVideoAssets($video);
 
         for ($i = 50; $i > 0; $i--) {
-            shell_exec(
-                "/usr/bin/env ffmpeg \
-                -i {$this->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} \
-                -vf \"select=eq(n\,$i)\" \
-                -q:v 70 \
-                -y {$this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)}
-            ");
+            $process = new Process(
+                [
+                    'ffmpeg',
+
+                    '-i',
+                    $this->getVideoChunkContentStorageFilePath(
+                        $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
+                    ),
+
+                    '-vf',
+                    "select=eq(n\,$i)",
+
+                    '-q:v',
+                    '70',
+
+                    '-y',
+                    $this->getVideoPosterStillAssetFilePath(
+                        $video,
+                        AssetMimeType::ImageWebp
+                    )
+                ]
+            );
+            $process->run();
 
             clearstatcache();
-            $filesize = filesize($this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp));
+            $filesize = filesize($this->getVideoPosterStillAssetFilePath(
+                $video,
+                AssetMimeType::ImageWebp
+            ));
 
             if ($filesize > 0) {
                 $video->setHasAssetPosterStillWebp(true);
@@ -371,17 +400,41 @@ class RecordingsInfrastructureService
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
-        shell_exec(
-            "/usr/bin/env ffmpeg \
-            -ss 1 \
-            -t 3 \
-            -i {$this->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} \
-            -vf scale=520:-1 \
-            -r 7 \
-            -q:v 80 \
-            -loop 0 \
-            -y {$this->getVideoPosterAnimatedAssetFilePath($video, AssetMimeType::ImageWebp)}
-        ");
+        $process = new Process(
+            [
+                'ffmpeg',
+
+                '-ss',
+                '1',
+
+                '-t',
+                '3',
+
+                '-i',
+                $this->getVideoChunkContentStorageFilePath(
+                    $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
+                ),
+
+                '-vf',
+                'scale=520:-1',
+
+                '-r',
+                '7',
+
+                '-q:v',
+                '80',
+
+                '-loop',
+                '0',
+
+                '-y',
+                $this->getVideoPosterAnimatedAssetFilePath(
+                    $video,
+                    AssetMimeType::ImageWebp
+                )
+            ]
+        );
+        $process->run();
 
         $video->setHasAssetPosterAnimatedWebp(true);
         $this->entityManager->persist($video);
@@ -392,17 +445,41 @@ class RecordingsInfrastructureService
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
-        shell_exec(
-            "/usr/bin/env ffmpeg \
-            -ss 1 \
-            -t 3 \
-            -i {$this->getVideoChunkContentStorageFilePath($video->getRecordingSession()->getRecordingSessionVideoChunks()->first())} \
-            -vf \"fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none\" \
-            -r 7 \
-            -q:v 20 \
-            -loop 0 \
-            -y {$this->getVideoPosterAnimatedAssetFilePath($video, AssetMimeType::ImageGif)}
-        ");
+        $process = new Process(
+            [
+                'ffmpeg',
+
+                '-ss',
+                '1',
+
+                '-t',
+                '3',
+
+                '-i',
+                $this->getVideoChunkContentStorageFilePath(
+                    $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
+                ),
+
+                '-vf',
+                'fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none',
+
+                '-r',
+                '7',
+
+                '-q:v',
+                '20',
+
+                '-loop',
+                '0',
+
+                '-y',
+                $this->getVideoPosterAnimatedAssetFilePath(
+                    $video,
+                    AssetMimeType::ImageGif
+                )
+            ]
+        );
+        $process->run();
 
         $video->setHasAssetPosterAnimatedGif(true);
         $this->entityManager->persist($video);
@@ -465,18 +542,42 @@ class RecordingsInfrastructureService
 
         // We generate the MP4 asset from the WebM asset that
         // was created by concatenating the WebM chunks.
-        shell_exec(
-            "/usr/bin/env ffmpeg \
-            -i {$this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)} \
-            -c:v libx264 \
-            -profile:v main \
-            -level 4.2 \
-            -vf format=yuv420p,fps=60 \
-            -c:a aac \
-            -movflags \
-            +faststart \
-            -y {$this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)}
-        ");
+        $process = new Process(
+            [
+                'ffmpeg',
+
+                '-i',
+                $this->getVideoFullAssetFilePath(
+                    $video,
+                    AssetMimeType::VideoWebm
+                ),
+
+                '-c:v',
+                'libx264',
+
+                '-profile:v',
+                'main',
+
+                '-level',
+                '4.2',
+
+                '-vf',
+                'format=yuv420p,fps=60',
+
+                '-c:a',
+                'aac',
+
+                '-movflags',
+                '+faststart',
+
+                '-y',
+                $this->getVideoFullAssetFilePath(
+                    $video,
+                    AssetMimeType::VideoMp4
+                )
+            ]
+        );
+        $process->run();
 
         $video->setHasAssetFullMp4(true);
 
@@ -514,9 +615,28 @@ class RecordingsInfrastructureService
      */
     private function probeForVideoAssetFps(string $filepath): float
     {
-        $command = "/usr/bin/env ffprobe -v error -select_streams v -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate $filepath";
-        $this->logger->debug("probeForVideoAssetFps command is '$command'.");
-        $output = shell_exec($command);
+        $process = new Process(
+            [
+                'ffprobe',
+
+                '-v',
+                'error',
+
+                '-select_streams',
+                'v',
+
+                '-of',
+                'default=noprint_wrappers=1:nokey=1',
+
+                '-show_entries',
+                'stream=r_frame_rate',
+
+                $filepath
+            ]
+        );
+        $process->run();
+
+        $output = $process->getOutput();
 
         $outputParts = explode('/', $output);
 
@@ -533,11 +653,28 @@ class RecordingsInfrastructureService
      */
     private function probeForVideoAssetSeconds(string $filepath): ?float
     {
-        $command = "/usr/bin/env ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $filepath";
+        $process = new Process(
+            [
+                'ffprobe',
 
-        $this->logger->debug("probeForVideoAssetSeconds command is '$command'.");
+                '-v',
+                'error',
 
-        $output = shell_exec($command);
+                '-select_streams',
+                'v',
+
+                '-of',
+                'default=noprint_wrappers=1:nokey=1',
+
+                '-show_entries',
+                'format=duration',
+
+                $filepath
+            ]
+        );
+        $process->run();
+
+        $output = $process->getOutput();
 
         if (is_numeric($output)) {
             return (float)$output;
@@ -552,11 +689,31 @@ class RecordingsInfrastructureService
      */
     private function probeForVideoAssetWidth(string $filepath): ?int
     {
-        $command = "/usr/bin/env ffprobe -v error -select_streams v -show_entries stream=width -of csv=p=0:s=x $filepath";
+        $process = new Process(
+            [
+                'ffprobe',
 
-        $this->logger->debug("probeForVideoAssetWidth command is '$command'.");
+                '-v',
+                'error',
 
-        $output = shell_exec($command);
+                '-select_streams',
+                'v',
+
+                '-of',
+                'default=noprint_wrappers=1:nokey=1',
+
+                '-show_entries',
+                'stream=width',
+
+                '-of',
+                'csv=p=0:s=x',
+
+                $filepath
+            ]
+        );
+        $process->run();
+
+        $output = $process->getOutput();
 
         if (is_numeric($output)) {
             return (int)$output;
@@ -567,11 +724,31 @@ class RecordingsInfrastructureService
 
     private function probeForVideoAssetHeight(string $filepath): ?int
     {
-        $command = "/usr/bin/env ffprobe -v error -select_streams v -show_entries stream=height -of csv=p=0:s=x $filepath";
+        $process = new Process(
+            [
+                'ffprobe',
 
-        $this->logger->debug("probeForVideoAssetHeight command is '$command'.");
+                '-v',
+                'error',
 
-        $output = shell_exec($command);
+                '-select_streams',
+                'v',
+
+                '-of',
+                'default=noprint_wrappers=1:nokey=1',
+
+                '-show_entries',
+                'stream=height',
+
+                '-of',
+                'csv=p=0:s=x',
+
+                $filepath
+            ]
+        );
+        $process->run();
+
+        $output = $process->getOutput();
 
         if (is_numeric($output)) {
             return (int)$output;
@@ -678,10 +855,10 @@ class RecordingsInfrastructureService
         }
         $filenames = implode(' ', $filenames);
 
-        $command = "/usr/bin/env cat $filenames > $targetFilePath";
+        $process = Process::fromShellCommandline(
+            "cat $filenames > $targetFilePath"
+        );
 
-        $this->logger->debug("concatenateChunksIntoFile command is '$command'");
-
-        shell_exec($command);
+        $process->run();
     }
 }

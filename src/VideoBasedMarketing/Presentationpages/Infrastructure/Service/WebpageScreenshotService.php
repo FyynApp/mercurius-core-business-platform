@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesSe
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -74,24 +75,29 @@ class WebpageScreenshotService
             ]
         );
 
-        $commandLine = '
-            docker run 
-                -i
-                --init
-                --cap-add=SYS_ADMIN
-                --rm
-                --env TARGET_URL="' . $targetUrl . '"
-                --env SCREENSHOT_FILE_PATH="/host/screenshot.webp"
-                -v ' . $contentStoragePath . ':/host ghcr.io/puppeteer/puppeteer:latest
-                node -e "`cat '
-            . $this->parameterBag->get('kernel.project_dir')
-            . 'src/VideoBasedMarketing/Presentationpages/Infrastructure/Resources/scripts/webpageScreenshotCapture.js'
-            . '`"
-        ';
-
-        $commandLine = mb_ereg_replace("\n", " ", $commandLine);
-
-        shell_exec($commandLine);
+        $process = new Process(
+            [
+                'docker',
+                'run',
+                '-i',
+                '--init',
+                '--cap-add=SYS_ADMIN',
+                '--rm',
+                '--env',
+                "TARGET_URL='$targetUrl'",
+                '--env',
+                'SCREENSHOT_FILE_PATH="/host/screenshot.webp"',
+                '-v',
+                "$contentStoragePath:/host",
+                'ghcr.io/puppeteer/puppeteer:latest',
+                'node',
+                '-e',
+                "`cat '{$this->parameterBag->get('kernel.project_dir')}"
+                . 'src/VideoBasedMarketing/Presentationpages/Infrastructure/Resources/scripts/webpageScreenshotCapture.js'
+                . "'`"
+            ]
+        );
+        $process->run();
 
         $fs = new Filesystem();
         $fs->copy(
@@ -112,19 +118,21 @@ class WebpageScreenshotService
         $this->entityManager->flush();
 
         // Docker Container user owns the generated file, therefore he must delete it
-        $commandLine = '
-            docker run 
-                -i
-                --init
-                --cap-add=SYS_ADMIN
-                --rm
-                -v ' . $contentStoragePath . ':/host ghcr.io/puppeteer/puppeteer:latest
-                rm -f /host/screenshot.webp
-        ';
-
-        $commandLine = mb_ereg_replace("\n", " ", $commandLine);
-
-        shell_exec($commandLine);
+        $process = new Process(
+            [
+                'docker',
+                'run',
+                '-i',
+                '--init',
+                '--cap-add=SYS_ADMIN',
+                '--rm',
+                '-v',
+                "$contentStoragePath:/host",
+                'ghcr.io/puppeteer/puppeteer:latest',
+                'rm -f /host/screenshot.webp'
+            ]
+        );
+        $process->run();
     }
 
     private function createFilesystemStructuresForScreenshots(

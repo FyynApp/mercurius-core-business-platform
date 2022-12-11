@@ -30,7 +30,7 @@ class UnregisteredUserWorkflowTest
             $structuredResponse['settings']['postUrl']
         );
 
-        foreach (['1', '2'] as $videoChunkId) {
+        foreach (['1', '2', '3'] as $videoChunkId) {
             $fs = new Filesystem();
             $fs->copy(
                 __DIR__ . "/../../../Resources/fixtures/video-chunks/video-chunk-$videoChunkId",
@@ -64,6 +64,30 @@ class UnregisteredUserWorkflowTest
             [
                 'CONTENT_TYPE' => 'multipart/form-data',
             ],
+        );
+
+        $this->assertFileEquals(
+            __DIR__
+            . '/../../../'
+            . 'Resources/fixtures/correctly-encoded-recording-preview-video-poster.webp',
+
+            __DIR__
+            . '/../../../../'
+            . 'public/generated-content/recording-sessions/'
+            . $recordingSessionId .
+            '/recording-preview-video-poster.webp'
+        );
+
+        $this->assertFileEquals(
+            __DIR__
+            . '/../../../'
+            . 'Resources/fixtures/correctly-encoded-recording-preview-video.webm',
+
+            __DIR__
+            . '/../../../../'
+            . 'public/generated-content/recording-sessions/'
+            . $recordingSessionId .
+            '/recording-preview-video.webm'
         );
 
         $structuredResponse = json_decode(

@@ -14,7 +14,7 @@ class RecordingSessionHelper
     {
         $isFollowingRedirects = $client->isFollowingRedirects();
 
-        $client->followRedirects(true);
+        $client->followRedirects();
 
         $client->request(
             'GET',
