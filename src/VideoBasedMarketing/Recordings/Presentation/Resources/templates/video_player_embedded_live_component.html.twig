@@ -12,18 +12,6 @@
         {% endif %}
 >
     {% if this.video.fullAssetAvailable %}
-        {# test #}
-        <style>
-            .icon-download {
-                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3' /%3E%3C/svg%3E");
-                background-repeat: no-repeat;
-                width: 1.25em;
-                height: 1.25em;
-            }
-            .pl30 {
-                padding-left: 30px;
-            }
-        </style>
 
         <div class="w-full">
 
@@ -55,7 +43,7 @@
                     >
 
                         <div
-                                class="col-span-9"
+                                class="md:col-span-9"
                         >
                             <h2
                                     class="font-medium leading-tight text-2xl text-black-600 break-normal"
@@ -64,14 +52,14 @@
                             </h2>
                         </div>
                         <div
-                                class="col-span-3"
+                                class="md:col-span-3"
                         >
                             <div
-                                    class="text-right"
+                                    class="md:text-right"
                             >
                                 <a
                                         class="icon-download pl30"
-                                        href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}">Download MP4</a>
+                                        href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}">Download</a>
                             </div>
                         </div>
                     </div>
