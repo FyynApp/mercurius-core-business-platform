@@ -74,8 +74,8 @@ class UnregisteredUserWorkflowTest
             __DIR__
             . '/../../../../'
             . 'public/generated-content/recording-sessions/'
-            . $recordingSessionId .
-            '/recording-preview-video-poster.webp'
+            . $recordingSessionId
+            . '/recording-preview-video-poster.webp'
         );
 
         $this->assertFileEquals(
@@ -86,8 +86,8 @@ class UnregisteredUserWorkflowTest
             __DIR__
             . '/../../../../'
             . 'public/generated-content/recording-sessions/'
-            . $recordingSessionId .
-            '/recording-preview-video.webm'
+            . $recordingSessionId
+            . '/recording-preview-video.webm'
         );
 
         $structuredResponse = json_decode(
