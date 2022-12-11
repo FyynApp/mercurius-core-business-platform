@@ -3,12 +3,13 @@
 namespace App\Tests\ApplicationTests\Helper\BrowserExtension;
 
 
+use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class RecordingSessionHelper
+class RecordingSessionHelper extends Assert
 {
     public static function createRecordingSession(
         KernelBrowser $client,
@@ -35,7 +36,8 @@ class RecordingSessionHelper
 
     public static function uploadChunks(
         KernelBrowser $client,
-        string $postUrl
+        string $postUrl,
+        string $recordingSessionId
     ): void
     {
         foreach (['1', '2', '3'] as $videoChunkId) {
@@ -72,6 +74,30 @@ class RecordingSessionHelper
             [
                 'CONTENT_TYPE' => 'multipart/form-data',
             ],
+        );
+
+        self::assertFileEquals(
+            __DIR__
+            . '/../../../'
+            . 'Resources/fixtures/correctly-encoded-recording-preview-video-poster.webp',
+
+            __DIR__
+            . '/../../../../'
+            . 'public/generated-content/recording-sessions/'
+            . $recordingSessionId
+            . '/recording-preview-video-poster.webp'
+        );
+
+        self::assertFileEquals(
+            __DIR__
+            . '/../../../'
+            . 'Resources/fixtures/correctly-encoded-recording-preview-video.webm',
+
+            __DIR__
+            . '/../../../../'
+            . 'public/generated-content/recording-sessions/'
+            . $recordingSessionId
+            . '/recording-preview-video.webm'
         );
     }
 }

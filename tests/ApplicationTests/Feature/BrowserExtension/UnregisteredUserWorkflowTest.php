@@ -4,8 +4,6 @@ namespace App\Tests\ApplicationTests\Feature\BrowserExtension;
 
 use App\Tests\ApplicationTests\Helper\BrowserExtension\RecordingSessionHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
 class UnregisteredUserWorkflowTest
@@ -30,30 +28,10 @@ class UnregisteredUserWorkflowTest
             $structuredResponse['settings']['postUrl']
         );
 
-        RecordingSessionHelper::uploadChunks($client, $postUrl);
-
-        $this->assertFileEquals(
-            __DIR__
-            . '/../../../'
-            . 'Resources/fixtures/correctly-encoded-recording-preview-video-poster.webp',
-
-            __DIR__
-            . '/../../../../'
-            . 'public/generated-content/recording-sessions/'
-            . $recordingSessionId
-            . '/recording-preview-video-poster.webp'
-        );
-
-        $this->assertFileEquals(
-            __DIR__
-            . '/../../../'
-            . 'Resources/fixtures/correctly-encoded-recording-preview-video.webm',
-
-            __DIR__
-            . '/../../../../'
-            . 'public/generated-content/recording-sessions/'
-            . $recordingSessionId
-            . '/recording-preview-video.webm'
+        RecordingSessionHelper::uploadChunks(
+            $client,
+            $postUrl,
+            $recordingSessionId
         );
 
         $structuredResponse = json_decode(
