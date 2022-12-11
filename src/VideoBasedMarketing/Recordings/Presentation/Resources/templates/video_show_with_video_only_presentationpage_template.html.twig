@@ -17,7 +17,13 @@
 {% block body %}
 
     <div
-            class="grid md:grid-cols-6 gap-4 h-full min-h-screen p-0 m-0"
+            class="w-full bg-slate-50 border-b"
+    >
+        Logo, share, copy url, get fyyn for free, login
+    </div>
+
+    <div
+            class="grid md:grid-cols-6 gap-4 p-0 m-0"
     >
         <div style="
                 font-family: 'Inter var', 'Times New Roman', serif;
@@ -32,12 +38,35 @@
                     'videobasedmarketing_recordings_video_player_embedded',
                     { video }
                 ) }}
+
+{#
+                <div
+                        class="bg-slate-400 rounded-md p-5 mt-36 text-center text-slate-200 text-sm"
+                >
+                    Footer Component<br>
+                    Impressum / Imprint
+                    Datenschutzerklärung / Privacy Policy
+                    AGB / Terms of Service
+                    <div
+                            class="pt-5"
+                    >
+                    © {{ 'now' | date('Y') }}, FYYN.io. All Rights Reserved
+                    </div>
+                </div>
+#}
             </div>
 
         </div>
+
+
     </div>
 
-
+<div
+        class="w-full" style="background-color: #009EEF;"
+>
+    sign up now
+    video preview
+</div>
 
 
 {% endblock %}
