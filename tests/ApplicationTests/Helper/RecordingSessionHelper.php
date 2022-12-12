@@ -1,49 +1,25 @@
 <?php
 
-namespace App\Tests\ApplicationTests\Helper\BrowserExtension;
+namespace App\Tests\ApplicationTests\Helper;
 
 
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RecordingSessionHelper extends Assert
 {
-    public static function createRecordingSession(
-        KernelBrowser $client,
-    ): Crawler
-    {
-        $isFollowingRedirects = $client->isFollowingRedirects();
-
-        $client->followRedirects();
-
-        $client->request(
-            'GET',
-            '/api/extension/v1/account/session-info'
-        );
-
-        $crawler = $client->request(
-            'POST',
-            '/api/extension/v1/recordings/recording-sessions/'
-        );
-
-        $client->followRedirects($isFollowingRedirects);
-
-        return $crawler;
-    }
-
     public static function uploadChunks(
         KernelBrowser $client,
-        string $postUrl,
-        string $recordingSessionId
+        string        $postUrl,
+        string        $recordingSessionId
     ): void
     {
         foreach (['1', '2', '3'] as $videoChunkId) {
             $fs = new Filesystem();
             $fs->copy(
-                __DIR__ . "/../../../Resources/fixtures/video-chunks/video-chunk-$videoChunkId",
+                __DIR__ . "/../../Resources/fixtures/video-chunks/video-chunk-$videoChunkId",
                 "/var/tmp/video-chunk-$videoChunkId",
                 true
             );
@@ -76,25 +52,25 @@ class RecordingSessionHelper extends Assert
             ],
         );
 
-        self::assertFileEquals(
+        Assert::assertFileEquals(
             __DIR__
-            . '/../../../'
+            . '/../../'
             . 'Resources/fixtures/correctly-encoded-recording-preview-video-poster.webp',
 
             __DIR__
-            . '/../../../../'
+            . '/../../../'
             . 'public/generated-content/recording-sessions/'
             . $recordingSessionId
             . '/recording-preview-video-poster.webp'
         );
 
-        self::assertFileEquals(
+        Assert::assertFileEquals(
             __DIR__
-            . '/../../../'
+            . '/../../'
             . 'Resources/fixtures/correctly-encoded-recording-preview-video.webm',
 
             __DIR__
-            . '/../../../../'
+            . '/../../../'
             . 'public/generated-content/recording-sessions/'
             . $recordingSessionId
             . '/recording-preview-video.webm'

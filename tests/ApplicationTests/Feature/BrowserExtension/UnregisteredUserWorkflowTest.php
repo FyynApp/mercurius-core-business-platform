@@ -2,7 +2,8 @@
 
 namespace App\Tests\ApplicationTests\Feature\BrowserExtension;
 
-use App\Tests\ApplicationTests\Helper\BrowserExtension\RecordingSessionHelper;
+use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
+use App\Tests\ApplicationTests\Helper\RecordingSessionHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
@@ -13,7 +14,7 @@ class UnregisteredUserWorkflowTest
     {
         $client = static::createClient();
 
-        RecordingSessionHelper::createRecordingSession($client);
+        BrowserExtensionHelper::createRecordingSession($client);
 
         $structuredResponse = json_decode(
             $client->getResponse()->getContent(),

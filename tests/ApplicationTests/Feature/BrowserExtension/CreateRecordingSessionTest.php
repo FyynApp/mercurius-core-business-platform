@@ -2,7 +2,7 @@
 
 namespace App\Tests\ApplicationTests\Feature\BrowserExtension;
 
-use App\Tests\ApplicationTests\Helper\BrowserExtension\RecordingSessionHelper;
+use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
@@ -30,7 +30,7 @@ class CreateRecordingSessionTest
             $em->getRepository(RecordingSession::class)->findAll()
         );
 
-        RecordingSessionHelper::createRecordingSession($client);
+        BrowserExtensionHelper::createRecordingSession($client);
 
         $sessions = $em->getRepository(RecordingSession::class)->findAll();
 
@@ -64,7 +64,7 @@ class CreateRecordingSessionTest
             $em->getRepository(RecordingSession::class)->findAll()
         );
 
-        RecordingSessionHelper::createRecordingSession($client);
+        BrowserExtensionHelper::createRecordingSession($client);
 
         $sessions = $em->getRepository(RecordingSession::class)->findAll();
 
