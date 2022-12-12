@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\RecordingRequests\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
-use App\VideoBasedMarketing\Account\Domain\Service\UserDomainService;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
@@ -12,8 +12,10 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDo
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RecordingRequestsController
@@ -113,7 +115,7 @@ class RecordingRequestsController
         string                                $recordingRequestId,
         Request                               $request,
         EntityManagerInterface                $entityManager,
-        UserDomainService                     $userDomainService,
+        AccountDomainService                  $accountDomainService,
         RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
         RecordingRequestsDomainService        $recordingRequestsDomainService
     ): Response
@@ -121,7 +123,7 @@ class RecordingRequestsController
         $user = $this->getUser();
 
         if (is_null($user)) {
-            $user = $userDomainService->createUnregisteredUser();
+            $user = $accountDomainService->createUnregisteredUser();
             return $requestParametersBasedUserAuthService->createRedirectResponse(
                 $user,
                 'videobasedmarketing.recording_requests.show_response_instructions',

@@ -66,6 +66,13 @@ Coming from the setup described above, you should always be able to get back to 
 - Open `http://127.0.0.1:8000/` in your browser. Enjoy!
 
 
+#### Ensuring up-to-date dependencies and DB structure after pulling changes
+
+After pulling changes from the repository, you should always run the following command (this command requires you to `cd` into the project folder containing this `README.md` file):
+
+- `bash bin/update-dev-system.sh`
+
+
 ## Notes on setting up the preprod system
 
     apt-get install php8.1-cli php8.1-curl php8.1-fpm php8.1-xml php8.1-mbstring php8.1-mysql php8.1-intl php8.1-gd php8.1-opcache php8.1-bcmath php8.1-zip php8.1-dev php8.1-apcu php-pear php-igbinary libzstd-dev mariadb-server mariadb-client nginx apache2-utils net-tools ffmpeg certbot python3-certbot-nginx composer unattended-upgrades

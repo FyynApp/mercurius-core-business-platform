@@ -51,3 +51,8 @@ claim_unregistered_user:
         one   {Deine erste Aufnahme ist selbstverständlich ebenfalls verfügbar!}
         other {Deine vorherigen Aufnahmen sind selbstverständlich ebenfalls verfügbar!}
       }
+  verification_email:
+    subject: 'E-Mail Adresse bestätigen'
+    greeting: 'Willkommen!'
+    you_signed_up: 'Sie haben sich mit folgender E-Mail Adresse registriert:'
+    verify_cta: 'E-Mail Adresse bestätigen'

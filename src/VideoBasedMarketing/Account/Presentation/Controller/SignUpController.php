@@ -86,7 +86,7 @@ class SignUpController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->emailVerifier->sendEmailConfirmation(
+            $this->emailVerifier->sendEmailAskingForVerification(
                 'videobasedmarketing.account.presentation.sign_up.email_verification',
                 $user,
                 (new TemplatedEmail())
@@ -138,7 +138,7 @@ class SignUpController
 
         // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleEmailConfirmation($request, $user);
+            $this->emailVerifier->handleVerification($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Application\Feature\BrowserExtension;
+namespace App\Tests\ApplicationTests\Feature\BrowserExtension;
 
-use App\Tests\Application\Helper\BrowserExtension\RecordingSessionHelper;
+use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
-class RecordingSessionForBrowserExtensionTest
+class CreateRecordingSessionTest
     extends WebTestCase
 {
     public function testCreatingRecordingSessionForRegisteredUser(): void
@@ -30,11 +30,7 @@ class RecordingSessionForBrowserExtensionTest
             $em->getRepository(RecordingSession::class)->findAll()
         );
 
-        $client->request(
-            'POST',
-            '/api/extension/v1/recordings/recording-sessions/'
-        );
-        $this->assertResponseRedirects();
+        BrowserExtensionHelper::createRecordingSession($client);
 
         $sessions = $em->getRepository(RecordingSession::class)->findAll();
 
@@ -68,7 +64,7 @@ class RecordingSessionForBrowserExtensionTest
             $em->getRepository(RecordingSession::class)->findAll()
         );
 
-        RecordingSessionHelper::createRecordingSession($client);
+        BrowserExtensionHelper::createRecordingSession($client);
 
         $sessions = $em->getRepository(RecordingSession::class)->findAll();
 
