@@ -85,5 +85,7 @@ class UnregisteredUserWorkflowTest
         $email = $this->getMailerMessage();
         $this->assertEmailHtmlBodyContains($email, 'Welcome');
         $this->assertEmailHtmlBodyContains($email, 'foo@bar.de');
+
+        echo $email->toString();
     }
 }
