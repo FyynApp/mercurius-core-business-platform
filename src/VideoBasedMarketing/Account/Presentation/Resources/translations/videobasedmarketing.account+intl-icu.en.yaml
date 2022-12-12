@@ -53,3 +53,5 @@ claim_unregistered_user:
         one   {Your previous recording is of course available, too!}
         other {Your previous recordings are of course available, too!}
       }
+  verification_email:
+    subject: 'Verify your email address'

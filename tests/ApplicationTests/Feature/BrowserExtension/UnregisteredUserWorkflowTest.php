@@ -4,12 +4,15 @@ namespace App\Tests\ApplicationTests\Feature\BrowserExtension;
 
 use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
 use App\Tests\ApplicationTests\Helper\RecordingSessionHelper;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
 class UnregisteredUserWorkflowTest
     extends WebTestCase
 {
+    use MailerAssertionsTrait;
+
     public function test(): void
     {
         $client = static::createClient();
@@ -23,12 +26,8 @@ class UnregisteredUserWorkflowTest
 
         $recordingSessionId = $structuredResponse['settings']['recordingSessionId'];
         $recordingSessionFinishedTargetUrl = $structuredResponse['settings']['recordingSessionFinishedTargetUrl'];
+        $postUrl = $structuredResponse['settings']['postUrl'];
 
-        $postUrl = mb_ereg_replace(
-            'http://localhost',
-            '',
-            $structuredResponse['settings']['postUrl']
-        );
 
         RecordingSessionHelper::uploadChunks(
             $client,
@@ -56,6 +55,7 @@ class UnregisteredUserWorkflowTest
             $structuredResponse['previewVideo']
         );
 
+
         $client->followRedirects();
         $crawler = $client->request(
             'GET',
@@ -71,5 +71,17 @@ class UnregisteredUserWorkflowTest
             'Hey there,',
             $crawler->filter('h1')->first()->text()
         );
+
+        $buttonCrawlerNode = $crawler->selectButton('Create account');
+        $form = $buttonCrawlerNode->form();
+
+        $form['claim_unregistered_user[email]'] = 'foo@bar.de';
+
+        $client->followRedirects();
+        $crawler = $client->submit($form);
+
+        echo $client->getResponse()->getContent();
+
+        $this->assertEmailCount(1);
     }
 }

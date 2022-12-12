@@ -4,21 +4,26 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Presentation\Service\AccountPresentationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use LogicException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 
-class UserDomainService
+class AccountDomainService
 {
     private EntityManagerInterface $entityManager;
 
+    private AccountPresentationService $presentationService;
 
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface  $entityManager,
+        AccountPresentationService $presentationService
     )
     {
         $this->entityManager = $entityManager;
+        $this->presentationService = $presentationService;
     }
 
 
@@ -54,13 +59,14 @@ class UserDomainService
 
     /**
      * @throws Exception
+     * @throws TransportExceptionInterface
      */
     public function handleUnregisteredUserClaim(
-        User   $currentUser,
+        User   $unregisteredUser,
         string $claimEmail
     ): bool
     {
-        if ($currentUser->isRegistered()) {
+        if ($unregisteredUser->isRegistered()) {
             throw new LogicException('Only unregistered user sessions can claim.');
         }
 
@@ -74,11 +80,15 @@ class UserDomainService
             throw new Exception("A user with email '$claimEmail' already exists.");
         }
 
-        $currentUser->setEmail($claimEmail);
-        $currentUser->makeRegistered();
+        $unregisteredUser->setEmail($claimEmail);
+        $unregisteredUser->makeRegistered();
 
-        $this->entityManager->persist($currentUser);
+        $this->entityManager->persist($unregisteredUser);
         $this->entityManager->flush();
+
+        $this
+            ->presentationService
+            ->sendVerificationEmailForClaimedUser($unregisteredUser);
 
         return true;
     }
