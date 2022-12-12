@@ -13,14 +13,18 @@
     <h1>Welcome!</h1>
 
     <p>
-        You signed up as using the following email:
+        You signed up using the following email:
     </p>
-    <p><code>{{ email.to[0].address }}</code></p>
+    <p>
+        {{ email.to[0].address }}
+    </p>
 
     <p>
+        <a href="{{ signedUrl }}">Confirm email</a>.
+    </p>
 
-        <a href="{{ signedUrl }}">Confirm my Email</a>.
-
-        This link will expire in {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+    <p>
+        This link will expire in
+        {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
     </p>
 {% endapply %}

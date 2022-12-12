@@ -77,11 +77,13 @@ class UnregisteredUserWorkflowTest
 
         $form['claim_unregistered_user[email]'] = 'foo@bar.de';
 
-        $client->followRedirects();
-        $crawler = $client->submit($form);
-
-        echo $client->getResponse()->getContent();
+        $client->followRedirects(false);
+        $client->submit($form);
 
         $this->assertEmailCount(1);
+
+        $email = $this->getMailerMessage();
+        $this->assertEmailHtmlBodyContains($email, 'Welcome');
+        $this->assertEmailHtmlBodyContains($email, 'foo@bar.de');
     }
 }
