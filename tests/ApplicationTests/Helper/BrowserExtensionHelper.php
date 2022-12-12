@@ -1,26 +1,34 @@
 <?php
 
-namespace App\Tests\Application\Helper\BrowserExtension;
+namespace App\Tests\ApplicationTests\Helper;
 
 
+use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
-class RecordingSessionHelper
+class BrowserExtensionHelper extends Assert
 {
     public static function createRecordingSession(
         KernelBrowser $client,
     ): Crawler
     {
+        $isFollowingRedirects = $client->isFollowingRedirects();
+
+        $client->followRedirects();
+
         $client->request(
             'GET',
             '/api/extension/v1/account/session-info'
         );
-        $client->followRedirect();
 
-        return $client->request(
+        $crawler = $client->request(
             'POST',
             '/api/extension/v1/recordings/recording-sessions/'
         );
+
+        $client->followRedirects($isFollowingRedirects);
+
+        return $crawler;
     }
 }

@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\VideoBasedMarketing\Account\Domain\Service\UserDomainService;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\ClaimUnregisteredUserType;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
@@ -58,7 +58,7 @@ class ClaimUnregisteredUserController
     )]
     public function handleFormSubmitAction(
         Request                               $request,
-        UserDomainService                     $userService,
+        AccountDomainService                  $userService,
         RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService
     ): Response
     {
@@ -69,14 +69,15 @@ class ClaimUnregisteredUserController
         }
 
         if ($user->isRegistered()) {
-            throw $this->createAccessDeniedException("Only unregistered users allowed, but '{$user->getUserIdentifier()}' is registered.");
+            throw $this->createAccessDeniedException(
+                "Only unregistered users allowed, but '{$user->getUserIdentifier()}' is registered."
+            );
         }
 
         $form = $this->createForm(ClaimUnregisteredUserType::class);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $success = $userService->handleUnregisteredUserClaim(
                 $user,
                 $form->getData()['email']

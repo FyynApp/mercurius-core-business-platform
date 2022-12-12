@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\VideoBasedMarketing\Presentationpages\Domain\Entity;
+namespace App\Tests\UnitTests\VideoBasedMarketing\Presentationpages\Domain\Entity;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;

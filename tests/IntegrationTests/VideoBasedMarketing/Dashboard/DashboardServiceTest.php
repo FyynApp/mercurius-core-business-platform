@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Integration\VideoBasedMarketing\Dashboard;
+namespace App\Tests\IntegrationTests\VideoBasedMarketing\Dashboard;
 
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;

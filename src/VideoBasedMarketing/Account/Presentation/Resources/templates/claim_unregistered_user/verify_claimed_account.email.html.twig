@@ -1,0 +1,34 @@
+{# email \Symfony\Bridge\Twig\Mime\WrappedTemplatedEmail #}
+
+{% trans_default_domain 'videobasedmarketing.account' %}
+
+{% apply inline_css %}
+    <style>
+        h1 {
+            color: #333;
+        }
+    </style>
+
+
+    <h1>
+        {{ 'claim_unregistered_user.verification_email.greeting'|trans }}
+    </h1>
+
+    <p>
+        {{ 'claim_unregistered_user.verification_email.you_signed_up'|trans }}
+    </p>
+    <p>
+        <strong>
+            {{ email.to[0].address }}
+        </strong>
+    </p>
+
+    <p>
+        <a href="{{ signedUrl }}">
+            {{ 'claim_unregistered_user.verification_email.verify_cta'|trans }}
+        </a>.
+    </p>
+    <p style="display: none;">
+        {{ signedUrl }}
+    </p>
+{% endapply %}
