@@ -10,21 +10,22 @@
     </style>
 
 
-    <h1>Welcome!</h1>
+    <h1>
+        {{ 'claim_unregistered_user.verification_email.greeting'|trans }}
+    </h1>
 
     <p>
-        You signed up using the following email:
+        {{ 'claim_unregistered_user.verification_email.you_signed_up'|trans }}
     </p>
     <p>
-        {{ email.to[0].address }}
-    </p>
-
-    <p>
-        <a href="{{ signedUrl }}">Confirm email</a>.
+        <strong>
+            {{ email.to[0].address }}
+        </strong>
     </p>
 
     <p>
-        This link will expire in
-        {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+        <a href="{{ signedUrl }}">
+            {{ 'claim_unregistered_user.verification_email.verify_cta'|trans }}
+        </a>.
     </p>
 {% endapply %}

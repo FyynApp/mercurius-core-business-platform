@@ -55,3 +55,6 @@ claim_unregistered_user:
       }
   verification_email:
     subject: 'Verify your email address'
+    greeting: 'Welcome!'
+    you_signed_up: 'You signed up with the following email:'
+    verify_cta: 'Confirm email'

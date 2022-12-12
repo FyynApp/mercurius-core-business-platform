@@ -53,3 +53,6 @@ claim_unregistered_user:
       }
   verification_email:
     subject: 'E-Mail Adresse bestätigen'
+    greeting: 'Willkommen!'
+    you_signed_up: 'Sie haben sich mit folgender E-Mail Adresse registriert:'
+    verify_cta: 'E-Mail Adresse bestätigen'
