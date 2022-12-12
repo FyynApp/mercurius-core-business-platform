@@ -16,11 +16,90 @@
 
 {% block body %}
 
-    <div
-            class="w-full bg-slate-50 border-b"
+    <nav
+            {{ stimulus_controller('shared-navMobileMenuSwitch') }}
+            class="bg-neutral-100 border-1 border-black-400 border-t-0 border-l-0 border-r-0 sticky"
     >
-        Logo, share, copy url, get fyyn for free, login
-    </div>
+        <div class="mx-auto px-4 sm:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="{{ path('shared.presentation.contentpages.homepage') }}">
+                            <img class="h-16" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn">
+                        </a>
+                    </div>
+                </div>
+
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button
+                                class="text-md border-2  text-neutral-50 block px-3 py-2 rounded-md hover:bg-indigo-700"
+                                aria-current="page"
+                                style="background-color: #009EEF; border-color: #009EEF"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 float-left mr-3">
+                                <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
+                            </svg>
+                            Share
+                        </button>
+                        <button
+                                class="text-md border-2 border-blue-500 hover:border-orange-500 text-blue-500 hover:text-white text-neutral-50 block px-3 py-2 rounded-md ml-2 hover:bg-orange-500"
+                                aria-current="page"
+                                {# style="color: #009EEF; border-color: #009EEF;" #} {# hover color + border fff  #}
+                        >
+                            Copy Video Link
+                        </button>
+
+
+                        <button
+                                class="text-md border-2 border-green-500 hover:border-green-700 bg-green-500 text-neutral-50 block px-3 py-2 rounded-md ml-2 hover:bg-green-700"
+                                aria-current="page"
+                        >
+                            Get FYYN for free
+                        </button>
+
+                        <button
+                                class="text-md bg-indigo-900 text-neutral-50 block px-3 py-2 rounded-md ml-5 hover:bg-indigo-700"
+                                aria-current="page"
+                        >
+                            Login
+                        </button>
+
+
+                    </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div
+                {{ stimulus_target('shared-navMobileMenuSwitch', 'menu') }}
+                class="hidden md:hidden"
+                id="mobile-menu"
+        >
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+
+                {{ component(
+                    'main_navigation',
+                    {
+                        user: app.user,
+                        request: app.request,
+                        type: 'stacked'
+                    })
+                }}
+
+                {{ component(
+                    'side_navigation',
+                    {
+                        user: app.user,
+                        request: app.request,
+                        type: 'stacked'
+                    })
+                }}
+
+            </div>
+
+        </div>
+    </nav>
 
     <div
             class="grid md:grid-cols-6 gap-4 p-0 m-0"
@@ -62,7 +141,7 @@
     </div>
 
 <div
-        class="w-full" style="background-color: #009EEF;"
+        class="w-full" style="background-color: #009EEF; height: 300px;"
 >
     sign up now
     video preview
