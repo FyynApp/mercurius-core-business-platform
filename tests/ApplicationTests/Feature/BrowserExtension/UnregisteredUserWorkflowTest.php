@@ -22,6 +22,7 @@ class UnregisteredUserWorkflowTest
         );
 
         $recordingSessionId = $structuredResponse['settings']['recordingSessionId'];
+        $recordingSessionFinishedTargetUrl = $structuredResponse['settings']['recordingSessionFinishedTargetUrl'];
 
         $postUrl = mb_ereg_replace(
             'http://localhost',
@@ -53,6 +54,22 @@ class UnregisteredUserWorkflowTest
         $this->assertStringStartsWith(
             "http://localhost/recordings/recording-sessions/$recordingSessionId/recording-preview-asset-redirect?random=",
             $structuredResponse['previewVideo']
+        );
+
+        $client->followRedirects();
+        $crawler = $client->request(
+            'GET',
+            $recordingSessionFinishedTargetUrl
+        );
+
+        $this->assertSame(
+            'http://localhost/en/account/claim',
+            $crawler->getUri()
+        );
+
+        $this->assertSame(
+            'Hey there,',
+            $crawler->filter('h1')->first()->text()
         );
     }
 }
