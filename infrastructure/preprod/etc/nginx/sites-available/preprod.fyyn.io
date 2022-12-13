@@ -32,7 +32,11 @@ server {
     proxy_pass http://fyynhelpdesk.kinsta.cloud$1;
   }
 
-  set $auth_basic "Login required";
+  set $auth_basic off;
+
+  if ($uri ~ "^/_profiler") {
+      set $auth_basic "Login required";
+  }
 
   if ($uri ~ "^/de/presentationpages/") {
     set $auth_basic off;
@@ -44,7 +48,6 @@ server {
 
 
   location ~ \.php$ {
-    set $auth_basic off;
     auth_basic $auth_basic;
     auth_basic_user_file /etc/nginx/htpasswd;
 
