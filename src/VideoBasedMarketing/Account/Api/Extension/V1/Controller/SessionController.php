@@ -3,11 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\Shared\Infrastructure\Enum\DateTimeFormat;
-use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Api\Extension\V1\Service\SessionService;
-use App\VideoBasedMarketing\Account\Infrastructure\Enum\RequestParameter;
-use App\VideoBasedMarketing\Account\Infrastructure\Security\RequestParametersBasedUserAuthenticator;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use Exception;
