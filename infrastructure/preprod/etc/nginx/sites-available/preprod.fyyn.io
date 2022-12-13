@@ -44,6 +44,7 @@ server {
 
 
   location ~ \.php$ {
+    set $auth_basic off;
     auth_basic $auth_basic;
     auth_basic_user_file /etc/nginx/htpasswd;
 
