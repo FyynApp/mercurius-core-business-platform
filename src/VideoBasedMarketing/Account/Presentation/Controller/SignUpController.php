@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Account\Infrastructure\Security\EmailVerifier;
+use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\SignUpType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
@@ -118,10 +118,10 @@ class SignUpController
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
     public function verifyEmailAction(
-        Request                   $request,
-        TranslatorInterface       $translator,
-        UserRepository            $userRepository,
-        LoginLinkHandlerInterface $loginLinkHandler
+        Request                               $request,
+        TranslatorInterface                   $translator,
+        UserRepository                        $userRepository,
+        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService
     ): Response
     {
         $id = $request->get('id');
@@ -147,10 +147,9 @@ class SignUpController
 
         $this->addFlash(FlashMessageLabel::Success->value, 'Your email address has been verified.');
 
-        return $this->redirect(
-            $loginLinkHandler
-                ->createLoginLink($user)
-                ->getUrl()
+        return $requestParametersBasedUserAuthService->createRedirectResponse(
+            $user,
+            'shared.presentation.contentpages.homepage'
         );
     }
 }

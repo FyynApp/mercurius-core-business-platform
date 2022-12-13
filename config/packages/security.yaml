@@ -22,10 +22,6 @@ security:
                 check_path: videobasedmarketing.account.presentation.sign_in
                 enable_csrf: true
 
-            login_link:
-                check_route: videobasedmarketing.account.infrastructure.sign_in_link_check
-                signature_properties: ['id']
-
             logout:
                 path: videobasedmarketing.account.infrastructure.sign_out
                 target: videobasedmarketing.account.presentation.sign_in
@@ -39,6 +35,9 @@ security:
                 token_provider:
                     doctrine: true
 
+            # We intentionally do not use Symfony's Passwordless Login Link Authentication
+            # (see https://symfony.com/doc/current/security/login_link.html) because it does not
+            # support arbitrary target URLs.
             custom_authenticators:
                 - App\VideoBasedMarketing\Account\Infrastructure\Security\RequestParametersBasedUserAuthenticator
 

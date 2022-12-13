@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 
 class ThirdPartyAuthService
@@ -19,17 +18,17 @@ class ThirdPartyAuthService
 
     private UserPasswordHasherInterface $userPasswordHasher;
 
-    private LoginLinkHandlerInterface $loginLinkHandler;
+    private RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService;
 
     public function __construct(
-        EntityManagerInterface      $entityManager,
-        UserPasswordHasherInterface $userPasswordHasher,
-        LoginLinkHandlerInterface   $loginLinkHandler
+        EntityManagerInterface                $entityManager,
+        UserPasswordHasherInterface           $userPasswordHasher,
+        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
     )
     {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
-        $this->loginLinkHandler = $loginLinkHandler;
+        $this->requestParametersBasedUserAuthService = $requestParametersBasedUserAuthService;
     }
 
     public function userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(
@@ -132,8 +131,12 @@ class ThirdPartyAuthService
 
         $loginLinkUrl = null;
         if (!is_null($resourceOwner->getUser())) {
-            $loginLinkDetails = $this->loginLinkHandler->createLoginLink($resourceOwner->getUser());
-            $loginLinkUrl = $loginLinkDetails->getUrl();
+            $loginLinkUrl = $this
+                ->requestParametersBasedUserAuthService
+                ->createUrl(
+                  $resourceOwner->getUser(),
+                  'shared.presentation.contentpages.homepage'
+                );
         }
 
         return new HandleReceivedLinkedInResourceOwnerResult(

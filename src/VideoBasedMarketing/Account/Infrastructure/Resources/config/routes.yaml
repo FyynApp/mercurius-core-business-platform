@@ -1,10 +1,3 @@
-# There is no controller behind this route because
-# Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator
-# intercepts requests to this route
-videobasedmarketing.account.infrastructure.sign_in_link_check:
-  path: /account/sign-in-link-check
-  methods: [ GET, POST ]
-
 videobasedmarketing.account.infrastructure.sign_out:
   path: /account/sign-out
   methods: [ GET, POST ]

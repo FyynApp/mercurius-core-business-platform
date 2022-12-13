@@ -29,27 +29,40 @@ class RequestParametersBasedUserAuthService
         array  $routeParameters = []
     ): Response
     {
+        return new RedirectResponse(
+            $this->createUrl(
+                $user,
+                $routeName,
+                $routeParameters
+            )
+        );
+    }
+
+    public function createUrl(
+        User   $user,
+        string $routeName,
+        array  $routeParameters = []
+    ): string
+    {
         $validUntil = DateAndTimeService::getDateTimeUtc('+1 minutes');
 
-        return new RedirectResponse(
-            $this->router->generate(
-                $routeName,
-                array_merge(
-                    $routeParameters,
-                    [
-                        RequestParameter::RequestParametersBasedUserAuthId->value =>
+        return $this->router->generate(
+            $routeName,
+            array_merge(
+                $routeParameters,
+                [
+                    RequestParameter::RequestParametersBasedUserAuthId->value =>
+                        $user->getId(),
+
+                    RequestParameter::RequestParametersBasedUserAuthValidUntil->value =>
+                        $validUntil->format(DateTimeFormat::SecondsSinceUnixEpoch->value),
+
+                    RequestParameter::RequestParametersBasedUserAuthHash->value =>
+                        RequestParametersBasedUserAuthenticator::generateAuthHash(
                             $user->getId(),
-
-                        RequestParameter::RequestParametersBasedUserAuthValidUntil->value =>
-                            $validUntil->format(DateTimeFormat::SecondsSinceUnixEpoch->value),
-
-                        RequestParameter::RequestParametersBasedUserAuthHash->value =>
-                            RequestParametersBasedUserAuthenticator::generateAuthHash(
-                                $user->getId(),
-                                $validUntil
-                            )
-                    ]
-                )
+                            $validUntil
+                        )
+                ]
             )
         );
     }
