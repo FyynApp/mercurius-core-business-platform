@@ -109,7 +109,7 @@
                 color: {{ video.videoOnlyPresentationpageTemplate.textColor.value }};
                 {# background-color: {{ video.videoOnlyPresentationpageTemplate.bgColor.value }}#}"
              class="md:col-start-2 col-span-4 pt-10 md:p-6">
-
+            <center>
             <div
                     class="w-full md:p-6" style="max-width: 980px;"
             >
@@ -119,6 +119,7 @@
                 ) }}
 
             </div>
+            </center>
         </div>
     </div>
 
@@ -132,23 +133,24 @@
              class="md:col-start-2 col-span-4 pt-10 md:p-6">
 
             <div
-                    class="relative p-2"
-            >
-
-                <div
-                        class="w-full"
+                    class="relative p-2 w-full"
                 >
+                <center>
+                    <div
+                            class="w-full md:p-6" style="max-width: 980px;"
+                    >
 
                     <div
                             class="w-full mt-4 mb-2 grid md:grid-cols-12 border-b"
                     >
+
 
                         <div
                                 class="md:col-span-9"
                         >
 
                             <h2
-                                class="font-medium leading-tight text-2xl text-black-600 break-normal"
+                                class="font-medium leading-tight text-2xl text-black-600 break-normal text-left"
                             >
                                 {{ video.title }}
                             </h2>
@@ -165,19 +167,26 @@
                                     href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}">Download</a>
                         </div>
                     </div>
+
+                    </div>
                 </div>
+                </center>
+                </div>
+
+            <center>
                 <div
-                        class="w-full mt-5 mb-2 grid md:grid-cols-12"
+                        class="w-full md:p-6" style="max-width: 980px;"
                 >
-
                     <div
-                            class="md:col-span-9"
+                            class="w-full mb-2 grid md:grid-cols-12"
                     >
-
+                        <div
+                                class="md:col-span-9 text-left"
+                        >
 
                         <div>
                             <div class="flex items-end w-fit">
-                                <div class="">
+                                <div>
 
                                     <img
                                             class="h-10 w-10 rounded-full ring-2 ring-indigo-700"
@@ -201,11 +210,8 @@
                     </div>
 
                 </div>
-           <!-- -->
-
             </div>
-            </div>
-            </div>
+            </center>
 
         </div>
     </div>
