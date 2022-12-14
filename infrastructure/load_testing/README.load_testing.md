@@ -76,7 +76,11 @@ SSH back into the instance with user `ubuntu`.  Edit the paths to the assets fil
 - `ps_files_cleanup_dir` failed with `permission denied`; user www-data had more than its ulimit of 1024 files open
 
 
-### 2022-12-14 09:30 CET, preprod, browser_extension_journey.js
+### 2022-12-14 09:50 CET, preprod, browser_extension_journey.js
+
+#### Relevant changes since previous run
+
+- Increased open files limit for user www-data (`ulimit -n`) from 1024 to 8192
 
 #### k6 stats
 
@@ -105,3 +109,35 @@ SSH back into the instance with user `ubuntu`.  Edit the paths to the assets fil
 - `ps_files_cleanup_dir` continues to fail with `permission denied` even though user www-data had had its open file limit set from 1024 to 8192
 - Relevant: https://symfony.com/doc/current/components/http_foundation/session_configuration.html#configuring-garbage-collection
 
+
+### 2022-12-14 10:05 CET, preprod, browser_extension_journey.js
+
+#### Relevant changes since previous run
+
+- Disabled Symfony override of PHP session garbage collection settings, resulting in no session garbage collection at all
+
+#### k6 stats
+
+    running (10m30.0s), 000/100 VUs, 802 complete and 99 interrupted iterations
+    default ✓ [======================================] 100 VUs  10m0s
+    
+         data_received..................: 14 MB 22 kB/s
+         data_sent......................: 17 GB 27 MB/s
+         http_req_blocked...............: avg=364.69µs min=1.06µs  med=3.49µs  max=77.45ms p(90)=4.57µs   p(95)=5.58µs
+         http_req_connecting............: avg=72.08µs  min=0s      med=0s      max=10.37ms p(90)=0s       p(95)=0s
+         http_req_duration..............: avg=135.01ms min=30.15ms med=86.31ms max=2.83s   p(90)=201.33ms p(95)=311.92ms
+           { expected_response:true }...: avg=134.96ms min=30.15ms med=86.31ms max=2.83s   p(90)=201.27ms p(95)=311.32ms
+         http_req_failed................: 0.01% ✓ 2         ✗ 14057
+         http_req_receiving.............: avg=55.5µs   min=21.24µs med=50.13µs max=1.87ms  p(90)=81.79µs  p(95)=93.02µs
+         http_req_sending...............: avg=830.91µs min=6.1µs   med=1.01ms  max=3.41ms  p(90)=1.28ms   p(95)=1.36ms
+         http_req_tls_handshaking.......: avg=278.06µs min=0s      med=0s      max=70.63ms p(90)=0s       p(95)=0s
+         http_req_waiting...............: avg=134.13ms min=30.1ms  med=85.17ms max=2.83s   p(90)=200.67ms p(95)=311.79ms
+         http_reqs......................: 14059 22.315234/s
+         iteration_duration.............: avg=1m11s    min=8.96s   med=1m11s   max=1m17s   p(90)=1m14s    p(95)=1m15s
+         iterations.....................: 802   1.272979/s
+         vus............................: 99    min=99      max=100
+         vus_max........................: 100   min=100     max=100
+
+#### Thoughts and observations
+
+- Thanks to the disabled session garbage collection, the `ps_files_cleanup_dir` error is gone
