@@ -24,6 +24,24 @@ server {
     deny all;
   }
 
+  location /fpm_status {
+    auth_basic "Login required";
+    auth_basic_user_file /etc/nginx/htpasswd;
+
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_index index.php;
+    include fastcgi_params;
+    fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+  }
+
+  location /munin {
+    auth_basic "Login required";
+    auth_basic_user_file /etc/nginx/htpasswd;
+
+    alias /var/cache/munin/www;
+    index index.html;
+  }
+
   location ~ /\. { deny all; }
 
   location ~/helpdesk(.*)$ {
@@ -54,7 +72,7 @@ server {
     include snippets/fastcgi-php.conf;
     fastcgi_param APP_ENV "preprod";
     fastcgi_hide_header Forwarded;
-    fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+    fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
   }
 
   location / {
