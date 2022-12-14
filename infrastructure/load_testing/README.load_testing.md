@@ -104,6 +104,8 @@ SSH back into the instance with user `ubuntu`.  Edit the paths to the assets fil
          vus............................: 100   min=100     max=100
          vus_max........................: 100   min=100     max=100
 
+Also see https://www.dropbox.com/s/iwupfn2p250112i/Bildschirmaufnahme%202022-12-14%20um%2009.52.14.mov?dl=0.
+
 #### Thoughts and observations
 
 - `ps_files_cleanup_dir` continues to fail with `permission denied` even though user www-data had had its open file limit set from 1024 to 8192
@@ -137,6 +139,8 @@ SSH back into the instance with user `ubuntu`.  Edit the paths to the assets fil
          iterations.....................: 802   1.272979/s
          vus............................: 99    min=99      max=100
          vus_max........................: 100   min=100     max=100
+
+Also see https://www.dropbox.com/s/dw57uzx6n0jr47t/Bildschirmaufnahme%202022-12-14%20um%2010.08.14.mov?dl=0.
 
 #### Thoughts and observations
 
