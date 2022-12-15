@@ -16,12 +16,13 @@ const chunkBins = [
     open('/Users/manuel/Dropbox/projects/Mercurius/Software and Systems/Infrastructure/Load Testing/Assets/chunk12.webm', 'b'),
     open('/Users/manuel/Dropbox/projects/Mercurius/Software and Systems/Infrastructure/Load Testing/Assets/chunk13.webm', 'b'),
 ];
+
 export default function () {
     http.get('https://preprod.fyyn.io/api/extension/v1/account/session-info');
-    sleep(sleep(Math.random() * 4));
+    sleep(Math.random() * 4);
 
     const res = http.post('https://preprod.fyyn.io/api/extension/v1/recordings/recording-sessions/');
-    sleep(sleep(Math.random() * 5));
+    sleep(Math.random() * 5);
 
     for (let i = 0; i < chunkBins.length; i++) {
         sleep(5);

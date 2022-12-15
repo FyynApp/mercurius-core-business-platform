@@ -19,6 +19,7 @@ This starts a load test with 10 concurrent users surfing the site for 60 seconds
 
 Launch a new `c6a.8xlarge` EC2 instance with Ubuntu 22.04. SSH into the instance with user `ubuntu`.
 
+    mkdir -p ~/load_testing/assets/
     sudo su -
     apt-get update && apt-get -u dist-upgrade
     mkdir .gnupg
