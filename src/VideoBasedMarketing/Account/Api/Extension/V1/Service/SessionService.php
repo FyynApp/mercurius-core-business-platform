@@ -32,7 +32,9 @@ class SessionService
     ): SessionInfo
     {
         if (is_null($user)) {
-            $user = $this->accountDomainService->createUnregisteredUser(true);
+            $user = $this
+                ->accountDomainService
+                ->createUnregisteredUser(true);
         }
 
         return new SessionInfo(
