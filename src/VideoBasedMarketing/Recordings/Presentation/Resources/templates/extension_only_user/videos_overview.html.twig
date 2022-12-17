@@ -1,0 +1,14 @@
+{% extends '@shared/base_extension_only_user.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% block body %}
+
+    {% for video in TwigHelperService.videoDomainService.availableVideos(app.user) %}
+
+        {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+
+        {{ video.id }}
+    {% endfor %}
+
+{% endblock %}

@@ -3,7 +3,6 @@
 namespace App\VideoBasedMarketing\Account\Presentation\EventSubscriber;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,24 +13,20 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
-class ForceShowingEmailVerificationPageKernelRequestSubscriber
+class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
     implements EventSubscriberInterface
 {
     private RouterInterface $router;
 
     private TokenStorageInterface $tokenStorage;
 
-    private AccountDomainService $accountDomainService;
-
     public function __construct(
         RouterInterface       $router,
-        TokenStorageInterface $tokenStorage,
-        AccountDomainService  $accountDomainService
+        TokenStorageInterface $tokenStorage
     )
     {
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
-        $this->accountDomainService = $accountDomainService;
     }
 
     public static function getSubscribedEvents(): array
@@ -54,13 +49,24 @@ class ForceShowingEmailVerificationPageKernelRequestSubscriber
             return;
         }
 
-        if (    $event->getRequest()->attributes->get('_route')
-            === 'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address'
+        $routeName = $event->getRequest()->attributes->get('_route');
 
-            || $event->getRequest()->attributes->get('_route')
-            === 'videobasedmarketing.account.presentation.sign_up.email_verification'
-        ) {
-            return;
+        $allowedRouteNames = [
+            'shared.infrastructure.content_delivery.serve_external_asset',
+            'videobasedmarketing.account.presentation.claim_unregistered_user.',
+            'videobasedmarketing.account.api.extension.',
+            'videobasedmarketing.account.presentation.sign_up.email_verification',
+            'videobasedmarketing.recordings.api.extension.',
+            'videobasedmarketing.recordings.presentation.extension_only_user.',
+            'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
+            'videobasedmarketing.recordings.presentation.recording_session.extension',
+            'ux_live_component'
+        ];
+
+        foreach ($allowedRouteNames as $allowedRouteName) {
+            if (str_starts_with($routeName, $allowedRouteName)) {
+                return;
+            }
         }
 
         /** @var User $user */
@@ -70,10 +76,11 @@ class ForceShowingEmailVerificationPageKernelRequestSubscriber
             return;
         }
 
-        if ($this->accountDomainService->userMustVerifyEmailBeforeUsingSite($user)) {
+        if ($user->isExtensionOnly()) {
             $response = new RedirectResponse(
                 $this->router->generate(
-                    'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address'
+                    'videobasedmarketing.recordings.presentation.extension_only_user.videos.overview',
+                    ['routeName' => $routeName]
                 )
             );
             $event->setResponse($response);

@@ -150,6 +150,12 @@ class User
     }
 
 
+    public function isExtensionOnly(): bool
+    {
+        return $this->hasRole(Role::EXTENSION_ONLY_USER);
+    }
+
+
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: ThirdPartyAuthLinkedinResourceOwner::class, cascade: ['persist'])]
     private ?ThirdPartyAuthLinkedinResourceOwner $thirdPartyAuthLinkedinResourceOwner = null;
 

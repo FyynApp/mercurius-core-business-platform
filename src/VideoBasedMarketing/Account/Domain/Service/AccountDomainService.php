@@ -98,4 +98,11 @@ class AccountDomainService
 
         return true;
     }
+
+    public function userMustVerifyEmailBeforeUsingSite(
+        User $user
+    ): bool
+    {
+        return $user->isRegistered() && !$user->isVerified();
+    }
 }

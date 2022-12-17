@@ -1,0 +1,53 @@
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+<!DOCTYPE html>
+<html class="bg-white" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Fyyn — {% block title %}Welcome!{% endblock %}</title>
+
+        {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_link_tags('tailwind') }}
+
+        {% block stylesheets %}{% endblock %}
+
+
+        {{ encore_entry_script_tags('app') }}
+
+        {% block javascripts %}{% endblock %}
+    </head>
+    <body class="bg-white h-full w-full">
+
+        <div class="bg-white h-full w-full p-8">
+
+            <div class="flex flex-row justify-end">
+                <a
+                        href="{{ path('shared.presentation.contentpages.homepage') }}"
+                        target="_blank"
+                        class="
+                        flex flex-row gap-2 justify-end items-end
+                        p-2 pr-4 pl-4 rounded-md opacity-20
+                        w-fit
+                        hover:opacity-100
+                        bg-neutral-500 text-neutral-300 font-light
+                    "
+                >
+                    <span>powered by Fyyn.io</span>
+                    <img
+                            class="h-6"
+                            src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
+                            alt="Fyyn.io"
+                    >
+                </a>
+            </div>
+
+            <div>
+                {% block body %}{% endblock %}
+            </div>
+
+        </div>
+
+    </body>
+</html>
