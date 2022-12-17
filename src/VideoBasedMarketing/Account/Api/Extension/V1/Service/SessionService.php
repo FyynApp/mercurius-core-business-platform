@@ -13,15 +13,15 @@ class SessionService
 {
     private MembershipService $membershipService;
 
-    private AccountDomainService $userService;
+    private AccountDomainService $accountDomainService;
 
     public function __construct(
         MembershipService    $membershipService,
-        AccountDomainService $userService
+        AccountDomainService $accountDomainService
     )
     {
         $this->membershipService = $membershipService;
-        $this->userService = $userService;
+        $this->accountDomainService = $accountDomainService;
     }
 
     /**
@@ -32,7 +32,7 @@ class SessionService
     ): SessionInfo
     {
         if (is_null($user)) {
-            $user = $this->userService->createUnregisteredUser();
+            $user = $this->accountDomainService->createUnregisteredUser(true);
         }
 
         return new SessionInfo(

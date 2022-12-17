@@ -30,7 +30,9 @@ class AccountDomainService
     /**
      * @throws Exception
      */
-    public function createUnregisteredUser(): User
+    public function createUnregisteredUser(
+        bool $asExtensionOnlyUser = false
+    ): User
     {
         $user = new User();
         $user->setEmail(
@@ -43,6 +45,10 @@ class AccountDomainService
         );
 
         $user->addRole(Role::UNREGISTERED_USER);
+
+        if ($asExtensionOnlyUser) {
+            $user->addRole(Role::EXTENSION_ONLY_USER);
+        }
 
         $user->setPassword(
             password_hash(
