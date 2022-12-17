@@ -120,9 +120,9 @@ class RequestParametersBasedUserAuthenticator
 
 
     public function onAuthenticationSuccess(
-        Request $request,
+        Request        $request,
         TokenInterface $token,
-        string $firewallName
+        string         $firewallName
     ): ?Response
     {
         return null;
@@ -130,7 +130,7 @@ class RequestParametersBasedUserAuthenticator
 
 
     public function onAuthenticationFailure(
-        Request $request,
+        Request                 $request,
         AuthenticationException $exception
     ): ?Response
     {
@@ -142,7 +142,7 @@ class RequestParametersBasedUserAuthenticator
 
 
     public static function generateAuthHash(
-        string $userId,
+        string   $userId,
         DateTime $validUntil
     ): string
     {

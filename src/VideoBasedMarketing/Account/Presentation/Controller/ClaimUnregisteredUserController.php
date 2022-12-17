@@ -24,16 +24,28 @@ class ClaimUnregisteredUserController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function indexAction(
+    public function landingpageAction(
         VideoDomainService $videoDomainService
     ): Response
     {
         $user = $this->getUser();
 
-        if ($user->isRegistered()) {
+        if (is_null($user)) {
             return $this->redirectToRoute(
-                'videobasedmarketing.dashboard.presentation.show_registered'
+                'shared.presentation.contentpages.homepage'
             );
+        }
+
+        if ($user->isRegistered()) {
+            if ($user->isVerified()) {
+                return $this->redirectToRoute(
+                    'videobasedmarketing.dashboard.presentation.show_registered'
+                );
+            } else {
+                return $this->redirectToRoute(
+                    'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address'
+                );
+            }
         }
 
         $form = $this->createForm(ClaimUnregisteredUserType::class);
@@ -87,7 +99,7 @@ class ClaimUnregisteredUserController
                 return $requestParametersBasedUserAuthService
                     ->createRedirectResponse(
                         $user,
-                        'videobasedmarketing.dashboard.presentation.show_registered'
+                        'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address'
                     );
             } else {
                 return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -95,5 +107,21 @@ class ClaimUnregisteredUserController
         }
 
         return new Response('', Response::HTTP_NOT_IMPLEMENTED);
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/claim/please-verify-email-address',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/beanspruchen/bitte-email-adresse-bestätigen',
+        ],
+        name        : 'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function showPleaseVerifyEmailAddressAction(): Response
+    {
+        return $this->render(
+            '@videobasedmarketing.account/claim_unregistered_user/please_verify_email_address.html.twig'
+        );
     }
 }

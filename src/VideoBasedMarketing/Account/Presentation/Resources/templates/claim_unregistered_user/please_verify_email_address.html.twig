@@ -1,0 +1,41 @@
+{% extends '@shared/base_naked.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.account' %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="bg-white h-full w-full p-8">
+        <div class="mt-16 mx-auto max-w-5xl md:ml-32 md:mr-32">
+
+            <h1 class="text-8xl font-extrabold">
+                {{ 'claim_unregistered_user.please_verify_email_address.greeting'|trans }}
+            </h1>
+
+            <div class="mt-4 text-4xl font-bold">
+                {{ 'claim_unregistered_user.please_verify_email_address.note1'|trans }}
+            </div>
+
+            <div class="mt-8 text-2xl font-extralight text-neutral-400">
+                {{ 'claim_unregistered_user.please_verify_email_address.note2'|trans }}
+            </div>
+
+            <div class="mt-8 text-2xl font-extralight text-neutral-400">
+                {{
+                    'claim_unregistered_user.please_verify_email_address.mail_info'
+                    |trans({ '{email}': app.user.email })
+                }}
+            </div>
+
+            <div class="mt-8 text-2xl font-semibold text-indigo-900">
+                {{ 'claim_unregistered_user.please_verify_email_address.note3'|trans }}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

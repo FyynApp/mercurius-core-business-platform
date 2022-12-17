@@ -56,3 +56,9 @@ claim_unregistered_user:
     greeting: 'Willkommen!'
     you_signed_up: 'Sie haben sich mit folgender E-Mail Adresse registriert:'
     verify_cta: 'E-Mail Adresse bestätigen'
+  please_verify_email_address:
+    greeting: 'Ein letzter Schritt...'
+    note1: 'Bitte bestätige abschließend noch deine E-Mail Adresse, um dein Konto zu aktivieren.'
+    note2: "Schau' in deinem E-Mail Postfach nach unserer Nachricht, und folge einfach den Anweisungen in der E-Mail."
+    note3: "Sieh' sicherheitshalber bitte auch im Spam-Ordner nach."
+    mail_info: 'Wir haben die Bestätigungsmail an {email} gesendet.'
