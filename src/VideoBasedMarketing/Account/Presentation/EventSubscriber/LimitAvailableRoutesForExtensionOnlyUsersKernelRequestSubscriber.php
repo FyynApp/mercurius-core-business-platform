@@ -60,6 +60,8 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.recordings.presentation.extension_only_user.',
             'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
             'videobasedmarketing.recordings.presentation.recording_session.extension',
+            'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
+            'videobasedmarketing.recordings.presentation.video.share_link',
             'ux_live_component'
         ];
 
@@ -79,8 +81,7 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
         if ($user->isExtensionOnly()) {
             $response = new RedirectResponse(
                 $this->router->generate(
-                    'videobasedmarketing.recordings.presentation.extension_only_user.videos.overview',
-                    ['routeName' => $routeName]
+                    'videobasedmarketing.recordings.presentation.extension_only_user.videos.overview'
                 )
             );
             $event->setResponse($response);
