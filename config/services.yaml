@@ -18,6 +18,9 @@ parameters:
     app.routing.route_prefix.with_locale.protected.en: '{_locale}/my'
     app.routing.route_prefix.with_locale.protected.de: '{_locale}/mein-bereich'
 
+    app.activecampaign.api_url: '%env(ACTIVECAMPAIGN_API_URL)%'
+    app.activecampaign.api_token: '%env(ACTIVECAMPAIGN_API_TOKEN)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:

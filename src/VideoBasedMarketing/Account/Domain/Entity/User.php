@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Domain\Entity;
 
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Infrastructure\Entity\ActiveCampaignContact;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
@@ -162,6 +163,15 @@ class User
     public function getThirdPartyAuthLinkedinResourceOwner(): ?ThirdPartyAuthLinkedinResourceOwner
     {
         return $this->thirdPartyAuthLinkedinResourceOwner;
+    }
+
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: ActiveCampaignContact::class, cascade: ['persist'])]
+    private ?ActiveCampaignContact $activeCampaignContact = null;
+
+    public function getActiveCampaignContact(): ?ActiveCampaignContact
+    {
+        return $this->activeCampaignContact;
     }
 
 
