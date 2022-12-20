@@ -6,7 +6,7 @@ use App\Shared\Infrastructure\Service\ContentDeliveryService;
 use App\Shared\Infrastructure\Service\CookiesService;
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
-use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardService;
+use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
@@ -30,7 +30,7 @@ class TwigHelperService
 
     private ShortIdService $shortIdService;
 
-    private DashboardService $dashboardService;
+    private DashboardDomainService $dashboardService;
 
     private PresentationpagesService $presentationpagesService;
 
@@ -44,7 +44,7 @@ class TwigHelperService
         VideoDomainService              $videoDomainService,
         RecordingsInfrastructureService $recordingsInfrastructureService,
         ShortIdService                  $shortIdService,
-        DashboardService                $dashboardService,
+        DashboardDomainService          $dashboardService,
         PresentationpagesService        $presentationpagesService,
         RecordingRequestsDomainService  $recordingRequestsDomainService
     )
@@ -96,7 +96,7 @@ class TwigHelperService
         return $this->shortIdService;
     }
 
-    public function getDashboardService(): DashboardService
+    public function getDashboardService(): DashboardDomainService
     {
         return $this->dashboardService;
     }

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Tests\IntegrationTests\VideoBasedMarketing\Dashboard;
+namespace App\Tests\IntegrationTests\VideoBasedMarketing\Dashboard\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
-use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardService;
+use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 
-class DashboardServiceTest
+class DashboardDomainServiceTest
     extends KernelTestCase
 {
     public function test(): void
@@ -19,7 +19,7 @@ class DashboardServiceTest
         $userRepository = $container->get(UserRepository::class);
         $user = $userRepository->findOneBy(['email' => RegisteredUserFixture::EMAIL]);
 
-        $dashboardService = $container->get(DashboardService::class);
+        $dashboardService = $container->get(DashboardDomainService::class);
 
         $this->assertEquals(
             0,
