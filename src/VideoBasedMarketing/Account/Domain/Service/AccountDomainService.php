@@ -4,11 +4,14 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Infrastructure\Enum\ActiveCampaignContactTag;
+use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
 use App\VideoBasedMarketing\Account\Presentation\Service\AccountPresentationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use LogicException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 
 class AccountDomainService
@@ -17,13 +20,18 @@ class AccountDomainService
 
     private AccountPresentationService $presentationService;
 
+    private MessageBusInterface $messageBus;
+
+
     public function __construct(
-        EntityManagerInterface  $entityManager,
-        AccountPresentationService $presentationService
+        EntityManagerInterface     $entityManager,
+        AccountPresentationService $presentationService,
+        MessageBusInterface        $messageBus
     )
     {
         $this->entityManager = $entityManager;
         $this->presentationService = $presentationService;
+        $this->messageBus = $messageBus;
     }
 
 
@@ -68,11 +76,11 @@ class AccountDomainService
      * @throws TransportExceptionInterface
      */
     public function handleUnregisteredUserClaim(
-        User   $unregisteredUser,
+        User   $userToClaim,
         string $claimEmail
     ): bool
     {
-        if ($unregisteredUser->isRegistered()) {
+        if ($userToClaim->isRegistered()) {
             throw new LogicException('Only unregistered user sessions can claim.');
         }
 
@@ -86,15 +94,27 @@ class AccountDomainService
             throw new Exception("A user with email '$claimEmail' already exists.");
         }
 
-        $unregisteredUser->setEmail($claimEmail);
-        $unregisteredUser->makeRegistered();
+        $userToClaim->setEmail($claimEmail);
+        $userToClaim->makeRegistered();
 
-        $this->entityManager->persist($unregisteredUser);
+        $this->entityManager->persist($userToClaim);
         $this->entityManager->flush();
+
+        $contactTags = [];
+        if ($userToClaim->isExtensionOnly()) {
+            $contactTags[] = ActiveCampaignContactTag::RegisteredThroughTheChromeExtension;
+        }
+
+        $this->messageBus->dispatch(
+            new SyncUserToActiveCampaignCommandMessage(
+                $userToClaim,
+                $contactTags
+            )
+        );
 
         $this
             ->presentationService
-            ->sendVerificationEmailForClaimedUser($unregisteredUser);
+            ->sendVerificationEmailForClaimedUser($userToClaim);
 
         return true;
     }

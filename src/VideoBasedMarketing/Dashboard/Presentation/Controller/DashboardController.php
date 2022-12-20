@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Dashboard\Presentation\Controller;
 
-use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardService;
+use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +22,7 @@ class DashboardController
         methods     : [Request::METHOD_GET]
     )]
     public function showRegisteredAction(
-        DashboardService $dashboardService
+        DashboardDomainService $dashboardService
     ): Response
     {
         return $this->render(

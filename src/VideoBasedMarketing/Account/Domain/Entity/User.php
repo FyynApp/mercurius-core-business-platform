@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Domain\Entity;
 
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Infrastructure\Entity\ActiveCampaignContact;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
@@ -15,6 +16,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -23,7 +25,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(
+    fields: ['email'],
+    message: 'There is already an account with this email'
+)]
 class User
     implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -42,7 +47,10 @@ class User
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(
+        type: 'guid',
+        unique: true
+    )]
     private ?string $id = null;
 
     public function getId(): ?string
@@ -51,7 +59,12 @@ class User
     }
 
 
-    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
+    #[ORM\Column(
+        type: 'string',
+        length: 180,
+        unique: true,
+        nullable: false
+    )]
     private ?string $email = null;
 
     public function getEmail(): ?string
@@ -140,10 +153,13 @@ class User
         return $this->hasRole(Role::REGISTERED_USER);
     }
 
+    /**
+     * @throws Exception
+     */
     public function makeRegistered(): void
     {
         if ($this->isRegistered()) {
-            return;
+            throw new Exception("User '{$this->getUserIdentifier()}' is already registered");
         }
         $this->removeRole(Role::UNREGISTERED_USER);
         $this->addRole(Role::REGISTERED_USER);
@@ -156,7 +172,11 @@ class User
     }
 
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: ThirdPartyAuthLinkedinResourceOwner::class, cascade: ['persist'])]
+    #[ORM\OneToOne(
+        mappedBy: 'user',
+        targetEntity: ThirdPartyAuthLinkedinResourceOwner::class,
+        cascade: ['persist']
+    )]
     private ?ThirdPartyAuthLinkedinResourceOwner $thirdPartyAuthLinkedinResourceOwner = null;
 
     public function getThirdPartyAuthLinkedinResourceOwner(): ?ThirdPartyAuthLinkedinResourceOwner
@@ -165,8 +185,32 @@ class User
     }
 
 
+    #[ORM\OneToOne(
+        mappedBy: 'user',
+        targetEntity: ActiveCampaignContact::class,
+        cascade: ['persist']
+    )]
+    private ?ActiveCampaignContact $activeCampaignContact = null;
+
+    public function getActiveCampaignContact(): ?ActiveCampaignContact
+    {
+        return $this->activeCampaignContact;
+    }
+
+    public function setActiveCampaignContact(
+        ?ActiveCampaignContact $activeCampaignContact
+    ): void
+    {
+        $this->activeCampaignContact = $activeCampaignContact;
+    }
+
+
     /** @var Subscription[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Subscription::class, cascade: ['persist'])]
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: Subscription::class,
+        cascade: ['persist']
+    )]
     private array|Collection $subscriptions;
 
     /**
@@ -179,7 +223,11 @@ class User
 
 
     /** @var Presentationpage[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Presentationpage::class, cascade: ['persist'])]
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: Presentationpage::class,
+        cascade: ['persist']
+    )]
     private array|Collection $presentationpages;
 
     /**
@@ -192,7 +240,11 @@ class User
 
 
     /** @var RecordingSession[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSession::class, cascade: ['persist'])]
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: RecordingSession::class,
+        cascade: ['persist']
+    )]
     private array|Collection $recordingSessions;
 
     /**
@@ -205,7 +257,11 @@ class User
 
 
     /** @var Video[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Video::class, cascade: ['persist'])]
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: Video::class,
+        cascade: ['persist']
+    )]
     private array|Collection $videos;
 
     /**
@@ -218,7 +274,11 @@ class User
 
 
     /** @var RecordingSettingsBag[]|Collection */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: RecordingSettingsBag::class, cascade: ['persist'])]
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: RecordingSettingsBag::class,
+        cascade: ['persist']
+    )]
     private array|Collection $recordingSettingsBags;
 
 

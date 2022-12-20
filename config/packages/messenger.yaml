@@ -23,3 +23,12 @@ framework:
             messenger.bus.default:
                 middleware:
                     - 'App\Shared\Infrastructure\Message\EventLoggerMiddleware'
+
+when@test:
+    framework:
+        messenger:
+            transports:
+                async:
+                    dsn: 'in-memory://'
+                    options:
+                        serialize: true

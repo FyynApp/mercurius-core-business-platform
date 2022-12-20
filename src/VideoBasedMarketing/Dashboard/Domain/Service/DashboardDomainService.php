@@ -9,7 +9,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 
 
-class DashboardService
+class DashboardDomainService
 {
     private PresentationpagesService $presentationpagesService;
 
