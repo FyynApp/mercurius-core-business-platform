@@ -4,8 +4,10 @@ namespace App\Tests\ApplicationTests\Feature\BrowserExtension;
 
 use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
 use App\Tests\ApplicationTests\Helper\RecordingSessionHelper;
+use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Messenger\Transport\InMemoryTransport;
 
 
 class UnregisteredUserWorkflowTest
@@ -85,5 +87,24 @@ class UnregisteredUserWorkflowTest
         $email = $this->getMailerMessage();
         $this->assertEmailHtmlBodyContains($email, 'Welcome');
         $this->assertEmailHtmlBodyContains($email, 'foo@bar.de');
+
+        /* @var InMemoryTransport $transport */
+        $transport = $this->getContainer()->get('messenger.transport.async');
+        $this->assertCount(1, $transport->getSent());
+
+        /** @var SyncUserToActiveCampaignCommandMessage $message */
+        $message = $transport->getSent()[0]->getMessage();
+
+        $this->assertSame(
+            SyncUserToActiveCampaignCommandMessage::class,
+            $message::class
+        );
+
+        $this->assertCount(1, $message->getContactTags());
+
+        $this->assertSame(
+            9,
+            $message->getContactTags()[0]->value
+        );
     }
 }
