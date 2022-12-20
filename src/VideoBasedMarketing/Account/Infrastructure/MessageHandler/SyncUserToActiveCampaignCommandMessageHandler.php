@@ -34,6 +34,7 @@ class SyncUserToActiveCampaignCommandMessageHandler
         SyncUserToActiveCampaignCommandMessage $message
     ): void
     {
+        /** @var null|User $user */
         $user = $this->entityManager->find(
             User::class,
             $message->getUserId()
@@ -45,13 +46,13 @@ class SyncUserToActiveCampaignCommandMessageHandler
             );
         }
 
-        if (is_null($user->getActiveCampaignContactId())) {
+        if (is_null($user->getActiveCampaignContact())) {
             $this->activeCampaignService->createContact($user);
         }
 
         foreach ($message->getContactTags() as $contactTag) {
             $this->activeCampaignService->addTagToContact(
-                $user,
+                $user->getActiveCampaignContact(),
                 $contactTag
             );
         }

@@ -197,6 +197,13 @@ class User
         return $this->activeCampaignContact;
     }
 
+    public function setActiveCampaignContact(
+        ?ActiveCampaignContact $activeCampaignContact
+    ): void
+    {
+        $this->activeCampaignContact = $activeCampaignContact;
+    }
+
 
     /** @var Subscription[]|Collection */
     #[ORM\OneToMany(

@@ -21,6 +21,7 @@ readonly class ActiveCampaignContact
         }
         $this->id = $id;
         $this->user = $user;
+        $user->setActiveCampaignContact($this);
     }
 
     #[ORM\Id]

@@ -2,6 +2,7 @@
 
 namespace App\Tests\IntegrationTests\VideoBasedMarketing\Account\Infrastructure\Service;
 
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ActiveCampaignService;
@@ -16,6 +17,8 @@ class ActiveCampaignServiceTest
         self::bootKernel();
         $container = static::getContainer();
         $userRepository = $container->get(UserRepository::class);
+
+        /** @var null|User $user */
         $user = $userRepository->findOneBy(['email' => RegisteredUserFixture::EMAIL]);
 
         /** @var ActiveCampaignService $activeCampaignService */
@@ -24,5 +27,10 @@ class ActiveCampaignServiceTest
         $contact = $activeCampaignService->createContact($user);
 
         $this->assertSame(1, $contact->getId());
+
+        $this->assertSame(
+            $contact->getId(),
+            $user->getActiveCampaignContact()->getId()
+        );
     }
 }

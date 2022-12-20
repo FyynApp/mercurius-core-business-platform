@@ -29,6 +29,20 @@ class MockHttpClientCallback
                 ]
             ),
 
+            'POST https://fyyn.api-us1.com/api/3/contactTags' => new MockResponse(
+                json_encode(
+                    [
+                        'contactTag' => [
+                            'contact' => 1,
+                            'id' => 1,
+                        ],
+                    ]
+                ),
+                [
+                    'http_code' => Response::HTTP_CREATED,
+                ]
+            ),
+
             default => throw new ValueError("Unexpected request: $method $url"),
         };
     }

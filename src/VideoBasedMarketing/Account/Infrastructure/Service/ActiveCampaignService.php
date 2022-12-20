@@ -101,6 +101,7 @@ readonly class ActiveCampaignService
         );
 
         $this->entityManager->persist($contact);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         return $contact;

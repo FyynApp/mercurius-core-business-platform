@@ -38,8 +38,13 @@ services:
             - '../src/Kernel.php'
             # We do not exclude '../src/**/Entity/*', because since Symfony 6.2, this results in error 'The definition ".service_locator.SAH4WVS" has a reference to an abstract definition "App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage". Abstract definitions cannot be the target of references.'
 
-    App\Tests\:
-        resource: '../tests/'
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+when@test:
+    services:
+        App\Tests\:
+            resource: '../tests/'
+            exclude:
+                - '../tests/bootstrap.php'
+                - '../tests/**/Resources/**/*'
