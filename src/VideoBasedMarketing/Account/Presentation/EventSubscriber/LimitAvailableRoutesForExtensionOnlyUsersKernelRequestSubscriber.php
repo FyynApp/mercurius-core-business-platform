@@ -79,12 +79,24 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
         }
 
         if ($user->isExtensionOnly()) {
-            $response = new RedirectResponse(
-                $this->router->generate(
-                    'videobasedmarketing.recordings.presentation.extension_only_user.videos.overview'
-                )
-            );
-            $event->setResponse($response);
+
+            if ($user->isRegistered() && $user->isVerified()) {
+                $response = new RedirectResponse(
+                    $this->router->generate(
+                        'videobasedmarketing.recordings.presentation.extension_only_user.videos.overview'
+                    )
+                );
+                $event->setResponse($response);
+            }
+
+            if (!$user->isRegistered()) {
+                $response = new RedirectResponse(
+                    $this->router->generate(
+                        'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage'
+                    )
+                );
+                $event->setResponse($response);
+            }
         }
     }
 }
