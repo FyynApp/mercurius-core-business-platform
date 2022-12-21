@@ -12,19 +12,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use ValueError;
 
 
 readonly class ActiveCampaignService
 {
     private HttpClientInterface $httpClient;
 
-    private ContainerBagInterface $containerBag;
-
     private EntityManagerInterface $entityManager;
 
     private string $apiUrl;
 
     private string $apiToken;
+
+    private string $kernelEnvironment;
 
     public function __construct(
         HttpClientInterface    $httpClient,
@@ -33,11 +34,11 @@ readonly class ActiveCampaignService
     )
     {
         $this->httpClient = $httpClient;
-        $this->containerBag = $containerBag;
         $this->entityManager = $entityManager;
 
-        $this->apiUrl = $this->containerBag->get('app.activecampaign.api_url');
-        $this->apiToken = $this->containerBag->get('app.activecampaign.api_token');
+        $this->apiUrl = $containerBag->get('app.activecampaign.api_url');
+        $this->apiToken = $containerBag->get('app.activecampaign.api_token');
+        $this->kernelEnvironment = $containerBag->get('kernel.environment');
     }
 
     public function userHasContact(User $user): bool
@@ -48,12 +49,22 @@ readonly class ActiveCampaignService
     /**
      * @throws Exception|TransportExceptionInterface
      */
-    public function createContact(User $user): ActiveCampaignContact
+    public function createContactIfNotExists(User $user): ActiveCampaignContact
     {
+        $envTag = match ($this->kernelEnvironment) {
+            'test'    => ActiveCampaignContactTag::EnvTest,
+            'dev'     => ActiveCampaignContactTag::EnvDev,
+            'preprod' => ActiveCampaignContactTag::EnvPreprod,
+            'prod'    => ActiveCampaignContactTag::EnvProd,
+            default   => throw new ValueError("Unknown environment '{$this->kernelEnvironment}'.")
+        };
+
         if ($this->userHasContact($user)) {
-            throw new Exception(
-                "User already has contact '{$user->getActiveCampaignContact()->getId()}' at ActiveCampaign."
+            $this->addTagToContact(
+                $user->getActiveCampaignContact(),
+                $envTag
             );
+            return $user->getActiveCampaignContact();
         }
 
         $response = $this->httpClient->request(
@@ -103,6 +114,11 @@ readonly class ActiveCampaignService
         $this->entityManager->persist($contact);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        $this->addTagToContact(
+            $user->getActiveCampaignContact(),
+            $envTag
+        );
 
         return $contact;
     }

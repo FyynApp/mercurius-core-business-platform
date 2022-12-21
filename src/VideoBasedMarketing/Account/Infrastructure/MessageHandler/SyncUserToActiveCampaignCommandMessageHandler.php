@@ -47,7 +47,7 @@ class SyncUserToActiveCampaignCommandMessageHandler
         }
 
         if (is_null($user->getActiveCampaignContact())) {
-            $this->activeCampaignService->createContact($user);
+            $this->activeCampaignService->createContactIfNotExists($user);
         }
 
         foreach ($message->getContactTags() as $contactTag) {

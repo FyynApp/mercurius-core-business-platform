@@ -1,0 +1,3 @@
+<?php // dev.encrypt.public on Wed, 21 Dec 2022 07:33:53 +0000
+
+return "vdC\xBF\xDET\xB7\x9E\xF79\x94n\x9B\xB8\xB1I6\x9D\xC1YHJ\x27\xEB\x10\x28k\xE9hf\x09V";

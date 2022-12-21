@@ -39,7 +39,7 @@ class CreateContactAtActiveCampaign
         OutputInterface $output
     ): int
     {
-        $contact = $this->activeCampaignService->createContact(
+        $contact = $this->activeCampaignService->createContactIfNotExists(
             $this->entityManager->find(
                 User::class,
                 '1ed7e43d-8990-6abe-a482-1ded198af678'

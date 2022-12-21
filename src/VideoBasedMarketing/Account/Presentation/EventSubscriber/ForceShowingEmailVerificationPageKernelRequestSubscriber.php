@@ -54,13 +54,21 @@ class ForceShowingEmailVerificationPageKernelRequestSubscriber
             return;
         }
 
-        if (    $event->getRequest()->attributes->get('_route')
-            === 'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address'
+        $routeName = $event->getRequest()->attributes->get('_route');
 
-            || $event->getRequest()->attributes->get('_route')
-            === 'videobasedmarketing.account.presentation.sign_up.email_verification'
-        ) {
-            return;
+        $allowedRouteNames = [
+            'shared.infrastructure.content_delivery.serve_external_asset',
+            'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address',
+            'videobasedmarketing.account.presentation.sign_up.email_verification',
+            'videobasedmarketing.account.api.extension.',
+            'videobasedmarketing.recordings.api.extension.',
+            'ux_live_component'
+        ];
+
+        foreach ($allowedRouteNames as $allowedRouteName) {
+            if (str_starts_with($routeName, $allowedRouteName)) {
+                return;
+            }
         }
 
         /** @var User $user */

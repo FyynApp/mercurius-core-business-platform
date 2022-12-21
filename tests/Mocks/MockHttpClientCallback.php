@@ -16,7 +16,7 @@ class MockHttpClientCallback
     ): ResponseInterface
     {
         return match ("$method $url") {
-            'POST https://fyyn.api-us1.com/api/3/contacts' => new MockResponse(
+            'POST https://fyynio1671611137.api-us1.com/api/3/contacts' => new MockResponse(
                 json_encode(
                     [
                         'contact' => [
@@ -29,7 +29,7 @@ class MockHttpClientCallback
                 ]
             ),
 
-            'POST https://fyyn.api-us1.com/api/3/contactTags' => new MockResponse(
+            'POST https://fyynio1671611137.api-us1.com/api/3/contactTags' => new MockResponse(
                 json_encode(
                     [
                         'contactTag' => [

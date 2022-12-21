@@ -24,7 +24,7 @@ class ActiveCampaignServiceTest
         /** @var ActiveCampaignService $activeCampaignService */
         $activeCampaignService = $container->get(ActiveCampaignService::class);
 
-        $contact = $activeCampaignService->createContact($user);
+        $contact = $activeCampaignService->createContactIfNotExists($user);
 
         $this->assertSame(1, $contact->getId());
 
