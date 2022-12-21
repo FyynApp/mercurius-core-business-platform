@@ -58,7 +58,7 @@ class UnregisteredUserTest
 
         UnregisteredUserHelper::createUnregisteredUser($client);
 
-        $crawler = $client->request('GET', '/en/account/claim');
+        $client->request('GET', '/en/account/claim');
 
         $this->assertSelectorTextSame(
             '[data-test-id=note2]',
