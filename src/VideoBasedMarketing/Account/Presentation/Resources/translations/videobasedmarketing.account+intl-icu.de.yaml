@@ -41,7 +41,9 @@ claim_unregistered_user:
   form:
     greeting: 'Hallo auch,'
     note1: 'vielen Dank für die Nutzung unserer Browser Extension.'
-    note2: 'Wir haben deine Aufnahmen sicher und zuverlässig zwischengespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
+    note2:
+      has_videos: 'Wir haben deine Aufnahmen sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
+      no_videos: 'Sobald du Aufnahmen erstellst, werden diese sicher und gespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
     note3: 'Erstelle jetzt deinen kostenlosen Fyyn.io Account und verwalte deine Videos!'
     cta: 'Account erstellen'
     fineprint: 'Mit dem Absenden dieses Formulars stimmst du unseren AGBs und der Datenschutzerklärung zu.'

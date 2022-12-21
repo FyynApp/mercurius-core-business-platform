@@ -3,7 +3,7 @@
 namespace App\Tests\ApplicationTests\Scenario;
 
 
-use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
+use App\Tests\ApplicationTests\Helper\UnregisteredUserHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UnregisteredUserTest
@@ -12,11 +12,9 @@ class UnregisteredUserTest
     public function testSiteMostlyLimitsUnregisteredUsersToClaimPage(): void
     {
         $client = static::createClient();
-
         $client->followRedirects();
 
-        // This creates an unregistered user
-        BrowserExtensionHelper::getSessionInfo($client);
+        UnregisteredUserHelper::createUnregisteredUser($client);
 
         foreach (
             [
@@ -51,5 +49,20 @@ class UnregisteredUserTest
                 $client->getRequest()->getUri()
             );
         }
+    }
+
+    public function testClaimPageRecognizesIfUserDoesNotYetHaveAnyVideos(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+
+        UnregisteredUserHelper::createUnregisteredUser($client);
+
+        $crawler = $client->request('GET', '/en/account/claim');
+
+        $this->assertSelectorTextSame(
+            '[data-test-id=note2]',
+            'Once you use it to create recordings, they are stored securely and reliably, making them accessible for you easily at any time.'
+        );
     }
 }
