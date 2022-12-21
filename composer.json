@@ -8,6 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-mbstring": "*",
+        "ext-sodium": "*",
         "doctrine/annotations": "^1.13.3",
         "doctrine/doctrine-bundle": "^2.7.1",
         "doctrine/doctrine-migrations-bundle": "^3.2.2",

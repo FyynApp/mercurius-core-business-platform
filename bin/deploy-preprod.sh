@@ -2,12 +2,20 @@
 
 SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+if [ ! -f "$SCRIPT_FOLDER/../config/secrets/preprod/preprod.decrypt.private.php" ]
+then
+    echo "You need to create file config/secrets/preprod/preprod.decrypt.private.php from the contents at https://start.1password.com/open/i?a=***REMOVED***&v=***REMOVED***&i=p25pbclejfra6sxl3yrh3dgg24&h=my.1password.com"
+    exit 1
+fi
+
 if [ "$1" != "--quick" ]
 then
   pushd "$SCRIPT_FOLDER"/../
     npm run build
   popd
 fi
+
+php bin/console --env=preprod secrets:decrypt-to-local --force
 
 rsync \
   -avc \
