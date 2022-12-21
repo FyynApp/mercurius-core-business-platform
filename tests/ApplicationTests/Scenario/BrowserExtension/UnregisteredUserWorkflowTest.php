@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\ApplicationTests\Feature\BrowserExtension;
+namespace App\Tests\ApplicationTests\Scenario\BrowserExtension;
 
 use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
 use App\Tests\ApplicationTests\Helper\RecordingSessionHelper;
