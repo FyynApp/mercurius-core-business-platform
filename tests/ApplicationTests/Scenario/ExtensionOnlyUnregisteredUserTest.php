@@ -6,7 +6,7 @@ namespace App\Tests\ApplicationTests\Scenario;
 use App\Tests\ApplicationTests\Helper\UnregisteredUserHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UnregisteredUserTest
+class ExtensionOnlyUnregisteredUserTest
     extends WebTestCase
 {
     public function testSiteMostlyLimitsUnregisteredUsersToClaimPage(): void
@@ -22,7 +22,6 @@ class UnregisteredUserTest
                 '/en/',
                 '/en/features',
                 '/en/pricing',
-                '/en/account/sign-in',
                 '/en/account/sign-up',
             ]
             as $path
@@ -38,6 +37,7 @@ class UnregisteredUserTest
         foreach (
             [
                 '/en/account/claim',
+                '/en/account/sign-in',
                 '/api/extension/v1/account/session-info'
             ]
             as $path

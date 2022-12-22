@@ -56,6 +56,7 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.account.presentation.claim_unregistered_user.',
             'videobasedmarketing.account.api.extension.',
             'videobasedmarketing.account.presentation.sign_up.email_verification',
+            'videobasedmarketing.account.presentation.sign_in',
             'videobasedmarketing.recordings.api.extension.',
             'videobasedmarketing.recordings.presentation.extension_only_user.',
             'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
