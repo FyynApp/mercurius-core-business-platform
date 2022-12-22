@@ -32,8 +32,31 @@ class ContentpagesController
             return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show_registered');
         }
 
+        return $this->redirectToRoute('shared.presentation.contentpages.homepage_extension');
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/extension',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/extension',
+        ],
+        name        : 'shared.presentation.contentpages.homepage_extension',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function homepageExtensionAction(): Response
+    {
+        /** @var User|null $user */
+        $user = $this->getUser();
+
+        if (   !is_null($user)
+            && $user->isRegistered()
+        ) {
+            return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show_registered');
+        }
+
         return $this->render(
-            '@shared/content_pages/homepage.html.twig',
+            '@shared/content_pages/homepage_extension.html.twig',
             ['kernel_environment' => $this->getParameter('kernel.environment')]
         );
     }

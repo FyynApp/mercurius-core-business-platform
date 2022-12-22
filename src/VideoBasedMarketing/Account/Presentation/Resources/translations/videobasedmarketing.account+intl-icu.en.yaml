@@ -60,3 +60,9 @@ claim_unregistered_user:
     greeting: 'Welcome!'
     you_signed_up: 'You signed up with the following email:'
     verify_cta: 'Confirm email'
+  please_verify_email_address:
+    greeting: 'A final step...'
+    note1: 'Please confirm your email address to activate your account.'
+    note2: 'Check your email inbox for our message and simply follow the instructions in the email.'
+    note3: 'Just to be safe, please also check your spam folder.'
+    mail_info: 'We have sent the confirmation email to address {email}.'

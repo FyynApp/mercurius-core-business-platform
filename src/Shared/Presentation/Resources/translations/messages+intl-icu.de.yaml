@@ -33,3 +33,9 @@ contentpages:
     cta:
       get_started: 'Direkt loslegen'
       live_demo: 'Live-Demo'
+  homepage_extension:
+    title: 'Die Fyyn.io Browser Extension'
+    text: 'Die Fyyn.io Browser Extension ist eine kostenlose Erweiterung für Google Chrome, die es dir ermöglicht, deine Aufnahmen direkt aus dem Browser heraus zu erstellen.'
+    cta:
+      download: 'Jetzt installieren'
+      login: 'Einloggen'

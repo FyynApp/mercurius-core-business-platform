@@ -13,9 +13,18 @@ class HomepageTest
     public function testVisitingWhileNotLoggedIn()
     {
         $client = static::createClient();
+        $client->followRedirects();
         $client->request('GET', '/en/');
+        $this->assertSelectorTextContains('h1', 'The Fyyn.io Browser Extension');
+    }
+
+    public function testThatRequestingTheHomepageWithGermanLanguageUrlWorks()
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $client->request('GET', '/de/');
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Increase sales using Video.');
+        $this->assertSelectorTextContains('h1', 'Die Fyyn.io Browser Extension');
     }
 
     public function testVisitingWhileLoggedIn()
@@ -29,13 +38,5 @@ class HomepageTest
         $client->loginUser($user);
         $client->request('GET', '/en/');
         $this->assertResponseRedirects('/en/my/dashboard');
-    }
-
-    public function testThatRequestingTheHomepageWithGermanLanguageUrlWorks()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/de/');
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Verkaufsergebnisse mit Videos steigern.');
     }
 }

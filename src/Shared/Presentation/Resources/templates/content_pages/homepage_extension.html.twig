@@ -1,0 +1,57 @@
+{% extends '@shared/base_extension_only_user.html.twig' %}
+
+{% block title %}{{ 'mainnav.homepage'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.homepage'|trans }}{% endblock %}
+
+{% block body %}
+
+    <div class="bg-white h-full w-full p-8">
+
+        <div class="mt-16 mx-auto max-w-5xl md:ml-32 md:mr-32">
+
+            <h1 class="text-6xl font-extrabold">
+                {{ 'contentpages.homepage_extension.title'|trans }}
+            </h1>
+
+            <div class="mt-8 text-2xl font-extralight text-neutral-400">
+                {{ 'contentpages.homepage_extension.text'|trans }}
+            </div>
+
+            <div class="w-full mt-16 flex flex-col md:flex-row gap-8 justify-start">
+
+                <a
+                        href="https://chrome.google.com/webstore/category/extensions"
+                        class="
+                            w-64 flex items-center justify-center px-8 py-3
+                            border border-transparent
+                            text-base font-medium
+                            rounded-md text-white
+                            bg-indigo-600 hover:bg-indigo-700
+                            md:py-4 md:text-lg md:px-10
+                        "
+                >
+                    {{ 'contentpages.homepage_extension.cta.download'|trans }}
+                </a>
+
+                <a
+                        href="https://chrome.google.com/webstore/category/extensions"
+                        class="
+                            w-64 flex items-center justify-center px-8 py-3
+                            border border-transparent
+                            text-base font-medium
+                            rounded-md text-white
+                            bg-neutral-300 hover:bg-neutral-400
+                            md:py-4 md:text-lg md:px-10
+                        "
+                >
+                    {{ 'contentpages.homepage_extension.cta.login'|trans }}
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- kernel_environment: {{ kernel_environment }} -->
+
+{% endblock %}
