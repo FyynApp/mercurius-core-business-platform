@@ -44,7 +44,7 @@ class VideosController
         methods     : [Request::METHOD_GET]
     )]
     public function videoShareLinkAction(
-        string $videoShortId,
+        string                 $videoShortId,
         EntityManagerInterface $entityManager
     ): Response
     {
@@ -74,7 +74,7 @@ class VideosController
         methods     : [Request::METHOD_GET]
     )]
     public function showWithVideoOnlyPresentationpageTemplateAction(
-        string $videoId,
+        string                 $videoId,
         EntityManagerInterface $entityManager
     ): Response
     {
@@ -105,9 +105,9 @@ class VideosController
         methods     : [Request::METHOD_POST]
     )]
     public function deleteVideoAction(
-        string                 $videoId,
-        TranslatorInterface    $translator,
-        VideoDomainService     $videoDomainService
+        string              $videoId,
+        TranslatorInterface $translator,
+        VideoDomainService  $videoDomainService
     ): Response
     {
         $r = $this->verifyAndGetUserAndEntity(
