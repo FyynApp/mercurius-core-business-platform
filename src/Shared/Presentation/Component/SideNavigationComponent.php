@@ -43,8 +43,7 @@ class SideNavigationComponent
             || !$user->isRegistered()
         ) {
             $this->entries = [
-                new NavigationEntry('sidenav.sign_in', 'videobasedmarketing.account.presentation.sign_in'),
-                new NavigationEntry('sidenav.sign_up', 'videobasedmarketing.account.presentation.sign_up'),
+                new NavigationEntry('sidenav.sign_in', 'videobasedmarketing.account.presentation.sign_in')
             ];
         } else {
             $this->entries = [

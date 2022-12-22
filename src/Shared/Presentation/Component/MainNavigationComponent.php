@@ -43,16 +43,6 @@ class MainNavigationComponent
                     'mainnav.homepage',
                     'shared.presentation.contentpages.homepage'
                 ),
-
-                new NavigationEntry(
-                    'mainnav.features',
-                    'shared.presentation.contentpages.features'
-                ),
-
-                new NavigationEntry(
-                    'mainnav.pricing',
-                    'shared.presentation.contentpages.pricing'
-                ),
             ];
         } else {
             $this->entries = [
