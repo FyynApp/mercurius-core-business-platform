@@ -38,13 +38,17 @@ class MainNavigationComponent
         if (    is_null($user)
             || !$user->isRegistered()
         ) {
-            $this->entries = [
-                new NavigationEntry(
-                    'mainnav.homepage',
-                    'shared.presentation.contentpages.homepage'
-                ),
-            ];
-        } else {
+            if (   !is_null($user)
+                && !$user->isExtensionOnly()
+            ) {
+                $this->entries = [
+                    new NavigationEntry(
+                        'mainnav.homepage',
+                        'shared.presentation.contentpages.homepage'
+                    ),
+                ];
+            }
+        } elseif (!$user->isExtensionOnly()) {
             $this->entries = [
                 new NavigationEntry(
                     'mainnav.dashboard',

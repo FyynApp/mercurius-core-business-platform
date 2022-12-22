@@ -33,7 +33,7 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
     {
         return [
             KernelEvents::REQUEST => [
-                ['redirectToEmailVerificationPage']
+                ['limit']
             ],
         ];
     }
@@ -41,7 +41,7 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
     /**
      * @throws Exception
      */
-    public function redirectToEmailVerificationPage(
+    public function limit(
         RequestEvent $event
     ): void
     {
@@ -58,7 +58,7 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.account.presentation.sign_up.email_verification',
             'videobasedmarketing.account.presentation.sign_in',
             'videobasedmarketing.recordings.api.extension.',
-            'videobasedmarketing.recordings.presentation.extension_only_user.',
+            'videobasedmarketing.recordings.presentation.videos.',
             'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
             'videobasedmarketing.recordings.presentation.recording_session.extension',
             'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
