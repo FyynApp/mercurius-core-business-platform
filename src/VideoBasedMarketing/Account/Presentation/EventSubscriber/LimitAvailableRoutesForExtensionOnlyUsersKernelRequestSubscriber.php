@@ -84,7 +84,7 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             if ($user->isRegistered() && $user->isVerified()) {
                 $response = new RedirectResponse(
                     $this->router->generate(
-                        'videobasedmarketing.recordings.presentation.extension_only_user.videos.overview'
+                        'videobasedmarketing.recordings.presentation.videos.overview'
                     )
                 );
                 $event->setResponse($response);

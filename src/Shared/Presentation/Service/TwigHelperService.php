@@ -10,6 +10,7 @@ use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 
@@ -28,6 +29,8 @@ class TwigHelperService
 
     private RecordingsInfrastructureService $recordingsInfrastructureService;
 
+    private RecordingSessionDomainService $recordingSessionDomainService;
+
     private ShortIdService $shortIdService;
 
     private DashboardDomainService $dashboardService;
@@ -43,6 +46,7 @@ class TwigHelperService
         CookiesService                  $cookiesService,
         VideoDomainService              $videoDomainService,
         RecordingsInfrastructureService $recordingsInfrastructureService,
+        RecordingSessionDomainService   $recordingSessionDomainService,
         ShortIdService                  $shortIdService,
         DashboardDomainService          $dashboardService,
         PresentationpagesService        $presentationpagesService,
@@ -55,6 +59,7 @@ class TwigHelperService
         $this->cookiesService = $cookiesService;
         $this->videoDomainService = $videoDomainService;
         $this->recordingsInfrastructureService = $recordingsInfrastructureService;
+        $this->recordingSessionDomainService = $recordingSessionDomainService;
         $this->shortIdService = $shortIdService;
         $this->dashboardService = $dashboardService;
         $this->presentationpagesService = $presentationpagesService;
@@ -89,6 +94,11 @@ class TwigHelperService
     public function getRecordingsInfrastructureService(): RecordingsInfrastructureService
     {
         return $this->recordingsInfrastructureService;
+    }
+
+    public function getRecordingSessionDomainService(): RecordingSessionDomainService
+    {
+        return $this->recordingSessionDomainService;
     }
 
     public function getShortIdService(): ShortIdService

@@ -84,4 +84,12 @@ class RecordingSessionDomainService
 
         return $recordingSession;
     }
+
+    public function userIsAllowedToOpenRecordingStudio(User $user): bool
+    {
+        return (    $user->isRegistered()
+                &&  $user->isVerified()
+                && !$user->isExtensionOnly()
+        );
+    }
 }
