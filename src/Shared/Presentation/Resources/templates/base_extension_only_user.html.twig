@@ -18,30 +18,69 @@
 
         {% block javascripts %}{% endblock %}
     </head>
-    <body class="bg-white h-full w-full p-8">
+    <body class="bg-white h-full w-full">
 
-        <div class="flex flex-row justify-end">
-            <div
-                    class="
-                        flex flex-row gap-2 justify-end items-end
-                        p-2 pr-4 pl-4 rounded-md opacity-20
-                        w-fit
-                        hover:opacity-100
-                        bg-neutral-500 text-neutral-300 font-light
-                        cursor-none
-                    "
-            >
-                <span>powered by Fyyn.io</span>
-                <img
-                        class="h-6"
-                        src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
-                        alt="Fyyn.io"
+        <div class="min-h-screen flex flex-col w-full p-8">
+            <header class="flex flex-row justify-end">
+                <div
+                        class="
+                            flex flex-row gap-2 justify-end items-end
+                            p-2 pr-4 pl-4 rounded-md opacity-20
+                            w-fit
+                            hover:opacity-100
+                            bg-neutral-500 text-neutral-300 font-light
+                            cursor-none
+                        "
                 >
-            </div>
-        </div>
+                    <span>powered by Fyyn.io</span>
+                    <img
+                            class="h-6"
+                            src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
+                            alt="Fyyn.io"
+                    >
+                </div>
+            </header>
 
-        <div class="mt-16 mx-auto max-w-7xl md:ml-0 md:mr-0">
-            {% block body %}{% endblock %}
+
+            <div class="flex flex-col flex-grow">
+                <main class="mb-auto">
+                    {% block body %}{% endblock %}
+                </main>
+
+                <footer class="
+                            min-h-max w-full bottom-0 p-4 md:flex md:items-center md:justify-between md:p-6
+                            font-extralight
+                            text-neutral-500 text-sm
+                        "
+                >
+                    <ul class="flex flex-wrap items-center mt-3 mr-6">
+                        <li>
+                            © {{ "now"|date("Y") }} smart DSGVO GmbH
+                        </li>
+                    </ul>
+
+                    <ul class="flex flex-wrap items-center mt-3 mr-6">
+                        <li>
+                            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="mr-4 hover:underline md:mr-6">{{ 'footernav.german'|trans }}</a>
+                        </li>
+                    </ul>
+
+                    <ul class="flex flex-wrap items-center mt-3">
+                        <li>
+                            <a href="#" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.imprint'|trans }}</a>
+                        </li>
+                        <li>
+                            <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.terms'|trans }}</a>
+                        </li>
+                        <li>
+                            <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.contact'|trans }}</a>
+                        </li>
+                    </ul>
+                </footer>
+            </div>
         </div>
 
     </body>
