@@ -18,34 +18,30 @@
 
         {% block javascripts %}{% endblock %}
     </head>
-    <body class="bg-white h-full w-full">
+    <body class="bg-white h-full w-full p-8">
 
-        <div class="bg-white h-full w-full p-8">
-
-            <div class="flex flex-row justify-end">
-                <div
-                        class="
-                            flex flex-row gap-2 justify-end items-end
-                            p-2 pr-4 pl-4 rounded-md opacity-20
-                            w-fit
-                            hover:opacity-100
-                            bg-neutral-500 text-neutral-300 font-light
-                            cursor-none
-                        "
+        <div class="flex flex-row justify-end">
+            <div
+                    class="
+                        flex flex-row gap-2 justify-end items-end
+                        p-2 pr-4 pl-4 rounded-md opacity-20
+                        w-fit
+                        hover:opacity-100
+                        bg-neutral-500 text-neutral-300 font-light
+                        cursor-none
+                    "
+            >
+                <span>powered by Fyyn.io</span>
+                <img
+                        class="h-6"
+                        src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
+                        alt="Fyyn.io"
                 >
-                    <span>powered by Fyyn.io</span>
-                    <img
-                            class="h-6"
-                            src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
-                            alt="Fyyn.io"
-                    >
-                </div>
             </div>
+        </div>
 
-            <div>
-                {% block body %}{% endblock %}
-            </div>
-
+        <div class="mt-16 mx-auto max-w-7xl md:ml-0 md:mr-0">
+            {% block body %}{% endblock %}
         </div>
 
     </body>

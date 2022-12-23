@@ -1,35 +1,37 @@
-new_video_title: 'Aufnahme {num}'
-frames_per_second: 'Bilder pro Sekunde'
+new_video_title: 'Recording {num}'
+frames_per_second: 'frames per second'
 seconds: >-
   {seconds, plural,
-    =0    {Länge: 1 Sekunde}
-    one   {Länge: 1 Sekunde}
-    other {Länge: # Sekunden}
+    =0    {Length: 1 second}
+    one   {Length: 1 second}
+    other {Length: # seconds}
   }
-video_successfully_deleted: 'Das Video “{title}” wurde erfolgreich gelöscht.'
+video_successfully_deleted: 'Video “{title}” has been removed.'
 video_manage_widget:
   overview_box:
     cta_share: 'Share recording'
     cta_edit: 'Edit recording'
     cta_delete: 'Delete recording'
   edit_modal:
-    cta_share: 'Teilen'
-    cta_preview: 'Vorschau'
-    cta_done: 'Fertig'
-    cta_download: 'Herunterladen'
-    cta_delete: 'Löschen'
-    cta_copy: 'Kopieren'
-    cta_cut: 'Schneiden'
+    cta_share: 'Share'
+    cta_preview: 'Preview'
+    cta_done: 'Done'
+    cta_download: 'Download'
+    cta_delete: 'Remove'
+    cta_copy: 'Copy'
+    cta_cut: 'Cut'
     label:
-      title: 'Titel der Aufnahme'
-      video_only_presentationpage_template: 'Anzeige-Vorlage'
+      title: 'Title of recording'
+      video_only_presentationpage_template: 'Template'
 videos_overview:
-  title: 'Ihre Aufnahmen'
-  subtitle: 'Hier können Aufnahmen bearbeitet und geteilt werden.'
+  title: 'Your recordings'
+  subtitle: 'Recordings can be modified and shared here.'
+  no_videos_available: 'You do not yet have any recordings.'
+  use_extension_note: 'Use the Browser Extension to record a video.'
   cta:
-    add: 'Neue Aufnahme erstellen'
-    create_presentationpage: 'Seite erstellen'
-    edit_presentationpage: 'Seite bearbeiten'
-    remove_video: 'Aufnahme löschen'
+    add: 'Create new recording'
+    create_presentationpage: 'Create landingpage'
+    edit_presentationpage: 'Edit landingpage'
+    remove_video: 'Remove recording'
 video_player_embedded:
-  full_asset_outstanding: 'Video wird verarbeitet · · ·'
+  full_asset_outstanding: 'Video is being encoded · · ·'

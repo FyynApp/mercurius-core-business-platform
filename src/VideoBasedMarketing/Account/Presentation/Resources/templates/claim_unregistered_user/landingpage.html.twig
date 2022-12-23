@@ -9,101 +9,94 @@
 
 {% block body %}
 
-    <div class="bg-white h-full w-full p-8">
+    <h1 class="text-8xl font-extrabold">
+        {{ 'claim_unregistered_user.form.greeting'|trans }}
+    </h1>
 
-        <div class="mt-16 mx-auto max-w-5xl md:ml-32 md:mr-32">
+    <div class="mt-4 text-4xl font-bold">
+        {{ 'claim_unregistered_user.form.note1'|trans }}
+    </div>
 
-            <h1 class="text-8xl font-extrabold">
-                {{ 'claim_unregistered_user.form.greeting'|trans }}
-            </h1>
+    <div
+            data-test-id="note2"
+            class="mt-8 text-2xl font-extralight text-neutral-400"
+    >
+        {% if videos|length > 0 %}
+            {{ 'claim_unregistered_user.form.note2.has_videos'|trans }}
+        {% else %}
+            {{ 'claim_unregistered_user.form.note2.no_videos'|trans }}
+        {% endif %}
+    </div>
 
-            <div class="mt-4 text-4xl font-bold">
-                {{ 'claim_unregistered_user.form.note1'|trans }}
-            </div>
+    <div class="mt-8 text-2xl font-semibold text-indigo-900">
+        {{ 'claim_unregistered_user.form.note3'|trans }}
+    </div>
 
-            <div
-                    data-test-id="note2"
-                    class="mt-8 text-2xl font-extralight text-neutral-400"
-            >
-                {% if videos|length > 0 %}
-                    {{ 'claim_unregistered_user.form.note2.has_videos'|trans }}
-                {% else %}
-                    {{ 'claim_unregistered_user.form.note2.no_videos'|trans }}
+    {# @var videos \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[] #}
+
+    {% if videos|length > 0 %}
+
+        <div class="mt-16">
+
+            {% import '@videobasedmarketing.recordings/macros/video_preview.html.twig' as videoPreviewMacros %}
+
+            {% for video in videos %}
+
+                {% if loop.first %}
+                    <div class="
+                        flex
+                        flex-col lg:flex-row
+                        justify-center lg:justify-start
+                        items-center lg:items-start
+                        gap-16
+                        max-w-4xl
+                    ">
+
+                        <div class="
+                            w-full shadow-xl shadow-neutral-400
+                            h-fit
+                        ">
+                            {{ videoPreviewMacros.interactive(video) }}
+                        </div>
+
+                        {% include '@videobasedmarketing.account/claim_unregistered_user/form.include.html.twig' %}
+
+                    </div>
                 {% endif %}
-            </div>
 
-            <div class="mt-8 text-2xl font-semibold text-indigo-900">
-                {{ 'claim_unregistered_user.form.note3'|trans }}
-            </div>
+            {% endfor %}
 
-            {# @var videos \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[] #}
+            {% if videos|length > 1 %}
 
-            {% if videos|length > 0 %}
-
-                <div class="mt-16">
-
-                    {% import '@videobasedmarketing.recordings/macros/video_preview.html.twig' as videoPreviewMacros %}
-
-                    {% for video in videos %}
-
-                        {% if loop.first %}
-                            <div class="
-                                flex
-                                flex-col lg:flex-row
-                                justify-center lg:justify-start
-                                items-center lg:items-start
-                                gap-16
-                                max-w-4xl
-                            ">
-
+                <div class="mt-32 flex flex-col justify-center items-center">
+                    <div class="flex flex-row justify-evenly gap-8">
+                        {% for video in videos %}
+                            {% if not loop.first %}
                                 <div class="
-                                    w-full shadow-xl shadow-neutral-400
-                                    h-fit
+                                    w-48 shadow-md shadow-neutral-300
+                                    h-32 opacity-40 overflow-hidden
                                 ">
                                     {{ videoPreviewMacros.interactive(video) }}
                                 </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
 
-                                {% include '@videobasedmarketing.account/claim_unregistered_user/form.include.html.twig' %}
-
-                            </div>
-                        {% endif %}
-
-                    {% endfor %}
-
-                    {% if videos|length > 1 %}
-
-                        <div class="mt-32 flex flex-col justify-center items-center">
-                            <div class="flex flex-row justify-evenly gap-8">
-                                {% for video in videos %}
-                                    {% if not loop.first %}
-                                        <div class="
-                                            w-48 shadow-md shadow-neutral-300
-                                            h-32 opacity-40 overflow-hidden
-                                        ">
-                                            {{ videoPreviewMacros.interactive(video) }}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-
-                            <div class="text-lg text-neutral-500 mt-6">
-                                {{ 'claim_unregistered_user.form.other_videos_note'|trans({ numberOfVideos: (videos|length - 1) }) }}
-                            </div>
-                        </div>
-
-                    {% endif %}
-
-                </div>
-
-            {% else %}
-
-                <div class="mt-16">
-                    {% include '@videobasedmarketing.account/claim_unregistered_user/form.include.html.twig' %}
+                    <div class="text-lg text-neutral-500 mt-6">
+                        {{ 'claim_unregistered_user.form.other_videos_note'|trans({ numberOfVideos: (videos|length - 1) }) }}
+                    </div>
                 </div>
 
             {% endif %}
+
         </div>
 
-    </div>
+    {% else %}
+
+        <div class="mt-16">
+            {% include '@videobasedmarketing.account/claim_unregistered_user/form.include.html.twig' %}
+        </div>
+
+    {% endif %}
 
 {% endblock %}

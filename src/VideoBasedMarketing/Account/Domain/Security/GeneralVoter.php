@@ -44,8 +44,9 @@ class GeneralVoter
         /** @var UserOwnedEntityInterface $typedSubject */
         $typedSubject = $subject;
 
-        if ($typedSubject->getUser()
-                         ->getId() === $user->getId()) {
+        if (    $typedSubject->getUser()->getId()
+            === $user->getId()
+        ) {
             return true;
         }
 
