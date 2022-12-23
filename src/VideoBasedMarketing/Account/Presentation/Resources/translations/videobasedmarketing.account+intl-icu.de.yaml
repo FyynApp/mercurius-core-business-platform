@@ -55,8 +55,9 @@ claim_unregistered_user:
       }
   verification_email:
     subject: 'E-Mail Adresse bestätigen'
-    greeting: 'Willkommen!'
-    you_signed_up: 'Sie haben sich mit folgender E-Mail Adresse registriert:'
+    greeting: 'Fast geschafft!'
+    text1: 'Vielen Dank für Ihre Registrierung bei Fyyn.io.'
+    text2: 'Bitte klicken Sie auf den untenstehenden Button, um Ihre Registrierung abzuschließen.'
     verify_cta: 'E-Mail Adresse bestätigen'
   please_verify_email_address:
     greeting: 'Ein letzter Schritt...'

@@ -2,10 +2,11 @@
 
 namespace App\VideoBasedMarketing\Account\Infrastructure\Security;
 
+use App\Shared\Presentation\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
@@ -15,21 +16,24 @@ class EmailVerifier
 {
     private VerifyEmailHelperInterface $verifyEmailHelper;
 
-    private MailerInterface $mailer;
+    private MailService $mailService;
 
     private EntityManagerInterface $entityManager;
 
     public function __construct(
         VerifyEmailHelperInterface $helper,
-        MailerInterface            $mailer,
+        MailService                $mailService,
         EntityManagerInterface     $manager
     )
     {
         $this->verifyEmailHelper = $helper;
-        $this->mailer = $mailer;
+        $this->mailService = $mailService;
         $this->entityManager = $manager;
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     public function sendEmailAskingForVerification(
         string         $verifyEmailRouteName,
         UserInterface  $user,
@@ -50,7 +54,7 @@ class EmailVerifier
 
         $email->context($context);
 
-        $this->mailer->send($email);
+        $this->mailService->send($email);
     }
 
     /**

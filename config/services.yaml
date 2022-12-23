@@ -21,6 +21,8 @@ parameters:
     app.activecampaign.api_url: '%env(ACTIVECAMPAIGN_API_URL)%'
     app.activecampaign.api_token: '%env(ACTIVECAMPAIGN_API_TOKEN)%'
 
+    app.mail.default_sender_address: '%env(MAIL_DEFAULT_SENDER_ADDRESS)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:

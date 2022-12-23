@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
+use App\Shared\Presentation\Service\MailService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
@@ -15,7 +16,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,10 +27,18 @@ class SignUpController
 {
     private EmailVerifier $emailVerifier;
 
+    private MailService $mailService;
 
-    public function __construct(EmailVerifier $emailVerifier)
+
+    public function __construct(
+        EmailVerifier          $emailVerifier,
+        MailService            $mailService,
+        EntityManagerInterface $entityManager
+    )
     {
         $this->emailVerifier = $emailVerifier;
+        $this->mailService = $mailService;
+        parent::__construct($entityManager);
     }
 
     #[Route(
@@ -90,7 +98,7 @@ class SignUpController
                 'videobasedmarketing.account.presentation.sign_up.email_verification',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('no-reply@fyyn.io', 'Fyyn.io'))
+                    ->from($this->mailService->getDefaultSenderAddress())
                     ->to($user->getEmail())
                     ->subject('Please confirm your email')
                     ->htmlTemplate('@videobasedmarketing.account/sign_up/confirmation_email.html.twig')

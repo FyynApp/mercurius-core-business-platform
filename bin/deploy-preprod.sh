@@ -29,6 +29,8 @@ rsync \
   "$SCRIPT_FOLDER"/../ \
   www-data@preprod.fyyn.io:/var/www/mercurius-core-business-platform/preprod/
 
+rm -f "$SCRIPT_FOLDER"/../.env.preprod.local
+
 ssh www-data@preprod.fyyn.io -C ' \
 cd ~/mercurius-core-business-platform/preprod; \
 /usr/bin/env php bin/console --env=preprod cache:clear; \

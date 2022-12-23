@@ -4,6 +4,10 @@ shared.presentation.tailwind_playground:
   defaults:
     template: '@shared/tailwind_playground.html.twig'
 
+shared.presentation.template_preview:
+  path: /template-preview
+  controller: App\Shared\Presentation\Controller\TemplateController::previewAction
+
 shared.presentation.catchall.pattern:
   path:     /{catchall}
   controller: App\Shared\Presentation\Controller\CatchallController::indexAction
