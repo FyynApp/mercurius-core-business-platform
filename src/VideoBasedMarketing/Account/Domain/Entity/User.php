@@ -153,6 +153,11 @@ class User
         return $this->hasRole(Role::REGISTERED_USER);
     }
 
+    public function isUnregistered(): bool
+    {
+        return $this->hasRole(Role::UNREGISTERED_USER);
+    }
+
     /**
      * @throws Exception
      */
@@ -255,6 +260,11 @@ class User
         return $this->recordingSessions;
     }
 
+    public function setRecordingSessions(array|Collection $recordingSessions): void
+    {
+        $this->recordingSessions = $recordingSessions;
+    }
+
 
     /** @var Video[]|Collection */
     #[ORM\OneToMany(
@@ -270,6 +280,11 @@ class User
     public function getVideos(): array|Collection
     {
         return $this->videos;
+    }
+
+    public function setVideos(Collection|array $videos): void
+    {
+        $this->videos = $videos;
     }
 
 

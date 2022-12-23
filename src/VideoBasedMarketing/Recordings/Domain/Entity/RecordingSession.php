@@ -98,6 +98,11 @@ class RecordingSession
         return $this->user;
     }
 
+    public function setUser(User $user): void
+    {
+        $this->user = $user;
+    }
+
 
     /** @var RecordingSession[]|Collection */
     #[ORM\OneToMany(mappedBy: 'recordingSession', targetEntity: RecordingSessionVideoChunk::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]

@@ -7,6 +7,8 @@ use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\ActiveCampaignContactTag;
 use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
 use App\VideoBasedMarketing\Account\Presentation\Service\AccountPresentationService;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use LogicException;
@@ -75,12 +77,12 @@ class AccountDomainService
      * @throws Exception
      * @throws TransportExceptionInterface
      */
-    public function handleUnregisteredUserClaim(
+    public function handleUnregisteredUserClaimsEmail(
         User   $userToClaim,
         string $claimEmail
     ): bool
     {
-        if ($userToClaim->isRegistered()) {
+        if (!$userToClaim->isUnregistered()) {
             throw new LogicException('Only unregistered user sessions can claim.');
         }
 
@@ -115,6 +117,44 @@ class AccountDomainService
         $this
             ->presentationService
             ->sendVerificationEmailForClaimedUser($userToClaim);
+
+        return true;
+    }
+
+    public function unregisteredUserClaimsRegisteredUser(
+        User $unregisteredUser,
+        User $registeredUser
+    ): bool
+    {
+        if (!$unregisteredUser->isUnregistered()) {
+            throw new LogicException('Only unregistered user sessions can claim.');
+        }
+
+        if (!$registeredUser->isRegistered()) {
+            throw new LogicException('Only registered user can be claimed.');
+        }
+
+        /** @var RecordingSession $recordingSession */
+        foreach ($unregisteredUser->getRecordingSessions() as $recordingSession) {
+            $recordingSession->setUser($registeredUser);
+            $this->entityManager->persist($recordingSession);
+        }
+        $unregisteredUser->setRecordingSessions([]);
+        $this->entityManager->persist($unregisteredUser);
+
+        /** @var Video $video */
+        foreach ($unregisteredUser->getVideos() as $video) {
+            $video->setUser($registeredUser);
+            $this->entityManager->persist($video);
+        }
+        $unregisteredUser->setVideos([]);
+        $this->entityManager->persist($unregisteredUser);
+
+
+        $this->entityManager->remove($unregisteredUser);
+        $this->entityManager->flush();
+
+        unset($unregisteredUser);
 
         return true;
     }

@@ -90,7 +90,7 @@ class ClaimUnregisteredUserController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $success = $userService->handleUnregisteredUserClaim(
+            $success = $userService->handleUnregisteredUserClaimsEmail(
                 $user,
                 $form->getData()['email']
             );
