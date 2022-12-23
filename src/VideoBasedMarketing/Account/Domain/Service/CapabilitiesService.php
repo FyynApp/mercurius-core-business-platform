@@ -9,15 +9,15 @@ class CapabilitiesService
 {
     public function canOpenRecordingStudio(User $user): bool
     {
-        return $user->isRegistered()
-            && $user->isVerified()
+        return  $user->isRegistered()
+            &&  $user->isVerified()
             && !$user->isExtensionOnly();
     }
 
     public function canEditVideos(User $user): bool
     {
-        return $user->isRegistered()
-            && $user->isVerified()
+        return  $user->isRegistered()
+            &&  $user->isVerified()
             && !$user->isExtensionOnly();
     }
 }
