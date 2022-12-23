@@ -43,7 +43,7 @@
 
                 <div class="grid-outer">
 
-                    {% if TwigHelperService.recordingSessionDomainService.userIsAllowedToOpenRecordingStudio(app.user) %}
+                    {% if TwigHelperService.capabilitiesService.canOpenRecordingStudio(app.user) %}
                         <div
                                 class="
                                 flex flex-col rounded-lg p-0 bg-indigo-50

@@ -12,12 +12,12 @@
             <button
                     class="
                         w-full p-0 m-0
-                        {% if not TwigHelperService.videoDomainService.userIsAllowedToEditVideos(app.user) %}
+                        {% if not TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
                             cursor-default
                         {% endif %}
                     "
 
-                    {% if TwigHelperService.videoDomainService.userIsAllowedToEditVideos(app.user) %}
+                    {% if TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
                         data-action="live#action"
                         data-action-name="showEditModal"
                     {% endif %}
@@ -124,7 +124,7 @@
             </button>
         </div>
 
-        {% if TwigHelperService.videoDomainService.userIsAllowedToEditVideos(app.user) %}
+        {% if TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
             <div class="text-indigo-900 hover:font-bold hover:bg-indigo-200">
                 <button
                         class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"

@@ -105,9 +105,4 @@ class VideoDomainService
         $this->entityManager->persist($video);
         $this->entityManager->flush();
     }
-
-    public function userIsAllowedToEditVideos(User  $user): bool
-    {
-        return !$user->isExtensionOnly();
-    }
 }

@@ -5,6 +5,7 @@ namespace App\Shared\Presentation\Service;
 use App\Shared\Infrastructure\Service\ContentDeliveryService;
 use App\Shared\Infrastructure\Service\CookiesService;
 use App\Shared\Infrastructure\Service\ShortIdService;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
@@ -39,6 +40,9 @@ class TwigHelperService
 
     private RecordingRequestsDomainService $recordingRequestsDomainService;
 
+    private CapabilitiesService $capabilitiesService;
+
+
     public function __construct(
         ContentDeliveryService          $contentDeliveryService,
         AccountAssetsService            $accountAssetsService,
@@ -50,7 +54,8 @@ class TwigHelperService
         ShortIdService                  $shortIdService,
         DashboardDomainService          $dashboardService,
         PresentationpagesService        $presentationpagesService,
-        RecordingRequestsDomainService  $recordingRequestsDomainService
+        RecordingRequestsDomainService  $recordingRequestsDomainService,
+        CapabilitiesService             $capabilitiesService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
@@ -64,6 +69,7 @@ class TwigHelperService
         $this->dashboardService = $dashboardService;
         $this->presentationpagesService = $presentationpagesService;
         $this->recordingRequestsDomainService = $recordingRequestsDomainService;
+        $this->capabilitiesService = $capabilitiesService;
     }
 
     public function getContentDeliveryService(): ContentDeliveryService
@@ -119,5 +125,10 @@ class TwigHelperService
     public function getRecordingRequestsDomainService(): RecordingRequestsDomainService
     {
         return $this->recordingRequestsDomainService;
+    }
+
+    public function getCapabilitiesService(): CapabilitiesService
+    {
+        return $this->capabilitiesService;
     }
 }
