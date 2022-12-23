@@ -119,7 +119,7 @@ class UnregisteredUserWorkflowTest
 
 
         $client->followRedirects();
-        $crawler = $client->request(
+        $client->request(
             'GET',
             $crawler->filter('a')->first()->attr('href')
         );
