@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampa
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
+use Symfony\Component\Mime\Email;
 
 
 class UnregisteredUserWorkflowTest
@@ -82,11 +83,6 @@ class UnregisteredUserWorkflowTest
         $client->followRedirects(false);
         $client->submit($form);
 
-        $this->assertEmailCount(1);
-
-        $email = $this->getMailerMessage();
-        $this->assertEmailHtmlBodyContains($email, 'Welcome');
-        $this->assertEmailHtmlBodyContains($email, 'foo@bar.de');
 
         /* @var InMemoryTransport $transport */
         $transport = $this->getContainer()->get('messenger.transport.async');
@@ -105,6 +101,42 @@ class UnregisteredUserWorkflowTest
         $this->assertSame(
             9,
             $message->getContactTags()[0]->value
+        );
+
+
+        $this->assertEmailCount(1);
+
+        /** @var Email $email */
+        $email = $this->getMailerMessage();
+
+        $crawler->clear();
+        $crawler->addHtmlContent($email->getHtmlBody());
+
+        $this->assertSame(
+            "It's nearly done!",
+            $crawler->filter('h2')->first()->text()
+        );
+
+
+        $client->followRedirects();
+        $crawler = $client->request(
+            'GET',
+            $crawler->filter('a')->first()->attr('href')
+        );
+
+        $this->assertSelectorTextSame(
+            'title',
+            'Fyyn — Recordings'
+        );
+
+        $this->assertSelectorTextContains(
+            'body',
+            'Your email address has been verified.'
+        );
+
+        $this->assertSelectorTextSame(
+            '[data-test-class="video-title"]',
+            'Recording 1'
         );
     }
 }
