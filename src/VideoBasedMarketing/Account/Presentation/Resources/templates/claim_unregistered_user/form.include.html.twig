@@ -58,6 +58,16 @@
             {{ 'claim_unregistered_user.form.fineprint'|trans }}
         </div>
 
+        <div class="text-neutral-700 mt-16 w-full">
+            {{ 'claim_unregistered_user.form.login_text'|trans }}
+            <div>
+                <a href="{{ path('videobasedmarketing.account.presentation.sign_in') }}" class="font-bold">
+                    {{ 'claim_unregistered_user.form.login_cta'|trans }}
+                </a>
+            </div>
+        </div>
+
+
     </div>
 
     {{ form_row(form._token) }}

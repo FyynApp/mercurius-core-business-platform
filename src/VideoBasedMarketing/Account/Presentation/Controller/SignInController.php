@@ -24,7 +24,8 @@ class SignInController
     )]
     public function indexAction(
         AuthenticationUtils   $authenticationUtils,
-        ThirdPartyAuthService $thirdPartyAuthService
+        ThirdPartyAuthService $thirdPartyAuthService,
+        Request               $request
     ): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -36,10 +37,14 @@ class SignInController
             return $this->redirectToRoute('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start');
         }
 
+        if (trim($lastUsername) === '') {
+            $lastUsername = (string)$request->get('username');
+        }
+
         return $this->render(
             '@videobasedmarketing.account/sign_in/form.html.twig',
             [
-                'last_username' => $lastUsername,
+                'username' => $lastUsername,
                 'error' => $error,
             ]
         );

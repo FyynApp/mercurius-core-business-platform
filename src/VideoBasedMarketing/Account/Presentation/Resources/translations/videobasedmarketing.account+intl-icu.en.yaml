@@ -49,6 +49,8 @@ claim_unregistered_user:
     note3: 'Create your free-of-charge Fyyn-io account now and manage your videos!'
     cta: 'Create account'
     fineprint: 'By submitting this form, you agree to our terms and privacy policy.'
+    login_text: 'Already signed up?'
+    login_cta: '➔ To the sign in form.'
     other_videos_note: >-
       {numberOfVideos, plural,
         =0    {}

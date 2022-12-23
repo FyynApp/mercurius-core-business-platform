@@ -3,10 +3,12 @@
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\ClaimUnregisteredUserType;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,7 +73,8 @@ class ClaimUnregisteredUserController
     public function handleFormSubmitAction(
         Request                               $request,
         AccountDomainService                  $userService,
-        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService
+        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
+        EntityManagerInterface                $entityManager
     ): Response
     {
         $user = $this->getUser();
@@ -90,6 +93,15 @@ class ClaimUnregisteredUserController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $form->getData()['email']]);
+            if (!is_null($existingUser)) {
+                return $this->redirectToRoute(
+                    'videobasedmarketing.account.presentation.sign_in',
+                    ['username' => $form->getData()['email']]
+                );
+            }
+
             $success = $userService->handleUnregisteredUserClaimsEmail(
                 $user,
                 $form->getData()['email']
