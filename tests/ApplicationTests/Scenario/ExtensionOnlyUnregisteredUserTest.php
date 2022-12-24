@@ -22,7 +22,6 @@ class ExtensionOnlyUnregisteredUserTest
                 '/en/',
                 '/en/features',
                 '/en/pricing',
-                '/en/account/sign-up',
             ]
             as $path
         ) {
@@ -38,7 +37,8 @@ class ExtensionOnlyUnregisteredUserTest
             [
                 '/en/account/claim',
                 '/en/account/sign-in',
-                '/api/extension/v1/account/session-info'
+                '/api/extension/v1/account/session-info',
+                '/en/account/sign-up',
             ]
             as $path
         ) {
