@@ -64,7 +64,6 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.recordings.presentation.recording_session.extension',
             'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
             'videobasedmarketing.recordings.presentation.video.share_link',
-            'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
             'ux_live_component',
         ];
 
