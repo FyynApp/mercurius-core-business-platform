@@ -66,8 +66,8 @@ class VideosController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/videos/{videoId}/wvopt',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/videos/{videoId}/wvopt',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recordings/videos/{videoId}/wvopt',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmen/videos/{videoId}/wvopt',
         ],
         name        : 'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
