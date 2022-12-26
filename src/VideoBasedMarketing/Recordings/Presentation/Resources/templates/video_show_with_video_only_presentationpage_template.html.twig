@@ -1,4 +1,4 @@
-{% extends '@shared/base_naked.html.twig' %}
+{% extends '@shared/base_landingpage.html.twig' %}
 
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
@@ -6,53 +6,146 @@
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor-static/Video.js/7.20.3/video-js.min.css') }}">
+    {{ encore_entry_link_tags('videoplayer') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor-static/Video.js/7.20.3/video.min.js') }}"></script>
 {% endblock %}
 
 {% block body %}
 
-    <div
-            class="w-full h-full min-h-screen p-0 m-0"
-            style="
-                    font-family: 'Tiro Gurmukhi', 'Times New Roman', serif;
-                    color: {{ video.videoOnlyPresentationpageTemplate.textColor.value }};
-                    background-color: {{ video.videoOnlyPresentationpageTemplate.bgColor.value }};
-            "
+    <nav
+            {{ stimulus_controller('shared-navMobileMenuSwitch') }}
+            class="bg-neutral-100 border-1 border-black-400 border-t-0 border-l-0 border-r-0 sticky"
     >
-        <div class="flex flex-col justify-start items-center p-8 pt-24 w-fit mx-auto">
+        <div class="mx-auto px-4 sm:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="{{ path('shared.presentation.contentpages.homepage') }}">
+                            <img class="h-16" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn">
+                        </a>
+                    </div>
+                </div>
 
-            <div
-                    class="text-7xl pb-8 border-b-2 mb-12 break-normal"
-                    style="border-color: {{ video.videoOnlyPresentationpageTemplate.fgColor.value }}"
-            >
-                {{ video.title }}
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button
+                                class="text-md border-2  text-neutral-50 block px-3 py-2 rounded-md hover:bg-indigo-700"
+                                aria-current="page"
+                                style="background-color: #009EEF; border-color: #009EEF"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 float-left mr-3">
+                                <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
+                            </svg>
+                            Share
+                        </button>
+                        <button
+                                class="text-md border-2 border-blue-500 hover:border-orange-500 text-blue-500 hover:text-white text-neutral-50 block px-3 py-2 rounded-md ml-2 hover:bg-orange-500"
+                                aria-current="page"
+                                {# style="color: #009EEF; border-color: #009EEF;" #} {# hover color + border fff  #}
+                        >
+                            Copy Video Link
+                        </button>
+
+
+                        <button
+                                class="text-md border-2 border-green-500 hover:border-green-700 bg-green-500 text-neutral-50 block px-3 py-2 rounded-md ml-2 hover:bg-green-700"
+                                aria-current="page"
+                        >
+                            Get FYYN for free
+                        </button>
+
+                        <button
+                                class="text-md bg-indigo-900 text-neutral-50 block px-3 py-2 rounded-md ml-5 hover:bg-indigo-700"
+                                aria-current="page"
+                        >
+                            Login
+                        </button>
+
+
+                    </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div
+                {{ stimulus_target('shared-navMobileMenuSwitch', 'menu') }}
+                class="hidden md:hidden"
+                id="mobile-menu"
+        >
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+
+                {{ component(
+                    'main_navigation',
+                    {
+                        user: app.user,
+                        request: app.request,
+                        type: 'stacked'
+                    })
+                }}
+
+                {{ component(
+                    'side_navigation',
+                    {
+                        user: app.user,
+                        request: app.request,
+                        type: 'stacked'
+                    })
+                }}
+
             </div>
 
-            <div class="w-full max-w-2xl">
+        </div>
+    </nav>
+
+    <div
+            class="grid md:grid-cols-6 gap-4 p-0 m-0"
+    >
+        <div style="
+                font-family: 'Inter var', 'Times New Roman', serif;
+                color: {{ video.videoOnlyPresentationpageTemplate.textColor.value }};
+                background-color: {{ video.videoOnlyPresentationpageTemplate.bgColor.value }}"
+             class="md:col-start-2 col-span-4 pt-10 md:p-6">
+
+            <div
+                    class="w-full md:p-6" style="max-width: 980px;"
+            >
                 {{ component(
                     'videobasedmarketing_recordings_video_player_embedded',
                     { video }
                 ) }}
+
+{#
+                <div
+                        class="bg-slate-400 rounded-md p-5 mt-36 text-center text-slate-200 text-sm"
+                >
+                    Footer Component<br>
+                    Impressum / Imprint
+                    Datenschutzerklärung / Privacy Policy
+                    AGB / Terms of Service
+                    <div
+                            class="pt-5"
+                    >
+                    © {{ 'now' | date('Y') }}, FYYN.io. All Rights Reserved
+                    </div>
+                </div>
+#}
             </div>
+
         </div>
+
+
     </div>
 
-    <a
-            href="{{ path('shared.presentation.contentpages.homepage') }}"
-            target="_blank"
-            class="
-                        absolute top-8 right-8 flex flex-row gap-2 justify-start items-center
-                        p-2 pr-4 pl-4 rounded-md opacity-20
-                        hover:opacity-100
-                        bg-neutral-500 text-neutral-300 font-light
-                    "
-    >
-        <span>hosted by Fyyn.io</span>
-        <img
-                class="h-6"
-                src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
-                alt="Fyyn.io"
-        >
-    </a>
+<div
+        class="w-full" style="background-color: #009EEF; height: 300px;"
+>
+    sign up now
+    video preview
+</div>
 
 
 {% endblock %}

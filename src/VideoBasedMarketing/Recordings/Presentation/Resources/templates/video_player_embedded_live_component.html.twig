@@ -4,26 +4,95 @@
 {% trans_default_domain 'videobasedmarketing.recordings' %}
 
 <div
-        class="relative"
-
+        class="relative p-2"
         {{ attributes }}
 
         {% if not this.video.fullAssetAvailable %}
             data-poll
         {% endif %}
 >
-
     {% if this.video.fullAssetAvailable %}
 
-        <video
-                class="mx-auto rounded-md w-full"
+        <div class="w-full">
+
+            <video
+                    id="my-video"
+                    class="video-js rounded-md vjs-default-skin vjs-16-9 {# vjs-4-3 #}"
+                    controls
+                    preload="auto"
+                   {# width="{{ this.video.assetFullMp4Width }}"
+                    height="{{ this.video.assetFullMp4Height }}" #}
+                    poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
+                    data-setup=''
+
+            >
+                <source
+                        src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
+                        type="video/mp4"
+                />
+                {#  <source src="MY_VIDEO.webm" type="video/webm" />#}
+                <p
+                        class="vjs-no-js"
+                >
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that supports HTML5 video
+                </p>
+            </video>
+                    <div
+                            class="w-full mt-4 mb-2 grid md:grid-cols-12"
+                    >
+
+                        <div
+                                class="md:col-span-9"
+                        >
+                            <h2
+                                    class="font-medium leading-tight text-2xl text-black-600 break-normal"
+                            >
+                                {{ video.title }}
+                            </h2>
+                        </div>
+                        <div
+                                class="md:col-span-3"
+                        >
+                            <div
+                                    class="md:text-right"
+                            >
+                                <a
+                                        class="icon-download pl30"
+                                        href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}">Download</a>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+
+
+        <script>
+            videojs('my-video').ready(function() {
+                var img = this.controlBar.addChild('Component', {}, 0); // 3rd arg is index, i.e. first
+                img.addClass("my-image");
+            });
+        </script>
+        <style>
+            .video-js .my-image {
+                width: 100px;
+                height: 40px;
+                background: url({{ asset('assets/images/videoplayer/fyyn-logo-player.jpg') }}) center center no-repeat;
+                background-size: 100px;
+            }
+        </style>
+
+{#
+    <video
+                class="mx-auto rounded-sm w-full"
                 controls
                 poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
         >
             <source
                     src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
             >
-        </video>
+        </video>#}
+
+
     {% else %}
 
         <div
