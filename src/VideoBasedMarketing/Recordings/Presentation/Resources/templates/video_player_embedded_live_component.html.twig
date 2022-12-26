@@ -14,7 +14,6 @@
     {% if this.video.fullAssetAvailable %}
 
         <div class="w-full">
-
             <video
                     id="my-video"
                     class="video-js rounded-md vjs-default-skin vjs-16-9 {# vjs-4-3 #}"
@@ -38,31 +37,7 @@
                     web browser that supports HTML5 video
                 </p>
             </video>
-                    <div
-                            class="w-full mt-4 mb-2 grid md:grid-cols-12"
-                    >
 
-                        <div
-                                class="md:col-span-9"
-                        >
-                            <h2
-                                    class="font-medium leading-tight text-2xl text-black-600 break-normal"
-                            >
-                                {{ video.title }}
-                            </h2>
-                        </div>
-                        <div
-                                class="md:col-span-3"
-                        >
-                            <div
-                                    class="md:text-right"
-                            >
-                                <a
-                                        class="icon-download pl30"
-                                        href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}">Download</a>
-                            </div>
-                        </div>
-                    </div>
         </div>
 
 
