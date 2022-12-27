@@ -21,19 +21,19 @@ class RecordingSessionDomainService
 
     private VideoDomainService $videoDomainService;
 
-    private RecordingsInfrastructureService $recordingsInfrastructureService;
+    private VideoAssetGenerationDomainService $videoAssetGenerationDomainService;
 
     public function __construct(
-        EntityManagerInterface          $entityManager,
-        MessageBusInterface             $messageBus,
-        VideoDomainService              $videoDomainService,
-        RecordingsInfrastructureService $recordingsInfrastructureService
+        EntityManagerInterface            $entityManager,
+        MessageBusInterface               $messageBus,
+        VideoDomainService                $videoDomainService,
+        VideoAssetGenerationDomainService $videoAssetGenerationDomainService
     )
     {
         $this->entityManager = $entityManager;
         $this->messageBus = $messageBus;
         $this->videoDomainService = $videoDomainService;
-        $this->recordingsInfrastructureService = $recordingsInfrastructureService;
+        $this->videoAssetGenerationDomainService = $videoAssetGenerationDomainService;
     }
 
 
@@ -52,20 +52,13 @@ class RecordingSessionDomainService
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();
 
-        $video = $this->videoDomainService->createVideoEntityForFinishedRecordingSession(
-            $recordingSession
-        );
+        $video = $this
+            ->videoDomainService
+            ->createVideoEntityForFinishedRecordingSession($recordingSession);
 
         $this
-            ->recordingsInfrastructureService
-            ->generateVideoAssetPosterStillWebp($video);
-
-        $this
-            ->recordingsInfrastructureService
-            ->generateVideoAssetPosterAnimatedWebp($video);
-
-        // Heavy-lifting stuff like missing video assets generation happens asynchronously
-        $this->messageBus->dispatch(new GenerateMissingVideoAssetsCommandMessage($video));
+            ->videoAssetGenerationDomainService
+            ->checkAndHandleVideoAssetGeneration($recordingSession->getUser());
 
         return $video;
     }

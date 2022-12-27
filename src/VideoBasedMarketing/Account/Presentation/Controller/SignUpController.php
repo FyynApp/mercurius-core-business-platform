@@ -138,15 +138,15 @@ class SignUpController
             return $this->redirectToRoute('videobasedmarketing.account.presentation.sign_up');
         }
 
+        /** @var User $user */
         $user = $userRepository->find($id);
 
         if (null === $user) {
             return $this->redirectToRoute('videobasedmarketing.account.presentation.sign_up');
         }
 
-        // validate email confirmation link, sets User::isVerified=true and persists
         try {
-            $this->emailVerifier->handleVerification($request, $user);
+            $this->emailVerifier->handleVerificationRequest($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
