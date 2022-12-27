@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 
@@ -14,20 +15,31 @@ class VideoAssetGenerationDomainService
 
     private RecordingsInfrastructureService $recordingsInfrastructureService;
 
+    private LoggerInterface $logger;
+
+
     public function __construct(
         MessageBusInterface             $messageBus,
-        RecordingsInfrastructureService $recordingsInfrastructureService
+        RecordingsInfrastructureService $recordingsInfrastructureService,
+        LoggerInterface                 $logger,
     )
     {
         $this->messageBus = $messageBus;
         $this->recordingsInfrastructureService = $recordingsInfrastructureService;
+        $this->logger = $logger;
     }
 
     public function checkAndHandleVideoAssetGeneration(
         User $user
     ): void
     {
+        $this
+            ->logger
+            ->debug("User '{$user->getId()}' has " . sizeof($user->getVideos()) . " videos.");
+
         foreach ($user->getVideos() as $video) {
+
+            $this->logger->debug("Checking video '{$video->getId()}' for missing assets.");
 
             if (!$video->hasAssetPosterStillWebp()) {
                 $this

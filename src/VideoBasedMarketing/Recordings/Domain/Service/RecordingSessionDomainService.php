@@ -48,6 +48,16 @@ class RecordingSessionDomainService
             return $recordingSession->getVideo();
         }
 
+        if (is_null(
+            $recordingSession
+                ->getRecordingSessionVideoChunks()
+                ->first()
+        )) {
+            throw new Exception(
+                "Recording session '{$recordingSession->getId()}' does not have any video chunks."
+            );
+        }
+
         $recordingSession->setIsFinished(true);
         $this->entityManager->persist($recordingSession);
         $this->entityManager->flush();

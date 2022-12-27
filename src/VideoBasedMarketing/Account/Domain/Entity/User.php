@@ -287,6 +287,11 @@ class User
         $this->videos = $videos;
     }
 
+    public function addVideo(Video $video): void
+    {
+        $this->videos->add($video);
+    }
+
 
     /** @var RecordingSettingsBag[]|Collection */
     #[ORM\OneToMany(

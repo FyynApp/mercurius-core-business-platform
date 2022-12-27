@@ -75,6 +75,39 @@ class UnregisteredUserWorkflowTest
             $crawler->filter('h1')->first()->text()
         );
 
+
+        $this->assertMatchesRegularExpression(
+            "/background-image: url\('\/generated-content\/video-assets\/(.*)\/poster-still\.webp'\);/",
+            $crawler
+                ->filter('[data-test-class="videoPreviewPosterStill"]')
+                ->first()
+                ->attr('style')
+        );
+        $this->assertStringContainsString(
+            'aspect-ratio: 480 / 336;',
+            $crawler
+                ->filter('[data-test-class="videoPreviewPosterStill"]')
+                ->first()
+                ->attr('style')
+        );
+
+
+        $this->assertMatchesRegularExpression(
+            "/background-image: url\('\/generated-content\/video-assets\/(.*)\/poster-animated\.webp'\);/",
+            $crawler
+                ->filter('[data-test-class="videoPreviewPosterAnimated"]')
+                ->first()
+                ->attr('style')
+        );
+        $this->assertStringContainsString(
+            'aspect-ratio: 480 / 336;',
+            $crawler
+                ->filter('[data-test-class="videoPreviewPosterAnimated"]')
+                ->first()
+                ->attr('style')
+        );
+
+
         $buttonCrawlerNode = $crawler->selectButton('Create account');
         $form = $buttonCrawlerNode->form();
 
