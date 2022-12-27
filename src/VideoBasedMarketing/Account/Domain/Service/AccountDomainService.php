@@ -165,4 +165,23 @@ class AccountDomainService
     {
         return $user->isRegistered() && !$user->isVerified();
     }
+
+    public function makeUserVerified(
+        User $user
+    ): bool
+    {
+        if (!$user->isRegistered()) {
+            throw new LogicException('Only registered user can be verified.');
+        }
+
+        if ($user->isVerified()) {
+            throw new LogicException('User is already verified.');
+        }
+
+        $user->setIsVerified(true);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return true;
+    }
 }

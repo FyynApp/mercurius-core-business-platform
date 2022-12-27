@@ -3,11 +3,14 @@
 namespace App\VideoBasedMarketing\Account\Infrastructure\Security;
 
 use App\Shared\Presentation\Service\MailService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Infrastructure\Event\EmailVerificationRequestHandledSuccessfullyEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
@@ -20,15 +23,19 @@ class EmailVerifier
 
     private EntityManagerInterface $entityManager;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         VerifyEmailHelperInterface $helper,
         MailService                $mailService,
-        EntityManagerInterface     $manager
+        EntityManagerInterface     $manager,
+        EventDispatcherInterface   $eventDispatcher
     )
     {
         $this->verifyEmailHelper = $helper;
         $this->mailService = $mailService;
         $this->entityManager = $manager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -60,9 +67,9 @@ class EmailVerifier
     /**
      * @throws VerifyEmailExceptionInterface
      */
-    public function handleVerification(
-        Request       $request,
-        UserInterface $user
+    public function handleVerificationRequest(
+        Request $request,
+        User    $user
     ): void
     {
         $this->verifyEmailHelper->validateEmailConfirmation(
@@ -71,7 +78,9 @@ class EmailVerifier
             $user->getEmail()
         );
 
-        $user->setIsVerified(true);
+        $this->eventDispatcher->dispatch(
+            new EmailVerificationRequestHandledSuccessfullyEvent($user)
+        );
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
