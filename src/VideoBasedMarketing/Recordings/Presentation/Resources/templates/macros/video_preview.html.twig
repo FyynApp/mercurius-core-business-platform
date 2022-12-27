@@ -23,7 +23,7 @@
                 style="
                         background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}');
 
-                        aspect-ratio: {{ video.assetFullMp4Width }} / {{ video.assetFullMp4Height }};
+                        aspect-ratio: {{ video.assetPosterStillWebpWidth }} / {{ video.assetPosterStillWebpHeight }};
                "
         ></div>
 
@@ -33,7 +33,7 @@
                 style="
                         background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(video) }}');
 
-                        aspect-ratio: {{ video.assetFullMp4Width }} / {{ video.assetFullMp4Height }};
+                        aspect-ratio: {{ video.assetPosterAnimatedWebpWidth }} / {{ video.assetPosterAnimatedWebpHeight }};
                 "
         ></div>
     </div>

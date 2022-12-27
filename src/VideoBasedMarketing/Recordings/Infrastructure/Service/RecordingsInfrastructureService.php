@@ -389,6 +389,19 @@ class RecordingsInfrastructureService
 
             if ($filesize > 0) {
                 $video->setHasAssetPosterStillWebp(true);
+
+                $video->setAssetPosterStillWebpWidth(
+                    $this->probeForVideoAssetWidth(
+                        $this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)
+                    )
+                );
+
+                $video->setAssetPosterStillWebpHeight(
+                    $this->probeForVideoAssetHeight(
+                        $this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)
+                    )
+                );
+
                 $this->entityManager->persist($video);
                 $this->entityManager->flush();
                 break;
@@ -437,6 +450,13 @@ class RecordingsInfrastructureService
         $process->run();
 
         $video->setHasAssetPosterAnimatedWebp(true);
+
+        // See https://trac.ffmpeg.org/ticket/4907
+        // ffmpeg/ffprobe can encode animated WebP files, but cannot decode them,
+        // which is why we simply use the width and height of the still image WebP asset
+        $video->setAssetPosterAnimatedWebpWidth($video->getAssetPosterStillWebpWidth());
+        $video->setAssetPosterAnimatedWebpHeight($video->getAssetPosterStillWebpHeight());
+
         $this->entityManager->persist($video);
         $this->entityManager->flush();
     }
