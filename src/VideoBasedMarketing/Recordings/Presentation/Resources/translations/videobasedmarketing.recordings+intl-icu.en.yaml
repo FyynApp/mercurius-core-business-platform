@@ -24,7 +24,12 @@ video_manage_widget:
       title: 'Title of recording'
       video_only_presentationpage_template: 'Template'
   share_modal:
+    headline: 'Share recording'
+    direct_link: 'Link'
     twitter_note: "Watch my new video!"
+  delete_modal:
+    really: 'Do you really want to delete this recording?'
+    yes: 'Yes, delete'
 videos_overview:
   title: 'Your recordings'
   subtitle: 'Recordings can be modified and shared here.'

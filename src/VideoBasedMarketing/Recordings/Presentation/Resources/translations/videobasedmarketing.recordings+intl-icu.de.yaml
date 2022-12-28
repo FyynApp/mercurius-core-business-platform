@@ -24,7 +24,12 @@ video_manage_widget:
       title: 'Titel der Aufnahme'
       video_only_presentationpage_template: 'Anzeige-Vorlage'
   share_modal:
+    headline: 'Aufnahme teilen'
+    direct_link: 'Direktlink'
     twitter_note: "Sieh' dir mein neues Video an!"
+  delete_modal:
+    really: 'Möchtest du diese Aufnahme wirklich löschen?'
+    yes: 'Ja, löschen'
 videos_overview:
   title: 'Deine Aufnahmen'
   subtitle: 'Hier können Aufnahmen bearbeitet und geteilt werden.'
