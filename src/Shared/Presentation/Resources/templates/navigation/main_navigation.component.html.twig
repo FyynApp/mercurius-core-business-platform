@@ -3,26 +3,28 @@
 
 {% for entry in this.entries %}
     <a
-        {% if this.type is same as 'wide' %}
-            {% if entry.active %}
-                class="bg-indigo-900 text-neutral-50 px-3 py-2 rounded-md text-sm font-extralight"
-                aria-current="page"
+            data-test-id="main-navigation-entry-{{ entry.routeName }}"
+
+            {% if this.type is same as 'wide' %}
+                {% if entry.active %}
+                    class="bg-indigo-900 text-neutral-50 px-3 py-2 rounded-md text-sm font-extralight"
+                    aria-current="page"
+                {% else %}
+                    class="text-neutral-500 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-extralight"
+                {% endif %}
+
             {% else %}
-                class="text-neutral-500 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-extralight"
+
+                {% if entry.active %}
+                    class="bg-indigo-900 text-neutral-50 block px-3 py-2 rounded-md text-base font-extralight mb-2"
+                    aria-current="page"
+                {% else %}
+                    class="text-neutral-500 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-extralight mb-2"
+                {% endif %}
+
             {% endif %}
 
-        {% else %}
-
-            {% if entry.active %}
-                class="bg-indigo-900 text-neutral-50 block px-3 py-2 rounded-md text-base font-extralight mb-2"
-                aria-current="page"
-            {% else %}
-                class="text-neutral-500 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-extralight mb-2"
-            {% endif %}
-
-        {% endif %}
-
-        href="{{ path(entry.routeName) }}"
+            href="{{ path(entry.routeName) }}"
     >
         {{ entry.displayNameTransId|trans }}
     </a>
