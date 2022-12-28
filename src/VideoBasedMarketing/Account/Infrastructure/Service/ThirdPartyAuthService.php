@@ -60,7 +60,7 @@ class ThirdPartyAuthService
         LinkedInResourceOwner $receivedResourceOwner
     ): HandleReceivedLinkedInResourceOwnerResult
     {
-        if (is_null($receivedResourceOwner->getId())
+        if (   is_null($receivedResourceOwner->getId())
             || is_null($receivedResourceOwner->getEmail())
         ) {
             return new HandleReceivedLinkedInResourceOwnerResult(
