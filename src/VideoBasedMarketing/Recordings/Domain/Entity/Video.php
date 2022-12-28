@@ -225,6 +225,42 @@ class Video
     }
 
 
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetPosterStillWebpWidth = null;
+
+    public function getAssetPosterStillWebpWidth(): ?int
+    {
+        return $this->assetPosterStillWebpWidth;
+    }
+
+    public function setAssetPosterStillWebpWidth(?int $val): void
+    {
+        $this->assetPosterStillWebpWidth = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetPosterStillWebpHeight = null;
+
+    public function getAssetPosterStillWebpHeight(): ?int
+    {
+        return $this->assetPosterStillWebpHeight;
+    }
+
+    public function setAssetPosterStillWebpHeight(?int $val): void
+    {
+        $this->assetPosterStillWebpHeight = $val;
+    }
+
+
     #[ORM\Column(type: 'boolean')]
     private bool $hasAssetPosterAnimatedWebp = false;
 
@@ -239,6 +275,42 @@ class Video
     }
 
 
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetPosterAnimatedWebpWidth = null;
+
+    public function getAssetPosterAnimatedWebpWidth(): ?int
+    {
+        return $this->assetPosterAnimatedWebpWidth;
+    }
+
+    public function setAssetPosterAnimatedWebpWidth(?int $val): void
+    {
+        $this->assetPosterAnimatedWebpWidth = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetPosterAnimatedWebpHeight = null;
+
+    public function getAssetPosterAnimatedWebpHeight(): ?int
+    {
+        return $this->assetPosterAnimatedWebpHeight;
+    }
+
+    public function setAssetPosterAnimatedWebpHeight(?int $val): void
+    {
+        $this->assetPosterAnimatedWebpHeight = $val;
+    }
+
+    
     #[ORM\Column(type: 'boolean')]
     private bool $hasAssetPosterAnimatedGif = false;
 

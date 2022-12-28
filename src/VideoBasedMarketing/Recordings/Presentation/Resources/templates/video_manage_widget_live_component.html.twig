@@ -39,14 +39,16 @@
                     <div
                             {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'stillImage') }}
                             class="bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
-                            style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(this.video) }}')"
+                            data-test-class="videoManageWidgetPosterStill"
+                            style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(this.video) }}');"
                     >
                     </div>
 
                     <div
                             {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'animatedImage') }}
                             class="hidden bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
-                            style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(this.video) }}')"
+                            data-test-class="videoManageWidgetPosterAnimated"
+                            style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(this.video) }}');"
                     ></div>
                 </div>
             </button>
@@ -334,7 +336,7 @@
                 <div
                         class="flex flex-col gap-6"
                 >
-                    Möchten Sie dieses Video wirklich löschen?
+                    Möchtest du dieses Video wirklich löschen?
 
                     <form method="post" action="{{ path('videobasedmarketing.recordings.presentation.video.deletion', { videoId: this.video.id }) }}">
                         <button class="cta-with-icon-danger"

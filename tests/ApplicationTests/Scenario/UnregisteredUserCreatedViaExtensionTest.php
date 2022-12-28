@@ -6,7 +6,7 @@ namespace App\Tests\ApplicationTests\Scenario;
 use App\Tests\ApplicationTests\Helper\UnregisteredUserHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ExtensionOnlyUnregisteredUserTest
+class UnregisteredUserCreatedViaExtensionTest
     extends WebTestCase
 {
     public function testSiteMostlyLimitsUnregisteredUsersToClaimPage(): void

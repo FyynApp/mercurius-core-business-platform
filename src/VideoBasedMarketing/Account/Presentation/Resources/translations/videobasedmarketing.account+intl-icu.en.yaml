@@ -18,7 +18,7 @@ sign_up:
     email: 'E-mail address'
     password: 'Password'
   cta:
-    accept_terms: 'Accept Terms & Conditions'
+    accept_terms: 'Accept Privacy Policy.'
     sign_up: 'Sign up'
     sign_up_with_linkedin: 'Sign up with LinkedIn'
   or: 'or'
@@ -30,6 +30,18 @@ sign_up:
     password:
       not_blank: 'The password must not be empty.'
       min_length: 'The password must be at least 6 characters long.'
+  verification_email:
+    subject: 'Verify your email address'
+    greeting: "It's nearly done!"
+    text1: 'Thanks for creating your Fyyn.io account.'
+    text2: 'Please click the button below to verify your email address.'
+    verify_cta: 'Confirm email'
+  please_verify_email_address:
+    greeting: 'A final step...'
+    note1: 'Please confirm your email address to activate your account.'
+    note2: 'Check your email inbox for our message and simply follow the instructions in the email.'
+    note3: 'Just to be safe, please also check your spam folder.'
+    mail_info: 'We have sent the confirmation email to address {email}.'
 
 thirdpartyauth:
   errorpage:

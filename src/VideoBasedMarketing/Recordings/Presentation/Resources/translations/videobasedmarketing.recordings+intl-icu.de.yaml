@@ -24,8 +24,10 @@ video_manage_widget:
       title: 'Titel der Aufnahme'
       video_only_presentationpage_template: 'Anzeige-Vorlage'
 videos_overview:
-  title: 'Ihre Aufnahmen'
+  title: 'Deine Aufnahmen'
   subtitle: 'Hier können Aufnahmen bearbeitet und geteilt werden.'
+  no_videos_available: 'Du hast bisher noch keine Aufnahmen.'
+  use_extension_note: 'Benutze die Browser Extension um Videos aufzuzeichnen.'
   cta:
     add: 'Neue Aufnahme erstellen'
     create_presentationpage: 'Seite erstellen'

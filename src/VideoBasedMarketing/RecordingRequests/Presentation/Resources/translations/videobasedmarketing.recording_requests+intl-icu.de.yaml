@@ -10,18 +10,18 @@ recording_request_owner_info:
   responses: 'Eingegangene Antworten'
 
 response_instructions:
-  greeting: 'Ihre Bildschirmaufnahme'
+  greeting: 'Deine Bildschirmaufnahme'
   start_cta: 'Vorgang starten'
-  text1: 'Der Benutzer {userIdentifier} benötigt eine Bildschirmaufnahme von Ihnen.'
-  text2: 'Befolgen Sie einfach die untenstehenden Schritte, um eine Aufnahme zu erstellen und zu übermitteln.'
-  step1: 'Schritt 1: Laden Sie die Browser-Erweiterung für Google Chrome herunter:'
-  step2: 'Schritt 2: Installieren Sie die Erweiterung unter'
-  step3: 'Schritt 3: Führen Sie mithilfe der Erweiterung eine Aufnahme durch und folgen Sie den weiteren Anweisungen.'
+  text1: 'Der Benutzer {userIdentifier} benötigt eine Bildschirmaufnahme von dir.'
+  text2: 'Befolge einfach die untenstehenden Schritte, um eine Aufnahme zu erstellen und zu übermitteln.'
+  step1: 'Schritt 1: Lade die Browser-Erweiterung für Google Chrome herunter:'
+  step2: 'Schritt 2: Installiere die Erweiterung unter'
+  step3: 'Schritt 3: Führe mithilfe der Erweiterung eine Aufnahme durch und folge den weiteren Anweisungen.'
   extension_download_name: 'Chrome-Extension.zip'
 
 ask_to_handle_responses:
-  greeting: 'Ihre Bildschirmaufnahme'
+  greeting: 'Deine Bildschirmaufnahme'
   text1:
-    singular: 'Möchten Sie diese Aufnahme nutzen, um die Anfrage von {userIdentifier} zu beantworten?'
-    plural: 'Möchten Sie diese Aufnahme nutzen, um eine der folgenden Anfragen zu beantworten'
+    singular: 'Möchtest du diese Aufnahme nutzen, um die Anfrage von {userIdentifier} zu beantworten?'
+    plural: 'Möchtest du diese Aufnahme nutzen, um eine der folgenden Anfragen zu beantworten?'
   cta_attach: 'Anfrage mit Aufnahme beantworten'

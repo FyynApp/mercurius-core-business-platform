@@ -64,6 +64,7 @@ class VideoDomainService
         }
 
         $video = new Video($recordingSession->getUser());
+
         $video->setTitle(
             $this->translator->trans(
                 'new_video_title',
@@ -72,10 +73,15 @@ class VideoDomainService
             )
         );
 
+        $video->getUser()->addVideo($video);
+
         $video->setRecordingSession($recordingSession);
         $recordingSession->setVideo($video);
+
         $this->entityManager->persist($video);
+        $this->entityManager->persist($video->getUser());
         $this->entityManager->persist($recordingSession);
+
         $this->entityManager->flush();
 
         $templates = $this
@@ -85,16 +91,6 @@ class VideoDomainService
             );
 
         $video->setVideoOnlyPresentationpageTemplate($templates[0]);
-
-        if (is_null(
-            $recordingSession
-                ->getRecordingSessionVideoChunks()
-                ->first()
-        )) {
-            throw new Exception(
-                "Cannot generate poster assets for video '{$video->getId()}' because its recording session '{$recordingSession->getId()}' does not have any video chunks."
-            );
-        }
 
         return $video;
     }

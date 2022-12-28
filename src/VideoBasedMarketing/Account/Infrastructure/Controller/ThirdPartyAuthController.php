@@ -51,7 +51,8 @@ class ThirdPartyAuthController
             /** @var LinkedInResourceOwner $receivedResourceOwner */
             $receivedResourceOwner = $client->fetchUser();
 
-            $result = $thirdPartyAuthService->handleReceivedLinkedInResourceOwner($receivedResourceOwner);
+            $result = $thirdPartyAuthService
+                ->handleReceivedLinkedInResourceOwner($receivedResourceOwner);
 
             if (!$result->wasSuccessful()) {
 

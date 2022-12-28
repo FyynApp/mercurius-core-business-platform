@@ -5,6 +5,7 @@ namespace App\Tests\ApplicationTests\Scenario\BrowserExtension;
 use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
 use App\Tests\ApplicationTests\Helper\RecordingSessionHelper;
 use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
@@ -59,11 +60,18 @@ class UnregisteredUserWorkflowTest
         );
 
 
-        $client->followRedirects();
+        $client->followRedirects(false);
         $crawler = $client->request(
             'GET',
             $recordingSessionFinishedTargetUrl
         );
+
+        // Verifies that at this point, no asset generation async message has been dispatched
+        /* @var InMemoryTransport $transport */
+        $transport = $this->getContainer()->get('messenger.transport.async');
+        $this->assertCount(0, $transport->getSent());
+
+        $crawler = $client->followRedirect();
 
         $this->assertSame(
             'http://localhost/en/account/claim',
@@ -74,6 +82,39 @@ class UnregisteredUserWorkflowTest
             'Hey there,',
             $crawler->filter('h1')->first()->text()
         );
+
+
+        $this->assertMatchesRegularExpression(
+            "/background-image: url\('\/generated-content\/video-assets\/(.*)\/poster-still\.webp'\);/",
+            $crawler
+                ->filter('[data-test-class="videoPreviewPosterStill"]')
+                ->first()
+                ->attr('style')
+        );
+        $this->assertStringContainsString(
+            'aspect-ratio: 480 / 336;',
+            $crawler
+                ->filter('[data-test-class="videoPreviewPosterStill"]')
+                ->first()
+                ->attr('style')
+        );
+
+
+        $this->assertMatchesRegularExpression(
+            "/background-image: url\('\/generated-content\/video-assets\/(.*)\/poster-animated\.webp'\);/",
+            $crawler
+                ->filter('[data-test-class="videoPreviewPosterAnimated"]')
+                ->first()
+                ->attr('style')
+        );
+        $this->assertStringContainsString(
+            'aspect-ratio: 480 / 336;',
+            $crawler
+                ->filter('[data-test-class="videoPreviewPosterAnimated"]')
+                ->first()
+                ->attr('style')
+        );
+
 
         $buttonCrawlerNode = $crawler->selectButton('Create account');
         $form = $buttonCrawlerNode->form();
@@ -118,11 +159,30 @@ class UnregisteredUserWorkflowTest
         );
 
 
-        $client->followRedirects();
+        $client->followRedirects(false);
         $client->request(
             'GET',
             $crawler->filter('a')->first()->attr('href')
         );
+
+        // Verifies that at this point, the asset generation async message has been dispatched
+        /* @var InMemoryTransport $transport */
+        $transport = $this->getContainer()->get('messenger.transport.async');
+        $this->assertCount(1, $transport->getSent());
+
+        /** @var GenerateMissingVideoAssetsCommandMessage $message */
+        $message = $transport->getSent()[0]->getMessage();
+
+        $this->assertSame(
+            GenerateMissingVideoAssetsCommandMessage::class,
+            $message::class
+        );
+
+        $videoId = $message->getVideoId();
+
+
+        $client->followRedirect();
+        $crawler = $client->followRedirect();
 
         $this->assertSelectorTextSame(
             'title',
@@ -137,6 +197,23 @@ class UnregisteredUserWorkflowTest
         $this->assertSelectorTextSame(
             '[data-test-class="video-title"]',
             'Recording 1'
+        );
+
+
+        $this->assertStringContainsString(
+            "background-image: url('/generated-content/video-assets/$videoId/poster-still.webp');",
+            $crawler
+                ->filter('[data-test-class="videoManageWidgetPosterStill"]')
+                ->first()
+                ->attr('style')
+        );
+
+        $this->assertStringContainsString(
+            "background-image: url('/generated-content/video-assets/$videoId/poster-animated.webp');",
+            $crawler
+                ->filter('[data-test-class="videoManageWidgetPosterAnimated"]')
+                ->first()
+                ->attr('style')
         );
     }
 }

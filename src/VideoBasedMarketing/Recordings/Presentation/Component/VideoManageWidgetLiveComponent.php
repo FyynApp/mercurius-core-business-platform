@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -61,13 +62,16 @@ class VideoManageWidgetLiveComponent
 
     private ShortIdService $shortIdService;
 
+    private TranslatorInterface $translator;
+
 
     public function __construct(
         LoggerInterface            $logger,
         EntityManagerInterface     $entityManager,
         PresentationpagesService   $presentationpagesService,
         RouterInterface            $router,
-        ShortIdService             $shortIdService
+        ShortIdService             $shortIdService,
+        TranslatorInterface        $translator
     )
     {
         $this->logger = $logger;
@@ -75,6 +79,7 @@ class VideoManageWidgetLiveComponent
         $this->presentationpagesService = $presentationpagesService;
         $this->router = $router;
         $this->shortIdService = $shortIdService;
+        $this->translator = $translator;
     }
 
     /**
@@ -201,7 +206,13 @@ class VideoManageWidgetLiveComponent
                 )
             )
             . '&text='
-            . urlencode("Sieh' dir mein neues Video an!\n\n");
+            . urlencode("{$this
+                ->translator
+                ->trans(
+                    'video_manage_widget.share_modal.twitter_note',
+                    [],
+                    'videobasedmarketing.recordings'
+                )}\n\n");
     }
 
     #[LiveAction]

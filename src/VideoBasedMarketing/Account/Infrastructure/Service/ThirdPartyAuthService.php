@@ -60,7 +60,7 @@ class ThirdPartyAuthService
         LinkedInResourceOwner $receivedResourceOwner
     ): HandleReceivedLinkedInResourceOwnerResult
     {
-        if (is_null($receivedResourceOwner->getId())
+        if (   is_null($receivedResourceOwner->getId())
             || is_null($receivedResourceOwner->getEmail())
         ) {
             return new HandleReceivedLinkedInResourceOwnerResult(
@@ -69,7 +69,10 @@ class ThirdPartyAuthService
             );
         }
 
-        $resourceOwner = $this->entityManager->find(ThirdPartyAuthLinkedinResourceOwner::class, $receivedResourceOwner->getId());
+        $resourceOwner = $this->entityManager->find(
+            ThirdPartyAuthLinkedinResourceOwner::class,
+            $receivedResourceOwner->getId()
+        );
 
         if (is_null($resourceOwner)) {
             $resourceOwner = new ThirdPartyAuthLinkedinResourceOwner(
@@ -105,6 +108,7 @@ class ThirdPartyAuthService
             }
             $user->setIsVerified(true);
             $user->addRole(Role::REGISTERED_USER);
+            $user->addRole(Role::EXTENSION_ONLY_USER);
             $resourceOwner->setUser($user);
 
             $this->entityManager->persist($resourceOwner);

@@ -74,9 +74,9 @@ class RecordingSessionController
             ],
 
             'mediaAlert' => [
-                'notAllowed' => '<strong>Zugriff verweigert</strong> Bitte erlauben Sie den Zugriff auf Ihre Kamera und Mikrofon.',
-                'info' => '<strong>Wichtig!!</strong> Bitte aktivieren Sie Ihre Kamera.',
-                'notSupported' => '<strong>Ihr Gerät wird nicht unterstützt.</strong>'
+                'xnotAllowed' => '<strong>Zugriff verweigert</strong> Bitte erlaube den Zugriff auf deine Kamera und Mikrofon.',
+                'info' => '<strong>Wichtig!!</strong> Bitte aktiviere deine Kamera.',
+                'notSupported' => '<strong>Dein Gerät wird nicht unterstützt.</strong>'
             ],
 
             'videoInterview' => [
@@ -111,8 +111,8 @@ class RecordingSessionController
                     'workingtext' => 'Cooles Video - wir benötigen noch einige Sekunden, wir sind gleich fertig...',
                     'titletext' => 'Dein geniales Video ist bereit um die Welt zu erobern!',
                     'headline' => 'Aufnahme beendet',
-                    'subheadline' => 'Sind Sie mit der Aufnahme zufrieden?',
-                    'text' => 'Sind Sie mit Ton und Video zufrieden?\nWenn Sie mit der Aufnahmen nicht zufrieden sind, können Sie die Aufnahmen wiederholen.',
+                    'subheadline' => 'Bist du mit der Aufnahme zufrieden?',
+                    'text' => 'Bist du mit Ton und Video zufrieden?\nWenn du mit der Aufnahmen nicht zufrieden bist, kannst du die Aufnahme wiederholen.',
                     'notWorkingBtn' => [
                         'text' => 'not working (Error)-'
                     ]
@@ -120,10 +120,10 @@ class RecordingSessionController
                 'functionTest' => [
                     'headline' => 'Kamera- und Toneinstellungen',
                     'subheadline' => 'Funktionstest',
-                    'text' => 'Bitte kontrollieren Sie ob die Kamera und das Mikrofon richtig konfiguriert sind.\n\nWählen Sie bei Bedarf die richtige Kamera und das richtige Mikrofon.\n\n<strong>Wichtig:</strong> Ihr Videobild muss sichtbar sein.',
-                    'microphoneText' => 'Ihr Mikrofon',
-                    'cameraText' => 'Ihre Kamera',
-                    'noDevicePermissionText' => 'Leider kann nicht auf Ihre Kamera zugeriffen werden.\nBitte aktivieren Sie die Kamera in Ihrem Brow',
+                    'text' => 'Bitte kontrolliere ob die Kamera und das Mikrofon richtig konfiguriert sind.\n\nWähle bei Bedarf die richtige Kamera und das richtige Mikrofon.\n\n<strong>Wichtig:</strong> Dein Videobild muss sichtbar sein.',
+                    'microphoneText' => 'Dein Mikrofon',
+                    'cameraText' => 'Dein Kamera',
+                    'noDevicePermissionText' => 'Leider kann nicht auf deine Kamera zugeriffen werden.\nBitte aktiviere die Kamera in deinem Browser.',
                     'callToActionText' => '',
                     'btn' => [
                         'text' => 'Weiter zum Test der Aufnahmefunktion',
@@ -140,7 +140,7 @@ class RecordingSessionController
                     ],
                     'headline' => 'Aufnahme Test',
                     'subheadline' => '',
-                    'text' => 'In diesem Schritt wird die Aufnahmefunktion Ihrer Kamera überpüft.\n\nBitte starten Sie die Aufnahme und erstellen ein kurzes <strong>Test-Video</strong> in dem Sie z.B. Ihren Namen sagen.\nNach der Aufnahme prüfen Sie bitte ob der <strong>Ton</strong> hörbar und das <strong>Video</strong> sichtbar ist.\n<strong>Zum starten der Aufnahme</strong>, kicken Sie den Button unterhalb des Videobildes.\nDie Aufnahme wird automatich nach 5 Sekunden beendet.\n<strong>Hinweis:</strong> Dieses Video ist <u>kein</u> Teil der Bewerbung.'
+                    'text' => 'In diesem Schritt wird die Aufnahmefunktion deiner Kamera überpüft.\n\nBitte starte die Aufnahme und erstellen ein kurzes <strong>Test-Video</strong> in dem du z.B. deinen Namen sagst.\nNach der Aufnahme prüfe bitte ob der <strong>Ton</strong> hörbar und das <strong>Video</strong> sichtbar ist.\n<strong>Zum starten der Aufnahme</strong>, kicke den Button unterhalb des Videobildes.\nDie Aufnahme wird automatich nach 5 Sekunden beendet.\n<strong>Hinweis:</strong> Dieses Video ist <u>kein</u> Teil der Bewerbung.'
                 ]
             ],
 
