@@ -23,6 +23,8 @@ video_manage_widget:
     label:
       title: 'Titel der Aufnahme'
       video_only_presentationpage_template: 'Anzeige-Vorlage'
+  share_modal:
+    twitter_note: "Sieh' dir mein neues Video an!"
 videos_overview:
   title: 'Deine Aufnahmen'
   subtitle: 'Hier können Aufnahmen bearbeitet und geteilt werden.'

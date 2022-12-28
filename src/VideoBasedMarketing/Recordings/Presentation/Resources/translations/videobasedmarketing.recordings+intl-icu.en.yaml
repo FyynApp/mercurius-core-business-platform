@@ -24,7 +24,7 @@ video_manage_widget:
       title: 'Title of recording'
       video_only_presentationpage_template: 'Template'
   share_modal:
-    twitter_note: "Sieh' dir mein neues Video an!"
+    twitter_note: "Watch my new video!"
 videos_overview:
   title: 'Your recordings'
   subtitle: 'Recordings can be modified and shared here.'
