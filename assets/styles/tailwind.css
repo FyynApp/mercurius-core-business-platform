@@ -40,7 +40,7 @@
     }
 
     .cta-link-primary {
-        @apply flex flex-row gap-2 rounded-md bg-indigo-100 text-indigo-700 p-4 text-start w-full ease-in-out delay-75 duration-100 border-indigo-300 border-1;
+        @apply flex flex-row gap-2 rounded-md bg-mercurius-blue-100 text-mercurius-blue-700 p-4 text-start w-full ease-in-out delay-75 duration-100 border-mercurius-blue-300 border-1;
     }
 
     .cta-link-success {
@@ -54,7 +54,7 @@
 
 
     .cta-with-icon-primary {
-        @apply flex flex-row gap-2 font-medium hover:font-bold text-indigo-900 p-3 bg-indigo-100 mb-4 border-indigo-200 border-1 rounded-md w-full;
+        @apply flex flex-row gap-2 font-medium hover:font-bold text-mercurius-blue-900 p-3 bg-mercurius-blue-100 mb-4 border-mercurius-blue-200 border-1 rounded-md w-full;
     }
 
     .cta-with-icon-success {
@@ -66,7 +66,7 @@
     }
 
     .cta-with-icon-inline-primary {
-        @apply flex flex-row gap-1 hover:underline text-indigo-900;
+        @apply flex flex-row gap-1 hover:underline text-mercurius-blue-900;
     }
 
     .cta-with-icon-inline-danger {
@@ -85,8 +85,8 @@
         ml-0
         gap-1
         rounded-md
-        bg-indigo-100
-        text-indigo-700
+        bg-mercurius-blue-100
+        text-mercurius-blue-700
         p-2
         pl-3
         pr-3
@@ -95,7 +95,7 @@
         ease-in-out
         delay-75
         duration-100
-        border-indigo-300
+        border-mercurius-blue-300
         border-1
         ;
     }

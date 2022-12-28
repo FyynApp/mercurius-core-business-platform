@@ -25,9 +25,9 @@
 
             {% if app.user is not null %}
                 <div class="
-                    min-h-full bg-gradient-to-t from-fuchsia-50 to-indigo-50 p-4
+                    min-h-full bg-gradient-to-t from-fuchsia-50 to-mercurius-blue-50 p-4
                     hidden md:block md:w-1/12 md:w-96 max-w-fit
-                    border-0 border-t-0 border-l-0 border-b-0 border-indigo-900
+                    border-0 border-t-0 border-l-0 border-b-0 border-mercurius-blue-900
                 ">
                     {% include '@shared/navigation/nav_left.html.twig' %}
                 </div>
@@ -51,7 +51,7 @@
 
                                     {% if app.user.hasProfilePhoto() %}
                                         <img
-                                                class="h-8 w-8 rounded-full ring-2 ring-indigo-700"
+                                                class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-700"
                                                 src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(app.user) }}"
                                                 alt=""
                                         >
