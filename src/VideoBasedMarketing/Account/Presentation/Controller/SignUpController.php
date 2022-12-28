@@ -69,7 +69,7 @@ class SignUpController
         $form = $this->createForm(SignUpType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()
+        if (   $form->isSubmitted()
             && !is_null($user->getEmail())
             && $thirdPartyAuthService
                 ->userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(
@@ -82,6 +82,7 @@ class SignUpController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $user->addRole(Role::REGISTERED_USER);
+            $user->addRole(Role::EXTENSION_ONLY_USER);
 
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -104,7 +105,10 @@ class SignUpController
                     ->htmlTemplate('@videobasedmarketing.account/sign_up/confirmation_email.html.twig')
             );
 
-            return $this->redirectToRoute('shared.presentation.contentpages.homepage');
+            return $this->redirectToRoute(
+                'videobasedmarketing.account.presentation.sign_up.pls_check_your_email',
+                ['email' => $user->getEmail()]
+            );
         }
 
         return $this->render(
@@ -112,6 +116,26 @@ class SignUpController
             [
                 'signUpForm' => $form->createView(),
             ]
+        );
+    }
+
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-up/please-check-your-email',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/neu-registrieren/bitte-ueberpruefe-dein-email-postfach',
+        ],
+        name        : 'videobasedmarketing.account.presentation.sign_up.pls_check_your_email',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function verficationEmailNoteAction(
+        Request $request
+    ): Response
+    {
+        return $this->render(
+            '@videobasedmarketing.account/sign_up/please_verify_email_address.html.twig',
+            ['email' => $request->get('email')]
         );
     }
 

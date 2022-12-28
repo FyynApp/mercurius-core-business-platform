@@ -108,6 +108,7 @@ class ThirdPartyAuthService
             }
             $user->setIsVerified(true);
             $user->addRole(Role::REGISTERED_USER);
+            $user->addRole(Role::EXTENSION_ONLY_USER);
             $resourceOwner->setUser($user);
 
             $this->entityManager->persist($resourceOwner);

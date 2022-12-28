@@ -32,6 +32,7 @@
             </a>
 
             <a
+                    data-test-id="extensionHomepageSignInCta"
                     href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
                     class="
                         w-64 flex items-center justify-center px-8 py-3
@@ -42,7 +43,22 @@
                         md:py-4 md:text-lg md:px-10
                     "
             >
-                {{ 'contentpages.homepage_extension.cta.login'|trans }}
+                {{ 'contentpages.homepage_extension.cta.sign_in'|trans }}
+            </a>
+
+            <a
+                    data-test-id="extensionHomepageSignUpCta"
+                    href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
+                    class="
+                        w-64 flex items-center justify-center px-8 py-3
+                        border border-transparent
+                        text-base font-medium
+                        rounded-md text-white
+                        bg-neutral-300 hover:bg-neutral-400
+                        md:py-4 md:text-lg md:px-10
+                    "
+            >
+                {{ 'contentpages.homepage_extension.cta.sign_up'|trans }}
             </a>
         </div>
 
