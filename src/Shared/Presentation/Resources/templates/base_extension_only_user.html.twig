@@ -70,13 +70,30 @@
 
                     <ul class="flex flex-wrap items-center mt-3">
                         <li>
-                            <a href="#" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.imprint'|trans }}</a>
+                            <a
+                                    {% if app.request.locale is same as 'de' %}
+                                        href="https://help.fyyn.io/knowledge-base/datenschutzerklarung/"
+                                    {% else %}
+                                        href="https://help.fyyn.io/knowledge-base/privacy-policy/"
+                                    {% endif %}
+
+                                    class="mr-4 hover:underline md:mr-6"
+                            >
+                                {{ 'footernav.privacy_policy'|trans }}
+                            </a>
                         </li>
                         <li>
-                            <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.terms'|trans }}</a>
-                        </li>
-                        <li>
-                            <a href="#" class="mr-4 hover:underline md:mr-6">{{ 'footernav.contact'|trans }}</a>
+                            <a
+                                    {% if app.request.locale is same as 'de' %}
+                                        href="https://help.fyyn.io/knowledge-base/impressum/"
+                                    {% else %}
+                                        href="https://help.fyyn.io/knowledge-base/imprint-site-notice/"
+                                    {% endif %}
+
+                                    class="mr-4 hover:underline md:mr-6"
+                            >
+                                {{ 'footernav.imprint'|trans }}
+                            </a>
                         </li>
                     </ul>
                 </footer>
