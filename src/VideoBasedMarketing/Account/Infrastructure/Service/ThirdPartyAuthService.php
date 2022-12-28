@@ -69,7 +69,10 @@ class ThirdPartyAuthService
             );
         }
 
-        $resourceOwner = $this->entityManager->find(ThirdPartyAuthLinkedinResourceOwner::class, $receivedResourceOwner->getId());
+        $resourceOwner = $this->entityManager->find(
+            ThirdPartyAuthLinkedinResourceOwner::class,
+            $receivedResourceOwner->getId()
+        );
 
         if (is_null($resourceOwner)) {
             $resourceOwner = new ThirdPartyAuthLinkedinResourceOwner(
