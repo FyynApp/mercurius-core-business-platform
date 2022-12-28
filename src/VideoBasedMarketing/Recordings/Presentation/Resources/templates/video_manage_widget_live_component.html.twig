@@ -65,7 +65,7 @@
                     <svg
                             class="
                                 w-8 h-8 p-1 pl-2 pr-2 rounded-md bg-black bg-opacity-75 text-neutral-200 text-xs font-light
-                                hover:bg-opacity-100 hover:text-indigo-500
+                                hover:bg-opacity-100 hover:text-mercurius-blue-500
                             "
                             xmlns="http://www.w3.org/2000/svg"
                             stroke="none"
@@ -110,7 +110,7 @@
             </p>
         </div>
 
-        <div class="text-indigo-900 hover:font-bold hover:bg-indigo-200">
+        <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
             <button
                     class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                     data-action="live#action"
@@ -131,7 +131,7 @@
         </div>
 
         {% if TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
-            <div class="text-indigo-900 hover:font-bold hover:bg-indigo-200">
+            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
                 <button
                         class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                         data-action="live#action"
@@ -144,7 +144,7 @@
                         <span>
                             {# Heroicon: pencil-square solid #}
                             <svg
-                                    class="h-4 w-4 text-indigo-900"
+                                    class="h-4 w-4 text-mercurius-blue-900"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor"
                                     viewBox="0 0 24 24"
@@ -227,7 +227,7 @@
                         data-clipboard-success-content='Kopiert!'
                 >
 
-                    <input class="w-full text-indigo-500 bg-gray-200 rounded-tl-md border-0 rounded-bl-md"
+                    <input class="w-full text-mercurius-blue-500 bg-gray-200 rounded-tl-md border-0 rounded-bl-md"
                            type="text"
                            disabled="disabled"
                            size="36"
@@ -235,7 +235,7 @@
                            data-clipboard-target="source"
                     >
                     <button class="
-                                bg-indigo-900 text-indigo-200 p-2 flex flex-row gap-1
+                                bg-mercurius-blue-900 text-mercurius-blue-200 p-2 flex flex-row gap-1
                                 rounded-tr-md
                                 rounded-br-md
                             "
@@ -247,7 +247,7 @@
                 </div>
                 <div class="flex flex-row justify-evenly items-end gap-4 text-sm font-semibold text-gray-700">
                     <button
-                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-indigo-200"
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
                             data-action="live#action"
                             data-action-name="switchShareUrlDirectLink"
                     >
@@ -261,14 +261,14 @@
                     <a
                             href="{{ this.shareUrlFacebook }}"
                             target="_blank"
-                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-indigo-200"
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
                     >
                         <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-facebook.svg') }}">
                         Facebook
                     </a>
 
                     <button
-                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-indigo-200"
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
                             data-action="live#action"
                             data-action-name="switchShareUrlInstagram"
                     >
@@ -279,7 +279,7 @@
                     <a
                             href="{{ this.shareUrlTwitter }}"
                             target="_blank"
-                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-indigo-200"
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
                     >
                         <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-twitter.svg') }}">
                         Twitter
@@ -288,7 +288,7 @@
                     <a
                             href="{{ this.shareUrlLinkedIn }}"
                             target="_blank"
-                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-indigo-200"
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
                     >
                         <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-linkedin.svg') }}">
                         LinkedIn

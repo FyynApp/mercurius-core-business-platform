@@ -8,7 +8,7 @@
         id="{{ formView.vars.id }}"
         value="{{ formView.vars.value|e }}"
         {% if formView.vars.required %}required="required"{% endif %}
-        class="{% if form_errors(formView) %}bg-red-50 border-red-900{% else %}border-gray-300{% endif %} mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md"
+        class="{% if form_errors(formView) %}bg-red-50 border-red-900{% else %}border-gray-300{% endif %} mt-1 focus:ring-mercurius-blue-500 focus:border-mercurius-blue-500 block w-full sm:text-sm rounded-md"
     />
 
     {% if form_errors(formView) %}
@@ -26,7 +26,7 @@
 {% macro primarySubmitButton(text) %}
     <button
         type="submit"
-        class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+        class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-mercurius-blue-500 hover:bg-mercurius-blue-700 md:py-4 md:text-lg md:px-10"
     >
         {{ text }}
     </button>
@@ -35,7 +35,7 @@
 {% macro primaryCtaButton(text) %}
     <button
             type="button"
-            class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+            class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-mercurius-blue-500 hover:bg-mercurius-blue-700 md:py-4 md:text-lg md:px-10"
     >
         {{ text }}
     </button>

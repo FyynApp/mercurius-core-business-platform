@@ -7,7 +7,7 @@
     ">
         <h3 class="text-xl leading-6 font-extralight text-neutral-600">
             {% block contentBoxTitle %}{% endblock %}
-            <div class="mt-2 bg-gradient-to-l h-0.5 bg-indigo-50"></div>
+            <div class="mt-2 bg-gradient-to-l h-0.5 bg-mercurius-blue-50"></div>
         </h3>
     </div>
 
@@ -23,7 +23,7 @@
                     text-lg
                     font-bold
                     {% if label is same as 'success' %} bg-lime-100 text-lime-900 {% endif %}
-                    {% if label is same as 'info' %} bg-indigo-100 text-indigo-900 {% endif %}
+                    {% if label is same as 'info' %} bg-mercurius-blue-100 text-mercurius-blue-900 {% endif %}
                     {% if label is same as 'warning' %} bg-orange-100 text-orange-900 {% endif %}
                     {% if label is same as 'danger' %} bg-red-100 text-red-900 {% endif %}
                 {% endapply %}

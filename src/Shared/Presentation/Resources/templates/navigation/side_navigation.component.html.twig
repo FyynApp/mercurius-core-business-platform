@@ -10,7 +10,7 @@
 
                     {% if app.user.hasProfilePhoto() %}
                         <img
-                                class="h-8 w-8 rounded-full ring-2 ring-indigo-700"
+                                class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-700"
                                 src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(app.user) }}"
                                 alt=""
                         >
@@ -41,10 +41,10 @@
             {% for entry in this.entries %}
                 <a
                     {% if entry.active %}
-                        class="text-sm bg-indigo-900 text-neutral-50 block px-3 py-2 rounded-md font-extralight"
+                        class="text-sm bg-mercurius-blue-900 text-neutral-50 block px-3 py-2 rounded-md font-extralight"
                         aria-current="page"
                     {% else %}
-                        class="text-sm text-indigo-900 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md font-extralight"
+                        class="text-sm text-mercurius-blue-900 hover:bg-mercurius-blue-700 hover:text-white block px-3 py-2 rounded-md font-extralight"
                     {% endif %}
 
                     href="{{ path(entry.routeName) }}"
@@ -54,11 +54,11 @@
             {% endfor %}
 
 
-            <div class="flex flex-row justify-start mt-4 pt-2 pb-0 border-1 border-l-0 border-r-0 border-b-0 border-indigo-100">
+            <div class="flex flex-row justify-start mt-4 pt-2 pb-0 border-1 border-l-0 border-r-0 border-b-0 border-mercurius-blue-100">
                 <a
                         class="
                             flex flex-row justify-center
-                            text-indigo-900 block px-3 py-2 font-extralight
+                            text-mercurius-blue-900 block px-3 py-2 font-extralight
                         "
                         href="{{ asset(
                             'assets/browser-extension-chrome/mercurius-browser-extension-chrome.'
@@ -77,7 +77,7 @@
                 </a>
             </div>
 
-            <div class="mt-8 pt-4 border-1 border-l-0 border-r-0 border-b-0 border-indigo-100 text-indigo-900 block px-3 py-2 font-extralight">
+            <div class="mt-8 pt-4 border-1 border-l-0 border-r-0 border-b-0 border-mercurius-blue-100 text-mercurius-blue-900 block px-3 py-2 font-extralight">
                 <div class="flex flex-row gap-4 justify-start mx-auto text-sm font-extralight w-full">
                     <a
                             href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}"
@@ -166,10 +166,10 @@
         {% for entry in this.entries %}
             <a
                 {% if entry.active %}
-                    class="bg-indigo-900 text-neutral-50 px-3 py-2 rounded-md text-sm font-extralight z-50 mr-2"
+                    class="bg-mercurius-blue-900 text-neutral-50 px-3 py-2 rounded-md text-sm font-extralight z-50 mr-2"
                     aria-current="page"
                 {% else %}
-                    class="text-indigo-900 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-extralight mr-2"
+                    class="text-mercurius-blue-900 hover:bg-mercurius-blue-700 hover:text-white px-3 py-2 rounded-md text-sm font-extralight mr-2"
                 {% endif %}
 
                 href="{{ path(entry.routeName) }}"

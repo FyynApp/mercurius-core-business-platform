@@ -2,6 +2,8 @@
 
 const defaultTheme = require('tailwindcss/defaultTheme');
 
+const colors = require('tailwindcss/colors')
+
 module.exports = {
     content: [
         './assets/**/*.ts',
@@ -25,6 +27,28 @@ module.exports = {
         'md:col-span-12',
     ],
     theme: {
+        colors: {
+            transparent: 'transparent',
+            current: 'currentColor',
+            black: colors.black,
+            white: colors.white,
+            gray: colors.gray,
+            neutral: colors.neutral,
+            lime: colors.lime,
+            red: colors.red,
+            'mercurius-blue': {
+                50:  '#b2e6fd',
+                100: '#91dcfd',
+                200: '#62cdfb',
+                300: '#3ac4ff',
+                400: '#00b0fc',
+                500: '#009ee2',
+                600: '#0185bd',
+                700: '#026c9a',
+                800: '#015072',
+                900: '#00354c'
+            }
+        },
         extend: {
             fontFamily: {
                 sans: ['Inter var', ...defaultTheme.fontFamily.sans],
