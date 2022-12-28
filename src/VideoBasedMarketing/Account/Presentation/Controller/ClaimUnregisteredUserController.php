@@ -132,6 +132,15 @@ class ClaimUnregisteredUserController
     )]
     public function showPleaseVerifyEmailAddressAction(): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($user->isVerified()) {
+            return $this->redirectToRoute(
+                'videobasedmarketing.dashboard.presentation.show_registered'
+            );
+        }
+
         return $this->render(
             '@videobasedmarketing.account/claim_unregistered_user/please_verify_email_address.html.twig'
         );
