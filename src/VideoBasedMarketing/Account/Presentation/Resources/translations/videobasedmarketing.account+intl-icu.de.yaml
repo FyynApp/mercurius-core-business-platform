@@ -8,8 +8,8 @@ sign_in:
     sign_in: 'Einloggen'
     sign_in_with_linkedin: 'Einloggen mit LinkedIn'
   or: 'oder'
-  sign_in_with_linkedin_question: 'Sind Sie LinkedIn-Nutzer?'
-  sign_in_with_linkedin_info: 'Dann können Sie sich hier mit nur einem Klick direkt bei Fyyn.io einloggen - eine vorherige Registrierung ist nicht erforderlich!'
+  sign_in_with_linkedin_question: 'Bist du LinkedIn-Nutzer?'
+  sign_in_with_linkedin_info: 'Dann kannst du dich hier mit nur einem Klick direkt bei Fyyn.io einloggen - eine vorherige Registrierung ist nicht erforderlich!'
 
 sign_up:
   title: 'Registrieren'
@@ -22,8 +22,8 @@ sign_up:
     sign_up: 'Registrieren'
     sign_up_with_linkedin: 'Registrieren mit LinkedIn'
   or: 'oder'
-  sign_up_with_linkedin_question: 'Sind Sie LinkedIn-Nutzer?'
-  sign_up_with_linkedin_info: 'Dann können Sie sich hier mit nur einem Klick direkt bei Fyyn.io registrieren!'
+  sign_up_with_linkedin_question: 'Bist du LinkedIn-Nutzer?'
+  sign_up_with_linkedin_info: 'Dann kannst du dich hier mit nur einem Klick direkt bei Fyyn.io registrieren!'
   validation:
     password:
       not_blank: 'Das Passwort darf nicht leer sein.'
@@ -35,7 +35,7 @@ thirdpartyauth:
     cta_back_to_sign_in: 'Zurück zum Login'
     cta_back_to_sign_up: 'Zurück zur Registrierung'
     linkedin:
-      infotext: 'Leider ist bei der Kommmunikation mit LinkedIn ein unerwarteter Fehler aufgetreten (Fehler {error}). Bitte wiederholen Sie den Vorgang.'
+      infotext: 'Leider ist bei der Kommmunikation mit LinkedIn ein unerwarteter Fehler aufgetreten (Fehler {error}). Bitte wiederhole den Vorgang.'
 
 claim_unregistered_user:
   form:
@@ -58,8 +58,8 @@ claim_unregistered_user:
   verification_email:
     subject: 'E-Mail Adresse bestätigen'
     greeting: 'Fast geschafft!'
-    text1: 'Vielen Dank für Ihre Registrierung bei Fyyn.io.'
-    text2: 'Bitte klicken Sie auf den untenstehenden Button, um Ihre Registrierung abzuschließen.'
+    text1: 'Vielen Dank für deine Registrierung bei Fyyn.io.'
+    text2: 'Bitte klicke auf den untenstehenden Button, um deine Registrierung abzuschließen.'
     verify_cta: 'E-Mail Adresse bestätigen'
   please_verify_email_address:
     greeting: 'Ein letzter Schritt...'

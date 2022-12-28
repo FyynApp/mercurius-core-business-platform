@@ -24,7 +24,7 @@ video_manage_widget:
       title: 'Titel der Aufnahme'
       video_only_presentationpage_template: 'Anzeige-Vorlage'
 videos_overview:
-  title: 'Ihre Aufnahmen'
+  title: 'Deine Aufnahmen'
   subtitle: 'Hier können Aufnahmen bearbeitet und geteilt werden.'
   cta:
     add: 'Neue Aufnahme erstellen'
