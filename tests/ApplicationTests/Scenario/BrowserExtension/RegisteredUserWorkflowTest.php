@@ -5,13 +5,11 @@ namespace App\Tests\ApplicationTests\Scenario\BrowserExtension;
 use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
 use App\Tests\ApplicationTests\Helper\RecordingSessionHelper;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredExtensionOnlyUserFixture;
-use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
-use Symfony\Component\Mime\Email;
 
 
 class RegisteredUserWorkflowTest
