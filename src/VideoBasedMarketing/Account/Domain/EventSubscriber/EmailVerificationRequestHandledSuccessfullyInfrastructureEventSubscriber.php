@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Account\Infrastructure\EventSubscriber;
+namespace App\VideoBasedMarketing\Account\Domain\EventSubscriber;
 
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Event\EmailVerificationRequestHandledSuccessfullyEvent;
@@ -9,7 +9,7 @@ use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
-class EmailVerificationRequestHandledSuccessfullyEventSubscriber
+class EmailVerificationRequestHandledSuccessfullyInfrastructureEventSubscriber
     implements EventSubscriberInterface
 {
     private AccountDomainService $accountDomainService;
