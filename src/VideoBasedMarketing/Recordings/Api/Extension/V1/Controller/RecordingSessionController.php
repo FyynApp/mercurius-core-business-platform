@@ -193,10 +193,21 @@ class RecordingSessionController
         methods     : [Request::METHOD_DELETE]
     )]
     public function removeRecordingSessionAction(
-        RecordingSessionDomainService         $recordingSessionDomainService,
-        RouterInterface                       $router
+        string                        $recordingSessionId,
+        RecordingSessionDomainService $recordingSessionDomainService
     ): Response
     {
-        return new Response('', Response::HTTP_NOT_IMPLEMENTED);
+        $r = $this->verifyAndGetUserAndEntity(
+            RecordingSession::class,
+            $recordingSessionId,
+            VotingAttribute::Delete
+        );
+
+        /** @var RecordingSession $recordingSession */
+        $recordingSession = $r->getEntity();
+
+        $recordingSessionDomainService->removeRecordingSession($recordingSession);
+
+        return new Response('', Response::HTTP_OK);
     }
 }

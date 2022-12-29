@@ -6,7 +6,7 @@ use App\Shared\Domain\Message\UserOwnedEntityLifecycleEventMessageInterface;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 
 
-class RecordingSessionCreatedEventMessage
+class RecordingSessionRemovedEventMessage
     implements UserOwnedEntityLifecycleEventMessageInterface
 {
     private RecordingSession $recordingSession;

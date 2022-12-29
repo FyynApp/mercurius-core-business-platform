@@ -6,11 +6,11 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Message\RecordingSessionCreatedEventMessage;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
+use App\VideoBasedMarketing\Recordings\Domain\Message\RecordingSessionRemovedEventMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Messenger\MessageBusInterface;
+use ValueError;
 
 
 class RecordingSessionDomainService
@@ -86,5 +86,27 @@ class RecordingSessionDomainService
         );
 
         return $recordingSession;
+    }
+
+    /**
+     * @throws ValueError
+     */
+    public function removeRecordingSession(
+        RecordingSession $recordingSession
+    ): void
+    {
+        if (!is_null($recordingSession->getVideo())) {
+            throw new ValueError(
+                "Recording session '{$recordingSession->getId()}' already has a video associated with it and therefore cannot be deleted."
+            );
+        }
+
+        $this->entityManager->remove($recordingSession);
+        $this->entityManager->flush();
+        $this->messageBus->dispatch(
+            new RecordingSessionRemovedEventMessage(
+                $recordingSession
+            )
+        );
     }
 }
