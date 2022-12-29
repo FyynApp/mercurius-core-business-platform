@@ -84,17 +84,22 @@
             </div>
         </div>
 
-        <div class="flex flex-row justify-center -m-1.5 z-10">
-            <p
-                    style="
-                            color: {{ this.video.videoOnlyPresentationpageTemplate.textColor.value }};
-                            background-color: {{ this.video.videoOnlyPresentationpageTemplate.bgColor.value }};
-                    "
-                    class="text-xs text-gray-600 w-fit p-1 pt-0.5 pb-0.5"
+        {% if not app.user.extensionOnly %}
+            <div
+                    data-test-class="video-presentationpage-template-title"
+                    class="flex flex-row justify-center -m-1.5 z-10"
             >
-                {{ this.video.videoOnlyPresentationpageTemplate.title }}
-            </p>
-        </div>
+                <p
+                        style="
+                                color: {{ this.video.videoOnlyPresentationpageTemplate.textColor.value }};
+                                background-color: {{ this.video.videoOnlyPresentationpageTemplate.bgColor.value }};
+                        "
+                        class="text-xs text-gray-600 w-fit p-1 pt-0.5 pb-0.5"
+                >
+                    {{ this.video.videoOnlyPresentationpageTemplate.title }}
+                </p>
+            </div>
+        {% endif %}
 
         <div class="flex-grow pt-4 pb-4 ml-4 mr-4 mt-3 overflow-y-clip">
             <p class="text-xs text-gray-400 mb-1">

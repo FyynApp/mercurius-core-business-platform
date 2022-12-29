@@ -108,6 +108,10 @@ class RegisteredUserWorkflowTest
             'Recording 1'
         );
 
+        $this->assertSelectorNotExists(
+            '[data-test-class="video-presentationpage-template-title"]'
+        );
+
 
         $this->assertStringContainsString(
             "background-image: url('/generated-content/video-assets/$videoId/poster-still.webp');",
