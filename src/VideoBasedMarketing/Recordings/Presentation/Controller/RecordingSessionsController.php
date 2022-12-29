@@ -102,17 +102,11 @@ class RecordingSessionsController
                 $recordingSession
             );
 
+        $routeParameters = [];
         if ($user->isRegistered()) {
             $routeName = 'videobasedmarketing.recordings.presentation.videos.overview';
-            $routeParameters = ['showEditModalForVideoId' => $recordingSession->getVideo()->getId()];
         } else {
-            if ($request->get('userWantsToEdit') === '1') {
-                $routeName = 'videobasedmarketing.recordings.presentation.recording_session.extension_edit';
-                $routeParameters = ['recordingSessionId' => $recordingSession->getId()];
-            } else {
-                $routeName = 'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage';
-                $routeParameters = [];
-            }
+            $routeName = 'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage';
         }
 
         if ($recordingRequestsDomainService
