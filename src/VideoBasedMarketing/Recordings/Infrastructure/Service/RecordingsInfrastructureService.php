@@ -224,7 +224,7 @@ class RecordingsInfrastructureService
         return $chunkFilesListPath;
     }
 
-    public function getVideoChunkContentStorageFilePath(RecordingSessionVideoChunk $chunk): string
+    private function getVideoChunkContentStorageFilePath(RecordingSessionVideoChunk $chunk): string
     {
         return $this->filesystemService->getContentStoragePath(
             [
@@ -237,7 +237,7 @@ class RecordingsInfrastructureService
         );
     }
 
-    public function getVideoChunkContentStorageFolderPath(RecordingSession $recordingSession): string
+    private function getVideoChunkContentStorageFolderPath(RecordingSession $recordingSession): string
     {
         return $this->filesystemService->getContentStoragePath(
             [
@@ -248,7 +248,7 @@ class RecordingsInfrastructureService
         );
     }
 
-    public function getRecordingPreviewVideoFilePath(RecordingSession $recordingSession): string
+    private function getRecordingPreviewVideoFilePath(RecordingSession $recordingSession): string
     {
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
             [
@@ -880,5 +880,18 @@ class RecordingsInfrastructureService
         );
 
         $process->run();
+    }
+
+    public function removeRecordingSessionAssetsById(string $recordingSessionId): void
+    {
+        $path = $this->filesystemService->getContentStoragePath(
+            [
+                'recording-sessions',
+                $recordingSessionId
+            ]
+        );
+
+        $fs = new Filesystem();
+        $fs->remove($path);
     }
 }

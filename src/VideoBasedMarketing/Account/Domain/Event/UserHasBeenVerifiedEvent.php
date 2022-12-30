@@ -1,10 +1,10 @@
 <?php
 
-namespace App\VideoBasedMarketing\Account\Infrastructure\Event;
+namespace App\VideoBasedMarketing\Account\Domain\Event;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 
-readonly class EmailVerificationRequestHandledSuccessfullyEvent
+readonly class UserHasBeenVerifiedEvent
 {
     public function __construct(
         public User $user

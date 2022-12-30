@@ -2,7 +2,10 @@
 
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\Message;
 
+use App\Shared\Infrastructure\Message\AsyncMessageInterface;
+
 class RemoveRecordingSessionAssetsCommandMessage
+    implements AsyncMessageInterface
 {
     private string $recordingSessionId;
 

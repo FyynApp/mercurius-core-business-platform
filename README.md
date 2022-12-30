@@ -91,3 +91,16 @@ After pulling changes from the repository, you should always run the following c
 ## dev setup
 
     docker run --name mcbp-db -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=secret -d mariadb:10.6.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+
+#### Architecture
+
+##### Communication betweet top-level components
+
+All elements within a component (like \App\VideoBasedMarketing\Account) can simply talk to all other elements within the same component. They can also talk to all elements within the \App\Shared namespace. The folder structure within a component is not relevant for communication, it's only relevant for organization.
+
+If an element in component A needs to communicate with an element in component B, there are two options:
+
+- If the element in component A needs to call a method of an element in component B because it depends on the return value of that method call, the element in component B must be injected into the element in component A, to be used directly.
+
+- If an element in component B needs to be triggered by element A, but element A doesn't depend on a return value from the element in component B, then then component A must dispatch an event, and component B must subscribe to that event accordingly.

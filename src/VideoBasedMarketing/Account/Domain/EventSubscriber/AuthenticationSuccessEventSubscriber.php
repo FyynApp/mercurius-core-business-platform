@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 
 
-class AuthenticationSuccessInfrastructureEventSubscriber
+class AuthenticationSuccessEventSubscriber
     implements EventSubscriberInterface
 {
     private AccountDomainService $accountDomainService;

@@ -3,26 +3,28 @@
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\MessageHandler;
 
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\RemoveRecordingSessionAssetsCommandMessage;
-use Psr\Log\LoggerInterface;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 
 #[AsMessageHandler]
 class RemoveRecordingSessionAssetsCommandMessageHandler
 {
-    private LoggerInterface $logger;
+    private RecordingsInfrastructureService $recordingsInfrastructureService;
 
     public function __construct(
-        LoggerInterface $logger
+        RecordingsInfrastructureService $recordingsInfrastructureService,
     )
     {
-        $this->logger = $logger;
+        $this->recordingsInfrastructureService = $recordingsInfrastructureService;
     }
 
     public function __invoke(
         RemoveRecordingSessionAssetsCommandMessage $message
     ): void
     {
-
+        $this->recordingsInfrastructureService->removeRecordingSessionAssetsById(
+            $message->getRecordingSessionId()
+        );
     }
 }

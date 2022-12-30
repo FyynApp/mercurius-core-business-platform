@@ -5,35 +5,25 @@ namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Domain\Event\RecordingSessionWillBeRemovedEvent;
+use App\VideoBasedMarketing\Recordings\Domain\Event\RecordingSessionWillBeRemovedDomainEvent;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Message\RemoveRecordingSessionAssetsCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use ValueError;
 
 
 class RecordingSessionDomainService
 {
-    private EntityManagerInterface $entityManager;
-
-    private VideoDomainService $videoDomainService;
-
-    private VideoAssetGenerationDomainService $videoAssetGenerationDomainService;
-
-    private EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface            $entityManager,
-        VideoDomainService                $videoDomainService,
-        VideoAssetGenerationDomainService $videoAssetGenerationDomainService,
-        EventDispatcherInterface          $eventDispatcher
+        private readonly EntityManagerInterface            $entityManager,
+        private readonly VideoDomainService                $videoDomainService,
+        private readonly VideoAssetGenerationDomainService $videoAssetGenerationDomainService,
+        private readonly EventDispatcherInterface          $eventDispatcher,
+        private readonly MessageBusInterface               $messageBus
     )
-    {
-        $this->entityManager = $entityManager;
-        $this->videoDomainService = $videoDomainService;
-        $this->videoAssetGenerationDomainService = $videoAssetGenerationDomainService;
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    {}
 
 
     /**
@@ -95,7 +85,15 @@ class RecordingSessionDomainService
         }
 
         $this->eventDispatcher->dispatch(
-            new RecordingSessionWillBeRemovedEvent($recordingSession)
+            new RecordingSessionWillBeRemovedDomainEvent(
+                $recordingSession
+            )
+        );
+
+        $this->messageBus->dispatch(
+            new RemoveRecordingSessionAssetsCommandMessage(
+                $recordingSession->getId()
+            )
         );
 
         $this->entityManager->remove($recordingSession);
