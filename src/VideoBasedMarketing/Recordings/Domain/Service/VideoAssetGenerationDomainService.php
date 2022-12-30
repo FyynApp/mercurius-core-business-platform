@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Psr\Log\LoggerInterface;
@@ -17,16 +18,20 @@ class VideoAssetGenerationDomainService
 
     private LoggerInterface $logger;
 
+    private CapabilitiesService $capabilitiesService;
+
 
     public function __construct(
         MessageBusInterface             $messageBus,
         RecordingsInfrastructureService $recordingsInfrastructureService,
         LoggerInterface                 $logger,
+        CapabilitiesService             $capabilitiesService
     )
     {
         $this->messageBus = $messageBus;
         $this->recordingsInfrastructureService = $recordingsInfrastructureService;
         $this->logger = $logger;
+        $this->capabilitiesService = $capabilitiesService;
     }
 
     public function checkAndHandleVideoAssetGeneration(
@@ -56,7 +61,7 @@ class VideoAssetGenerationDomainService
             if (   !$video->hasAssetFullMp4()
                 || !$video->hasAssetFullWebm()
             ) {
-                if ($user->isRegistered() && $user->isVerified()) {
+                if ($this->capabilitiesService->canHaveAllVideoAssetsGenerated($user)) {
                     $this->messageBus->dispatch(
                         new GenerateMissingVideoAssetsCommandMessage($video)
                     );

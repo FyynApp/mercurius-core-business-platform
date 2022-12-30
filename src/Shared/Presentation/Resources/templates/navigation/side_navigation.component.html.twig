@@ -8,7 +8,7 @@
             <div class="flex items-center px-3 md:hidden">
                 <div class="flex-shrink-0">
 
-                    {% if app.user.hasProfilePhoto() %}
+                    {% if TwigHelperService.capabilitiesService.canSeeOwnProfilePhoto(app.user) %}
                         <img
                                 class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-700"
                                 src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(app.user) }}"
@@ -24,7 +24,7 @@
                 </div>
                 <div class="ml-3">
 
-                    {% if app.user.firstName is not null or app.user.lastName is not null %}
+                    {% if TwigHelperService.capabilitiesService.canSeeOwnProfileName(app.user) %}
                         <div class="text-base font-extralight leading-none text-neutral-900">
                             {{ app.user.firstName }}
                             {{ app.user.lastName }}
@@ -96,7 +96,7 @@
 
 {% else %}
 
-    {% if app.user and user.registered %}
+    {% if TwigHelperService.capabilitiesService.canSeeProfileDropdownInSideNavigation(app.user) %}
         <div class="hidden md:block z-50">
             <div class="ml-4 flex items-center md:ml-6">
 
@@ -115,7 +115,7 @@
                                 aria-haspopup="true"
                         >
                             <span class="sr-only">Open user menu</span>
-                            {% if app.user.hasProfilePhoto() %}
+                            {% if TwigHelperService.capabilitiesService.canSeeOwnProfilePhoto(app.user) %}
                                 <img
                                         class="h-8 w-8 rounded-full ring-2 ring-gray-600"
                                         src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(app.user) }}"
