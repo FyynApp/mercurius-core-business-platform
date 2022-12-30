@@ -74,4 +74,10 @@ class CapabilitiesService
     {
         return $user->isExtensionOnly();
     }
+
+    public function canHaveAllVideoAssetsGenerated(User $user): bool
+    {
+        return $user->isRegistered()
+            && $user->isVerified();
+    }
 }

@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
@@ -69,10 +70,10 @@ class RecordingSessionsController
     )]
     public function extensionRecordingSessionFinishedAction(
         string                         $recordingSessionId,
-        Request                        $request,
         EntityManagerInterface         $entityManager,
         RecordingSessionDomainService  $recordingSessionDomainService,
-        RecordingRequestsDomainService $recordingRequestsDomainService
+        RecordingRequestsDomainService $recordingRequestsDomainService,
+        CapabilitiesService            $capabilitiesService
     ): Response
     {
         /** @var ?User $user */
@@ -103,10 +104,10 @@ class RecordingSessionsController
             );
 
         $routeParameters = [];
-        if ($user->isRegistered()) {
-            $routeName = 'videobasedmarketing.recordings.presentation.videos.overview';
-        } else {
+        if ($capabilitiesService->mustBeForcedToClaimUnregisteredUser($user)) {
             $routeName = 'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage';
+        } else {
+            $routeName = 'videobasedmarketing.recordings.presentation.videos.overview';
         }
 
         if ($recordingRequestsDomainService
