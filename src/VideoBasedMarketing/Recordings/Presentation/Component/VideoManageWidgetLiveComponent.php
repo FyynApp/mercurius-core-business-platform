@@ -91,7 +91,7 @@ class VideoManageWidgetLiveComponent
         bool $doneCtaMustRedirectToOverview = false
     )
     {
-        $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $video);
+        $this->denyAccessUnlessGranted(VotingAttribute::View->value, $video);
 
         if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
             $video->setVideoOnlyPresentationpageTemplate(
@@ -126,6 +126,7 @@ class VideoManageWidgetLiveComponent
     #[LiveAction]
     public function showEditModal(): void
     {
+        $this->denyAccessUnlessGranted(VotingAttribute::View->value, $this->video);
         $this->editModalIsOpen = true;
     }
 

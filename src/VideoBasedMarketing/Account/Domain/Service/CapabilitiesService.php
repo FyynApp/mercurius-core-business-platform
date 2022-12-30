@@ -20,4 +20,58 @@ class CapabilitiesService
             &&  $user->isVerified()
             && !$user->isExtensionOnly();
     }
+
+    public function canSeeLeftNavigation(?User $user): bool
+    {
+        return !is_null($user);
+    }
+
+    public function canSeeTopNavigationOnLargeScreenWidth(?User $user): bool
+    {
+        return !is_null($user);
+    }
+
+    public function canSeeUserInfoInNavigation(?User $user): bool
+    {
+        return !is_null($user) && $user->isRegistered();
+    }
+
+    public function canSeeProfileDropdownInSideNavigation(?User $user): bool
+    {
+        return !is_null($user) && $user->isRegistered();
+    }
+
+    public function canSeeOwnProfilePhoto(?User $user): bool
+    {
+        return !is_null($user) && $user->hasProfilePhoto();
+    }
+
+    public function canSeeOwnProfileName(?User $user): bool
+    {
+        return !is_null($user)
+            && (
+                   !is_null($user->getFirstName())
+                || !is_null($user->getLastName())
+            );
+    }
+
+    public function canSeeFooterOnFullPage(?User $user): bool
+    {
+        return is_null($user);
+    }
+
+    public function canSeeVideoOnlyPresentationpageTemplateTitle(User $user): bool
+    {
+        return !$user->isExtensionOnly();
+    }
+
+    public function mustBeForcedToClaimUnregisteredUser(User $user): bool
+    {
+        return !$user->isRegistered();
+    }
+
+    public function canBeAskedToUseExtension(User $user): bool
+    {
+        return $user->isExtensionOnly();
+    }
 }
