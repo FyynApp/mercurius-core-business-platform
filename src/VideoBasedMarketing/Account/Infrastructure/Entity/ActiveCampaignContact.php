@@ -9,7 +9,7 @@ use ValueError;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'activecampaign_contacts')]
-readonly class ActiveCampaignContact
+class ActiveCampaignContact
 {
     public function __construct(
         int  $id,
@@ -29,7 +29,7 @@ readonly class ActiveCampaignContact
         type: 'integer',
         options: ['unsigned' => true]
     )]
-    private int $id;
+    readonly private int $id;
 
     public function getId(): int
     {
@@ -48,7 +48,7 @@ readonly class ActiveCampaignContact
         nullable: false,
         onDelete: 'CASCADE'
     )]
-    private User $user;
+    readonly private User $user;
 
     public function getUser(): User
     {
