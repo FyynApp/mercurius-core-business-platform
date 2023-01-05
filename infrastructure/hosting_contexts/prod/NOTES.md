@@ -1,6 +1,6 @@
 # prod setup notes
 
-    apt-get install libzstd-dev mariadb-server mariadb-client nginx apache2-utils net-tools ffmpeg certbot python3-certbot-nginx composer unattended-upgrades software-properties-common munin
+    apt-get install libzstd-dev mariadb-server mariadb-client nginx apache2-utils net-tools ffmpeg certbot python3-certbot-nginx composer unattended-upgrades software-properties-common munin supervisor
 
     mysql
     > GRANT ALL PRIVILEGES ON mercurius_core_business_platform_prod.* TO 'mercurius_prod'@localhost IDENTIFIED BY '<redacted>';
@@ -8,7 +8,7 @@
 
     LC_ALL=C.UTF-8 sudo add-apt-repository ppa:ondrej/php
 
-    apt-get install php8.2-cli php8.2-curl php8.2-fpm php8.2-xml php8.2-mbstring php8.2-mysql php8.2-intl php8.2-gd php8.2-opcache php8.2-bcmath php8.2-zip php8.2-dev php8.2-apcu php-pear php-igbinary composer
+    apt-get install php8.2-cli php8.2-curl php8.2-fpm php8.2-xml php8.2-mbstring php8.2-mysql php8.2-intl php8.2-gd php8.2-opcache php8.2-bcmath php8.2-zip php8.2-dev php8.2-apcu php-pear php-igbinary
 
     # Copy infrastructure/hosting_contexts/prod/etc/php/8.2/fpm/php.ini
     # Copy infrastructure/hosting_contexts/prod/etc/php/8.2/fpm/pool.d/www.conf
@@ -40,3 +40,12 @@
     chmod 0600 .ssh/authorized_keys
 
     mkdir -p mercurius-core-business-platform/prod
+
+    exit
+
+    # Deploy prod
+
+    # Copy infrastructure/hosting_contexts/prod/etc/supervisor/conf.d/mercurius-core-business-platform-symfony-messages-consumer.conf
+
+    service supervisor stop
+    service supervisor start
