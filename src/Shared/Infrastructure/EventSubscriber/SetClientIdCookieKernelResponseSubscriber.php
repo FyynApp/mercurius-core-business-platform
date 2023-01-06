@@ -44,6 +44,15 @@ class SetClientIdCookieKernelResponseSubscriber
             return;
         }
 
+        if (!$this->cookiesService->isCookieAllowed(
+            $event->getRequest(),
+            CookieName::ClientId)
+        ) {
+            $response = $event->getResponse();
+            $response->headers->clearCookie(CookieName::ClientId->value);
+            return;
+        }
+
         $request = $event->getRequest();
         $response = $event->getResponse();
 

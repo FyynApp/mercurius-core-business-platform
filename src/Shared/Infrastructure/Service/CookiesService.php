@@ -67,4 +67,45 @@ class CookiesService
             return $clientTimezone;
         }
     }
+
+    public function isCookieAllowed(
+        Request    $request,
+        CookieName $cookieName
+    ): bool
+    {
+        if (   $cookieName === CookieName::CookieConsent
+            || $cookieName === CookieName::PHPSESSID
+            || $cookieName === CookieName::REMEMBERME
+            || $cookieName === CookieName::ClientTimezone
+        ) {
+            return true;
+        }
+
+        $cookieConsent = $request->cookies->get(CookieName::CookieConsent->value);
+
+        if ($cookieConsent == '-1') {
+            return true;
+        }
+
+        $validPhpJson = preg_replace(
+            '/\s*:\s*([a-zA-Z0-9_]+?)([}\[,])/',
+            ':"$1"$2',
+            preg_replace(
+                '/([{\[,])\s*([a-zA-Z0-9_]+?):/',
+                '$1"$2":',
+                str_replace("'", '"',stripslashes($cookieConsent))
+            )
+        );
+        $consentDetails = json_decode($validPhpJson);
+
+        if (is_null($consentDetails)) {
+            return true;
+        }
+
+        if ($cookieName === CookieName::ClientId) {
+            return filter_var($consentDetails->statistics, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        return false;
+    }
 }
