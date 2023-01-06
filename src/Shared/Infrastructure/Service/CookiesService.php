@@ -83,7 +83,9 @@ class CookiesService
 
         $cookieConsent = $request->cookies->get(CookieName::CookieConsent->value);
 
-        if ($cookieConsent == '-1') {
+        if (   is_null($cookieConsent)
+            || $cookieConsent == '-1'
+        ) {
             return true;
         }
 
