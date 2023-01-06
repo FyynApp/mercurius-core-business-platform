@@ -8,6 +8,8 @@
 
         <title>Fyyn — {% block title %}Welcome!{% endblock %}</title>
 
+        {{ include('@shared/includes/cookiebot_script.html.twig') }}
+
         {{ encore_entry_link_tags('app') }}
         {{ encore_entry_link_tags('tailwind') }}
 
