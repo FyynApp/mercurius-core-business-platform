@@ -98,6 +98,10 @@ class CookiesService
         );
         $consentDetails = json_decode($validPhpJson);
 
+        if (is_null($consentDetails)) {
+            return true;
+        }
+
         if ($cookieName === CookieName::ClientId) {
             return filter_var($consentDetails->statistics, FILTER_VALIDATE_BOOLEAN);
         }
