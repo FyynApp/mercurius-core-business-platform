@@ -7,6 +7,7 @@ use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\Shared\Presentation\Service\MailService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Account\Infrastructure\Security\EmailVerifier;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
@@ -29,15 +30,19 @@ class SignUpController
 
     private MailService $mailService;
 
+    private AccountDomainService $accountDomainService;
+
 
     public function __construct(
         EmailVerifier          $emailVerifier,
         MailService            $mailService,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        AccountDomainService   $accountDomainService
     )
     {
         $this->emailVerifier = $emailVerifier;
         $this->mailService = $mailService;
+        $this->accountDomainService = $accountDomainService;
         parent::__construct($entityManager);
     }
 
@@ -170,7 +175,7 @@ class SignUpController
         }
 
         try {
-            $this->emailVerifier->handleVerificationRequest($request, $user);
+            $this->accountDomainService->handleVerificationRequest($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 

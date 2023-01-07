@@ -6,7 +6,6 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Message\RecordingSessionCreatedEventMessage;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -21,19 +20,19 @@ class RecordingSessionDomainService
 
     private VideoDomainService $videoDomainService;
 
-    private VideoAssetGenerationDomainService $videoAssetGenerationDomainService;
+    private RecordingsInfrastructureService $recordingsInfrastructureService;
 
     public function __construct(
         EntityManagerInterface            $entityManager,
         MessageBusInterface               $messageBus,
         VideoDomainService                $videoDomainService,
-        VideoAssetGenerationDomainService $videoAssetGenerationDomainService
+        RecordingsInfrastructureService   $recordingsInfrastructureService
     )
     {
         $this->entityManager = $entityManager;
         $this->messageBus = $messageBus;
         $this->videoDomainService = $videoDomainService;
-        $this->videoAssetGenerationDomainService = $videoAssetGenerationDomainService;
+        $this->recordingsInfrastructureService = $recordingsInfrastructureService;
     }
 
 
@@ -67,7 +66,7 @@ class RecordingSessionDomainService
             ->createVideoEntityForFinishedRecordingSession($recordingSession);
 
         $this
-            ->videoAssetGenerationDomainService
+            ->recordingsInfrastructureService
             ->checkAndHandleVideoAssetGeneration($recordingSession->getUser());
 
         return $video;

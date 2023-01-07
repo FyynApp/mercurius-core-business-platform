@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Account\Infrastructure\Event;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 
-class EmailVerificationRequestHandledSuccessfullyEvent
+class UserVerifiedEvent
 {
     private User $user;
 
