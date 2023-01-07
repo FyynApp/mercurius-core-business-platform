@@ -5,10 +5,12 @@ namespace App\VideoBasedMarketing\Recordings\Infrastructure\Service;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +18,7 @@ use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -32,17 +35,25 @@ class RecordingsInfrastructureService
 
     private RouterInterface $router;
 
+    private CapabilitiesService $capabilitiesService;
+
+    private MessageBusInterface $messageBus;
+
     public function __construct(
-        EntityManagerInterface        $entityManager,
-        FilesystemService             $filesystemService,
-        LoggerInterface               $logger,
-        RouterInterface               $router
+        EntityManagerInterface $entityManager,
+        FilesystemService      $filesystemService,
+        LoggerInterface        $logger,
+        RouterInterface        $router,
+        CapabilitiesService    $capabilitiesService,
+        MessageBusInterface    $messageBus
     )
     {
         $this->entityManager = $entityManager;
         $this->filesystemService = $filesystemService;
         $this->logger = $logger;
         $this->router = $router;
+        $this->capabilitiesService = $capabilitiesService;
+        $this->messageBus = $messageBus;
     }
 
 
@@ -880,5 +891,37 @@ class RecordingsInfrastructureService
         );
 
         $process->run();
+    }
+
+    public function checkAndHandleVideoAssetGeneration(
+        User $user
+    ): void
+    {
+        $this
+            ->logger
+            ->debug("User '{$user->getId()}' has " . sizeof($user->getVideos()) . " videos.");
+
+        foreach ($user->getVideos() as $video) {
+
+            $this->logger->debug("Checking video '{$video->getId()}' for missing assets.");
+
+            if (!$video->hasAssetPosterStillWebp()) {
+                $this->generateVideoAssetPosterStillWebp($video);
+            }
+
+            if (!$video->hasAssetPosterAnimatedWebp()) {
+                $this->generateVideoAssetPosterAnimatedWebp($video);
+            }
+
+            if (   !$video->hasAssetFullMp4()
+                || !$video->hasAssetFullWebm()
+            ) {
+                if ($this->capabilitiesService->canHaveAllVideoAssetsGenerated($user)) {
+                    $this->messageBus->dispatch(
+                        new GenerateMissingVideoAssetsCommandMessage($video)
+                    );
+                }
+            }
+        }
     }
 }
