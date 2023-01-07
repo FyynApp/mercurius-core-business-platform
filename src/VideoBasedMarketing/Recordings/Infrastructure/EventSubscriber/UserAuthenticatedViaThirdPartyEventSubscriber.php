@@ -8,18 +8,12 @@ use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
-class UserAuthenticatedViaThirdPartyEventSubscriber
+readonly class UserAuthenticatedViaThirdPartyEventSubscriber
     implements EventSubscriberInterface
 {
-    private RecordingsInfrastructureService $recordingsInfrastructureService;
-
-
     public function __construct(
-        RecordingsInfrastructureService   $recordingsInfrastructureService
-    )
-    {
-        $this->recordingsInfrastructureService = $recordingsInfrastructureService;
-    }
+        private RecordingsInfrastructureService $recordingsInfrastructureService
+    ) {}
 
     public static function getSubscribedEvents(): array
     {

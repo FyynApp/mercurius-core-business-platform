@@ -60,7 +60,11 @@ claim_unregistered_user:
     cta: 'Account erstellen'
     fineprint: 'Mit dem Absenden dieses Formulars stimmst du unseren AGBs und der Datenschutzerklärung zu.'
     login_text: 'Bereits registriert?'
-    login_cta: '➔ Zum Login-Formular.'
+    login_cta: 'Zum Login-Formular.'
+    third_party_auth:
+      linkedin:
+        text: 'Bereits bei LinkedIn?'
+        cta: 'Mit einem Klick einloggen!'
     other_videos_note: >-
       {numberOfVideos, plural,
         =0    {}

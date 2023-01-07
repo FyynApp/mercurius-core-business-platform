@@ -62,7 +62,11 @@ claim_unregistered_user:
     cta: 'Create account'
     fineprint: 'By submitting this form, you agree to our terms and privacy policy.'
     login_text: 'Already signed up?'
-    login_cta: '➔ To the sign in form.'
+    login_cta: 'To the sign in form.'
+    third_party_auth:
+      linkedin:
+        text: 'Already on LinkedIn?'
+        cta: 'Sign in with a single click!'
     other_videos_note: >-
       {numberOfVideos, plural,
         =0    {}
