@@ -58,7 +58,29 @@
             {{ 'claim_unregistered_user.form.fineprint'|trans }}
         </div>
 
-        <div class="text-neutral-700 mt-16 w-full">
+        <div class="text-neutral-700 mt-8 w-full">
+            <div>
+                <a
+                        href="{{ path('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start') }}"
+                >
+                    <p class="mb-2">
+                        {{ 'claim_unregistered_user.form.third_party_auth.linkedin.text'|trans }}
+                    </p>
+
+                    <img
+                            class="w-36"
+                            src="{{ asset('assets/images/videobasedmarketing/account/third-party-auth/linkedin/linkedin-logo.png') }}"
+                            alt="LinkedIn"
+                    >
+
+                    <p class="font-bold">
+                        {{ 'claim_unregistered_user.form.third_party_auth.linkedin.cta'|trans }}
+                    </p>
+                </a>
+            </div>
+        </div>
+
+        <div class="text-neutral-700 mt-8 w-full">
             {{ 'claim_unregistered_user.form.login_text'|trans }}
             <div>
                 <a href="{{ path('videobasedmarketing.account.presentation.sign_in') }}" class="font-bold">
