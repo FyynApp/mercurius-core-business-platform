@@ -75,8 +75,6 @@ class VideoShareWidgetLiveComponent
         Video $video
     )
     {
-        $this->denyAccessUnlessGranted(VotingAttribute::View->value, $video);
-
         if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
             $video->setVideoOnlyPresentationpageTemplate(
                 $this
