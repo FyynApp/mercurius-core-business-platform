@@ -7,6 +7,12 @@ seconds: >-
     other {Länge: # Sekunden}
   }
 video_successfully_deleted: 'Das Video “{title}” wurde erfolgreich gelöscht.'
+video_share_widget:
+  headline: 'Aufnahme teilen'
+  direct_link: 'Direktlink'
+  twitter_note: "Sieh' dir mein neues Video an!"
+  copy_cta: 'Kopieren'
+  copied: 'Kopiert!'
 video_manage_widget:
   overview_box:
     cta_share: 'Aufnahme teilen'
@@ -27,6 +33,8 @@ video_manage_widget:
     headline: 'Aufnahme teilen'
     direct_link: 'Direktlink'
     twitter_note: "Sieh' dir mein neues Video an!"
+    copy_cta: 'Kopieren'
+    copied: 'Kopiert!'
   delete_modal:
     really: 'Möchtest du diese Aufnahme wirklich löschen?'
     yes: 'Ja, löschen'

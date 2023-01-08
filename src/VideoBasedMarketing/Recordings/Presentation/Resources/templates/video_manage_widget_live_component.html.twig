@@ -231,7 +231,7 @@
                 <div
                         class="flex flex-row mb-8"
                         data-controller="clipboard"
-                        data-clipboard-success-content='Kopiert!'
+                        data-clipboard-success-content='{{ 'video_share_widget.copied'|trans }}'
                 >
 
                     <input class="w-full text-mercurius-blue-500 bg-gray-200 rounded-tl-md border-0 rounded-bl-md"
@@ -249,7 +249,7 @@
                             data-clipboard-target="button"
                             data-action="clipboard#copy"
                     >
-                        Kopieren
+                        {{ 'video_share_widget.copy_cta'|trans }}
                     </button>
                 </div>
                 <div class="flex flex-row justify-evenly items-end gap-4 text-sm font-semibold text-gray-700">
