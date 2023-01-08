@@ -33,11 +33,12 @@
                 <h2 class="font-bold text-xl mb-2">
                     {{ 'videos_overview.no_videos_available'|trans }}
                 </h2>
-                <h3 class="text-neutral-500">
-                    {% if app.user.extensionOnly %}
+
+                {% if TwigHelperService.capabilitiesService.canBeAskedToUseExtension(app.user) %}
+                    <h3 class="text-neutral-500">
                         {{ 'videos_overview.use_extension_note'|trans }}
-                    {% endif %}
-                </h3>
+                    </h3>
+                {% endif %}
 
             {% else %}
 

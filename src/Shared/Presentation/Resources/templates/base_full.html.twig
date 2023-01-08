@@ -9,6 +9,8 @@
         <title>Fyyn — {% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 
+        {{ include('@shared/includes/cookiebot_script.html.twig') }}
+
         {{ encore_entry_link_tags('app') }}
         {{ encore_entry_link_tags('tailwind') }}
 
@@ -23,7 +25,7 @@
 
         <div class="flex flex-row justify-start">
 
-            {% if app.user is not null %}
+            {% if TwigHelperService.capabilitiesService.canSeeLeftNavigation(app.user) %}
                 <div class="
                     min-h-full bg-gradient-to-t from-fuchsia-50 to-mercurius-blue-50 p-4
                     hidden md:block md:w-1/12 md:w-96 max-w-fit
@@ -35,11 +37,15 @@
 
             <div class="min-h-screen flex flex-col w-full">
 
-                <div class="{% if app.user is not null %}md:hidden{% endif %}">
+                <div
+                        {% if not TwigHelperService.capabilitiesService.canSeeTopNavigationOnLargeScreenWidth(app.user) %}
+                            class="md:hidden"
+                        {% endif %}
+                >
                     {% include '@shared/navigation/nav_top.html.twig' %}
                 </div>
 
-                {% if app.user and app.user.registered %}
+                {% if TwigHelperService.capabilitiesService.canSeeUserInfoInNavigation(app.user) %}
                     <div class="
                         hidden md:flex
                         flex-row justify-end w-full p-4 pr-12 -mb-20
@@ -49,7 +55,7 @@
                             <div class="flex items-end w-fit">
                                 <div class="">
 
-                                    {% if app.user.hasProfilePhoto() %}
+                                    {% if TwigHelperService.capabilitiesService.canSeeOwnProfilePhoto(app.user) %}
                                         <img
                                                 class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-700"
                                                 src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(app.user) }}"
@@ -65,7 +71,7 @@
                                 </div>
                                 <div class="ml-3">
 
-                                    {% if app.user.firstName is not null or app.user.lastName is not null %}
+                                    {% if TwigHelperService.capabilitiesService.canSeeOwnProfileName(app.user) %}
                                         <div class="text-base font-medium leading-none text-neutral-900">
                                             {{ app.user.firstName }}
                                             {{ app.user.lastName }}
@@ -84,7 +90,7 @@
                         {% block body %}{% endblock %}
                     </main>
 
-                    {% if app.user is null %}
+                    {% if TwigHelperService.capabilitiesService.canSeeFooterOnFullPage(app.user) %}
                         <footer class="
                             min-h-max w-full bottom-0 p-4 md:flex md:items-center md:justify-between md:p-6
                             font-extralight

@@ -1,0 +1,31 @@
+image: thecodingmachine/php:8.2-v4-cli-node18
+
+options:
+  max-time: 40 # time limit for each step
+
+definitions:
+  services:
+    mariadb:
+      image: mariadb:10.6.11
+      environment:
+        MYSQL_ROOT_PASSWORD: 'secret'
+
+pipelines:
+  branches:
+    '{main}':
+      - step:
+          services:
+            - mariadb
+          caches:
+            - composer
+            - node
+          artifacts:
+            - var/log/**
+          script:
+            - echo "extension=bcmath.so"  | sudo tee -a /etc/php/8.2/cli/php.ini
+            - echo "extension=intl.so"    | sudo tee -a /etc/php/8.2/cli/php.ini
+            - echo "extension=gd.so"      | sudo tee -a /etc/php/8.2/cli/php.ini
+            - composer install --no-interaction --no-progress --no-scripts
+            - npm install --no-save
+            - npm run build
+            - bash bin/run-tests.sh

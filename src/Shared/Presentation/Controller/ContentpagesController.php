@@ -90,6 +90,20 @@ class ContentpagesController
     }
 
     #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/cookie-settings',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/cookie-einstellungen',
+        ],
+        name        : 'shared.presentation.contentpages.cookie_settings',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function cookieSettingsAction(): Response
+    {
+        return $this->render('@shared/content_pages/cookie_settings.html.twig');
+    }
+
+    #[Route(
         path        : '_content',
         name        : 'shared.presentation.contentpages.wrapped_external_content',
         methods     : [Request::METHOD_GET]

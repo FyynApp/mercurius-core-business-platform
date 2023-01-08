@@ -4,12 +4,15 @@ namespace App\VideoBasedMarketing\Account\Infrastructure\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\HandleReceivedLinkedInResourceOwnerResult;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
+use App\VideoBasedMarketing\Account\Infrastructure\Event\UserAuthenticatedViaThirdPartyEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 
 class ThirdPartyAuthService
@@ -20,15 +23,23 @@ class ThirdPartyAuthService
 
     private RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService;
 
+    private AccountDomainService $accountDomainService;
+
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         EntityManagerInterface                $entityManager,
         UserPasswordHasherInterface           $userPasswordHasher,
         RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
+        AccountDomainService                  $accountDomainService,
+        EventDispatcherInterface              $eventDispatcher
     )
     {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
         $this->requestParametersBasedUserAuthService = $requestParametersBasedUserAuthService;
+        $this->accountDomainService = $accountDomainService;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint(
@@ -106,7 +117,6 @@ class ThirdPartyAuthService
                     )
                 );
             }
-            $user->setIsVerified(true);
             $user->addRole(Role::REGISTERED_USER);
             $user->addRole(Role::EXTENSION_ONLY_USER);
             $resourceOwner->setUser($user);
@@ -114,6 +124,8 @@ class ThirdPartyAuthService
             $this->entityManager->persist($resourceOwner);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
+
+            $this->accountDomainService->makeUserVerified($user);
         }
 
         if (array_key_exists(3, $receivedResourceOwner->getSortedProfilePictures())) {
@@ -142,6 +154,10 @@ class ThirdPartyAuthService
                   'shared.presentation.contentpages.homepage'
                 );
         }
+
+        $this->eventDispatcher->dispatch(
+            new UserAuthenticatedViaThirdPartyEvent($resourceOwner->getUser())
+        );
 
         return new HandleReceivedLinkedInResourceOwnerResult(
             true,

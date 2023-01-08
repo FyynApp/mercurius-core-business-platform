@@ -19,6 +19,7 @@ php bin/console --env=preprod secrets:decrypt-to-local --force
 
 rsync \
   -avc \
+  --exclude .DS_Store \
   --exclude .git/ \
   --exclude .idea/ \
   --exclude node_modules/ \
@@ -34,5 +35,7 @@ rm -f "$SCRIPT_FOLDER"/../.env.preprod.local
 ssh www-data@preprod.fyyn.io -C ' \
 cd ~/mercurius-core-business-platform/preprod; \
 /usr/bin/env php bin/console --env=preprod cache:clear; \
-/usr/bin/env php bin/console --env=preprod doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing;
+/usr/bin/env php bin/console --env=preprod doctrine:database:create --if-not-exists --no-interaction; \
+/usr/bin/env php bin/console --env=preprod doctrine:migrations:migrate --no-interaction --allow-no-migration --all-or-nothing; \
+/usr/bin/env php bin/console --env=preprod messenger:stop-workers --no-interaction;
 '

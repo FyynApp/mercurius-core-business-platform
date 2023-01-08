@@ -20,7 +20,7 @@
 
 Now clone this repository and cd into the folder containing this `README.md` file.
 
-- Start the database Docker container: `docker run --name mcbp-db -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=secret -d mariadb:10.6.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci`.
+- Start the database Docker container: `docker run --name mcbp-db -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=secret -d mariadb:10.6.11 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci`.
 
 - Install PHP dependencies: `composer install`.
 
@@ -90,4 +90,4 @@ After pulling changes from the repository, you should always run the following c
 
 ## dev setup
 
-    docker run --name mcbp-db -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=secret -d mariadb:10.6.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    docker run --name mcbp-db -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=secret -d mariadb:10.6.11 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci

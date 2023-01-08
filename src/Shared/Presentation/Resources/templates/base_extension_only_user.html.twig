@@ -8,6 +8,8 @@
 
         <title>Fyyn — {% block title %}Welcome!{% endblock %}</title>
 
+        {{ include('@shared/includes/cookiebot_script.html.twig') }}
+
         {{ encore_entry_link_tags('app') }}
         {{ encore_entry_link_tags('tailwind') }}
 
@@ -93,6 +95,14 @@
                                     class="mr-4 hover:underline md:mr-6"
                             >
                                 {{ 'footernav.imprint'|trans }}
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                    href="{{ path('shared.presentation.contentpages.cookie_settings') }}"
+                                    class="mr-4 hover:underline md:mr-6"
+                            >
+                                {{ 'footernav.cookie_settings'|trans }}
                             </a>
                         </li>
                     </ul>

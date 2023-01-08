@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\ActiveCampaignContactTag;
+use App\VideoBasedMarketing\Account\Infrastructure\Event\UserVerifiedEvent;
 use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
 use App\VideoBasedMarketing\Account\Presentation\Service\AccountPresentationService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
@@ -12,8 +13,12 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use LogicException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 
 class AccountDomainService
@@ -24,16 +29,24 @@ class AccountDomainService
 
     private MessageBusInterface $messageBus;
 
+    private VerifyEmailHelperInterface $verifyEmailHelper;
+
+    private EventDispatcherInterface $eventDispatcher;
+
 
     public function __construct(
         EntityManagerInterface     $entityManager,
         AccountPresentationService $presentationService,
-        MessageBusInterface        $messageBus
+        MessageBusInterface        $messageBus,
+        VerifyEmailHelperInterface $verifyEmailHelper,
+        EventDispatcherInterface   $eventDispatcher
     )
     {
         $this->entityManager = $entityManager;
         $this->presentationService = $presentationService;
         $this->messageBus = $messageBus;
+        $this->verifyEmailHelper = $verifyEmailHelper;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -166,6 +179,26 @@ class AccountDomainService
         return $user->isRegistered() && !$user->isVerified();
     }
 
+    /**
+     * @throws VerifyEmailExceptionInterface
+     */
+    public function handleVerificationRequest(
+        Request $request,
+        User    $user
+    ): void
+    {
+        $this->verifyEmailHelper->validateEmailConfirmation(
+            $request->getUri(),
+            $user->getId(),
+            $user->getEmail()
+        );
+
+        $this->makeUserVerified($user);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
+
     public function makeUserVerified(
         User $user
     ): bool
@@ -181,6 +214,10 @@ class AccountDomainService
         $user->setIsVerified(true);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(
+            new UserVerifiedEvent($user)
+        );
 
         return true;
     }
