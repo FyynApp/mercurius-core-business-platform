@@ -1,6 +1,8 @@
 {% extends '@shared/base_landingpage.html.twig' %}
 
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+
 
 {% block title %}{{ video.title }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
@@ -27,6 +29,12 @@
 {% block body %}
 
     {% trans_default_domain 'videobasedmarketing.recordings' %}
+
+    {% if TwigHelperService.videoDomainService.userIsOwnerOfVideo(app.user, video) %}
+        <div class="bg-mercurius-blue-50 font-extralight text-mercurius-blue-900 p-4 text-center">
+            {{ 'video_show_with_video_only_presentationpage_template.owner_view_note'|trans }}
+        </div>
+    {% endif %}
 
     <nav
             class="bg-neutral-100 border-1 border-black-400 border-t-0 border-l-0 border-r-0 sticky"

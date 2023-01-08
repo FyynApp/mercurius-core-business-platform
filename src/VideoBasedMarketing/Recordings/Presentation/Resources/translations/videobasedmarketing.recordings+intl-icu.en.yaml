@@ -44,6 +44,7 @@ videos_overview:
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
 video_show_with_video_only_presentationpage_template:
+  owner_view_note: 'This is the landingpage of your recording as seen by other visitors.'
   share_cta: 'Share'
   copy_video_link_cta: 'Copy video link'
   get_fyyn_io_for_free_cta: 'Get the free browser extension'
