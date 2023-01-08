@@ -65,25 +65,49 @@
     </nav>
 
     <div
-            class="grid md:grid-cols-6 gap-4 p-0 m-0 bg-black"
+            class="bg-black"
     >
-        <div style="
-                font-family: 'Inter var', 'Times New Roman', serif;
-                color: {{ video.videoOnlyPresentationpageTemplate.textColor.value }};
-                {# background-color: {{ video.videoOnlyPresentationpageTemplate.bgColor.value }}#}"
-             class="md:col-start-2 col-span-4 pt-10 md:p-6">
-            <center>
-            <div
-                    class="w-full md:p-6" style="max-width: 980px;"
-            >
-                {{ component(
-                    'videobasedmarketing_recordings_video_player_embedded',
-                    { video }
-                ) }}
 
-            </div>
-            </center>
+
+        <div class="w-full">
+            <video
+                    id="video-js-player"
+                    class="video-js rounded-md vjs-default-skin vjs-16-9"
+                    controls
+                    preload="auto"
+                    poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
+                    data-setup=''
+
+            >
+                <source
+                        src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
+                        type="video/mp4"
+                />
+                <p
+                        class="vjs-no-js"
+                >
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that supports HTML5 video.
+                </p>
+            </video>
+
         </div>
+
+        <script>
+            videojs('video-js-player').ready(function() {
+                var img = this.controlBar.addChild('Component', {}, 0); // 3rd arg is index, i.e. first
+                img.addClass('video-js-logo-image');
+            });
+        </script>
+        <style>
+            .video-js-logo-image {
+                width: 100px;
+                height: 40px;
+                background: url({{ asset('assets/images/videoplayer/fyyn-logo-player.jpg') }}) center center no-repeat;
+                background-size: 100px;
+            }
+        </style>
+
     </div>
 
     <div
