@@ -5,25 +5,23 @@
 
 <div {{ attributes }}>
 
-    <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
-        <button
-                class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
-                data-action="live#action"
-                data-action-name="showShareModal"
-        >
-            <span class="flex flex-row justify-between items-center gap-2">
-                <span>
-                    {{ 'video_manage_widget.overview_box.cta_share'|trans }}
-                </span>
-                <span>
-                    <!-- Heroicon: share solid -->
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                        <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
-                    </svg>
-                </span>
-            </span>
-        </button>
-    </div>
+    <button
+            class="cta-with-icon-primary w-full md:w-fit text-left"
+            data-action="live#action"
+            data-action-name="showShareModal"
+            onclick="
+                document
+                    .querySelectorAll('.hide-when-modal-open')
+                    .forEach(function (el) {
+                        el.classList.add('hidden');
+                    });
+            "
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+            <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
+        </svg>
+        {{ 'video_show_with_video_only_presentationpage_template.share_cta'|trans }}
+    </button>
 
     {% if this.shareModalIsOpen %}
         <div
@@ -54,6 +52,13 @@
                             class=""
                             data-action="live#action"
                             data-action-name="hideShareModal"
+                            onclick="
+                                document
+                                    .querySelectorAll('.hide-when-modal-open')
+                                    .forEach(function (el) {
+                                        el.classList.remove('hidden');
+                                    });
+                            "
                     >
                         {# Heroicon: x-mark solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">

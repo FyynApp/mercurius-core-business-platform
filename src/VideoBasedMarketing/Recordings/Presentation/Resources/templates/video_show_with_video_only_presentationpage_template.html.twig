@@ -31,20 +31,9 @@
                 </div>
 
                 <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
-
-
                     {{ component('videobasedmarketing_recordings_video_share_widget', {
                         video: video
                     }) }}
-
-                    <button
-                            class="cta-with-icon-primary w-full md:w-fit text-left"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                            <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
-                        </svg>
-                        {{ 'video_show_with_video_only_presentationpage_template.share_cta'|trans }}
-                    </button>
 
                     <a
                             href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
@@ -64,7 +53,9 @@
         </div>
     </nav>
 
-    <div class="bg-black">
+    <div
+            class="bg-black hide-when-modal-open"
+    >
         <div class="w-full">
             <video
                     id="video-js-player"
@@ -86,7 +77,6 @@
                     web browser that supports HTML5 video.
                 </p>
             </video>
-
         </div>
 
         <script>
@@ -103,28 +93,18 @@
                 background-size: 100px;
             }
         </style>
-
     </div>
+
 
     <div
             class="grid md:grid-cols-6 gap-4 p-0 m-0 mb-10"
     >
         <div class="md:col-start-2 col-span-4 pt-10 md:p-6">
-            <div class="relative p-2 w-full">
-                    <div class="w-full md:p-6">
-
-                    <div
-                            class="w-full mt-4 mb-2 grid md:grid-cols-12 border-b"
-                    >
-
-
-                        <div
-                                class="md:col-span-9"
-                        >
-
-                            <h2
-                                class="font-medium leading-tight text-2xl text-black-600 break-normal text-left"
-                            >
+            <div class="p-2 w-full">
+                <div class="w-full md:p-6">
+                    <div class="w-full mt-4 mb-2 grid md:grid-cols-12 border-b">
+                        <div class="md:col-span-9">
+                            <h2 class="font-medium leading-tight text-2xl text-black-600 break-normal text-left">
                                 {{ video.title }}
                             </h2>
                         </div>
@@ -132,17 +112,16 @@
                         <div class="md:col-span-3 mb-10">
                             <div class="md:text-right">
                                 <a
-                                    class="icon-download pl30"
-                                    href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}">Download</a>
+                                        class="icon-download pl30"
+                                        href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
+                                >Download</a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="w-full bg-mercurius-blue-500">
         <div style="">
@@ -152,7 +131,8 @@
                 <div class="md:col-span-7 mt-16 text-left">
                     <h3 class="font-medium text-3xl break-normal ml-2 text-white">Easily record videos with your
                         computer</h3>
-                    <h4 class="mt-6 font-light text-xl break-normal ml-2 text-white">A picture says more than a thousand
+                    <h4 class="mt-6 font-light text-xl break-normal ml-2 text-white">A picture says more than a
+                        thousand
                         words, a video shows more than a thousand pictures!</h4>
                     <a href="/">
                         <button
