@@ -10,6 +10,7 @@ video_successfully_deleted: 'Video “{title}” has been removed.'
 video_manage_widget:
   overview_box:
     cta_share: 'Share recording'
+    cta_show_landingpage: 'Show landingpage'
     cta_edit: 'Edit recording'
     cta_delete: 'Delete recording'
   edit_modal:
