@@ -111,9 +111,7 @@
     >
         <div class="md:col-start-2 col-span-4 pt-10 md:p-6">
             <div class="relative p-2 w-full">
-                    <div
-                            class="w-full md:p-6" style="max-width: 980px;"
-                    >
+                    <div class="w-full md:p-6">
 
                     <div
                             class="w-full mt-4 mb-2 grid md:grid-cols-12 border-b"
@@ -131,52 +129,80 @@
                             </h2>
                         </div>
 
-                        <div
-                                class="md:col-span-3 mb-10"
-                        >
-                        <div
-                                class="md:text-right"
-                        >
-                            <a
+                        <div class="md:col-span-3 mb-10">
+                            <div class="md:text-right">
+                                <a
                                     class="icon-download pl30"
                                     href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}">Download</a>
-                        </div>
-                    </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="w-full md:p-6">
-                    <div class="w-full mb-2 grid md:grid-cols-12">
-                        <div class="md:col-span-9 text-left">
-                            <div>
-                                <div class="flex items-end w-fit">
-                                    <div>
-                                        <img
-                                            class="h-10 w-10 rounded-full ring-2 ring-indigo-700"
-                                            src="http://127.0.0.1:8000/content-delivery/serve-external-asset?externalAssetUrl=https://media-exp1.licdn.com/dms/image/C5603AQHlWDmE4J3E-Q/profile-displayphoto-shrink_800_800/0/1655211395819?e%3D1675900800%26v%3Dbeta%26t%3DAB4mJFlP8VzWlyfUgGX6eJ7XsKZPN5m0zqr7orFC2CM&amp;contentType=image/jpeg&amp;checksum=139644eae2e10c5096795ccc537105e380ef3405"
-                                            alt=""
-                                        >
-                                    </div>
-
-                                    <div class="ml-3">
-
-                                        <div class="text-base font-medium leading-none text-neutral-900">
-                                            Maik Becker
-                                        </div>
-
-                                        <div class="text-sm font-light leading-none text-neutral-600 pt-2">12. Dec. 2022</div>
-                                </div>
                             </div>
                         </div>
 
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
-    {% include '@videobasedmarketing.presentationpages/includes/footer_unregistered_cta_register.html.twig' %}
+
+    <div class="w-full bg-mercurius-blue-500">
+        <div style="">
+
+            <div class="w-full pb-4 pt-4 grid md:grid-cols-12">
+
+                <div class="md:col-span-7 mt-16 text-left">
+                    <h3 class="font-medium text-3xl break-normal ml-2 text-white">Easily record videos with your
+                        computer</h3>
+                    <h4 class="mt-6 font-light text-xl break-normal ml-2 text-white">A picture says more than a thousand
+                        words, a video shows more than a thousand pictures!</h4>
+                    <a href="/">
+                        <button
+                                class="mt-4 text-2xl border-2 border-white-500 text-white-500 text-neutral-50 block px-3 py-2 rounded-md ml-2"
+                        >
+                            Sign up Now
+                        </button>
+                    </a>
+
+                </div>
+                <div
+                        class="md:col-span-2 pt-5"
+                >
+                    <img src="{{ asset('assets/images/website/videoteaser-240-138-1.jpg') }}"
+                         alt="Easily record videos with FYYN.io" title="Easily record videos with FYYN.io"
+                         style="width: 120px;" class="mt-5 rounded-md">
+                    <img src="{{ asset('assets/images/website/videoteaser-240-180-1.jpg') }}"
+                         alt="Easily record videos with FYYN.io" title="Easily record videos with FYYN.io"
+                         style="width: 120px;" class="mt-3 rounded-md">
+                    <img src="{{ asset('assets/images/website/videoteaser-240-138-2.jpg') }}"
+                         alt="Easily record videos with FYYN.io" title="Easily record videos with FYYN.io"
+                         style="width: 120px;" class="mt-3 rounded-md">
+                </div>
+                <div
+                        class="md:col-span-1 pt-5"
+                >
+
+                    <img src="{{ asset('assets/images/website/videoteaser-240-138-4.jpg') }}"
+                         alt="Easily record videos with FYYN.io" title="Easily record videos with FYYN.io"
+                         style="width: 120px;" class="rounded-md">
+                    <img src="{{ asset('assets/images/website/videoteaser-240-240-1.jpg') }}"
+                         alt="Easily record videos with FYYN.io" title="Easily record videos with FYYN.io"
+                         style="width: 120px;" class="mt-3 rounded-md">
+                    <img src="{{ asset('assets/images/website/videoteaser-240-138-3.jpg') }}"
+                         alt="Easily record videos with FYYN.io" title="Easily record videos with FYYN.io"
+                         style="width: 120px;" class="mt-3 rounded-md">
+                </div>
+                <div
+                        class="md:col-span-2 pt-5"
+                >
+
+                    <img src="{{ asset('assets/images/website/videoteaser-240-180-2.jpg') }}"
+                         alt="Easily record videos with FYYN.io" title="Easily record videos with FYYN.io"
+                         style="width: 120px;" class="mt-10 rounded-md">
+                    <img src="{{ asset('assets/images/website/videoteaser-240-240-2.jpg') }}"
+                         alt="Easily record videos with FYYN.io" title="Easily record videos with FYYN.io"
+                         style="width: 120px;" class="mt-3 rounded-md">
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
