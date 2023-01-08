@@ -7,6 +7,16 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('assets/vendor-static/Video.js/7.20.3/video-js.min.css') }}">
+
+    <style>
+        .video-js-logo-image {
+            width: 100px;
+            height: 40px;
+            background: url({{ asset('assets/images/videoplayer/fyyn-logo-player.jpg') }}) center center no-repeat;
+            background-size: 100px;
+        }
+    </style>
+
     {{ encore_entry_link_tags('videoplayer') }}
 {% endblock %}
 
@@ -26,7 +36,7 @@
 
                 <div class="flex flex-shrink-0 justify-start items-start">
                     <a href="{{ path('shared.presentation.contentpages.homepage') }}">
-                        <img class="h-14" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn">
+                        <img class="h-14" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn.io">
                     </a>
                 </div>
 
@@ -87,20 +97,12 @@
                 img.addClass('video-js-logo-image');
             });
         </script>
-        <style>
-            .video-js-logo-image {
-                width: 100px;
-                height: 40px;
-                background: url({{ asset('assets/images/videoplayer/fyyn-logo-player.jpg') }}) center center no-repeat;
-                background-size: 100px;
-            }
-        </style>
     </div>
 
-    <div class="w-full bg-mercurius-blue-500 p-8 pb-32">
-        <div class="flex flex-col md:flex-row items-center justify-center w-full gap-8">
+    <div class="w-full bg-mercurius-blue-500 p-16 pb-32">
+        <div class="flex flex-col md:flex-row items-start justify-center w-full gap-8">
 
-            <div class="md:col-span-7 mt-16 text-left">
+            <div class="text-left">
                 <h3 class="font-medium text-3xl break-normal ml-2 text-white">
                     {{ 'video_show_with_video_only_presentationpage_template.footer_copy_1'|trans }}
                 </h3>
@@ -109,14 +111,18 @@
                 </h4>
                 <a href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh">
                     <button
-                            class="mt-4 text-2xl border-2 border-white-500 text-white-500 text-neutral-50 block px-3 py-2 rounded-md ml-2"
+                            class="
+                                mt-4 text-2xl border-2 border-white-500 text-white
+                                block px-3 py-2 rounded-md ml-2
+                                bg-mercurius-blue-700 hover:bg-mercurius-blue-400
+                            "
                     >
                         {{ 'video_show_with_video_only_presentationpage_template.get_fyyn_io_for_free_cta'|trans }}
                     </button>
                 </a>
             </div>
 
-            <div class="grid grid-cols-4 justify-center items-center gap-4 w-96">
+            <div class="grid grid-cols-4 justify-center items-center gap-4 w-100">
                 <img
                         src="{{ asset('assets/images/website/videoteaser-240-138-1.jpg') }}"
                         class="rounded-md w-full"
