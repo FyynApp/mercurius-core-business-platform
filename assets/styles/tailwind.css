@@ -4,11 +4,6 @@
 
 @layer components {
 
-    .font-tiro-gurmukhi {
-        font-family: 'Tiro Gurmukhi', 'Times New Roman', serif;
-        line-height: 2rem !important;
-    }
-
     .border-1 {
         border-width: 1px;
     }
@@ -54,7 +49,20 @@
 
 
     .cta-with-icon-primary {
-        @apply flex flex-row gap-2 font-medium hover:font-bold text-mercurius-blue-900 p-3 bg-mercurius-blue-100 mb-4 border-mercurius-blue-200 border-1 rounded-md w-full;
+        @apply
+        flex
+        flex-row
+        gap-2
+        text-base
+        font-medium
+        text-white
+        p-3
+        bg-mercurius-blue-500
+        hover:bg-mercurius-blue-700
+        border
+        border-transparent
+        rounded-md w-fit
+        ;
     }
 
     .cta-with-icon-success {
@@ -151,14 +159,6 @@
     }
 
 
-    .button-success {
-        @apply cta-link-success w-fit border-lime-300;
-    }
-
-    .button-danger {
-        @apply cta-link-danger w-fit border-red-300;
-    }
-
     .heroicon-next-to-text {
         @apply h-5 w-5 inline align-bottom;
     }
@@ -166,18 +166,4 @@
     textarea {
         resize: none;
     }
-
-    /* Icons */
-    .icon-download {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-6 h-6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3' /%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        width: 1.25em;
-        height: 1.25em;
-    }
-
-    .pl30 {
-        padding-left: 30px;
-    }
-
-    
 }

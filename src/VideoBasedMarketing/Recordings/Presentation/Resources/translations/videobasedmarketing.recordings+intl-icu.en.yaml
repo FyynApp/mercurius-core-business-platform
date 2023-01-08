@@ -42,3 +42,5 @@ videos_overview:
     remove_video: 'Remove recording'
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
+video_show_with_video_only_presentationpage_template:
+  share_cta: 'Share'
