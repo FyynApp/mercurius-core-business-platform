@@ -26,14 +26,16 @@
 
                 <div class="flex flex-shrink-0 justify-start items-start">
                     <a href="{{ path('shared.presentation.contentpages.homepage') }}">
-                        <img class="h-16" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn">
+                        <img class="h-14" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn">
                     </a>
                 </div>
 
                 <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
-                    {{ component('videobasedmarketing_recordings_video_share_widget', {
-                        video: video
-                    }) }}
+                    <div class="w-full md:w-fit">
+                        {{ component('videobasedmarketing_recordings_video_share_widget', {
+                            video: video
+                        }) }}
+                    </div>
 
                     <a
                             href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
@@ -54,9 +56,9 @@
     </nav>
 
     <div
-            class="bg-black hide-when-modal-open"
+            class="hide-when-modal-open bg-black flex flex-row justify-center"
     >
-        <div class="w-full">
+        <div class="w-full max-w-6xl">
             <video
                     id="video-js-player"
                     class="video-js rounded-md vjs-default-skin vjs-16-9"
@@ -95,7 +97,7 @@
         </style>
     </div>
 
-    <div class="w-full bg-mercurius-blue-500 p-8">
+    <div class="w-full bg-mercurius-blue-500 p-8 pb-32">
         <div class="flex flex-col md:flex-row items-center justify-center w-full gap-8">
 
             <div class="md:col-span-7 mt-16 text-left">

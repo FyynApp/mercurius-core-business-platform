@@ -3,10 +3,13 @@
 
 {% trans_default_domain 'videobasedmarketing.recordings' %}
 
-<div {{ attributes }}>
+<div
+        {{ attributes }}
+        class="w-full"
+>
 
     <button
-            class="cta-with-icon-primary w-full md:w-fit text-left"
+            class="cta-with-icon-primary w-full text-left"
             data-action="live#action"
             data-action-name="showShareModal"
             onclick="
