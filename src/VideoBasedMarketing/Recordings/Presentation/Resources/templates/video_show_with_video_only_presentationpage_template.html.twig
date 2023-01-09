@@ -23,6 +23,13 @@
 
 {% block javascripts %}
     <script src="{{ asset('assets/vendor-static/Video.js/7.20.3/video.min.js') }}"></script>
+
+    <script>
+        videojs('video-js-player').ready(function() {
+            const img = this.controlBar.addChild('Component', {}, 0);
+            img.addClass('video-js-logo-image');
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -73,7 +80,7 @@
     </nav>
 
     <div
-            class="hide-when-modal-open bg-black flex flex-row justify-center"
+            class="hide-when-modal-open bg-neutral-900 flex flex-row justify-center"
     >
         <div class="w-full max-w-6xl">
             <video
@@ -97,26 +104,53 @@
                 </p>
             </video>
         </div>
-
-        <script>
-            videojs('video-js-player').ready(function() {
-                const img = this.controlBar.addChild('Component', {}, 0);
-                img.addClass('video-js-logo-image');
-            });
-        </script>
     </div>
 
-    <div>
-        <a href="{{
+    <div
+            class="
+                flex flex-row justify-start sm:justify-center
+                mt-0 pt-4 pl-4 pr-4 pb-16 border-t-2 border-neutral-900
+                bg-neutral-100
+            "
+    >
+        <div
+                class="
+                    flex flex-col sm:flex-row justify-start sm:justify-between items-center
+                    gap-4 w-full max-w-6xl
+                "
+        >
+            <div>
+                <img
+                        class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-500"
+                        src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(video.user) }}"
+                        alt=""
+                >
+            </div>
+            <div class="text-sm font-semibold">
+                {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                {{ dateAndTimeMacros.full(video.createdAt) }}
+            </div>
+
+            <div class="flex-grow">
+                <a href="{{
                 TwigHelperService.contentDeliveryService.createForcedDownloadLink(
                     TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
                         video
                     )
                 )
-            }}"
-        >
-            Download
-        </a>
+                }}"
+                >
+                    <div class="flex flex-row justify-start sm:justify-end items-center gap-2 text-sm font-semibold">
+                        {{ 'video_show_with_video_only_presentationpage_template.download_video_file_cta'|trans }}
+
+                        {# Heroicon: arrow-down-tray solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                            <path fill-rule="evenodd" d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="w-full bg-mercurius-blue-500 p-16 pb-32">
