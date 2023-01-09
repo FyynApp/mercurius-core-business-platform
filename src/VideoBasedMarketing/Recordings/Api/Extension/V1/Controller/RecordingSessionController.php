@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainServ
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,7 +98,8 @@ class RecordingSessionController
         string                          $recordingSessionId,
         Request                         $request,
         RouterInterface                 $router,
-        RecordingsInfrastructureService $recordingSessionInfrastructureService
+        RecordingsInfrastructureService $recordingSessionInfrastructureService,
+        LoggerInterface                 $logger
     ): Response
     {
         $r = $this->verifyAndGetUserAndEntity(
@@ -164,11 +166,23 @@ class RecordingSessionController
             }
 
             if ($uploadedFile->getPathname() === '') {
-                throw new Exception('File path is empty.');
+                $logger->warning(
+                    'Received empty video chunk.',
+                    [
+                        'recordingSessionId' => $recordingSessionId,
+                        'chunkName' => $chunkName,
+                        '$_FILES' => json_encode($_FILES)
+                    ]
+                );
+                return $this->json(
+                    [
+                        'status' => Response::HTTP_OK
+                    ]
+                );
             }
 
             if (!$uploadedFile->isValid()) {
-                throw new Exception('File path is empty.');
+                throw new Exception('File is not valid.');
             }
 
             $recordingSessionInfrastructureService->handleRecordingSessionVideoChunk(
