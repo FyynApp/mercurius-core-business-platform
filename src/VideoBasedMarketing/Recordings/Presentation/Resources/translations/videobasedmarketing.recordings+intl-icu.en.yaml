@@ -10,6 +10,7 @@ video_successfully_deleted: 'Video “{title}” has been removed.'
 video_manage_widget:
   overview_box:
     cta_share: 'Share recording'
+    cta_show_landingpage: 'Show landingpage'
     cta_edit: 'Edit recording'
     cta_delete: 'Delete recording'
   edit_modal:
@@ -42,3 +43,12 @@ videos_overview:
     remove_video: 'Remove recording'
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
+video_show_with_video_only_presentationpage_template:
+  owner_view_note: 'This is the landingpage of your recording as seen by other visitors.'
+  share_cta: 'Share'
+  copy_video_link_cta: 'Copy video link'
+  get_fyyn_io_for_free_cta: 'Get the free browser extension'
+  sign_in_cta: 'Sign in'
+  download_video_file_cta: 'Download MP4 video file'
+  footer_copy_1: 'Easily record videos with your computer'
+  footer_copy_2: 'A picture says more than a thousand words, a video shows more than a thousand pictures!'

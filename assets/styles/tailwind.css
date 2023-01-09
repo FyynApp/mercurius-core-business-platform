@@ -4,11 +4,6 @@
 
 @layer components {
 
-    .font-tiro-gurmukhi {
-        font-family: 'Tiro Gurmukhi', 'Times New Roman', serif;
-        line-height: 2rem !important;
-    }
-
     .border-1 {
         border-width: 1px;
     }
@@ -54,7 +49,20 @@
 
 
     .cta-with-icon-primary {
-        @apply flex flex-row gap-2 font-medium hover:font-bold text-mercurius-blue-900 p-3 bg-mercurius-blue-100 mb-4 border-mercurius-blue-200 border-1 rounded-md w-full;
+        @apply
+        flex
+        flex-row
+        gap-2
+        text-base
+        font-medium
+        text-white
+        p-3
+        bg-mercurius-blue-500
+        hover:bg-mercurius-blue-700
+        border
+        border-transparent
+        rounded-md w-fit
+        ;
     }
 
     .cta-with-icon-success {
@@ -150,14 +158,6 @@
         ;
     }
 
-
-    .button-success {
-        @apply cta-link-success w-fit border-lime-300;
-    }
-
-    .button-danger {
-        @apply cta-link-danger w-fit border-red-300;
-    }
 
     .heroicon-next-to-text {
         @apply h-5 w-5 inline align-bottom;

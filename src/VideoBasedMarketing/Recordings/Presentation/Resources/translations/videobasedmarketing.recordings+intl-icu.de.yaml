@@ -7,9 +7,16 @@ seconds: >-
     other {Länge: # Sekunden}
   }
 video_successfully_deleted: 'Das Video “{title}” wurde erfolgreich gelöscht.'
+video_share_widget:
+  headline: 'Aufnahme teilen'
+  direct_link: 'Direktlink'
+  twitter_note: "Sieh' dir mein neues Video an!"
+  copy_cta: 'Kopieren'
+  copied: 'Kopiert!'
 video_manage_widget:
   overview_box:
     cta_share: 'Aufnahme teilen'
+    cta_show_landingpage: 'Zeige Landingpage'
     cta_edit: 'Aufnahme bearbeiten'
     cta_delete: 'Aufnahme löschen'
   edit_modal:
@@ -27,6 +34,8 @@ video_manage_widget:
     headline: 'Aufnahme teilen'
     direct_link: 'Direktlink'
     twitter_note: "Sieh' dir mein neues Video an!"
+    copy_cta: 'Kopieren'
+    copied: 'Kopiert!'
   delete_modal:
     really: 'Möchtest du diese Aufnahme wirklich löschen?'
     yes: 'Ja, löschen'
@@ -42,3 +51,12 @@ videos_overview:
     remove_video: 'Aufnahme löschen'
 video_player_embedded:
   full_asset_outstanding: 'Video wird verarbeitet · · ·'
+video_show_with_video_only_presentationpage_template:
+  owner_view_note: 'Dies ist die Landingpage deiner Aufnahme, wie sie von anderen Besuchern gesehen wird.'
+  share_cta: 'Teilen'
+  copy_video_link_cta: 'Video-Link kopieren'
+  get_fyyn_io_for_free_cta: "Kostenlose Chrome Extension"
+  sign_in_cta: 'Einloggen'
+  download_video_file_cta: 'Video als MP4 herunterladen'
+  footer_copy_1: 'Einfach Videos mit deinem Computer aufzeichnen'
+  footer_copy_2: 'Ein Bild sagt mehr als tausend Worte, und ein Video sagt mehr als tausend Bilder!'

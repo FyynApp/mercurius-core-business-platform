@@ -56,14 +56,9 @@ server {
       set $auth_basic "Login required";
   }
 
-  if ($uri ~ "^/de/presentationpages/") {
-    set $auth_basic off;
+  if ($uri ~ "^/phpinfo") {
+      set $auth_basic "Login required";
   }
-
-  if ($uri ~ "^/en/presentationpages/") {
-    set $auth_basic off;
-  }
-
 
   location ~ \.php$ {
     auth_basic $auth_basic;
@@ -75,15 +70,20 @@ server {
     fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
   }
 
-  location / {
-
-    if (-f $request_filename) {
-      expires max;
-
-      break;
+    location / {
+        error_page 418 = @download;
+        if ( $args ~ "forceDownload=true" ) { return 418; }
+        if (-f $request_filename) {
+            expires max;
+            break;
+        }
+        rewrite ^(.*) /index.php last;
     }
-    rewrite ^(.*) /index.php last;
-  }
+
+    location @download {
+        add_header Content-Disposition "attachment; filename=$arg_filename";
+        expires max;
+    }
 
     listen 443 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/app.fyyn.io/fullchain.pem; # managed by Certbot

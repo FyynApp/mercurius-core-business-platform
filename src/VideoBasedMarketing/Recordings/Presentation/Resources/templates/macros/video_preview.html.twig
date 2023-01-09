@@ -19,7 +19,7 @@
     >
         <div
                 {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'stillImage') }}
-                class="bg-cover bg-center w-full rounded-tl-lg rounded-tr-lg"
+                class="bg-cover bg-center w-full rounded-tl-md rounded-tr-md"
                 data-test-class="videoPreviewPosterStill"
                 style="
                         background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}');
@@ -30,7 +30,7 @@
 
         <div
                 {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'animatedImage') }}
-                class="hidden bg-cover bg-center w-full rounded-tl-lg rounded-tr-lg"
+                class="hidden bg-cover bg-center w-full rounded-tl-md rounded-tr-md"
                 data-test-class="videoPreviewPosterAnimated"
                 style="
                         background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(video) }}');

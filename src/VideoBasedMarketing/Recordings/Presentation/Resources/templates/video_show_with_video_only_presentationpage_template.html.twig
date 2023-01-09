@@ -1,49 +1,216 @@
-{% extends '@shared/base_naked.html.twig' %}
+{% extends '@shared/base_landingpage.html.twig' %}
 
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
 {% block title %}{{ video.title }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/vendor-static/Video.js/7.20.3/video-js.min.css') }}">
+
+    <style>
+        .video-js-logo-image {
+            width: 100px;
+            height: 40px;
+            background: url({{ asset('assets/images/videoplayer/fyyn-logo-player.jpg') }}) center center no-repeat;
+            background-size: 100px;
+        }
+    </style>
+
+    {{ encore_entry_link_tags('videoplayer') }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/vendor-static/Video.js/7.20.3/video.min.js') }}"></script>
+
+    <script>
+        videojs('video-js-player').ready(function() {
+            const img = this.controlBar.addChild('Component', {}, 0);
+            img.addClass('video-js-logo-image');
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
 
+    {% trans_default_domain 'videobasedmarketing.recordings' %}
+
+    {% if TwigHelperService.videoDomainService.userIsOwnerOfVideo(app.user, video) %}
+        <div class="bg-mercurius-blue-50 font-extralight text-mercurius-blue-900 p-4 text-center">
+            {{ 'video_show_with_video_only_presentationpage_template.owner_view_note'|trans }}
+        </div>
+    {% endif %}
+
+    <nav
+            class="bg-neutral-100 border-1 border-black-400 border-t-0 border-l-0 border-r-0 sticky"
+    >
+        <div class="mx-auto p-4">
+            <div class="flex items-start md:items-center justify-between h-fit">
+
+                <div class="flex flex-shrink-0 justify-start items-start">
+                    <a href="{{ path('shared.presentation.contentpages.homepage') }}">
+                        <img class="h-14" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn.io">
+                    </a>
+                </div>
+
+                <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
+                    <div class="w-full md:w-fit">
+                        {{ component('videobasedmarketing_recordings_video_share_widget', {
+                            video: video
+                        }) }}
+                    </div>
+
+                    <a
+                            href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
+                            class="cta-with-icon-primary w-full md:w-fit text-left"
+                    >
+                        {{ 'video_show_with_video_only_presentationpage_template.get_fyyn_io_for_free_cta'|trans }}
+                    </a>
+
+                    <a
+                            href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
+                            class="cta-with-icon-primary w-full md:w-fit text-left"
+                    >
+                        {{ 'video_show_with_video_only_presentationpage_template.sign_in_cta'|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div
-            class="w-full h-full min-h-screen p-0 m-0"
-            style="
-                    color: {{ video.videoOnlyPresentationpageTemplate.textColor.value }};
-                    background-color: {{ video.videoOnlyPresentationpageTemplate.bgColor.value }};
+            class="hide-when-modal-open bg-neutral-900 flex flex-row justify-center"
+    >
+        <div class="w-full max-w-6xl">
+            <video
+                    id="video-js-player"
+                    class="video-js rounded-md vjs-default-skin vjs-16-9"
+                    controls
+                    preload="auto"
+                    poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
+                    data-setup=''
+
+            >
+                <source
+                        src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
+                        type="video/mp4"
+                />
+                <p
+                        class="vjs-no-js"
+                >
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that supports HTML5 video.
+                </p>
+            </video>
+        </div>
+    </div>
+
+    <div
+            class="
+                flex flex-row justify-start sm:justify-center
+                mt-0 pt-4 pl-4 pr-4 pb-16 border-t-2 border-neutral-900
+                bg-neutral-100
             "
     >
-        <div class="flex flex-col justify-start items-center p-8 pt-24 w-fit mx-auto">
-            <div class="w-full max-w-2xl">
-                {{ component(
-                    'videobasedmarketing_recordings_video_player_embedded',
-                    { video }
-                ) }}
+        <div
+                class="
+                    flex flex-col sm:flex-row justify-start sm:justify-between items-center
+                    gap-4 w-full max-w-6xl
+                "
+        >
+            <div>
+                <img
+                        class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-500"
+                        src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(video.user) }}"
+                        alt=""
+                >
+            </div>
+            <div class="text-sm font-semibold">
+                {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                {{ dateAndTimeMacros.full(video.createdAt) }}
+            </div>
+
+            <div class="flex-grow">
+                <a href="{{
+                TwigHelperService.contentDeliveryService.createForcedDownloadLink(
+                    TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
+                        video
+                    )
+                )
+                }}"
+                >
+                    <div class="flex flex-row justify-start sm:justify-end items-center gap-2 text-sm font-semibold">
+                        {{ 'video_show_with_video_only_presentationpage_template.download_video_file_cta'|trans }}
+
+                        {# Heroicon: arrow-down-tray solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                            <path fill-rule="evenodd" d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
 
-    <a
-            href="{{ path('shared.presentation.contentpages.homepage') }}"
-            target="_blank"
-            class="
-                        absolute top-8 right-8 flex flex-row gap-2 justify-start items-center
-                        p-2 pr-4 pl-4 rounded-md opacity-20
-                        hover:opacity-100
-                        bg-neutral-500 text-neutral-300 font-light
-                    "
-    >
-        <span>hosted by Fyyn.io</span>
-        <img
-                class="h-6"
-                src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
-                alt="Fyyn.io"
-        >
-    </a>
+    <div class="w-full bg-mercurius-blue-500 p-16 pb-32">
+        <div class="flex flex-col md:flex-row items-start justify-center w-full gap-8">
 
+            <div class="text-left">
+                <h3 class="font-medium text-3xl break-normal ml-2 text-white">
+                    {{ 'video_show_with_video_only_presentationpage_template.footer_copy_1'|trans }}
+                </h3>
+                <h4 class="mt-6 font-light text-xl break-normal ml-2 text-white">
+                    {{ 'video_show_with_video_only_presentationpage_template.footer_copy_2'|trans }}
+                </h4>
+                <a href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh">
+                    <button
+                            class="
+                                mt-4 text-2xl border-2 border-white-500 text-white
+                                block px-3 py-2 rounded-md ml-2
+                                bg-mercurius-blue-700 hover:bg-mercurius-blue-400
+                            "
+                    >
+                        {{ 'video_show_with_video_only_presentationpage_template.get_fyyn_io_for_free_cta'|trans }}
+                    </button>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-4 justify-center items-center gap-4 w-100">
+                <img
+                        src="{{ asset('assets/images/website/videoteaser-240-138-1.jpg') }}"
+                        class="rounded-md w-full"
+                >
+                <img
+                        src="{{ asset('assets/images/website/videoteaser-240-180-1.jpg') }}"
+                        class="rounded-md w-full"
+                >
+                <img
+                        src="{{ asset('assets/images/website/videoteaser-240-138-2.jpg') }}"
+                        class="rounded-md w-full"
+                >
+                <img
+                        src="{{ asset('assets/images/website/videoteaser-240-138-4.jpg') }}"
+                        class="rounded-md w-full"
+                >
+                <img
+                        src="{{ asset('assets/images/website/videoteaser-240-240-1.jpg') }}"
+                        class="rounded-md w-full"
+                >
+                <img
+                        src="{{ asset('assets/images/website/videoteaser-240-138-3.jpg') }}"
+                        class="rounded-md w-full"
+                >
+                <img
+                        src="{{ asset('assets/images/website/videoteaser-240-180-2.jpg') }}"
+                        class="rounded-md w-full"
+                >
+                <img
+                        src="{{ asset('assets/images/website/videoteaser-240-240-2.jpg') }}"
+                        class="rounded-md w-full"
+                >
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

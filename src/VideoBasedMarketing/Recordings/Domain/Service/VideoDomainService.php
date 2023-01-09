@@ -101,4 +101,12 @@ class VideoDomainService
         $this->entityManager->persist($video);
         $this->entityManager->flush();
     }
+
+    public function userIsOwnerOfVideo(
+        ?User $user,
+        Video $video
+    ): bool
+    {
+        return !is_null($user) && $user->getId() === $video->getUser()->getId();
+    }
 }

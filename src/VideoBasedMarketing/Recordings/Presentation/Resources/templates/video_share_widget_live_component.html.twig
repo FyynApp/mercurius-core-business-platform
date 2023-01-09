@@ -1,0 +1,150 @@
+{# @var this \App\VideoBasedMarketing\Recordings\Presentation\Component\VideoShareWidgetLiveComponent #}
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.recordings' %}
+
+<div
+        {{ attributes }}
+        class="w-full"
+>
+
+    <button
+            class="cta-with-icon-primary w-full text-left"
+            data-action="live#action"
+            data-action-name="showShareModal"
+            onclick="
+                document
+                    .querySelectorAll('.hide-when-modal-open')
+                    .forEach(function (el) {
+                        el.classList.add('hidden');
+                    });
+            "
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+            <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
+        </svg>
+        {{ 'video_show_with_video_only_presentationpage_template.share_cta'|trans }}
+    </button>
+
+    {% if this.shareModalIsOpen %}
+        <div
+                class="
+                    fixed w-full h-full top-0 left-0 bg-opacity-90 bg-neutral-900
+                    flex flex-row justify-center items-center
+                "
+                style="z-index: 99999999;"
+        >
+            <div class="
+                bg-white max-w-screen-lg max-h-screen max-w-full
+                p-4 w-fit rounded-md
+                flex flex-col justify-start
+            ">
+                <div class="flex flex-row justify-between mb-8">
+
+                    <div class="flex flex-row gap-2 items-center text-gray-700">
+                        {# Heroicon: share solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-bold">
+                            {{ 'video_share_widget.headline'|trans }}
+                        </span>
+                    </div>
+
+                    <button
+                            class=""
+                            data-action="live#action"
+                            data-action-name="hideShareModal"
+                            onclick="
+                                document
+                                    .querySelectorAll('.hide-when-modal-open')
+                                    .forEach(function (el) {
+                                        el.classList.remove('hidden');
+                                    });
+                            "
+                    >
+                        {# Heroicon: x-mark solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div
+                        class="flex flex-row mb-8"
+                        data-controller="clipboard"
+                        data-clipboard-success-content='{{ 'video_share_widget.copied'|trans }}'
+                >
+
+                    <input class="w-full text-mercurius-blue-500 bg-gray-200 rounded-tl-md border-0 rounded-bl-md"
+                           type="text"
+                           disabled="disabled"
+                           size="36"
+                           value="{{ this.shareUrl }}"
+                           data-clipboard-target="source"
+                    >
+                    <button class="
+                                bg-mercurius-blue-900 text-mercurius-blue-200 p-2 flex flex-row gap-1
+                                rounded-tr-md
+                                rounded-br-md
+                            "
+                            data-clipboard-target="button"
+                            data-action="clipboard#copy"
+                    >
+                        {{ 'video_share_widget.copy_cta'|trans }}
+                    </button>
+                </div>
+                <div class="flex flex-row justify-evenly items-end gap-4 text-sm font-semibold text-gray-700">
+                    <button
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
+                            data-action="live#action"
+                            data-action-name="switchShareUrlDirectLink"
+                    >
+                        {# Heroicon: link solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="block w-8 h-8 m-2">
+                            <path fill-rule="evenodd" d="M19.902 4.098a3.75 3.75 0 00-5.304 0l-4.5 4.5a3.75 3.75 0 001.035 6.037.75.75 0 01-.646 1.353 5.25 5.25 0 01-1.449-8.45l4.5-4.5a5.25 5.25 0 117.424 7.424l-1.757 1.757a.75.75 0 11-1.06-1.06l1.757-1.757a3.75 3.75 0 000-5.304zm-7.389 4.267a.75.75 0 011-.353 5.25 5.25 0 011.449 8.45l-4.5 4.5a5.25 5.25 0 11-7.424-7.424l1.757-1.757a.75.75 0 111.06 1.06l-1.757 1.757a3.75 3.75 0 105.304 5.304l4.5-4.5a3.75 3.75 0 00-1.035-6.037.75.75 0 01-.354-1z" clip-rule="evenodd" />
+                        </svg>
+                        {{ 'video_share_widget.direct_link'|trans }}
+                    </button>
+
+                    <a
+                            href="{{ this.shareUrlFacebook }}"
+                            target="_blank"
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
+                    >
+                        <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-facebook.svg') }}">
+                        Facebook
+                    </a>
+
+                    <button
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
+                            data-action="live#action"
+                            data-action-name="switchShareUrlInstagram"
+                    >
+                        <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-instagram.svg') }}">
+                        Instagram
+                    </button>
+
+                    <a
+                            href="{{ this.shareUrlTwitter }}"
+                            target="_blank"
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
+                    >
+                        <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-twitter.svg') }}">
+                        Twitter
+                    </a>
+
+                    <a
+                            href="{{ this.shareUrlLinkedIn }}"
+                            target="_blank"
+                            class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
+                    >
+                        <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-linkedin.svg') }}">
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+</div>

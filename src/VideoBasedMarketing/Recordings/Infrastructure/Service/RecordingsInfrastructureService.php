@@ -312,15 +312,27 @@ class RecordingsInfrastructureService
         if ($video->hasAssetFullMp4()) {
             return $this->router->generate(
                 'videobasedmarketing.recordings.presentation.video.full.asset',
-                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4)]
+                [
+                    'videoId' => $video->getId(),
+                    'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4),
+                    'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4)}"
+                ]
             );
         } elseif ($video->hasAssetFullWebm()) {
             return $this->router->generate(
                 'videobasedmarketing.recordings.presentation.video.full.asset',
-                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)]
+                [
+                    'videoId' => $video->getId(),
+                    'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                    'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)}"
+                ]
             );
         } else {
-            return $this->router->generate('videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder');
+            return $this
+                ->router
+                ->generate(
+                    'videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder'
+                );
         }
     }
 

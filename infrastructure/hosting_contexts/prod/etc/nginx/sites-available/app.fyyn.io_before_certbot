@@ -58,12 +58,8 @@ server {
         set $auth_basic "Login required";
     }
 
-    if ($uri ~ "^/de/presentationpages/") {
-        set $auth_basic off;
-    }
-
-    if ($uri ~ "^/en/presentationpages/") {
-        set $auth_basic off;
+    if ($uri ~ "^/phpinfo") {
+        set $auth_basic "Login required";
     }
 
     location ~ \.php$ {
@@ -77,11 +73,17 @@ server {
     }
 
     location / {
+        error_page 418 = @download;
+        if ( $args ~ "forceDownload=true" ) { return 418; }
         if (-f $request_filename) {
-        expires max;
-
-        break;
+            expires max;
+            break;
+        }
+        rewrite ^(.*) /index.php last;
     }
-    rewrite ^(.*) /index.php last;
-  }
+
+    location @download {
+        add_header Content-Disposition "attachment; filename=$arg_filename";
+        expires max;
+    }
 }
