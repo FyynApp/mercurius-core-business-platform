@@ -17,9 +17,9 @@ class CatchallController
         Request         $request
     ): Response
     {
-        $preferredLanguage = $request->getPreferredLanguage();
+        $preferredLanguage = (string)$request->getPreferredLanguage();
 
-        if ($preferredLanguage === 'de'
+        if (   $preferredLanguage === 'de'
             || mb_substr($preferredLanguage, 0, 3) === 'de_'
             || mb_substr($preferredLanguage, 0, 3) === 'de-'
         ) {
