@@ -162,14 +162,30 @@ class RecordingsInfrastructureService
         $process = new Process(
             [
                 'ffmpeg',
+
+                '-ss',
+                '1',
+
+                '-t',
+                '3',
+
                 '-i',
                 $this->getVideoChunkContentStorageFilePath(
                     $recordingSession->getRecordingSessionVideoChunks()->first()
                 ),
+
                 '-vf',
-                'select=eq(n\,50)',
+                'scale=520:-1',
+
+                '-r',
+                '7',
+
                 '-q:v',
-                '70',
+                '80',
+
+                '-loop',
+                '0',
+
                 '-y',
                 $this->getRecordingPreviewVideoPosterFilePath($recordingSession)
             ]
