@@ -106,6 +106,19 @@
         </script>
     </div>
 
+    <div>
+        <a href="{{
+                TwigHelperService.contentDeliveryService.createForcedDownloadLink(
+                    TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
+                        video
+                    )
+                )
+            }}"
+        >
+            Download
+        </a>
+    </div>
+
     <div class="w-full bg-mercurius-blue-500 p-16 pb-32">
         <div class="flex flex-col md:flex-row items-start justify-center w-full gap-8">
 

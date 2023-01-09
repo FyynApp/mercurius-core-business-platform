@@ -38,4 +38,18 @@ class ContentDeliveryService
             UrlGeneratorInterface::ABSOLUTE_URL
         );
     }
+
+
+    public function createForcedDownloadLink(
+        string $url
+    ): string
+    {
+        if (mb_stristr($url, '?') === false) {
+            $url .= '?';
+        } else {
+            $url .= '&';
+        }
+
+        return $url . 'forceDownload=true';
+    }
 }

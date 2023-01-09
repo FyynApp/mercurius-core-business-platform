@@ -470,7 +470,13 @@
                                             {% if TwigHelperService.capabilitiesService.mustBeForcedToClaimUnregisteredUser(app.user) %}
                                                 href="{{ claimUnregisteredUserLandingpagePath }}"
                                             {% else %}
-                                                href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(this.video) }}"
+                                                href="{{
+                                                    TwigHelperService.contentDeliveryService.createForcedDownloadLink(
+                                                        TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
+                                                            this.video
+                                                        )
+                                                    )
+                                                }}"
                                             {% endif %}
 
                                             class="cta-with-icon-inline-primary"
