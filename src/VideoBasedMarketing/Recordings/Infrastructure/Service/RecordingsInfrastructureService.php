@@ -686,7 +686,9 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function probeForVideoAssetFps(string $filepath): float
+    private function probeForVideoAssetFps(
+        string $filepath
+    ): ?float
     {
         $process = new Process(
             [
@@ -716,7 +718,12 @@ class RecordingsInfrastructureService
         if (is_numeric($outputParts[0]) && is_numeric($outputParts[1])) {
             return $outputParts[0] / $outputParts[1];
         } else {
-            throw new Exception("Did not get numeric fps values for file at '$filepath'. Command error output was '{$process->getErrorOutput()}'.");
+            $this
+                ->logger
+                ->info(
+                    "Did not get numeric fps values for file at '$filepath' with command line \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                );
+            return null;
         }
     }
 
@@ -752,6 +759,11 @@ class RecordingsInfrastructureService
         if (is_numeric($output)) {
             return (float)$output;
         } else {
+            $this
+                ->logger
+                ->info(
+                    "Did not get seconds value for file at '$filepath' with command line \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                );
             return null;
         }
     }
@@ -791,6 +803,11 @@ class RecordingsInfrastructureService
         if (is_numeric($output)) {
             return (int)$output;
         } else {
+            $this
+                ->logger
+                ->info(
+                    "Did not get width for file at '$filepath' with command line \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                );
             return null;
         }
     }
@@ -826,6 +843,11 @@ class RecordingsInfrastructureService
         if (is_numeric($output)) {
             return (int)$output;
         } else {
+            $this
+                ->logger
+                ->info(
+                    "Did not get height for file at '$filepath' with command line \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                );
             return null;
         }
     }
