@@ -421,6 +421,20 @@ class RecordingsInfrastructureService
             $process->run();
 
             clearstatcache();
+
+            if (!file_exists(
+                $this->getVideoPosterStillAssetFilePath(
+                    $video,
+                    AssetMimeType::ImageWebp))
+            ) {
+                $this
+                    ->logger
+                    ->info(
+                        "Failed to generate video asset 'poster still webp' for video {$video->getId()} from recording session {$video->getRecordingSession()->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                    );
+                continue;
+            }
+
             $filesize = filesize($this->getVideoPosterStillAssetFilePath(
                 $video,
                 AssetMimeType::ImageWebp
@@ -702,7 +716,7 @@ class RecordingsInfrastructureService
         if (is_numeric($outputParts[0]) && is_numeric($outputParts[1])) {
             return $outputParts[0] / $outputParts[1];
         } else {
-            throw new Exception("Did not get numeric fps values for file at $filepath.");
+            throw new Exception("Did not get numeric fps values for file at '$filepath'. Command error output was '{$process->getErrorOutput()}'.");
         }
     }
 
