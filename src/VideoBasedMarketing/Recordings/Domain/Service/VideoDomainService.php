@@ -109,4 +109,9 @@ class VideoDomainService
     {
         return !is_null($user) && $user->getId() === $video->getUser()->getId();
     }
+
+    public function videoIsAvailableForDownload(Video $video): bool
+    {
+        return $video->hasAssetFullMp4();
+    }
 }
