@@ -419,6 +419,15 @@ class RecordingsInfrastructureService
                 ]
             );
             $process->run();
+            $process->wait();
+
+            if (!file_exists(
+                $this->getVideoPosterStillAssetFilePath(
+                    $video,
+                    AssetMimeType::ImageWebp))
+            ) {
+                continue;
+            }
 
             clearstatcache();
             $filesize = filesize($this->getVideoPosterStillAssetFilePath(
