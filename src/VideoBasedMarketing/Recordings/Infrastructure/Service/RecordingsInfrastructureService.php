@@ -419,13 +419,13 @@ class RecordingsInfrastructureService
                 ]
             );
             $process->run();
-            $process->wait();
 
             if (!file_exists(
                 $this->getVideoPosterStillAssetFilePath(
                     $video,
                     AssetMimeType::ImageWebp))
             ) {
+                $this->logger->info("Failed to generate video asset 'poster still webp' for video {$video->getId()} from recording session {$video->getRecordingSession()->getId()} using commandline '{$process->getCommandLine()}'.");
                 continue;
             }
 
