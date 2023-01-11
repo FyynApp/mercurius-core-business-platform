@@ -389,6 +389,10 @@ class RecordingsInfrastructureService
         if (!$video->hasAssetPosterAnimatedGif()) {
             $this->generateVideoAssetPosterAnimatedGif($video);
         }
+
+        if (!$video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
+            $this->generateVideoAssetPosterAnimatedGif($video);
+        }
     }
 
     public function generateVideoAssetPosterStillWebp(Video $video): void
@@ -460,6 +464,75 @@ class RecordingsInfrastructureService
                 break;
             }
         }
+    }
+
+    public function generateVideoAssetPosterStillWithPlayOverlayForEmailPng(Video $video): void
+    {
+        $this->createFilesystemStructureForVideoAssets($video);
+
+        if (!file_exists(
+            $this->getVideoPosterStillAssetFilePath(
+                $video,
+                AssetMimeType::ImageWebp
+            )
+        )) {
+            $this->generateVideoAssetPosterStillWebp($video);
+        }
+
+        $dstImage = imagecreatetruecolor(
+            $video->getAssetPosterStillWebpWidth(),
+            $video->getAssetPosterStillWebpHeight()
+        );
+
+        $srcImagePoster = imagecreatefromwebp(
+            $this->getVideoPosterStillAssetFilePath(
+                $video,
+                AssetMimeType::ImageWebp
+            )
+        );
+
+        $srcImageOverlay = imagecreatefromwebp(
+            __DIR__ . '/../../../../../public/assets/images/videobasedmarketing/mailings/play-button-overlay.webp'
+        );
+
+        imagecopy(
+            $dstImage,
+            $srcImagePoster,
+            0,
+            0,
+            0,
+            0,
+            469,
+            296
+        );
+
+        imagecopy(
+            $dstImage,
+            $srcImageOverlay,
+            0,
+            0,
+            0,
+            0,
+            469,
+            296
+        );
+
+        imagewebp(
+            $dstImage,
+            $this->getVideoPosterStillWithPlayOverlayForEmailAssetFilePath(
+                $video,
+                AssetMimeType::ImagePng
+            )
+        );
+
+        $video->setHasAssetPosterStillWithPlayOverlayForEmailPng(true);
+
+        #$video->setAssetPosterStillWithPlayOverlayForEmailPngWidth();
+
+        #$video->setAssetPosterStillWithPlayOverlayForEmailPngHeight();
+
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
     }
 
     public function generateVideoAssetPosterAnimatedWebp(Video $video): void
@@ -880,6 +953,24 @@ class RecordingsInfrastructureService
                 self::VIDEO_ASSETS_SUBFOLDER_NAME,
                 $video->getId(),
                 'poster-still.' . $this->mimeTypeToFileSuffix($mimeType)
+            ]
+        );
+    }
+
+    private function getVideoPosterStillWithPlayOverlayForEmailAssetFilePath(
+        Video         $video,
+        AssetMimeType $mimeType
+    ): string
+    {
+        if ($mimeType !== AssetMimeType::ImagePng) {
+            throw new InvalidArgumentException();
+        }
+
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                self::VIDEO_ASSETS_SUBFOLDER_NAME,
+                $video->getId(),
+                'poster-still-with-play-overlay-for-email.' . $this->mimeTypeToFileSuffix($mimeType)
             ]
         );
     }

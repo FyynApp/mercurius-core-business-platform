@@ -499,6 +499,58 @@ class Video
         $this->assetFullMp4Height = $val;
     }
 
+    
+    #[ORM\Column(type: 'boolean')]
+    private bool $hasAssetPosterStillWithPlayOverlayForEmailPng = false;
+
+    public function hasAssetPosterStillWithPlayOverlayForEmailPng(): bool
+    {
+        return $this->hasAssetPosterStillWithPlayOverlayForEmailPng;
+    }
+
+    public function setHasAssetPosterStillWithPlayOverlayForEmailPng(
+        bool $hasAssetPosterStillWithPlayOverlayForEmailPng
+    ): void
+    {
+        $this->hasAssetPosterStillWithPlayOverlayForEmailPng = $hasAssetPosterStillWithPlayOverlayForEmailPng;
+    }
+
+    
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetPosterStillWithPlayOverlayForEmailPngWidth = null;
+
+    public function getAssetPosterStillWithPlayOverlayForEmailPngWidth(): ?int
+    {
+        return $this->assetPosterStillWithPlayOverlayForEmailPngWidth;
+    }
+
+    public function setAssetPosterStillWithPlayOverlayForEmailPngWidth(?int $val): void
+    {
+        $this->assetPosterStillWithPlayOverlayForEmailPngWidth = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetPosterStillWithPlayOverlayForEmailPngHeight = null;
+
+    public function getAssetPosterStillWithPlayOverlayForEmailPngHeight(): ?int
+    {
+        return $this->assetPosterStillWithPlayOverlayForEmailPngHeight;
+    }
+
+    public function setAssetPosterStillWithPlayOverlayForEmailPngHeight(?int $val): void
+    {
+        $this->assetPosterStillWithPlayOverlayForEmailPngHeight = $val;
+    }
+
 
     /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(
