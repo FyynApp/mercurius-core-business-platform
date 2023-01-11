@@ -6,6 +6,7 @@ use App\Shared\Infrastructure\Entity\SupportsShortIdInterface;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use DateTime;
@@ -33,6 +34,7 @@ class Video
     {
         $this->user = $user;
         $this->presentationpages = new ArrayCollection();
+        $this->videoMailings = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
 
@@ -534,6 +536,29 @@ class Video
     public function setVideoOnlyPresentationpageTemplate(?Presentationpage $videoOnlyPresentationpageTemplate): void
     {
         $this->videoOnlyPresentationpageTemplate = $videoOnlyPresentationpageTemplate;
+    }
+
+
+    #[ORM\OneToMany(
+        mappedBy: 'video',
+        targetEntity: VideoMailing::class,
+        cascade: ['persist']
+    )]
+    private array|Collection $videoMailings;
+
+    /** @return VideoMailing[]|Collection */
+    public function getVideoMailings(): array|Collection
+    {
+        return $this->videoMailings;
+    }
+
+    public function addVideoMailing(
+        VideoMailing $videoMailing
+    ): void
+    {
+        if (!$this->videoMailings->contains($videoMailing)) {
+            $this->videoMailings->add($videoMailing);
+        }
     }
 
 

@@ -2,11 +2,13 @@
 
 namespace App\VideoBasedMarketing\Mailings\Presentation\Component;
 
-use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Presentation\Form\Type\VideoType;
+use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
+use App\VideoBasedMarketing\Mailings\Presentation\Form\Type\VideoMailingType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -21,14 +23,44 @@ class VideoMailingEditorLiveComponent
     use DefaultActionTrait;
     use ComponentWithFormTrait;
 
+
+    public function __construct(
+        readonly private EntityManagerInterface $entityManager
+    ) {
+
+    }
+
     #[LiveProp(fieldName: 'data')]
-    public Video $video;
+    public VideoMailing $videoMailing;
+
+
+    #[LiveAction]
+    public function save(): void
+    {
+        if (is_null($this->formView)) {
+            $this->submitForm();
+        }
+        $this->storeDataAndRebuildForm();
+    }
+
+
+    private function storeDataAndRebuildForm(): void
+    {
+        $this->entityManager->persist($this->videoMailing);
+        $this->entityManager->flush();
+        $form = $this->createForm(VideoMailingType::class, $this->videoMailing);
+        $this->formView = $form->createView();
+        $this->formValues = $this->extractFormValues(
+            $this->instantiateForm()
+                ->createView()
+        );
+    }
 
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(
-            VideoType::class,
-            $this->video
+            VideoMailingType::class,
+            $this->videoMailing
         );
     }
 }

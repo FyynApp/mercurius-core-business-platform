@@ -4,6 +4,10 @@
 
 @layer components {
 
+    .max-w-8xl {
+        max-width: 100rem;
+    }
+
     .border-1 {
         border-width: 1px;
     }

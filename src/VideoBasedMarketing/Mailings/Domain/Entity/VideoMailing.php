@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Mailings\Domain\Entity;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -22,10 +23,12 @@ class VideoMailing
     implements UserOwnedEntityInterface
 {
     public function __construct(
-        User $user
+        User  $user,
+        Video $video
     )
     {
         $this->user = $user;
+        $this->video = $video;
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
 
@@ -48,7 +51,7 @@ class VideoMailing
     #[ORM\ManyToOne(
         targetEntity: User::class,
         cascade: ['persist'],
-        inversedBy: 'recordingRequests'
+        inversedBy: 'videoMailings'
     )]
     #[ORM\JoinColumn(
         name: 'users_id',
@@ -61,6 +64,25 @@ class VideoMailing
     public function getUser(): User
     {
         return $this->user;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: Video::class,
+        cascade: ['persist'],
+        inversedBy: 'videoMailings'
+    )]
+    #[ORM\JoinColumn(
+        name: 'videos_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
+    private Video $video;
+
+    public function getVideo(): Video
+    {
+        return $this->video;
     }
 
 

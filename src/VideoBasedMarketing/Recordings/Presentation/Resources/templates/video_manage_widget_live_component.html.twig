@@ -191,16 +191,20 @@
             </div>
         {% endif %}
 
-        <a href="{{
-        path(
-            'videobasedmarketing.mailings.presentation.show_video_mailing_editor',
-            {
-                'videoId': this.video.id
-            }
-        )
-        }}">
-            email
-        </a>
+        <form
+                action="{{
+                    path(
+                        'videobasedmarketing.mailings.presentation.create_video_mailing',
+                        { 'videoId': this.video.id }
+                    ) }}"
+                method="post"
+        >
+            <button
+                    type="submit"
+            >
+                Send video mail
+            </button>
+        </form>
 
 
         <div class="text-red-900 hover:font-bold hover:bg-red-200 rounded-bl rounded-br">

@@ -1,10 +1,130 @@
 {# @var this \App\VideoBasedMarketing\Mailings\Presentation\Component\VideoMailingEditorLiveComponent #}
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
+{% trans_default_domain 'videobasedmarketing.mailings' %}
+
 <div
-    {{ attributes }}
+        {{ attributes }}
+        class="mt-8"
 >
+    <div class="flex flex-col xl:flex-row gap-12 w-full">
 
-    {{ this.video.title }}
+        <div class="w-full xl:w-4/12">
 
+            <div class="mb-6 text-xl font-bold">
+                {{ 'video_mailing_editor.form_headline'|trans }}
+            </div>
+
+            {% form_theme form '@shared/form_themes/form_theme_default.html.twig' %}
+
+            {{ form_start(this.form) }}
+
+            {{ form_row(this.form.receiverMailAddress, {
+                attr: {
+                    'data-model': 'on(input)|debounce(250)|' ~ this.form.receiverMailAddress.vars.full_name,
+                    'data-action': 'live#action',
+                    'data-action-name': 'debounce(300)|save'
+                }
+            }) }}
+
+
+            {{ form_row(this.form.subject, {
+                attr: {
+                    'data-model': 'on(input)|debounce(250)|' ~ this.form.subject.vars.full_name,
+                    'data-action': 'live#action',
+                    'data-action-name': 'debounce(300)|save'
+                }
+            }) }}
+
+            {{ form_row(this.form.bodyAboveVideo, {
+                attr: {
+                    'data-model': 'on(input)|debounce(250)|' ~ this.form.bodyAboveVideo.vars.full_name,
+                    'data-action': 'live#action',
+                    'data-action-name': 'debounce(300)|save',
+                    'rows': 10
+                }
+            }) }}
+
+            {{ form_row(this.form.bodyBelowVideo, {
+                attr: {
+                    'data-model': 'on(input)|debounce(250)|' ~ this.form.bodyBelowVideo.vars.full_name,
+                    'data-action': 'live#action',
+                    'data-action-name': 'debounce(300)|save',
+                    'rows': 10
+                }
+            }) }}
+
+            {{ form_end(this.form) }}
+        </div>
+
+
+        <div class="flex-grow">
+            <div class="invisible md:visible mb-6 text-xl font-bold">
+                {{ 'video_mailing_editor.preview_headline'|trans }}
+            </div>
+            <div class="invisible md:visible w-full">
+                <div class="w-full flex flex-row gap-0 w-full">
+                    <img
+                            src="{{ asset('assets/images/videobasedmarketing/mailings/mailer-in-browser-left.png') }}"
+                            width="453"
+                            height="1051"
+                    >
+                    <div
+                            class="relative flex-grow"
+                            style="
+                                    background-image: url('{{ asset('assets/images/videobasedmarketing/mailings/mailer-in-browser-middle.png') }}');
+                                    background-repeat: repeat-x;
+                                    "
+                    >
+                        <div
+                                class="absolute"
+                                style="
+                                    top: 206px;
+                                    left: -175px;
+                                "
+                        >
+                            <div class="font-semibold text-2xl">
+                                {{ this.videoMailing.subject }}
+                            </div>
+
+                            <div class="font-light">
+                                From:
+                                <span class="font-semibold">{{ this.videoMailing.user.email }}</span>
+                            </div>
+
+                            <div class="font-light">
+                                To:
+                                <span>{{ this.videoMailing.receiverMailAddress }}</span>
+                            </div>
+
+                            <div class="font-medium mt-8">
+                                <div>
+                                    <span>{{ this.videoMailing.bodyAboveVideo|nl2br }}</span>
+                                </div>
+
+                                <img
+                                        class="w-64 rounded-md mt-4 mb-4"
+                                        src="{{
+                                            TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(this.videoMailing.video)
+                                        }}"
+                                >
+                                </div>
+
+                                <div>
+                                    <span>
+                                        {{ this.videoMailing.bodyBelowVideo|nl2br }}
+                                    </span>
+                                </div>
+                            </div>
+                    </div>
+                    <img
+                            src="{{ asset('assets/images/videobasedmarketing/mailings/mailer-in-browser-right.png') }}"
+                            width="102"
+                            height="1051"
+                    >
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>

@@ -1,7 +1,7 @@
 {% extends '@shared/base_extension_only_user.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
-{# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\video #}
+{# @var videoMailing \App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing #}
 
 {% block title %}{{ 'mainnav.mailings'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.mailings'|trans }}{% endblock %}
@@ -14,7 +14,7 @@
     <div>
         {{ component(
             'videobasedmarketing_mailings_video_mailing_editor',
-            { 'video': video }
+            { 'videoMailing': videoMailing }
         ) }}
     </div>
 

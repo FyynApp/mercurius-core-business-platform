@@ -1,0 +1,9 @@
+video_mailing_editor:
+  form_labels:
+    receiver_mail_address: 'To'
+    subject: 'Subject'
+    body_above_video: 'Text above video'
+    body_below_video: 'Text below video'
+    submit: 'Send'
+  form_headline: 'Enter your email here:'
+  preview_headline: 'See how your email will look like:'
