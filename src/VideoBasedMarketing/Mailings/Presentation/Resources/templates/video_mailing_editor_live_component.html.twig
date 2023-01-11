@@ -97,25 +97,30 @@
                                 <span>{{ this.videoMailing.receiverMailAddress }}</span>
                             </div>
 
-                            <div class="font-medium mt-8">
-                                <div>
-                                    <span>{{ this.videoMailing.bodyAboveVideo|nl2br }}</span>
+                            <div class="mt-8">
+                                <div class="font-medium">
+                                    {{ this.videoMailing.bodyAboveVideo|nl2br }}
                                 </div>
 
-                                <img
-                                        class="w-64 rounded-md mt-4 mb-4"
-                                        src="{{
+                                <div class="relative">
+                                    <img
+                                            class="w-64 rounded-md mt-4 mb-4"
+                                            src="{{
                                             TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(this.videoMailing.video)
-                                        }}"
-                                >
-                                </div>
-
-                                <div>
-                                    <span>
-                                        {{ this.videoMailing.bodyBelowVideo|nl2br }}
-                                    </span>
+                                            }}"
+                                    >
+                                    <img
+                                            class="absolute"
+                                            style="width: 80px; top: 50px; left: 90px;"
+                                            src="{{ asset('assets/images/videobasedmarketing/mailings/play-button-overlay.webp') }}"
+                                    >
                                 </div>
                             </div>
+
+                            <div class="font-medium">
+                                {{ this.videoMailing.bodyBelowVideo|nl2br }}
+                            </div>
+                        </div>
                     </div>
                     <img
                             src="{{ asset('assets/images/videobasedmarketing/mailings/mailer-in-browser-right.png') }}"
