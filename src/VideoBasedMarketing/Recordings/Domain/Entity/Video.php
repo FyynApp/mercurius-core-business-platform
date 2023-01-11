@@ -12,6 +12,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -26,7 +27,7 @@ class Video
     implements UserOwnedEntityInterface, SupportsShortIdInterface
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(User $user)
     {
