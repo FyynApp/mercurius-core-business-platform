@@ -10,6 +10,7 @@ framework:
             - '%kernel.project_dir%/src/VideoBasedMarketing/Recordings/Presentation/Resources/translations'
             - '%kernel.project_dir%/src/VideoBasedMarketing/RecordingRequests/Presentation/Resources/translations'
             - '%kernel.project_dir%/src/VideoBasedMarketing/Presentationpages/Presentation/Resources/translations'
+            - '%kernel.project_dir%/src/VideoBasedMarketing/Mailings/Presentation/Resources/translations'
         fallbacks:
             - en
             - de

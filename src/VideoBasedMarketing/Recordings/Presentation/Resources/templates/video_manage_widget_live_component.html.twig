@@ -191,6 +191,18 @@
             </div>
         {% endif %}
 
+        <a href="{{
+        path(
+            'videobasedmarketing.mailings.presentation.show_video_mailing_editor',
+            {
+                'videoId': this.video.id
+            }
+        )
+        }}">
+            email
+        </a>
+
+
         <div class="text-red-900 hover:font-bold hover:bg-red-200 rounded-bl rounded-br">
             <button
                     class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
