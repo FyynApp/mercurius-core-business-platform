@@ -77,6 +77,10 @@
         @apply cta-with-icon-primary text-red-900 bg-red-100 hover:bg-red-700 border-red-200;
     }
 
+    .cta-with-icon-neutral {
+        @apply cta-with-icon-primary text-neutral-900 bg-neutral-100 hover:bg-neutral-100 border-neutral-200;
+    }
+
     .cta-with-icon-disabled {
         @apply cta-with-icon-primary text-neutral-900 bg-neutral-100 hover:bg-neutral-100 border-neutral-200 hover:cursor-not-allowed;
     }

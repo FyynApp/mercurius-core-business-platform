@@ -64,6 +64,7 @@
                     )
                 }}"
                 method="post"
+                class="flex flex-row gap-4"
             >
                 <button
                         type="submit"
@@ -80,6 +81,13 @@
                 >
                     {{ 'video_mailing_editor.send_email_cta'|trans }}
                 </button>
+
+                <a
+                        class="cta-with-icon-neutral"
+                        href="{{ path('videobasedmarketing.recordings.presentation.videos.overview') }}"
+                >
+                    {{ 'video_mailing_editor.abort_cta'|trans }}
+                </a>
             </form>
         </div>
 
