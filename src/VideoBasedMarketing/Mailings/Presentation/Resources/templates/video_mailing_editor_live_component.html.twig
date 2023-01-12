@@ -137,14 +137,22 @@
                                 </div>
 
                                 <div class="relative">
-                                    <img
-                                            class="w-64 rounded-md mt-4 mb-4"
-                                            src="{{
-                                                TwigHelperService
-                                                    .recordingsInfrastructureService
-                                                    .videoPosterStillWithPlayOverlayForEmailAssetUrl(this.videoMailing.video)
-                                            }}"
+                                    <a href="{{
+                                    url(
+                                        'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
+                                        { 'videoId': this.videoMailing.video.id }
+                                    )
+                                    }}"
                                     >
+                                        <img
+                                                class="w-64 rounded-md mt-4 mb-4"
+                                                src="{{
+                                                    TwigHelperService
+                                                        .recordingsInfrastructureService
+                                                        .videoPosterStillWithPlayOverlayForEmailAssetUrl(this.videoMailing.video, true)
+                                                }}"
+                                        >
+                                    </a>
                                 </div>
                             </div>
 
