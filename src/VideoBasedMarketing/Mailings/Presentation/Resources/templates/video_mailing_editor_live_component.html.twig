@@ -65,7 +65,19 @@
                 }}"
                 method="post"
             >
-                <button type="submit">
+                <button
+                        type="submit"
+                        {% if not this.form.vars.valid
+                              or this.videoMailing.receiverMailAddress is empty
+                              or this.videoMailing.subject is empty
+                        %}
+                            class="cta-with-icon-disabled"
+                            disabled="disabled"
+                        {% else %}
+                            class="cta-with-icon-primary"
+                        {% endif %}
+
+                >
                     {{ 'video_mailing_editor.send_email_cta'|trans }}
                 </button>
             </form>

@@ -191,21 +191,40 @@
             </div>
         {% endif %}
 
-        <form
-                action="{{
-                    path(
-                        'videobasedmarketing.mailings.presentation.create_video_mailing',
-                        { 'videoId': this.video.id }
-                    ) }}"
-                method="post"
-        >
-            <button
-                    type="submit"
-            >
-                Send video mail
-            </button>
-        </form>
-
+        {% if TwigHelperService.capabilitiesService.canSendVideoMailing(app.user) %}
+            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
+                <form
+                        action="{{
+                        path(
+                            'videobasedmarketing.mailings.presentation.create_video_mailing',
+                            { 'videoId': this.video.id }
+                        ) }}"
+                        method="post"
+                >
+                    <button
+                            class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                    >
+                        <span class="flex flex-row justify-between items-center gap-2">
+                            <span>
+                                {{ 'video_manage_widget.overview_box.cta_send_video_mailing'|trans }}
+                            </span>
+                            <span>
+                                {# Heroicon: envelope solid #}
+                                <svg
+                                        class="h-4 w-4 text-mercurius-blue-900"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                >
+                                    <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                                    <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                                </svg>
+                            </span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+        {% endif %}
 
         <div class="text-red-900 hover:font-bold hover:bg-red-200 rounded-bl rounded-br">
             <button

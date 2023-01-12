@@ -23,6 +23,7 @@ readonly class MailingsPresentationService
     {
         $email = (new TemplatedEmail())
             ->from($videoMailing->getUser()->getEmail())
+            ->replyTo($videoMailing->getUser()->getEmail())
             ->sender($this->mailService->getDefaultSenderAddress())
             ->to($videoMailing->getReceiverMailAddress())
             ->subject("{$this->translator->trans('video_mailing_editor.email.subject_prefix', [], 'videobasedmarketing.mailings')}{$videoMailing->getSubject()}")
@@ -35,6 +36,6 @@ readonly class MailingsPresentationService
 
         $email->context($context);
 
-        $this->mailService->send($email);
+        $this->mailService->send($email, false);
     }
 }

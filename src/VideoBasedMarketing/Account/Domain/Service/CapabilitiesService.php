@@ -21,6 +21,12 @@ class CapabilitiesService
             && !$user->isExtensionOnly();
     }
 
+    public function canSendVideoMailing(User $user): bool
+    {
+        return  $user->isRegistered()
+            &&  $user->isVerified();
+    }
+
     public function canSeeLeftNavigation(?User $user): bool
     {
         return !is_null($user);

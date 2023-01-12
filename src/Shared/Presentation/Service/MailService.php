@@ -29,19 +29,22 @@ class MailService
      * @throws TransportExceptionInterface
      */
     public function send(
-        RawMessage $email
+        RawMessage $email,
+        bool       $autoresponserProtection = true
     ): void
     {
-        // this non-standard header tells compliant autoresponders ("email holiday mode")
-        // to not reply to this message because it's an automated email
-        $email->setHeaders(
-            $email
-                ->getHeaders()
-                ->addTextHeader(
-                    'X-Auto-Response-Suppress',
-                    'OOF, DR, RN, NRN, AutoReply'
-                )
-        );
+        if ($autoresponserProtection) {
+            // this non-standard header tells compliant autoresponders ("email holiday mode")
+            // to not reply to this message because it's an automated email
+            $email->setHeaders(
+                $email
+                    ->getHeaders()
+                    ->addTextHeader(
+                        'X-Auto-Response-Suppress',
+                        'OOF, DR, RN, NRN, AutoReply'
+                    )
+            );
+        }
 
         $this->mailer->send($email);
     }
