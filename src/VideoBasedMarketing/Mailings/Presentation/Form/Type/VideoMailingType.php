@@ -54,7 +54,8 @@ class VideoMailingType
                     'translation_domain' => 'videobasedmarketing.mailings',
                     'label' => 'video_mailing_editor.form_labels.body_above_video',
                     'trim' => false,
-                    'empty_data' => ''
+                    'empty_data' => '',
+                    'required' => false
                 ],
             );
 
@@ -65,7 +66,8 @@ class VideoMailingType
                     'translation_domain' => 'videobasedmarketing.mailings',
                     'label' => 'video_mailing_editor.form_labels.body_below_video',
                     'trim' => false,
-                    'empty_data' => ''
+                    'empty_data' => '',
+                    'required' => false
                 ],
             );
 
