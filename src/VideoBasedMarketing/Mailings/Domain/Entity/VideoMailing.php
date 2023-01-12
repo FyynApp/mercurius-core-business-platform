@@ -138,7 +138,7 @@ class VideoMailing
 
     
     #[ORM\Column(
-        type: 'string',
+        type: 'text',
         length: 4096,
         nullable: false
     )]
@@ -156,7 +156,43 @@ class VideoMailing
 
     
     #[ORM\Column(
-        type: 'string',
+        type: 'text',
+        length: 4096,
+        nullable: false
+    )]
+    private string $improvedBodyAboveVideo = '';
+
+    public function setImprovedBodyAboveVideo(string $improvedBodyAboveVideo): void
+    {
+        $this->improvedBodyAboveVideo = $improvedBodyAboveVideo;
+    }
+
+    public function getImprovedBodyAboveVideo(): string
+    {
+        return $this->improvedBodyAboveVideo;
+    }
+
+    #[ORM\Column(
+        type: 'boolean',
+        nullable: false
+    )]
+    private bool $improvedBodyAboveVideoIsCurrentlyBeingGenerated = false;
+
+    public function setImprovedBodyAboveVideoIsCurrentlyBeingGenerated(
+        bool $improvedBodyAboveVideoIsCurrentlyBeingGenerated
+    ): void
+    {
+        $this->improvedBodyAboveVideoIsCurrentlyBeingGenerated = $improvedBodyAboveVideoIsCurrentlyBeingGenerated;
+    }
+
+    public function isImprovedBodyAboveVideoCurrentlyBeingGenerated(): bool
+    {
+        return $this->improvedBodyAboveVideoIsCurrentlyBeingGenerated;
+    }
+
+
+    #[ORM\Column(
+        type: 'text',
         length: 4096,
         nullable: false
     )]
@@ -170,5 +206,41 @@ class VideoMailing
     public function getBodyBelowVideo(): string
     {
         return $this->bodyBelowVideo;
+    }
+
+
+    #[ORM\Column(
+        type: 'text',
+        length: 4096,
+        nullable: false
+    )]
+    private string $improvedBodyBelowVideo = '';
+
+    public function setImprovedBodyBelowVideo(string $improvedBodyBelowVideo): void
+    {
+        $this->improvedBodyBelowVideo = $improvedBodyBelowVideo;
+    }
+
+    public function getImprovedBodyBelowVideo(): string
+    {
+        return $this->improvedBodyBelowVideo;
+    }
+
+    #[ORM\Column(
+        type: 'boolean',
+        nullable: false
+    )]
+    private bool $improvedBodyBelowVideoIsCurrentlyBeingGenerated = false;
+
+    public function setImprovedBodyBelowVideoIsCurrentlyBeingGenerated(
+        bool $improvedBodyBelowVideoIsCurrentlyBeingGenerated
+    ): void
+    {
+        $this->improvedBodyBelowVideoIsCurrentlyBeingGenerated = $improvedBodyBelowVideoIsCurrentlyBeingGenerated;
+    }
+
+    public function isImprovedBodyBelowVideoCurrentlyBeingGenerated(): bool
+    {
+        return $this->improvedBodyBelowVideoIsCurrentlyBeingGenerated;
     }
 }

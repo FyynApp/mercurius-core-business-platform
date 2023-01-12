@@ -5,6 +5,11 @@
 
 <div
         {{ attributes }}
+
+        {% if this.videoMailing.improvedBodyAboveVideoCurrentlyBeingGenerated %}
+            data-poll
+        {% endif %}
+
         class="mt-8"
 >
     <div class="flex flex-col xl:flex-row gap-12 w-full">
@@ -44,6 +49,57 @@
                     'rows': 10
                 }
             }) }}
+
+            <div class="mb-16 -mt-4">
+                {% if this.videoMailing.improvedBodyAboveVideoCurrentlyBeingGenerated %}
+                    <div class="text-mercurius-blue-900 font-semibold animate-pulse">
+                        {{ 'video_mailing_editor.improve_texts.improvement_running'|trans }}
+                    </div>
+                {% else %}
+
+                    {% if   this.videoMailing.bodyAboveVideo|length > 50
+                        and this.videoMailing.improvedBodyAboveVideo|length is same as 0
+                    %}
+                        <button
+                                data-action="live#action"
+                                data-action-name="improveTexts"
+                                class="cta-with-icon-success"
+                        >
+                            {# Heroicon: sparkles - solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5zM16.5 15a.75.75 0 01.712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 010 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 01-1.422 0l-.395-1.183a1.5 1.5 0 00-.948-.948l-1.183-.395a.75.75 0 010-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0116.5 15z" clip-rule="evenodd" />
+                            </svg>
+                            {{ 'video_mailing_editor.improve_texts.improve_cta'|trans }}
+                        </button>
+                    {% endif %}
+
+                    {% if this.videoMailing.improvedBodyAboveVideo|length > 0 %}
+                        <div class="bg-mercurius-blue-50 p-4 rounded-md mt-6">
+                            <p class="font-semibold">
+                                {{ 'video_mailing_editor.improve_texts.improved_result'|trans }}
+                            </p>
+                            <p>
+                                {{ this.videoMailing.improvedBodyAboveVideo }}
+                            </p>
+                        </div>
+
+                        <button
+                                data-action="live#action"
+                                data-action-name="useImprovedBodyAboveVideoText"
+                                class="cta-with-icon-success mt-3"
+                        >
+                            {# Heroicon: document-plus - solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <path fill-rule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zM12.75 12a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V18a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V12z" clip-rule="evenodd" />
+                                <path d="M14.25 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0016.5 7.5h-1.875a.375.375 0 01-.375-.375V5.25z" />
+                            </svg>
+                            {{ 'video_mailing_editor.improve_texts.use_cta'|trans }}
+                        </button>
+                        {% endif %}
+
+                {% endif %}
+            </div>
+
 
             {{ form_row(this.form.bodyBelowVideo, {
                 attr: {
