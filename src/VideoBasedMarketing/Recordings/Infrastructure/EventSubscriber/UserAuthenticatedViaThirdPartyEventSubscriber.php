@@ -33,6 +33,6 @@ readonly class UserAuthenticatedViaThirdPartyEventSubscriber
     {
         $this
             ->recordingsInfrastructureService
-            ->checkAndHandleVideoAssetGeneration($event->getUser());
+            ->checkAndHandleVideoAssetGenerationForUser($event->getUser());
     }
 }

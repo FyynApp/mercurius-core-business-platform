@@ -6,12 +6,14 @@ use App\Shared\Infrastructure\Entity\SupportsShortIdInterface;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -26,12 +28,13 @@ class Video
     implements UserOwnedEntityInterface, SupportsShortIdInterface
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(User $user)
     {
         $this->user = $user;
         $this->presentationpages = new ArrayCollection();
+        $this->videoMailings = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }
 
@@ -496,6 +499,58 @@ class Video
         $this->assetFullMp4Height = $val;
     }
 
+    
+    #[ORM\Column(type: 'boolean')]
+    private bool $hasAssetPosterStillWithPlayOverlayForEmailPng = false;
+
+    public function hasAssetPosterStillWithPlayOverlayForEmailPng(): bool
+    {
+        return $this->hasAssetPosterStillWithPlayOverlayForEmailPng;
+    }
+
+    public function setHasAssetPosterStillWithPlayOverlayForEmailPng(
+        bool $hasAssetPosterStillWithPlayOverlayForEmailPng
+    ): void
+    {
+        $this->hasAssetPosterStillWithPlayOverlayForEmailPng = $hasAssetPosterStillWithPlayOverlayForEmailPng;
+    }
+
+    
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetPosterStillWithPlayOverlayForEmailPngWidth = null;
+
+    public function getAssetPosterStillWithPlayOverlayForEmailPngWidth(): ?int
+    {
+        return $this->assetPosterStillWithPlayOverlayForEmailPngWidth;
+    }
+
+    public function setAssetPosterStillWithPlayOverlayForEmailPngWidth(?int $val): void
+    {
+        $this->assetPosterStillWithPlayOverlayForEmailPngWidth = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetPosterStillWithPlayOverlayForEmailPngHeight = null;
+
+    public function getAssetPosterStillWithPlayOverlayForEmailPngHeight(): ?int
+    {
+        return $this->assetPosterStillWithPlayOverlayForEmailPngHeight;
+    }
+
+    public function setAssetPosterStillWithPlayOverlayForEmailPngHeight(?int $val): void
+    {
+        $this->assetPosterStillWithPlayOverlayForEmailPngHeight = $val;
+    }
+
 
     /** @var Presentationpage[]|Collection */
     #[ORM\OneToMany(
@@ -533,6 +588,29 @@ class Video
     public function setVideoOnlyPresentationpageTemplate(?Presentationpage $videoOnlyPresentationpageTemplate): void
     {
         $this->videoOnlyPresentationpageTemplate = $videoOnlyPresentationpageTemplate;
+    }
+
+
+    #[ORM\OneToMany(
+        mappedBy: 'video',
+        targetEntity: VideoMailing::class,
+        cascade: ['persist']
+    )]
+    private array|Collection $videoMailings;
+
+    /** @return VideoMailing[]|Collection */
+    public function getVideoMailings(): array|Collection
+    {
+        return $this->videoMailings;
+    }
+
+    public function addVideoMailing(
+        VideoMailing $videoMailing
+    ): void
+    {
+        if (!$this->videoMailings->contains($videoMailing)) {
+            $this->videoMailings->add($videoMailing);
+        }
     }
 
 

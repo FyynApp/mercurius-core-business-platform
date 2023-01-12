@@ -20,6 +20,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 
@@ -311,6 +312,19 @@ class RecordingsInfrastructureService
         }
     }
 
+    public function getVideoPosterStillWithPlayOverlayForEmailAssetUrl(Video $video, bool $absoluteUrl = false): string
+    {
+        if ($video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
+            return $this->router->generate(
+                'videobasedmarketing.recordings.presentation.video.poster_still_with_play_overlay_for_email.asset',
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::ImagePng)],
+                $absoluteUrl ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+            );
+        } else {
+            return $this->router->generate('videobasedmarketing.recordings.presentation.video.missing_poster_asset_placeholder');
+        }
+    }
+
     public function getVideoPosterAnimatedAssetUrl(Video $video): string
     {
         if ($video->hasAssetPosterAnimatedWebp()) {
@@ -361,6 +375,7 @@ class RecordingsInfrastructureService
             AssetMimeType::ImageGif => 'gif',
             AssetMimeType::VideoWebm => 'webm',
             AssetMimeType::VideoMp4 => 'mp4',
+            AssetMimeType::ImagePng => 'png',
         };
     }
 
@@ -388,6 +403,10 @@ class RecordingsInfrastructureService
 
         if (!$video->hasAssetPosterAnimatedGif()) {
             $this->generateVideoAssetPosterAnimatedGif($video);
+        }
+
+        if (!$video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
+            $this->generateVideoAssetPosterStillWithPlayOverlayForEmailPng($video);
         }
     }
 
@@ -460,6 +479,89 @@ class RecordingsInfrastructureService
                 break;
             }
         }
+    }
+
+    public function generateVideoAssetPosterStillWithPlayOverlayForEmailPng(Video $video): void
+    {
+        $this->createFilesystemStructureForVideoAssets($video);
+
+        if (!file_exists(
+            $this->getVideoPosterStillAssetFilePath(
+                $video,
+                AssetMimeType::ImageWebp
+            )
+        )) {
+            $this->generateVideoAssetPosterStillWebp($video);
+        }
+
+        $posterStillWidth = $video->getAssetPosterStillWebpWidth();
+        $posterStillHeight = $video->getAssetPosterStillWebpHeight();
+
+        $dstImage = imagecreatetruecolor(
+            $posterStillWidth,
+            $posterStillHeight
+        );
+
+        $srcImagePoster = imagecreatefromwebp(
+            $this->getVideoPosterStillAssetFilePath(
+                $video,
+                AssetMimeType::ImageWebp
+            )
+        );
+
+        $srcImageOverlay = imagecreatefromwebp(
+            __DIR__ . '/../../../../../public/assets/images/videobasedmarketing/mailings/play-button-overlay.webp'
+        );
+
+        imagecopy(
+            $dstImage,
+            $srcImagePoster,
+            0,
+            0,
+            0,
+            0,
+            $posterStillWidth,
+            $posterStillHeight
+        );
+
+        $dstY = $posterStillHeight / 2 / 2;
+        $dstY = (int)round($dstY, 0, PHP_ROUND_HALF_DOWN);
+        $dstHeight = $posterStillHeight / 2 * 1.5 - $dstY;
+
+        $dstWidth = $dstHeight;
+        $dstX = $posterStillWidth / 2 - $dstWidth / 2;
+        $dstX = (int)round($dstX, 0, PHP_ROUND_HALF_DOWN);
+
+
+        imagecopyresized(
+            $dstImage,
+            $srcImageOverlay,
+            $dstX,
+            $dstY,
+            0,
+            0,
+            $dstWidth,
+            $dstHeight,
+            352,
+            352
+        );
+
+        imagepng(
+            $dstImage,
+            $this->getVideoPosterStillWithPlayOverlayForEmailAssetFilePath(
+                $video,
+                AssetMimeType::ImagePng
+            )
+        );
+
+        $video->setHasAssetPosterStillWithPlayOverlayForEmailPng(true);
+
+        $video->setAssetPosterStillWithPlayOverlayForEmailPngWidth($video->getAssetPosterStillWebpWidth());
+
+        $video->setAssetPosterStillWithPlayOverlayForEmailPngHeight($video->getAssetPosterStillWebpHeight());
+
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
     }
 
     public function generateVideoAssetPosterAnimatedWebp(Video $video): void
@@ -884,6 +986,24 @@ class RecordingsInfrastructureService
         );
     }
 
+    private function getVideoPosterStillWithPlayOverlayForEmailAssetFilePath(
+        Video         $video,
+        AssetMimeType $mimeType
+    ): string
+    {
+        if ($mimeType !== AssetMimeType::ImagePng) {
+            throw new InvalidArgumentException();
+        }
+
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                self::VIDEO_ASSETS_SUBFOLDER_NAME,
+                $video->getId(),
+                'poster-still-with-play-overlay-for-email.' . $this->mimeTypeToFileSuffix($mimeType)
+            ]
+        );
+    }
+
     private function getVideoPosterAnimatedAssetFilePath(
         Video         $video,
         AssetMimeType $mimeType
@@ -957,7 +1077,7 @@ class RecordingsInfrastructureService
         $process->run();
     }
 
-    public function checkAndHandleVideoAssetGeneration(
+    public function checkAndHandleVideoAssetGenerationForUser(
         User $user
     ): void
     {
@@ -966,25 +1086,35 @@ class RecordingsInfrastructureService
             ->debug("User '{$user->getId()}' has " . sizeof($user->getVideos()) . " videos.");
 
         foreach ($user->getVideos() as $video) {
+            $this->checkAndHandleVideoAssetGenerationForVideo($video);
+        }
+    }
 
-            $this->logger->debug("Checking video '{$video->getId()}' for missing assets.");
+    public function checkAndHandleVideoAssetGenerationForVideo(
+        Video $video
+    ): void
+    {
+        $this->logger->debug("Checking video '{$video->getId()}' for missing assets.");
 
-            if (!$video->hasAssetPosterStillWebp()) {
-                $this->generateVideoAssetPosterStillWebp($video);
-            }
+        if (!$video->hasAssetPosterStillWebp()) {
+            $this->generateVideoAssetPosterStillWebp($video);
+        }
 
-            if (!$video->hasAssetPosterAnimatedWebp()) {
-                $this->generateVideoAssetPosterAnimatedWebp($video);
-            }
+        if (!$video->hasAssetPosterAnimatedWebp()) {
+            $this->generateVideoAssetPosterAnimatedWebp($video);
+        }
 
-            if (   !$video->hasAssetFullMp4()
-                || !$video->hasAssetFullWebm()
-            ) {
-                if ($this->capabilitiesService->canHaveAllVideoAssetsGenerated($user)) {
-                    $this->messageBus->dispatch(
-                        new GenerateMissingVideoAssetsCommandMessage($video)
-                    );
-                }
+        if (!$video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
+            $this->generateVideoAssetPosterStillWithPlayOverlayForEmailPng($video);
+        }
+
+        if (   !$video->hasAssetFullMp4()
+            || !$video->hasAssetFullWebm()
+        ) {
+            if ($this->capabilitiesService->canHaveAllVideoAssetsGenerated($video->getUser())) {
+                $this->messageBus->dispatch(
+                    new GenerateMissingVideoAssetsCommandMessage($video)
+                );
             }
         }
     }

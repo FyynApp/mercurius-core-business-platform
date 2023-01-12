@@ -1,0 +1,47 @@
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var videoMailing \App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing #}
+
+{% trans_default_domain 'videobasedmarketing.mailings' %}
+
+{% apply inline_css %}
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #333;
+            background-color: #fff;
+        }
+        .video-poster-still-with-play-overlay {
+            max-width: 320px;
+        }
+    </style>
+
+    <p>
+        {{ videoMailing.bodyAboveVideo|nl2br }}
+    </p>
+
+    <p>
+        <a href="{{
+                url(
+                    'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
+                    { 'videoId': videoMailing.video.id }
+                )
+            }}"
+        >
+            <img
+                    class="video-poster-still-with-play-overlay"
+                    src="{{
+                    TwigHelperService
+                    .recordingsInfrastructureService
+                        .videoPosterStillWithPlayOverlayForEmailAssetUrl(videoMailing.video, true)
+                    }}"
+            >
+        </a>
+    </p>
+
+    <p>
+        {{ videoMailing.bodyBelowVideo|nl2br }}
+    </p>
+
+{% endapply %}

@@ -1,0 +1,25 @@
+{% extends '@shared/base_extension_only_user.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var videoMailing \App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing #}
+
+{% block title %}{{ 'mainnav.mailings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.mailings'|trans }}{% endblock %}
+
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.mailings' %}
+
+        {% block contentBoxContent %}
+            {{ component(
+                'videobasedmarketing_mailings_video_mailing_editor',
+                { 'videoMailing': videoMailing }
+            ) }}
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

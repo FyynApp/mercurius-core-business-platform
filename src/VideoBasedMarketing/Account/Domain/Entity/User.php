@@ -6,6 +6,7 @@ use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ActiveCampaignContact;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
+use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
@@ -41,6 +42,7 @@ class User
         $this->videos = new ArrayCollection();
         $this->recordingRequests = new ArrayCollection();
         $this->recordingRequestResponses = new ArrayCollection();
+        $this->videoMailings = new ArrayCollection();
     }
 
 
@@ -353,7 +355,33 @@ class User
         }
     }
 
-    
+
+    /** @var VideoMailing[]|Collection */
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: VideoMailing::class,
+        cascade: ['persist']
+    )]
+    private array|Collection $videoMailings;
+
+    /**
+     * @return VideoMailing[]|Collection
+     */
+    public function getVideoMailings(): array|Collection
+    {
+        return $this->videoMailings;
+    }
+
+    public function addVideoMailing(
+        VideoMailing $videoMailing
+    ): void
+    {
+        if (!$this->videoMailings->contains($videoMailing)) {
+            $this->videoMailings->add($videoMailing);
+        }
+    }
+
+
     public function getUserIdentifier(): string
     {
         if (is_null($this->email)) {

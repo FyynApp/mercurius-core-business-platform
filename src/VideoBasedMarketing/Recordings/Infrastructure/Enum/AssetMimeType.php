@@ -8,4 +8,5 @@ enum AssetMimeType: string
     case ImageGif = 'image/gif';
     case VideoWebm = 'video/webm';
     case VideoMp4 = 'video/mp4';
+    case ImagePng = 'image/png';
 }

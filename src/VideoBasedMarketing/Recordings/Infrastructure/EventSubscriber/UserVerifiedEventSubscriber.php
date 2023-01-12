@@ -39,6 +39,6 @@ class UserVerifiedEventSubscriber
     {
         $this
             ->recordingsInfrastructureService
-            ->checkAndHandleVideoAssetGeneration($event->getUser());
+            ->checkAndHandleVideoAssetGenerationForUser($event->getUser());
     }
 }

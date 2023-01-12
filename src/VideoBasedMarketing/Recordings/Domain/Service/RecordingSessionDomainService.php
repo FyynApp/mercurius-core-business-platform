@@ -67,7 +67,7 @@ class RecordingSessionDomainService
 
         $this
             ->recordingsInfrastructureService
-            ->checkAndHandleVideoAssetGeneration($recordingSession->getUser());
+            ->checkAndHandleVideoAssetGenerationForUser($recordingSession->getUser());
 
         return $video;
     }

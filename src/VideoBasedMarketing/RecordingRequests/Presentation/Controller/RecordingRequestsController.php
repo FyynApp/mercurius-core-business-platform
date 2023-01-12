@@ -12,10 +12,8 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDo
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RecordingRequestsController

@@ -1,0 +1,13 @@
+video_mailing_editor:
+  form_labels:
+    receiver_mail_address: 'Empfänger-Adresse'
+    subject: 'Betreff'
+    body_above_video: 'Text oberhalb des Videos'
+    body_below_video: 'Text unterhalb des Videos'
+  form_headline: 'Schreiben Sie Ihre E-Mail hier:'
+  send_email_cta: 'E-Mail senden'
+  abort_cta: 'Abbrechen'
+  preview_headline: 'So wird Ihre E-Mail beim Empfänger ankommen:'
+  email_sent_successfully_flash_message: 'Ihre E-Mail wurde erfolgreich versendet.'
+  email:
+    subject_prefix: '[Fyyn.io] '
