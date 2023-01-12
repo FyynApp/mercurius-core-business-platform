@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Mailings\Presentation\Form\Type;
 
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +27,7 @@ class VideoMailingType
 
             $form->add(
                 'receiverMailAddress',
-                TextType::class,
+                EmailType::class,
                 [
                     'translation_domain' => 'videobasedmarketing.mailings',
                     'label' => 'video_mailing_editor.form_labels.receiver_mail_address',

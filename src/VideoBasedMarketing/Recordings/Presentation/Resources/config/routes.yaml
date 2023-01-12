@@ -15,6 +15,9 @@ videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder
 videobasedmarketing.recordings.presentation.video.poster_still.asset:
   path: /generated-content/video-assets/{videoId}/poster-still.{extension}
 
+videobasedmarketing.recordings.presentation.video.poster_still_with_play_overlay_for_email.asset:
+  path: /generated-content/video-assets/{videoId}/poster-still-with-play-overlay-for-email.{extension}
+
 videobasedmarketing.recordings.presentation.video.poster_animated.asset:
   path: /generated-content/video-assets/{videoId}/poster-animated.{extension}
 

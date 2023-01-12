@@ -9,6 +9,8 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity]
 #[ORM\Table(
@@ -103,6 +105,7 @@ class VideoMailing
         length: 256,
         nullable: false
     )]
+    #[Assert\Email]
     private string $receiverMailAddress = '';
 
     public function setReceiverMailAddress(string $receiverMailAddress): void

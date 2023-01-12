@@ -106,13 +106,10 @@
                                     <img
                                             class="w-64 rounded-md mt-4 mb-4"
                                             src="{{
-                                            TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(this.videoMailing.video)
+                                                TwigHelperService
+                                                    .recordingsInfrastructureService
+                                                    .videoPosterStillWithPlayOverlayForEmailAssetUrl(this.videoMailing.video)
                                             }}"
-                                    >
-                                    <img
-                                            class="absolute"
-                                            style="width: 80px; top: 50px; left: 90px;"
-                                            src="{{ asset('assets/images/videobasedmarketing/mailings/play-button-overlay.webp') }}"
                                     >
                                 </div>
                             </div>
