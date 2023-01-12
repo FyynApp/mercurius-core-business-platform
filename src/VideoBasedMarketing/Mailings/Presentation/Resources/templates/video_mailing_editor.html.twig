@@ -9,13 +9,17 @@
 
 {% block body %}
 
-    {% trans_default_domain 'videobasedmarketing.mailings' %}
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
 
-    <div>
-        {{ component(
-            'videobasedmarketing_mailings_video_mailing_editor',
-            { 'videoMailing': videoMailing }
-        ) }}
-    </div>
+        {% trans_default_domain 'videobasedmarketing.mailings' %}
+
+        {% block contentBoxContent %}
+            {{ component(
+                'videobasedmarketing_mailings_video_mailing_editor',
+                { 'videoMailing': videoMailing }
+            ) }}
+        {% endblock %}
+
+    {% endembed %}
 
 {% endblock %}

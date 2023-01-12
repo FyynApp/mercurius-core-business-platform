@@ -22,14 +22,22 @@
     </p>
 
     <p>
-        <img
-                class="video-poster-still-with-play-overlay"
-                src="{{
-                        TwigHelperService
-                            .recordingsInfrastructureService
-                            .videoPosterStillWithPlayOverlayForEmailAssetUrl(videoMailing.video, true)
-                }}"
+        <a href="{{
+                url(
+                    'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
+                    { 'videoId': videoMailing.video.id }
+                )
+            }}"
         >
+            <img
+                    class="video-poster-still-with-play-overlay"
+                    src="{{
+                    TwigHelperService
+                    .recordingsInfrastructureService
+                        .videoPosterStillWithPlayOverlayForEmailAssetUrl(videoMailing.video, true)
+                    }}"
+            >
+        </a>
     </p>
 
     <p>
