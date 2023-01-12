@@ -22,6 +22,8 @@ pipelines:
           artifacts:
             - var/log/**
           script:
+            - sudo apt-get update
+            - sudo apt-get install -yy ffmpeg
             - echo "extension=bcmath.so"  | sudo tee -a /etc/php/8.2/cli/php.ini
             - echo "extension=intl.so"    | sudo tee -a /etc/php/8.2/cli/php.ini
             - echo "extension=gd.so"      | sudo tee -a /etc/php/8.2/cli/php.ini
