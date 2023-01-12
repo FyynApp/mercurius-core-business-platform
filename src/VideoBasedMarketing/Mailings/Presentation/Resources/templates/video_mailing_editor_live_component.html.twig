@@ -55,6 +55,20 @@
             }) }}
 
             {{ form_end(this.form) }}
+
+            <form
+                action="{{
+                    path(
+                        'videobasedmarketing.mailings.presentation.send_video_mailing',
+                        { 'videoMailingId': this.videoMailing.id }
+                    )
+                }}"
+                method="post"
+            >
+                <button type="submit">
+                    {{ 'video_mailing_editor.send_email_cta'|trans }}
+                </button>
+            </form>
         </div>
 
 

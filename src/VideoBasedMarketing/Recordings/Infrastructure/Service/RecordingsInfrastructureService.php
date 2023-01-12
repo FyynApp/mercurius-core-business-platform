@@ -20,6 +20,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 
@@ -311,12 +312,13 @@ class RecordingsInfrastructureService
         }
     }
 
-    public function getVideoPosterStillWithPlayOverlayForEmailAssetUrl(Video $video): string
+    public function getVideoPosterStillWithPlayOverlayForEmailAssetUrl(Video $video, bool $absoluteUrl = false): string
     {
         if ($video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
             return $this->router->generate(
                 'videobasedmarketing.recordings.presentation.video.poster_still_with_play_overlay_for_email.asset',
-                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::ImagePng)]
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::ImagePng)],
+                $absoluteUrl ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
             );
         } else {
             return $this->router->generate('videobasedmarketing.recordings.presentation.video.missing_poster_asset_placeholder');
