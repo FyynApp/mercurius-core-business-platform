@@ -74,27 +74,43 @@
                     {% endif %}
 
                     {% if this.videoMailing.improvedBodyAboveVideo|length > 0 %}
-                        <div class="bg-mercurius-blue-50 p-4 rounded-md mt-6">
-                            <p class="font-semibold">
-                                {{ 'video_mailing_editor.improve_texts.improved_result'|trans }}
-                            </p>
-                            <p>
-                                {{ this.videoMailing.improvedBodyAboveVideo }}
-                            </p>
-                        </div>
+                        <div class="mt-6">
+                            <div class="flex flex-row gap-3">
+                                <button
+                                        data-action="live#action"
+                                        data-action-name="useImprovedBodyAboveVideoText"
+                                        class="cta-with-icon-success mb-3"
+                                >
+                                    {# Heroicon: arrow-up-on-square - solid #}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                        <path d="M11.47 1.72a.75.75 0 011.06 0l3 3a.75.75 0 01-1.06 1.06l-1.72-1.72V7.5h-1.5V4.06L9.53 5.78a.75.75 0 01-1.06-1.06l3-3zM11.25 7.5V15a.75.75 0 001.5 0V7.5h3.75a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9a3 3 0 013-3h3.75z" />
+                                    </svg>
+                                    {{ 'video_mailing_editor.improve_texts.use_cta'|trans }}
+                                </button>
 
-                        <button
-                                data-action="live#action"
-                                data-action-name="useImprovedBodyAboveVideoText"
-                                class="cta-with-icon-success mt-3"
-                        >
-                            {# Heroicon: document-plus - solid #}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                <path fill-rule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zM12.75 12a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V18a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V12z" clip-rule="evenodd" />
-                                <path d="M14.25 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0016.5 7.5h-1.875a.375.375 0 01-.375-.375V5.25z" />
-                            </svg>
-                            {{ 'video_mailing_editor.improve_texts.use_cta'|trans }}
-                        </button>
+                                <button
+                                        data-action="live#action"
+                                        data-action-name="resetImprovedBodyAboveVideoText"
+                                        class="cta-with-icon-neutral mb-3"
+                                >
+                                    {# Heroicon: archive-box-x-mark - solid #}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                        <path d="M3.375 3C2.339 3 1.5 3.84 1.5 4.875v.75c0 1.036.84 1.875 1.875 1.875h17.25c1.035 0 1.875-.84 1.875-1.875v-.75C22.5 3.839 21.66 3 20.625 3H3.375z" />
+                                        <path fill-rule="evenodd" d="M3.087 9l.54 9.176A3 3 0 006.62 21h10.757a3 3 0 002.995-2.824L20.913 9H3.087zm6.133 2.845a.75.75 0 011.06 0l1.72 1.72 1.72-1.72a.75.75 0 111.06 1.06l-1.72 1.72 1.72 1.72a.75.75 0 11-1.06 1.06L12 15.685l-1.72 1.72a.75.75 0 11-1.06-1.06l1.72-1.72-1.72-1.72a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                                    </svg>
+                                    {{ 'video_mailing_editor.improve_texts.reset_cta'|trans }}
+                                </button>
+                            </div>
+
+                            <div class="bg-lime-100 p-4 rounded-md">
+                                <p class="font-semibold">
+                                    {{ 'video_mailing_editor.improve_texts.improved_result'|trans }}
+                                </p>
+                                <p>
+                                    {{ this.videoMailing.improvedBodyAboveVideo }}
+                                </p>
+                            </div>
+                        </div>
                         {% endif %}
 
                 {% endif %}

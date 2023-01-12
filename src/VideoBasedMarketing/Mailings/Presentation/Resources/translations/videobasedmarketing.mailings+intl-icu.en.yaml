@@ -10,6 +10,7 @@ video_mailing_editor:
     improvement_running: 'Please wait...'
     improved_result: 'Improved text:'
     use_cta: 'Use improved text'
+    reset_cta: 'Reset'
   send_email_cta: 'Send email'
   abort_cta: 'Abort'
   preview_headline: 'See how your email will look like:'

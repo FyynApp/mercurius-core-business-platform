@@ -72,6 +72,14 @@ class VideoMailingEditorLiveComponent
         $this->storeDataAndRebuildForm();
     }
 
+    #[LiveAction]
+    public function resetImprovedBodyAboveVideoText(): void
+    {
+        $this->save();
+        $this->videoMailing->setImprovedBodyAboveVideo('');
+        $this->storeDataAndRebuildForm();
+    }
+
     private function storeDataAndRebuildForm(): void
     {
         $this->entityManager->persist($this->videoMailing);
