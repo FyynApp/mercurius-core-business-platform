@@ -17,7 +17,6 @@ pipelines:
           services:
             - mariadb
           caches:
-            - docker
             - composer
             - node
           artifacts:
