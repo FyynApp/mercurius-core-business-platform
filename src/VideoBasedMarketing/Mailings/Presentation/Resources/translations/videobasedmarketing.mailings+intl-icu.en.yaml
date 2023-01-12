@@ -4,7 +4,7 @@ video_mailing_editor:
     subject: 'Subject'
     body_above_video: 'Text above video'
     body_below_video: 'Text below video'
-  form_headline: 'Enter your email here:'
+  form_headline: 'Write your email here:'
   send_email_cta: 'Send email'
   abort_cta: 'Abort'
   preview_headline: 'See how your email will look like:'

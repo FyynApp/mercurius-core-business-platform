@@ -17,6 +17,7 @@ video_manage_widget:
   overview_box:
     cta_share: 'Aufnahme teilen'
     cta_show_landingpage: 'Zeige Landingpage'
+    cta_send_video_mailing: 'Video-Mail senden'
     cta_edit: 'Aufnahme bearbeiten'
     cta_delete: 'Aufnahme löschen'
   edit_modal:
