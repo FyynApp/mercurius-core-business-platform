@@ -70,7 +70,7 @@
     }
 
     .cta-with-icon-success {
-        @apply cta-with-icon-primary text-lime-900 bg-lime-100 border-lime-400;
+        @apply cta-with-icon-primary text-lime-900 hover:text-lime-50 bg-lime-100 hover:bg-lime-600 border-lime-400;
     }
 
     .cta-with-icon-danger {
