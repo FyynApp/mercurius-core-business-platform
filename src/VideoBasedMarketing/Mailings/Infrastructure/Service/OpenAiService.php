@@ -2,23 +2,27 @@
 
 namespace App\VideoBasedMarketing\Mailings\Infrastructure\Service;
 
+use Exception;
 use Orhanerday\OpenAi\OpenAi;
 
 readonly class OpenAiService
 {
+    /**
+     * @throws Exception
+     */
     public function improveText(
         string $text,
         string $promptNotes = '',
     ): string|bool
     {
-        $openAiApiKey = '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';
+        $openAiApiKey = $_ENV['OPENAI_API_KEY'];
 
         $openAi = new OpenAi($openAiApiKey);
 
         $text = mb_ereg_replace("\n", ' ', $text);
 
         $prompt = <<<EOT
-Based on the following text, please improve it by making it sound professional and more interesting:
+Based on the following text, please improve it by making it sound professional and more interesting, while keeping it concise and to the point:
 
 $text
 EOT;
@@ -41,6 +45,6 @@ EOT;
 
         $completionArray = json_decode($completion, true);
 
-        return $completionArray['choices'][0]['text'] ?? false;
+        return $completionArray['choices'][0]['text'] ?? throw new Exception("Improvement failed: $completion");
     }
 }

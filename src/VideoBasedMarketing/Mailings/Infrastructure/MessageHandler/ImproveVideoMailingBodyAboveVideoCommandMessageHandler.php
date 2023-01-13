@@ -10,6 +10,7 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
+use Throwable;
 
 
 #[AsMessageHandler]
@@ -26,27 +27,37 @@ readonly class ImproveVideoMailingBodyAboveVideoCommandMessageHandler
     /** @throws Exception */
     public function __invoke(ImproveVideoMailingBodyAboveVideoCommandMessage $message): void
     {
-        $this->logger->debug("Received ImproveVideoMailingBodyAboveVideoCommandMessage for videoMailing {$message->getVideoMailingId()}.");
+        try {
+            $this->logger->debug("Received ImproveVideoMailingBodyAboveVideoCommandMessage for videoMailing {$message->getVideoMailingId()}.");
 
-        $videoMailing = $this->entityManager->find(VideoMailing::class, $message->getVideoMailingId());
+            $videoMailing = $this->entityManager->find(VideoMailing::class, $message->getVideoMailingId());
 
-        if (is_null($videoMailing)) {
-            throw new UnrecoverableMessageHandlingException("Could not find videoMailing with id '{$message->getVideoMailingId()}'.");
-        }
+            if (is_null($videoMailing)) {
+                throw new UnrecoverableMessageHandlingException("Could not find videoMailing with id '{$message->getVideoMailingId()}'.");
+            }
 
-        $improvedText = $this
-            ->openAiService
-            ->improveText($videoMailing->getBodyAboveVideo());
+            $improvedText = $this
+                ->openAiService
+                ->improveText($videoMailing->getBodyAboveVideo());
 
-        if ($improvedText === false) {
-            $videoMailing->setImprovedBodyAboveVideo('An error occurred while generating the improved text.');
-        } else {
             $videoMailing->setImprovedBodyAboveVideo(trim($improvedText));
+            $videoMailing->setImprovedBodyAboveVideoIsCurrentlyBeingGenerated(false);
+
+            $this->entityManager->persist($videoMailing);
+            $this->entityManager->flush();
+        } catch (Throwable $t) {
+            if (isset($videoMailing)) {
+                $videoMailing->setImprovedBodyAboveVideo('');
+                $videoMailing->setImprovedBodyAboveVideoIsCurrentlyBeingGenerated(false);
+                $this->entityManager->persist($videoMailing);
+                $this->entityManager->flush();
+            }
+
+            throw new UnrecoverableMessageHandlingException(
+                "Could not improve text for videoMailing {$message->getVideoMailingId()}: {$t->getMessage()}.",
+                0,
+                $t
+            );
         }
-
-        $videoMailing->setImprovedBodyAboveVideoIsCurrentlyBeingGenerated(false);
-
-        $this->entityManager->persist($videoMailing);
-        $this->entityManager->flush();
     }
 }
