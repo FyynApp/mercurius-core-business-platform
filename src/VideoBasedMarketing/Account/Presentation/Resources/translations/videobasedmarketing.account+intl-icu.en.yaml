@@ -58,7 +58,7 @@ claim_unregistered_user:
     note2:
       has_videos: 'Your recordings are stored securely and reliably, making them accessible for you easily at any time.'
       no_videos: 'Once you use it to create recordings, they are stored securely and reliably, making them accessible for you easily at any time.'
-    note3: 'Create your free-of-charge Fyyn-io account now and manage your videos!'
+    note3: 'Create your free-of-charge Fyyn.io account now and manage your videos!'
     cta: 'Create account'
     fineprint: 'By submitting this form, you agree to our terms and privacy policy.'
     login_text: 'Already signed up?'
