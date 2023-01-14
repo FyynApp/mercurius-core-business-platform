@@ -26,6 +26,7 @@ footernav:
   contact: 'Kontakt'
   privacy_policy: 'Datenschutz'
   cookie_settings: 'Cookies'
+  sign_out: 'Sign out'
 
 contentpages:
   homepage:

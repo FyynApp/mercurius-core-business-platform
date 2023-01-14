@@ -105,6 +105,22 @@
                                 {{ 'footernav.cookie_settings'|trans }}
                             </a>
                         </li>
+
+                        {% if app.user is defined and app.user is not null %}
+                            <li>
+                                <form
+                                        action="{{ path('videobasedmarketing.account.infrastructure.sign_out') }}"
+                                        method="post"
+                                >
+                                    <button
+                                            type="submit"
+                                            class="mr-4 hover:underline md:mr-6"
+                                    >
+                                        {{ 'footernav.sign_out'|trans }}
+                                    </button>
+                                </form>
+                            </li>
+                        {% endif %}
                     </ul>
                 </footer>
             </div>
