@@ -75,7 +75,8 @@ class VideosController
     )]
     public function showWithVideoOnlyPresentationpageTemplateAction(
         string                 $videoId,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        VideoDomainService     $videoDomainService
     ): Response
     {
         /** @var null|Video $video */
@@ -83,6 +84,10 @@ class VideosController
 
         if (is_null($video)) {
             throw $this->createNotFoundException("No video with id '$videoId'.");
+        }
+
+        if (!$videoDomainService->videoOnlyPresentationpageIsAvailable($video)) {
+            return $this->redirectToRoute('shared.presentation.contentpages.homepage');
         }
 
         if (is_null($video->getVideoOnlyPresentationpageTemplate())) {

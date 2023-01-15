@@ -60,6 +60,12 @@ class GeneralVoter
             }
         }
 
+        if (   $subject instanceof Video
+            && $subject->isDeleted()
+        ) {
+            return false;
+        }
+
         /** @var UserOwnedEntityInterface $typedSubject */
         $typedSubject = $subject;
 
