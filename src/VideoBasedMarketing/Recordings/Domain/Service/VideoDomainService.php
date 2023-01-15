@@ -12,23 +12,15 @@ use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
-class VideoDomainService
+readonly class VideoDomainService
 {
-    private EntityManagerInterface $entityManager;
-
-    private TranslatorInterface $translator;
-
-    private PresentationpagesService $presentationpagesService;
 
     public function __construct(
-        EntityManagerInterface     $entityManager,
-        TranslatorInterface        $translator,
-        PresentationpagesService   $presentationpagesService,
+        private EntityManagerInterface   $entityManager,
+        private TranslatorInterface      $translator,
+        private PresentationpagesService $presentationpagesService,
     )
     {
-        $this->entityManager = $entityManager;
-        $this->translator = $translator;
-        $this->presentationpagesService = $presentationpagesService;
     }
 
 
@@ -113,5 +105,10 @@ class VideoDomainService
     public function videoIsAvailableForDownload(Video $video): bool
     {
         return $video->hasAssetFullMp4();
+    }
+
+    public function videoOnlyPresentationpageIsAvailable(Video $video): bool
+    {
+        return !$video->isDeleted();
     }
 }
