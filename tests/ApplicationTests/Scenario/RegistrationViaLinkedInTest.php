@@ -40,7 +40,7 @@ class RegistrationViaLinkedInTest
         );
 
         $this->assertSame(
-            'thirdpary.linkedin.user@example.com',
+            'thirdparty.linkedin.user@example.com',
             $users[2]->getEmail()
         );
     }
@@ -255,7 +255,7 @@ class RegistrationViaLinkedInTest
           },
           "id": "9I2nzj-oKR",
           "localizedFirstName": "Manuel",
-          "email": "thirdpary.linkedin.user@example.com"
+          "email": "thirdparty.linkedin.user@example.com"
         }
         EOT;
 
