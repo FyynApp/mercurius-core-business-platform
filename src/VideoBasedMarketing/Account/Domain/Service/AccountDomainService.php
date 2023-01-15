@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Domain\Event\UnregisteredUserClaimedRegisteredUserEvent;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\ActiveCampaignContactTag;
 use App\VideoBasedMarketing\Account\Infrastructure\Event\UserVerifiedEvent;
 use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
@@ -163,6 +164,15 @@ class AccountDomainService
         $unregisteredUser->setVideos([]);
         $this->entityManager->persist($unregisteredUser);
 
+        $this->entityManager->persist($registeredUser);
+        $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(
+            new UnregisteredUserClaimedRegisteredUserEvent(
+                $unregisteredUser,
+                $registeredUser
+            )
+        );
 
         $this->entityManager->remove($unregisteredUser);
         $this->entityManager->flush();
