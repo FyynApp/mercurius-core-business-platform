@@ -49,7 +49,7 @@ thirdpartyauth:
     cta_back_to_sign_in: 'Back to sign in form'
     cta_back_to_sign_up: 'Back to sign up form'
     linkedin:
-      infotext: 'While exchaning data with LinkedIn, an unexpected error occurred (error {error}). Please try again.'
+      infotext: 'While exchanging data with LinkedIn, an unexpected error occurred (error {error}). Please try again.'
 
 claim_unregistered_user:
   form:
