@@ -5,34 +5,26 @@ namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Domain\Event\RecordingSessionWillBeRemovedEvent;
 use App\VideoBasedMarketing\Recordings\Domain\Message\RecordingSessionCreatedEventMessage;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use ValueError;
 
 
-class RecordingSessionDomainService
+readonly class RecordingSessionDomainService
 {
-    private EntityManagerInterface $entityManager;
-
-    private MessageBusInterface $messageBus;
-
-    private VideoDomainService $videoDomainService;
-
-    private RecordingsInfrastructureService $recordingsInfrastructureService;
-
     public function __construct(
-        EntityManagerInterface            $entityManager,
-        MessageBusInterface               $messageBus,
-        VideoDomainService                $videoDomainService,
-        RecordingsInfrastructureService   $recordingsInfrastructureService
+        private EntityManagerInterface          $entityManager,
+        private MessageBusInterface             $messageBus,
+        private VideoDomainService              $videoDomainService,
+        private RecordingsInfrastructureService $recordingsInfrastructureService,
+        private EventDispatcherInterface        $eventDispatcher
     )
     {
-        $this->entityManager = $entityManager;
-        $this->messageBus = $messageBus;
-        $this->videoDomainService = $videoDomainService;
-        $this->recordingsInfrastructureService = $recordingsInfrastructureService;
     }
 
 
@@ -85,5 +77,22 @@ class RecordingSessionDomainService
         );
 
         return $recordingSession;
+    }
+
+    public function removeRecordingSession(
+        RecordingSession $recordingSession
+    ): void
+    {
+        if (!is_null($recordingSession->getVideo())) {
+            throw new ValueError("Recording session '{$recordingSession->getId()}' is already linked to a video and cannot be removed anymore.");
+        }
+
+        $this->eventDispatcher->dispatch(
+            new RecordingSessionWillBeRemovedEvent($recordingSession),
+            RecordingSessionWillBeRemovedEvent::class
+        );
+
+        $this->entityManager->remove($recordingSession);
+        $this->entityManager->flush();
     }
 }
