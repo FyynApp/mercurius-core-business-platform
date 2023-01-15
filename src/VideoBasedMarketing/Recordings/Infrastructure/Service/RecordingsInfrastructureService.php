@@ -1118,4 +1118,29 @@ class RecordingsInfrastructureService
             }
         }
     }
+
+    public function removeRecordingSessionAssets(
+        RecordingSession $recordingSession
+    ): void
+    {
+        $fs = new Filesystem();
+
+        $fs->remove(
+            $this->filesystemService->getContentStoragePath(
+                [
+                    'recording-sessions',
+                    $recordingSession->getId()
+                ]
+            )
+        );
+
+        $fs->remove(
+            $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+                [
+                    'recording-sessions',
+                    $recordingSession->getId()
+                ]
+            )
+        );
+    }
 }
