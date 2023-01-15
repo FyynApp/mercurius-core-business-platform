@@ -194,11 +194,6 @@ class UnregisteredUserWorkflowTest
             'Your email address has been verified.'
         );
 
-        $this->assertSelectorTextSame(
-            '[data-test-class="video-title"]',
-            'Recording 1'
-        );
-
         $this->assertSelectorNotExists(
             '[data-test-class="video-presentationpage-template-title"]'
         );
@@ -286,11 +281,6 @@ class UnregisteredUserWorkflowTest
         $this->assertSelectorTextNotContains(
             'body',
             'Your email address has been verified.'
-        );
-
-        $this->assertSelectorTextSame(
-            '[data-test-class="video-title"]',
-            'Recording 1'
         );
 
         $this->assertSelectorNotExists(

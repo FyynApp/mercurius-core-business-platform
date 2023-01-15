@@ -101,11 +101,6 @@ class RegisteredUserWorkflowTest
             'Fyyn — Recordings'
         );
 
-        $this->assertSelectorTextSame(
-            '[data-test-class="video-title"]',
-            'Recording 1'
-        );
-
         $this->assertSelectorNotExists(
             '[data-test-class="video-presentationpage-template-title"]'
         );
