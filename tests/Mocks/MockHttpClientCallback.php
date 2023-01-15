@@ -15,6 +15,8 @@ class MockHttpClientCallback
         array  $options = []
     ): ResponseInterface
     {
+        echo ("\nMockHttpClientCallback: $method $url\n");
+
         return match ("$method $url") {
             'POST https://fyynio1671611137.api-us1.com/api/3/contacts' => new MockResponse(
                 json_encode(
