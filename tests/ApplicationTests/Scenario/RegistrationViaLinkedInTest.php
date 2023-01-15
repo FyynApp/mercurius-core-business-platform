@@ -21,7 +21,36 @@ class RegistrationViaLinkedInTest
         /** @var Container $container */
         $container = $client->getContainer();
 
-        $mockedLinkedInClient = $this->createMock(LinkedInClient::class);
+        $this->setUpMockedLinkedInClient($this, $container);
+
+        $client->request(
+            'GET',
+            '/account/thirdpartyauth/linkedin/return?code=AQQ4F6tzWOI0f9uPJpI9hunOi3zIiX0A-SyYw5ZcLJvGe21uhkYQZGoQavQjbtGNr7DM7lr7HbzydqOwd2fI-OJ37un8apx8QwQvcwbDQbsokz2VSNciESGH2twb4kwd-SxFpk5VleDWGqnrLlrGNGrZGUU8dtSYLqVw4CFrn3Lg_GxC__eRlQWihA1B8l6qo77n5wIPjFZtrpfEM9o&state=4d4a73452f61cf1ce1879ff95a633436'
+        );
+
+        $this->assertResponseStatusCodeSame(200);
+
+        $em = $container->get(EntityManagerInterface::class);
+        /** @var User[] $users */
+        $users = $em->getRepository(User::class)->findAll();
+
+        $this->assertCount(
+            3,
+            $users
+        );
+
+        $this->assertSame(
+            'thirdpary.linkedin.user@example.com',
+            $users[2]->getEmail()
+        );
+    }
+
+    private static function setUpMockedLinkedInClient(
+        WebTestCase $webTestCase,
+        Container   $container
+    ): void
+    {
+        $mockedLinkedInClient = $webTestCase->createMock(LinkedInClient::class);
 
         $json = <<<EOT
         {
@@ -234,7 +263,7 @@ class RegistrationViaLinkedInTest
         $resourceOwner = new LinkedInResourceOwner($response);
 
         $mockedLinkedInClient
-            ->expects($this->once())
+            ->expects($webTestCase->once())
             ->method('fetchUser')
             ->with()
             ->willReturn($resourceOwner);
@@ -244,25 +273,5 @@ class RegistrationViaLinkedInTest
             $mockedLinkedInClient
         );
 
-        $client->request(
-            'GET',
-            '/account/thirdpartyauth/linkedin/return?code=AQQ4F6tzWOI0f9uPJpI9hunOi3zIiX0A-SyYw5ZcLJvGe21uhkYQZGoQavQjbtGNr7DM7lr7HbzydqOwd2fI-OJ37un8apx8QwQvcwbDQbsokz2VSNciESGH2twb4kwd-SxFpk5VleDWGqnrLlrGNGrZGUU8dtSYLqVw4CFrn3Lg_GxC__eRlQWihA1B8l6qo77n5wIPjFZtrpfEM9o&state=4d4a73452f61cf1ce1879ff95a633436'
-        );
-
-        $this->assertResponseStatusCodeSame(200);
-
-        $em = $container->get(EntityManagerInterface::class);
-        /** @var User[] $users */
-        $users = $em->getRepository(User::class)->findAll();
-
-        $this->assertCount(
-            3,
-            $users
-        );
-
-        $this->assertSame(
-            'thirdpary.linkedin.user@example.com',
-            $users[2]->getEmail()
-        );
     }
 }
