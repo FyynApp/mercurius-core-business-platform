@@ -81,7 +81,13 @@ class RecordingSessionController
                     'videobasedmarketing.recordings.presentation.recording_session.extension_finished',
                     ['recordingSessionId' => $recordingSession->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
-                )
+                ),
+
+                'recordingSessionChunkReportUrl' => $router->generate(
+                    'videobasedmarketing.recordings.api.extension.v1.store_chunk_report',
+                    ['recordingSessionId' => $recordingSession->getId()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
             ]
         ];
 
@@ -209,6 +215,19 @@ class RecordingSessionController
         methods     : [Request::METHOD_DELETE]
     )]
     public function removeRecordingSessionAction(
+        RecordingSessionDomainService         $recordingSessionDomainService,
+        RouterInterface                       $router
+    ): Response
+    {
+        return new Response('', Response::HTTP_NOT_IMPLEMENTED);
+    }
+
+    #[Route(
+        path        : '%app.routing.route_prefix.api%/extension/v1/recordings/recording-sessions/{recordingSessionId}/chunk-report',
+        name        : 'videobasedmarketing.recordings.api.extension.v1.store_chunk_report',
+        methods     : [Request::METHOD_PUT]
+    )]
+    public function storeChunkReportAction(
         RecordingSessionDomainService         $recordingSessionDomainService,
         RouterInterface                       $router
     ): Response
