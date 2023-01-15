@@ -17,7 +17,7 @@ class UnregisteredUserWorkflowTest
 {
     use MailerAssertionsTrait;
 
-    public function test(): void
+    public function testClaimViaEmail(): void
     {
         $client = static::createClient();
 
@@ -203,6 +203,99 @@ class UnregisteredUserWorkflowTest
             '[data-test-class="video-presentationpage-template-title"]'
         );
 
+
+        $this->assertStringContainsString(
+            "background-image: url('/generated-content/video-assets/$videoId/poster-still.webp');",
+            $crawler
+                ->filter('[data-test-class="videoManageWidgetPosterStill"]')
+                ->first()
+                ->attr('style')
+        );
+
+        $this->assertStringContainsString(
+            "background-image: url('/generated-content/video-assets/$videoId/poster-animated.webp');",
+            $crawler
+                ->filter('[data-test-class="videoManageWidgetPosterAnimated"]')
+                ->first()
+                ->attr('style')
+        );
+    }
+
+    public function testClaimViaThirdPartyLinkedInAuth(): void
+    {
+        $client = static::createClient();
+
+        BrowserExtensionHelper::createRecordingSession($client);
+
+        $structuredResponse = json_decode(
+            $client->getResponse()->getContent(),
+            true
+        );
+
+        $recordingSessionId = $structuredResponse['settings']['recordingSessionId'];
+        $recordingSessionFinishedTargetUrl = $structuredResponse['settings']['recordingSessionFinishedTargetUrl'];
+        $postUrl = $structuredResponse['settings']['postUrl'];
+
+        RecordingSessionHelper::uploadChunks(
+            $client,
+            $postUrl,
+            $recordingSessionId
+        );
+
+        $client->followRedirects();
+
+        $client->request(
+            'GET',
+            $recordingSessionFinishedTargetUrl
+        );
+
+        $this->assertSelectorTextSame(
+            '[data-test-id="claim-by-thirdpartyauth-linkedin-text"]',
+            'Already on LinkedIn?'
+        );
+
+        $client->followRedirects(false);
+        $client->request(
+            'GET',
+            '/account/thirdpartyauth/linkedin/return'
+        );
+        $client->followRedirect();
+
+        // Verifies that at this point, the asset generation async message has been dispatched
+        /* @var InMemoryTransport $transport */
+        $transport = $this->getContainer()->get('messenger.transport.async');
+        $this->assertCount(1, $transport->getSent());
+
+        /** @var GenerateMissingVideoAssetsCommandMessage $message */
+        $message = $transport->getSent()[0]->getMessage();
+
+        $this->assertSame(
+            GenerateMissingVideoAssetsCommandMessage::class,
+            $message::class
+        );
+
+        $videoId = $message->getVideoId();
+
+        $crawler = $client->followRedirect();
+
+        $this->assertSelectorTextSame(
+            'title',
+            'Fyyn — Recordings'
+        );
+
+        $this->assertSelectorTextNotContains(
+            'body',
+            'Your email address has been verified.'
+        );
+
+        $this->assertSelectorTextSame(
+            '[data-test-class="video-title"]',
+            'Recording 1'
+        );
+
+        $this->assertSelectorNotExists(
+            '[data-test-class="video-presentationpage-template-title"]'
+        );
 
         $this->assertStringContainsString(
             "background-image: url('/generated-content/video-assets/$videoId/poster-still.webp');",
