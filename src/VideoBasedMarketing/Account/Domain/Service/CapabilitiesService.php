@@ -71,6 +71,11 @@ class CapabilitiesService
         return !$user->isExtensionOnly();
     }
 
+    public function canSeeVideoTitle(User $user): bool
+    {
+        return !$user->isExtensionOnly();
+    }
+
     public function mustBeForcedToClaimUnregisteredUser(User $user): bool
     {
         return !$user->isRegistered();

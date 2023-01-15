@@ -107,12 +107,14 @@
                 {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
                 {{ dateAndTimeMacros.shortDateAndTime(this.video.createdAt) }}
             </p>
-            <p
-                    data-test-class="video-title"
-                    class="text-xl font-bold mb-1 break-words flex flex-row justify-between items-start gap-2"
-            >
-                {{ this.video.title }}
-            </p>
+            {% if TwigHelperService.capabilitiesService.canSeeVideoTitle(app.user) %}
+                <p
+                        data-test-class="video-title"
+                        class="text-xl font-bold mb-1 break-words flex flex-row justify-between items-start gap-2"
+                >
+                    {{ this.video.title }}
+                </p>
+            {% endif %}
         </div>
 
         <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
