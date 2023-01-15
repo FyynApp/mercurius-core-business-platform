@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 readonly class KnpUOAuth2ClientBundleLinkedInClientFactory
 {
-    public function createMock()
+    public static function createMock()
     {
         $g = new Generator();
         $m = $g->getMock(

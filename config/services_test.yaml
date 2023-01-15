@@ -5,10 +5,10 @@ services:
             - '../tests/bootstrap.php'
             - '../tests/**/Resources/**/*'
 
-    App\Tests\Mocks\KnpUOAuth2ClientBundleLinkedInClientFactory: ~
-
     'knpu.oauth2.client.linkedin':
         class: 'KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient'
-        factory: ['@App\Tests\Mocks\KnpUOAuth2ClientBundleLinkedInClientFactory', 'createMock']
-        arguments:
+        factory: [
+            'App\Tests\Mocks\KnpUOAuth2ClientBundleLinkedInClientFactory',
+            'createMock'
+        ]
         public: true
