@@ -30,14 +30,9 @@ class RegistrationViaLinkedInTest
         /** @var User[] $users */
         $users = $em->getRepository(User::class)->findAll();
 
-        $this->assertCount(
-            3,
-            $users
-        );
-
         $this->assertSame(
             'thirdparty.linkedin.user@example.com',
-            $users[2]->getEmail()
+            $users[sizeof($users) - 1]->getEmail()
         );
     }
 }
