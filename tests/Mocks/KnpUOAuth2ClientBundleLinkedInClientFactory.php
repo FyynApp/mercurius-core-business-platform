@@ -5,11 +5,12 @@ namespace App\Tests\Mocks;
 use KnpU\OAuth2ClientBundle\Client\Provider\LinkedInClient;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
 use PHPUnit\Framework\MockObject\Generator;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 readonly class KnpUOAuth2ClientBundleLinkedInClientFactory
 {
-    public static function createMock()
+    public static function createMock(): MockObject
     {
         $g = new Generator();
         $m = $g->getMock(
