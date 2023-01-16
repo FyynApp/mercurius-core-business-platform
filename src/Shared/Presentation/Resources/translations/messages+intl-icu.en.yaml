@@ -37,10 +37,13 @@ contentpages:
       get_started: 'Get started'
       live_demo: 'Live demo'
   homepage_extension:
+    copy_1: 'From zero to a'
+    copy_2: 'professional video email'
+    copy_3: "in your customer's inbox in 3 simple steps."
     title: 'The Fyyn.io Browser Extension'
     text: 'The Fyyn.io browser extension is a free extension for Google Chrome that allows you to create recordings directly from your browser. It is a convenient tool for capturing audio and video content on the web and can be useful for a variety of purposes, such as creating tutorial videos, recording online meetings, or capturing audio for podcasts or other audio content. The extension is easy to install and use, and it integrates seamlessly with the Chrome browser, allowing you to start and stop recordings with just a few clicks.'
     cta:
-      download: 'Install now'
+      download: 'Install the Chrome browser extension now'
       sign_in: 'Sign in'
       sign_up: 'Sign up'
   features:
