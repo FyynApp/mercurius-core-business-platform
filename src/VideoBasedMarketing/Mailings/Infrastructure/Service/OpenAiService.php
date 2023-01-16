@@ -22,16 +22,18 @@ readonly class OpenAiService
         $text = mb_ereg_replace("\n", ' ', $text);
 
         $prompt = <<<EOT
-Based on the following text, please improve it by making it sound professional and more interesting, while keeping it concise and to the point:
+Based on the following text, please improve it by making it sound professional and more interesting, while keeping it concise and to the point, and without translating it into another language:
 
 $text
 EOT;
 
-        $maxTokens = str_word_count($text) * 2;
+        $maxTokens = (int)(mb_strlen($text) / 4);
 
-        if ($maxTokens > 500) {
-            $maxTokens = 500;
+        if ($maxTokens > 2000) {
+            $maxTokens = 2000;
         }
+
+        $maxTokens = 2000;
 
         $completion = $openAi->completion([
             'model' => 'text-davinci-003',
