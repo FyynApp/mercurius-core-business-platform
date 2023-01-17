@@ -240,6 +240,6 @@ class RecordingSessionController
         RouterInterface                       $router
     ): Response
     {
-        return new Response('', Response::HTTP_NOT_IMPLEMENTED);
+        return new Response('', Response::HTTP_CREATED);
     }
 }
