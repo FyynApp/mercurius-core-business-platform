@@ -6,7 +6,6 @@ use App\Shared\Domain\Enum\Iso639_1Code;
 use App\Shared\Domain\Service\Iso639_1CodeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -39,9 +38,6 @@ class UpdateUiLanguageCodeKernelRequestSubscriber
         ];
     }
 
-    /**
-     * @throws Exception
-     */
     public function handle(
         RequestEvent $event
     ): void
