@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Controller;
 
+use App\Shared\Domain\Service\Iso639_1CodeService;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Api\Extension\V1\Service\SessionService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
@@ -25,6 +26,7 @@ class SessionController
         methods     : [Request::METHOD_GET]
     )]
     public function getSessionInfoAction(
+        Request                               $request,
         SessionService                        $sessionService,
         AccountAssetsService                  $accountAssetsService,
         RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService
@@ -59,6 +61,10 @@ class SessionController
                         'userFirstName' => $sessionInfo->getUser()->getFirstName(),
 
                         'userLastName' => $sessionInfo->getUser()->getLastName(),
+
+                        'userLanguage' => is_null($sessionInfo->getUser()->getUiLanguageCode())
+                            ? Iso639_1CodeService::getCodeFromRequest($request)
+                            : $sessionInfo->getUser()->getUiLanguageCode()->value,
 
                         'userImage' => $accountAssetsService
                             ->getUrlForUserProfilePhoto($sessionInfo->getUser()),

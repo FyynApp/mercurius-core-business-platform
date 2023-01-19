@@ -43,15 +43,13 @@ class Subscription
         )]
         private readonly MembershipPlanName $membershipPlanName,
 
-
         #[ORM\Column(
             type: 'string',
             nullable: false,
             enumType: SubscriptionStatus::class
         )]
-        private SubscriptionStatus $status,
-
-)
+        private SubscriptionStatus $status
+    )
     {
         $this->createdAt = DateAndTimeService::getDateTimeUtc();
     }

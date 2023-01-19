@@ -2,6 +2,8 @@
 
 namespace App\Shared\Presentation\Controller;
 
+use App\Shared\Domain\Enum\Iso639_1Code;
+use App\Shared\Domain\Service\Iso639_1CodeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,25 +19,11 @@ class CatchallController
         Request         $request
     ): Response
     {
-        $preferredLanguage = (string)$request->getPreferredLanguage();
-
-        if (   $preferredLanguage === 'de'
-            || mb_substr($preferredLanguage, 0, 3) === 'de_'
-            || mb_substr($preferredLanguage, 0, 3) === 'de-'
-        ) {
-            return new RedirectResponse(
-                $router->generate(
-                    'shared.presentation.contentpages.homepage',
-                    ['_locale' => 'de']
-                )
-            );
-        } else {
-            return new RedirectResponse(
-                $router->generate(
-                    'shared.presentation.contentpages.homepage',
-                    ['_locale' => 'en']
-                )
-            );
-        }
+        return new RedirectResponse(
+            $router->generate(
+                'shared.presentation.contentpages.homepage',
+                ['_locale' => Iso639_1CodeService::getCodeFromRequest($request)->value]
+            )
+        );
     }
 }

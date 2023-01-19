@@ -77,7 +77,7 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             }
         }
 
-        /** @var User $user */
+        /** @var null|User $user */
         $user = $this->tokenStorage->getToken()?->getUser();
 
         if (is_null($user)) {

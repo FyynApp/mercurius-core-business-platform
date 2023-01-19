@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Account\Domain\Entity;
 
+use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ActiveCampaignContact;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
@@ -189,6 +190,26 @@ class User
     public function getThirdPartyAuthLinkedinResourceOwner(): ?ThirdPartyAuthLinkedinResourceOwner
     {
         return $this->thirdPartyAuthLinkedinResourceOwner;
+    }
+
+    #[ORM\Column(
+        type: 'string',
+        length: 2,
+        nullable: true,
+        enumType: Iso639_1Code::class
+    )]
+    private ?Iso639_1Code $uiLanguageCode;
+
+    public function getUiLanguageCode(): ?Iso639_1Code
+    {
+        return $this->uiLanguageCode;
+    }
+
+    public function setUiLanguageCode(
+        ?Iso639_1Code $iso639_1Code
+    ): void
+    {
+        $this->uiLanguageCode = $iso639_1Code;
     }
 
 
