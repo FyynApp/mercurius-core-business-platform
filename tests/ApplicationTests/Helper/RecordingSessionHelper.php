@@ -55,7 +55,7 @@ class RecordingSessionHelper extends Assert
         Assert::assertFileEquals(
             __DIR__
             . '/../../'
-            . 'Resources/fixtures/correctly-encoded-recording-preview-video-poster.webp',
+            . 'Resources/fixtures/correctly-encoded-recording-preview-video-poster.' . php_uname('m') . '.webp',
 
             __DIR__
             . '/../../../'
