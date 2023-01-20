@@ -49,80 +49,87 @@
                     {% block body %}{% endblock %}
                 </main>
 
-                <footer class="
-                            min-h-max w-full bottom-0 p-4 md:flex md:items-center md:justify-between md:p-6
-                            font-extralight
-                            text-neutral-500 text-sm
-                        "
-                >
-                    <ul class="flex flex-wrap items-center mt-3 mr-6">
-                        <li>
-                            © {{ "now"|date("Y") }} smart DSGVO GmbH
-                        </li>
-                    </ul>
-
-                    <ul class="flex flex-wrap items-center mt-3 mr-6">
-                        <li>
-                            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
-                        </li>
-                        <li>
-                            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="mr-4 hover:underline md:mr-6">{{ 'footernav.german'|trans }}</a>
-                        </li>
-                    </ul>
-
-                    <ul class="flex flex-wrap items-center mt-3">
-                        <li>
-                            <a
-                                    {% if app.request.locale is same as 'de' %}
-                                        href="https://help.fyyn.io/knowledge-base/datenschutzerklarung/"
-                                    {% else %}
-                                        href="https://help.fyyn.io/knowledge-base/privacy-policy/"
-                                    {% endif %}
-
-                                    class="mr-4 hover:underline md:mr-6"
-                            >
-                                {{ 'footernav.privacy_policy'|trans }}
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                    {% if app.request.locale is same as 'de' %}
-                                        href="https://help.fyyn.io/knowledge-base/impressum/"
-                                    {% else %}
-                                        href="https://help.fyyn.io/knowledge-base/imprint-site-notice/"
-                                    {% endif %}
-
-                                    class="mr-4 hover:underline md:mr-6"
-                            >
-                                {{ 'footernav.imprint'|trans }}
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                    href="{{ path('shared.presentation.contentpages.cookie_settings') }}"
-                                    class="mr-4 hover:underline md:mr-6"
-                            >
-                                {{ 'footernav.cookie_settings'|trans }}
-                            </a>
-                        </li>
-
-                        {% if app.user is defined and app.user is not null %}
+                <footer class="padded-content-box">
+                    <div
+                            class="
+                                mt-32
+                                bg-neutral-100 rounded-lg
+                                min-h-max w-full bottom-0 p-6 pb-8
+                                lg:flex lg:items-center lg:justify-between
+                                font-extralight
+                                text-neutral-500 text-sm
+                            "
+                    >
+                        <ul class="flex flex-wrap items-center mt-3 mr-6">
                             <li>
-                                <form
-                                        action="{{ path('videobasedmarketing.account.infrastructure.sign_out') }}"
-                                        method="post"
-                                >
-                                    <button
-                                            type="submit"
-                                            class="mr-4 hover:underline md:mr-6"
-                                    >
-                                        {{ 'footernav.sign_out'|trans }}
-                                    </button>
-                                </form>
+                                © {{ "now"|date("Y") }} smart DSGVO GmbH
                             </li>
-                        {% endif %}
-                    </ul>
+                        </ul>
+
+                        <ul class="flex flex-wrap items-center mt-3 mr-6">
+                            <li>
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
+                            </li>
+                            <li>
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="mr-4 hover:underline md:mr-6">{{ 'footernav.german'|trans }}</a>
+                            </li>
+                        </ul>
+
+                        <ul class="flex flex-wrap items-center mt-3">
+                            <li>
+                                <a
+                                        {% if app.request.locale is same as 'de' %}
+                                            href="https://help.fyyn.io/knowledge-base/datenschutzerklarung/"
+                                        {% else %}
+                                            href="https://help.fyyn.io/knowledge-base/privacy-policy/"
+                                        {% endif %}
+
+                                        class="mr-4 hover:underline md:mr-6"
+                                >
+                                    {{ 'footernav.privacy_policy'|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                        {% if app.request.locale is same as 'de' %}
+                                            href="https://help.fyyn.io/knowledge-base/impressum/"
+                                        {% else %}
+                                            href="https://help.fyyn.io/knowledge-base/imprint-site-notice/"
+                                        {% endif %}
+
+                                        class="mr-4 hover:underline md:mr-6"
+                                >
+                                    {{ 'footernav.imprint'|trans }}
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                        href="{{ path('shared.presentation.contentpages.cookie_settings') }}"
+                                        class="mr-4 hover:underline md:mr-6"
+                                >
+                                    {{ 'footernav.cookie_settings'|trans }}
+                                </a>
+                            </li>
+
+                            {% if app.user is defined and app.user is not null %}
+                                <li>
+                                    <form
+                                            action="{{ path('videobasedmarketing.account.infrastructure.sign_out') }}"
+                                            method="post"
+                                    >
+                                        <button
+                                                type="submit"
+                                                class="mr-4 hover:underline md:mr-6"
+                                        >
+                                            {{ 'footernav.sign_out'|trans }}
+                                        </button>
+                                    </form>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
                 </footer>
+
             </div>
         </div>
 

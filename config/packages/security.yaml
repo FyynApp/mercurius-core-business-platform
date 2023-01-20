@@ -24,7 +24,7 @@ security:
 
             logout:
                 path: videobasedmarketing.account.infrastructure.sign_out
-                target: videobasedmarketing.account.presentation.sign_in
+                target: shared.presentation.contentpages.homepage
 
             remember_me:
                 secret: '%kernel.secret%'

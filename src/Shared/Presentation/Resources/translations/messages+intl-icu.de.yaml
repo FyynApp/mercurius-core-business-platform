@@ -38,11 +38,13 @@ contentpages:
       live_demo: 'Live-Demo'
   homepage_extension:
     copy_1: 'Von 0 zur'
-    copy_2: 'professionellen Video-Email'
-    copy_3: 'im Postfach Ihres Kunden in 3 einfachen Schritten.'
+    copy_2: 'KI-optimierten Video-Email'
+    copy_3: 'in drei einfachen Schritten.'
     title: 'Die Fyyn.io Browser Extension'
-    text: 'Die Fyyn.io Browser Extension ist eine kostenlose Erweiterung für Google Chrome, die es dir ermöglicht, deine Aufnahmen direkt aus dem Browser heraus zu erstellen.'
+    text:
+      1: 'Die Fyyn.io Browser Extension ist eine kostenlose Erweiterung für Google Chrome, die es dir ermöglicht, Bildschirm- und Kamera-aufnahmen direkt aus dem Browser heraus zu erstellen.'
+      2: 'Und nach der Aufnahme erstellst du dank unserer KI-unterstützen Formulierungshilfe eine professionelle Video-Mail für deine Kunden.'
     cta:
-      download: 'Jetzt die Chrome Browser Erweiterung installieren'
+      download: 'Jetzt die kostenlose Chrome Browser Erweiterung installieren'
       sign_in: 'Einloggen'
       sign_up: 'Registrieren'
