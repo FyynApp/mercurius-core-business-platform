@@ -149,7 +149,7 @@
                 "
         >
             <div>
-                {% if app.user.profilePhoto %}
+                {% if video.user.profilePhoto %}
                     <img
                             class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-500"
                             src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(video.user) }}"
