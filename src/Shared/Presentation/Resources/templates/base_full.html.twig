@@ -55,7 +55,9 @@
                             <div class="flex items-end w-fit">
                                 <div class="">
 
-                                    {% if TwigHelperService.capabilitiesService.canSeeOwnProfilePhoto(app.user) %}
+                                    {% if   app.user.profilePhoto
+                                        and TwigHelperService.capabilitiesService.canSeeOwnProfilePhoto(app.user)
+                                    %}
                                         <img
                                                 class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-700"
                                                 src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(app.user) }}"
