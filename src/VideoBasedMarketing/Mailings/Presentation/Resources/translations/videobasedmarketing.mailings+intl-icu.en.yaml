@@ -13,7 +13,11 @@ video_mailing_editor:
     reset_cta: 'Reset'
   send_email_cta: 'Send email'
   abort_cta: 'Abort'
-  preview_headline: 'See how your email will look like:'
+  preview:
+    headline: 'This is how your email will look like:'
+    subject: 'Subject'
+    from: 'From:'
+    to: 'To:'
   email_sent_successfully_flash_message: 'Your email has been sent successfully.'
   email:
     subject_prefix: '[Fyyn.io] '

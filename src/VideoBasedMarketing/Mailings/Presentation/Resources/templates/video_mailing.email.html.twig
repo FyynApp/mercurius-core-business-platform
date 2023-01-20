@@ -13,35 +13,82 @@
             background-color: #fff;
         }
         .video-poster-still-with-play-overlay {
-            max-width: 320px;
+            width: 100%;
+            max-width: 600px;
         }
     </style>
 
-    <p>
-        {{ videoMailing.bodyAboveVideo|nl2br }}
-    </p>
 
-    <p>
-        <a href="{{
-                url(
-                    'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
-                    { 'videoId': videoMailing.video.id }
-                )
-            }}"
-        >
-            <img
-                    class="video-poster-still-with-play-overlay"
-                    src="{{
-                    TwigHelperService
-                    .recordingsInfrastructureService
-                        .videoPosterStillWithPlayOverlayForEmailAssetUrl(videoMailing.video, true)
-                    }}"
-            >
-        </a>
-    </p>
+    <table width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+        <tbody>
+            <tr>
+                <td align="center">
 
-    <p>
-        {{ videoMailing.bodyBelowVideo|nl2br }}
-    </p>
+                    <table style="width:100%;max-width:600px" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr>
+                                <td style="font-size:0;width:40px">&nbsp;</td>
+                                <td style="width:520px;max-width:520px">
+
+                                    <p>
+                                        {{ videoMailing.bodyAboveVideo|nl2br }}
+                                    </p>
+
+                                </td>
+                                <td style="font-size:0;width:40px">&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table style="width:100%;max-width:600px" cellspacing="0" cellpadding="0" border="0" align="center">
+                        <tbody>
+                            <tr>
+                                <td style="text-align:center;padding-top:24px;width:100%" valign="top">
+
+                                    <p>
+                                        <a href="{{
+                                                    url(
+                                                        'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
+                                                        { 'videoId': videoMailing.video.id }
+                                                    )
+                                                    }}"
+                                        >
+                                            <img
+                                                    class="video-poster-still-with-play-overlay"
+                                                    src="{{
+                                                    TwigHelperService
+                                                    .recordingsInfrastructureService
+                                                        .videoPosterStillWithPlayOverlayForEmailAssetUrl(videoMailing.video, true)
+                                                    }}"
+                                            >
+                                        </a>
+                                    </p>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <table style="width:100%;max-width:600px" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr>
+                                <td style="font-size:0;width:40px">&nbsp;</td>
+                                <td style="width:520px;max-width:520px">
+
+                                    <p>
+                                        {{ videoMailing.bodyBelowVideo|nl2br }}
+                                    </p>
+
+                                </td>
+                                <td style="font-size:0;width:40px">&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
 {% endapply %}
