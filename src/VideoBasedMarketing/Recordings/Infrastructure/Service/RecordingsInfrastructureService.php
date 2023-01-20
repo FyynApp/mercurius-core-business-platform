@@ -497,6 +497,13 @@ class RecordingsInfrastructureService
         $posterStillWidth = $video->getAssetPosterStillWebpWidth();
         $posterStillHeight = $video->getAssetPosterStillWebpHeight();
 
+        // on macOS, ffmpeg command for generateVideoAssetPosterStillWebp fails for unknown reasons
+        if (   !$posterStillWidth > 0
+            || !$posterStillHeight > 0
+        ) {
+            return;
+        }
+
         $dstImage = imagecreatetruecolor(
             $posterStillWidth,
             $posterStillHeight

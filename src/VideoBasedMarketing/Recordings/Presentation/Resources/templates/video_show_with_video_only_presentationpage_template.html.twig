@@ -9,6 +9,8 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('assets/vendor-static/Video.js/7.20.3/video-js.min.css') }}">
 
+    {{ encore_entry_link_tags('videoplayer') }}
+
     <style>
         .video-js-logo-image {
             width: 100px;
@@ -16,9 +18,11 @@
             background: url({{ asset('assets/images/videoplayer/fyyn-logo-player.jpg') }}) center center no-repeat;
             background-size: 100px;
         }
-    </style>
 
-    {{ encore_entry_link_tags('videoplayer') }}
+        .video-js, .vjs-poster {
+            background-color: transparent;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
@@ -55,12 +59,6 @@
                 </div>
 
                 <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
-                    <div class="w-full md:w-fit">
-                        {{ component('videobasedmarketing_recordings_video_share_widget', {
-                            video: video
-                        }) }}
-                    </div>
-
                     <a
                             href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
                             class="cta-with-icon-primary w-full md:w-fit text-left"
@@ -80,9 +78,16 @@
     </nav>
 
     <div
-            class="hide-when-modal-open bg-neutral-900 flex flex-row justify-center"
+            class="
+                hide-when-modal-open
+                bg-gradient-to-r
+                    from-black
+                    via-neutral-600
+                    to-black
+                flex flex-row justify-center
+            "
     >
-        <div class="w-full max-w-6xl">
+        <div class="w-full max-w-6xl max-h-screen">
             <video
                     id="video-js-player"
                     class="video-js rounded-md vjs-default-skin vjs-16-9"
@@ -93,8 +98,13 @@
 
             >
                 <source
+                        class="w-full"
                         src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
-                        type="video/mp4"
+                        {% if (video.assetFullMp4) %}
+                            type="video/mp4"
+                        {% else %}
+                            type="video/webm"
+                        {% endif %}
                 />
                 <p
                         class="vjs-no-js"
@@ -126,14 +136,6 @@
                             src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(video.user) }}"
                             alt=""
                     >
-                {% else %}
-                    <!-- Heroicon name: outline/user-circle -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
                 {% endif %}
             </div>
             <div class="text-sm font-semibold">
