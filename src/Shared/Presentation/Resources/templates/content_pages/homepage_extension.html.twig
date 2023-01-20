@@ -5,7 +5,7 @@
 
 {% block body %}
 
-    <div class="mt-16 mx-auto max-w-5xl md:ml-32 md:mr-32">
+    <div class="padded-content-box mt-16">
 
         <div class="text-6xl font-extrabold mb-16">
             {{ 'contentpages.homepage_extension.copy_1'|trans }}
@@ -24,7 +24,7 @@
             <a
                     href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
                     class="
-                        w-96 flex items-center justify-center px-8 py-3
+                        w-96 max-w-full flex items-center justify-center px-8 py-3
                         border border-transparent
                         text-base font-medium
                         rounded-md text-white
@@ -45,7 +45,11 @@
         </h1>
 
         <div class="mt-8 text-2xl font-extralight text-neutral-400">
-            {{ 'contentpages.homepage_extension.text'|trans }}
+            {{ 'contentpages.homepage_extension.text.1'|trans }}
+        </div>
+
+        <div class="mt-8 text-2xl font-extralight text-neutral-400">
+            {{ 'contentpages.homepage_extension.text.2'|trans }}
         </div>
 
         <div class="w-full mt-16 flex flex-col md:flex-row gap-8 justify-start">
