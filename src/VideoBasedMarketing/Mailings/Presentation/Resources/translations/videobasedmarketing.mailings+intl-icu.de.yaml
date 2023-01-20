@@ -1,4 +1,6 @@
 video_mailing_editor:
+  title: 'Video-Mail verfassen'
+  back_cta: 'Zurück zu Videos'
   form_labels:
     receiver_mail_address: 'Empfänger-Adresse'
     subject: 'Betreff'

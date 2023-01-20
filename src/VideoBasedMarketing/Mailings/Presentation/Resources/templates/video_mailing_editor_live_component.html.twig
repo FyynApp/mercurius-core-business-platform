@@ -10,15 +10,11 @@
             data-poll
         {% endif %}
 
-        class="mt-8"
+        class="mt-1"
 >
     <div class="flex flex-col lg:flex-row gap-12 w-full">
 
         <div class="w-full lg:w-4/12">
-
-            <div class="mb-6 text-xl font-bold">
-                {{ 'video_mailing_editor.form_headline'|trans }}
-            </div>
 
             {% form_theme form '@shared/form_themes/form_theme_default.html.twig' %}
 
@@ -41,14 +37,16 @@
                 }
             }) }}
 
-            {{ form_row(this.form.bodyAboveVideo, {
-                attr: {
-                    'data-model': 'on(input)|debounce(250)|' ~ this.form.bodyAboveVideo.vars.full_name,
-                    'data-action': 'live#action',
-                    'data-action-name': 'debounce(300)|save',
-                    'rows': 10
-                }
-            }) }}
+            <div class="mt-14">
+                {{ form_row(this.form.bodyAboveVideo, {
+                    attr: {
+                        'data-model': 'on(input)|debounce(250)|' ~ this.form.bodyAboveVideo.vars.full_name,
+                        'data-action': 'live#action',
+                        'data-action-name': 'debounce(300)|save',
+                        'rows': 10
+                    }
+                }) }}
+            </div>
 
             <div class="mb-16 -mt-4">
                 {% if this.videoMailing.improvedBodyAboveVideoCurrentlyBeingGenerated %}
@@ -168,9 +166,6 @@
 
 
         <div class="flex-grow">
-            <div class="mb-6 text-xl font-bold">
-                {{ 'video_mailing_editor.preview.headline'|trans }}
-            </div>
             <div class="w-full">
                 <div class="w-full flex flex-col gap-0 w-full bg-neutral-100 p-8 rounded-md">
                     <div class="font-semibold text-2xl">
