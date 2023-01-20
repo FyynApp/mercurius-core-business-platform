@@ -21,6 +21,24 @@
 
         .video-js, .vjs-poster {
             background-color: transparent;
+            height: fit-content;
+            min-height: 700px;
+        }
+
+        .video-js.vjs-16-9:not(.vjs-audio-only-mode) {
+            padding-top: 15.25%;
+            height: fit-content;
+            min-height: 700px;
+        }
+
+        @media only screen and (max-width: 1280px) {
+            .video-js, .vjs-poster {
+                min-height: 350px;
+            }
+
+            .video-js.vjs-16-9:not(.vjs-audio-only-mode) {
+                min-height: 350px;
+            }
         }
     </style>
 {% endblock %}
@@ -85,9 +103,10 @@
                     via-neutral-600
                     to-black
                 flex flex-row justify-center
+                w-full max-h-screen
             "
     >
-        <div class="w-full max-w-6xl max-h-screen">
+        <div class="w-full max-h-screen">
             <video
                     id="video-js-player"
                     class="video-js rounded-md vjs-default-skin vjs-16-9"
