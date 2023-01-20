@@ -1,5 +1,5 @@
 video_mailing_editor:
-  title: 'Write a video mail'
+  title: 'Send a video mail'
   back_cta: 'Back to videos'
   form_labels:
     receiver_mail_address: 'To'
