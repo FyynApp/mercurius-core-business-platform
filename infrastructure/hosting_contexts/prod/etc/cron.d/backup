@@ -1,0 +1,1 @@
+0 * * * *   www-data    /bin/bash /opt/backup.sh

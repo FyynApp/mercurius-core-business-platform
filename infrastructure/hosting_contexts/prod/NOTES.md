@@ -1,6 +1,6 @@
 # prod setup notes
 
-    apt-get install libzstd-dev mariadb-server mariadb-client nginx apache2-utils net-tools ffmpeg certbot python3-certbot-nginx composer unattended-upgrades software-properties-common munin supervisor
+    apt-get install libzstd-dev mariadb-server mariadb-client nginx apache2-utils net-tools ffmpeg certbot python3-certbot-nginx composer unattended-upgrades software-properties-common munin supervisor awscli
 
     mysql
     > GRANT ALL PRIVILEGES ON mercurius_core_business_platform_prod.* TO 'mercurius_prod'@localhost IDENTIFIED BY '<redacted>';
@@ -49,3 +49,11 @@
 
     service supervisor stop
     service supervisor start
+
+    # as user www-data, configure the aws cli for access to Contabo S3 using the credentials in https://start.1password.com/open/i?a=***REMOVED***&v=***REMOVED***&i=swv56noijpqo35w546xxbpf2xq&h=my.1password.com
+
+    aws configure
+
+    # as user root, put file infrastructure/hosting_contexts/prod/opt/backup.sh to /opt/backup.sh
+    
+    # as user root, put file infrastructure/hosting_contexts/prod/etc/cron.d/backup to /etc/cron.d/backup
