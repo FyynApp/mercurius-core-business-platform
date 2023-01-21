@@ -1011,6 +1011,19 @@ class RecordingsInfrastructureService
         );
     }
 
+    public function getVideoPosterStillWithPlayOverlayForEmailAssetRelativeFilePath(
+        Video         $video,
+        AssetMimeType $mimeType = AssetMimeType::ImagePng
+    ): string
+    {
+        if ($mimeType !== AssetMimeType::ImagePng) {
+            throw new InvalidArgumentException();
+        }
+
+        return self::VIDEO_ASSETS_SUBFOLDER_NAME . "/{$video->getId()}/poster-still-with-play-overlay-for-email.{$this->mimeTypeToFileSuffix($mimeType)}";
+    }
+
+
     private function getVideoPosterAnimatedAssetFilePath(
         Video         $video,
         AssetMimeType $mimeType
