@@ -38,7 +38,7 @@ readonly class ImproveVideoMailingBodyAboveVideoCommandMessageHandler
 
             $improvedText = $this
                 ->openAiService
-                ->improveText($videoMailing->getBodyAboveVideo());
+                ->improveTextForVideoMailing($videoMailing);
 
             $videoMailing->setImprovedBodyAboveVideo(trim($improvedText));
             $videoMailing->setImprovedBodyAboveVideoIsCurrentlyBeingGenerated(false);

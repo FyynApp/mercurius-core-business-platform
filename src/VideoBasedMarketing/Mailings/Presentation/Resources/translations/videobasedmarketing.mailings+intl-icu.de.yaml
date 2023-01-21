@@ -7,6 +7,12 @@ video_mailing_editor:
     body_above_video: 'Text oberhalb des Videos'
     body_below_video: 'Text unterhalb des Videos'
   form_headline: 'Schreiben Sie Ihre E-Mail hier:'
+  improve_texts:
+    improve_cta: 'Text mit KI verbessern'
+    improvement_running: 'Bitte warten...'
+    improved_result: 'Verbesserter Text:'
+    use_cta: 'Verbesserten Text übernehmen'
+    reset_cta: 'Zurücksetzen'
   send_email_cta: 'E-Mail senden'
   abort_cta: 'Abbrechen'
   preview:
