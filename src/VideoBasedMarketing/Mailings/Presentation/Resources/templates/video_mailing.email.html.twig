@@ -55,11 +55,14 @@
                                         >
                                             <img
                                                     class="video-poster-still-with-play-overlay"
-                                                    src="{{
-                                                    TwigHelperService
-                                                    .recordingsInfrastructureService
-                                                        .videoPosterStillWithPlayOverlayForEmailAssetUrl(videoMailing.video, true)
-                                                    }}"
+
+                                                    src="{{ email.image(
+                                                                '@generated_content'
+                                                                ~
+                                                                '/'
+                                                                ~
+                                                                TwigHelperService.recordingsInfrastructureService.getVideoPosterStillWithPlayOverlayForEmailAssetRelativeFilePath(videoMailing.video)
+                                                    ) }}"
                                             >
                                         </a>
                                     </p>
