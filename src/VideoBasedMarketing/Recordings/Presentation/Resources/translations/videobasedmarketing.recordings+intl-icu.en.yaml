@@ -30,6 +30,7 @@ video_manage_widget:
     direct_link: 'Link'
     twitter_note: "Watch my new video!"
   delete_modal:
+    title: 'Delete video'
     really: 'Do you really want to delete this recording?'
     yes: 'Yes, delete'
 videos_overview:

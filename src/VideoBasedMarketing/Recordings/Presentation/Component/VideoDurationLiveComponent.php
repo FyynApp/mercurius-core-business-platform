@@ -27,7 +27,7 @@ class VideoDurationLiveComponent
     public function shouldPoll(): bool
     {
         $isNew =
-            DateAndTimeService::getDateTimeUtc()->getTimestamp()
+            DateAndTimeService::getDateTime()->getTimestamp()
             - $this->video->getCreatedAt()->getTimestamp()
             < 60;
 

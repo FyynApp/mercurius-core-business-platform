@@ -44,7 +44,7 @@ class CookiesService
         CookieName $cookieName
     ): DateTime|int
     {
-        $expireAt = DateAndTimeService::getDateTimeUtc();
+        $expireAt = DateAndTimeService::getDateTime();
 
         if ($cookieName === CookieName::ClientId) {
             $expireAt->add(new DateInterval('P10Y'));

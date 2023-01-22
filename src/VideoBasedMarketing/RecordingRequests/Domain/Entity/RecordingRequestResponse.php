@@ -38,7 +38,7 @@ class RecordingRequestResponse
         $this->user = $user;
         $this->recordingRequest = $recordingRequest;
         $this->videos = new ArrayCollection();
-        $this->createdAt = DateAndTimeService::getDateTimeUtc();
+        $this->createdAt = DateAndTimeService::getDateTime();
         $this->status = RecordingRequestResponseStatus::UNANSWERED;
     }
 

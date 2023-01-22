@@ -35,7 +35,7 @@ class Presentationpage
     {
         $this->user = $user;
         $this->presentationpageElements = new ArrayCollection();
-        $this->createdAt = DateAndTimeService::getDateTimeUtc();
+        $this->createdAt = DateAndTimeService::getDateTime();
     }
 
 

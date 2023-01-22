@@ -3,6 +3,7 @@
 namespace App\Shared\Infrastructure\Service;
 
 use DateTime;
+use DateTimeZone;
 use Exception;
 
 
@@ -11,8 +12,18 @@ class DateAndTimeService
     /**
      * @throws Exception
      */
-    public static function getDateTimeUtc(string $s = 'now'): DateTime
+    public static function getDateTime(
+        string $s = 'now',
+        ?string $tz = 'UTC'
+    ): DateTime
     {
-        return new DateTime($s);
+        if (is_null($tz)) {
+            $tz = 'UTC';
+        }
+
+        return new DateTime(
+            $s,
+            new DateTimeZone($tz)
+        );
     }
 }

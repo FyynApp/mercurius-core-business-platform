@@ -44,7 +44,7 @@ class RequestParametersBasedUserAuthService
         array  $routeParameters = []
     ): string
     {
-        $validUntil = DateAndTimeService::getDateTimeUtc('+1 minutes');
+        $validUntil = DateAndTimeService::getDateTime('+1 minutes');
 
         return $this->router->generate(
             $routeName,

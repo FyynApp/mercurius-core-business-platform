@@ -48,12 +48,12 @@ class RequestParametersBasedUserAuthenticator
             && !is_null($request->get(RequestParameter::RequestParametersBasedUserAuthHash->value))
             && !is_null($request->get(RequestParameter::RequestParametersBasedUserAuthValidUntil->value))
         ) {
-            $validUntilDateTime = DateAndTimeService::getDateTimeUtc();
+            $validUntilDateTime = DateAndTimeService::getDateTime();
             $validUntilDateTime->setTimestamp(
                 (int)$request->get(RequestParameter::RequestParametersBasedUserAuthValidUntil->value)
             );
 
-            if ($validUntilDateTime < DateAndTimeService::getDateTimeUtc()) {
+            if ($validUntilDateTime < DateAndTimeService::getDateTime()) {
                 return false;
             }
 
@@ -79,10 +79,10 @@ class RequestParametersBasedUserAuthenticator
             );
         }
 
-        $validUntilDateTime = DateAndTimeService::getDateTimeUtc();
+        $validUntilDateTime = DateAndTimeService::getDateTime();
         $validUntilDateTime->setTimestamp((int)$validUntil);
 
-        if ($validUntilDateTime < DateAndTimeService::getDateTimeUtc()) {
+        if ($validUntilDateTime < DateAndTimeService::getDateTime()) {
             throw new CustomUserMessageAuthenticationException(
                 'validUntil has already passed at '
                 . $validUntilDateTime->format(DateTimeFormat::Iso8601->value)

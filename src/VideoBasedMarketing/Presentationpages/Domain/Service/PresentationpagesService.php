@@ -155,7 +155,7 @@ class PresentationpagesService
         $draft->setIsDraft(true);
         $draft->setDraftOfPresentationpage($presentationpage);
 
-        $draft->setCreatedAt(DateAndTimeService::getDateTimeUtc());
+        $draft->setCreatedAt(DateAndTimeService::getDateTime());
         $draft->setTitle($presentationpage->getTitle());
         $draft->setType($presentationpage->getType());
         $draft->setBgColor($presentationpage->getBgColor());
@@ -183,7 +183,7 @@ class PresentationpagesService
      */
     public function handleEdited(Presentationpage $presentationpage): void
     {
-        $presentationpage->setUpdatedAt(DateAndTimeService::getDateTimeUtc());
+        $presentationpage->setUpdatedAt(DateAndTimeService::getDateTime());
         $this->entityManager->persist($presentationpage);
         $this->entityManager->flush();
 
