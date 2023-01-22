@@ -45,6 +45,7 @@ class VideosController
     )]
     public function videoShareLinkAction(
         string                 $videoShortId,
+        Request                $request,
         EntityManagerInterface $entityManager
     ): Response
     {
@@ -58,9 +59,10 @@ class VideosController
             throw $this->createNotFoundException("No video with short id '$videoShortId' found.");
         }
 
-        return $this->redirectToRoute(
-            'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
-            ['videoId' => $video->getId()]
+        return $this->forward(
+            self::class . '::showWithVideoOnlyPresentationpageTemplateAction',
+            ['videoId' => $video->getId()],
+            $request->query->all()
         );
     }
 
