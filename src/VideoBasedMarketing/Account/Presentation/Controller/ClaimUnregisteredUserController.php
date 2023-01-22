@@ -94,11 +94,27 @@ class ClaimUnregisteredUserController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $form->getData()['email']]);
+            $existingUser = $entityManager
+                ->getRepository(User::class)
+                ->findOneBy([
+                    'email' => $form->getData()['email']
+                ]);
             if (!is_null($existingUser)) {
+
+                if ($existingUser->isVerified()) {
+                    return $this->redirectToRoute(
+                        'videobasedmarketing.account.presentation.sign_in',
+                        ['username' => $existingUser->getEmail()]
+                    );
+                }
+
+                $userService->handleUnregisteredUserReclaimsEmail(
+                    $existingUser
+                );
+
                 return $this->redirectToRoute(
-                    'videobasedmarketing.account.presentation.sign_in',
-                    ['username' => $form->getData()['email']]
+                    'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address',
+                    ['email' => $existingUser->getEmail()]
                 );
             }
 
@@ -108,11 +124,10 @@ class ClaimUnregisteredUserController
             );
 
             if ($success) {
-                return $requestParametersBasedUserAuthService
-                    ->createRedirectResponse(
-                        $user,
-                        'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address'
-                    );
+                return $this->redirectToRoute(
+                    'videobasedmarketing.account.presentation.claim_unregistered_user.please_verify_email_address',
+                    ['email' => $user->getEmail()]
+                );
             } else {
                 return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
             }
@@ -130,19 +145,23 @@ class ClaimUnregisteredUserController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function showPleaseVerifyEmailAddressAction(): Response
+    public function showPleaseVerifyEmailAddressAction(
+        Request $request
+    ): Response
     {
-        /** @var User $user */
+        /** @var null|User $user */
         $user = $this->getUser();
 
-        if ($user->isVerified()) {
+        if (!is_null($user) && $user->isVerified()) {
             return $this->redirectToRoute(
                 'videobasedmarketing.dashboard.presentation.show_registered'
             );
         }
+        $email = (string)$request->get('email');
 
         return $this->render(
-            '@videobasedmarketing.account/claim_unregistered_user/please_verify_email_address.html.twig'
+            '@videobasedmarketing.account/claim_unregistered_user/please_verify_email_address.html.twig',
+            ['email' => $email]
         );
     }
 }

@@ -92,11 +92,11 @@ class AccountDomainService
      * @throws TransportExceptionInterface
      */
     public function handleUnregisteredUserClaimsEmail(
-        User   $userToClaim,
-        string $claimEmail
+        User   $claimingUser,
+        string $claimedEmail
     ): bool
     {
-        if (!$userToClaim->isUnregistered()) {
+        if (!$claimingUser->isUnregistered()) {
             throw new LogicException('Only unregistered user sessions can claim.');
         }
 
@@ -104,35 +104,44 @@ class AccountDomainService
         $existingUser = $this
             ->entityManager
             ->getRepository(User::class)
-            ->findOneBy(['email' => $claimEmail]);
+            ->findOneBy(['email' => $claimedEmail]);
 
         if (!is_null($existingUser)) {
-            throw new Exception("A user with email '$claimEmail' already exists.");
+            throw new Exception("A user with email '$claimedEmail' already exists.");
         }
 
-        $userToClaim->setEmail($claimEmail);
-        $userToClaim->makeRegistered();
+        $claimingUser->setEmail($claimedEmail);
+        $claimingUser->makeRegistered();
 
-        $this->entityManager->persist($userToClaim);
+        $this->entityManager->persist($claimingUser);
         $this->entityManager->flush();
 
         $contactTags = [];
-        if ($userToClaim->isExtensionOnly()) {
+        if ($claimingUser->isExtensionOnly()) {
             $contactTags[] = ActiveCampaignContactTag::RegisteredThroughTheChromeExtension;
         }
 
         $this->messageBus->dispatch(
             new SyncUserToActiveCampaignCommandMessage(
-                $userToClaim,
+                $claimingUser,
                 $contactTags
             )
         );
 
         $this
             ->presentationService
-            ->sendVerificationEmailForClaimedUser($userToClaim);
+            ->sendVerificationEmailForClaimedUser($claimingUser);
 
         return true;
+    }
+
+    public function handleUnregisteredUserReclaimsEmail(
+        User $userToClaim
+    ): void
+    {
+        $this
+            ->presentationService
+            ->sendVerificationEmailForClaimedUser($userToClaim);
     }
 
     public function unregisteredUserClaimsRegisteredUser(

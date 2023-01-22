@@ -1,6 +1,7 @@
 {% extends '@shared/base_extension_only_user.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var email string #}
 
 {% trans_default_domain 'videobasedmarketing.account' %}
 
@@ -9,27 +10,29 @@
 
 {% block body %}
 
-    <h1 class="text-8xl font-extrabold">
-        {{ 'claim_unregistered_user.please_verify_email_address.greeting'|trans }}
-    </h1>
+    <div class="padded-content-box">
+        <h1 class="text-8xl font-extrabold">
+            {{ 'claim_unregistered_user.please_verify_email_address.greeting'|trans }}
+        </h1>
 
-    <div class="mt-4 text-4xl font-bold">
-        {{ 'claim_unregistered_user.please_verify_email_address.note1'|trans }}
-    </div>
+        <div class="mt-4 text-4xl font-bold">
+            {{ 'claim_unregistered_user.please_verify_email_address.note1'|trans }}
+        </div>
 
-    <div class="mt-8 text-2xl font-extralight text-neutral-400">
-        {{ 'claim_unregistered_user.please_verify_email_address.note2'|trans }}
-    </div>
+        <div class="mt-8 text-2xl font-extralight text-neutral-400">
+            {{ 'claim_unregistered_user.please_verify_email_address.note2'|trans }}
+        </div>
 
-    <div class="mt-8 text-2xl font-extralight text-neutral-400">
-        {{
-            'claim_unregistered_user.please_verify_email_address.mail_info'
-            |trans({ '{email}': app.user.email })
-        }}
-    </div>
+        <div class="mt-8 text-2xl font-extralight text-neutral-400">
+            {{
+                'claim_unregistered_user.please_verify_email_address.mail_info'
+                |trans({ '{email}': email })
+            }}
+        </div>
 
-    <div class="mt-8 text-2xl font-semibold text-mercurius-blue-900">
-        {{ 'claim_unregistered_user.please_verify_email_address.note3'|trans }}
+        <div class="mt-8 text-2xl font-semibold text-mercurius-blue-900">
+            {{ 'claim_unregistered_user.please_verify_email_address.note3'|trans }}
+        </div>
     </div>
 
 {% endblock %}

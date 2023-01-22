@@ -65,4 +65,34 @@ class UnregisteredUserCreatedViaExtensionTest
             'Once you use it to create recordings, they are stored securely and reliably, making them accessible for you easily at any time.'
         );
     }
+
+    public function testReclaimingAlreadyClaimedVerifiedEmail(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+
+        UnregisteredUserHelper::createUnregisteredUser($client);
+
+        $crawler = $client->request('GET', '/en/account/claim');
+
+        $createAccountButton = $crawler->selectButton('Create account');
+        $form = $createAccountButton->form();
+
+        $form['claim_unregistered_user[email]'] = 'j.doe@example.com';
+
+        $client->submit($form);
+        $this->assertSelectorTextSame('h1', 'A final step...');
+
+
+        UnregisteredUserHelper::createUnregisteredUser($client);
+        $crawler = $client->request('GET', '/en/account/claim');
+
+        $createAccountButton = $crawler->selectButton('Create account');
+        $form = $createAccountButton->form();
+
+        $form['claim_unregistered_user[email]'] = 'j.doe@example.com';
+        $client->submit($form);
+
+        $this->assertSelectorTextSame('h1', 'A final step...');
+    }
 }
