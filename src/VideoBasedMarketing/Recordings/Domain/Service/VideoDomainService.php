@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
+use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
@@ -10,15 +11,12 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use InvalidArgumentException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 readonly class VideoDomainService
 {
-
     public function __construct(
         private EntityManagerInterface   $entityManager,
-        private TranslatorInterface      $translator,
         private PresentationpagesService $presentationpagesService,
         private ShortIdService           $shortIdService,
     )
@@ -60,11 +58,11 @@ readonly class VideoDomainService
         $video = new Video($recordingSession->getUser());
 
         $video->setTitle(
-            $this->translator->trans(
-                'new_video_title',
-                ['{num}' => $recordingSession->getUser()->getVideos()->count() + 1],
-                'videobasedmarketing.recordings'
+            DateAndTimeService::getDateTime(
+                'now',
+                $recordingSession->getUser()->getUiTimezone()
             )
+                ->format('Y-m-d H:i:s')
         );
 
         $video->getUser()->addVideo($video);

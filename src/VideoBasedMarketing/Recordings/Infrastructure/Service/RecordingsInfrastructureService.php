@@ -97,7 +97,7 @@ class RecordingsInfrastructureService
         $chunk->setRecordingSession($recordingSession);
         $chunk->setName($chunkName);
         $chunk->setMimeType($mimeType);
-        $chunk->setCreatedAt(DateAndTimeService::getDateTimeUtc());
+        $chunk->setCreatedAt(DateAndTimeService::getDateTime());
         $this->entityManager->persist($chunk);
 
         $fs = new Filesystem();

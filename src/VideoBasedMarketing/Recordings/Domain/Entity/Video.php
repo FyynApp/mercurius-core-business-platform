@@ -35,7 +35,7 @@ class Video
         $this->user = $user;
         $this->presentationpages = new ArrayCollection();
         $this->videoMailings = new ArrayCollection();
-        $this->createdAt = DateAndTimeService::getDateTimeUtc();
+        $this->createdAt = DateAndTimeService::getDateTime();
     }
 
 

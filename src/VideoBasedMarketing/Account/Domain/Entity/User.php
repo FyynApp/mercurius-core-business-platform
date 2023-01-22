@@ -213,6 +213,26 @@ class User
     }
 
 
+    #[ORM\Column(
+        type: 'string',
+        length: 128,
+        nullable: true
+    )]
+    private ?string $uiTimezone;
+
+    public function getUiTimezone(): ?string
+    {
+        return $this->uiTimezone;
+    }
+
+    public function setUiTimezone(
+        ?string $uiTimezone
+    ): void
+    {
+        $this->uiTimezone = $uiTimezone;
+    }
+
+
     #[ORM\OneToOne(
         mappedBy: 'user',
         targetEntity: ActiveCampaignContact::class,

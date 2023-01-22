@@ -35,7 +35,7 @@ class RecordingRequest
     {
         $this->user = $user;
         $this->recordingRequestResponses = new ArrayCollection();
-        $this->createdAt = DateAndTimeService::getDateTimeUtc();
+        $this->createdAt = DateAndTimeService::getDateTime();
     }
 
 

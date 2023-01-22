@@ -64,6 +64,9 @@ readonly class RecordingSessionDomainService
         return $video;
     }
 
+    /**
+     * @throws Exception
+     */
     public function startRecordingSession(User $user): RecordingSession
     {
         $recordingSession = new RecordingSession($user);

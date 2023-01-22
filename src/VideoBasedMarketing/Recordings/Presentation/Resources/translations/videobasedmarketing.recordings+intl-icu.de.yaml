@@ -38,6 +38,7 @@ video_manage_widget:
     copy_cta: 'Kopieren'
     copied: 'Kopiert!'
   delete_modal:
+    title: 'Video löschen'
     really: 'Möchtest du diese Aufnahme wirklich löschen?'
     yes: 'Ja, löschen'
 videos_overview:

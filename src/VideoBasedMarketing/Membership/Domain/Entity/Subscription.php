@@ -51,7 +51,7 @@ class Subscription
         private SubscriptionStatus $status
     )
     {
-        $this->createdAt = DateAndTimeService::getDateTimeUtc();
+        $this->createdAt = DateAndTimeService::getDateTime();
     }
 
 

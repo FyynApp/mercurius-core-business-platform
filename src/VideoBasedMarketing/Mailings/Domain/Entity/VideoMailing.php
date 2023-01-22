@@ -31,7 +31,7 @@ class VideoMailing
     {
         $this->user = $user;
         $this->video = $video;
-        $this->createdAt = DateAndTimeService::getDateTimeUtc();
+        $this->createdAt = DateAndTimeService::getDateTime();
     }
 
 
