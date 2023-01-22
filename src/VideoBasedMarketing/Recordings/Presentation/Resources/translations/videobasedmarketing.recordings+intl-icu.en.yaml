@@ -1,4 +1,4 @@
-new_video_title: 'Recording {num}'
+new_video_title: 'Video {num}'
 frames_per_second: 'frames per second'
 seconds: >-
   {seconds, plural,
@@ -9,11 +9,11 @@ seconds: >-
 video_successfully_deleted: 'Video “{title}” has been removed.'
 video_manage_widget:
   overview_box:
-    cta_share: 'Share recording'
+    cta_share: 'Share video'
     cta_show_landingpage: 'Show landingpage'
-    cta_edit: 'Edit recording'
+    cta_edit: 'Edit video'
     cta_send_video_mailing: 'Send video email'
-    cta_delete: 'Delete recording'
+    cta_delete: 'Delete video'
   edit_modal:
     cta_share: 'Share'
     cta_preview: 'Preview'
@@ -23,30 +23,30 @@ video_manage_widget:
     cta_copy: 'Copy'
     cta_cut: 'Cut'
     label:
-      title: 'Title of recording'
+      title: 'Title of video'
       video_only_presentationpage_template: 'Template'
   share_modal:
-    headline: 'Share recording'
+    headline: 'Share video'
     direct_link: 'Link'
     twitter_note: "Watch my new video!"
   delete_modal:
     title: 'Delete video'
-    really: 'Do you really want to delete this recording?'
+    really: 'Do you really want to delete this video?'
     yes: 'Yes, delete'
 videos_overview:
-  title: 'Your recordings'
-  subtitle: 'Recordings can be modified and shared here.'
-  no_videos_available: 'You do not yet have any recordings.'
+  title: 'Your videos'
+  subtitle: 'Videos can be modified and shared here.'
+  no_videos_available: 'You do not yet have any videos.'
   use_extension_note: 'Use the Browser Extension to record a video.'
   cta:
-    add: 'Create new recording'
+    add: 'Create new video'
     create_presentationpage: 'Create landingpage'
     edit_presentationpage: 'Edit landingpage'
-    remove_video: 'Remove recording'
+    remove_video: 'Remove video'
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
 video_show_with_video_only_presentationpage_template:
-  owner_view_note: 'This is the landingpage of your recording as seen by other visitors.'
+  owner_view_note: 'This is the landingpage of your video as seen by other visitors.'
   share_cta: 'Share'
   copy_video_link_cta: 'Copy video link'
   get_extenstion_for_free_cta: 'Get the free browser extension'

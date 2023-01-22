@@ -54,8 +54,8 @@ claim_unregistered_user:
     greeting: 'Hallo auch,'
     note1: 'vielen Dank für die Nutzung unserer Browser Extension.'
     note2:
-      has_videos: 'Wir haben deine Aufnahmen sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
-      no_videos: 'Sobald du Aufnahmen erstellst, werden diese sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
+      has_videos: 'Wir haben deine Video sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
+      no_videos: 'Sobald du Videos erstellst, werden diese sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
     note3: 'Erstelle jetzt deinen kostenlosen Fyyn.io Account und verwalte deine Videos!'
     cta: 'Account erstellen'
     fineprint: 'Mit dem Absenden dieses Formulars stimmst du unseren AGBs und der Datenschutzerklärung zu.'
@@ -68,8 +68,8 @@ claim_unregistered_user:
     other_videos_note: >-
       {numberOfVideos, plural,
         =0    {}
-        one   {Deine erste Aufnahme ist selbstverständlich ebenfalls verfügbar!}
-        other {Deine vorherigen Aufnahmen sind selbstverständlich ebenfalls verfügbar!}
+        one   {Dein erstes Video ist selbstverständlich ebenfalls verfügbar!}
+        other {Deine vorherigen Videos sind selbstverständlich ebenfalls verfügbar!}
       }
   verification_email:
     subject: 'E-Mail Adresse bestätigen'

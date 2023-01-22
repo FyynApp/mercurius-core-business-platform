@@ -62,7 +62,7 @@ class UnregisteredUserCreatedViaExtensionTest
 
         $this->assertSelectorTextSame(
             '[data-test-id=note2]',
-            'Once you use it to create recordings, they are stored securely and reliably, making them accessible for you easily at any time.'
+            'Once you use it to create videos, they are stored securely and reliably, making them accessible for you easily at any time.'
         );
     }
 

@@ -4,7 +4,7 @@ show:
   your_name: 'Name'
   your_email_address: 'E-mail address'
   your_subscription: 'Your current plan'
-  your_latest_videos: 'Newest recordings'
+  your_latest_videos: 'Newest videos'
   your_presentationpages: 'Landingpages'
   your_presentationpages.info: >-
     {numberOfPresentationpages, plural,
