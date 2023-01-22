@@ -56,7 +56,6 @@ class ThirdPartyAuthController
 
             if (!$result->wasSuccessful()) {
 
-                // TODO: Redirect to a presentation route
                 return $this->render(
                     '@videobasedmarketing.account/thirdpartyauth/error.html.twig',
                     [
@@ -74,7 +73,6 @@ class ThirdPartyAuthController
             return new Response(print_r($receivedResourceOwner, true));
         } catch (Throwable $t) {
 
-            // TODO: Redirect to a presentation route
             return $this->render(
                 '@videobasedmarketing.account/thirdpartyauth/error.html.twig',
                 [

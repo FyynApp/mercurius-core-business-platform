@@ -1,16 +1,53 @@
-{% extends '@shared/base_full.html.twig' %}
+{% extends '@shared/base_extension_only_user.html.twig' %}
 
 {% trans_default_domain 'videobasedmarketing.account' %}
 
 {% block title %}{{ 'thirdpartyauth.errorpage.title'|trans }}{% endblock %}
 
 {% block body %}
-    {{ 'thirdpartyauth.errorpage.linkedin.infotext'|trans({'error': error}) }}
+    <div class="padded-content-box">
 
-    {% if gotThrowable %}
-        <!-- Got throwable: {{ throwable.message }} -->
-    {% endif %}
+        <div
+            class="w-full max-w-2xl rounded-md bg-red-50 text-red-900 p-8 border-1 border-red-100"
+        >
+            {{ 'thirdpartyauth.errorpage.linkedin.infotext'|trans({'error': error}) }}
+        </div>
 
-    <a href="{{ path('videobasedmarketing.account.presentation.sign_up') }}">{{ 'thirdpartyauth.errorpage.cta_back_to_sign_up'|trans }}</a>
-    <a href="{{ path('videobasedmarketing.account.presentation.sign_in') }}">{{ 'thirdpartyauth.errorpage.cta_back_to_sign_in'|trans }}</a>
+        {% if gotThrowable %}
+            <!-- Got throwable: {{ throwable.message }} -->
+        {% endif %}
+
+
+        <div class="w-full mt-16 flex flex-col md:flex-row gap-8 justify-start">
+            <a
+                    href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
+                    class="
+                        w-64 flex items-center justify-center px-8 py-3
+                        border border-transparent
+                        text-base font-medium
+                        rounded-md text-white
+                        bg-neutral-300 hover:bg-neutral-400
+                        md:py-4 md:px-10
+                    "
+            >
+                {{ 'thirdpartyauth.errorpage.cta_back_to_sign_in'|trans }}
+            </a>
+
+            <a
+                    href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
+                    class="
+                        w-64 flex items-center justify-center px-8 py-3
+                        border border-transparent
+                        text-base font-medium
+                        rounded-md text-white
+                        bg-neutral-300 hover:bg-neutral-400
+                        md:py-4 md:px-10
+                    "
+            >
+                {{ 'thirdpartyauth.errorpage.cta_back_to_sign_up'|trans }}
+            </a>
+        </div>
+    </div>
+
+
 {% endblock %}

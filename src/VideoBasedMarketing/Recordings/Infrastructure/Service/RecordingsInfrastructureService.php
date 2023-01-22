@@ -1098,7 +1098,8 @@ class RecordingsInfrastructureService
     }
 
     public function checkAndHandleVideoAssetGenerationForUser(
-        User $user
+        User $user,
+        bool $basicAssetsAreRequiredImmediately = true
     ): void
     {
         $this
@@ -1106,30 +1107,49 @@ class RecordingsInfrastructureService
             ->debug("User '{$user->getId()}' has " . sizeof($user->getVideos()) . " videos.");
 
         foreach ($user->getVideos() as $video) {
-            $this->checkAndHandleVideoAssetGenerationForVideo($video);
+            $this->checkAndHandleVideoAssetGenerationForVideo(
+                $video,
+                $basicAssetsAreRequiredImmediately
+            );
         }
     }
 
-    public function checkAndHandleVideoAssetGenerationForVideo(
-        Video $video
+    private function checkAndHandleVideoAssetGenerationForVideo(
+        Video $video,
+        bool $basicAssetsAreRequiredImmediately = true
     ): void
     {
         $this->logger->debug("Checking video '{$video->getId()}' for missing assets.");
 
+        $forceGenerateMissingAssetsCommand = false;
+
         if (!$video->hasAssetPosterStillWebp()) {
-            $this->generateVideoAssetPosterStillWebp($video);
+            if ($basicAssetsAreRequiredImmediately) {
+                $this->generateVideoAssetPosterStillWebp($video);
+            } else {
+                $forceGenerateMissingAssetsCommand = true;
+            }
         }
 
         if (!$video->hasAssetPosterAnimatedWebp()) {
-            $this->generateVideoAssetPosterAnimatedWebp($video);
+            if ($basicAssetsAreRequiredImmediately) {
+                $this->generateVideoAssetPosterAnimatedWebp($video);
+            } else {
+                $forceGenerateMissingAssetsCommand = true;
+            }
         }
 
         if (!$video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
-            $this->generateVideoAssetPosterStillWithPlayOverlayForEmailPng($video);
+            if ($basicAssetsAreRequiredImmediately) {
+                $this->generateVideoAssetPosterStillWithPlayOverlayForEmailPng($video);
+            } else {
+                $forceGenerateMissingAssetsCommand = true;
+            }
         }
 
         if (   !$video->hasAssetFullMp4()
             || !$video->hasAssetFullWebm()
+            || $forceGenerateMissingAssetsCommand
         ) {
             if ($this->capabilitiesService->canHaveAllVideoAssetsGenerated($video->getUser())) {
                 $this->messageBus->dispatch(
