@@ -18,7 +18,13 @@ readonly class VideoMailingDomainService
 
     public function createVideoMailing(Video $video): VideoMailing
     {
-        $this->recordingsInfrastructureService->checkAndHandleVideoAssetGenerationForVideo($video);
+        if (!$video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
+            $this
+                ->recordingsInfrastructureService
+                ->generateVideoAssetPosterStillWithPlayOverlayForEmailPng(
+                    $video
+                );
+        }
 
         $videoMailing = new VideoMailing($video->getUser(), $video);
         $this->entityManager->persist($videoMailing);
