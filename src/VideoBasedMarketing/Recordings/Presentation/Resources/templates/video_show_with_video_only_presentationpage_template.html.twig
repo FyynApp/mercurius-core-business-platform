@@ -6,6 +6,24 @@
 {% block title %}{{ video.title }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 
+{% block metatags %}
+    <meta property="og:title" content="Fyyn.io - record your screen and camera with one click">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{
+        url(
+            'videobasedmarketing.recordings.presentation.video.share_link',
+            { videoShortId: video.shortId }
+        )
+    }}">
+    <meta property="og:image" content="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}">
+    <meta property="og:description" content="Record your screen and camera with one click - no special skills or additional software required.">
+    <meta property="og:site_name" content="Fyyn.io">
+    <meta property="og:locale" content="en">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@smartdsgvo">
+    <meta property="twitter:creator" content="@smartdsgvo">
+{% endblock %}
+
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('assets/vendor-static/Video.js/7.20.3/video-js.min.css') }}">
 

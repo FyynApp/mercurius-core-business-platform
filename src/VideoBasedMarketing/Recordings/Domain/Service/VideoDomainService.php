@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
+use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
@@ -19,6 +20,7 @@ readonly class VideoDomainService
         private EntityManagerInterface   $entityManager,
         private TranslatorInterface      $translator,
         private PresentationpagesService $presentationpagesService,
+        private ShortIdService           $shortIdService,
     )
     {
     }
@@ -73,6 +75,8 @@ readonly class VideoDomainService
         $this->entityManager->persist($video);
         $this->entityManager->persist($video->getUser());
         $this->entityManager->persist($recordingSession);
+
+        $this->shortIdService->encodeObject($video);
 
         $this->entityManager->flush();
 
