@@ -3,6 +3,8 @@
 namespace App\Tests\ApplicationTests\Helper;
 
 
+use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredExtensionOnlyUserFixture;
+use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Filesystem\Filesystem;
@@ -74,6 +76,34 @@ class RecordingSessionHelper extends Assert
             . 'public/generated-content/recording-sessions/'
             . $recordingSessionId
             . '/recording-preview-video.webm'
+        );
+    }
+
+    public static function makeRecordingSession(
+        KernelBrowser $client
+    ): void
+    {
+        BrowserExtensionHelper::createRecordingSession($client);
+
+        $structuredResponse = json_decode(
+            $client->getResponse()->getContent(),
+            true
+        );
+
+        $recordingSessionId = $structuredResponse['settings']['recordingSessionId'];
+        $recordingSessionFinishedTargetUrl = $structuredResponse['settings']['recordingSessionFinishedTargetUrl'];
+        $postUrl = $structuredResponse['settings']['postUrl'];
+
+
+        RecordingSessionHelper::uploadChunks(
+            $client,
+            $postUrl,
+            $recordingSessionId
+        );
+
+        $client->request(
+            'GET',
+            $recordingSessionFinishedTargetUrl
         );
     }
 }

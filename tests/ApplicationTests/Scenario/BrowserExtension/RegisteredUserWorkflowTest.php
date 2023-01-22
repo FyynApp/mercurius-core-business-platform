@@ -17,7 +17,7 @@ class RegisteredUserWorkflowTest
 {
     use MailerAssertionsTrait;
 
-    public function test(): void
+    public function testRecordingWorks(): void
     {
         $client = static::createClient();
         $container = static::getContainer();
@@ -67,7 +67,7 @@ class RegisteredUserWorkflowTest
 
 
         $client->followRedirects(false);
-        $crawler = $client->request(
+        $client->request(
             'GET',
             $recordingSessionFinishedTargetUrl
         );
@@ -120,6 +120,52 @@ class RegisteredUserWorkflowTest
                 ->filter('[data-test-class="videoManageWidgetPosterAnimated"]')
                 ->first()
                 ->attr('style')
+        );
+    }
+
+    public function testVideoOnlyLandingpage(): void
+    {
+        $client = static::createClient();
+        $container = static::getContainer();
+
+        $userRepository = $container->get(UserRepository::class);
+        $user = $userRepository->findOneBy(['email' => RegisteredExtensionOnlyUserFixture::EMAIL]);
+
+        $client->loginUser($user);
+
+        RecordingSessionHelper::makeRecordingSession($client);
+
+        $crawler = $client->request(
+            'GET',
+            '/en/my/recordings/videos/'
+        );
+
+        $landingpageUrl = $crawler
+            ->filter('[data-test-class="videoManageWidgetShowLandingpageCta"]')
+            ->first()
+            ->attr('href');
+
+        $client->request('GET', $landingpageUrl);
+
+        $this->assertSelectorTextSame(
+            '[data-test-id="videoShowWithVideoOnlyPresentationpageTemplateOwnerViewNote"]',
+            'This is the landingpage of your recording as seen by other visitors.'
+        );
+
+        $client->request('GET', '/');
+        $createAccountButton = $crawler->selectButton('Sign out');
+        $form = $createAccountButton->form();
+        $client->submit($form);
+
+        $client->request('GET', $landingpageUrl);
+
+        $this->assertSelectorNotExists(
+            '[data-test-id="videoShowWithVideoOnlyPresentationpageTemplateOwnerViewNote"]'
+        );
+
+        $this->assertSelectorTextSame(
+            '[data-test-id="videoShowWithVideoOnlyPresentationpageTemplateGetForFreeTopNavCta"]',
+            'Get the free browser extension'
         );
     }
 }

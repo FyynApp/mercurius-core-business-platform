@@ -48,7 +48,7 @@ video_show_with_video_only_presentationpage_template:
   owner_view_note: 'This is the landingpage of your recording as seen by other visitors.'
   share_cta: 'Share'
   copy_video_link_cta: 'Copy video link'
-  get_fyyn_io_for_free_cta: 'Get the free browser extension'
+  get_extenstion_for_free_cta: 'Get the free browser extension'
   sign_in_cta: 'Sign in'
   download_video_file_cta: 'Download MP4 video file'
   footer_copy_1: 'Easily record videos with your computer'

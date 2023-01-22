@@ -77,7 +77,10 @@
     {% trans_default_domain 'videobasedmarketing.recordings' %}
 
     {% if TwigHelperService.videoDomainService.userIsOwnerOfVideo(app.user, video) %}
-        <div class="bg-mercurius-blue-50 font-extralight text-mercurius-blue-900 p-4 text-center">
+        <div
+                data-test-id="videoShowWithVideoOnlyPresentationpageTemplateOwnerViewNote"
+                class="bg-mercurius-blue-50 font-extralight text-mercurius-blue-900 p-4 text-center"
+        >
             {{ 'video_show_with_video_only_presentationpage_template.owner_view_note'|trans }}
         </div>
     {% endif %}
@@ -96,10 +99,11 @@
 
                 <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
                     <a
+                            data-test-id="videoShowWithVideoOnlyPresentationpageTemplateGetForFreeTopNavCta"
                             href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
                             class="cta-with-icon-primary w-full md:w-fit text-left"
                     >
-                        {{ 'video_show_with_video_only_presentationpage_template.get_fyyn_io_for_free_cta'|trans }}
+                        {{ 'video_show_with_video_only_presentationpage_template.get_extenstion_for_free_cta'|trans }}
                     </a>
 
                     <a
@@ -222,7 +226,7 @@
                                 bg-mercurius-blue-700 hover:bg-mercurius-blue-400
                             "
                     >
-                        {{ 'video_show_with_video_only_presentationpage_template.get_fyyn_io_for_free_cta'|trans }}
+                        {{ 'video_show_with_video_only_presentationpage_template.get_extenstion_for_free_cta'|trans }}
                     </button>
                 </a>
             </div>
