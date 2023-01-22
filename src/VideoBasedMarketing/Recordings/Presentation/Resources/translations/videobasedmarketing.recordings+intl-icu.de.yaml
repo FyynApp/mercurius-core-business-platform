@@ -1,4 +1,4 @@
-new_video_title: 'Aufnahme {num}'
+new_video_title: 'Video {num}'
 frames_per_second: 'Bilder pro Sekunde'
 seconds: >-
   {seconds, plural,
@@ -8,18 +8,18 @@ seconds: >-
   }
 video_successfully_deleted: 'Das Video “{title}” wurde erfolgreich gelöscht.'
 video_share_widget:
-  headline: 'Aufnahme teilen'
+  headline: 'Video teilen'
   direct_link: 'Direktlink'
   twitter_note: "Sieh' dir mein neues Video an!"
   copy_cta: 'Kopieren'
   copied: 'Kopiert!'
 video_manage_widget:
   overview_box:
-    cta_share: 'Aufnahme teilen'
+    cta_share: 'Video teilen'
     cta_show_landingpage: 'Zeige Landingpage'
     cta_send_video_mailing: 'Video-Mail senden'
-    cta_edit: 'Aufnahme bearbeiten'
-    cta_delete: 'Aufnahme löschen'
+    cta_edit: 'Video bearbeiten'
+    cta_delete: 'Video löschen'
   edit_modal:
     cta_share: 'Teilen'
     cta_preview: 'Vorschau'
@@ -29,32 +29,32 @@ video_manage_widget:
     cta_copy: 'Kopieren'
     cta_cut: 'Schneiden'
     label:
-      title: 'Titel der Aufnahme'
+      title: 'Titel des Videos'
       video_only_presentationpage_template: 'Anzeige-Vorlage'
   share_modal:
-    headline: 'Aufnahme teilen'
+    headline: 'Video teilen'
     direct_link: 'Direktlink'
     twitter_note: "Sieh' dir mein neues Video an!"
     copy_cta: 'Kopieren'
     copied: 'Kopiert!'
   delete_modal:
     title: 'Video löschen'
-    really: 'Möchtest du diese Aufnahme wirklich löschen?'
+    really: 'Möchtest du dieses Video wirklich löschen?'
     yes: 'Ja, löschen'
 videos_overview:
-  title: 'Deine Aufnahmen'
-  subtitle: 'Hier können Aufnahmen bearbeitet und geteilt werden.'
-  no_videos_available: 'Du hast bisher noch keine Aufnahmen.'
+  title: 'Deine Videos'
+  subtitle: 'Hier können Videos bearbeitet und geteilt werden.'
+  no_videos_available: 'Du hast bisher noch keine Videos.'
   use_extension_note: 'Benutze die Browser Extension um Videos aufzuzeichnen.'
   cta:
-    add: 'Neue Aufnahme erstellen'
+    add: 'Neues Video erstellen'
     create_presentationpage: 'Seite erstellen'
     edit_presentationpage: 'Seite bearbeiten'
-    remove_video: 'Aufnahme löschen'
+    remove_video: 'Video löschen'
 video_player_embedded:
   full_asset_outstanding: 'Video wird verarbeitet · · ·'
 video_show_with_video_only_presentationpage_template:
-  owner_view_note: 'Dies ist die Landingpage deiner Aufnahme, wie sie von anderen Besuchern gesehen wird.'
+  owner_view_note: 'Dies ist die Landingpage deines Videos, wie sie von anderen Besuchern gesehen wird.'
   share_cta: 'Teilen'
   copy_video_link_cta: 'Video-Link kopieren'
   get_extenstion_for_free_cta: "Kostenlose Chrome Extension"

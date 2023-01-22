@@ -98,7 +98,7 @@ class RegisteredUserWorkflowTest
 
         $this->assertSelectorTextSame(
             'title',
-            'Fyyn — Recordings'
+            'Fyyn — Videos'
         );
 
         $this->assertSelectorNotExists(
@@ -149,7 +149,7 @@ class RegisteredUserWorkflowTest
 
         $this->assertSelectorTextSame(
             '[data-test-id="videoShowWithVideoOnlyPresentationpageTemplateOwnerViewNote"]',
-            'This is the landingpage of your recording as seen by other visitors.'
+            'This is the landingpage of your video as seen by other visitors.'
         );
 
         $client->request('GET', '/');
