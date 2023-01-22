@@ -27,6 +27,7 @@ footernav:
   contact: 'Contact'
   privacy_policy: 'Privacy Policy'
   cookie_settings: 'Cookies'
+  sign_out: 'Sign out'
 
 contentpages:
   homepage:
