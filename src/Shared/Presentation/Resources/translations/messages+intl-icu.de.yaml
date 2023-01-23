@@ -48,3 +48,18 @@ contentpages:
       download: 'Jetzt die kostenlose Chrome Browser Erweiterung installieren'
       sign_in: 'Einloggen'
       sign_up: 'Registrieren'
+    step1:
+      title: 'Schritt 1'
+      copy1: 'Nehmen Sie'
+      highlight: 'Bildschirm & Kamera'
+      copy2: 'auf - direkt im Browser!'
+    step2:
+      title: 'Schritt 2'
+      copy1: 'Erstellen Sie ein professionelles Anschreiben mit unserem'
+      highlight: 'KI-unterstützten'
+      copy2: 'Text-Verbesserungs-Tool!'
+    step3:
+      title: 'Schritt 3'
+      copy1: 'Versenden Sie eine'
+      highlight: 'Video E-Mail'
+      copy2: 'die Ihre Kunden begeistert!'
