@@ -49,6 +49,21 @@ contentpages:
       download: 'Install the free Chrome browser extension now'
       sign_in: 'Sign in'
       sign_up: 'Sign up'
+    step1:
+      title: 'Step 1'
+      copy1: 'Record your'
+      highlight: 'screen & camera'
+      copy2: 'right from your web browser.'
+    step2:
+      title: 'Step 2'
+      copy1: 'Create professional copy using our'
+      highlight: 'AI powered'
+      copy2: 'text improvement tool.'
+    step3:
+      title: 'Step 3'
+      copy1: 'Send a'
+      highlight: 'video email'
+      copy2: 'that your customers will love.'
   features:
     title1: 'We provide'
     title2: 'what you need.'
