@@ -2,6 +2,15 @@ import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 import Dashboard from '@uppy/dashboard';
 import Webcam from '@uppy/webcam';
+import de_DE from '@uppy/locales/lib/de_DE';
+import en_US from '@uppy/locales/lib/en_US';
+
+const appLocale = document.currentScript.getAttribute('data-lang');
+
+let locale = en_US;
+if (appLocale === 'de') {
+    locale = de_DE;
+}
 
 const uppy = new Uppy({
     id: 'uppyVideoUploadDashboard',
@@ -19,8 +28,8 @@ const uppy = new Uppy({
     meta: {},
     onBeforeFileAdded: (currentFile, files) => currentFile,
     onBeforeUpload: (files, record) => {},
-    locale: {},
-    infoTimeout: 5000,
+    locale: locale,
+    infoTimeout: 5000
 });
 
 uppy.use(Tus, {
@@ -66,8 +75,8 @@ uppy.use(Dashboard, {
     disablePageScrollWhenModalOpen: true,
     animateOpenClose: true,
     fileManagerSelectionType: 'files',
-    proudlyDisplayPoweredByUppy: true,
-    onRequestCloseModal: () => this.closeModal(),
+    proudlyDisplayPoweredByUppy: false,
+    onRequestCloseModal: () => location.reload(),
     showSelectedFiles: true,
     showRemoveButtonAfterComplete: false,
     showNativePhotoCameraButton: false,
@@ -75,5 +84,5 @@ uppy.use(Dashboard, {
     browserBackButtonClose: false,
     theme: 'light',
     autoOpenFileEditor: false,
-    disableLocalFiles: false,
+    disableLocalFiles: false
 });

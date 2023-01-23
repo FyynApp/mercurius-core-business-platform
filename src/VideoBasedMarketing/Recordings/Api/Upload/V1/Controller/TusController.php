@@ -52,6 +52,7 @@ class TusController
 
         $server->setApiPath('/api/upload/v1/tus');
         $server->getCache()->setPrefix($user->getId());
+        $server->setMaxUploadSize(104857600);
 
         $recordingsInfrastructureService->prepareTusUpload($user, $server);
 
