@@ -113,4 +113,20 @@ readonly class VideoDomainService
     {
         return !$video->isDeleted();
     }
+
+    public function videoIsCurrentlyBeingProcessed(
+        Video $video
+    ): bool
+    {
+        if (!is_null($video->getTusUpload())) {
+            if (   !$video->hasAssetPosterStillWebp()
+                || !$video->hasAssetPosterAnimatedWebp()
+                || !$video->hasAssetFullMp4()
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

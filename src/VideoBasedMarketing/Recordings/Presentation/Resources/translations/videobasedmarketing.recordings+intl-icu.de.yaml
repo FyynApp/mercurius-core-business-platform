@@ -14,6 +14,10 @@ video_share_widget:
   copy_cta: 'Kopieren'
   copied: 'Kopiert!'
 video_manage_widget:
+  upload_cta: 'Video-Datei hochladen'
+  processing:
+    note: 'Verarbeite...'
+    abort_cta: 'Abbrechen und Löschen'
   overview_box:
     cta_share: 'Video teilen'
     cta_show_landingpage: 'Zeige Landingpage'
@@ -46,6 +50,7 @@ videos_overview:
   subtitle: 'Hier können Videos bearbeitet und geteilt werden.'
   no_videos_available: 'Du hast bisher noch keine Videos.'
   use_extension_note: 'Benutze die Browser Extension um Videos aufzuzeichnen.'
+  use_upload_note: 'Alternativ kannst du auch eine bereits erstellte Video-Datei hochladen.'
   cta:
     add: 'Neues Video erstellen'
     create_presentationpage: 'Seite erstellen'

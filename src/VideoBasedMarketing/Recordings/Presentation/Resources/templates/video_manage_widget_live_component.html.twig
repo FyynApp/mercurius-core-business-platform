@@ -5,254 +5,276 @@
 
 {% set claimUnregisteredUserLandingpagePath = path('videobasedmarketing.account.presentation.claim_unregistered_user.landingpage')%}
 
-<div {{ attributes }}>
+<div
+        {{ attributes }}
+        {% if TwigHelperService.videoDomainService.videoIsCurrentlyBeingProcessed(this.video) %}
+            data-poll
+        {% endif %}
+>
 
     <div class="flex flex-col rounded-md p-0 bg-gradient-to-t from-neutral-100 to-white border-fuchsia-50 border-1 h-full">
-        <div class="relative -mb-1.5">
-            <button
-                    class="
-                        w-full p-0 m-0
-                        {% if not TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
-                            cursor-default
-                        {% endif %}
-                    "
 
-                    {% if TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
-                        data-action="live#action"
-                        data-action-name="showEditModal"
-                    {% endif %}
-            >
+        {% if TwigHelperService.videoDomainService.videoIsCurrentlyBeingProcessed(this.video) %}
 
-                <div
-                        class="p-0 m-0"
-
-                        {{ stimulus_controller('videoBasedMarketing-recordings-videoPreview') }}
-
-                        data-action="
-                            focus->videoBasedMarketing-recordings-videoPreview#showAnimated
-                            click->videoBasedMarketing-recordings-videoPreview#showAnimated
-                            mouseover->videoBasedMarketing-recordings-videoPreview#showAnimated
-                            mouseout->videoBasedMarketing-recordings-videoPreview#showStill
-                            blur->videoBasedMarketing-recordings-videoPreview#showStill
-                        "
-                >
-                    <div
-                            {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'stillImage') }}
-                            class="bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
-                            data-test-class="videoManageWidgetPosterStill"
-                            style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(this.video) }}');"
-                    >
-                    </div>
-
-                    <div
-                            {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'animatedImage') }}
-                            class="hidden bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
-                            data-test-class="videoManageWidgetPosterAnimated"
-                            style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(this.video) }}');"
-                    ></div>
-                </div>
-            </button>
-
-            <div class="absolute bottom-1 left-0 p-2">
-                <a
-                        href="{{ path(
-                            'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
-                            { 'videoId': this.video.id })
-                        }}"
-                        target="_blank"
-                >
-                    {# Heroicon: eye solid #}
-                    <svg
-                            class="
-                                w-8 h-8 p-1 pl-2 pr-2 rounded-md bg-black bg-opacity-75 text-neutral-200 text-xs font-light
-                                hover:bg-opacity-100 hover:text-mercurius-blue-500
-                            "
-                            xmlns="http://www.w3.org/2000/svg"
-                            stroke="none"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                    >
-                        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                        <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </div>
-
-            <div class="absolute bottom-0 right-0 p-4">
-                <div class="p-1 pl-2 pr-2 rounded-md bg-black bg-opacity-75 text-neutral-200 text-xs font-light">
-                    {{ component('videobasedmarketing_recordings_video_duration', { 'video': this.video }) }}
-                </div>
-            </div>
-        </div>
-
-        {% if TwigHelperService.capabilitiesService.canSeeVideoOnlyPresentationpageTemplateTitle(app.user) %}
-            <div
-                    data-test-class="video-presentationpage-template-title"
-                    class="flex flex-row justify-center -m-1.5 z-10"
-            >
-                <p
-                        style="
-                                color: {{ this.video.videoOnlyPresentationpageTemplate.textColor.value }};
-                                background-color: {{ this.video.videoOnlyPresentationpageTemplate.bgColor.value }};
-                        "
-                        class="text-xs text-gray-600 w-fit p-1 pt-0.5 pb-0.5"
-                >
-                    {{ this.video.videoOnlyPresentationpageTemplate.title }}
-                </p>
-            </div>
-        {% endif %}
-
-        <div class="flex-grow pt-4 pb-4 ml-4 mr-4 mt-3 overflow-y-clip">
-            <p class="text-xs text-gray-400 mb-1">
-                {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
-                {{ dateAndTimeMacros.shortDateAndTime(this.video.createdAt) }}
-            </p>
-            {% if TwigHelperService.capabilitiesService.canSeeVideoTitle(app.user) %}
-                <p
-                        data-test-class="video-title"
-                        class="text-xl font-bold mb-1 break-words flex flex-row justify-between items-start gap-2"
-                >
+            <div class="p-4 flex flex-col h-full gap-4 justify-start items-start">
+                <div class="font-bold flex-grow">
                     {{ this.video.title }}
-                </p>
-            {% endif %}
-        </div>
-
-        <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
-            <button
-                    class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
-                    data-action="live#action"
-                    data-action-name="showShareModal"
-            >
-                <span class="flex flex-row justify-between items-center gap-2">
-                    <span>
-                        {{ 'video_manage_widget.overview_box.cta_share'|trans }}
-                    </span>
-                    <span>
-                        <!-- Heroicon: share solid -->
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                            <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </span>
-            </button>
-        </div>
-
-        <a
-                data-test-class="videoManageWidgetShowLandingpageCta"
-                target="_blank"
-                href="{{
-                    path(
-                        'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
-                        { 'videoId': this.video.id }
-                    )
-                }}"
-        >
-            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
-                <div class="p-2 pl-4 pr-4 w-full h-full text-left text-sm">
-                    <span class="flex flex-row justify-between items-center gap-2">
-                        <span>
-                            {{ 'video_manage_widget.overview_box.cta_show_landingpage'|trans }}
-                        </span>
-                        <span>
-                            <!-- Heroicon: document-text solid -->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                                <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625zM7.5 15a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 017.5 15zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H8.25z" clip-rule="evenodd" />
-                                <path d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z" />
-                            </svg>
-
-                        </span>
-                    </span>
                 </div>
-            </div>
-        </a>
 
-        {% if TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
-            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
+                <div class="text-neutral-600 flex flex-row gap-1 items-center text-sm mb-2 animate-pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 animate-spin-slow">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {{ 'video_manage_widget.processing.note'|trans }}
+                </div>
+
                 <button
-                        class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                        class="cta-with-icon-danger text-sm w-full"
                         data-action="live#action"
-                        data-action-name="showEditModal"
+                        data-action-name="showDeleteModal"
                 >
                     <span class="flex flex-row justify-between items-center gap-2">
                         <span>
-                            {{ 'video_manage_widget.overview_box.cta_edit'|trans }}
+                            {{ 'video_manage_widget.processing.abort_cta'|trans }}
                         </span>
                         <span>
-                            {# Heroicon: pencil-square solid #}
+                            {# Heroicon: trash solid #}
                             <svg
-                                    class="h-4 w-4 text-mercurius-blue-900"
+                                    class="h-4 w-4 text-red-900"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor"
                                     viewBox="0 0 24 24"
                             >
-                                <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-                                <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
                             </svg>
                         </span>
                     </span>
                 </button>
             </div>
-        {% endif %}
 
-        {% if TwigHelperService.capabilitiesService.canSendVideoMailing(app.user) %}
-            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
-                <form
-                        action="{{
-                        path(
-                            'videobasedmarketing.mailings.presentation.create_video_mailing',
-                            { 'videoId': this.video.id }
-                        ) }}"
-                        method="post"
+        {% else %}
+            <div class="relative -mb-1.5">
+                <button
+                        class="
+                            w-full p-0 m-0
+                            {% if not TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
+                                cursor-default
+                            {% endif %}
+                        "
+
+                        {% if TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
+                            data-action="live#action"
+                            data-action-name="showEditModal"
+                        {% endif %}
                 >
+
+                    <div
+                            class="p-0 m-0"
+
+                            {{ stimulus_controller('videoBasedMarketing-recordings-videoPreview') }}
+
+                            data-action="
+                                focus->videoBasedMarketing-recordings-videoPreview#showAnimated
+                                click->videoBasedMarketing-recordings-videoPreview#showAnimated
+                                mouseover->videoBasedMarketing-recordings-videoPreview#showAnimated
+                                mouseout->videoBasedMarketing-recordings-videoPreview#showStill
+                                blur->videoBasedMarketing-recordings-videoPreview#showStill
+                            "
+                    >
+                        <div
+                                {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'stillImage') }}
+                                class="bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
+                                data-test-class="videoManageWidgetPosterStill"
+                                style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(this.video) }}');"
+                        >
+                        </div>
+
+                        <div
+                                {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'animatedImage') }}
+                                class="hidden bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
+                                data-test-class="videoManageWidgetPosterAnimated"
+                                style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(this.video) }}');"
+                        ></div>
+                    </div>
+                </button>
+
+                <div class="absolute bottom-0 right-0 p-4">
+                    <div class="p-1 pl-2 pr-2 rounded-md bg-black bg-opacity-75 text-neutral-200 text-xs font-light">
+                        {{ component('videobasedmarketing_recordings_video_duration', { 'video': this.video }) }}
+                    </div>
+                </div>
+            </div>
+
+            {% if TwigHelperService.capabilitiesService.canSeeVideoOnlyPresentationpageTemplateTitle(app.user) %}
+                <div
+                        data-test-class="video-presentationpage-template-title"
+                        class="flex flex-row justify-center -m-1.5 z-10"
+                >
+                    <p
+                            style="
+                                    color: {{ this.video.videoOnlyPresentationpageTemplate.textColor.value }};
+                                    background-color: {{ this.video.videoOnlyPresentationpageTemplate.bgColor.value }};
+                                    "
+                            class="text-xs text-gray-600 w-fit p-1 pt-0.5 pb-0.5"
+                    >
+                        {{ this.video.videoOnlyPresentationpageTemplate.title }}
+                    </p>
+                </div>
+            {% endif %}
+
+            <div class="flex-grow pt-4 pb-4 ml-4 mr-4 mt-3 overflow-y-clip">
+                <p class="text-xs text-gray-400 mb-1">
+                    {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                    {{ dateAndTimeMacros.shortDateAndTime(this.video.createdAt) }}
+                </p>
+                {% if TwigHelperService.capabilitiesService.canSeeVideoTitle(app.user) %}
+                    <p
+                            data-test-class="video-title"
+                            class="text-xl font-bold mb-1 break-words flex flex-row justify-between items-start gap-2"
+                    >
+                        {{ this.video.title }}
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
+                <button
+                        class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                        data-action="live#action"
+                        data-action-name="showShareModal"
+                >
+                    <span class="flex flex-row justify-between items-center gap-2">
+                        <span>
+                            {{ 'video_manage_widget.overview_box.cta_share'|trans }}
+                        </span>
+                        <span>
+                            <!-- Heroicon: share solid -->
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd" d="M15.75 4.5a3 3 0 11.825 2.066l-8.421 4.679a3.002 3.002 0 010 1.51l8.421 4.679a3 3 0 11-.729 1.31l-8.421-4.678a3 3 0 110-4.132l8.421-4.679a3 3 0 01-.096-.755z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </span>
+                </button>
+            </div>
+
+            <a
+                    data-test-class="videoManageWidgetShowLandingpageCta"
+                    target="_blank"
+                    href="{{
+                    path(
+                        'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
+                        { 'videoId': this.video.id }
+                    )
+                    }}"
+            >
+                <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
+                    <div class="p-2 pl-4 pr-4 w-full h-full text-left text-sm">
+                        <span class="flex flex-row justify-between items-center gap-2">
+                            <span>
+                                {{ 'video_manage_widget.overview_box.cta_show_landingpage'|trans }}
+                            </span>
+                            <span>
+                                <!-- Heroicon: document-text solid -->
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                    <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625zM7.5 15a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 017.5 15zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H8.25z" clip-rule="evenodd" />
+                                    <path d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z" />
+                                </svg>
+
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            {% if TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
+                <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
                     <button
                             class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                            data-action="live#action"
+                            data-action-name="showEditModal"
                     >
                         <span class="flex flex-row justify-between items-center gap-2">
                             <span>
-                                {{ 'video_manage_widget.overview_box.cta_send_video_mailing'|trans }}
+                                {{ 'video_manage_widget.overview_box.cta_edit'|trans }}
                             </span>
                             <span>
-                                {# Heroicon: envelope solid #}
+                                {# Heroicon: pencil-square solid #}
                                 <svg
                                         class="h-4 w-4 text-mercurius-blue-900"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor"
                                         viewBox="0 0 24 24"
                                 >
-                                    <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
-                                    <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                                    <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                                    <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
                                 </svg>
                             </span>
                         </span>
                     </button>
-                </form>
+                </div>
+            {% endif %}
+
+            {% if TwigHelperService.capabilitiesService.canSendVideoMailing(app.user) %}
+                <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
+                    <form
+                            action="{{
+                            path(
+                                'videobasedmarketing.mailings.presentation.create_video_mailing',
+                                { 'videoId': this.video.id }
+                            ) }}"
+                            method="post"
+                    >
+                        <button
+                                class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                        >
+                            <span class="flex flex-row justify-between items-center gap-2">
+                                <span>
+                                    {{ 'video_manage_widget.overview_box.cta_send_video_mailing'|trans }}
+                                </span>
+                                <span>
+                                    {# Heroicon: envelope solid #}
+                                    <svg
+                                            class="h-4 w-4 text-mercurius-blue-900"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 24 24"
+                                    >
+                                        <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                                        <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                                    </svg>
+                                </span>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+
+            <div class="text-red-900 hover:font-bold hover:bg-red-200 rounded-bl rounded-br">
+                <button
+                        class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                        data-action="live#action"
+                        data-action-name="showDeleteModal"
+                >
+                    <span class="flex flex-row justify-between items-center gap-2">
+                        <span>
+                            {{ 'video_manage_widget.overview_box.cta_delete'|trans }}
+                        </span>
+                        <span>
+                            {# Heroicon: trash solid #}
+                            <svg
+                                    class="h-4 w-4 text-red-900"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                            >
+                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </span>
+                </button>
             </div>
         {% endif %}
-
-        <div class="text-red-900 hover:font-bold hover:bg-red-200 rounded-bl rounded-br">
-            <button
-                    class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
-                    data-action="live#action"
-                    data-action-name="showDeleteModal"
-            >
-                <span class="flex flex-row justify-between items-center gap-2">
-                    <span>
-                        {{ 'video_manage_widget.overview_box.cta_delete'|trans }}
-                    </span>
-                    <span>
-                        {# Heroicon: trash solid #}
-                        <svg
-                                class="h-4 w-4 text-red-900"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor"
-                                viewBox="0 0 24 24"
-                        >
-                            <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                </span>
-            </button>
-        </div>
 
     </div>
 
