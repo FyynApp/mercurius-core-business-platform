@@ -88,9 +88,11 @@ class VideosController
             throw $this->createNotFoundException("No video with id '$videoId'.");
         }
 
-        if (!$videoDomainService->videoOnlyPresentationpageIsAvailable($video)) {
+        if (!$videoDomainService->videoCanBeShownOnPresentationpage($video)) {
             return $this->redirectToRoute('shared.presentation.contentpages.homepage');
         }
+
+        $videoDomainService->prepareForShowingOnVideoOnlyPresentationpage($video);
 
         if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
             throw $this->createNotFoundException("Video '$videoId' does not have a video only presentationpage template.");

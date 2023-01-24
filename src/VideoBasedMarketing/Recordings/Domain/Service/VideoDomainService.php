@@ -109,8 +109,25 @@ readonly class VideoDomainService
         return $video->hasAssetFullMp4();
     }
 
-    public function videoOnlyPresentationpageIsAvailable(Video $video): bool
+    public function videoCanBeShownOnPresentationpage(Video $video): bool
     {
         return !$video->isDeleted();
+    }
+
+    public function prepareForShowingOnVideoOnlyPresentationpage(
+        Video $video
+    ): void
+    {
+        if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
+            $templates = $this
+                ->presentationpagesService
+                ->getVideoOnlyPresentationpageTemplatesForUser(
+                    $video->getUser()
+                );
+
+            $video->setVideoOnlyPresentationpageTemplate($templates[0]);
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+        }
     }
 }
