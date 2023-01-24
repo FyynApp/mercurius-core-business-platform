@@ -36,6 +36,7 @@ module.exports = {
             neutral: colors.neutral,
             lime: colors.lime,
             red: colors.red,
+            'mercurius-green': colors.lime,
             'mercurius-blue': {
                 50:  '#b2e6fd',
                 100: '#91dcfd',
@@ -47,7 +48,7 @@ module.exports = {
                 700: '#026c9a',
                 800: '#015072',
                 900: '#00354c'
-            }
+            },
         },
         extend: {
             fontFamily: {

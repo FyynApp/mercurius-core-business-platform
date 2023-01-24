@@ -43,7 +43,7 @@
     }
 
     .cta-link-success {
-        @apply flex flex-row gap-2 rounded-md bg-lime-100 text-lime-900 p-4 text-start w-full ease-in-out delay-75 duration-100 border-lime-300 border-1;
+        @apply flex flex-row gap-2 rounded-md bg-mercurius-green-100 text-mercurius-green-900 p-4 text-start w-full ease-in-out delay-75 duration-100 border-mercurius-green-300 border-1;
     }
 
     .cta-link-danger {
@@ -63,18 +63,26 @@
         p-3
         bg-mercurius-blue-500
         hover:bg-mercurius-blue-700
-        border
-        border-transparent
         rounded-md w-fit
         ;
     }
 
     .cta-with-icon-success {
-        @apply cta-with-icon-primary text-lime-900 hover:text-lime-50 bg-lime-100 hover:bg-lime-600 border-lime-400;
+        @apply
+        cta-with-icon-primary
+        hover:text-mercurius-green-50
+        bg-mercurius-green-500
+        hover:bg-mercurius-green-700
+        ;
     }
 
     .cta-with-icon-danger {
-        @apply cta-with-icon-primary text-red-900 bg-red-100 hover:bg-red-700 border-red-200;
+        @apply
+        cta-with-icon-primary
+        hover:text-red-50
+        bg-red-700
+        hover:bg-red-900
+        ;
     }
 
     .cta-with-icon-neutral {
@@ -130,8 +138,8 @@
         ml-0
         gap-1
         rounded-md
-        bg-lime-200
-        text-lime-900
+        bg-mercurius-green-200
+        text-mercurius-green-900
         p-2
         pl-3
         pr-3
@@ -140,7 +148,7 @@
         ease-in-out
         delay-75
         duration-100
-        border-lime-500
+        border-mercurius-green-500
         border-1
         ;
     }
@@ -172,7 +180,7 @@
 
 
     .heroicon-next-to-text {
-        @apply h-5 w-5 inline align-bottom;
+        @apply h-5 w-5 inline align-bottom shrink-0;
     }
 
     textarea {

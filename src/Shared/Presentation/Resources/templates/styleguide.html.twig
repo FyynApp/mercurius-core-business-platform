@@ -1,0 +1,205 @@
+{% extends '@shared/base_minimal.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% block title %}Styleguide{% endblock %}
+
+{% block body %}
+
+    <div class="p-8">
+
+        <h1 class="text-6xl font-extrabold mb-8">
+            Fyyn.io Styleguide
+        </h1>
+
+        <div class="grid grid-cols-2 gap-16">
+
+            <div>
+                <h2 class="text-4xl font-extrabold mb-8">
+                    Colors
+                </h2>
+
+                <h3 class="text-xl font-extrabold mb-8">
+                    mercurius-blue
+                </h3>
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-50">
+                    #b2e6fd
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-100">
+                    #91dcfd
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-200">
+                    #62cdfb
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-300">
+                    #3ac4ff
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-400">
+                    #00b0fc
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-500">
+                    #009ee2 <- This is the default
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-600">
+                    #0185bd
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-700">
+                    #026c9a
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-800 text-white">
+                    #015072
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-blue-900 text-white">
+                    #00354c
+                </div>
+
+
+                <h3 class="text-xl font-extrabold mb-8 mt-8">
+                    mercurius-green
+                </h3>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-50">
+                    #f7fee7
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-100">
+                    #ecfccb
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-200">
+                    #d9f99d
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-300">
+                    #bef264
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-400">
+                    #a3e635
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-500">
+                    #84cc16 <- This is the default
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-600">
+                    #65a30d
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-700">
+                    #4d7c0f
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-800 text-white">
+                    #3f6212
+                </div>
+
+                <div class="w-96 h-10 p-4 bg-mercurius-green-900 text-white">
+                    #365314
+                </div>
+
+
+                <h3 class="text-xl font-extrabold mb-8 mt-8">
+                    gradient
+                </h3>
+
+                <div class="bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500 h-10 w-96">
+                </div>
+            </div>
+
+
+
+
+            <div>
+                <h2 class="text-4xl font-extrabold mb-8">
+                    Fonts
+                </h2>
+
+                <a href="https://fonts.google.com/specimen/Inter">
+
+                    <p class="mb-4">
+                        https://fonts.google.com/specimen/Inter
+                    </p>
+
+                    <p class="font-thin">
+                        Inter thin
+                    </p>
+
+                    <p class="font-extralight">
+                        Inter extralight
+                    </p>
+
+                    <p class="font-light">
+                        Inter light
+                    </p>
+
+                    <p class="font-normal">
+                        Inter normal
+                    </p>
+
+                    <p class="font-medium">
+                        Inter medium
+                    </p>
+
+                    <p class="font-semibold">
+                        Inter semibold
+                    </p>
+
+                    <p class="font-bold">
+                        Inter bold
+                    </p>
+
+                    <p class="font-extrabold">
+                        Inter extrabold
+                    </p>
+
+                    <p class="font-black">
+                        Inter black
+                    </p>
+                </a>
+
+                <h2 class="text-4xl font-extrabold mb-8 mt-16">
+                    Buttons
+                </h2>
+
+                <div class="flex flex-col gap-4">
+                    <button class="cta-with-icon-primary">
+                        Primary
+                    </button>
+
+                    <button class="cta-with-icon-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="heroicon-next-to-text">
+                            <path d="M12 9a3.75 3.75 0 100 7.5A3.75 3.75 0 0012 9z" />
+                            <path fill-rule="evenodd" d="M9.344 3.071a49.52 49.52 0 015.312 0c.967.052 1.83.585 2.332 1.39l.821 1.317c.24.383.645.643 1.11.71.386.054.77.113 1.152.177 1.432.239 2.429 1.493 2.429 2.909V18a3 3 0 01-3 3h-15a3 3 0 01-3-3V9.574c0-1.416.997-2.67 2.429-2.909.382-.064.766-.123 1.151-.178a1.56 1.56 0 001.11-.71l.822-1.315a2.942 2.942 0 012.332-1.39zM6.75 12.75a5.25 5.25 0 1110.5 0 5.25 5.25 0 01-10.5 0zm12-1.5a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+                        </svg>
+
+                        Primary, with icon
+                    </button>
+
+                    <button class="cta-with-icon-success">
+                        Success
+                    </button>
+
+                    <button class="cta-with-icon-danger">
+                        Danger
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

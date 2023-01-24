@@ -4,6 +4,12 @@ shared.presentation.tailwind_playground:
   defaults:
     template: '@shared/tailwind_playground.html.twig'
 
+shared.presentation.styleguide:
+  path: /styleguide
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: '@shared/styleguide.html.twig'
+
 shared.presentation.template_preview:
   path: /template-preview
   controller: App\Shared\Presentation\Controller\TemplateController::previewAction
