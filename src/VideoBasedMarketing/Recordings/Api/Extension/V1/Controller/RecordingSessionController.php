@@ -58,7 +58,7 @@ class RecordingSessionController
                 ),
 
                 'postChunkSize' => 5,
-                'maxRecordingTime' => $user->isRegistered() && $user->isVerified() ? 300 : 60,
+                'maxRecordingTime' => 300,
                 'videoBitsPerSecond' => 1250000, // 0.15 MiB, 5-second chunks are ~1.2 MiB. See https://developers.google.com/media/vp9/settings/vod#recommended_settings
                 'audioBitsPerSecond' => 64000,
 
