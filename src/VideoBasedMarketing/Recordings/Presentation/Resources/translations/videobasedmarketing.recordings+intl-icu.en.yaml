@@ -54,3 +54,6 @@ video_show_with_video_only_presentationpage_template:
   download_video_file_cta: 'Download MP4 video file'
   footer_copy_1: 'Easily record videos with your computer'
   footer_copy_2: 'A picture says more than a thousand words, a video shows more than a thousand pictures!'
+admin:
+  videos_overview:
+    title: 'Newest Videos'

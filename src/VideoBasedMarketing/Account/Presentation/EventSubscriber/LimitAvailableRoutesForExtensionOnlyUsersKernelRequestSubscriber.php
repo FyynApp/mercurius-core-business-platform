@@ -85,6 +85,10 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             return;
         }
 
+        if ($user->isAdmin()) {
+            return;
+        }
+
         if ($user->isExtensionOnly()) {
 
             if ($user->isRegistered() && $user->isVerified()) {

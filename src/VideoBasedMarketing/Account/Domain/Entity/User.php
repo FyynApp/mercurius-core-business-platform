@@ -179,6 +179,11 @@ class User
         return $this->hasRole(Role::EXTENSION_ONLY_USER);
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(Role::ADMIN);
+    }
+
 
     #[ORM\OneToOne(
         mappedBy: 'user',

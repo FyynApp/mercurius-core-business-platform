@@ -1,0 +1,36 @@
+{% extends '@shared/base_extension_only_user.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var videos \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[] #}
+
+{% trans_default_domain 'videobasedmarketing.recordings' %}
+
+{% block title %}{{ 'admin.videos_overview.title'|trans }}{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.recordings' %}
+
+        {% block contentBoxTitle %}
+            {{ 'admin.videos_overview.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            {% for video in videos %}
+                <p>
+                    {{ video.user.email }}
+                    {{ video.title }}
+                    {{ video.id }}
+                </p>
+            {% endfor %}
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}
