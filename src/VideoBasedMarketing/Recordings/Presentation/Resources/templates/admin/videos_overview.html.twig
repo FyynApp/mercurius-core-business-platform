@@ -57,7 +57,16 @@
 
                             <div>
                                 {% if video.user.thirdPartyAuthLinkedinResourceOwner is not null %}
-                                    via LinkedIn
+                                    <a href="https://www.linkedin.com/search/results/all/?keywords={{
+                                            (
+                                                video.user.thirdPartyAuthLinkedinResourceOwner.firstName
+                                                ~ ' '
+                                                ~ video.user.thirdPartyAuthLinkedinResourceOwner.lastName
+                                            )|url_encode
+                                        }}"
+                                    >
+                                        via LinkedIn
+                                    </a>
                                 {% endif %}
                             </div>
 
