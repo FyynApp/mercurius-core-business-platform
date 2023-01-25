@@ -55,6 +55,12 @@
                                 {{ video.user.email }}
                             </div>
 
+                            <div>
+                                {% if video.user.thirdPartyAuthLinkedinResourceOwner is not null %}
+                                    via LinkedIn
+                                {% endif %}
+                            </div>
+
                             {% if video.assetFullMp4 %}
                                 <a
                                         href="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
