@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 
 #[AsCommand(
-    name: 'app:videobasedmarketing:infrastructure:devhelper:create-contact-at-activecampaign',
+    name: 'app:videobasedmarketing:account:infrastructure:devhelper:create-contact-at-activecampaign',
     description: 'Create a contact at active campaign',
     aliases: ['create-contact-at-activecampaign']
 )]

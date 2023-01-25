@@ -91,4 +91,9 @@ class CapabilitiesService
         return $user->isRegistered()
             && $user->isVerified();
     }
+
+    public function canAdministerVideos(User $user): bool
+    {
+        return $user->isAdmin();
+    }
 }

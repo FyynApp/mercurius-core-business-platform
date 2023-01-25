@@ -8,7 +8,9 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Exception;
 use InvalidArgumentException;
 
@@ -25,7 +27,7 @@ readonly class VideoDomainService
 
 
     /**
-     * @return Video[]
+     * @return array|Video[]
      */
     public function getAvailableVideos(User $user): array
     {
@@ -129,5 +131,19 @@ readonly class VideoDomainService
             $this->entityManager->persist($video);
             $this->entityManager->flush();
         }
+    }
+
+    /**
+     * @return array|Video[]
+     */
+    public function getNewestVideos(): array
+    {
+        /** @var ObjectRepository $repo */
+        $repo = $this->entityManager->getRepository(Video::class);
+
+        return $repo->findBy(
+            [],
+            ['createdAt' => Criteria::DESC]
+        );
     }
 }

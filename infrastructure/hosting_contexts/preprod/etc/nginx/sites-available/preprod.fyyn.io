@@ -52,6 +52,10 @@ server {
 
   set $auth_basic off;
 
+  if ($uri ~ "/admin") {
+      set $auth_basic "Login required";
+  }
+
   if ($uri ~ "^/_profiler") {
       set $auth_basic "Login required";
   }
