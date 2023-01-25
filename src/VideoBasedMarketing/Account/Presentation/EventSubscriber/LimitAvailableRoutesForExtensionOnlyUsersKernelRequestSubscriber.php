@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Presentation\EventSubscriber;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,27 +14,22 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
-class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
+readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
     implements EventSubscriberInterface
 {
-    private RouterInterface $router;
-
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        RouterInterface       $router,
-        TokenStorageInterface $tokenStorage
+        private RouterInterface       $router,
+        private TokenStorageInterface $tokenStorage,
+        private CapabilitiesService   $capabilitiesService
     )
     {
-        $this->router = $router;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [
-                ['limit']
+                ['handle']
             ],
         ];
     }
@@ -41,11 +37,18 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
     /**
      * @throws Exception
      */
-    public function limit(
+    public function handle(
         RequestEvent $event
     ): void
     {
         if ($event->getRequestType() === HttpKernelInterface::SUB_REQUEST) {
+            return;
+        }
+
+        /** @var null|User $user */
+        $user = $this->tokenStorage->getToken()?->getUser();
+
+        if (is_null($user)) {
             return;
         }
 
@@ -72,22 +75,16 @@ class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'ux_live_component',
         ];
 
+        if ($this->capabilitiesService->canAdministerVideos($user)) {
+            $allowedRouteNames[] = 'videobasedmarketing.recordings.presentation.admin.videos.';
+        }
+
         foreach ($allowedRouteNames as $allowedRouteName) {
             if (str_starts_with($routeName, $allowedRouteName)) {
                 return;
             }
         }
 
-        /** @var null|User $user */
-        $user = $this->tokenStorage->getToken()?->getUser();
-
-        if (is_null($user)) {
-            return;
-        }
-
-        if ($user->isAdmin()) {
-            return;
-        }
 
         if ($user->isExtensionOnly()) {
 

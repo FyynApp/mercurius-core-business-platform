@@ -126,6 +126,20 @@
                                     </form>
                                 </li>
                             {% endif %}
+
+                            {% if app.user is defined
+                                and app.user is not null
+                                and TwigHelperService.capabilitiesService.canAdministerVideos(app.user)
+                            %}
+                                <li>
+                                    <a
+                                            href="{{ path('videobasedmarketing.recordings.presentation.admin.videos.overview') }}"
+                                            class="mr-4 hover:underline md:mr-6 text-red-700 font-semibold"
+                                    >
+                                        Admin
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </footer>

@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Exception;
@@ -140,6 +141,9 @@ readonly class VideoDomainService
         /** @var ObjectRepository $repo */
         $repo = $this->entityManager->getRepository(Video::class);
 
-        return $repo->findAll();
+        return $repo->findBy(
+            [],
+            ['createdAt' => Criteria::DESC]
+        );
     }
 }
