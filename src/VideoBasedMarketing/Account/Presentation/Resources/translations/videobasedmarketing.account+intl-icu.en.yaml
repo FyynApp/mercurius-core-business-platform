@@ -58,15 +58,14 @@ claim_unregistered_user:
     note2:
       has_videos: 'Your videos are stored securely and reliably, making them accessible for you easily at any time.'
       no_videos: 'Once you use it to create videos, they are stored securely and reliably, making them accessible for you easily at any time.'
-    note3: 'Create your free-of-charge Fyyn.io account now and manage your videos!'
+    note3: 'Create your free-of-charge Fyyn.io account now and start sharing your videos!'
     cta: 'Create account'
-    fineprint: 'By submitting this form, you agree to our terms and privacy policy.'
-    login_text: 'Already signed up?'
-    login_cta: 'To the sign in form.'
+    fineprint: 'By submitting this form, you agree to our privacy policy.'
+    login_text: 'Already have an account?'
+    login_cta: 'Sign in.'
+    continue_with: 'or continue with'
     third_party_auth:
-      linkedin:
-        text: 'Already on LinkedIn?'
-        cta: 'Sign in with a single click!'
+      linkedin: 'Sign up with LinkedIn.'
     other_videos_note: >-
       {numberOfVideos, plural,
         =0    {}

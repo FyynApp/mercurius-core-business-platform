@@ -54,17 +54,16 @@ claim_unregistered_user:
     greeting: 'Hallo auch,'
     note1: 'vielen Dank für die Nutzung unserer Browser Extension.'
     note2:
-      has_videos: 'Wir haben deine Video sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
+      has_videos: 'Wir haben dein Video sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell darauf zugreifen kannst.'
       no_videos: 'Sobald du Videos erstellst, werden diese sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'
-    note3: 'Erstelle jetzt deinen kostenlosen Fyyn.io Account und verwalte deine Videos!'
+    note3: 'Erstelle jetzt deinen kostenlosen Fyyn.io Account und teile deine Videos!'
     cta: 'Account erstellen'
-    fineprint: 'Mit dem Absenden dieses Formulars stimmst du unseren AGBs und der Datenschutzerklärung zu.'
+    fineprint: 'Mit dem Absenden dieses Formulars stimmst du unserer Datenschutzerklärung zu.'
     login_text: 'Bereits registriert?'
-    login_cta: 'Zum Login-Formular.'
+    login_cta: 'Jetzt einloggen.'
+    continue_with: 'oder weiter mit'
     third_party_auth:
-      linkedin:
-        text: 'Bereits bei LinkedIn?'
-        cta: 'Mit einem Klick einloggen!'
+      linkedin: 'Anmelden mit LinkedIn.'
     other_videos_note: >-
       {numberOfVideos, plural,
         =0    {}
