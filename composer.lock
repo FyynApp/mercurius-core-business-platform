@@ -7942,16 +7942,16 @@
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v2.7.0",
+            "version": "v2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
-                "reference": "fb19eed5b40fd26801da74e4ffc06a9489ba1597"
+                "reference": "79066fbf5e3e178bddc8cf2a847ce427f6bd9327"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/fb19eed5b40fd26801da74e4ffc06a9489ba1597",
-                "reference": "fb19eed5b40fd26801da74e4ffc06a9489ba1597",
+                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/79066fbf5e3e178bddc8cf2a847ce427f6bd9327",
+                "reference": "79066fbf5e3e178bddc8cf2a847ce427f6bd9327",
                 "shasum": ""
             },
             "require": {
@@ -8007,7 +8007,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v2.7.0"
+                "source": "https://github.com/symfony/ux-live-component/tree/v2.7.1"
             },
             "funding": [
                 {
@@ -8023,11 +8023,11 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-19T15:55:42+00:00"
+            "time": "2023-01-24T15:57:44+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
-            "version": "v2.7.0",
+            "version": "v2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-twig-component.git",
@@ -8085,7 +8085,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-twig-component/tree/v2.7.0"
+                "source": "https://github.com/symfony/ux-twig-component/tree/v2.7.1"
             },
             "funding": [
                 {
