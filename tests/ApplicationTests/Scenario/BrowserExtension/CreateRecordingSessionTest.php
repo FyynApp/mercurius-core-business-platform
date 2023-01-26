@@ -81,7 +81,7 @@ class CreateRecordingSessionTest
         );
 
         $this->assertSame(
-            60,
+            300,
             $structuredResponse['settings']['maxRecordingTime']
         );
     }

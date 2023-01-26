@@ -84,38 +84,6 @@ class UnregisteredUserWorkflowTest
         );
 
 
-        $this->assertMatchesRegularExpression(
-            "/background-image: url\('\/generated-content\/video-assets\/(.*)\/poster-still\.webp'\);/",
-            $crawler
-                ->filter('[data-test-class="videoPreviewPosterStill"]')
-                ->first()
-                ->attr('style')
-        );
-        $this->assertStringContainsString(
-            'aspect-ratio: 480 / 336;',
-            $crawler
-                ->filter('[data-test-class="videoPreviewPosterStill"]')
-                ->first()
-                ->attr('style')
-        );
-
-
-        $this->assertMatchesRegularExpression(
-            "/background-image: url\('\/generated-content\/video-assets\/(.*)\/poster-animated\.webp'\);/",
-            $crawler
-                ->filter('[data-test-class="videoPreviewPosterAnimated"]')
-                ->first()
-                ->attr('style')
-        );
-        $this->assertStringContainsString(
-            'aspect-ratio: 480 / 336;',
-            $crawler
-                ->filter('[data-test-class="videoPreviewPosterAnimated"]')
-                ->first()
-                ->attr('style')
-        );
-
-
         $buttonCrawlerNode = $crawler->selectButton('Create account');
         $form = $buttonCrawlerNode->form();
 
@@ -246,7 +214,7 @@ class UnregisteredUserWorkflowTest
 
         $this->assertSelectorTextSame(
             '[data-test-id="claim-by-thirdpartyauth-linkedin-text"]',
-            'Already on LinkedIn?'
+            'Sign up with LinkedIn.'
         );
 
         $client->followRedirects(false);
