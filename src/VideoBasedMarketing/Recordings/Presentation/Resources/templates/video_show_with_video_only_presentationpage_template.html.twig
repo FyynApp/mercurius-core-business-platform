@@ -83,6 +83,15 @@
         >
             {{ 'video_show_with_video_only_presentationpage_template.owner_view_note'|trans }}
         </div>
+
+        {% if TwigHelperService.capabilitiesService.capability(
+                app.user,
+                constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandinpage')
+            ) is same as false
+        %}
+            logo?
+        {% endif %}
+
     {% endif %}
 
     <nav

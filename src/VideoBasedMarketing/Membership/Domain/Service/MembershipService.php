@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Membership\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
@@ -104,21 +105,30 @@ class MembershipService
             MembershipPlanName::Basic =>
                 new MembershipPlan(
                     $name,
-                    false
+                    false,
+                    0.0,
+                    []
                 ),
 
             MembershipPlanName::Plus =>
                 new MembershipPlan(
                     $name,
                     true,
-                    9.99
+                    9.99,
+                    [
+                        Capability::CustomLogoOnLandinpage,
+                    ]
                 ),
 
             MembershipPlanName::Pro =>
                 new MembershipPlan(
                     $name,
                     true,
-                    19.99
+                    19.99,
+                    [
+                        Capability::CustomDomain,
+                        Capability::CustomLogoOnLandinpage,
+                    ]
                 ),
         };
     }

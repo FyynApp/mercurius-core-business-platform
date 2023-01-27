@@ -105,10 +105,14 @@ readonly class CapabilitiesService
     }
 
     public function hasCapability(
-        User       $user,
+        ?User      $user,
         Capability $capability
     ): bool
     {
+        if (is_null($user)) {
+            return false;
+        }
+
         if ($user->isAdmin()) {
             return true;
         }
