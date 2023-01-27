@@ -70,7 +70,7 @@ class MembershipService
         return true;
     }
 
-    public function userIsSubscribed(
+    public function userIsSubscribedToPlanThatMustBeBought(
         User $user
     ): bool
     {

@@ -30,7 +30,7 @@ class MembershipController
         return $this->render(
             '@videobasedmarketing.membership/overview.html.twig',
             [
-                'isSubscribed' => $membershipService->userIsSubscribed($user),
+                'isSubscribed' => $membershipService->userIsSubscribedToPlanThatMustBeBought($user),
                 'currentPlan' => $membershipService->getCurrentlySubscribedMembershipPlanForUser($user),
                 'availablePlans' => $membershipService->getAvailablePlansForUser($user)
             ]
