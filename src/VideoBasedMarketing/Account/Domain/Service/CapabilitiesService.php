@@ -3,10 +3,17 @@
 namespace App\VideoBasedMarketing\Account\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 
 
-class CapabilitiesService
+readonly class CapabilitiesService
 {
+    public function __construct(
+        private MembershipService $membershipService
+    )
+    {}
+
     public function canOpenRecordingStudio(User $user): bool
     {
         return  $user->isRegistered()
@@ -95,5 +102,20 @@ class CapabilitiesService
     public function canAdministerVideos(User $user): bool
     {
         return $user->isAdmin();
+    }
+
+    public function hasCapability(
+        User       $user,
+        Capability $capability
+    ): bool
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        return $this
+            ->membershipService
+            ->getCurrentlySubscribedMembershipPlanForUser($user)
+            ->hasCapability($capability);
     }
 }
