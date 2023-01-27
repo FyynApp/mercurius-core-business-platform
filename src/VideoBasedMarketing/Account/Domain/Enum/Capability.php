@@ -4,6 +4,6 @@ namespace App\VideoBasedMarketing\Account\Domain\Enum;
 
 enum Capability: string
 {
-    case CustomLogoOnLandinpage = 'CustomLogoOnLandingpage';
+    case CustomLogoOnLandingpage = 'CustomLogoOnLandingpage';
     case CustomDomain = 'CustomDomain';
 }

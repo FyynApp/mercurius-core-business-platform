@@ -1,0 +1,43 @@
+plan:
+  basic:
+    title: 'Base'
+    description: ''
+  plus:
+    title: 'Plus'
+    description: ''
+  pro:
+    title: 'Pro'
+    description: ''
+
+overview:
+  title: 'Your membership'
+  subtitle: 'Manage your subscription here'
+  current_plan: 'Your currently subscribed plan:'
+  available_plans: 'The following plans are available:'
+  currently_no_subscription: 'You are currently not subscribed to a paid plan'
+  cta_book: 'Subscribe to plan'
+  this_is_current_plan: 'This is your current plan'
+
+plan_offering_for_capabilities:
+  error_no_plan_found: 'We are currently not able to offer a plan matching your request.'
+  intro: 'Upgrade to a new plan to unlock additional features.'
+  requested: 'You have requested to use the following features'
+  required_upgrade: 'To unlock these features, this upgrade is required'
+  current_plan: 'Current plan'
+  current_plan_free: 'Free of charge'
+  current_plan_costs: '${pricePerMonth} per month'
+  required_plan: 'Required plan'
+  required_plan_costs: '${pricePerMonth} per month'
+  upgrade_cta: 'Upgrade now'
+
+capabilities:
+  CustomLogoOnLandingpage:
+    title: 'Your logo on the video landingpage'
+    description: ''
+  CustomDomain:
+    title: 'Landingpage available on your own domain'
+    description: ''
+
+subscription_checkout:
+  success_flash_message: 'Das Paket wurde erfolgreich gebucht.'
+  cancel_flash_message: 'Vorgang abgebrochen. Eine Zahlung hat nicht stattgefunden, und es wurde kein Abo gebucht.'

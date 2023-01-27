@@ -11,6 +11,7 @@ use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use ValueError;
 
 
 class MembershipService
@@ -86,6 +87,15 @@ class MembershipService
     /**
      * @return MembershipPlan[]
      */
+    public function getAvailablePlans(): array
+    {
+        $plans = [];
+        foreach (MembershipPlanName::cases() as $name) {
+            $plans[] = $this->getMembershipPlanByName($name);
+        }
+        return $plans;
+    }
+
     public function getAvailablePlansForUser(
         User $user
     ): array
@@ -116,7 +126,7 @@ class MembershipService
                     true,
                     9.99,
                     [
-                        Capability::CustomLogoOnLandinpage,
+                        Capability::CustomLogoOnLandingpage,
                     ]
                 ),
 
@@ -127,7 +137,7 @@ class MembershipService
                     19.99,
                     [
                         Capability::CustomDomain,
-                        Capability::CustomLogoOnLandinpage,
+                        Capability::CustomLogoOnLandingpage,
                     ]
                 ),
         };
@@ -145,5 +155,34 @@ class MembershipService
         $this->entityManager->flush();
 
         return true;
+    }
+
+    /** @param MembershipPlan[] $capabilities */
+    public function getCheapestMembershipPlanRequiredForCapabilities(
+        array $capabilities
+    ): ?MembershipPlan
+    {
+        /** @var Capability $capability */
+        foreach ($capabilities as $key => $capability) {
+            if (get_class($capability) !== Capability::class) {
+                throw new ValueError('$capabilities['. $key .'] has class ' . get_class($capability) . '.');
+            }
+        }
+
+        $plans = $this->getAvailablePlans();
+
+        foreach ($plans as $plan) {
+            $planHasAllCapabilities = true;
+            foreach ($capabilities as $capability) {
+                if (!$plan->hasCapability($capability)) {
+                    $planHasAllCapabilities = false;
+                }
+            }
+            if ($planHasAllCapabilities) {
+                return $plan;
+            }
+        }
+
+        return null;
     }
 }

@@ -58,10 +58,12 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'shared.infrastructure.content_delivery.serve_external_asset',
             'shared.presentation.contentpages.cookie_settings',
             'shared.presentation.styleguide',
+
             'videobasedmarketing.account.presentation.claim_unregistered_user.',
             'videobasedmarketing.account.api.extension.',
             'videobasedmarketing.account.presentation.sign',
             'videobasedmarketing.account.infrastructure.thirdpartyauth.',
+
             'videobasedmarketing.recordings.api.extension.',
             'videobasedmarketing.recordings.presentation.videos.',
             'videobasedmarketing.recordings.presentation.video.deletion',
@@ -69,9 +71,14 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.recordings.presentation.recording_session.extension',
             'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
             'videobasedmarketing.recordings.presentation.video.share_link',
+
             'videobasedmarketing.mailings.presentation.create_video_mailing',
             'videobasedmarketing.mailings.presentation.show_video_mailing_editor',
             'videobasedmarketing.mailings.presentation.send_video_mailing',
+
+            'videobasedmarketing.membership.presentation.show_plan_offering_for_capabilities',
+            'videobasedmarketing.membership.presentation.subscription.',
+
             'ux_live_component',
         ];
 
