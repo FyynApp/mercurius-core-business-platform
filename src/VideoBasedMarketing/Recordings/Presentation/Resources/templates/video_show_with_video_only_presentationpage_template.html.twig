@@ -81,17 +81,20 @@
                 data-test-id="videoShowWithVideoOnlyPresentationpageTemplateOwnerViewNote"
                 class="bg-mercurius-blue-50 font-extralight text-mercurius-blue-900 p-4 text-center"
         >
-            {{ 'video_show_with_video_only_presentationpage_template.owner_view_note'|trans }}
+            <div>
+                {{ 'video_show_with_video_only_presentationpage_template.owner_view_note'|trans }}
+            </div>
+
+            <div>
+                {% if TwigHelperService.capabilitiesService.capability(
+                    app.user,
+                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandinpage')
+                ) is same as false
+                %}
+                    logo?
+                {% endif %}
+            </div>
         </div>
-
-        {% if TwigHelperService.capabilitiesService.capability(
-                app.user,
-                constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandinpage')
-            ) is same as false
-        %}
-            logo?
-        {% endif %}
-
     {% endif %}
 
     <nav
