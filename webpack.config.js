@@ -21,7 +21,9 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.ts')
-    .addEntry('uppyVideoUpload', './assets/uppyVideoUpload.js')
+
+    .addEntry('recordings/uppyVideoUpload', './src/VideoBasedMarketing/Recordings/Presentation/Resources/assets/uppyVideoUpload.js')
+    .addEntry('settings/uppyCustomLogoUpload', './src/VideoBasedMarketing/Settings/Presentation/Resources/assets/uppyCustomLogoUpload.js')
 
     .addStyleEntry('tailwind', './assets/styles/tailwind.css')
     .addStyleEntry('videoplayer', './assets/styles/videoplayer.css')

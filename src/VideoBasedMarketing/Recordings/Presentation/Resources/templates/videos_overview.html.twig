@@ -14,7 +14,7 @@
 {% block javascripts %}
     {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
         {{ encore_entry_script_tags(
-            'uppyVideoUpload',
+            'recordings/uppyVideoUpload',
             null,
             '_default',
             { 'data-lang': app.request.locale }
