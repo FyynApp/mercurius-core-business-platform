@@ -1,8 +1,7 @@
 {% extends '@shared/base_extension_only_user.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
-{# @var capabilities \App\VideoBasedMarketing\Account\Domain\Enum\Capability[] #}
-{# @var cheapestMembershipPlan \App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan #}
+{# @var membershipPlan \App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan #}
 {# @var currentMembershipPlan \App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan #}
 
 {% block title %}{% endblock %}
@@ -20,7 +19,7 @@
         {% block contentBoxContent %}
 
             <div class="text-xl text-mercurius-green-600 font-bold mb-10">
-                {{ 'plan_offering_for_capabilities.intro'|trans }}
+                {{ 'upgrade_offer.intro'|trans }}
             </div>
 
             <div class="flex flex-col lg:flex-row gap-12 p-12 shadow-inner bg-neutral-100 rounded-md">
@@ -28,11 +27,11 @@
                 <div class="lg:w-6/12">
 
                     <div class="font-light mb-4 h-20 text-center w-64 mx-auto">
-                        {{ 'plan_offering_for_capabilities.requested'|trans }}
+                        {{ 'upgrade_offer.requested'|trans }}
                     </div>
 
                     <ul class="">
-                        {% for capability in capabilities %}
+                        {% for capability in membershipPlan.capabilities %}
                             <li class="text-center font-semibold bg-white p-8 rounded-md mb-8 flex flex-col items-center text-mercurius-blue-500">
                                 {% if capability is same as constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage') %}
                                     {# Heroicon photo solid #}
@@ -68,11 +67,11 @@
                                 href="{{
                                     path(
                                         'videobasedmarketing.membership.presentation.subscription.checkout.start',
-                                        { 'planName': cheapestMembershipPlan.name.value }
+                                        { 'planName': membershipPlan.name.value }
                                     )
                                 }}"
                         >
-                            {{ 'plan_offering_for_capabilities.upgrade_cta'|trans }}
+                            {{ 'upgrade_offer.upgrade_cta'|trans }}
 
                             <img
                                     class="h-6"
@@ -93,21 +92,21 @@
                 <div class="lg:w-6/12">
 
                     <div class="font-light mb-4 h-20 text-center w-64 mx-auto">
-                        {{ 'plan_offering_for_capabilities.required_upgrade'|trans }}
+                        {{ 'upgrade_offer.required_upgrade'|trans }}
                     </div>
 
 
                     <div class="bg-gradient-to-t from-neutral-100 to-mercurius-green-100 p-8 rounded-md flex flex-col items-center">
 
                         <div class="font-semibold mb-4">
-                            {{ 'plan_offering_for_capabilities.required_plan'|trans }}
+                            {{ 'upgrade_offer.required_plan'|trans }}
                         </div>
 
                         <a
                                 href="{{
                                     path(
                                         'videobasedmarketing.membership.presentation.subscription.checkout.start',
-                                        { 'planName': cheapestMembershipPlan.name.value }
+                                        { 'planName': membershipPlan.name.value }
                                     )
                                 }}"
 
@@ -119,11 +118,11 @@
                                     shadow-sm shadow-neutral-100
                                 "
                         >
-                            {{ ('plan.' ~ cheapestMembershipPlan.name.value ~ '.title')|trans }}
+                            {{ ('plan.' ~ membershipPlan.name.value ~ '.title')|trans }}
                         </a>
 
                         <div class="font-extralight text-xs text-neutral-500 mb-6">
-                            {{ 'plan_offering_for_capabilities.required_plan_costs'|trans({ '{pricePerMonth}': cheapestMembershipPlan.pricePerMonth }) }}
+                            {{ 'upgrade_offer.required_plan_costs'|trans({ '{pricePerMonth}': membershipPlan.pricePerMonth }) }}
                         </div>
 
 
@@ -142,7 +141,7 @@
 
 
                         <div class="mb-4">
-                            {{ 'plan_offering_for_capabilities.current_plan'|trans }}
+                            {{ 'upgrade_offer.current_plan'|trans }}
                         </div>
 
                         <div
@@ -159,22 +158,17 @@
 
                         <div class="font-extralight text-xs text-neutral-500 mb-4">
                             {% if currentMembershipPlan.mustBeBought is same as false %}
-                                {{ 'plan_offering_for_capabilities.current_plan_free'|trans }}
+                                {{ 'upgrade_offer.current_plan_free'|trans }}
                             {% else %}
-                                {{ 'plan_offering_for_capabilities.current_plan_costs'|trans({ '{pricePerMonth}': currentMembershipPlan.pricePerMonth }) }}
+                                {{ 'upgrade_offer.current_plan_costs'|trans({ '{pricePerMonth}': currentMembershipPlan.pricePerMonth }) }}
                             {% endif %}
                         </div>
 
                     </div>
 
-
-
-
                 </div>
 
-
             </div>
-
 
         {% endblock %}
     {% endembed %}

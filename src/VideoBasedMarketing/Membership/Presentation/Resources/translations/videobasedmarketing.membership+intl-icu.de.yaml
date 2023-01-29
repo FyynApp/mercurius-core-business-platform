@@ -17,7 +17,7 @@ overview:
       title: 'Pro-Paket'
       description: 'Mit diesem Paket kannst du maximal 500 Videos mit einer Länge von bis zu 20 Minuten aufzeichnen.'
 
-plan_offering_for_capabilities:
+upgrade_offer:
   error_no_plan_found: 'Leider können wir Ihnen derzeit kein passendes Paket anbieten.'
 
 subscription_checkout:

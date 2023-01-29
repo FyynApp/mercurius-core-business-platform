@@ -1,0 +1,67 @@
+{% extends '@shared/base_extension_only_user.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var requiredMembershipPlan \App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan #}
+
+{% block title %}{{ 'mainnav.settings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.settings'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('uppy') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags(
+        'settings/uppyCustomLogoUpload',
+        null,
+        '_default',
+        { 'data-lang': app.request.locale }
+    ) }}
+{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.settings' %}
+
+        {% block contentBoxTitle %}
+            {{ 'custom_logo.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <div
+                    id="uppyCustomLogoUploadDashboard"
+                    class="mb-9 flex flex-row justify-end"
+            >
+                <button
+                        id="uppyCustomLogoUploadDashboardOpenCta"
+                        class="cta-with-icon-primary"
+                >
+                    {# Heroicon: cloud-arrow-up solid #}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd" d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.03 5.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72v4.94a.75.75 0 001.5 0v-4.94l1.72 1.72a.75.75 0 101.06-1.06l-3-3z" clip-rule="evenodd" />
+                    </svg>
+
+                    {{ 'custom_logo.upload_cta'|trans }}
+                </button>
+            </div>
+
+            {% if not hasCapability %}
+                <a href="{{
+                    path(
+                        'videobasedmarketing.membership.presentation.show_upgrade_offer.for_plan',
+                        { 'membershipPlanName': requiredMembershipPlan.name.value }
+                    )
+                }}">
+                    {{ 'custom_logo.note_missing_capability.title'|trans }}
+                    {{ 'custom_logo.note_missing_capability.content'|trans }}
+                    {{ 'custom_logo.note_missing_capability.cta'|trans }}
+                </a>
+            {% endif %}
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

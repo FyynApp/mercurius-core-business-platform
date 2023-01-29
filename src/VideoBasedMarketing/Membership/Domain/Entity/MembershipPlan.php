@@ -59,4 +59,12 @@ readonly class MembershipPlan
     {
         return in_array($capability, $this->capabilities);
     }
+
+    /**
+     * @return Capability[]
+     */
+    public function getCapabilities(): array
+    {
+        return $this->capabilities;
+    }
 }

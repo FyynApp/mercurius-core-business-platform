@@ -43,24 +43,60 @@
 
         {% block contentBoxContent %}
 
-            {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
-                <div
-                        id="uppyVideoUploadDashboard"
-                        class="mb-9 flex flex-row justify-end"
-                >
-                    <button
-                            id="uppyVideoUploadDashboardOpenCta"
-                            class="cta-with-icon-primary"
-                    >
-                        {# Heroicon: cloud-arrow-up solid #}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path fill-rule="evenodd" d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.03 5.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72v4.94a.75.75 0 001.5 0v-4.94l1.72 1.72a.75.75 0 101.06-1.06l-3-3z" clip-rule="evenodd" />
-                        </svg>
+            <div class="flex flex-row gap-6 justify-between items-start mb-2">
 
-                        {{ 'video_manage_widget.upload_cta'|trans }}
-                    </button>
+                {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
+                    <div
+                            id="uppyVideoUploadDashboard"
+                            class="mb-9 flex flex-row justify-end"
+                    >
+                        <button
+                                id="uppyVideoUploadDashboardOpenCta"
+                                class="cta-with-icon-primary"
+                        >
+                            {# Heroicon: cloud-arrow-up solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="heroicon-next-to-text">
+                                <path fill-rule="evenodd" d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.03 5.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72v4.94a.75.75 0 001.5 0v-4.94l1.72 1.72a.75.75 0 101.06-1.06l-3-3z" clip-rule="evenodd" />
+                            </svg>
+
+                            {{ 'videos_overview.cta.upload'|trans }}
+                        </button>
+                    </div>
+                {% else %}
+                    <div>&nbsp;</div>
+                {% endif %}
+
+                <div class="flex flex-col items-end">
+                    <a
+                            class="flex flex-row gap-1 text-xs text-neutral-500 hover:text-black"
+                            href="{{ path('videobasedmarketing.settings.presentation.custom_logo') }}"
+                    >
+                        {{ 'videos_overview.cta.custom_logo'|trans }}
+
+                        {# Heroicons: photo mini #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                            <path fill-rule="evenodd" d="M1 5.25A2.25 2.25 0 013.25 3h13.5A2.25 2.25 0 0119 5.25v9.5A2.25 2.25 0 0116.75 17H3.25A2.25 2.25 0 011 14.75v-9.5zm1.5 5.81v3.69c0 .414.336.75.75.75h13.5a.75.75 0 00.75-.75v-2.69l-2.22-2.219a.75.75 0 00-1.06 0l-1.91 1.909.47.47a.75.75 0 11-1.06 1.06L6.53 8.091a.75.75 0 00-1.06 0l-2.97 2.97zM12 7a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+
+
+                    <a
+                            class="flex flex-row gap-1 text-xs text-neutral-500 hover:text-black"
+                            href="#"
+                    >
+                        {{ 'videos_overview.cta.custom_domain'|trans }}
+
+                        {# Heroicons: window mini #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                            <path fill-rule="evenodd" d="M3.25 3A2.25 2.25 0 001 5.25v9.5A2.25 2.25 0 003.25 17h13.5A2.25 2.25 0 0019 14.75v-9.5A2.25 2.25 0 0016.75 3H3.25zM2.5 9v5.75c0 .414.336.75.75.75h13.5a.75.75 0 00.75-.75V9h-15zM4 5.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V6a.75.75 0 00-.75-.75H4zM6.25 6A.75.75 0 017 5.25h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H7a.75.75 0 01-.75-.75V6zM10 5.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V6a.75.75 0 00-.75-.75H10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
                 </div>
-            {% endif %}
+
+
+            </div>
+
+
 
             {% if TwigHelperService.videoDomainService.availableVideos(app.user)|length is same as 0 %}
                 <h2 class="font-bold text-xl mb-2">

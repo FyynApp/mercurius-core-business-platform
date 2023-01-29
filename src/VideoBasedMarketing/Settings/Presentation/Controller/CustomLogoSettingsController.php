@@ -3,6 +3,8 @@
 namespace App\VideoBasedMarketing\Settings\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
+use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,16 +22,23 @@ class CustomLogoSettingsController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function customLogoAction(MembershipService $membershipService): Response
+    public function customLogoAction(
+        MembershipService   $membershipService,
+        CapabilitiesService $capabilitiesService
+    ): Response
     {
         $user = $this->getUser();
 
         return $this->render(
-            '@videobasedmarketing.membership/overview.html.twig',
+            '@videobasedmarketing.settings/custom_logo.html.twig',
             [
-                'isSubscribed' => $membershipService->userIsSubscribedToPlanThatMustBeBought($user),
-                'currentPlan' => $membershipService->getCurrentlySubscribedMembershipPlanForUser($user),
-                'availablePlans' => $membershipService->getAvailablePlansForUser($user)
+                'hasCapability' => $capabilitiesService->hasCapability(
+                    $user, Capability::CustomLogoOnLandingpage
+                ),
+                'requiredMembershipPlan' => $membershipService
+                    ->getCheapestMembershipPlanRequiredForCapabilities([
+                        Capability::CustomLogoOnLandingpage
+                    ])
             ]
         );
     }

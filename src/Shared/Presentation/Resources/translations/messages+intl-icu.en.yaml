@@ -12,6 +12,7 @@ mainnav:
   recording_studio: 'Recording studio'
   presentationpages: 'Landingpages'
   mailings: 'Mailings'
+  settings: 'Settings'
 
 sidenav:
   sign_in: 'Sign in'

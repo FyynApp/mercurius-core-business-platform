@@ -11,6 +11,8 @@ mainnav:
   recording_requests: 'Video-Anfragen'
   recording_studio: 'Aufnahmestudio'
   presentationpages: 'Landingpages'
+  mailings: 'Mailings'
+  settings: 'Einstellungen'
 
 sidenav:
   sign_in: 'Einloggen'

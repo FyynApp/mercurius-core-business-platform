@@ -33,7 +33,7 @@ const uppy = new Uppy({
 });
 
 uppy.use(Tus, {
-    endpoint: '/api/upload/v1/tus/',
+    endpoint: '/api/logo-upload/v1/tus/',
     retryDelays: [0, 1000, 3000, 5000],
 });
 

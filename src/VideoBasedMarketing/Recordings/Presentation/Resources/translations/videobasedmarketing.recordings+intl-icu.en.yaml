@@ -8,7 +8,6 @@ seconds: >-
   }
 video_successfully_deleted: 'Video “{title}” has been removed.'
 video_manage_widget:
-  upload_cta: 'Upload video file'
   processing:
     note: 'Processing...'
     abort_cta: 'Abort and delete'
@@ -44,10 +43,13 @@ videos_overview:
   use_extension_note: 'Use the Browser Extension to record a video.'
   use_upload_note: 'You can also upload an already created video file.'
   cta:
+    upload: 'Upload video file'
     add: 'Create new video'
     create_presentationpage: 'Create landingpage'
     edit_presentationpage: 'Edit landingpage'
     remove_video: 'Remove video'
+    custom_logo: 'Change logo for landingpage'
+    custom_domain: 'Change domain for landingpage'
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
 video_show_with_video_only_presentationpage_template:

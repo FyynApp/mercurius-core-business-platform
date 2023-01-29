@@ -77,9 +77,11 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.mailings.presentation.show_video_mailing_editor',
             'videobasedmarketing.mailings.presentation.send_video_mailing',
 
-            'videobasedmarketing.membership.presentation.show_plan_offering_for_capabilities',
+            'videobasedmarketing.membership.presentation.show_upgrade_offer.',
             'videobasedmarketing.membership.presentation.subscription.',
-            'videobasedmarketing.membership.infrastructure.subscription',
+            'videobasedmarketing.membership.infrastructure.subscription.',
+
+            'videobasedmarketing.settings.presentation.',
 
             'ux_live_component',
         ];

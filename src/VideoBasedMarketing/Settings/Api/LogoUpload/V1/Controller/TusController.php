@@ -1,10 +1,9 @@
 <?php
 
-namespace App\VideoBasedMarketing\Recordings\Api\Upload\V1\Controller;
+namespace App\VideoBasedMarketing\Settings\Api\LogoUpload\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,8 +17,8 @@ class TusController
     extends AbstractController
 {
     #[Route(
-        path: '%app.routing.route_prefix.api%/upload/v1/tus/',
-        name: 'videobasedmarketing.recordings.api.upload.v1.tus_patch',
+        path: '%app.routing.route_prefix.api%/settings/logo-upload/v1/tus/',
+        name: 'videobasedmarketing.settings.api.upload.v1.tus_patch',
         methods: [
             Request::METHOD_POST,
             Request::METHOD_PATCH,
@@ -27,8 +26,8 @@ class TusController
         ]
     )]
     #[Route(
-        path: '%app.routing.route_prefix.api%/upload/v1/tus/{token?}',
-        name: 'videobasedmarketing.recordings.api.upload.v1.tus',
+        path: '%app.routing.route_prefix.api%/settings/logo-upload/v1/tus/{token?}',
+        name: 'videobasedmarketing.settings.api.upload.v1.tus',
         requirements: ['token' => '.+'],
         methods: [
             Request::METHOD_POST,
@@ -36,11 +35,11 @@ class TusController
             Request::METHOD_HEAD
         ]
     )]
-    public function tusAction(
+    public function logoUploadTusAction(
         ?string                         $token,
         Server                          $server,
         LoggerInterface                 $logger,
-        RecordingsInfrastructureService $recordingsInfrastructureService
+        SettingsInfrastructureService $settingsInfrastructureService
     ): Response
     {
         /** @var null|User $user */
@@ -54,16 +53,16 @@ class TusController
         $server->getCache()->setPrefix($user->getId());
         $server->setMaxUploadSize(104857600);
 
-        $recordingsInfrastructureService->prepareTusUpload($user, $server);
+        $settingsInfrastructureService->prepareTusUpload($user, $server);
 
         $server->event()->addListener(
             UploadComplete::NAME,
             function (UploadComplete $event)
-                use ($logger, $recordingsInfrastructureService, $user, $token, $server)
+            use ($logger, $settingsInfrastructureService, $user, $token, $server)
             {
                 $fileMeta = $event->getFile()->details();
 
-                $recordingsInfrastructureService
+                $settingsInfrastructureService
                     ->handleCompletedTusUpload(
                         $user,
                         $token,

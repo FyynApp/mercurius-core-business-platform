@@ -18,10 +18,10 @@ overview:
   cta_book: 'Subscribe to plan'
   this_is_current_plan: 'This is your current plan'
 
-plan_offering_for_capabilities:
+upgrade_offer:
   error_no_plan_found: 'We are currently not able to offer a plan matching your request.'
   intro: 'Upgrade to a new plan to unlock additional features.'
-  requested: 'You have requested to use the following features'
+  requested: 'An upgrade unlocks the following additional feature'
   required_upgrade: 'To unlock these features, this upgrade is required'
   current_plan: 'Current plan'
   current_plan_free: 'Free of charge'
