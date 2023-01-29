@@ -52,21 +52,15 @@ readonly class SettingsInfrastructureService
     {
         $fileMeta = $event->getFile()->details();
 
-        $customLogoSetting = new CustomLogoSetting(
-            $user
-        );
-
         $logoUpload = new LogoUpload(
-            $customLogoSetting,
+            $user,
             $token,
             $fileMeta['metadata']['filename'],
             $fileMeta['metadata']['filetype']
         );
 
-        $customLogoSetting->setLogoUpload($logoUpload);
-
         $this->entityManager->persist($logoUpload);
-        $this->entityManager->persist($customLogoSetting);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         $fs = new Filesystem();
