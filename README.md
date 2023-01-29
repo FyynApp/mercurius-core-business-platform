@@ -46,6 +46,8 @@ Now clone this repository and cd into the folder containing this `README.md` fil
 
 - Open `http://127.0.0.1:8000/` in your browser. Enjoy!
 
+- In another Terminal window, run `mkdir -p /var/tmp/mercurius-core-business-platform/dev/tus-uploads`
+
 
 #### Getting back to work
 

@@ -8,6 +8,10 @@ seconds: >-
   }
 video_successfully_deleted: 'Video “{title}” has been removed.'
 video_manage_widget:
+  upload_cta: 'Upload video file'
+  processing:
+    note: 'Processing...'
+    abort_cta: 'Abort and delete'
   overview_box:
     cta_share: 'Share video'
     cta_show_landingpage: 'Show landingpage'
@@ -38,6 +42,7 @@ videos_overview:
   subtitle: 'Videos can be modified and shared here.'
   no_videos_available: 'You do not yet have any videos.'
   use_extension_note: 'Use the Browser Extension to record a video.'
+  use_upload_note: 'You can also upload an already created video file.'
   cta:
     add: 'Create new video'
     create_presentationpage: 'Create landingpage'
