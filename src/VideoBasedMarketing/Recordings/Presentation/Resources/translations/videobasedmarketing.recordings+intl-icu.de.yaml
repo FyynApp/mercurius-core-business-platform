@@ -62,6 +62,9 @@ video_show_with_video_only_presentationpage_template:
   download_video_file_cta: 'Video als MP4 herunterladen'
   footer_copy_1: 'Einfach Videos mit deinem Computer aufzeichnen'
   footer_copy_2: 'Ein Bild sagt mehr als tausend Worte, und ein Video sagt mehr als tausend Bilder!'
+  upgrade_promotion:
+    custom_domain: 'Ihre eigener Domainname?'
+    custom_logo: 'Ihr eigenes Logo?'
 admin:
   videos_overview:
     title: 'Neueste Videos'
