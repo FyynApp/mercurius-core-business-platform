@@ -11,25 +11,25 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'tus_uploads')]
+#[ORM\Table(name: 'recordings_video_uploads')]
 #[ORM\Index(
     fields: ['createdAt'],
     name: 'created_at_idx'
 )]
-class TusUpload
+class VideoUpload
 {
     /**
      * @throws Exception
      */
     public function __construct(
         Video  $video,
-        string $token,
+        string $tusToken,
         string $fileName,
         string $fileType,
     )
     {
         $this->video = $video;
-        $this->token = $token;
+        $this->tusToken = $tusToken;
         $this->fileName = $fileName;
         $this->fileType = $fileType;
         $this->createdAt = DateAndTimeService::getDateTime();
@@ -54,11 +54,11 @@ class TusUpload
         type: 'guid',
         unique: true
     )]
-    private string $token;
+    private string $tusToken;
 
-    public function getToken(): string
+    public function getTusToken(): string
     {
-        return $this->token;
+        return $this->tusToken;
     }
 
 
@@ -107,7 +107,7 @@ class TusUpload
 
 
     #[ORM\OneToOne(
-        mappedBy: 'tusUpload',
+        mappedBy: 'videoUpload',
         targetEntity: Video::class,
         cascade: ['persist']
     )]

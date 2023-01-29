@@ -120,7 +120,7 @@ readonly class VideoDomainService
         Video $video
     ): bool
     {
-        if (!is_null($video->getTusUpload())) {
+        if (!is_null($video->getVideoUpload())) {
             if (   !$video->hasAssetPosterStillWebp()
                 || !$video->hasAssetPosterAnimatedWebp()
                 || !$video->hasAssetFullMp4()

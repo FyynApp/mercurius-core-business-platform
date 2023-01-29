@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Settings\Api\LogoUpload\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructureService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,9 +37,9 @@ class TusController
         ]
     )]
     public function logoUploadTusAction(
-        ?string                         $token,
-        Server                          $server,
-        LoggerInterface                 $logger,
+        ?string                       $token,
+        Server                        $server,
+        LoggerInterface               $logger,
         SettingsInfrastructureService $settingsInfrastructureService
     ): Response
     {
@@ -49,11 +50,11 @@ class TusController
             throw new AccessDeniedHttpException('No user.');
         }
 
-        $server->setApiPath('/api/upload/v1/tus');
+        $server->setApiPath('/api/settings/logo-upload/v1/tus');
         $server->getCache()->setPrefix($user->getId());
         $server->setMaxUploadSize(104857600);
 
-        $settingsInfrastructureService->prepareTusUpload($user, $server);
+        $settingsInfrastructureService->prepareLogoUpload($user, $server);
 
         $server->event()->addListener(
             UploadComplete::NAME,

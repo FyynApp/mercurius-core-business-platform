@@ -50,11 +50,11 @@ class TusController
             throw new AccessDeniedHttpException('No user.');
         }
 
-        $server->setApiPath('/api/upload/v1/tus');
+        $server->setApiPath('/api/recordings/video-upload/v1/tus');
         $server->getCache()->setPrefix($user->getId());
         $server->setMaxUploadSize(104857600);
 
-        $recordingsInfrastructureService->prepareTusUpload($user, $server);
+        $recordingsInfrastructureService->prepareVideoUpload($user, $server);
 
         $server->event()->addListener(
             UploadComplete::NAME,
@@ -64,11 +64,10 @@ class TusController
                 $fileMeta = $event->getFile()->details();
 
                 $recordingsInfrastructureService
-                    ->handleCompletedTusUpload(
+                    ->handleCompletedVideoUpload(
                         $user,
                         $token,
-                        $event,
-                        $server
+                        $event
                     );
 
                 $logger->debug("fileMeta: " . json_encode($fileMeta));

@@ -9,7 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\TusUpload;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -179,25 +179,25 @@ class Video
 
     #[ORM\OneToOne(
         inversedBy: 'video',
-        targetEntity: TusUpload::class,
+        targetEntity: VideoUpload::class,
         cascade: ['persist']
     )]
     #[ORM\JoinColumn(
-        name: 'tus_uploads_id',
+        name: 'video_uploads_id',
         referencedColumnName: 'id',
         nullable: true,
         onDelete: 'SET NULL'
     )]
-    private ?TusUpload $tusUpload;
+    private ?VideoUpload $videoUpload;
 
-    public function getTusUpload(): ?TusUpload
+    public function getVideoUpload(): ?VideoUpload
     {
-        return $this->tusUpload;
+        return $this->videoUpload;
     }
 
-    public function setTusUpload(?TusUpload $tusUpload): void
+    public function setVideoUpload(?VideoUpload $videoUpload): void
     {
-        $this->tusUpload = $tusUpload;
+        $this->videoUpload = $videoUpload;
     }
 
 

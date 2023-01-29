@@ -9,7 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\TusUpload;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -30,7 +30,7 @@ use TusPhp\Tus\Server;
 class RecordingsInfrastructureService
 {
     private const VIDEO_ASSETS_SUBFOLDER_NAME = 'video-assets';
-    private const UPLOAD_ASSETS_SUBFOLDER_NAME = 'upload-assets';
+    private const UPLOADED_VIDEO_ASSETS_SUBFOLDER_NAME = 'recordings-uploaded-video-assets';
 
     private EntityManagerInterface $entityManager;
 
@@ -393,20 +393,20 @@ class RecordingsInfrastructureService
     public function generateMissingVideoAssets(Video $video): void
     {
         if (   is_null($video->getRecordingSession())
-            && is_null($video->getTusUpload())
+            && is_null($video->getVideoUpload())
         ) {
             throw new Exception('Need video linked to either recording session or tus upload.');
         }
 
         if (   !is_null($video->getRecordingSession())
-            && !is_null($video->getTusUpload())
+            && !is_null($video->getVideoUpload())
         ) {
             throw new Exception('Need video linked to only one of recording session or tus upload.');
         }
 
-        if (!is_null($video->getTusUpload())) {
+        if (!is_null($video->getVideoUpload())) {
             $this->tusServer->getCache()->setPrefix($video->getUser()->getId());
-            $this->tusServer->getCache()->delete($video->getTusUpload()->getToken());
+            $this->tusServer->getCache()->delete($video->getVideoUpload()->getTusToken());
         }
 
         $this->createFilesystemStructureForVideoAssets($video);
@@ -442,7 +442,7 @@ class RecordingsInfrastructureService
             );
         } else {
             $sourcePath = $this
-                ->getContentStoragePathForTusUploadFile($video->getTusUpload());
+                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
         }
 
         for ($i = 50; $i > 0; $i--) {
@@ -610,7 +610,7 @@ class RecordingsInfrastructureService
             );
         } else {
             $sourcePath = $this
-                ->getContentStoragePathForTusUploadFile($video->getTusUpload());
+                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
         }
 
         $process = new Process(
@@ -669,7 +669,7 @@ class RecordingsInfrastructureService
             );
         } else {
             $sourcePath = $this
-                ->getContentStoragePathForTusUploadFile($video->getTusUpload());
+                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
         }
 
         $process = new Process(
@@ -717,7 +717,7 @@ class RecordingsInfrastructureService
      */
     private function generateVideoAssetFullWebm(Video $video): void
     {
-        if (!is_null($video->getTusUpload())) {
+        if (!is_null($video->getVideoUpload())) {
             return;
         }
 
@@ -776,7 +776,7 @@ class RecordingsInfrastructureService
             );
         } else {
             $sourcePath = $this
-                ->getContentStoragePathForTusUploadFile($video->getTusUpload());
+                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
         }
 
         $process = new Process(
@@ -1240,11 +1240,10 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    public function handleCompletedTusUpload(
+    public function handleCompletedVideoUpload(
         User           $user,
         string         $token,
-        UploadComplete $event,
-        Server         $server
+        UploadComplete $event
     ): void
     {
         $fileMeta = $event->getFile()->details();
@@ -1253,7 +1252,7 @@ class RecordingsInfrastructureService
             $user
         );
 
-        $tusUpload = new TusUpload(
+        $videoUpload = new VideoUpload(
             $video,
             $token,
             $fileMeta['metadata']['filename'],
@@ -1266,7 +1265,7 @@ class RecordingsInfrastructureService
                 array_slice(
                     explode(
                         '.',
-                        $tusUpload->getFileName()
+                        $videoUpload->getFileName()
                     ),
                     0,
                     -1
@@ -1274,9 +1273,9 @@ class RecordingsInfrastructureService
             )
         );
 
-        $video->setTusUpload($tusUpload);
+        $video->setVideoUpload($videoUpload);
 
-        $this->entityManager->persist($tusUpload);
+        $this->entityManager->persist($videoUpload);
         $this->entityManager->persist($video);
         $this->entityManager->flush();
 
@@ -1285,36 +1284,33 @@ class RecordingsInfrastructureService
         $fs->rename(
             $this->filesystemService->getContentStoragePath(
                 [
-                    self::UPLOAD_ASSETS_SUBFOLDER_NAME,
+                    self::UPLOADED_VIDEO_ASSETS_SUBFOLDER_NAME,
                     $user->getId(),
-                    $tusUpload->getFileName()
+                    $videoUpload->getFileName()
                 ]
             ),
             $this->filesystemService->getContentStoragePath(
                 [
-                    self::UPLOAD_ASSETS_SUBFOLDER_NAME,
+                    self::UPLOADED_VIDEO_ASSETS_SUBFOLDER_NAME,
                     $user->getId(),
-                    "{$tusUpload->getId()}_{$tusUpload->getFileName()}"
+                    "{$videoUpload->getId()}_{$videoUpload->getFileName()}"
                 ]
             )
         );
-
-        #$server->getCache()->delete($tusUpload->getToken());
-
 
         $this->messageBus->dispatch(
             new GenerateMissingVideoAssetsCommandMessage($video)
         );
     }
 
-    public function prepareTusUpload(
+    public function prepareVideoUpload(
         User   $user,
         Server $server
     ): void
     {
         $path = $this->filesystemService->getContentStoragePath(
             [
-                self::UPLOAD_ASSETS_SUBFOLDER_NAME,
+                self::UPLOADED_VIDEO_ASSETS_SUBFOLDER_NAME,
                 $user->getId()
             ]
         );
@@ -1325,15 +1321,15 @@ class RecordingsInfrastructureService
         $server->setUploadDir($path);
     }
 
-    private function getContentStoragePathForTusUploadFile(
-        TusUpload $tusUpload
+    private function getContentStoragePathForVideoUpload(
+        VideoUpload $videoUpload
     ): string
     {
         return $this->filesystemService->getContentStoragePath(
             [
-                self::UPLOAD_ASSETS_SUBFOLDER_NAME,
-                $tusUpload->getVideo()->getUser()->getId(),
-                "{$tusUpload->getId()}_{$tusUpload->getFileName()}"
+                self::UPLOADED_VIDEO_ASSETS_SUBFOLDER_NAME,
+                $videoUpload->getVideo()->getUser()->getId(),
+                "{$videoUpload->getId()}_{$videoUpload->getFileName()}"
             ]
         );
     }

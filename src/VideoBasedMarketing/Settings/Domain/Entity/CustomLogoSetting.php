@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Settings\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -66,5 +67,29 @@ class CustomLogoSetting
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
+    }
+
+    
+    #[ORM\OneToOne(
+        inversedBy: 'customLogoSetting',
+        targetEntity: LogoUpload::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'logo_uploads_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?LogoUpload $logoUpload;
+
+    public function getLogoUpload(): ?LogoUpload
+    {
+        return $this->logoUpload;
+    }
+
+    public function setLogoUpload(?LogoUpload $logoUpload): void
+    {
+        $this->logoUpload = $logoUpload;
     }
 }
