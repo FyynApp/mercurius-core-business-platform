@@ -10,6 +10,7 @@
         "ext-iconv": "*",
         "ext-mbstring": "*",
         "ext-sodium": "*",
+        "ankitpokhrel/tus-php": "^2.3",
         "doctrine/annotations": "^1.13.3",
         "doctrine/doctrine-bundle": "^2.7.1",
         "doctrine/doctrine-migrations-bundle": "^3.2.2",

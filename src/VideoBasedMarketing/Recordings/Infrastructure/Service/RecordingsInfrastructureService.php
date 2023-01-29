@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\TusUpload;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,11 +23,14 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use TusPhp\Events\UploadComplete;
+use TusPhp\Tus\Server;
 
 
 class RecordingsInfrastructureService
 {
     private const VIDEO_ASSETS_SUBFOLDER_NAME = 'video-assets';
+    private const UPLOAD_ASSETS_SUBFOLDER_NAME = 'upload-assets';
 
     private EntityManagerInterface $entityManager;
 
@@ -40,13 +44,17 @@ class RecordingsInfrastructureService
 
     private MessageBusInterface $messageBus;
 
+    private Server $tusServer;
+
+
     public function __construct(
         EntityManagerInterface $entityManager,
         FilesystemService      $filesystemService,
         LoggerInterface        $logger,
         RouterInterface        $router,
         CapabilitiesService    $capabilitiesService,
-        MessageBusInterface    $messageBus
+        MessageBusInterface    $messageBus,
+        Server                 $tusServer
     )
     {
         $this->entityManager = $entityManager;
@@ -55,6 +63,7 @@ class RecordingsInfrastructureService
         $this->router = $router;
         $this->capabilitiesService = $capabilitiesService;
         $this->messageBus = $messageBus;
+        $this->tusServer = $tusServer;
     }
 
 
@@ -383,8 +392,21 @@ class RecordingsInfrastructureService
     /** @throws Exception */
     public function generateMissingVideoAssets(Video $video): void
     {
-        if (is_null($video->getRecordingSession())) {
-            throw new Exception('Need video linked to recording session.');
+        if (   is_null($video->getRecordingSession())
+            && is_null($video->getTusUpload())
+        ) {
+            throw new Exception('Need video linked to either recording session or tus upload.');
+        }
+
+        if (   !is_null($video->getRecordingSession())
+            && !is_null($video->getTusUpload())
+        ) {
+            throw new Exception('Need video linked to only one of recording session or tus upload.');
+        }
+
+        if (!is_null($video->getTusUpload())) {
+            $this->tusServer->getCache()->setPrefix($video->getUser()->getId());
+            $this->tusServer->getCache()->delete($video->getTusUpload()->getToken());
         }
 
         $this->createFilesystemStructureForVideoAssets($video);
@@ -414,15 +436,22 @@ class RecordingsInfrastructureService
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
+        if (!is_null($video->getRecordingSession())) {
+            $sourcePath = $this->getVideoChunkContentStorageFilePath(
+                $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
+            );
+        } else {
+            $sourcePath = $this
+                ->getContentStoragePathForTusUploadFile($video->getTusUpload());
+        }
+
         for ($i = 50; $i > 0; $i--) {
             $process = new Process(
                 [
                     'ffmpeg',
 
                     '-i',
-                    $this->getVideoChunkContentStorageFilePath(
-                        $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
-                    ),
+                    $sourcePath,
 
                     '-vf',
                     "select=eq(n\,$i)",
@@ -575,6 +604,15 @@ class RecordingsInfrastructureService
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
+        if (!is_null($video->getRecordingSession())) {
+            $sourcePath = $this->getVideoChunkContentStorageFilePath(
+                $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
+            );
+        } else {
+            $sourcePath = $this
+                ->getContentStoragePathForTusUploadFile($video->getTusUpload());
+        }
+
         $process = new Process(
             [
                 'ffmpeg',
@@ -586,9 +624,7 @@ class RecordingsInfrastructureService
                 '3',
 
                 '-i',
-                $this->getVideoChunkContentStorageFilePath(
-                    $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
-                ),
+                $sourcePath,
 
                 '-vf',
                 'scale=520:-1',
@@ -627,6 +663,15 @@ class RecordingsInfrastructureService
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
+        if (!is_null($video->getRecordingSession())) {
+            $sourcePath = $this->getVideoChunkContentStorageFilePath(
+                $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
+            );
+        } else {
+            $sourcePath = $this
+                ->getContentStoragePathForTusUploadFile($video->getTusUpload());
+        }
+
         $process = new Process(
             [
                 'ffmpeg',
@@ -638,9 +683,7 @@ class RecordingsInfrastructureService
                 '3',
 
                 '-i',
-                $this->getVideoChunkContentStorageFilePath(
-                    $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
-                ),
+                $sourcePath,
 
                 '-vf',
                 'fps=7,scale=480:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=256:reserve_transparent=0[p];[s1][p]paletteuse=dither=none',
@@ -674,6 +717,10 @@ class RecordingsInfrastructureService
      */
     private function generateVideoAssetFullWebm(Video $video): void
     {
+        if (!is_null($video->getTusUpload())) {
+            return;
+        }
+
         $this->createFilesystemStructureForVideoAssets($video);
 
         $this->concatenateChunksIntoFile(
@@ -718,21 +765,26 @@ class RecordingsInfrastructureService
         Video $video
     ): void
     {
-        if (!$video->hasAssetFullWebm()) {
-            $this->generateVideoAssetFullWebm($video);
+        if (!is_null($video->getRecordingSession())) {
+            if (!$video->hasAssetFullWebm()) {
+                $this->generateVideoAssetFullWebm($video);
+            }
+
+            $sourcePath = $this->getVideoFullAssetFilePath(
+                $video,
+                AssetMimeType::VideoWebm
+            );
+        } else {
+            $sourcePath = $this
+                ->getContentStoragePathForTusUploadFile($video->getTusUpload());
         }
 
-        // We generate the MP4 asset from the WebM asset that
-        // was created by concatenating the WebM chunks.
         $process = new Process(
             [
                 'ffmpeg',
 
                 '-i',
-                $this->getVideoFullAssetFilePath(
-                    $video,
-                    AssetMimeType::VideoWebm
-                ),
+                $sourcePath,
 
                 '-c:v',
                 'libx264',
@@ -1181,6 +1233,108 @@ class RecordingsInfrastructureService
                     $recordingSession->getId()
                 ]
             )
+        );
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function handleCompletedTusUpload(
+        User           $user,
+        string         $token,
+        UploadComplete $event,
+        Server         $server
+    ): void
+    {
+        $fileMeta = $event->getFile()->details();
+
+        $video = new Video(
+            $user
+        );
+
+        $tusUpload = new TusUpload(
+            $video,
+            $token,
+            $fileMeta['metadata']['filename'],
+            $fileMeta['metadata']['filetype']
+        );
+
+        $video->setTitle(
+            implode(
+                '.',
+                array_slice(
+                    explode(
+                        '.',
+                        $tusUpload->getFileName()
+                    ),
+                    0,
+                    -1
+                )
+            )
+        );
+
+        $video->setTusUpload($tusUpload);
+
+        $this->entityManager->persist($tusUpload);
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
+
+        $fs = new Filesystem();
+
+        $fs->rename(
+            $this->filesystemService->getContentStoragePath(
+                [
+                    self::UPLOAD_ASSETS_SUBFOLDER_NAME,
+                    $user->getId(),
+                    $tusUpload->getFileName()
+                ]
+            ),
+            $this->filesystemService->getContentStoragePath(
+                [
+                    self::UPLOAD_ASSETS_SUBFOLDER_NAME,
+                    $user->getId(),
+                    "{$tusUpload->getId()}_{$tusUpload->getFileName()}"
+                ]
+            )
+        );
+
+        #$server->getCache()->delete($tusUpload->getToken());
+
+
+        $this->messageBus->dispatch(
+            new GenerateMissingVideoAssetsCommandMessage($video)
+        );
+    }
+
+    public function prepareTusUpload(
+        User   $user,
+        Server $server
+    ): void
+    {
+        $path = $this->filesystemService->getContentStoragePath(
+            [
+                self::UPLOAD_ASSETS_SUBFOLDER_NAME,
+                $user->getId()
+            ]
+        );
+
+        $fs = new Filesystem();
+        $fs->mkdir($path);
+
+        $server->setUploadDir($path);
+    }
+
+    private function getContentStoragePathForTusUploadFile(
+        TusUpload $tusUpload
+    ): string
+    {
+        return $this->filesystemService->getContentStoragePath(
+            [
+                self::UPLOAD_ASSETS_SUBFOLDER_NAME,
+                $tusUpload->getVideo()->getUser()->getId(),
+                "{$tusUpload->getId()}_{$tusUpload->getFileName()}"
+            ]
         );
     }
 }

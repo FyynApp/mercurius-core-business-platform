@@ -21,6 +21,12 @@ readonly class CapabilitiesService
             && !$user->isExtensionOnly();
     }
 
+    public function canUploadVideos(User $user): bool
+    {
+        return  $user->isRegistered()
+            &&  $user->isVerified();
+    }
+
     public function canEditVideos(User $user): bool
     {
         return  $user->isRegistered()

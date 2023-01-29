@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\TusUpload;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -151,7 +152,7 @@ class Video
         nullable: true,
         onDelete: 'SET NULL'
     )]
-    private ?RecordingSession $recordingSession;
+    private ?RecordingSession $recordingSession = null;
 
     public function getRecordingSession(): ?RecordingSession
     {
@@ -173,6 +174,30 @@ class Video
             );
         }
         $this->recordingSession = $recordingSession;
+    }
+
+
+    #[ORM\OneToOne(
+        inversedBy: 'video',
+        targetEntity: TusUpload::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'tus_uploads_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?TusUpload $tusUpload;
+
+    public function getTusUpload(): ?TusUpload
+    {
+        return $this->tusUpload;
+    }
+
+    public function setTusUpload(?TusUpload $tusUpload): void
+    {
+        $this->tusUpload = $tusUpload;
     }
 
 

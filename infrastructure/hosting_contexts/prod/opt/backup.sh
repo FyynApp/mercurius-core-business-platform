@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NOW=$(date +%Y-%m-%d_%H_%M_%S)
+NOW=$(date +%Y-%m-%d)
 
 WORKDIR="$(mktemp -d)"
 
