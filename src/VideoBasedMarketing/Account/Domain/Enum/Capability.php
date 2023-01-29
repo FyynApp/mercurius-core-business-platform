@@ -6,4 +6,5 @@ enum Capability: string
 {
     case CustomLogoOnLandingpage = 'CustomLogoOnLandingpage';
     case CustomDomain = 'CustomDomain';
+    case AdFreeLandingpages = 'AdFreeLandingpages';
 }

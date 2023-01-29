@@ -127,6 +127,7 @@ class MembershipService
                     9.99,
                     [
                         Capability::CustomLogoOnLandingpage,
+                        Capability::AdFreeLandingpages,
                     ]
                 ),
 
@@ -138,6 +139,7 @@ class MembershipService
                     [
                         Capability::CustomDomain,
                         Capability::CustomLogoOnLandingpage,
+                        Capability::AdFreeLandingpages,
                     ]
                 ),
         };
