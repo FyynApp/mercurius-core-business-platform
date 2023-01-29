@@ -61,6 +61,11 @@ doctrine:
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Settings/Domain/Entity'
                 prefix: 'App\VideoBasedMarketing\Settings\Domain\Entity'
 
+            App\VideoBasedMarketing\Settings\Infrastructure\Entity:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/VideoBasedMarketing/Settings/Infrastructure/Entity'
+                prefix: 'App\VideoBasedMarketing\Settings\Infrastructure\Entity'
+
 when@test:
     doctrine:
         dbal:
