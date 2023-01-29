@@ -65,7 +65,7 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.account.infrastructure.thirdpartyauth.',
 
             'videobasedmarketing.recordings.api.extension.',
-            'videobasedmarketing.recordings.api.upload.v1.',
+            'videobasedmarketing.recordings.api.video_upload.',
             'videobasedmarketing.recordings.presentation.videos.',
             'videobasedmarketing.recordings.presentation.video.deletion',
             'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
@@ -82,6 +82,7 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.membership.infrastructure.subscription.',
 
             'videobasedmarketing.settings.presentation.',
+            'videobasedmarketing.settings.api.logo_upload.',
 
             'ux_live_component',
         ];

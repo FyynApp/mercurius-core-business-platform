@@ -80,7 +80,7 @@ uppy.use(Dashboard, {
     showSelectedFiles: true,
     showRemoveButtonAfterComplete: false,
     showNativePhotoCameraButton: false,
-    showNativeVideoCameraButton: false,
+    showNativeVideoCameraButton: true,
     browserBackButtonClose: false,
     theme: 'light',
     autoOpenFileEditor: false,

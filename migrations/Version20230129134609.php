@@ -18,8 +18,44 @@ final class Version20230129134609 extends AbstractMigration
     {
         $this->addSql('ALTER TABLE videos DROP FOREIGN KEY FK_29AA643268D8EA3B');
         $this->addSql('CREATE TABLE custom_logo_settings (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', users_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', logo_uploads_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\', created_at DATETIME NOT NULL, INDEX IDX_3F6AB5E867B3B43D (users_id), UNIQUE INDEX UNIQ_3F6AB5E89DB8C871 (logo_uploads_id), INDEX created_at_idx (created_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE recordings_video_uploads (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', tus_token CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', file_name VARCHAR(256) NOT NULL, file_type VARCHAR(32) NOT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_6161774516BB3F31 (tus_token), INDEX created_at_idx (created_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE settings_logo_uploads (id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', users_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', custom_logo_settings_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\', tus_token CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', file_name VARCHAR(256) NOT NULL, file_type VARCHAR(32) NOT NULL, created_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_F68A37EE16BB3F31 (tus_token), INDEX IDX_F68A37EE67B3B43D (users_id), UNIQUE INDEX UNIQ_F68A37EEF56596AC (custom_logo_settings_id), INDEX created_at_idx (created_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+
+        $this->addSql('
+            CREATE TABLE recordings_video_uploads
+            (
+                id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\',
+                tus_token CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\',
+                file_name VARCHAR(256) NOT NULL,
+                file_type VARCHAR(32) NOT NULL,
+                created_at DATETIME NOT NULL,
+                UNIQUE INDEX UNIQ_6161774516BB3F31 (tus_token),
+                INDEX created_at_idx (created_at),
+                PRIMARY KEY(id)
+            )
+            DEFAULT CHARACTER SET utf8mb4 
+            COLLATE `utf8mb4_unicode_ci`
+            ENGINE = InnoDB
+        ');
+
+        $this->addSql('
+            CREATE TABLE settings_logo_uploads (
+                id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\',
+                users_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\',
+                custom_logo_settings_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\',
+                tus_token CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\',
+                file_name VARCHAR(256) NOT NULL,
+                file_type VARCHAR(32) NOT NULL,
+                created_at DATETIME NOT NULL,
+                UNIQUE INDEX UNIQ_F68A37EE16BB3F31 (tus_token),
+                INDEX IDX_F68A37EE67B3B43D (users_id),
+                UNIQUE INDEX UNIQ_F68A37EEF56596AC (custom_logo_settings_id),
+                INDEX created_at_idx (created_at),
+                PRIMARY KEY(id)
+            )
+            DEFAULT CHARACTER SET utf8mb4 
+            COLLATE `utf8mb4_unicode_ci` 
+            ENGINE = InnoDB
+        ');
+
         $this->addSql('ALTER TABLE custom_logo_settings ADD CONSTRAINT FK_3F6AB5E867B3B43D FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE custom_logo_settings ADD CONSTRAINT FK_3F6AB5E89DB8C871 FOREIGN KEY (logo_uploads_id) REFERENCES settings_logo_uploads (id) ON DELETE SET NULL');
         $this->addSql('ALTER TABLE settings_logo_uploads ADD CONSTRAINT FK_F68A37EE67B3B43D FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE');

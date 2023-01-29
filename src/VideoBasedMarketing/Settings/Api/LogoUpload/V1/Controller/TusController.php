@@ -19,7 +19,7 @@ class TusController
 {
     #[Route(
         path: '%app.routing.route_prefix.api%/settings/logo-upload/v1/tus/',
-        name: 'videobasedmarketing.settings.api.upload.v1.tus_patch',
+        name: 'videobasedmarketing.settings.api.logo_upload.v1.tus_patch',
         methods: [
             Request::METHOD_POST,
             Request::METHOD_PATCH,
@@ -28,7 +28,7 @@ class TusController
     )]
     #[Route(
         path: '%app.routing.route_prefix.api%/settings/logo-upload/v1/tus/{token?}',
-        name: 'videobasedmarketing.settings.api.upload.v1.tus',
+        name: 'videobasedmarketing.settings.api.logo_upload.v1.tus',
         requirements: ['token' => '.+'],
         methods: [
             Request::METHOD_POST,
@@ -64,11 +64,10 @@ class TusController
                 $fileMeta = $event->getFile()->details();
 
                 $settingsInfrastructureService
-                    ->handleCompletedTusUpload(
+                    ->handleCompletedLogoUpload(
                         $user,
                         $token,
-                        $event,
-                        $server
+                        $event
                     );
 
                 $logger->debug("fileMeta: " . json_encode($fileMeta));

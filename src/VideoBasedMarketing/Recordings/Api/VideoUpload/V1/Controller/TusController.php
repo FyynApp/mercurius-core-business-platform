@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Recordings\Api\Upload\V1\Controller;
+namespace App\VideoBasedMarketing\Recordings\Api\VideoUpload\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
@@ -19,7 +19,7 @@ class TusController
 {
     #[Route(
         path: '%app.routing.route_prefix.api%/recordings/video-upload/v1/tus/',
-        name: 'videobasedmarketing.recordings.api.upload.v1.tus_patch',
+        name: 'videobasedmarketing.recordings.api.video_upload.v1.tus_patch',
         methods: [
             Request::METHOD_POST,
             Request::METHOD_PATCH,
@@ -28,7 +28,7 @@ class TusController
     )]
     #[Route(
         path: '%app.routing.route_prefix.api%/recordings/video-upload/v1/tus/{token?}',
-        name: 'videobasedmarketing.recordings.api.upload.v1.tus',
+        name: 'videobasedmarketing.recordings.api.video_upload.v1.tus',
         requirements: ['token' => '.+'],
         methods: [
             Request::METHOD_POST,

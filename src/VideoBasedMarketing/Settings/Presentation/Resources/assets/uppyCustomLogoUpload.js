@@ -1,7 +1,6 @@
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 import Dashboard from '@uppy/dashboard';
-import Webcam from '@uppy/webcam';
 import de_DE from '@uppy/locales/lib/de_DE';
 import en_US from '@uppy/locales/lib/en_US';
 
@@ -18,12 +17,19 @@ const uppy = new Uppy({
     allowMultipleUploadBatches: true,
     debug: true,
     restrictions: {
-        maxFileSize: 104857600,
+        maxFileSize: 10485760,
         minFileSize: null,
-        maxTotalFileSize: 104857600,
+        maxTotalFileSize: 10485760,
         maxNumberOfFiles: 1,
         minNumberOfFiles: 1,
-        allowedFileTypes: ['video/*'],
+        allowedFileTypes: [
+            'image/png',
+            'image/gif',
+            'image/jpeg',
+            'image/webp',
+            'image/svg+xml',
+            'image/avif',
+        ],
     },
     meta: {},
     onBeforeFileAdded: (currentFile, files) => currentFile,
@@ -33,17 +39,8 @@ const uppy = new Uppy({
 });
 
 uppy.use(Tus, {
-    endpoint: '/api/logo-upload/v1/tus/',
+    endpoint: '/api/settings/logo-upload/v1/tus/',
     retryDelays: [0, 1000, 3000, 5000],
-});
-
-uppy.use(Webcam, {
-    modes: [
-        'video-audio',
-        'video-only',
-    ],
-    showVideoSourceDropdown: true,
-    preferredVideoMimeType: 'video/webm'
 });
 
 uppy.use(Dashboard, {
