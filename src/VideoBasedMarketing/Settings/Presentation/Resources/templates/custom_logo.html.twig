@@ -32,9 +32,51 @@
 
         {% block contentBoxContent %}
 
+            {% if not hasCapability %}
+
+                <div class="flex flex-row items-center gap-6 bg-neutral-100 border-1 border-neutral-200 rounded-md p-4 mb-16">
+
+                    <div class="ml-2">
+                        <a
+                                class="
+                                    cta-with-icon-success text-center
+                                    bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500
+                                    hover:from-mercurius-blue-600 hover:to-mercurius-green-600
+                                "
+
+                                href="{{
+                                    path(
+                                        'videobasedmarketing.membership.presentation.show_upgrade_offer.for_plan',
+                                        { 'membershipPlanName': requiredMembershipPlan.name.value }
+                                    )
+                                }}"
+                        >
+                            {{ 'custom_logo.note_missing_capability.cta'|trans }}
+                        </a>
+                    </div>
+
+
+                    <div class="flex flex-col gap-4 border-l-2 pl-6 w-96">
+                        <div class="font-semibold">
+                            {{ 'custom_logo.note_missing_capability.title'|trans }}
+                        </div>
+
+                        <div class="text-sm">
+                            {{ 'custom_logo.note_missing_capability.content.1'|trans }}
+                        </div>
+
+                        <div class="text-sm">
+                            {{ 'custom_logo.note_missing_capability.content.2'|trans }}
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
+
             <div
                     id="uppyCustomLogoUploadDashboard"
-                    class="mb-9 flex flex-row justify-end"
+                    class="mb-9 flex flex-row justify-start"
             >
                 <button
                         id="uppyCustomLogoUploadDashboardOpenCta"
@@ -48,6 +90,7 @@
                     {{ 'custom_logo.upload_cta'|trans }}
                 </button>
             </div>
+
 
             <div
                     class="flex flex-col gap-8 items-start w-96"
@@ -78,19 +121,6 @@
 
                 {% endfor %}
             </div>
-
-            {% if not hasCapability %}
-                <a href="{{
-                    path(
-                        'videobasedmarketing.membership.presentation.show_upgrade_offer.for_plan',
-                        { 'membershipPlanName': requiredMembershipPlan.name.value }
-                    )
-                }}">
-                    {{ 'custom_logo.note_missing_capability.title'|trans }}
-                    {{ 'custom_logo.note_missing_capability.content'|trans }}
-                    {{ 'custom_logo.note_missing_capability.cta'|trans }}
-                </a>
-            {% endif %}
 
         {% endblock %}
     {% endembed %}

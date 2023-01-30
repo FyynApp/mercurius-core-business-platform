@@ -61,16 +61,12 @@ class TusController
             function (UploadComplete $event)
             use ($logger, $settingsInfrastructureService, $user, $token, $server)
             {
-                $fileMeta = $event->getFile()->details();
-
                 $settingsInfrastructureService
                     ->handleCompletedLogoUpload(
                         $user,
                         $token,
                         $event
                     );
-
-                $logger->debug("fileMeta: " . json_encode($fileMeta));
             }
         );
 

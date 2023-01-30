@@ -3,5 +3,7 @@ custom_logo:
   upload_cta: 'Upload new logo'
   note_missing_capability:
     title: 'Important: Upgrade required!'
-    content: 'Your current plan does not allow to present a custom logo on your landingpages.'
+    content:
+      1: 'Your current plan does not allow to present a custom logo on your landingpages.'
+      2: 'You can upload a logo here, but you will not be able to activate it for use on your landingpages.'
     cta: 'Upgrade now'
