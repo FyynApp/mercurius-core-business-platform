@@ -43,5 +43,5 @@ capabilities:
     description: ''
 
 subscription_checkout:
-  success_flash_message: 'Das Paket wurde erfolgreich gebucht.'
-  cancel_flash_message: 'Vorgang abgebrochen. Eine Zahlung hat nicht stattgefunden, und es wurde kein Abo gebucht.'
+  success_flash_message: 'Plan has been booked successfully.'
+  cancel_flash_message: 'Booking aborted. No payment has been charged, and no subscription has been activated.'
