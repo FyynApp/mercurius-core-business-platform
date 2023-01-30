@@ -147,9 +147,9 @@ class RegisteredUserWorkflowTest
 
         $client->request('GET', $landingpageUrl);
 
-        $this->assertSelectorTextSame(
+        $this->assertSelectorTextContains(
             '[data-test-id="videoShowWithVideoOnlyPresentationpageTemplateOwnerViewNote"]',
-            'This is the landingpage of your video as seen by other visitors.'
+            'Your own domain name in the address bar?'
         );
 
         $client->request('GET', '/');
