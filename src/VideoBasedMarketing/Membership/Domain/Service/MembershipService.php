@@ -125,10 +125,7 @@ class MembershipService
                     $name,
                     true,
                     9.99,
-                    [
-                        Capability::CustomLogoOnLandingpage,
-                        Capability::AdFreeLandingpages,
-                    ]
+                    []
                 ),
 
             MembershipPlanName::Pro =>

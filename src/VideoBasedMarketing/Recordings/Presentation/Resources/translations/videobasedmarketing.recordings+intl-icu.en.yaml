@@ -62,8 +62,8 @@ video_show_with_video_only_presentationpage_template:
   footer_copy_1: 'Easily record videos with your computer'
   footer_copy_2: 'A picture says more than a thousand words, a video shows more than a thousand pictures!'
   upgrade_promotion:
-    custom_domain: 'Your own domain name here?'
-    custom_logo: 'Your own logo here?'
+    custom_domain: 'Your own domain name in the address bar?'
+    custom_logo: 'Your own logo on this page?'
 admin:
   videos_overview:
     title: 'Newest Videos'

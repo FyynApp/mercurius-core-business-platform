@@ -19,6 +19,7 @@ overview:
   this_is_current_plan: 'This is your current plan'
 
 upgrade_offer:
+  back_to_videos_cta: 'Back to videos'
   error_no_plan_found: 'We are currently not able to offer a plan matching your request.'
   intro: 'Upgrade to a new plan to unlock additional features.'
   requested: 'An upgrade unlocks the following additional feature'
@@ -32,10 +33,13 @@ upgrade_offer:
 
 capabilities:
   CustomLogoOnLandingpage:
-    title: 'Your logo on the video landingpage'
+    title: 'Your logo on all video landingpages'
     description: ''
   CustomDomain:
-    title: 'Landingpage available on your own domain'
+    title: 'Landingpages available on your own domain'
+    description: ''
+  AdFreeLandingpages:
+    title: 'Ad free landingpages'
     description: ''
 
 subscription_checkout:

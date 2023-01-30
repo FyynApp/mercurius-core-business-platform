@@ -43,12 +43,12 @@
 
         {% block contentBoxContent %}
 
-            <div class="flex flex-row gap-6 justify-between items-start mb-2">
+            <div class="flex flex-row gap-6 justify-between items-center mb-10">
 
                 {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
                     <div
                             id="uppyVideoUploadDashboard"
-                            class="mb-9 flex flex-row justify-end"
+                            class=""
                     >
                         <button
                                 id="uppyVideoUploadDashboardOpenCta"
@@ -66,34 +66,33 @@
                     <div>&nbsp;</div>
                 {% endif %}
 
-                <div class="flex flex-col items-end">
-                    <a
-                            class="flex flex-row gap-1 text-xs text-neutral-500 hover:text-black mb-2"
-                            href="{{ path('videobasedmarketing.settings.presentation.custom_logo') }}"
-                    >
-                        {{ 'videos_overview.cta.custom_logo'|trans }}
+                <div class="flex flex-row gap-3 items-center p-4 bg-neutral-100 rounded-md shadow-inner">
 
-                        {# Heroicons: photo mini #}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
-                            <path fill-rule="evenodd" d="M1 5.25A2.25 2.25 0 013.25 3h13.5A2.25 2.25 0 0119 5.25v9.5A2.25 2.25 0 0116.75 17H3.25A2.25 2.25 0 011 14.75v-9.5zm1.5 5.81v3.69c0 .414.336.75.75.75h13.5a.75.75 0 00.75-.75v-2.69l-2.22-2.219a.75.75 0 00-1.06 0l-1.91 1.909.47.47a.75.75 0 11-1.06 1.06L6.53 8.091a.75.75 0 00-1.06 0l-2.97 2.97zM12 7a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />
+                    <div class="text-neutral-400">
+                        {# Hericon: cog-6-tooth outline #}
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                    </a>
+                    </div>
+
+                    <div class="flex flex-col items-start border-l-2 pl-4">
+                        <a
+                                class="flex flex-row gap-1 text-xs text-neutral-500 hover:text-black mb-2"
+                                href="{{ path('videobasedmarketing.settings.presentation.custom_logo') }}"
+                        >
+                            {{ 'videos_overview.cta.custom_logo'|trans }}
+                        </a>
 
 
-                    <a
-                            class="flex flex-row gap-1 text-xs text-neutral-500 hover:text-black"
-                            href="#"
-                    >
-                        {{ 'videos_overview.cta.custom_domain'|trans }}
-
-                        {# Heroicons: window mini #}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
-                            <path fill-rule="evenodd" d="M3.25 3A2.25 2.25 0 001 5.25v9.5A2.25 2.25 0 003.25 17h13.5A2.25 2.25 0 0019 14.75v-9.5A2.25 2.25 0 0016.75 3H3.25zM2.5 9v5.75c0 .414.336.75.75.75h13.5a.75.75 0 00.75-.75V9h-15zM4 5.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V6a.75.75 0 00-.75-.75H4zM6.25 6A.75.75 0 017 5.25h.01a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75H7a.75.75 0 01-.75-.75V6zM10 5.25a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75h.01a.75.75 0 00.75-.75V6a.75.75 0 00-.75-.75H10z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
+                        <a
+                                class="flex flex-row gap-1 text-xs text-neutral-500 hover:text-black"
+                                href="#"
+                        >
+                            {{ 'videos_overview.cta.custom_domain'|trans }}
+                        </a>
+                    </div>
                 </div>
-
-
             </div>
 
 

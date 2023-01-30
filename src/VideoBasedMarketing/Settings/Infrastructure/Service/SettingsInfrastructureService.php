@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\RouterInterface;
 use TusPhp\Events\UploadComplete;
 use TusPhp\Tus\Server;
 
@@ -24,7 +25,8 @@ readonly class SettingsInfrastructureService
         private FilesystemService      $filesystemService,
         private EntityManagerInterface $entityManager,
         private MessageBusInterface    $messageBus,
-        private SettingsDomainService  $settingsDomainService
+        private SettingsDomainService  $settingsDomainService,
+        private RouterInterface        $router
     )
     {
 
@@ -126,5 +128,25 @@ readonly class SettingsInfrastructureService
         });
 
         return $logoUploads;
+    }
+
+    public function getCustomLogoAssetUrl(
+        User $user
+    ): ?string
+    {
+        if (   !is_null($user->getCustomLogoSetting())
+            && !is_null($user->getCustomLogoSetting()->getLogoUpload())
+        ) {
+            return $this->router->generate(
+                'videobasedmarketing.settings.presentation.logo_upload_asset',
+                [
+                    'userId' => $user->getId(),
+                    'logoUploadId' => $user->getCustomLogoSetting()->getLogoUpload()->getId(),
+                    'logoUploadFileName' => $user->getCustomLogoSetting()->getLogoUpload()->getFileName()
+                ]
+            );
+        }
+
+        return null;
     }
 }

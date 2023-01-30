@@ -90,9 +90,9 @@
                 constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage')
             ) is same as false
             %}
-                <div class="w-fit text-left font-semibold">
+                <div class="w-fit text-left font-normal">
                     <a
-                            class="flex flex-col w-fit items-center gap-4"
+                            class="flex flex-col w-fit items-start gap-0"
                             href="{{
                                 path(
                                     'videobasedmarketing.membership.presentation.show_upgrade_offer.for_capabilities',
@@ -106,17 +106,9 @@
                     >
                         <div class="flex flex-row items-center gap-2">
                             {{ 'video_show_with_video_only_presentationpage_template.upgrade_promotion.custom_domain'|trans }}
-
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                                <path fill-rule="evenodd" d="M8.25 3.75H19.5a.75.75 0 01.75.75v11.25a.75.75 0 01-1.5 0V6.31L5.03 20.03a.75.75 0 01-1.06-1.06L17.69 5.25H8.25a.75.75 0 010-1.5z" clip-rule="evenodd" />
-                            </svg>
                         </div>
 
                         <div class="flex flex-row items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                                <path fill-rule="evenodd" d="M20.03 3.97a.75.75 0 010 1.06L6.31 18.75h9.44a.75.75 0 010 1.5H4.5a.75.75 0 01-.75-.75V8.25a.75.75 0 011.5 0v9.44L18.97 3.97a.75.75 0 011.06 0z" clip-rule="evenodd" />
-                            </svg>
-
                             {{ 'video_show_with_video_only_presentationpage_template.upgrade_promotion.custom_logo'|trans }}
                         </div>
                     </a>
@@ -154,9 +146,24 @@
             <div class="flex items-start md:items-center justify-between h-fit">
 
                 <div class="flex flex-shrink-0 justify-start items-start">
-                    <a href="{{ path('shared.presentation.contentpages.homepage') }}">
-                        <img class="h-14" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn.io">
-                    </a>
+
+                    {% if TwigHelperService.capabilitiesService.capability(
+                            app.user,
+                            constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage')
+                        ) is same as true
+                        and
+                        TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(app.user) is not null
+                    %}
+                        <img
+                                class="h-14"
+                                src="{{ asset(TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(app.user)) }}"
+                                alt="logo"
+                        >
+                    {% else %}
+                        <a href="{{ path('shared.presentation.contentpages.homepage') }}">
+                            <img class="h-14" src="{{ asset('assets/images/fyyn-logo-240x241.png') }}" alt="Fyyn.io">
+                        </a>
+                    {% endif %}
                 </div>
 
                 <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
