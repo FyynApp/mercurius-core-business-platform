@@ -9,6 +9,6 @@ custom_logo:
     title: 'Important: Plan upgrade required!'
     content:
       1: 'Your current plan does not allow to present a custom logo on your landingpages.'
-      2: 'While you can upload and configure logo here, it will not be shown on your landingpages unless the plan upgrade has been made.'
+      2: 'While you can upload and configure your logo now, it will not be shown on your landingpages unless the plan upgrade has been made.'
     cta: 'Upgrade now'
     additional: 'The chosen logo will be shown on your landingpages as soon as you have upgraded your plan.'

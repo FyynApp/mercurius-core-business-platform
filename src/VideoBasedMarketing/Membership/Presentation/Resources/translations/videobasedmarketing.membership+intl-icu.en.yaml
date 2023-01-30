@@ -19,6 +19,7 @@ overview:
   this_is_current_plan: 'This is your current plan'
 
 upgrade_offer:
+  title: 'Plan upgrade'
   back_to_videos_cta: 'Back to videos'
   error_no_plan_found: 'We are currently not able to offer a plan matching your request.'
   intro: 'Upgrade to a new plan to unlock additional features.'
