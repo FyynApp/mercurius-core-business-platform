@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Settings\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,5 +53,24 @@ readonly class SettingsDomainService
         $this->entityManager->persist($customLogoSetting);
 
         $this->entityManager->flush();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getCustomDomainSetting(
+        User $user
+    ): CustomDomainSetting
+    {
+        if (is_null($user->getCustomDomainSetting())) {
+            $customDomainSetting = new CustomDomainSetting($user);
+
+            $this->entityManager->persist($customDomainSetting);
+            $this->entityManager->flush($customDomainSetting);
+
+            $this->entityManager->refresh($user);
+        }
+
+        return $user->getCustomDomainSetting();
     }
 }

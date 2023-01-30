@@ -1,0 +1,244 @@
+{% extends '@shared/base_extension_only_user.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var hasCapability bool #}
+{# @var requiredMembershipPlan \App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan #}
+
+{% block title %}{{ 'mainnav.settings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.settings'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('uppy') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags(
+        'settings/uppyCustomLogoUpload',
+        null,
+        '_default',
+        { 'data-lang': app.request.locale }
+    ) }}
+{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.settings' %}
+
+        {% block contentBoxTitle %}
+            {{ 'custom_logo.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <a
+                    href="{{ path('videobasedmarketing.recordings.presentation.videos.overview') }}"
+                    class="w-fit text-neutral-400 hover:text-neutral-900 flex flex-row items-center gap-2 text-sm mb-12 underline"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 010 1.06L4.81 8.25H15a6.75 6.75 0 010 13.5h-3a.75.75 0 010-1.5h3a5.25 5.25 0 100-10.5H4.81l4.72 4.72a.75.75 0 11-1.06 1.06l-6-6a.75.75 0 010-1.06l6-6a.75.75 0 011.06 0z" clip-rule="evenodd" />
+                </svg>
+
+                {{ 'custom_logo.back_to_videos_cta'|trans }}
+            </a>
+
+            {% if not hasCapability %}
+
+                <div class="flex flex-row items-center gap-6 bg-neutral-100 border-1 border-neutral-200 rounded-md p-4 mb-16">
+
+                    <div class="ml-2">
+                        <a
+                                class="
+                                    cta-with-icon-success text-center
+                                    bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500
+                                    hover:from-mercurius-blue-600 hover:to-mercurius-green-600
+                                "
+
+                                href="{{
+                                    path(
+                                        'videobasedmarketing.membership.presentation.show_upgrade_offer.for_plan',
+                                        { 'membershipPlanName': requiredMembershipPlan.name.value }
+                                    )
+                                }}"
+                        >
+                            {{ 'custom_logo.note_missing_capability.cta'|trans }}
+                        </a>
+                    </div>
+
+
+                    <div class="flex flex-col gap-4 border-l-2 pl-6 w-96">
+                        <div class="font-semibold">
+                            {{ 'custom_logo.note_missing_capability.title'|trans }}
+                        </div>
+
+                        <div class="text-sm">
+                            {{ 'custom_logo.note_missing_capability.content.1'|trans }}
+                        </div>
+
+                        <div class="text-sm text-neutral-400">
+                            {{ 'custom_logo.note_missing_capability.content.2'|trans }}
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
+
+
+            {% if TwigHelperService.settingsInfrastructureService.logoUploads(app.user)|length > 1 %}
+                <div class="mb-8 mt-4 text-sm">
+                    <div class="flex flex-row gap-1 justify-start items-center">
+
+                        <div class="whitespace-nowrap min-w-fit">
+                            {{ 'custom_logo.activate_note.1'|trans }}
+                        </div>
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                class="w-6 h-6 text-neutral-200"
+                        >
+                            <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                        </svg>
+                        <div class="whitespace-nowrap">
+                            {{ 'custom_logo.activate_note.2'|trans }}
+                        </div>
+                    </div>
+
+                    <div>
+                        {% if hasCapability is same as false %}
+                            {{ 'custom_logo.note_missing_capability.additional'|trans }}
+                        {% endif %}
+                    </div>
+                </div>
+
+
+            {% endif %}
+
+
+            <div
+                    class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 items-start w-full"
+            >
+                <div
+                        class="
+                        flex flex-row justify-center items-center gap-4 rounded-sm p-4 w-full
+                        bg-neutral-100 w-full h-full h-44
+                    "
+                >
+                    <div
+                            id="uppyCustomLogoUploadDashboard"
+                    >
+                        <button
+                                id="uppyCustomLogoUploadDashboardOpenCta"
+                                class="cta-with-icon-primary"
+                        >
+                            {# Heroicon: cloud-arrow-up solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <path fill-rule="evenodd" d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.03 5.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72v4.94a.75.75 0 001.5 0v-4.94l1.72 1.72a.75.75 0 101.06-1.06l-3-3z" clip-rule="evenodd" />
+                            </svg>
+
+                            {{ 'custom_logo.upload_cta'|trans }}
+                        </button>
+                    </div>
+                </div>
+
+                {# @var logoUpload \App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload #}
+                {% for logoUpload in TwigHelperService.settingsInfrastructureService.logoUploads(app.user) %}
+
+                    <div
+                            class="
+                                flex flex-row justify-start items-center gap-4 rounded-sm p-4 w-full h-full
+                                {% if logoUpload.customLogoSetting is not null %}
+                                    bg-mercurius-green-100
+                                {% else %}
+                                    bg-neutral-100
+                                {% endif %}
+                            "
+                    >
+
+                        <div class="w-12 flex-shrink-0 flex flex-col items-center">
+
+                            <div class="">
+
+                                {% if logoUpload.customLogoSetting is not null %}
+                                    <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="currentColor"
+                                            class="w-10 h-10 text-mercurius-green-600 -mt-1.5"
+                                    >
+                                        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                                    </svg>
+
+                                {% else %}
+
+                                    <form
+                                            method="post"
+                                            action="{{
+                                            path(
+                                                'videobasedmarketing.settings.presentation.custom_logo.activate_logo_upload',
+                                                { logoUploadId: logoUpload.id }
+                                            )
+                                            }}"
+                                    >
+                                        <button
+
+                                        >
+                                            <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="currentColor"
+                                                    class="w-10 h-10 text-neutral-200 hover:text-mercurius-green-500 absolute"
+                                            >
+                                                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                                            </svg>
+
+                                            <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke-width="1.5"
+                                                    stroke="currentColor"
+                                                    class="w-10 h-10 text-white hover:text-mercurius-green-500"
+                                            >
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                        <div
+                                class="flex flex-col items-start gap-2"
+                        >
+                            <img
+                                    class="max-h-24"
+                                    src="{{
+                                    asset(
+                                        path(
+                                            'videobasedmarketing.settings.presentation.logo_upload_asset',
+                                            {
+                                                userId: logoUpload.user.id,
+                                                logoUploadId: logoUpload.id,
+                                                logoUploadFileName: logoUpload.fileName
+                                            }
+                                        )
+                                    ) }}"
+                            >
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+            </div>
+
+
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

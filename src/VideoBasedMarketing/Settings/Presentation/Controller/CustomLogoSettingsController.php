@@ -19,8 +19,8 @@ class CustomLogoSettingsController
 {
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/settings/custom-logo',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/einstellungen/eigenes-logo',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/settings/custom-logo-on-landingpages',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/einstellungen/eigenes-logo-auf-landingpages',
         ],
         name        : 'videobasedmarketing.settings.presentation.custom_logo',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -51,7 +51,6 @@ class CustomLogoSettingsController
         );
     }
 
-
     #[Route(
         path        : [
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/settings/custom-logo/logo-upload/{logoUploadId}/activation',
@@ -80,5 +79,41 @@ class CustomLogoSettingsController
         $settingsDomainService->makeLogoUploadActive($logoUpload);
 
         return $this->redirectToRoute('videobasedmarketing.settings.presentation.custom_logo');
+    }
+
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/settings/custom-domain',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/einstellungen/eigene-domain',
+        ],
+        name        : 'videobasedmarketing.settings.presentation.custom_domain',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function customDomainAction(
+        MembershipService             $membershipService,
+        CapabilitiesService           $capabilitiesService,
+        SettingsInfrastructureService $settingsInfrastructureService,
+        SettingsDomainService         $settingsDomainService
+    ): Response
+    {
+        $user = $this->getUser();
+
+        return $this->render(
+            '@videobasedmarketing.settings/custom_domain.html.twig',
+            [
+                'hasCapability' => $capabilitiesService->hasCapability(
+                    $user, Capability::CustomDomain
+                ),
+
+                'requiredMembershipPlan' => $membershipService
+                    ->getCheapestMembershipPlanRequiredForCapabilities([
+                        Capability::CustomDomain
+                    ]),
+
+                'customDomainSetting' => $settingsDomainService->makeLogoUploadActive()
+            ]
+        );
     }
 }
