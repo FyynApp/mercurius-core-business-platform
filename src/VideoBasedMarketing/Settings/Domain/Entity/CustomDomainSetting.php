@@ -87,7 +87,7 @@ class CustomDomainSetting
         nullable: false,
         enumType: DomainCheckStatus::class
     )]
-    private DomainCheckStatus $checkStatus;
+    private DomainCheckStatus $checkStatus = DomainCheckStatus::CheckOutstanding;
 
     public function setCheckStatus(
         DomainCheckStatus $checkStatus

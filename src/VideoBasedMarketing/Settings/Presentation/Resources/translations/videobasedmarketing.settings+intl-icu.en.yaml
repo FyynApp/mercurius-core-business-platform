@@ -12,3 +12,17 @@ custom_logo:
       2: 'While you can upload and configure your logo now, it will not be shown on your landingpages unless the plan upgrade has been made.'
     cta: 'Upgrade now'
     additional: 'The chosen logo will be shown on your landingpages as soon as you have upgraded your plan.'
+
+custom_domain:
+  title: 'Custom domain name'
+  back_to_videos_cta: 'Back to videos'
+  note_missing_capability:
+    title: 'Important: Plan upgrade required!'
+    content:
+      1: 'Your current plan does not allow to present your landingpages using custom domain name.'
+      2: 'While you can fully configure your custom domain now, it cannot be used to present your landingpages unless the plan upgrade has been made.'
+    cta: 'Upgrade now'
+  flash_message:
+    change_domain_name:
+      successful: 'Successfully updated domain name.'
+      failed: 'Failed to update domain name.'

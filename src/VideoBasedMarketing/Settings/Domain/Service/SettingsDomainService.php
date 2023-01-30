@@ -73,4 +73,16 @@ readonly class SettingsDomainService
 
         return $user->getCustomDomainSetting();
     }
+
+    public function setCustomDomainName(
+        User   $user,
+        string $name
+    ): bool
+    {
+        $name = trim($name);
+
+
+
+        $this->getCustomDomainSetting($user)->setDomainName($name);
+    }
 }
