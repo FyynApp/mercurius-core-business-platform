@@ -1,9 +1,14 @@
 custom_logo:
   title: 'Custom logo'
-  upload_cta: 'Upload new logo'
+  back_to_videos_cta: 'Back to videos'
+  upload_cta: 'Upload new logo file'
+  activate_note:
+    1: 'Choose which logo to use by clicking on the'
+    2: 'icon.'
   note_missing_capability:
-    title: 'Important: Upgrade required!'
+    title: 'Important: Plan upgrade required!'
     content:
       1: 'Your current plan does not allow to present a custom logo on your landingpages.'
-      2: 'You can upload a logo here, but you will not be able to activate it for use on your landingpages.'
+      2: 'You can upload a logo here, but it will not be shown on your landingpages unless the plan upgrade has been made.'
     cta: 'Upgrade now'
+    additional: 'The chosen logo will be shown on your landingpages as soon as you have upgraded your plan.'

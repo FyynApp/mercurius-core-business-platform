@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Settings\Infrastructure\Service;
 use App\Shared\Infrastructure\Message\ClearTusCacheCommandMessage;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +23,8 @@ readonly class SettingsInfrastructureService
     public function __construct(
         private FilesystemService      $filesystemService,
         private EntityManagerInterface $entityManager,
-        private MessageBusInterface    $messageBus
+        private MessageBusInterface    $messageBus,
+        private SettingsDomainService  $settingsDomainService
     )
     {
 
@@ -68,6 +70,10 @@ readonly class SettingsInfrastructureService
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
+        if (sizeof($user->getLogoUploads()) === 1) {
+            $this->settingsDomainService->makeLogoUploadActive($logoUpload);
+        }
+
         $fs = new Filesystem();
 
         $fs->mkdir(
@@ -106,20 +112,6 @@ readonly class SettingsInfrastructureService
         );
     }
 
-    private function getContentStoragePathForLogoUpload(
-        LogoUpload $logoUpload
-    ): string
-    {
-        return $this->filesystemService->getContentStoragePath(
-            [
-                self::ROOT_FOLDER_NAME,
-                self::LOGO_UPLOADS_SUBFOLDER_NAME,
-                $logoUpload->getCustomLogoSetting()->getUser()->getId(),
-                "{$logoUpload->getId()}_{$logoUpload->getFileName()}"
-            ]
-        );
-    }
-
     /**
      * @return LogoUpload[]|Collection
      */
@@ -127,6 +119,12 @@ readonly class SettingsInfrastructureService
         User $user
     ): array|Collection
     {
-        return $user->getLogoUploads();
+        $logoUploads = $user->getLogoUploads()->toArray();
+
+        usort($logoUploads, function(LogoUpload $a, LogoUpload $b) {
+            return (int)($a->getCreatedAt() < $b->getCreatedAt());
+        });
+
+        return $logoUploads;
     }
 }
