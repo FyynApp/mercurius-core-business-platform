@@ -2,23 +2,27 @@
 
 namespace App\VideoBasedMarketing\Settings\Infrastructure\Service;
 
+use App\Shared\Infrastructure\Message\ClearTusCacheCommandMessage;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Messenger\MessageBusInterface;
 use TusPhp\Events\UploadComplete;
 use TusPhp\Tus\Server;
 
 readonly class SettingsInfrastructureService
 {
-    private const UPLOADED_LOGO_ASSETS_SUBFOLDER_NAME = 'settings-uploaded-logo-assets';
+    private const ROOT_FOLDER_NAME = 'settings';
+    private const LOGO_UPLOADS_SUBFOLDER_NAME = 'logo-uploads';
 
     public function __construct(
         private FilesystemService      $filesystemService,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private MessageBusInterface    $messageBus
     )
     {
 
@@ -30,7 +34,8 @@ readonly class SettingsInfrastructureService
     {
         $path = $this->filesystemService->getContentStoragePath(
             [
-                self::UPLOADED_LOGO_ASSETS_SUBFOLDER_NAME,
+                self::ROOT_FOLDER_NAME,
+                self::LOGO_UPLOADS_SUBFOLDER_NAME,
                 $user->getId()
             ]
         );
@@ -65,21 +70,39 @@ readonly class SettingsInfrastructureService
 
         $fs = new Filesystem();
 
+        $fs->mkdir(
+            $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+                [
+                    self::ROOT_FOLDER_NAME,
+                    self::LOGO_UPLOADS_SUBFOLDER_NAME,
+                    $user->getId(),
+                    $logoUpload->getId()
+                ]
+            )
+        );
+
         $fs->rename(
             $this->filesystemService->getContentStoragePath(
                 [
-                    self::UPLOADED_LOGO_ASSETS_SUBFOLDER_NAME,
+                    self::ROOT_FOLDER_NAME,
+                    self::LOGO_UPLOADS_SUBFOLDER_NAME,
                     $user->getId(),
                     $logoUpload->getFileName()
                 ]
             ),
-            $this->filesystemService->getContentStoragePath(
+            $this->filesystemService->getPublicWebfolderGeneratedContentPath(
                 [
-                    self::UPLOADED_LOGO_ASSETS_SUBFOLDER_NAME,
+                    self::ROOT_FOLDER_NAME,
+                    self::LOGO_UPLOADS_SUBFOLDER_NAME,
                     $user->getId(),
-                    "{$logoUpload->getId()}_{$logoUpload->getFileName()}"
+                    $logoUpload->getId(),
+                    $logoUpload->getFileName()
                 ]
             )
+        );
+
+        $this->messageBus->dispatch(
+            new ClearTusCacheCommandMessage($user, $token)
         );
     }
 
@@ -89,10 +112,21 @@ readonly class SettingsInfrastructureService
     {
         return $this->filesystemService->getContentStoragePath(
             [
-                self::UPLOADED_LOGO_ASSETS_SUBFOLDER_NAME,
+                self::ROOT_FOLDER_NAME,
+                self::LOGO_UPLOADS_SUBFOLDER_NAME,
                 $logoUpload->getCustomLogoSetting()->getUser()->getId(),
                 "{$logoUpload->getId()}_{$logoUpload->getFileName()}"
             ]
         );
+    }
+
+    /**
+     * @return LogoUpload[]|Collection
+     */
+    public function getLogoUploads(
+        User $user
+    ): array|Collection
+    {
+        return $user->getLogoUploads();
     }
 }

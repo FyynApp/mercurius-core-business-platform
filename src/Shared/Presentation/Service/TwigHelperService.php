@@ -14,6 +14,8 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDo
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
+use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
+use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructureService;
 
 
 class TwigHelperService
@@ -42,6 +44,10 @@ class TwigHelperService
 
     private CapabilitiesService $capabilitiesService;
 
+    private SettingsDomainService $settingsDomainService;
+
+    private SettingsInfrastructureService $settingsInfrastructureService;
+
 
     public function __construct(
         ContentDeliveryService          $contentDeliveryService,
@@ -55,7 +61,9 @@ class TwigHelperService
         DashboardDomainService          $dashboardService,
         PresentationpagesService        $presentationpagesService,
         RecordingRequestsDomainService  $recordingRequestsDomainService,
-        CapabilitiesService             $capabilitiesService
+        CapabilitiesService             $capabilitiesService,
+        SettingsDomainService           $settingsDomainService,
+        SettingsInfrastructureService   $settingsInfrastructureService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
@@ -70,6 +78,8 @@ class TwigHelperService
         $this->presentationpagesService = $presentationpagesService;
         $this->recordingRequestsDomainService = $recordingRequestsDomainService;
         $this->capabilitiesService = $capabilitiesService;
+        $this->settingsDomainService = $settingsDomainService;
+        $this->settingsInfrastructureService = $settingsInfrastructureService;
     }
 
     public function getContentDeliveryService(): ContentDeliveryService
@@ -130,5 +140,15 @@ class TwigHelperService
     public function getCapabilitiesService(): CapabilitiesService
     {
         return $this->capabilitiesService;
+    }
+
+    public function getSettingsDomainService(): SettingsDomainService
+    {
+        return $this->settingsDomainService;
+    }
+
+    public function getSettingsInfrastructureService(): SettingsInfrastructureService
+    {
+        return $this->settingsInfrastructureService;
     }
 }

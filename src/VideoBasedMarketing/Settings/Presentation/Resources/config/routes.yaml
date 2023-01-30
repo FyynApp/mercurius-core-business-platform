@@ -1,0 +1,2 @@
+videobasedmarketing.settings.presentation.logo_upload_asset:
+  path: /generated-content/settings/logo-uploads/{userId}/{logoUploadId}/{logoUploadFileName}

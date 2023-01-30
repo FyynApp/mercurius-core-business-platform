@@ -52,7 +52,7 @@ class TusController
 
         $server->setApiPath('/api/settings/logo-upload/v1/tus');
         $server->getCache()->setPrefix($user->getId());
-        $server->setMaxUploadSize(104857600);
+        $server->setMaxUploadSize(10485760);
 
         $settingsInfrastructureService->prepareLogoUpload($user, $server);
 

@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\Service;
 
+use App\Shared\Infrastructure\Message\ClearTusCacheCommandMessage;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
@@ -1296,6 +1297,10 @@ class RecordingsInfrastructureService
                     "{$videoUpload->getId()}_{$videoUpload->getFileName()}"
                 ]
             )
+        );
+
+        $this->messageBus->dispatch(
+            new ClearTusCacheCommandMessage($user, $token)
         );
 
         $this->messageBus->dispatch(

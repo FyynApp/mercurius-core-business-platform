@@ -1,6 +1,7 @@
 {% extends '@shared/base_extension_only_user.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var hasCapability bool #}
 {# @var requiredMembershipPlan \App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan #}
 
 {% block title %}{{ 'mainnav.settings'|trans }}{% endblock %}
@@ -46,6 +47,36 @@
 
                     {{ 'custom_logo.upload_cta'|trans }}
                 </button>
+            </div>
+
+            <div
+                    class="flex flex-col gap-8 items-start w-96"
+            >
+                {# @var logoUpload \App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload #}
+                {% for logoUpload in TwigHelperService.settingsInfrastructureService.logoUploads(app.user) %}
+                    <div
+                            class="flex flex-col items-start gap-2 bg-neutral-100 rounded-sm p-4 w-full"
+                    >
+                        <img
+                                class="h-20"
+                                src="{{
+                                    asset(
+                                        path(
+                                            'videobasedmarketing.settings.presentation.logo_upload_asset',
+                                            {
+                                                userId: logoUpload.user.id,
+                                                logoUploadId: logoUpload.id,
+                                                logoUploadFileName: logoUpload.fileName
+                                            }
+                                        )
+                                    ) }}"
+                        >
+                        <div class="text-xs text-neutral-700">
+                            {{ logoUpload.fileName }}
+                        </div>
+                    </div>
+
+                {% endfor %}
             </div>
 
             {% if not hasCapability %}

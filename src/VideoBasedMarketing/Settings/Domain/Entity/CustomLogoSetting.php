@@ -42,10 +42,10 @@ class CustomLogoSetting
     }
 
 
-    #[ORM\ManyToOne(
+    #[ORM\OneToOne(
+        inversedBy: 'customLogoSetting',
         targetEntity: User::class,
-        cascade: ['persist'],
-        inversedBy: 'customLogoSettings'
+        cascade: ['persist']
     )]
     #[ORM\JoinColumn(
         name: 'users_id',

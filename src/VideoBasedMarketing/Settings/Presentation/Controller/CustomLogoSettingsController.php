@@ -6,6 +6,8 @@ use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
+use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructureService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,8 +25,9 @@ class CustomLogoSettingsController
         methods     : [Request::METHOD_GET]
     )]
     public function customLogoAction(
-        MembershipService   $membershipService,
-        CapabilitiesService $capabilitiesService
+        MembershipService             $membershipService,
+        CapabilitiesService           $capabilitiesService,
+        SettingsInfrastructureService $settingsInfrastructureService
     ): Response
     {
         $user = $this->getUser();
@@ -35,10 +38,13 @@ class CustomLogoSettingsController
                 'hasCapability' => $capabilitiesService->hasCapability(
                     $user, Capability::CustomLogoOnLandingpage
                 ),
+
                 'requiredMembershipPlan' => $membershipService
                     ->getCheapestMembershipPlanRequiredForCapabilities([
                         Capability::CustomLogoOnLandingpage
-                    ])
+                    ]),
+
+                'logoUploads' => $settingsInfrastructureService->getLogoUploads($user)
             ]
         );
     }

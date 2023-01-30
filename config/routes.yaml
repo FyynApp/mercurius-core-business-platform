@@ -17,6 +17,10 @@ videobasedmarketing.recordings.api.recorder.v1:
     resource: '../src/VideoBasedMarketing/Recordings/Api/Recorder/V1/Resources/config/routes.yaml'
 
 
+videobasedmarketing.settings.presentation:
+    resource: '../src/VideoBasedMarketing/Settings/Presentation/Resources/config/routes.yaml'
+
+
 # This needs to be last because it contains the catchall route definitions.
 shared.presentation:
     resource: '../src/Shared/Presentation/Resources/config/routes.yaml'
