@@ -5,14 +5,18 @@ namespace App\VideoBasedMarketing\Settings\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
+use App\VideoBasedMarketing\Settings\Domain\Enum\DomainCheckStatus;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
+use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 readonly class SettingsDomainService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private MessageBusInterface    $messageBus
     )
     {
     }
@@ -74,15 +78,63 @@ readonly class SettingsDomainService
         return $user->getCustomDomainSetting();
     }
 
+    /**
+     * @throws Exception
+     */
     public function setCustomDomainName(
         User   $user,
-        string $name
+        string $domainName
     ): bool
     {
-        $name = trim($name);
+        $domainName = trim($domainName);
 
+        if (!mb_ereg(
+            '^(((?!\-))(xn\-\-)?[a-z0-9\-_]{0,61}[a-z0-9]{1,1}\.)*(xn\-\-)?([a-z0-9\-]{1,61}|[a-z0-9\-]{1,30})\.[a-z]{2,}$',
+            $domainName
+        )) {
 
+            // Maybe it's a URL, not a domain...
+            $urlParts = parse_url($domainName);
 
-        $this->getCustomDomainSetting($user)->setDomainName($name);
+            if (   is_array($urlParts)
+                && array_key_exists('host', $urlParts)
+            ) {
+                $domainName = $urlParts['host'];
+
+                if (!mb_ereg(
+                    '^(((?!\-))(xn\-\-)?[a-z0-9\-_]{0,61}[a-z0-9]{1,1}\.)*(xn\-\-)?([a-z0-9\-]{1,61}|[a-z0-9\-]{1,30})\.[a-z]{2,}$',
+                    $domainName
+                )) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        $this->getCustomDomainSetting($user)->setDomainName($domainName);
+        $this->entityManager->persist($user->getCustomDomainSetting());
+        $this->entityManager->flush();
+
+        $this->triggerDomainNameCheck($user);
+
+        return true;
+    }
+
+    public function triggerDomainNameCheck(
+        User $user
+    ): void
+    {
+        $this->getCustomDomainSetting($user)
+            ->setCheckStatus(DomainCheckStatus::CheckOutstanding);
+
+        $this->entityManager->persist($user->getCustomDomainSetting());
+        $this->entityManager->flush();
+
+        $this->messageBus->dispatch(
+            new CheckCustomDomainNameCommandMessage(
+                $user->getCustomDomainSetting()
+            )
+        );
     }
 }

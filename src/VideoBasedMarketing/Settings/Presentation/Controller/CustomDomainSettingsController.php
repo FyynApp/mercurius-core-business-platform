@@ -7,12 +7,12 @@ use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
-use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructureService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CustomDomainSettingsController
     extends AbstractController
@@ -51,7 +51,6 @@ class CustomDomainSettingsController
         );
     }
 
-
     #[Route(
         path        : [
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/settings/custom-domain/name',
@@ -70,7 +69,7 @@ class CustomDomainSettingsController
         $user = $this->getUser();
         $success = $settingsDomainService->setCustomDomainName(
             $user,
-            $request->get('name')
+            $request->get('domainName')
         );
 
         if ($success) {
@@ -92,6 +91,26 @@ class CustomDomainSettingsController
                 )
             );
         }
+
+        return $this->redirectToRoute('videobasedmarketing.settings.presentation.custom_domain');
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/settings/custom-domain/namecheck',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/einstellungen/eigene-domain/namensüberprüfung',
+        ],
+        name        : 'videobasedmarketing.settings.presentation.custom_domain.trigger_domain_name_check',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function triggerDomainNameCheck(
+        SettingsDomainService $settingsDomainService,
+    ): Response
+    {
+        $settingsDomainService->triggerDomainNameCheck(
+            $this->getUser(true)
+        );
 
         return $this->redirectToRoute('videobasedmarketing.settings.presentation.custom_domain');
     }

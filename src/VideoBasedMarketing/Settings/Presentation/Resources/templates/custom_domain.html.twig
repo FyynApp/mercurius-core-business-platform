@@ -76,10 +76,89 @@
 
                 <form
                         method="post"
-                        action=""
+                        action="{{ path('videobasedmarketing.settings.presentation.custom_domain.update_name') }}"
                 >
+                    <div class="flex flex-col gap-2">
+                        <label for="domainName">
+                            {{ 'custom_domain.label_domain_name'|trans }}
+                        </label>
 
+                        <div class="flex flex-row gap-2">
+                            <input
+                                    class="w-96 text-black font-mono bg-neutral-50 rounded-md border-1 border-mercurius-blue-500"
+                                    type="text"
+                                    id="domainName"
+                                    name="domainName"
+                                    value="{{ TwigHelperService.settingsDomainService.customDomainSetting(app.user).domainName }}"
+                            >
+                            <button
+                                    class="cta-with-icon-primary"
+                                    type="submit"
+                            >
+                                {{ 'custom_domain.cta_change'|trans }}
+                            </button>
+                        </div>
+                    </div>
                 </form>
+
+
+                <form
+                        method="post"
+                        action="{{ path('videobasedmarketing.settings.presentation.custom_domain.trigger_domain_name_check') }}"
+                >
+                    <div class="flex flex-row gap-2 mt-4">
+                        <div class="w-96 flex-shrink p-3 bg-neutral-100 shadow-inner rounded-md flex flex-row gap-2 justify-start items-center">
+                            {{ component(
+                                'videobasedmarketing_settings_custom_domain_name_check_result',
+                                { 'customDomainSetting': TwigHelperService.settingsDomainService.customDomainSetting(app.user) }
+                            ) }}
+                        </div>
+
+                        <button
+                                class="cta-with-icon-primary "
+                                type="submit"
+                        >
+                            {{ 'custom_domain.cta_check'|trans }}
+                        </button>
+                    </div>
+                </form>
+
+                <div
+                        class="
+                            mt-8 rounded-md p-4 border-1 border-neutral-300 border-dotted w-96 max-w-full
+                            flex flex-col gap-4
+                        "
+                >
+                    <div class="font-semibold">
+                        {{ 'custom_domain.setup_info.title'|trans }}
+                    </div>
+
+                    <p>
+                        {{ 'custom_domain.setup_info.content.1'|trans }}
+                    </p>
+
+                    <p>
+                        {{ 'custom_domain.setup_info.content.2'|trans }}
+                        <span class="font-mono font-semibold">138.201.225.175</span>
+                        {{ 'custom_domain.setup_info.content.3'|trans }}
+                        <span class="font-mono font-semibold">app.fyyn.io</span>{{ 'custom_domain.setup_info.content.4'|trans }}
+                    </p>
+
+                    <p>
+                        {{ 'custom_domain.setup_info.content.5'|trans }}
+                    </p>
+
+                    <a
+                            href=""
+                            class="flex flex-row items-center gap-1 underline text-neutral-500 hover:text-black"
+                    >
+                        {{ 'custom_domain.setup_info.cta'|trans }}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                            <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clip-rule="evenodd" />
+                            <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
 
             </div>
 

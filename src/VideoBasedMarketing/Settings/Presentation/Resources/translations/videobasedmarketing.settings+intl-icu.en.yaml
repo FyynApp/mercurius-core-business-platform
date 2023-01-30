@@ -22,7 +22,25 @@ custom_domain:
       1: 'Your current plan does not allow to present your landingpages using custom domain name.'
       2: 'While you can fully configure your custom domain now, it cannot be used to present your landingpages unless the plan upgrade has been made.'
     cta: 'Upgrade now'
+  label_domain_name: 'Your domain name:'
+  cta_change: 'Save'
+  cta_check: 'Check now'
+  setup_info:
+    title: 'How to set up your domain'
+    content:
+      1: 'To make your custom domain show your Fyyn.io landingpages, you need to ensure that the DNS settings of your domain point at our servers.'
+      2: 'This can be achieved by setting an A record to'
+      3: 'or a CNAME record to'
+      4: '.'
+      5: 'Consult the DNS management console of your hosting provider to set these records.'
+    cta: 'Read our helpdesk article for more details'
   flash_message:
     change_domain_name:
       successful: 'Successfully updated domain name.'
       failed: 'Failed to update domain name.'
+  check_status:
+    outstanding: 'Check outstanding...'
+    running: 'Checking...'
+    positive: 'Settings correct.'
+    negative: 'Settings incorrect.'
+    errored: 'Check failed.'
