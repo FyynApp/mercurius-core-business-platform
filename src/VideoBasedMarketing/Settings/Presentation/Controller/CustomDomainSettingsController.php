@@ -7,7 +7,6 @@ use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
-use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,9 +26,9 @@ class CustomDomainSettingsController
         methods     : [Request::METHOD_GET]
     )]
     public function customDomainAction(
-        MembershipService             $membershipService,
-        CapabilitiesService           $capabilitiesService,
-        SettingsDomainService         $settingsDomainService
+        MembershipService     $membershipService,
+        CapabilitiesService   $capabilitiesService,
+        SettingsDomainService $settingsDomainService
     ): Response
     {
         $user = $this->getUser();

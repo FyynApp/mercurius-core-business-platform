@@ -7,11 +7,13 @@ use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
 use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameSetupCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Throwable;
 
 #[AsMessageHandler]
 readonly class CheckCustomDomainNameSetupCommandMessageHandler
@@ -19,7 +21,8 @@ readonly class CheckCustomDomainNameSetupCommandMessageHandler
     public function __construct(
         private EntityManagerInterface $entityManager,
         private MessageBusInterface    $messageBus,
-        private RouterInterface        $router
+        private RouterInterface        $router,
+        private LoggerInterface        $logger
     )
     {
     }
@@ -66,7 +69,15 @@ readonly class CheckCustomDomainNameSetupCommandMessageHandler
 
             $checkUrl = "https://{$customDomainSetting->getDomainName()}{$this->router->generate('videobasedmarketing.settings.presentation.custom_domain.verify')}";
 
-            if (file_get_contents($checkUrl) !== 'This custom domain is working.') {
+            $checkResult = false;
+
+            try {
+                $checkResult = file_get_contents($checkUrl);
+            } catch (Throwable $t) {
+                $this->logger->info("Got throwable '{$t->getMessage()}'.");
+            }
+
+            if ($checkResult !== 'This custom domain is working.') {
 
                 $customDomainSetting->setHttpSetupStatus(CustomDomainHttpSetupStatus::CheckNegative);
                 $this->entityManager->persist($customDomainSetting);
@@ -86,6 +97,8 @@ readonly class CheckCustomDomainNameSetupCommandMessageHandler
                     new CheckCustomDomainNameSetupCommandMessage($customDomainSetting)
                 );
 
+                return;
+
             } else {
                 $customDomainSetting->setHttpSetupStatus(CustomDomainHttpSetupStatus::CheckPositive);
                 $this->entityManager->persist($customDomainSetting);
@@ -98,5 +111,11 @@ readonly class CheckCustomDomainNameSetupCommandMessageHandler
         $customDomainSetting->setDnsSetupStatus(CustomDomainDnsSetupStatus::CheckNegative);
         $this->entityManager->persist($customDomainSetting);
         $this->entityManager->flush();
+
+        sleep(5);
+
+        $this->messageBus->dispatch(
+            new CheckCustomDomainNameSetupCommandMessage($customDomainSetting)
+        );
     }
 }

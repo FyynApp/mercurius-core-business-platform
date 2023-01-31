@@ -10,58 +10,140 @@
 >
     <div class="flex flex-row gap-2 justify-start items-center">
 
-        {% if this.customDomainSetting.dnsSetupStatus
+        {% if this.dnsSetupStatus
             is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainDnsSetupStatus::CheckOutstanding')
         %}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                 <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
             </svg>
             <div class="animate-pulse">
-                {{ 'custom_domain.check_status.outstanding'|trans }}
+                {{ 'custom_domain.check_status.dns.outstanding'|trans }}
             </div>
         {% endif %}
 
 
-        {% if this.customDomainSetting.dnsSetupStatus
+        {% if this.dnsSetupStatus
             is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainDnsSetupStatus::CheckRunning')
         %}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                 <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 01-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 01-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 01-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584zM12 18a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
             </svg>
             <div class="animate-pulse">
-                {{ 'custom_domain.check_status.running'|trans }}
+                {{ 'custom_domain.check_status.dns.running'|trans }}
             </div>
         {% endif %}
 
 
-        {% if this.customDomainSetting.dnsSetupStatus
+        {% if this.dnsSetupStatus
             is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainDnsSetupStatus::CheckPositive')
         %}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                 <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
             </svg>
-            {{ 'custom_domain.check_status.positive'|trans }}
+            {{ 'custom_domain.check_status.dns.positive'|trans }}
         {% endif %}
 
 
-        {% if this.customDomainSetting.dnsSetupStatus
+        {% if this.dnsSetupStatus
             is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainDnsSetupStatus::CheckNegative')
         %}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                 <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
             </svg>
-            {{ 'custom_domain.check_status.negative'|trans }}
+            {{ 'custom_domain.check_status.dns.negative'|trans }}
         {% endif %}
 
 
-        {% if this.customDomainSetting.dnsSetupStatus
+        {% if this.dnsSetupStatus
             is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainDnsSetupStatus::CheckErrored')
         %}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                 <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
             </svg>
-            {{ 'custom_domain.check_status.errored'|trans }}
+            {{ 'custom_domain.check_status.dns.errored'|trans }}
         {% endif %}
 
     </div>
+
+
+    <div class="flex flex-row gap-2 justify-start items-center">
+
+        {% if this.httpSetupStatus
+            is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainHttpSetupStatus::CheckOutstanding')
+        %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" />
+            </svg>
+            <div class="animate-pulse">
+                {{ 'custom_domain.check_status.http.outstanding'|trans }}
+            </div>
+        {% endif %}
+
+
+        {% if this.httpSetupStatus
+            is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainHttpSetupStatus::CheckRunning')
+        %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 01-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 01-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 01-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584zM12 18a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+            </svg>
+            <div class="animate-pulse">
+                {{ 'custom_domain.check_status.http.running'|trans }}
+            </div>
+        {% endif %}
+
+
+        {% if this.httpSetupStatus
+            is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainHttpSetupStatus::CheckPositive')
+        %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+            </svg>
+            {{ 'custom_domain.check_status.http.positive'|trans }}
+        {% endif %}
+
+
+        {% if this.httpSetupStatus
+            is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainHttpSetupStatus::CheckNegative')
+        %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" />
+            </svg>
+            {{ 'custom_domain.check_status.http.negative'|trans }}
+        {% endif %}
+
+
+        {% if this.httpSetupStatus
+            is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainHttpSetupStatus::CheckErrored')
+        %}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
+            </svg>
+            {{ 'custom_domain.check_status.http.errored'|trans }}
+        {% endif %}
+
+    </div>
+
+
+    {% if this.httpSetupStatus
+        is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainHttpSetupStatus::CheckPositive')
+
+        and this.dnsSetupStatus
+        is same as constant('\\App\\VideoBasedMarketing\\Settings\\Domain\\Enum\\CustomDomainDnsSetupStatus::CheckPositive')
+    %}
+        <div class="mt-4">
+            {{ 'custom_domain.check_status.all_working'|trans }}
+
+            <a
+                    href="https://{{ this.customDomainSetting.domainName }}"
+                    target="_blank"
+                    class="flex flex-row items-center gap-1 underline text-neutral-800 hover:text-black"
+            >
+                https://{{ this.customDomainSetting.domainName }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                    <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+    {% endif %}
 </div>

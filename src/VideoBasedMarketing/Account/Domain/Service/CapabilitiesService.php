@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 
 
 readonly class CapabilitiesService
@@ -108,6 +109,11 @@ readonly class CapabilitiesService
     public function canAdministerVideos(User $user): bool
     {
         return $user->isAdmin();
+    }
+
+    public function canUseCustomDomainForLandingpages(User $user): bool
+    {
+        return $this->hasCapability($user, Capability::CustomDomain);
     }
 
     public function hasCapability(

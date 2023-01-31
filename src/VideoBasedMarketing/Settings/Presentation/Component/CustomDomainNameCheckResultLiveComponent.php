@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Settings\Presentation\Component;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
+use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -26,12 +27,22 @@ class CustomDomainNameCheckResultLiveComponent
 
     public function shouldPoll(): bool
     {
-        return $this->customDomainSetting->getDnsSetupStatus() !== CustomDomainDnsSetupStatus::CheckPositive
-            && $this->customDomainSetting->getDnsSetupStatus() !== CustomDomainDnsSetupStatus::CheckNegative
-            && $this->customDomainSetting->getDnsSetupStatus() !== CustomDomainDnsSetupStatus::CheckErrored;
+        if (   $this->customDomainSetting->getDnsSetupStatus()  ===  CustomDomainDnsSetupStatus::CheckPositive
+            && $this->customDomainSetting->getHttpSetupStatus() === CustomDomainHttpSetupStatus::CheckPositive
+        ) {
+            return false;
+        }
+
+        if (   $this->customDomainSetting->getDnsSetupStatus()  ===  CustomDomainDnsSetupStatus::CheckErrored
+            && $this->customDomainSetting->getHttpSetupStatus() === CustomDomainHttpSetupStatus::CheckErrored
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
-    public function getStatus(): CustomDomainDnsSetupStatus
+    public function getDnsSetupStatus(): CustomDomainDnsSetupStatus
     {
         $this->denyAccessUnlessGranted(
             VotingAttribute::View->value,
@@ -39,5 +50,15 @@ class CustomDomainNameCheckResultLiveComponent
         );
 
         return $this->customDomainSetting->getDnsSetupStatus();
+    }
+
+    public function getHttpSetupStatus(): CustomDomainHttpSetupStatus
+    {
+        $this->denyAccessUnlessGranted(
+            VotingAttribute::View->value,
+            $this->customDomainSetting
+        );
+
+        return $this->customDomainSetting->getHttpSetupStatus();
     }
 }

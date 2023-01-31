@@ -38,8 +38,16 @@ custom_domain:
       successful: 'Successfully updated domain name.'
       failed: 'Failed to update domain name.'
   check_status:
-    outstanding: 'Check outstanding...'
-    running: 'Checking...'
-    positive: 'Settings correct.'
-    negative: 'Settings incorrect.'
-    errored: 'Check failed.'
+    dns:
+      outstanding: 'DNS check: outstanding...'
+      running: 'DNS check: running...'
+      positive: 'DNS check: Success!'
+      negative: 'DNS check: Settings not yet correct.'
+      errored: 'DNS check: error.'
+    http:
+      outstanding: 'HTTP check: outstanding...'
+      running: 'HTTP check: running...'
+      positive: 'HTTP check: Success!'
+      negative: 'HTTP check: Setup outstanding.'
+      errored: 'HTTP check: error.'
+    all_working: 'Your domain can now serve your Fyyn.io landingpages at '

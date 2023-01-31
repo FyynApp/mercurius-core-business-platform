@@ -155,4 +155,17 @@ readonly class SettingsDomainService
             )
         );
     }
+
+    public function getUsableCustomDomain(User $user): ?string
+    {
+        if (   !is_null($user->getCustomDomainSetting())
+            && !is_null($user->getCustomDomainSetting()->getDomainName())
+            && $user->getCustomDomainSetting()->getDnsSetupStatus() === CustomDomainDnsSetupStatus::CheckPositive
+            && $user->getCustomDomainSetting()->getHttpSetupStatus() === CustomDomainHttpSetupStatus::CheckPositive
+        ) {
+            return $user->getCustomDomainSetting()->getDomainName();
+        }
+
+        return null;
+    }
 }

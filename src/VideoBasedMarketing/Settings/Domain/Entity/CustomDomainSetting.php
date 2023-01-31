@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Settings\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
 use DateTime;
@@ -15,6 +16,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Table(name: 'custom_domain_settings')]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
 class CustomDomainSetting
+    implements UserOwnedEntityInterface
 {
     /**
      * @throws Exception
@@ -56,7 +58,7 @@ class CustomDomainSetting
     )]
     private User $user;
 
-    public function getuser(): User
+    public function getUser(): User
     {
         return $this->user;
     }

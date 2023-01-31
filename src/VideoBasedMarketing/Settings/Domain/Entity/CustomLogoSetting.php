@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Settings\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,6 +15,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Table(name: 'custom_logo_settings')]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
 class CustomLogoSetting
+    implements UserOwnedEntityInterface
 {
     /**
      * @throws Exception
@@ -55,7 +57,7 @@ class CustomLogoSetting
     )]
     private User $user;
 
-    public function getuser(): User
+    public function getUser(): User
     {
         return $this->user;
     }
