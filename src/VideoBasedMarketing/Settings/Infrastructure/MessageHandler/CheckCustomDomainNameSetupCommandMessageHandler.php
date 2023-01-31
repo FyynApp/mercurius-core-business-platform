@@ -4,19 +4,22 @@ namespace App\VideoBasedMarketing\Settings\Infrastructure\MessageHandler;
 
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
+use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
 use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameSetupCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 #[AsMessageHandler]
 readonly class CheckCustomDomainNameSetupCommandMessageHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private MessageBusInterface    $messageBus
+        private MessageBusInterface    $messageBus,
+        private RouterInterface        $router
     )
     {
     }
@@ -34,6 +37,12 @@ readonly class CheckCustomDomainNameSetupCommandMessageHandler
         if (is_null($customDomainSetting)) {
             throw new UnrecoverableMessageHandlingException(
                 "Could not find customDomainSetting with id '{$message->getCustomDomainSettingId()}'."
+            );
+        }
+
+        if (is_null($customDomainSetting->getDomainName())) {
+            throw new UnrecoverableMessageHandlingException(
+                "Domain name of custom domain setting '{$customDomainSetting->getId()}' is null."
             );
         }
 
@@ -55,16 +64,33 @@ readonly class CheckCustomDomainNameSetupCommandMessageHandler
             $this->entityManager->persist($customDomainSetting);
             $this->entityManager->flush();
 
-            $fs = new Filesystem();
-            $fs->mkdir('/var/tmp/mercurius-core-business-platform/customdomain_setup_tasks');
-            file_put_contents(
-                "/var/tmp/mercurius-core-business-platform/customdomain_setup_tasks/{$customDomainSetting->getId()}",
-                $customDomainSetting->getDomainName()
-            );
+            $checkUrl = "https://{$customDomainSetting->getDomainName()}{$this->router->generate('videobasedmarketing.settings.presentation.custom_domain.verify')}";
 
-            $this->messageBus->dispatch(
-                new CheckCustomDomainNameSetupCommandMessage($customDomainSetting)
-            );
+            if (file_get_contents($checkUrl) !== 'This custom domain is working.') {
+
+                $customDomainSetting->setHttpSetupStatus(CustomDomainHttpSetupStatus::CheckNegative);
+                $this->entityManager->persist($customDomainSetting);
+                $this->entityManager->flush();
+
+                $fs = new Filesystem();
+                $fs->mkdir('/var/tmp/mercurius-core-business-platform/customdomain_setup_tasks');
+                file_put_contents(
+                    "/var/tmp/mercurius-core-business-platform/customdomain_setup_tasks/{$customDomainSetting->getId()}.task",
+                    $customDomainSetting->getDomainName()
+                );
+
+
+                sleep(5);
+
+                $this->messageBus->dispatch(
+                    new CheckCustomDomainNameSetupCommandMessage($customDomainSetting)
+                );
+
+            } else {
+                $customDomainSetting->setHttpSetupStatus(CustomDomainHttpSetupStatus::CheckPositive);
+                $this->entityManager->persist($customDomainSetting);
+                $this->entityManager->flush();
+            }
 
             return;
         }

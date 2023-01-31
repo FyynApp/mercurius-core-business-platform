@@ -6,6 +6,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
+use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameSetupCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -140,6 +141,10 @@ readonly class SettingsDomainService
         $this
             ->getCustomDomainSetting($user)
             ->setDnsSetupStatus(CustomDomainDnsSetupStatus::CheckOutstanding);
+
+        $this
+            ->getCustomDomainSetting($user)
+            ->setHttpSetupStatus(CustomDomainHttpSetupStatus::CheckOutstanding);
 
         $this->entityManager->persist($user->getCustomDomainSetting());
         $this->entityManager->flush();

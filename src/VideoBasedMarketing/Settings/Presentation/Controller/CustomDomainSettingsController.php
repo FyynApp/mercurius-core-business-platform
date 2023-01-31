@@ -104,7 +104,7 @@ class CustomDomainSettingsController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_POST]
     )]
-    public function triggerDomainNameCheck(
+    public function triggerDomainNameCheckAction(
         SettingsDomainService $settingsDomainService,
     ): Response
     {
@@ -113,5 +113,15 @@ class CustomDomainSettingsController
         );
 
         return $this->redirectToRoute('videobasedmarketing.settings.presentation.custom_domain');
+    }
+
+    #[Route(
+        path        : '/settings/custom-domain/verify',
+        name        : 'videobasedmarketing.settings.presentation.custom_domain.verify',
+        methods     : [Request::METHOD_GET]
+    )]
+    public function verifyAction(): Response
+    {
+        return new Response('This custom domain is working.');
     }
 }
