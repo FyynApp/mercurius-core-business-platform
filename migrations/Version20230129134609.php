@@ -62,9 +62,9 @@ final class Version20230129134609 extends AbstractMigration
         $this->addSql('ALTER TABLE settings_logo_uploads ADD CONSTRAINT FK_F68A37EEF56596AC FOREIGN KEY (custom_logo_settings_id) REFERENCES custom_logo_settings (id) ON DELETE SET NULL');
         $this->addSql('DROP TABLE tus_uploads');
         $this->addSql('DROP INDEX UNIQ_29AA643268D8EA3B ON videos');
-        $this->addSql('ALTER TABLE videos CHANGE tus_uploads_id video_uploads_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\'');
-        $this->addSql('ALTER TABLE videos ADD CONSTRAINT FK_29AA643236C46A13 FOREIGN KEY (video_uploads_id) REFERENCES recordings_video_uploads (id) ON DELETE SET NULL');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_29AA643236C46A13 ON videos (video_uploads_id)');
+        $this->addSql('ALTER TABLE videos CHANGE tus_uploads_id recordings_video_uploads_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\'');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_29AA643236C46A13 ON videos (recordings_video_uploads_id)');
+        $this->addSql('ALTER TABLE videos ADD CONSTRAINT FK_29AA643236C46A13 FOREIGN KEY (recordings_video_uploads_id) REFERENCES recordings_video_uploads (id) ON DELETE SET NULL');
     }
 
     public function down(Schema $schema): void
@@ -79,7 +79,7 @@ final class Version20230129134609 extends AbstractMigration
         $this->addSql('DROP TABLE recordings_video_uploads');
         $this->addSql('DROP TABLE settings_logo_uploads');
         $this->addSql('DROP INDEX UNIQ_29AA643236C46A13 ON videos');
-        $this->addSql('ALTER TABLE videos CHANGE video_uploads_id tus_uploads_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\'');
+        $this->addSql('ALTER TABLE videos CHANGE recordings_video_uploads_id tus_uploads_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\'');
         $this->addSql('ALTER TABLE videos ADD CONSTRAINT FK_29AA643268D8EA3B FOREIGN KEY (tus_uploads_id) REFERENCES tus_uploads (id) ON DELETE SET NULL');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_29AA643268D8EA3B ON videos (tus_uploads_id)');
     }

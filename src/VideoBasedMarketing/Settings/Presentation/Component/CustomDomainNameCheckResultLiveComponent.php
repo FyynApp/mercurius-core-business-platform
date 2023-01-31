@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Settings\Presentation\Component;
 
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
-use App\VideoBasedMarketing\Settings\Domain\Enum\DomainCheckStatus;
+use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -26,18 +26,18 @@ class CustomDomainNameCheckResultLiveComponent
 
     public function shouldPoll(): bool
     {
-        return $this->customDomainSetting->getCheckStatus() !== DomainCheckStatus::CheckPositive
-            && $this->customDomainSetting->getCheckStatus() !== DomainCheckStatus::CheckNegative
-            && $this->customDomainSetting->getCheckStatus() !== DomainCheckStatus::CheckErrored;
+        return $this->customDomainSetting->getDnsSetupStatus() !== CustomDomainDnsSetupStatus::CheckPositive
+            && $this->customDomainSetting->getDnsSetupStatus() !== CustomDomainDnsSetupStatus::CheckNegative
+            && $this->customDomainSetting->getDnsSetupStatus() !== CustomDomainDnsSetupStatus::CheckErrored;
     }
 
-    public function getStatus(): DomainCheckStatus
+    public function getStatus(): CustomDomainDnsSetupStatus
     {
         $this->denyAccessUnlessGranted(
             VotingAttribute::View->value,
             $this->customDomainSetting
         );
 
-        return $this->customDomainSetting->getCheckStatus();
+        return $this->customDomainSetting->getDnsSetupStatus();
     }
 }

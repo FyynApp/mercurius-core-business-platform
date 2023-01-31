@@ -183,7 +183,7 @@ class Video
         cascade: ['persist']
     )]
     #[ORM\JoinColumn(
-        name: 'video_uploads_id',
+        name: 'recordings_video_uploads_id',
         referencedColumnName: 'id',
         nullable: true,
         onDelete: 'SET NULL'

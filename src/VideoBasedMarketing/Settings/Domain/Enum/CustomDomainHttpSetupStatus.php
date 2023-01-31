@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Settings\Domain\Enum;
 
-enum DomainCheckStatus: int
+enum CustomDomainHttpSetupStatus: int
 {
     case CheckOutstanding = 0;
     case CheckRunning = 1;

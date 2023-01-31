@@ -5,9 +5,9 @@ namespace App\VideoBasedMarketing\Settings\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
-use App\VideoBasedMarketing\Settings\Domain\Enum\DomainCheckStatus;
+use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
-use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameCommandMessage;
+use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameDnsSetupCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -86,7 +86,11 @@ readonly class SettingsDomainService
         string $domainName
     ): bool
     {
-        $domainName = trim($domainName);
+        $domainName = trim(mb_strtolower($domainName));
+
+        if (mb_substr($domainName, -8) === '.fyyn.io') {
+            return false;
+        }
 
         if (!mb_ereg(
             '^(((?!\-))(xn\-\-)?[a-z0-9\-_]{0,61}[a-z0-9]{1,1}\.)*(xn\-\-)?([a-z0-9\-]{1,61}|[a-z0-9\-]{1,30})\.[a-z]{2,}$',
@@ -126,13 +130,13 @@ readonly class SettingsDomainService
     ): void
     {
         $this->getCustomDomainSetting($user)
-            ->setCheckStatus(DomainCheckStatus::CheckOutstanding);
+            ->setDnsSetupStatus(CustomDomainDnsSetupStatus::CheckOutstanding);
 
         $this->entityManager->persist($user->getCustomDomainSetting());
         $this->entityManager->flush();
 
         $this->messageBus->dispatch(
-            new CheckCustomDomainNameCommandMessage(
+            new CheckCustomDomainNameDnsSetupCommandMessage(
                 $user->getCustomDomainSetting()
             )
         );

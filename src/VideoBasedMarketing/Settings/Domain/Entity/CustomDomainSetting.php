@@ -4,7 +4,8 @@ namespace App\VideoBasedMarketing\Settings\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Settings\Domain\Enum\DomainCheckStatus;
+use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
+use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -85,20 +86,40 @@ class CustomDomainSetting
     #[ORM\Column(
         type: 'smallint',
         nullable: false,
-        enumType: DomainCheckStatus::class
+        enumType: CustomDomainDnsSetupStatus::class
     )]
-    private DomainCheckStatus $checkStatus = DomainCheckStatus::CheckOutstanding;
+    private CustomDomainDnsSetupStatus $dnsSetupStatus = CustomDomainDnsSetupStatus::CheckOutstanding;
 
-    public function setCheckStatus(
-        DomainCheckStatus $checkStatus
+    public function setDnsSetupStatus(
+        CustomDomainDnsSetupStatus $dnsSetupStatus
     ): void
     {
-        $this->checkStatus = $checkStatus;
+        $this->dnsSetupStatus = $dnsSetupStatus;
     }
 
-    public function getCheckStatus(): DomainCheckStatus
+    public function getDnsSetupStatus(): CustomDomainDnsSetupStatus
     {
-        return $this->checkStatus;
+        return $this->dnsSetupStatus;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: false,
+        enumType: CustomDomainHttpSetupStatus::class
+    )]
+    private CustomDomainHttpSetupStatus $httpSetupStatus = CustomDomainHttpSetupStatus::CheckOutstanding;
+
+    public function setHttpSetupStatus(
+        CustomDomainHttpSetupStatus $httpSetupStatus
+    ): void
+    {
+        $this->httpSetupStatus = $httpSetupStatus;
+    }
+
+    public function getHttpSetupStatus(): CustomDomainHttpSetupStatus
+    {
+        return $this->httpSetupStatus;
     }
 
 

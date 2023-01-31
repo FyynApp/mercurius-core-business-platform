@@ -3,14 +3,14 @@
 namespace App\VideoBasedMarketing\Settings\Infrastructure\MessageHandler;
 
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
-use App\VideoBasedMarketing\Settings\Domain\Enum\DomainCheckStatus;
-use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameCommandMessage;
+use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
+use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameDnsSetupCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
 #[AsMessageHandler]
-class CheckCustomDomainNameCommandMessageHandler
+class CheckCustomDomainNameDnsSetupCommandMessageHandler
 {
     private EntityManagerInterface $entityManager;
 
@@ -22,7 +22,7 @@ class CheckCustomDomainNameCommandMessageHandler
     }
 
     public function __invoke(
-        CheckCustomDomainNameCommandMessage $message
+        CheckCustomDomainNameDnsSetupCommandMessage $message
     ): void
     {
         /** @var null|CustomDomainSetting $customDomainSetting */
@@ -37,7 +37,7 @@ class CheckCustomDomainNameCommandMessageHandler
             );
         }
 
-        $customDomainSetting->setCheckStatus(DomainCheckStatus::CheckRunning);
+        $customDomainSetting->setDnsSetupStatus(CustomDomainDnsSetupStatus::CheckRunning);
         $this->entityManager->persist($customDomainSetting);
         $this->entityManager->flush();
 
@@ -51,13 +51,13 @@ class CheckCustomDomainNameCommandMessageHandler
             && array_key_exists('target', $cnameRecord[0])
             && $cnameRecord[0]['target'] === "customdomain.{$_ENV['APP_ENV']}.fyyn.io"
         ) {
-            $customDomainSetting->setCheckStatus(DomainCheckStatus::CheckPositive);
+            $customDomainSetting->setDnsSetupStatus(CustomDomainDnsSetupStatus::CheckPositive);
             $this->entityManager->persist($customDomainSetting);
             $this->entityManager->flush();
             return;
         }
 
-        $customDomainSetting->setCheckStatus(DomainCheckStatus::CheckNegative);
+        $customDomainSetting->setDnsSetupStatus(CustomDomainDnsSetupStatus::CheckNegative);
         $this->entityManager->persist($customDomainSetting);
         $this->entityManager->flush();
     }
