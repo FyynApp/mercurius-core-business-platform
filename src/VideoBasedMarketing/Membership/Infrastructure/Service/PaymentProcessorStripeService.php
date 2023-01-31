@@ -55,7 +55,7 @@ class PaymentProcessorStripeService
         $this->entityManager->persist($subscription);
         $this->entityManager->flush();
 
-        Stripe::setApiKey('sk_test_T7k8gX5WJjJNGYYRSsmck4wR');
+        Stripe::setApiKey($_ENV['STRIPE_API_KEY']);
 
         $checkoutSession = Session::create(
             [
@@ -66,9 +66,11 @@ class PaymentProcessorStripeService
 
                 'line_items' => [[
                     'price' => match ($membershipPlan->getName()) {
-                        MembershipPlanName::Plus => 'price_1LuAWFKfVD7HZWQX0Crxe0WY',
-                        MembershipPlanName::Pro => 'price_1LuAWaKfVD7HZWQX9iHpiwda',
-                        MembershipPlanName::Basic => throw new InvalidArgumentException("Cannot subscribe to plan '{$membershipPlan->getName()->value}'.")
+                        MembershipPlanName::Plus => $_ENV['STRIPE_API_ID_PRODUCT_PLUS_PLAN'],
+                        MembershipPlanName::Pro => $_ENV['STRIPE_API_ID_PRODUCT_PRO_PLAN'],
+
+                        MembershipPlanName::Basic
+                            => throw new InvalidArgumentException("Cannot subscribe to plan '{$membershipPlan->getName()->value}'.")
                     },
                     'quantity' => 1,
                 ]],

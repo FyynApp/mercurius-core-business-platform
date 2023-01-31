@@ -127,7 +127,7 @@ class MembershipService
                 new MembershipPlan(
                     $name,
                     true,
-                    19.99,
+                    49.99,
                     [
                         Capability::CustomDomain,
                         Capability::CustomLogoOnLandingpage,
