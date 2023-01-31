@@ -41,23 +41,6 @@ class CheckCustomDomainNameCommandMessageHandler
         $this->entityManager->persist($customDomainSetting);
         $this->entityManager->flush();
 
-        $aRecord = dns_get_record(
-            $customDomainSetting->getDomainName(),
-            DNS_A
-        );
-
-        if (   is_array($aRecord)
-            && array_key_exists(0, $aRecord)
-            && array_key_exists('ip', $aRecord[0])
-            && $aRecord[0]['ip'] === '138.201.225.175'
-        ) {
-            $customDomainSetting->setCheckStatus(DomainCheckStatus::CheckPositive);
-            $this->entityManager->persist($customDomainSetting);
-            $this->entityManager->flush();
-            return;
-        }
-
-
         $cnameRecord = dns_get_record(
             $customDomainSetting->getDomainName(),
             DNS_CNAME
@@ -66,7 +49,7 @@ class CheckCustomDomainNameCommandMessageHandler
         if (   is_array($cnameRecord)
             && array_key_exists(0, $cnameRecord)
             && array_key_exists('target', $cnameRecord[0])
-            && $cnameRecord[0]['target'] === 'app.fyyn.io'
+            && $cnameRecord[0]['target'] === "customdomain.{$_ENV['APP_ENV']}.fyyn.io"
         ) {
             $customDomainSetting->setCheckStatus(DomainCheckStatus::CheckPositive);
             $this->entityManager->persist($customDomainSetting);

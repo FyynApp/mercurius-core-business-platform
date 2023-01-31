@@ -26,7 +26,9 @@ class CustomDomainNameCheckResultLiveComponent
 
     public function shouldPoll(): bool
     {
-        return $this->customDomainSetting->getCheckStatus() !== DomainCheckStatus::CheckPositive;
+        return $this->customDomainSetting->getCheckStatus() !== DomainCheckStatus::CheckPositive
+            && $this->customDomainSetting->getCheckStatus() !== DomainCheckStatus::CheckNegative
+            && $this->customDomainSetting->getCheckStatus() !== DomainCheckStatus::CheckErrored;
     }
 
     public function getStatus(): DomainCheckStatus

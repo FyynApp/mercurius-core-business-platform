@@ -72,56 +72,57 @@
             {% endif %}
 
 
-            <div>
+            <div class="flex flex-col lg:flex-row gap-8">
 
-                <form
-                        method="post"
-                        action="{{ path('videobasedmarketing.settings.presentation.custom_domain.update_name') }}"
-                >
-                    <div class="flex flex-col gap-2">
-                        <label for="domainName">
-                            {{ 'custom_domain.label_domain_name'|trans }}
-                        </label>
+                <div>
+                    <form
+                            method="post"
+                            action="{{ path('videobasedmarketing.settings.presentation.custom_domain.update_name') }}"
+                    >
+                        <div class="flex flex-col gap-2">
+                            <label for="domainName">
+                                {{ 'custom_domain.label_domain_name'|trans }}
+                            </label>
 
-                        <div class="flex flex-row gap-2">
-                            <input
-                                    class="w-96 text-black font-mono bg-neutral-50 rounded-md border-1 border-mercurius-blue-500"
-                                    type="text"
-                                    id="domainName"
-                                    name="domainName"
-                                    value="{{ TwigHelperService.settingsDomainService.customDomainSetting(app.user).domainName }}"
-                            >
+                            <div class="flex flex-row gap-2">
+                                <input
+                                        class="w-96 text-black font-mono bg-neutral-50 rounded-md border-1 border-mercurius-blue-500"
+                                        type="text"
+                                        id="domainName"
+                                        name="domainName"
+                                        value="{{ TwigHelperService.settingsDomainService.customDomainSetting(app.user).domainName }}"
+                                >
+                                <button
+                                        class="cta-with-icon-primary"
+                                        type="submit"
+                                >
+                                    {{ 'custom_domain.cta_change'|trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form
+                            method="post"
+                            action="{{ path('videobasedmarketing.settings.presentation.custom_domain.trigger_domain_name_check') }}"
+                    >
+                        <div class="flex flex-row gap-2 mt-4">
+                            <div class="w-96 flex-shrink p-3 bg-neutral-100 shadow-inner rounded-md flex flex-row gap-2 justify-start items-center">
+                                {{ component(
+                                    'videobasedmarketing_settings_custom_domain_name_check_result',
+                                    { 'customDomainSetting': TwigHelperService.settingsDomainService.customDomainSetting(app.user) }
+                                ) }}
+                            </div>
+
                             <button
-                                    class="cta-with-icon-primary"
+                                    class="cta-with-icon-primary "
                                     type="submit"
                             >
-                                {{ 'custom_domain.cta_change'|trans }}
+                                {{ 'custom_domain.cta_check'|trans }}
                             </button>
                         </div>
-                    </div>
-                </form>
-
-
-                <form
-                        method="post"
-                        action="{{ path('videobasedmarketing.settings.presentation.custom_domain.trigger_domain_name_check') }}"
-                >
-                    <div class="flex flex-row gap-2 mt-4">
-                        <div class="w-96 flex-shrink p-3 bg-neutral-100 shadow-inner rounded-md flex flex-row gap-2 justify-start items-center">
-                            {{ component(
-                                'videobasedmarketing_settings_custom_domain_name_check_result',
-                                { 'customDomainSetting': TwigHelperService.settingsDomainService.customDomainSetting(app.user) }
-                            ) }}
-                        </div>
-
-                        <button
-                                class="cta-with-icon-primary "
-                                type="submit"
-                        >
-                            {{ 'custom_domain.cta_check'|trans }}
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
 
                 <div
                         class="
@@ -139,13 +140,11 @@
 
                     <p>
                         {{ 'custom_domain.setup_info.content.2'|trans }}
-                        <span class="font-mono font-semibold">138.201.225.175</span>
-                        {{ 'custom_domain.setup_info.content.3'|trans }}
-                        <span class="font-mono font-semibold">app.fyyn.io</span>{{ 'custom_domain.setup_info.content.4'|trans }}
+                        <span class="font-mono font-semibold p-1 bg-mercurius-blue-50">customdomain.{{ TwigHelperService.symfonyEnv }}.fyyn.io</span>{{ 'custom_domain.setup_info.content.3'|trans }}
                     </p>
 
                     <p>
-                        {{ 'custom_domain.setup_info.content.5'|trans }}
+                        {{ 'custom_domain.setup_info.content.4'|trans }}
                     </p>
 
                     <a

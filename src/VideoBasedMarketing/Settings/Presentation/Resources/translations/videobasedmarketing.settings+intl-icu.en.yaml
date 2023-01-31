@@ -19,8 +19,8 @@ custom_domain:
   note_missing_capability:
     title: 'Important: Plan upgrade required!'
     content:
-      1: 'Your current plan does not allow to present your landingpages using custom domain name.'
-      2: 'While you can fully configure your custom domain now, it cannot be used to present your landingpages unless the plan upgrade has been made.'
+      1: 'Your current plan does not allow to present your landingpages using a custom domain name.'
+      2: 'While you can fully configure your custom domain name now, it cannot be used to present your landingpages unless the plan upgrade has been made.'
     cta: 'Upgrade now'
   label_domain_name: 'Your domain name:'
   cta_change: 'Save'
@@ -28,11 +28,10 @@ custom_domain:
   setup_info:
     title: 'How to set up your domain'
     content:
-      1: 'To make your custom domain show your Fyyn.io landingpages, you need to ensure that the DNS settings of your domain point at our servers.'
-      2: 'This can be achieved by setting an A record to'
-      3: 'or a CNAME record to'
-      4: '.'
-      5: 'Consult the DNS management console of your hosting provider to set these records.'
+      1: 'To make your custom domain show your Fyyn.io landingpages, you need to ensure that one of the DNS settings of your domain point at our servers.'
+      2: 'This can be achieved by creating a CNAME record to'
+      3: '.'
+      4: 'Consult the DNS management console of your hosting provider to create this record.'
     cta: 'Read our helpdesk article for more details'
   flash_message:
     change_domain_name:

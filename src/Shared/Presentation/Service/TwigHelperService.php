@@ -82,6 +82,11 @@ class TwigHelperService
         $this->settingsInfrastructureService = $settingsInfrastructureService;
     }
 
+    public function getSymfonyEnv(): string
+    {
+        return $_ENV['APP_ENV'];
+    }
+
     public function getContentDeliveryService(): ContentDeliveryService
     {
         return $this->contentDeliveryService;
