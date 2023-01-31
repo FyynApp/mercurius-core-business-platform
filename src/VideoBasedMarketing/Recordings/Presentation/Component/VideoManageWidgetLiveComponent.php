@@ -2,18 +2,16 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Component;
 
-use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Presentation\Form\Type\VideoType;
+use App\VideoBasedMarketing\Recordings\Presentation\Service\RecordingsPresentationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -58,28 +56,24 @@ class VideoManageWidgetLiveComponent
 
     private PresentationpagesService $presentationpagesService;
 
-    private RouterInterface $router;
-
-    private ShortIdService $shortIdService;
-
     private TranslatorInterface $translator;
+
+    private RecordingsPresentationService $recordingsPresentationService;
 
 
     public function __construct(
-        LoggerInterface            $logger,
-        EntityManagerInterface     $entityManager,
-        PresentationpagesService   $presentationpagesService,
-        RouterInterface            $router,
-        ShortIdService             $shortIdService,
-        TranslatorInterface        $translator
+        LoggerInterface               $logger,
+        EntityManagerInterface        $entityManager,
+        PresentationpagesService      $presentationpagesService,
+        TranslatorInterface           $translator,
+        RecordingsPresentationService $recordingsPresentationService
     )
     {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
         $this->presentationpagesService = $presentationpagesService;
-        $this->router = $router;
-        $this->shortIdService = $shortIdService;
         $this->translator = $translator;
+        $this->recordingsPresentationService = $recordingsPresentationService;
     }
 
     /**
@@ -162,49 +156,54 @@ class VideoManageWidgetLiveComponent
         $this->deleteModalIsOpen = false;
     }
 
-    
+
+    /**
+     * @throws Exception
+     */
     #[LiveAction]
     public function switchShareUrlDirectLink(): void
     {
-        $this->shareUrl =
-            $this->router->generate(
-                'videobasedmarketing.recordings.presentation.video.share_link',
-                ['videoShortId' => $this->shortIdService->encodeObject($this->video)],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
+        $this->shareUrl = $this
+            ->recordingsPresentationService
+            ->getVideoShareLinkUrl($this->video);
     }
 
+    /**
+     * @throws Exception
+     */
     #[LiveAction]
     public function shareUrlFacebook(): string
     {
         return
             'https://www.facebook.com/sharer/sharer.php?u='
             . urlencode(
-                $this->router->generate(
-                    'videobasedmarketing.recordings.presentation.video.share_link',
-                    ['videoShortId' => $this->shortIdService->encodeObject($this->video)],
-                    UrlGeneratorInterface::ABSOLUTE_URL
-                )
+                $this
+                    ->recordingsPresentationService
+                    ->getVideoShareLinkUrl($this->video)
             );
     }
 
+    /**
+     * @throws Exception
+     */
     #[LiveAction]
     public function switchShareUrlInstagram(): void
     {
         $this->switchShareUrlDirectLink();
     }
 
+    /**
+     * @throws Exception
+     */
     #[LiveAction]
     public function shareUrlTwitter(): string
     {
         return
             'https://twitter.com/intent/tweet?url='
             . urlencode(
-                $this->router->generate(
-                    'videobasedmarketing.recordings.presentation.video.share_link',
-                    ['videoShortId' => $this->shortIdService->encodeObject($this->video)],
-                    UrlGeneratorInterface::ABSOLUTE_URL
-                )
+                $this
+                    ->recordingsPresentationService
+                    ->getVideoShareLinkUrl($this->video)
             )
             . '&text='
             . urlencode("{$this
@@ -216,17 +215,18 @@ class VideoManageWidgetLiveComponent
                 )}\n\n");
     }
 
+    /**
+     * @throws Exception
+     */
     #[LiveAction]
     public function shareUrlLinkedIn(): string
     {
         return
             'https://www.linkedin.com/sharing/share-offsite/?url='
             . urlencode(
-                $this->router->generate(
-                    'videobasedmarketing.recordings.presentation.video.share_link',
-                    ['videoShortId' => $this->shortIdService->encodeObject($this->video)],
-                    UrlGeneratorInterface::ABSOLUTE_URL
-                )
+                $this
+                    ->recordingsPresentationService
+                    ->getVideoShareLinkUrl($this->video)
             );
     }
 

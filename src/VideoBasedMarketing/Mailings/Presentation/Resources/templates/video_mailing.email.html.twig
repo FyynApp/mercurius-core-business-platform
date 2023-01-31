@@ -46,12 +46,7 @@
                                 <td style="text-align:center;padding-top:24px;width:100%" valign="top">
 
                                     <p>
-                                        <a href="{{
-                                                    url(
-                                                        'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
-                                                        { 'videoId': videoMailing.video.id }
-                                                    )
-                                                    }}"
+                                        <a href="{{ TwigHelperService.recordingsPresentationService.videoShareLinkUrl(videoMailing.video) }}"
                                         >
                                             <img
                                                     class="video-poster-still-with-play-overlay"

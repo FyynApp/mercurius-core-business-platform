@@ -111,7 +111,7 @@ readonly class CapabilitiesService
         return $user->isAdmin();
     }
 
-    public function canUseCustomDomainForLandingpages(User $user): bool
+    public function canPresentLandingpageOnCustomDomain(User $user): bool
     {
         return $this->hasCapability($user, Capability::CustomDomain);
     }

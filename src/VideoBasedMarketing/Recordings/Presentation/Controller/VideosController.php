@@ -38,7 +38,10 @@ class VideosController
     }
 
     #[Route(
-        path        : '/v/{videoShortId}',
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/v/{videoShortId}',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/v/{videoShortId}',
+        ],
         name        : 'videobasedmarketing.recordings.presentation.video.share_link',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
@@ -60,8 +63,8 @@ class VideosController
         }
 
         return $this->forward(
-            self::class . '::showWithVideoOnlyPresentationpageTemplateAction',
-            ['videoId' => $video->getId()],
+            self::class . '::showVideoLandingpageAction',
+            ['videoId' => $video->getId(), '_locale' => $request->getLocale()],
             $request->query->all()
         );
     }
@@ -71,11 +74,11 @@ class VideosController
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recordings/videos/{videoId}/wvopt',
             'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmen/videos/{videoId}/wvopt',
         ],
-        name        : 'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
+        name        : 'videobasedmarketing.recordings.presentation.show_video_landingpage',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function showWithVideoOnlyPresentationpageTemplateAction(
+    public function showVideoLandingpageAction(
         string                 $videoId,
         EntityManagerInterface $entityManager,
         VideoDomainService     $videoDomainService
@@ -99,7 +102,7 @@ class VideosController
         }
 
         return $this->render(
-            '@videobasedmarketing.recordings/video_show_with_video_only_presentationpage_template.html.twig',
+            '@videobasedmarketing.recordings/video_landingpage.html.twig',
             ['video' => $video]
         );
     }

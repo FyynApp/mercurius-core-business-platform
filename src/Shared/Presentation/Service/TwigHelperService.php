@@ -14,6 +14,7 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDo
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
+use App\VideoBasedMarketing\Recordings\Presentation\Service\RecordingsPresentationService;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructureService;
 
@@ -33,6 +34,8 @@ class TwigHelperService
     private RecordingsInfrastructureService $recordingsInfrastructureService;
 
     private RecordingSessionDomainService $recordingSessionDomainService;
+
+    private RecordingsPresentationService $recordingsPresentationService;
 
     private ShortIdService $shortIdService;
 
@@ -57,6 +60,7 @@ class TwigHelperService
         VideoDomainService              $videoDomainService,
         RecordingsInfrastructureService $recordingsInfrastructureService,
         RecordingSessionDomainService   $recordingSessionDomainService,
+        RecordingsPresentationService   $recordingsPresentationService,
         ShortIdService                  $shortIdService,
         DashboardDomainService          $dashboardService,
         PresentationpagesService        $presentationpagesService,
@@ -73,6 +77,7 @@ class TwigHelperService
         $this->videoDomainService = $videoDomainService;
         $this->recordingsInfrastructureService = $recordingsInfrastructureService;
         $this->recordingSessionDomainService = $recordingSessionDomainService;
+        $this->recordingsPresentationService = $recordingsPresentationService;
         $this->shortIdService = $shortIdService;
         $this->dashboardService = $dashboardService;
         $this->presentationpagesService = $presentationpagesService;
@@ -120,6 +125,11 @@ class TwigHelperService
     public function getRecordingSessionDomainService(): RecordingSessionDomainService
     {
         return $this->recordingSessionDomainService;
+    }
+
+    public function getRecordingsPresentationService(): RecordingsPresentationService
+    {
+        return $this->recordingsPresentationService;
     }
 
     public function getShortIdService(): ShortIdService

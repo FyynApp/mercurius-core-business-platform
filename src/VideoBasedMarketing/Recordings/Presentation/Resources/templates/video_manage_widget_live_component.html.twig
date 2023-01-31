@@ -161,24 +161,7 @@
             <a
                     data-test-class="videoManageWidgetShowLandingpageCta"
                     target="_blank"
-
-                    {% if TwigHelperService.capabilitiesService.canUseCustomDomainForLandingpages(this.video.user)
-                        and TwigHelperService.settingsDomainService.usableCustomDomain(this.video.user) is not null
-                    %}
-                        href="https://{{ TwigHelperService.settingsDomainService.usableCustomDomain(this.video.user) }}{{
-                            path(
-                                'videobasedmarketing.recordings.presentation.video.share_link',
-                                { 'videoShortId': this.video.shortId }
-                            )
-                        }}"
-                    {% else %}
-                        href="{{
-                            path(
-                                'videobasedmarketing.recordings.presentation.video.share_link',
-                                { 'videoShortId': this.video.shortId }
-                            )
-                        }}"
-                    {% endif %}
+                    href="{{ TwigHelperService.recordingsPresentationService.videoShareLinkUrl(this.video) }}"
             >
                 <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
                     <div class="p-2 pl-4 pr-4 w-full h-full text-left text-sm">
@@ -650,12 +633,7 @@
                                 {% if TwigHelperService.capabilitiesService.mustBeForcedToClaimUnregisteredUser(app.user) %}
                                     href="{{ claimUnregisteredUserLandingpagePath }}"
                                 {% else %}
-                                    href="{{
-                                    path(
-                                        'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
-                                        { videoId: this.video.id }
-                                    )
-                                    }}"
+                                    href="{{ TwigHelperService.recordingsPresentationService.videoShareLinkUrl(this.video) }}"
                                 {% endif %}
 
                                 target="_blank"

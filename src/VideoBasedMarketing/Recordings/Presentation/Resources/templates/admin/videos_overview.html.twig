@@ -33,11 +33,7 @@
                             {% if TwigHelperService.videoDomainService.videoCanBeShownOnPresentationpage(video) %}
                                 <a
                                         target="_blank"
-                                        href="{{
-                                            path(
-                                                'videobasedmarketing.recordings.presentation.video.show_with_video_only_presentationpage_template',
-                                                { videoId: video.id }
-                                            ) }}"
+                                        href="{{ TwigHelperService.recordingsPresentationService.videoShareLinkUrl(video) }}"
                                 >
                                     {{ videoPreviewMacros.interactive(video) }}
                                 </a>

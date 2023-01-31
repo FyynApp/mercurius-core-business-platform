@@ -9,12 +9,7 @@
 {% block metatags %}
     <meta property="og:title" content="Fyyn.io - record your screen and camera with one click">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{
-        url(
-            'videobasedmarketing.recordings.presentation.video.share_link',
-            { videoShortId: video.shortId }
-        )
-    }}">
+    <meta property="og:url" content="{{ TwigHelperService.recordingsPresentationService.videoShareLinkUrl(video) }}">
     <meta property="og:image" content="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillWithPlayOverlayForEmailAssetUrl(video) }}">
     <meta property="og:description" content="Record your screen and camera with one click - no special skills or additional software required.">
     <meta property="og:site_name" content="Fyyn.io">
