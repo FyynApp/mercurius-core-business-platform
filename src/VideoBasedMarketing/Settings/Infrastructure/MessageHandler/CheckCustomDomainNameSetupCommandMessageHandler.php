@@ -4,25 +4,25 @@ namespace App\VideoBasedMarketing\Settings\Infrastructure\MessageHandler;
 
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
-use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameDnsSetupCommandMessage;
+use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameSetupCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
-class CheckCustomDomainNameDnsSetupCommandMessageHandler
+readonly class CheckCustomDomainNameSetupCommandMessageHandler
 {
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private MessageBusInterface    $messageBus
     )
     {
-        $this->entityManager = $entityManager;
     }
 
     public function __invoke(
-        CheckCustomDomainNameDnsSetupCommandMessage $message
+        CheckCustomDomainNameSetupCommandMessage $message
     ): void
     {
         /** @var null|CustomDomainSetting $customDomainSetting */
@@ -54,6 +54,18 @@ class CheckCustomDomainNameDnsSetupCommandMessageHandler
             $customDomainSetting->setDnsSetupStatus(CustomDomainDnsSetupStatus::CheckPositive);
             $this->entityManager->persist($customDomainSetting);
             $this->entityManager->flush();
+
+            $fs = new Filesystem();
+            $fs->mkdir('/var/tmp/mercurius-core-business-platform/customdomain_setup_tasks');
+            file_put_contents(
+                "/var/tmp/mercurius-core-business-platform/customdomain_setup_tasks/{$customDomainSetting->getId()}",
+                $customDomainSetting->getDomainName()
+            );
+
+            $this->messageBus->dispatch(
+                new CheckCustomDomainNameSetupCommandMessage($customDomainSetting)
+            );
+
             return;
         }
 

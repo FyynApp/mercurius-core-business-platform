@@ -6,7 +6,7 @@ use App\Shared\Infrastructure\Message\AsyncMessageInterface;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use ValueError;
 
-class CheckCustomDomainNameDnsSetupCommandMessage
+class CheckCustomDomainNameSetupCommandMessage
     implements AsyncMessageInterface
 {
     private string $customDomainSettingId;
