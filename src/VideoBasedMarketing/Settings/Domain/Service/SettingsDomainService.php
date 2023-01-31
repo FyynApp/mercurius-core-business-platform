@@ -92,6 +92,10 @@ readonly class SettingsDomainService
             return false;
         }
 
+        if (mb_substr($domainName, -9) === '.fyyn.app') {
+            return false;
+        }
+
         if (!mb_ereg(
             '^(((?!\-))(xn\-\-)?[a-z0-9\-_]{0,61}[a-z0-9]{1,1}\.)*(xn\-\-)?([a-z0-9\-]{1,61}|[a-z0-9\-]{1,30})\.[a-z]{2,}$',
             $domainName
@@ -114,6 +118,10 @@ readonly class SettingsDomainService
             } else {
                 return false;
             }
+        }
+
+        if ($domainName === $this->getCustomDomainSetting($user)->getDomainName()) {
+            return true;
         }
 
         $this->getCustomDomainSetting($user)->setDomainName($domainName);
