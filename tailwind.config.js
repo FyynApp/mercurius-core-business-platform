@@ -39,9 +39,9 @@ module.exports = {
             orange: colors.orange,
             'mercurius-green': colors.lime,
             'mercurius-blue': {
-                50:  '#b2e6fd',
-                100: '#91dcfd',
-                200: '#62cdfb',
+                50:  '#d8f2fe',
+                100: '#ade5fe',
+                200: '#79d4fc',
                 300: '#3ac4ff',
                 400: '#00b0fc',
                 500: '#009ee2',
