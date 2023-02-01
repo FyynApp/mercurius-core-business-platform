@@ -101,7 +101,18 @@
         @apply flex flex-row gap-1 hover:underline text-red-800;
     }
 
-
+    .cta-link-back {
+        @apply
+        w-fit
+        text-neutral-400
+        hover:text-neutral-900
+        flex
+        flex-row
+        items-center
+        gap-2
+        text-sm
+        underline
+    }
 
     .cta-link-primary-small {
         @apply
@@ -185,5 +196,18 @@
 
     textarea {
         resize: none;
+    }
+
+    .text-input {
+        @apply
+        text-black
+        bg-neutral-50
+        rounded-md
+        border-1
+        border-neutral-300
+        focus:border-mercurius-blue-500
+        focus:ring-mercurius-blue-300
+        focus:bg-mercurius-blue-50
+        ;
     }
 }
