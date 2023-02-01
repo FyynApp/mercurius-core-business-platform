@@ -116,7 +116,17 @@ readonly class CapabilitiesService
         return $this->hasCapability($user, Capability::CustomDomain);
     }
 
-    public function hasCapability(
+    public function canPresentOwnLogoOnLandingpage(User $user): bool
+    {
+        return $this->hasCapability($user, Capability::CustomLogoOnLandingpage);
+    }
+
+    public function canPresentAdFreeLandingpage(User $user): bool
+    {
+        return $this->hasCapability($user, Capability::AdFreeLandingpages);
+    }
+
+    private function hasCapability(
         ?User      $user,
         Capability $capability
     ): bool

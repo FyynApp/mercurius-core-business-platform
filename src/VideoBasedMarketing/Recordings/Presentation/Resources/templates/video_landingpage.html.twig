@@ -73,7 +73,11 @@
 
     {% trans_default_domain 'videobasedmarketing.recordings' %}
 
-    {% if TwigHelperService.videoDomainService.userIsOwnerOfVideo(app.user, video) %}
+    {% if
+        TwigHelperService.videoDomainService.userIsOwnerOfVideo(app.user, video)
+        and
+        not TwigHelperService.capabilitiesService.canPresentOwnLogoOnLandingpage(app.user)
+    %}
         <div
                 data-test-id="videoShowWithVideoOnlyPresentationpageTemplateOwnerViewNote"
                 class="
@@ -82,57 +86,50 @@
                     flex flex-row justify-start items-center gap-6
                 "
         >
-            {% if TwigHelperService.capabilitiesService.capability(
-                app.user,
-                constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage')
-            ) is same as false
-            %}
-                <div class="w-fit text-left font-normal">
-                    <a
-                            class="flex flex-col w-fit items-start gap-0"
-                            href="{{
-                                path(
-                                    'videobasedmarketing.membership.presentation.show_upgrade_offer.for_capabilities',
-                                    { capabilityNames: [
-                                        constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage').value,
-                                        constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomDomain').value,
-                                        constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::AdFreeLandingpages').value
-                                    ] }
-                                )
-                            }}"
-                    >
-                        <div class="flex flex-row items-center gap-2">
-                            {{ 'video_show_with_video_only_presentationpage_template.upgrade_promotion.custom_domain'|trans }}
-                        </div>
+            <div class="w-fit text-left font-normal">
+                <a
+                        class="flex flex-col w-fit items-start gap-0"
+                        href="{{
+                            path(
+                                'videobasedmarketing.membership.presentation.show_upgrade_offer.for_capabilities',
+                                { capabilityNames: [
+                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage').value,
+                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomDomain').value,
+                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::AdFreeLandingpages').value
+                                ] }
+                            )
+                        }}"
+                >
+                    <div class="flex flex-row items-center gap-2">
+                        {{ 'video_show_with_video_only_presentationpage_template.upgrade_promotion.custom_domain'|trans }}
+                    </div>
 
-                        <div class="flex flex-row items-center gap-2">
-                            {{ 'video_show_with_video_only_presentationpage_template.upgrade_promotion.custom_logo'|trans }}
-                        </div>
-                    </a>
-                </div>
+                    <div class="flex flex-row items-center gap-2">
+                        {{ 'video_show_with_video_only_presentationpage_template.upgrade_promotion.custom_logo'|trans }}
+                    </div>
+                </a>
+            </div>
 
-                <div>
-                    <a
-                            class="cta-with-icon-primary bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500 text-sm"
-                            href="{{
-                                path(
-                                    'videobasedmarketing.membership.presentation.show_upgrade_offer.for_capabilities',
-                                    { capabilityNames: [
-                                        constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage').value,
-                                        constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomDomain').value,
-                                    ] }
-                                )
-                            }}"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 heroicon-next-to-text">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-                        </svg>
+            <div>
+                <a
+                        class="cta-with-icon-primary bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500 text-sm"
+                        href="{{
+                            path(
+                                'videobasedmarketing.membership.presentation.show_upgrade_offer.for_capabilities',
+                                { capabilityNames: [
+                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage').value,
+                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomDomain').value,
+                                ] }
+                            )
+                        }}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 heroicon-next-to-text">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                    </svg>
 
-                        Unlock now!
-                    </a>
-                </div>
-
-            {% endif %}
+                    Unlock now!
+                </a>
+            </div>
         </div>
     {% endif %}
 
@@ -144,16 +141,14 @@
 
                 <div class="flex flex-shrink-0 justify-start items-start">
 
-                    {% if TwigHelperService.capabilitiesService.capability(
-                            app.user,
-                            constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage')
-                        ) is same as true
+                    {% if
+                        TwigHelperService.capabilitiesService.canPresentOwnLogoOnLandingpage(video.user)
                         and
-                        TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(app.user) is not null
+                        TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(video.user) is not null
                     %}
                         <img
                                 class="h-14"
-                                src="{{ asset(TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(app.user)) }}"
+                                src="{{ asset(TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(video.user)) }}"
                                 alt="logo"
                         >
                     {% else %}
@@ -163,22 +158,24 @@
                     {% endif %}
                 </div>
 
-                <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
-                    <a
-                            data-test-id="videoShowWithVideoOnlyPresentationpageTemplateGetForFreeTopNavCta"
-                            href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
-                            class="cta-with-icon-primary w-full md:w-fit text-left"
-                    >
-                        {{ 'video_show_with_video_only_presentationpage_template.get_extenstion_for_free_cta'|trans }}
-                    </a>
+                {% if not TwigHelperService.capabilitiesService.canPresentAdFreeLandingpage(video.user) %}
+                    <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
+                        <a
+                                data-test-id="videoShowWithVideoOnlyPresentationpageTemplateGetForFreeTopNavCta"
+                                href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
+                                class="cta-with-icon-primary w-full md:w-fit text-left"
+                        >
+                            {{ 'video_show_with_video_only_presentationpage_template.get_extenstion_for_free_cta'|trans }}
+                        </a>
 
-                    <a
-                            href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
-                            class="cta-with-icon-primary w-full md:w-fit text-left"
-                    >
-                        {{ 'video_show_with_video_only_presentationpage_template.sign_in_cta'|trans }}
-                    </a>
-                </div>
+                        <a
+                                href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
+                                class="cta-with-icon-primary w-full md:w-fit text-left"
+                        >
+                            {{ 'video_show_with_video_only_presentationpage_template.sign_in_cta'|trans }}
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -274,64 +271,67 @@
         </div>
     </div>
 
-    <div class="w-full bg-mercurius-blue-500 p-16 pb-32">
-        <div class="flex flex-col md:flex-row items-start justify-center w-full gap-8">
 
-            <div class="text-left">
-                <h3 class="font-medium text-3xl break-normal ml-2 text-white">
-                    {{ 'video_show_with_video_only_presentationpage_template.footer_copy_1'|trans }}
-                </h3>
-                <h4 class="mt-6 font-light text-xl break-normal ml-2 text-white">
-                    {{ 'video_show_with_video_only_presentationpage_template.footer_copy_2'|trans }}
-                </h4>
-                <a href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh">
-                    <button
-                            class="
-                                mt-4 text-2xl border-2 border-white-500 text-white
-                                block px-3 py-2 rounded-md ml-2
-                                bg-mercurius-blue-700 hover:bg-mercurius-blue-400
-                            "
+    {% if not TwigHelperService.capabilitiesService.canPresentAdFreeLandingpage(video.user) %}
+        <div class="w-full bg-mercurius-blue-500 p-16 pb-32">
+            <div class="flex flex-col md:flex-row items-start justify-center w-full gap-8">
+
+                <div class="text-left">
+                    <h3 class="font-medium text-3xl break-normal ml-2 text-white">
+                        {{ 'video_show_with_video_only_presentationpage_template.footer_copy_1'|trans }}
+                    </h3>
+                    <h4 class="mt-6 font-light text-xl break-normal ml-2 text-white">
+                        {{ 'video_show_with_video_only_presentationpage_template.footer_copy_2'|trans }}
+                    </h4>
+                    <a href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh">
+                        <button
+                                class="
+                                    mt-4 text-2xl border-2 border-white-500 text-white
+                                    block px-3 py-2 rounded-md ml-2
+                                    bg-mercurius-blue-700 hover:bg-mercurius-blue-400
+                                "
+                        >
+                            {{ 'video_show_with_video_only_presentationpage_template.get_extenstion_for_free_cta'|trans }}
+                        </button>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-4 justify-center items-center gap-4 w-100">
+                    <img
+                            src="{{ asset('assets/images/website/videoteaser-240-138-1.jpg') }}"
+                            class="rounded-md w-full"
                     >
-                        {{ 'video_show_with_video_only_presentationpage_template.get_extenstion_for_free_cta'|trans }}
-                    </button>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-4 justify-center items-center gap-4 w-100">
-                <img
-                        src="{{ asset('assets/images/website/videoteaser-240-138-1.jpg') }}"
-                        class="rounded-md w-full"
-                >
-                <img
-                        src="{{ asset('assets/images/website/videoteaser-240-180-1.jpg') }}"
-                        class="rounded-md w-full"
-                >
-                <img
-                        src="{{ asset('assets/images/website/videoteaser-240-138-2.jpg') }}"
-                        class="rounded-md w-full"
-                >
-                <img
-                        src="{{ asset('assets/images/website/videoteaser-240-138-4.jpg') }}"
-                        class="rounded-md w-full"
-                >
-                <img
-                        src="{{ asset('assets/images/website/videoteaser-240-240-1.jpg') }}"
-                        class="rounded-md w-full"
-                >
-                <img
-                        src="{{ asset('assets/images/website/videoteaser-240-138-3.jpg') }}"
-                        class="rounded-md w-full"
-                >
-                <img
-                        src="{{ asset('assets/images/website/videoteaser-240-180-2.jpg') }}"
-                        class="rounded-md w-full"
-                >
-                <img
-                        src="{{ asset('assets/images/website/videoteaser-240-240-2.jpg') }}"
-                        class="rounded-md w-full"
-                >
+                    <img
+                            src="{{ asset('assets/images/website/videoteaser-240-180-1.jpg') }}"
+                            class="rounded-md w-full"
+                    >
+                    <img
+                            src="{{ asset('assets/images/website/videoteaser-240-138-2.jpg') }}"
+                            class="rounded-md w-full"
+                    >
+                    <img
+                            src="{{ asset('assets/images/website/videoteaser-240-138-4.jpg') }}"
+                            class="rounded-md w-full"
+                    >
+                    <img
+                            src="{{ asset('assets/images/website/videoteaser-240-240-1.jpg') }}"
+                            class="rounded-md w-full"
+                    >
+                    <img
+                            src="{{ asset('assets/images/website/videoteaser-240-138-3.jpg') }}"
+                            class="rounded-md w-full"
+                    >
+                    <img
+                            src="{{ asset('assets/images/website/videoteaser-240-180-2.jpg') }}"
+                            class="rounded-md w-full"
+                    >
+                    <img
+                            src="{{ asset('assets/images/website/videoteaser-240-240-2.jpg') }}"
+                            class="rounded-md w-full"
+                    >
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 
 {% endblock %}

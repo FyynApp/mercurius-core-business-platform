@@ -37,9 +37,7 @@ class CustomDomainSettingsController
         return $this->render(
             '@videobasedmarketing.settings/custom_domain.html.twig',
             [
-                'hasCapability' => $capabilitiesService->hasCapability(
-                    $user, Capability::CustomDomain
-                ),
+                'hasCapability' => $capabilitiesService->canPresentLandingpageOnCustomDomain($user),
 
                 'requiredMembershipPlan' => $membershipService
                     ->getCheapestMembershipPlanRequiredForCapabilities([

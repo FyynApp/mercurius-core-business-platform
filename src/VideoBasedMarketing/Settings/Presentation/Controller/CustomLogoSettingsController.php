@@ -37,9 +37,7 @@ class CustomLogoSettingsController
         return $this->render(
             '@videobasedmarketing.settings/custom_logo.html.twig',
             [
-                'hasCapability' => $capabilitiesService->hasCapability(
-                    $user, Capability::CustomLogoOnLandingpage
-                ),
+                'hasCapability' => $capabilitiesService->canPresentOwnLogoOnLandingpage($user),
 
                 'requiredMembershipPlan' => $membershipService
                     ->getCheapestMembershipPlanRequiredForCapabilities([
