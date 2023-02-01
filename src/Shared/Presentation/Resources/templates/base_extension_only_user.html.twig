@@ -24,23 +24,29 @@
 
         <div class="min-h-screen flex flex-col w-full p-8">
             <header class="flex flex-row justify-end absolute right-0 -top-1">
-                <div
-                        class="
-                            flex flex-row gap-2 justify-end items-end
-                            p-2 pr-4 pl-4 rounded-bl-md opacity-20
-                            w-fit
-                            hover:opacity-100
-                            bg-neutral-500 text-neutral-300 font-semibold
-                            cursor-none
-                        "
-                >
-                    <span>Fyyn.io</span>
-                    <img
-                            class="h-6"
-                            src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
-                            alt="Fyyn.io"
+                <a href="/">
+                    <div
+                            class="
+                                flex flex-row gap-2 justify-end items-end
+                                p-4 pr-4 pl-4 rounded-bl-md
+                                w-fit
+                                opacity-20
+                                hover:opacity-100
+                                bg-neutral-500
+                                hover:bg-mercurius-blue-600
+                                text-neutral-300
+                                hover:text-white
+                                font-semibold
+                            "
                     >
-                </div>
+                        <span>Fyyn.io</span>
+                        <img
+                                class="h-6"
+                                src="{{ asset('assets/images/fyyn-logo-240x241.png') }}"
+                                alt="Fyyn.io"
+                        >
+                    </div>
+                </a>
             </header>
 
 
