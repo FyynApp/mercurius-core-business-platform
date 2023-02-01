@@ -35,8 +35,10 @@ custom_domain:
     cta: 'Read our helpdesk article for more details'
   flash_message:
     change_domain_name:
-      successful: 'Successfully updated domain name.'
-      failed: 'Failed to update domain name.'
+      success: 'Successfully updated domain name.'
+      invalid_domain_name: 'This is not a valid domain name.'
+      is_apex_domain: 'Using a so-called apex domain name requires a different setup approach. Please contact customer support for assistance.'
+      is_mercurius_domain: 'This is not a valid domain name.'
   check_status:
     dns:
       outstanding: 'DNS check: outstanding...'

@@ -7,6 +7,7 @@ use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
+use App\VideoBasedMarketing\Settings\Domain\Enum\SetCustomDomainNameResult;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameSetupCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -85,16 +86,16 @@ readonly class SettingsDomainService
     public function setCustomDomainName(
         User   $user,
         string $domainName
-    ): bool
+    ): SetCustomDomainNameResult
     {
         $domainName = trim(mb_strtolower($domainName));
 
         if (mb_substr($domainName, -8) === '.fyyn.io') {
-            return false;
+            return SetCustomDomainNameResult::IsMercuriusDomain;
         }
 
         if (mb_substr($domainName, -9) === '.fyyn.app') {
-            return false;
+            return SetCustomDomainNameResult::IsMercuriusDomain;
         }
 
         if (!mb_ereg(
@@ -114,15 +115,19 @@ readonly class SettingsDomainService
                     '^(((?!\-))(xn\-\-)?[a-z0-9\-_]{0,61}[a-z0-9]{1,1}\.)*(xn\-\-)?([a-z0-9\-]{1,61}|[a-z0-9\-]{1,30})\.[a-z]{2,}$',
                     $domainName
                 )) {
-                    return false;
+                    return SetCustomDomainNameResult::InvalidDomainName;
                 }
             } else {
-                return false;
+                return SetCustomDomainNameResult::InvalidDomainName;
             }
         }
 
+        if (mb_substr_count($domainName, '.') === 1) {
+            return SetCustomDomainNameResult::IsApexDomain;
+        }
+
         if ($domainName === $this->getCustomDomainSetting($user)->getDomainName()) {
-            return true;
+            return SetCustomDomainNameResult::Success;
         }
 
         $this->getCustomDomainSetting($user)->setDomainName($domainName);
@@ -131,7 +136,7 @@ readonly class SettingsDomainService
 
         $this->triggerDomainNameCheck($user);
 
-        return true;
+        return SetCustomDomainNameResult::Success;
     }
 
     public function triggerDomainNameCheck(

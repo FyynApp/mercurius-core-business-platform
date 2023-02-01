@@ -36,6 +36,7 @@ module.exports = {
             neutral: colors.neutral,
             lime: colors.lime,
             red: colors.red,
+            orange: colors.orange,
             'mercurius-green': colors.lime,
             'mercurius-blue': {
                 50:  '#b2e6fd',

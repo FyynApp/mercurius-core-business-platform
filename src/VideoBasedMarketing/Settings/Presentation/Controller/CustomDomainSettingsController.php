@@ -7,6 +7,7 @@ use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Settings\Domain\Enum\SetCustomDomainNameResult;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,30 +67,48 @@ class CustomDomainSettingsController
     ): Response
     {
         $user = $this->getUser();
-        $success = $settingsDomainService->setCustomDomainName(
+        $result = $settingsDomainService->setCustomDomainName(
             $user,
             $request->get('domainName')
         );
 
-        if ($success) {
-            $this->addFlash(
+        match ($result) {
+            SetCustomDomainNameResult::Success => $this->addFlash(
                 FlashMessageLabel::Success->value,
                 $translator->trans(
-                    'custom_domain.flash_message.change_domain_name.successful',
+                    'custom_domain.flash_message.change_domain_name.success',
                     [],
                     'videobasedmarketing.settings'
                 )
-            );
-        } else {
-            $this->addFlash(
+            ),
+
+            SetCustomDomainNameResult::InvalidDomainName => $this->addFlash(
+                FlashMessageLabel::Danger->value,
+                $translator->trans(
+                    'custom_domain.flash_message.change_domain_name.invalid_domain_name',
+                    [],
+                    'videobasedmarketing.settings'
+                )
+            ),
+
+            SetCustomDomainNameResult::IsApexDomain => $this->addFlash(
                 FlashMessageLabel::Warning->value,
                 $translator->trans(
-                    'custom_domain.flash_message.change_domain_name.failed',
+                    'custom_domain.flash_message.change_domain_name.is_apex_domain',
                     [],
                     'videobasedmarketing.settings'
                 )
-            );
-        }
+            ),
+
+            SetCustomDomainNameResult::IsMercuriusDomain => $this->addFlash(
+                FlashMessageLabel::Danger->value,
+                $translator->trans(
+                    'custom_domain.flash_message.change_domain_name.is_mercurius_domain',
+                    [],
+                    'videobasedmarketing.settings'
+                )
+            )
+        };
 
         return $this->redirectToRoute('videobasedmarketing.settings.presentation.custom_domain');
     }
