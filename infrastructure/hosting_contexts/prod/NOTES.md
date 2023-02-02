@@ -46,6 +46,7 @@
     # Deploy prod
 
     # Copy infrastructure/hosting_contexts/prod/etc/supervisor/conf.d/mercurius-core-business-platform-symfony-messages-consumer.conf
+    # Copy infrastructure/hosting_contexts/prod/etc/supervisor/conf.d/mercurius-core-business-platform-setup-custom-domain.conf
 
     service supervisor stop
     service supervisor start
