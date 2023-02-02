@@ -59,7 +59,7 @@ videos_overview:
     custom_logo: 'Logo für Landingpage ändern'
 video_player_embedded:
   full_asset_outstanding: 'Video wird verarbeitet · · ·'
-video_show_with_video_only_presentationpage_template:
+video_landingpage:
   owner_view_note: 'Dies ist die Landingpage deines Videos, wie sie von anderen Besuchern gesehen wird.'
   share_cta: 'Teilen'
   copy_video_link_cta: 'Video-Link kopieren'
