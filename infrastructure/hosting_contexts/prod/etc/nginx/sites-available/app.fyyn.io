@@ -89,6 +89,7 @@ server {
         expires max;
     }
 
+    listen [::]:443 ssl; # managed by Certbot
     listen 443 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/app.fyyn.io/fullchain.pem; # managed by Certbot
     ssl_certificate_key /etc/letsencrypt/live/app.fyyn.io/privkey.pem; # managed by Certbot
@@ -107,7 +108,6 @@ server {
     server_name app.fyyn.io;
 
     listen 80;
+    listen [::]:80;
     return 404; # managed by Certbot
-
-
 }
