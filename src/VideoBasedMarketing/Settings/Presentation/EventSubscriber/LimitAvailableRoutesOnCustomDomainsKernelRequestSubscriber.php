@@ -61,6 +61,7 @@ readonly class LimitAvailableRoutesOnCustomDomainsKernelRequestSubscriber
 
             'videobasedmarketing.recordings.presentation.video.share_link',
 
+            'videobasedmarketing.settings.presentation.custom_domain.verify',
             'videobasedmarketing.settings.presentation.custom_domain.redirect',
 
             'ux_live_component',

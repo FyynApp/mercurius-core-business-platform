@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ENV="$1"
+TARGET_DOMAIN="$1"
 
 mkdir -p /var/tmp/mercurius-core-business-platform/customdomain_setup_tasks
 chmod 0777 /var/tmp/mercurius-core-business-platform/customdomain_setup_tasks
@@ -33,7 +33,7 @@ server {
     root /dev/null;
 
     location / {
-      proxy_pass https://preprod.fyyn.io;
+      proxy_pass https://$TARGET_DOMAIN;
       proxy_set_header X-Mercurius-Custom-Domain $DOMAIN;
     }
 }
@@ -57,7 +57,7 @@ EOT
             exit 2
           fi
 
-          /usr/sbin/service nginx restart
+          /usr/sbin/service nginx reload
 
           rm "$FILENAME"
     fi
