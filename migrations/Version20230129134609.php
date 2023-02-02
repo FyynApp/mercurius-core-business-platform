@@ -64,6 +64,7 @@ final class Version20230129134609 extends AbstractMigration
         $this->addSql('DROP INDEX UNIQ_29AA643268D8EA3B ON videos');
         $this->addSql('ALTER TABLE videos CHANGE tus_uploads_id recordings_video_uploads_id CHAR(36) DEFAULT NULL COMMENT \'(DC2Type:guid)\'');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_29AA643236C46A13 ON videos (recordings_video_uploads_id)');
+        $this->addSql('UPDATE videos SET recordings_video_uploads_id = NULL;');
         $this->addSql('ALTER TABLE videos ADD CONSTRAINT FK_29AA643236C46A13 FOREIGN KEY (recordings_video_uploads_id) REFERENCES recordings_video_uploads (id) ON DELETE SET NULL');
     }
 
