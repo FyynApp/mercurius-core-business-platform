@@ -47,7 +47,7 @@ EOT
             exit 1
           fi
 
-          /usr/sbin/service nginx restart
+          /usr/sbin/service nginx reload
 
           /usr/bin/certbot --non-interactive --keep-until-expiring --nginx --domain $DOMAIN
 
