@@ -62,7 +62,6 @@ class ForceShowingEmailVerificationPageKernelRequestSubscriber
             'videobasedmarketing.account.presentation.sign_up.email_verification',
             'videobasedmarketing.account.api.extension.',
             'videobasedmarketing.recordings.api.extension.',
-            'videobasedmarketing.recordings.presentation.show_video_landingpage',
             'ux_live_component'
         ];
 

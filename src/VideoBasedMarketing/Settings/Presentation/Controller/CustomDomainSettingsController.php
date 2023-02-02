@@ -140,4 +140,14 @@ class CustomDomainSettingsController
     {
         return new Response('This custom domain is working.');
     }
+
+    #[Route(
+        path        : '/settings/custom-domain/redirect',
+        name        : 'videobasedmarketing.settings.presentation.custom_domain.redirect',
+        methods     : [Request::METHOD_GET]
+    )]
+    public function redirectAction(): Response
+    {
+        return $this->render('@videobasedmarketing.settings/custom_domain_redirect.html.twig');
+    }
 }

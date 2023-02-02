@@ -34,6 +34,7 @@ server {
 
     location / {
       proxy_pass https://preprod.fyyn.io;
+      proxy_set_header X-Mercurius-Custom-Domain $DOMAIN;
     }
 }
 EOT

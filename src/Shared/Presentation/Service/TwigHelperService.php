@@ -92,6 +92,11 @@ class TwigHelperService
         return $_ENV['APP_ENV'];
     }
 
+    public function getEnvVar(string $envVar): string
+    {
+        return $_ENV[$envVar];
+    }
+
     public function getContentDeliveryService(): ContentDeliveryService
     {
         return $this->contentDeliveryService;

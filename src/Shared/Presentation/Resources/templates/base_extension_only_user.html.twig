@@ -6,6 +6,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        {% block metatags %}{% endblock %}
+
         <title>Fyyn — {% block title %}Welcome!{% endblock %}</title>
 
         {{ include('@shared/includes/cookiebot_script.html.twig') }}

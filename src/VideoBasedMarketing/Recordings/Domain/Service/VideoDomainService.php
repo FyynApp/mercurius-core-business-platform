@@ -132,7 +132,7 @@ readonly class VideoDomainService
         return false;
     }
 
-    public function prepareForShowingOnVideoOnlyPresentationpage(
+    public function prepareForShowingWithVideoOnlyPresentationpageTemplate(
         Video $video
     ): void
     {
