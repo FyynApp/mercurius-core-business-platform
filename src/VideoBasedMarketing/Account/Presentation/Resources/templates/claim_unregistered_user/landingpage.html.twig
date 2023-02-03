@@ -26,6 +26,17 @@
                     {{ 'claim_unregistered_user.form.note1'|trans }}
                 </div>
 
+                {% if videos|length > 0 %}
+                    <div class="mt-7 w-full">
+                        <img
+                                class="rounded-md w-full"
+                                src="{{ asset(
+                                    TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(videos[0])
+                                ) }}"
+                        >
+                    </div>
+                {% endif %}
+
                 <div
                         data-test-id="note2"
                         class="mt-8 text-2xl font-extralight text-neutral-100"
