@@ -828,8 +828,6 @@ class RecordingsInfrastructureService
             }
         }
 
-        $scaleParam = '';
-
         $process = new Process(
             [
                 'ffmpeg',
