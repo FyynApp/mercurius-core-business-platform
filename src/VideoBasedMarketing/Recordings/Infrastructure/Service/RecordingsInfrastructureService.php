@@ -217,14 +217,16 @@ class RecordingsInfrastructureService
         RecordingSession $recordingSession
     ): void
     {
-        $this->concatenateChunksIntoFile(
+        $success = $this->concatenateChunksIntoFile(
             $recordingSession,
             $this->getRecordingPreviewVideoFilePath($recordingSession)
         );
 
-        $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
-        $this->entityManager->persist($recordingSession);
-        $this->entityManager->flush();
+        if ($success) {
+            $recordingSession->setRecordingPreviewAssetHasBeenGenerated(true);
+            $this->entityManager->persist($recordingSession);
+            $this->entityManager->flush();
+        }
     }
 
     /**
@@ -396,13 +398,13 @@ class RecordingsInfrastructureService
         if (   is_null($video->getRecordingSession())
             && is_null($video->getVideoUpload())
         ) {
-            throw new Exception('Need video linked to either recording session or tus upload.');
+            throw new Exception("Need video '{$video->getId()}' to be linked to either recording session or video upload.");
         }
 
         if (   !is_null($video->getRecordingSession())
             && !is_null($video->getVideoUpload())
         ) {
-            throw new Exception('Need video linked to only one of recording session or tus upload.');
+            throw new Exception("Need video '{$video->getId()}' to be linked to only one of recording session or video upload.");
         }
 
         if (!is_null($video->getVideoUpload())) {
@@ -648,16 +650,18 @@ class RecordingsInfrastructureService
         );
         $process->run();
 
-        $video->setHasAssetPosterAnimatedWebp(true);
+        if ($process->isSuccessful()) {
+            $video->setHasAssetPosterAnimatedWebp(true);
 
-        // See https://trac.ffmpeg.org/ticket/4907
-        // ffmpeg/ffprobe can encode animated WebP files, but cannot decode them,
-        // which is why we simply use the width and height of the still image WebP asset
-        $video->setAssetPosterAnimatedWebpWidth($video->getAssetPosterStillWebpWidth());
-        $video->setAssetPosterAnimatedWebpHeight($video->getAssetPosterStillWebpHeight());
+            // See https://trac.ffmpeg.org/ticket/4907
+            // ffmpeg/ffprobe can encode animated WebP files, but cannot decode them,
+            // which is why we simply use the width and height of the still image WebP asset
+            $video->setAssetPosterAnimatedWebpWidth($video->getAssetPosterStillWebpWidth());
+            $video->setAssetPosterAnimatedWebpHeight($video->getAssetPosterStillWebpHeight());
 
-        $this->entityManager->persist($video);
-        $this->entityManager->flush();
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+        }
     }
 
     private function generateVideoAssetPosterAnimatedGif(Video $video): void
@@ -707,9 +711,11 @@ class RecordingsInfrastructureService
         );
         $process->run();
 
-        $video->setHasAssetPosterAnimatedGif(true);
-        $this->entityManager->persist($video);
-        $this->entityManager->flush();
+        if ($process->isSuccessful()) {
+            $video->setHasAssetPosterAnimatedGif(true);
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+        }
     }
 
 
@@ -724,39 +730,41 @@ class RecordingsInfrastructureService
 
         $this->createFilesystemStructureForVideoAssets($video);
 
-        $this->concatenateChunksIntoFile(
+        $success = $this->concatenateChunksIntoFile(
             $video->getRecordingSession(),
             $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
         );
 
-        $video->setHasAssetFullWebm(true);
+        if ($success) {
+            $video->setHasAssetFullWebm(true);
 
-        $video->setAssetFullWebmFps(
-            $this->probeForVideoAssetFps(
-                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
-            )
-        );
+            $video->setAssetFullWebmFps(
+                $this->probeForVideoAssetFps(
+                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                )
+            );
 
-        $video->setAssetFullWebmSeconds(
-            $this->probeForVideoAssetSeconds(
-                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
-            )
-        );
+            $video->setAssetFullWebmSeconds(
+                $this->probeForVideoAssetSeconds(
+                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                )
+            );
 
-        $video->setAssetFullWebmWidth(
-            $this->probeForVideoAssetWidth(
-                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
-            )
-        );
+            $video->setAssetFullWebmWidth(
+                $this->probeForVideoAssetWidth(
+                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                )
+            );
 
-        $video->setAssetFullWebmHeight(
-            $this->probeForVideoAssetHeight(
-                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
-            )
-        );
+            $video->setAssetFullWebmHeight(
+                $this->probeForVideoAssetHeight(
+                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                )
+            );
 
-        $this->entityManager->persist($video);
-        $this->entityManager->flush();
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+        }
     }
 
     /**
@@ -771,14 +779,56 @@ class RecordingsInfrastructureService
                 $this->generateVideoAssetFullWebm($video);
             }
 
+            $sourceWidth = $video->getAssetFullWebmWidth();
+            $sourceHeight = $video->getAssetFullWebmHeight();
+
             $sourcePath = $this->getVideoFullAssetFilePath(
                 $video,
                 AssetMimeType::VideoWebm
             );
         } else {
-            $sourcePath = $this
-                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
+            $sourcePath = $this->getContentStoragePathForVideoUpload($video->getVideoUpload());
+
+            $sourceWidth = $this->probeForVideoAssetWidth(
+                $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
+            );
+
+            $sourceHeight = $this->probeForVideoAssetHeight(
+                $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
+            );
         }
+
+        // The libx264 encoder cannot work with uneven resolutions,
+        // we therefore try to feed it even resolutions
+
+        if (!is_null($sourceWidth) && $sourceWidth % 2 !== 0) {
+            $sourceWidth += 1;
+        }
+
+        if (!is_null($sourceHeight) && $sourceHeight % 2 !== 0) {
+            $sourceHeight += 1;
+        }
+
+        if (is_null($sourceWidth) && is_null($sourceHeight)) {
+            $scaleParam = ''; // in this case, if the input video has an uneven resolution in
+                              // one or two of it's dimensions, encoding will fail.
+                              // Encoding without a scaleParam is therefore a best-effort approach
+        } else {
+            $scaleParam = ',scale=';
+            if (is_null($sourceWidth)) {
+                $scaleParam .= 'iw:';
+            } else {
+                $scaleParam .= "$sourceWidth:";
+            }
+
+            if (is_null($sourceHeight)) {
+                $scaleParam .= 'ih';
+            } else {
+                $scaleParam .= "$sourceHeight";
+            }
+        }
+
+        $scaleParam = '';
 
         $process = new Process(
             [
@@ -797,7 +847,7 @@ class RecordingsInfrastructureService
                 '4.2',
 
                 '-vf',
-                'format=yuv420p,fps=60',
+                "format=yuv420p,fps=60$scaleParam",
 
                 '-c:a',
                 'aac',
@@ -814,34 +864,36 @@ class RecordingsInfrastructureService
         );
         $process->run();
 
-        $video->setHasAssetFullMp4(true);
+        if ($process->isSuccessful()) {
+            $video->setHasAssetFullMp4(true);
 
-        $video->setAssetFullMp4Fps(
-            $this->probeForVideoAssetFps(
-                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
-            )
-        );
+            $video->setAssetFullMp4Fps(
+                $this->probeForVideoAssetFps(
+                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+                )
+            );
 
-        $video->setAssetFullMp4Seconds(
-            $this->probeForVideoAssetSeconds(
-                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
-            )
-        );
+            $video->setAssetFullMp4Seconds(
+                $this->probeForVideoAssetSeconds(
+                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+                )
+            );
 
-        $video->setAssetFullMp4Width(
-            $this->probeForVideoAssetWidth(
-                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
-            )
-        );
+            $video->setAssetFullMp4Width(
+                $this->probeForVideoAssetWidth(
+                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+                )
+            );
 
-        $video->setAssetFullMp4Height(
-            $this->probeForVideoAssetHeight(
-                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
-            )
-        );
+            $video->setAssetFullMp4Height(
+                $this->probeForVideoAssetHeight(
+                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+                )
+            );
 
-        $this->entityManager->persist($video);
-        $this->entityManager->flush();
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+        }
     }
 
 
@@ -1117,7 +1169,7 @@ class RecordingsInfrastructureService
     private function concatenateChunksIntoFile(
         RecordingSession $recordingSession,
         string $targetFilePath
-    ): void
+    ): bool
     {
         $sql = "
                 SELECT id
@@ -1148,6 +1200,8 @@ class RecordingsInfrastructureService
         );
 
         $process->run();
+
+        return $process->isSuccessful();
     }
 
     public function checkAndHandleVideoAssetGenerationForUser(
