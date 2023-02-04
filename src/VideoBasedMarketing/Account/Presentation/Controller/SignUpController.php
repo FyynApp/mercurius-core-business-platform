@@ -15,8 +15,12 @@ use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\SignUpType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -183,6 +187,72 @@ class SignUpController
         }
 
         $this->addFlash(FlashMessageLabel::Success->value, 'Your email address has been verified.');
+
+        return $requestParametersBasedUserAuthService->createRedirectResponse(
+            $user,
+            'shared.presentation.contentpages.homepage'
+        );
+    }
+
+
+    #[Route(
+        path        : '%app.routing.route_prefix.with_locale.unprotected.en%/account/cleanup',
+        name        : 'videobasedmarketing.account.presentation.sign_up.cleanup',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function cleanup(
+        UserRepository         $userRepository,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        if ($_ENV['APP_ENV'] !== 'test') {
+            throw $this->createAccessDeniedException('This route is only available in Symfony env "test".');
+        }
+
+        /** @var User[] $user */
+        $users = $userRepository->findAll();
+
+        foreach ($users as $user) {
+            $entityManager->remove($user);
+        }
+
+        $entityManager->flush();
+
+        return new Response('Cleaned up.');
+    }
+
+    #[Route(
+        path        : '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-up/verify-email-directly',
+        name        : 'videobasedmarketing.account.presentation.sign_up.email_verification.directly',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function verifyEmailDirectly(
+        Request                               $request,
+        UserRepository                        $userRepository,
+        AccountDomainService                  $accountDomainService,
+        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService
+    ): Response
+    {
+        if ($_ENV['APP_ENV'] !== 'test') {
+            throw $this->createAccessDeniedException('This route is only available in Symfony env "test".');
+        }
+
+        $email = $request->get('email');
+
+        if (is_null($email)) {
+            throw new BadRequestHttpException('Missing "email".');
+        }
+
+        /** @var null|User $user */
+        $user = $userRepository->findOneBy(['email' => $email]);
+
+        if (is_null($user)) {
+            throw $this->createNotFoundException("No user with email '$email'.");
+        }
+
+        $accountDomainService->makeUserVerified($user);
 
         return $requestParametersBasedUserAuthService->createRedirectResponse(
             $user,

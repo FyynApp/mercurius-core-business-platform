@@ -150,6 +150,11 @@
                             {% endif %}
                         </ul>
                     </div>
+
+                    {% if TwigHelperService.symfonyEnv is not same as 'prod' %}
+                        Symfony env: {{ TwigHelperService.symfonyEnv }}
+                    {% endif %}
+
                 </footer>
 
             </div>
