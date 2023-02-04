@@ -3,6 +3,9 @@
 namespace App\Tests\EndToEndTests\Scenario\Shared;
 
 use App\Tests\EndToEndTests\Helper\AccountHelper;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredExtensionOnlyUserFixture;
+use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use Symfony\Component\Panther\PantherTestCase;
 
 class HomepageTest extends PantherTestCase
@@ -14,12 +17,16 @@ class HomepageTest extends PantherTestCase
 
         $this->assertPageTitleSame('Fyyn — About');
 
-        AccountHelper::cleanup($client);
+        $container = static::getContainer();
+        $userRepository = $container->get(UserRepository::class);
 
-        AccountHelper::signUp(
-            $client,
-            'end2endtest.user.1@example.com',
-            'test123'
-        );
+        /** @var User $user */
+        $user = $userRepository->findOneBy(['email' => RegisteredExtensionOnlyUserFixture::EMAIL]);
+
+        echo $user->getUserIdentifier();
+
+        AccountHelper::signIn($client, $user);
+
+        $this->assertSelectorTextContains('foo', 'bar');
     }
 }
