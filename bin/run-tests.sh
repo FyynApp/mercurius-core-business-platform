@@ -9,5 +9,8 @@ pushd "$SCRIPT_FOLDER/.."
   /usr/bin/env php bin/console --env=test doctrine:database:create --if-not-exists --no-interaction
   /usr/bin/env php bin/console --env=test doctrine:migrations:migrate --no-interaction
   /usr/bin/env php bin/console --env=test doctrine:fixtures:load --no-interaction
-  /usr/bin/env php bin/phpunit
+  /usr/bin/env php bin/phpunit tests/UnitTests
+  /usr/bin/env php bin/phpunit tests/IntegrationTests
+  /usr/bin/env php bin/phpunit tests/ApplicationTests
+  /usr/bin/env php bin/phpunit tests/EndToEndTests
 popd
