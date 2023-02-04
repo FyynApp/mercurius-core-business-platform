@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\ApplicationTests\Scenario;
+namespace App\Tests\ApplicationTests\Scenario\Shared;
 
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;

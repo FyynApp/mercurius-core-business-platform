@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\ApplicationTests\Scenario;
+namespace App\Tests\ApplicationTests\Scenario\Account;
 
 
 use App\Tests\ApplicationTests\Helper\UnregisteredUserHelper;

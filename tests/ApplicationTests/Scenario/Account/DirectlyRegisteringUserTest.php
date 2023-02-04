@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Tests\ApplicationTests\Scenario;
+namespace App\Tests\ApplicationTests\Scenario\Account;
 
 
-use App\Tests\ApplicationTests\Helper\UnregisteredUserHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Mime\Email;
 

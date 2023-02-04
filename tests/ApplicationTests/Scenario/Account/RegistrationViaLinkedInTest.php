@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\ApplicationTests\Scenario;
+namespace App\Tests\ApplicationTests\Scenario\Account;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
