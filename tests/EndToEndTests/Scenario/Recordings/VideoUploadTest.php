@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Tests\EndToEndTests\Scenario\Recordings;
+
+use App\Tests\EndToEndTests\Helper\AccountHelper;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredExtensionOnlyUserFixture;
+use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
+use Facebook\WebDriver\Remote\LocalFileDetector;
+use Facebook\WebDriver\WebDriverBy;
+use Symfony\Component\Panther\PantherTestCase;
+
+class VideoUploadTest extends PantherTestCase
+{
+    public function test(): void
+    {
+        $client = static::createPantherClient();
+        $container = static::getContainer();
+        $userRepository = $container->get(UserRepository::class);
+
+        /** @var null|User $user */
+        $user = $userRepository->findOneBy(['email' => RegisteredExtensionOnlyUserFixture::EMAIL]);
+
+        echo $user->getUserIdentifier();
+
+        AccountHelper::signIn($client, $user);
+
+        $crawler = $client->refreshCrawler();
+        $crawler->filter('[data-test-id="uppyVideoUploadDashboardOpenCta"]')->click();
+
+        $crawler->findElement(
+            WebDriverBy::cssSelector('.uppy-Dashboard-input')
+        )->setFileDetector(
+            new LocalFileDetector()
+        )->sendKeys(__DIR__ . '/../../../Resources/fixtures/videos/upload-video.mov');
+
+        $crawler = $client->waitFor(
+            '.uppy-StatusBar-actionBtn--done'
+        );
+
+        $crawler->filter('.uppy-StatusBar-actionBtn--done')->click();
+
+        $this->assertSelectorExists('[data-test-class="videoUploadProcessingWidget"]');
+    }
+}
