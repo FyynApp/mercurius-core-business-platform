@@ -1,6 +1,7 @@
 .idea/
 public/generated-content/
 .DS_Store
+composer.phar
 
 ###> symfony/framework-bundle ###
 /.env.local
