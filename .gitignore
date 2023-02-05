@@ -24,3 +24,7 @@ public/generated-content/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> dbrekelmans/bdi ###
+drivers/
+###< dbrekelmans/bdi ###
