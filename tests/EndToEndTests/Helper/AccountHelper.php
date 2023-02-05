@@ -20,8 +20,6 @@ class AccountHelper
         $form['_username'] = $user->getEmail();
         $form['_password'] = 'test123';
 
-        echo "\nloginUser: {$user->getPassword()}\n";
-
         $client->submit($form);
     }
 }
