@@ -288,15 +288,34 @@ class RecordingsInfrastructureService
         );
     }
 
-    public function getRecordingPreviewVideoFilePath(RecordingSession $recordingSession): string
+    public function getRecordingPreviewVideoFilePath(
+        RecordingSession $recordingSession
+    ): string
     {
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
             [
                 'recording-sessions',
                 $recordingSession->getId(),
-                'recording-preview-video.webm'
+                'recording-preview-video.'
+                . $this->mimeTypeToFileSuffix(
+                    $this->getRecordingSessionChunksMimeType($recordingSession)
+                )
             ]
         );
+    }
+
+    public function getRecordingSessionChunksMimeType(
+        RecordingSession $recordingSession
+    ): ?AssetMimeType
+    {
+        /** @var null|RecordingSessionVideoChunk $chunk */
+        $chunk = $recordingSession->getRecordingSessionVideoChunks()->first();
+
+        if (is_null($chunk)) {
+            return null;
+        }
+
+        return AssetMimeType::tryFrom($chunk->getMimeType());
     }
 
     private function getRecordingPreviewVideoPosterFilePath(RecordingSession $recordingSession): string
