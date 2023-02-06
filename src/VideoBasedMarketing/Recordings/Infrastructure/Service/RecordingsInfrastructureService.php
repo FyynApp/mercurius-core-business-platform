@@ -741,7 +741,7 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function generateVideoAssetFullWebm(Video $video): void
+    private function generateVideoAssetOriginal(Video $video): void
     {
         if (!is_null($video->getVideoUpload())) {
             return;
@@ -751,7 +751,10 @@ class RecordingsInfrastructureService
 
         $success = $this->concatenateChunksIntoFile(
             $video->getRecordingSession(),
-            $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+            $this->getVideoAssetOriginalFilePath(
+                $video,
+                AssetMimeType::VideoWebm
+            )
         );
 
         if ($success) {
@@ -795,7 +798,7 @@ class RecordingsInfrastructureService
     {
         if (!is_null($video->getRecordingSession())) {
             if (!$video->hasAssetFullWebm()) {
-                $this->generateVideoAssetFullWebm($video);
+                $this->generateVideoAssetOriginal($video);
             }
 
             $sourceWidth = $video->getAssetFullWebmWidth();
@@ -1176,6 +1179,20 @@ class RecordingsInfrastructureService
                 self::VIDEO_ASSETS_SUBFOLDER_NAME,
                 $video->getId(),
                 'full.' . $this->mimeTypeToFileSuffix($mimeType)
+            ]
+        );
+    }
+
+    private function getVideoAssetOriginalFilePath(
+        Video         $video,
+        AssetMimeType $mimeType
+    ): string
+    {
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                self::VIDEO_ASSETS_SUBFOLDER_NAME,
+                $video->getId(),
+                "{$video->getId()}_original.{$this->mimeTypeToFileSuffix($mimeType)}"
             ]
         );
     }

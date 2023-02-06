@@ -10,6 +10,7 @@ use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -350,6 +351,113 @@ class Video
     public function setHasAssetPosterAnimatedGif(bool $hasAssetPosterAnimatedGif): void
     {
         $this->hasAssetPosterAnimatedGif = $hasAssetPosterAnimatedGif;
+    }
+
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $hasAssetOriginal = false;
+
+    public function hasAssetOriginal(): bool
+    {
+        return $this->hasAssetOriginal;
+    }
+
+    public function setHasAssetOriginal(bool $hasAssetOriginal): void
+    {
+        $this->hasAssetOriginal = $hasAssetOriginal;
+    }
+
+
+    #[ORM\Column(
+        type: 'float',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetOriginalFps = null;
+
+    public function getAssetOriginalFps(): ?float
+    {
+        return $this->assetOriginalFps;
+    }
+
+    public function setAssetOriginalFps(?float $val): void
+    {
+        $this->assetOriginalFps = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'float',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetOriginalSeconds = null;
+
+    public function getAssetOriginalSeconds(): ?float
+    {
+        return $this->assetOriginalSeconds;
+    }
+
+    public function setAssetOriginalSeconds(?float $val): void
+    {
+        $this->assetOriginalSeconds = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetOriginalWidth = null;
+
+    public function getAssetOriginalWidth(): ?int
+    {
+        return $this->assetOriginalWidth;
+    }
+
+    public function setAssetOriginalWidth(?int $val): void
+    {
+        $this->assetOriginalWidth = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'smallint',
+        nullable: true,
+        options: ['unsigned' => true]
+    )]
+    private ?float $assetOriginalHeight = null;
+
+    public function getAssetOriginalHeight(): ?int
+    {
+        return $this->assetOriginalHeight;
+    }
+
+    public function setAssetOriginalHeight(?int $val): void
+    {
+        $this->assetOriginalHeight = $val;
+    }
+
+
+    #[ORM\Column(
+        type: 'string',
+        length: 32,
+        nullable: true,
+        enumType: AssetMimeType::class
+    )]
+    private ?AssetMimeType $assetOriginalMimeType;
+
+    public function getAssetOriginalMimeType(): ?AssetMimeType
+    {
+        return $this->assetOriginalMimeType;
+    }
+
+    public function setAssetOriginalMimeType(
+        ?AssetMimeType $mimeType
+    ): void
+    {
+        $this->assetOriginalMimeType = $mimeType;
     }
 
 
