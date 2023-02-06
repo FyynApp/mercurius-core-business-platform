@@ -26,6 +26,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use TusPhp\Events\UploadComplete;
 use TusPhp\Tus\Server;
+use ValueError;
 
 
 class RecordingsInfrastructureService
@@ -745,6 +746,31 @@ class RecordingsInfrastructureService
     {
         if (!is_null($video->getVideoUpload())) {
             return;
+        }
+
+        if (is_null($video->getRecordingSession())) {
+            throw new ValueError("Video '{}' entity with a recording session entity.");
+        }
+
+        if (is_null($video->getAssetOriginalMimeType())) {
+            if (sizeof($video->getRecordingSession()->getRecordingSessionVideoChunks()) === 0) {
+                throw new ValueError(
+                    "Recording session '{$video->getRecordingSession()->getId()}' of video '{$video->getId()}' does not have any video chunks."
+                );
+            }
+            $mimeType = AssetMimeType::tryFrom(
+                $video->getRecordingSession()->getRecordingSessionVideoChunks()[0]->getMimeType()
+            );
+
+            if (is_null($mimeType)) {
+                throw new ValueError(
+                    "Could not map mime type value '{$video->getRecordingSession()->getRecordingSessionVideoChunks()[0]->getMimeType()}' of chunk '{$video->getRecordingSession()->getRecordingSessionVideoChunks()[0]->getId()}' of recording session '{$video->getRecordingSession()->getId()}' of video '{$video->getId()}' to a mime type that we know."
+                );
+            } else {
+                $video->setAssetOriginalMimeType($mimeType);
+                $this->entityManager->persist($mimeType);
+                $this->entityManager->flush();
+            }
         }
 
         $this->createFilesystemStructureForVideoAssets($video);
