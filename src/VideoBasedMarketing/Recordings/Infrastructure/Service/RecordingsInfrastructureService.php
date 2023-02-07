@@ -293,13 +293,21 @@ class RecordingsInfrastructureService
         RecordingSession $recordingSession
     ): string
     {
+        $chunksMimeType = $this->getRecordingSessionChunksMimeType($recordingSession);
+
+        if (is_null($chunksMimeType)) {
+            throw new ValueError(
+                "Could not detect chunks mime type of recording session '{$recordingSession->getId()}'."
+            );
+        }
+
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
             [
                 'recording-sessions',
                 $recordingSession->getId(),
                 'recording-preview-video.'
                 . $this->mimeTypeToFileSuffix(
-                    $this->getRecordingSessionChunksMimeType($recordingSession)
+                    $chunksMimeType
                 )
             ]
         );
@@ -316,7 +324,17 @@ class RecordingsInfrastructureService
             return null;
         }
 
-        return AssetMimeType::tryFrom($chunk->getMimeType());
+        $mimeType = $chunk->getMimeType();
+
+        if (mb_strstr($mimeType, ';')) {
+            $mimeType = explode(';', $mimeType)[0];
+        }
+
+        if (mb_strstr($mimeType, ',')) {
+            $mimeType = explode(',', $mimeType)[0];
+        }
+
+        return AssetMimeType::tryFrom($mimeType);
     }
 
     private function getRecordingPreviewVideoPosterFilePath(RecordingSession $recordingSession): string
@@ -762,9 +780,7 @@ class RecordingsInfrastructureService
                     "Recording session '{$video->getRecordingSession()->getId()}' of video '{$video->getId()}' does not have any video chunks."
                 );
             }
-            $chunksMimeType = AssetMimeType::tryFrom(
-                $video->getRecordingSession()->getRecordingSessionVideoChunks()[0]->getMimeType()
-            );
+            $chunksMimeType = $this->getRecordingSessionChunksMimeType($video->getRecordingSession());
 
             if (is_null($chunksMimeType)) {
                 throw new ValueError(
@@ -772,7 +788,7 @@ class RecordingsInfrastructureService
                 );
             } else {
                 $video->setAssetOriginalMimeType($chunksMimeType);
-                $this->entityManager->persist($chunksMimeType);
+                $this->entityManager->persist($video);
                 $this->entityManager->flush();
             }
         }
@@ -1351,6 +1367,9 @@ class RecordingsInfrastructureService
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function checkAndHandleVideoAssetGenerationForVideo(
         Video $video,
         bool $basicAssetsAreRequiredImmediately = true
@@ -1359,6 +1378,26 @@ class RecordingsInfrastructureService
         $this->logger->debug("Checking video '{$video->getId()}' for missing assets.");
 
         $forceGenerateMissingAssetsCommand = false;
+
+        if (!is_null($video->getRecordingSession())) {
+           if ($video->getRecordingSession()->isFinished()) {
+               if (!$video->hasAssetOriginal()) {
+                   $this->generateVideoAssetOriginal($video);
+
+                   if (   !$video->hasAssetFullMp4()
+                       && $video->getAssetOriginalMimeType() === AssetMimeType::VideoMp4)
+                   {
+                       $this->generateVideoAssetFullMp4($video);
+                   }
+
+                   if (   !$video->hasAssetFullWebm()
+                       && $video->getAssetOriginalMimeType() === AssetMimeType::VideoWebm)
+                   {
+                       $this->generateVideoAssetFullWebm($video);
+                   }
+               }
+           }
+        }
 
         if (!$video->hasAssetPosterStillWebp()) {
             if ($basicAssetsAreRequiredImmediately) {

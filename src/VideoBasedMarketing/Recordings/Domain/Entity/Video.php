@@ -189,7 +189,7 @@ class Video
         nullable: true,
         onDelete: 'SET NULL'
     )]
-    private ?VideoUpload $videoUpload;
+    private ?VideoUpload $videoUpload = null;
 
     public function getVideoUpload(): ?VideoUpload
     {
@@ -446,7 +446,7 @@ class Video
         nullable: true,
         enumType: AssetMimeType::class
     )]
-    private ?AssetMimeType $assetOriginalMimeType;
+    private ?AssetMimeType $assetOriginalMimeType = null;
 
     public function getAssetOriginalMimeType(): ?AssetMimeType
     {
