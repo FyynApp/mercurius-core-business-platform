@@ -749,7 +749,7 @@ class Video
 
     public function isFullAssetAvailable(): bool
     {
-        return $this->hasAssetFullMp4 || $this->hasAssetFullWebm();
+        return $this->hasAssetFullMp4 || $this->hasAssetFullWebm;
     }
 
     public function getDuration(): ?string

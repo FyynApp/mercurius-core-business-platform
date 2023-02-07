@@ -442,6 +442,10 @@ class RecordingsInfrastructureService
             $this->generateVideoAssetPosterAnimatedWebp($video);
         }
 
+        if (!$video->hasAssetFullWebm()) {
+            $this->generateVideoAssetFullWebm($video);
+        }
+
         if (!$video->hasAssetFullMp4()) {
             $this->generateVideoAssetFullMp4($video);
         }
@@ -749,7 +753,7 @@ class RecordingsInfrastructureService
         }
 
         if (is_null($video->getRecordingSession())) {
-            throw new ValueError("Video '{}' entity with a recording session entity.");
+            throw new ValueError("Video '{$video->getId()}' entity without a recording session entity.");
         }
 
         if (is_null($video->getAssetOriginalMimeType())) {
@@ -783,29 +787,29 @@ class RecordingsInfrastructureService
         );
 
         if ($success) {
-            $video->setHasAssetFullWebm(true);
+            $video->setHasAssetOriginal(true);
 
-            $video->setAssetFullWebmFps(
+            $video->setAssetOriginalFps(
                 $this->probeForVideoAssetFps(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    $this->getVideoAssetOriginalFilePath($video)
                 )
             );
 
-            $video->setAssetFullWebmSeconds(
+            $video->setAssetOriginalSeconds(
                 $this->probeForVideoAssetSeconds(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    $this->getVideoAssetOriginalFilePath($video)
                 )
             );
 
-            $video->setAssetFullWebmWidth(
+            $video->setAssetOriginalWidth(
                 $this->probeForVideoAssetWidth(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    $this->getVideoAssetOriginalFilePath($video)
                 )
             );
 
-            $video->setAssetFullWebmHeight(
+            $video->setAssetOriginalHeight(
                 $this->probeForVideoAssetHeight(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    $this->getVideoAssetOriginalFilePath($video)
                 )
             );
 
@@ -821,6 +825,36 @@ class RecordingsInfrastructureService
         Video $video
     ): void
     {
+        if (   $video->hasAssetOriginal()
+            && $video->getAssetOriginalMimeType() === AssetMimeType::VideoMp4
+        ) {
+            $fs = new Filesystem();
+            $fs->copy(
+                $this->getVideoAssetOriginalFilePath($video),
+                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+            );
+
+            $video->setHasAssetFullMp4(true);
+
+            $video->setAssetFullMp4Width(
+                $video->getAssetOriginalWidth()
+            );
+            $video->setAssetFullMp4Height(
+                $video->getAssetOriginalHeight()
+            );
+            $video->setAssetFullMp4Seconds(
+                $video->getAssetOriginalSeconds()
+            );
+            $video->setAssetFullMp4Fps(
+                $video->getAssetOriginalFps()
+            );
+
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+
+            return;
+        }
+
         if (!is_null($video->getRecordingSession())) {
             if (!$video->hasAssetOriginal()) {
                 $this->generateVideoAssetOriginal($video);
@@ -830,9 +864,9 @@ class RecordingsInfrastructureService
             $sourceHeight = $video->getAssetOriginalHeight();
 
             $sourcePath = $this->getVideoAssetOriginalFilePath(
-                $video,
-                AssetMimeType::VideoWebm
+                $video
             );
+
         } else {
             $sourcePath = $this->getContentStoragePathForVideoUpload($video->getVideoUpload());
 
@@ -941,6 +975,44 @@ class RecordingsInfrastructureService
         }
     }
 
+
+    /**
+     * @throws Exception
+     */
+    private function generateVideoAssetFullWebm(
+        Video $video
+    ): void
+    {
+        if ($video->hasAssetOriginal()
+            && $video->getAssetOriginalMimeType() === AssetMimeType::VideoWebm
+        ) {
+            $fs = new Filesystem();
+            $fs->copy(
+                $this->getVideoAssetOriginalFilePath($video),
+                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+            );
+
+            $video->setHasAssetFullWebm(true);
+
+            $video->setAssetFullWebmWidth(
+                $video->getAssetOriginalWidth()
+            );
+            $video->setAssetFullWebmHeight(
+                $video->getAssetOriginalHeight()
+            );
+            $video->setAssetFullWebmSeconds(
+                $video->getAssetOriginalSeconds()
+            );
+            $video->setAssetFullWebmFps(
+                $video->getAssetOriginalFps()
+            );
+
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+
+            return;
+        }
+    }
 
     /**
      * @throws Exception
