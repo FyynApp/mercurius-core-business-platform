@@ -758,17 +758,17 @@ class RecordingsInfrastructureService
                     "Recording session '{$video->getRecordingSession()->getId()}' of video '{$video->getId()}' does not have any video chunks."
                 );
             }
-            $mimeType = AssetMimeType::tryFrom(
+            $chunksMimeType = AssetMimeType::tryFrom(
                 $video->getRecordingSession()->getRecordingSessionVideoChunks()[0]->getMimeType()
             );
 
-            if (is_null($mimeType)) {
+            if (is_null($chunksMimeType)) {
                 throw new ValueError(
                     "Could not map mime type value '{$video->getRecordingSession()->getRecordingSessionVideoChunks()[0]->getMimeType()}' of chunk '{$video->getRecordingSession()->getRecordingSessionVideoChunks()[0]->getId()}' of recording session '{$video->getRecordingSession()->getId()}' of video '{$video->getId()}' to a mime type that we know."
                 );
             } else {
-                $video->setAssetOriginalMimeType($mimeType);
-                $this->entityManager->persist($mimeType);
+                $video->setAssetOriginalMimeType($chunksMimeType);
+                $this->entityManager->persist($chunksMimeType);
                 $this->entityManager->flush();
             }
         }
@@ -778,8 +778,7 @@ class RecordingsInfrastructureService
         $success = $this->concatenateChunksIntoFile(
             $video->getRecordingSession(),
             $this->getVideoAssetOriginalFilePath(
-                $video,
-                AssetMimeType::VideoWebm
+                $video
             )
         );
 
@@ -823,14 +822,14 @@ class RecordingsInfrastructureService
     ): void
     {
         if (!is_null($video->getRecordingSession())) {
-            if (!$video->hasAssetFullWebm()) {
+            if (!$video->hasAssetOriginal()) {
                 $this->generateVideoAssetOriginal($video);
             }
 
-            $sourceWidth = $video->getAssetFullWebmWidth();
-            $sourceHeight = $video->getAssetFullWebmHeight();
+            $sourceWidth = $video->getAssetOriginalWidth();
+            $sourceHeight = $video->getAssetOriginalHeight();
 
-            $sourcePath = $this->getVideoFullAssetFilePath(
+            $sourcePath = $this->getVideoAssetOriginalFilePath(
                 $video,
                 AssetMimeType::VideoWebm
             );
@@ -1210,15 +1209,14 @@ class RecordingsInfrastructureService
     }
 
     private function getVideoAssetOriginalFilePath(
-        Video         $video,
-        AssetMimeType $mimeType
+        Video         $video
     ): string
     {
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
             [
                 self::VIDEO_ASSETS_SUBFOLDER_NAME,
                 $video->getId(),
-                "{$video->getId()}_original.{$this->mimeTypeToFileSuffix($mimeType)}"
+                "{$video->getId()}_original.{$this->mimeTypeToFileSuffix($video->getAssetOriginalMimeType())}"
             ]
         );
     }
