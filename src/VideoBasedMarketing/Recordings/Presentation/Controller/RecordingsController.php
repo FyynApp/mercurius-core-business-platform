@@ -109,7 +109,9 @@ class RecordingsController
                 'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset',
                 [
                     'recordingSessionId' => $recordingSessionId,
-                    'extension' => $recordingsInfrastructureService->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                    'extension' => $recordingsInfrastructureService->mimeTypeToFileSuffix(
+                        $recordingsInfrastructureService->getRecordingSessionChunksMimeType($recordingSession)
+                    ),
                     'random' => bin2hex(random_bytes(8))
                 ]
             );

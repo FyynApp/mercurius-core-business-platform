@@ -21,12 +21,12 @@ class VideoUploadTest extends PantherTestCase
         /** @var null|User $user */
         $user = $userRepository->findOneBy(['email' => RegisteredExtensionOnlyUserFixture::EMAIL]);
 
-        echo $user->getUserIdentifier();
-
         AccountHelper::signIn($client, $user);
 
         $crawler = $client->refreshCrawler();
         $crawler->filter('[data-test-id="uppyVideoUploadDashboardOpenCta"]')->click();
+
+        $client->waitFor('.uppy-Dashboard-input');
 
         $crawler->findElement(
             WebDriverBy::cssSelector('.uppy-Dashboard-input')

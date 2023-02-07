@@ -26,6 +26,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use TusPhp\Events\UploadComplete;
 use TusPhp\Tus\Server;
+use ValueError;
 
 
 class RecordingsInfrastructureService
@@ -288,15 +289,52 @@ class RecordingsInfrastructureService
         );
     }
 
-    public function getRecordingPreviewVideoFilePath(RecordingSession $recordingSession): string
+    public function getRecordingPreviewVideoFilePath(
+        RecordingSession $recordingSession
+    ): string
     {
+        $chunksMimeType = $this->getRecordingSessionChunksMimeType($recordingSession);
+
+        if (is_null($chunksMimeType)) {
+            throw new ValueError(
+                "Could not detect chunks mime type of recording session '{$recordingSession->getId()}'."
+            );
+        }
+
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
             [
                 'recording-sessions',
                 $recordingSession->getId(),
-                'recording-preview-video.webm'
+                'recording-preview-video.'
+                . $this->mimeTypeToFileSuffix(
+                    $chunksMimeType
+                )
             ]
         );
+    }
+
+    public function getRecordingSessionChunksMimeType(
+        RecordingSession $recordingSession
+    ): ?AssetMimeType
+    {
+        /** @var null|RecordingSessionVideoChunk $chunk */
+        $chunk = $recordingSession->getRecordingSessionVideoChunks()->first();
+
+        if (is_null($chunk)) {
+            return null;
+        }
+
+        $mimeType = $chunk->getMimeType();
+
+        if (mb_strstr($mimeType, ';')) {
+            $mimeType = explode(';', $mimeType)[0];
+        }
+
+        if (mb_strstr($mimeType, ',')) {
+            $mimeType = explode(',', $mimeType)[0];
+        }
+
+        return AssetMimeType::tryFrom($mimeType);
     }
 
     private function getRecordingPreviewVideoPosterFilePath(RecordingSession $recordingSession): string
@@ -420,6 +458,10 @@ class RecordingsInfrastructureService
 
         if (!$video->hasAssetPosterAnimatedWebp()) {
             $this->generateVideoAssetPosterAnimatedWebp($video);
+        }
+
+        if (!$video->hasAssetFullWebm()) {
+            $this->generateVideoAssetFullWebm($video);
         }
 
         if (!$video->hasAssetFullMp4()) {
@@ -722,43 +764,68 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function generateVideoAssetFullWebm(Video $video): void
+    private function generateVideoAssetOriginal(Video $video): void
     {
         if (!is_null($video->getVideoUpload())) {
             return;
+        }
+
+        if (is_null($video->getRecordingSession())) {
+            throw new ValueError("Video '{$video->getId()}' entity without a recording session entity.");
+        }
+
+        if (is_null($video->getAssetOriginalMimeType())) {
+            if (sizeof($video->getRecordingSession()->getRecordingSessionVideoChunks()) === 0) {
+                throw new ValueError(
+                    "Recording session '{$video->getRecordingSession()->getId()}' of video '{$video->getId()}' does not have any video chunks."
+                );
+            }
+            $chunksMimeType = $this->getRecordingSessionChunksMimeType($video->getRecordingSession());
+
+            if (is_null($chunksMimeType)) {
+                throw new ValueError(
+                    "Could not map mime type value '{$video->getRecordingSession()->getRecordingSessionVideoChunks()[0]->getMimeType()}' of chunk '{$video->getRecordingSession()->getRecordingSessionVideoChunks()[0]->getId()}' of recording session '{$video->getRecordingSession()->getId()}' of video '{$video->getId()}' to a mime type that we know."
+                );
+            } else {
+                $video->setAssetOriginalMimeType($chunksMimeType);
+                $this->entityManager->persist($video);
+                $this->entityManager->flush();
+            }
         }
 
         $this->createFilesystemStructureForVideoAssets($video);
 
         $success = $this->concatenateChunksIntoFile(
             $video->getRecordingSession(),
-            $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+            $this->getVideoAssetOriginalFilePath(
+                $video
+            )
         );
 
         if ($success) {
-            $video->setHasAssetFullWebm(true);
+            $video->setHasAssetOriginal(true);
 
-            $video->setAssetFullWebmFps(
+            $video->setAssetOriginalFps(
                 $this->probeForVideoAssetFps(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    $this->getVideoAssetOriginalFilePath($video)
                 )
             );
 
-            $video->setAssetFullWebmSeconds(
+            $video->setAssetOriginalSeconds(
                 $this->probeForVideoAssetSeconds(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    $this->getVideoAssetOriginalFilePath($video)
                 )
             );
 
-            $video->setAssetFullWebmWidth(
+            $video->setAssetOriginalWidth(
                 $this->probeForVideoAssetWidth(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    $this->getVideoAssetOriginalFilePath($video)
                 )
             );
 
-            $video->setAssetFullWebmHeight(
+            $video->setAssetOriginalHeight(
                 $this->probeForVideoAssetHeight(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    $this->getVideoAssetOriginalFilePath($video)
                 )
             );
 
@@ -774,18 +841,48 @@ class RecordingsInfrastructureService
         Video $video
     ): void
     {
+        if (   $video->hasAssetOriginal()
+            && $video->getAssetOriginalMimeType() === AssetMimeType::VideoMp4
+        ) {
+            $fs = new Filesystem();
+            $fs->copy(
+                $this->getVideoAssetOriginalFilePath($video),
+                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+            );
+
+            $video->setHasAssetFullMp4(true);
+
+            $video->setAssetFullMp4Width(
+                $video->getAssetOriginalWidth()
+            );
+            $video->setAssetFullMp4Height(
+                $video->getAssetOriginalHeight()
+            );
+            $video->setAssetFullMp4Seconds(
+                $video->getAssetOriginalSeconds()
+            );
+            $video->setAssetFullMp4Fps(
+                $video->getAssetOriginalFps()
+            );
+
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+
+            return;
+        }
+
         if (!is_null($video->getRecordingSession())) {
-            if (!$video->hasAssetFullWebm()) {
-                $this->generateVideoAssetFullWebm($video);
+            if (!$video->hasAssetOriginal()) {
+                $this->generateVideoAssetOriginal($video);
             }
 
-            $sourceWidth = $video->getAssetFullWebmWidth();
-            $sourceHeight = $video->getAssetFullWebmHeight();
+            $sourceWidth = $video->getAssetOriginalWidth();
+            $sourceHeight = $video->getAssetOriginalHeight();
 
-            $sourcePath = $this->getVideoFullAssetFilePath(
-                $video,
-                AssetMimeType::VideoWebm
+            $sourcePath = $this->getVideoAssetOriginalFilePath(
+                $video
             );
+
         } else {
             $sourcePath = $this->getContentStoragePathForVideoUpload($video->getVideoUpload());
 
@@ -894,6 +991,44 @@ class RecordingsInfrastructureService
         }
     }
 
+
+    /**
+     * @throws Exception
+     */
+    private function generateVideoAssetFullWebm(
+        Video $video
+    ): void
+    {
+        if ($video->hasAssetOriginal()
+            && $video->getAssetOriginalMimeType() === AssetMimeType::VideoWebm
+        ) {
+            $fs = new Filesystem();
+            $fs->copy(
+                $this->getVideoAssetOriginalFilePath($video),
+                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+            );
+
+            $video->setHasAssetFullWebm(true);
+
+            $video->setAssetFullWebmWidth(
+                $video->getAssetOriginalWidth()
+            );
+            $video->setAssetFullWebmHeight(
+                $video->getAssetOriginalHeight()
+            );
+            $video->setAssetFullWebmSeconds(
+                $video->getAssetOriginalSeconds()
+            );
+            $video->setAssetFullWebmFps(
+                $video->getAssetOriginalFps()
+            );
+
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+
+            return;
+        }
+    }
 
     /**
      * @throws Exception
@@ -1161,6 +1296,19 @@ class RecordingsInfrastructureService
         );
     }
 
+    private function getVideoAssetOriginalFilePath(
+        Video         $video
+    ): string
+    {
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                self::VIDEO_ASSETS_SUBFOLDER_NAME,
+                $video->getId(),
+                "{$video->getId()}_original.{$this->mimeTypeToFileSuffix($video->getAssetOriginalMimeType())}"
+            ]
+        );
+    }
+
     /**
      * @throws \Doctrine\DBAL\Exception
      */
@@ -1219,6 +1367,9 @@ class RecordingsInfrastructureService
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function checkAndHandleVideoAssetGenerationForVideo(
         Video $video,
         bool $basicAssetsAreRequiredImmediately = true
@@ -1227,6 +1378,26 @@ class RecordingsInfrastructureService
         $this->logger->debug("Checking video '{$video->getId()}' for missing assets.");
 
         $forceGenerateMissingAssetsCommand = false;
+
+        if (!is_null($video->getRecordingSession())) {
+           if ($video->getRecordingSession()->isFinished()) {
+               if (!$video->hasAssetOriginal()) {
+                   $this->generateVideoAssetOriginal($video);
+
+                   if (   !$video->hasAssetFullMp4()
+                       && $video->getAssetOriginalMimeType() === AssetMimeType::VideoMp4)
+                   {
+                       $this->generateVideoAssetFullMp4($video);
+                   }
+
+                   if (   !$video->hasAssetFullWebm()
+                       && $video->getAssetOriginalMimeType() === AssetMimeType::VideoWebm)
+                   {
+                       $this->generateVideoAssetFullWebm($video);
+                   }
+               }
+           }
+        }
 
         if (!$video->hasAssetPosterStillWebp()) {
             if ($basicAssetsAreRequiredImmediately) {
