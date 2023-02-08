@@ -2,6 +2,7 @@ import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 import Dashboard from '@uppy/dashboard';
 import Webcam from '@uppy/webcam';
+import ScreenCapture from '@uppy/screen-capture';
 import de_DE from '@uppy/locales/lib/de_DE';
 import en_US from '@uppy/locales/lib/en_US';
 
@@ -13,7 +14,7 @@ if (appLocale === 'de') {
 }
 
 const uppy = new Uppy({
-    id: 'uppyVideoUploadDashboard',
+    id: 'uppyVideoUpload',
     autoProceed: true,
     allowMultipleUploadBatches: true,
     debug: true,
@@ -35,15 +36,6 @@ const uppy = new Uppy({
 uppy.use(Tus, {
     endpoint: '/api/recordings/video-upload/v1/tus/',
     retryDelays: [0, 1000, 3000, 5000],
-});
-
-uppy.use(Webcam, {
-    modes: [
-        'video-audio',
-        'video-only',
-    ],
-    showVideoSourceDropdown: true,
-    preferredVideoMimeType: 'video/webm'
 });
 
 uppy.use(Dashboard, {
@@ -85,4 +77,34 @@ uppy.use(Dashboard, {
     theme: 'light',
     autoOpenFileEditor: false,
     disableLocalFiles: false
+});
+
+uppy.use(Webcam, {
+    modes: [
+        'video-audio',
+        'video-only',
+    ],
+    showVideoSourceDropdown: true,
+    preferredVideoMimeType: 'video/mp4',
+    target: Dashboard
+});
+
+uppy.use(ScreenCapture, {
+    displayMediaConstraints: {
+        video: {
+            width: 1280,
+            height: 720,
+            frameRate: {
+                ideal: 3,
+                max: 5,
+            },
+            cursor: 'motion',
+            displaySurface: 'monitor',
+        },
+    },
+    userMediaConstraints: {
+        audio: true,
+    },
+    preferredVideoMimeType: 'video/webm',
+    target: Dashboard
 });

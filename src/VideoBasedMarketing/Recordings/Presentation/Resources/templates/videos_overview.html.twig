@@ -43,29 +43,58 @@
 
         {% block contentBoxContent %}
 
-            <div class="flex flex-row gap-6 justify-between items-center mb-10">
+            <div
+                    class="bg-red-600"
+                    id="uppyVideoUploadDashboardTarget"
+            >
+            </div>
 
-                {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
-                    <div
-                            id="uppyVideoUploadDashboard"
-                            class=""
-                    >
-                        <button
-                                id="uppyVideoUploadDashboardOpenCta"
-                                data-test-id="uppyVideoUploadDashboardOpenCta"
-                                class="cta-with-icon-primary"
+            <div class="flex flex-row gap-6 justify-between items-start mb-10">
+
+                <div class="flex flex-col lg:flex-row justify-start lg:justify-between gap-6">
+                    {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
+                        <div
+                                id="uppyVideoUploadDashboard"
+                                class=""
                         >
-                            {# Heroicon: cloud-arrow-up solid #}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="heroicon-next-to-text">
-                                <path fill-rule="evenodd" d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.03 5.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72v4.94a.75.75 0 001.5 0v-4.94l1.72 1.72a.75.75 0 101.06-1.06l-3-3z" clip-rule="evenodd" />
-                            </svg>
+                            <button
+                                    id="uppyVideoUploadDashboardOpenCta"
+                                    data-test-id="uppyVideoUploadDashboardOpenCta"
+                                    class="cta-with-icon-primary"
+                            >
+                                {# Heroicon: cloud-arrow-up solid #}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="heroicon-next-to-text">
+                                    <path fill-rule="evenodd" d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.03 5.47a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72v4.94a.75.75 0 001.5 0v-4.94l1.72 1.72a.75.75 0 101.06-1.06l-3-3z" clip-rule="evenodd" />
+                                </svg>
 
-                            {{ 'videos_overview.cta.upload'|trans }}
-                        </button>
-                    </div>
-                {% else %}
-                    <div>&nbsp;</div>
-                {% endif %}
+                                {{ 'videos_overview.cta.upload'|trans }}
+                            </button>
+                        </div>
+                    {% endif %}
+
+                    {% if TwigHelperService.capabilitiesService.canRecordVideosWithNativeBrowserRecorder() %}
+                        <div>
+                            <a
+                                    href="{{ path('videobasedmarketing.recordings.presentation.show_native_browser_recorder') }}"
+                                    data-test-id="recordVideoWithNativeBrowserRecorderCta"
+                                    class="cta-with-icon-primary"
+                            >
+                                {# Heroicon: computer-desktop solid #}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                    <path fill-rule="evenodd" d="M2.25 5.25a3 3 0 013-3h13.5a3 3 0 013 3V15a3 3 0 01-3 3h-3v.257c0 .597.237 1.17.659 1.591l.621.622a.75.75 0 01-.53 1.28h-9a.75.75 0 01-.53-1.28l.621-.622a2.25 2.25 0 00.659-1.59V18h-3a3 3 0 01-3-3V5.25zm1.5 0v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5z" clip-rule="evenodd" />
+                                </svg>
+
+                                {# Heroicon: video-camera solid #}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                    <path d="M4.5 4.5a3 3 0 00-3 3v9a3 3 0 003 3h8.25a3 3 0 003-3v-9a3 3 0 00-3-3H4.5zM19.94 18.75l-2.69-2.69V7.94l2.69-2.69c.944-.945 2.56-.276 2.56 1.06v11.38c0 1.336-1.616 2.005-2.56 1.06z" />
+                                </svg>
+
+                                {{ 'videos_overview.cta.record_with_native_browser_recorder'|trans }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
 
                 <div class="flex flex-row gap-3 items-center p-4 bg-neutral-100 rounded-md shadow-inner">
 

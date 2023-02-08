@@ -52,6 +52,7 @@ videos_overview:
   use_upload_note: 'Alternativ kannst du auch eine bereits erstellte Video-Datei hochladen.'
   cta:
     upload: 'Video-Datei hochladen'
+    record_with_native_browser_recorder: 'Webcam oder Desktop aufnehmen'
     add: 'Neues Video erstellen'
     create_presentationpage: 'Seite erstellen'
     edit_presentationpage: 'Seite bearbeiten'

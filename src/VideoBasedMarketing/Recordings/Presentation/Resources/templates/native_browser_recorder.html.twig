@@ -1,0 +1,30 @@
+{% extends '@shared/base_extension_only_user.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+
+    <script defer="defer" src="{{ asset('assets/native-browser-recorder/main.7afb0297.js') }}"></script>
+
+{% endblock %}
+
+{% block body %}
+
+    <mercurius-web-recorder
+            init-id="v1stGXR8Z5jdHi6B"
+            brand-color="#009EE2"
+            brand-dark-color="#0185BD"
+            primary-color="#84CC16"
+            primary-dark-color="#65A30D"
+            accent-color="#fd5f00"
+    >
+    </mercurius-web-recorder>
+
+
+{% endblock %}

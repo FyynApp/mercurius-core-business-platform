@@ -44,6 +44,7 @@ videos_overview:
   use_upload_note: 'You can also upload an already created video file.'
   cta:
     upload: 'Upload video file'
+    record_with_native_browser_recorder: 'Record webcam or desktop'
     add: 'Create new video'
     create_presentationpage: 'Create landingpage'
     edit_presentationpage: 'Edit landingpage'
