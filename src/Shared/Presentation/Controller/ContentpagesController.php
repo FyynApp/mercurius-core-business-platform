@@ -32,7 +32,7 @@ class ContentpagesController
             return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show_registered');
         }
 
-        return $this->redirectToRoute('shared.presentation.contentpages.homepage_extension');
+        return $this->redirectToRoute('shared.presentation.contentpages.homepage_native_recorder');
     }
 
     #[Route(
@@ -57,6 +57,32 @@ class ContentpagesController
 
         return $this->render(
             '@shared/content_pages/homepage_extension.html.twig',
+            ['kernel_environment' => $this->getParameter('kernel.environment')]
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/welcome',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/willkommen',
+        ],
+        name        : 'shared.presentation.contentpages.homepage_native_recorder',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function homepageNativeRecorderAction(): Response
+    {
+        /** @var User|null $user */
+        $user = $this->getUser();
+
+        if (   !is_null($user)
+            && $user->isRegistered()
+        ) {
+            return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show_registered');
+        }
+
+        return $this->render(
+            '@shared/content_pages/homepage_native_recorder.html.twig',
             ['kernel_environment' => $this->getParameter('kernel.environment')]
         );
     }

@@ -38,6 +38,10 @@ contentpages:
     cta:
       get_started: 'Get started'
       live_demo: 'Live demo'
+  homepage_native_recorder:
+    copy_1: 'From zero to an'
+    copy_2: 'AI-optimized video email'
+    copy_3: "in three simple steps."
   homepage_extension:
     copy_1: 'From zero to an'
     copy_2: 'AI-optimized video email'

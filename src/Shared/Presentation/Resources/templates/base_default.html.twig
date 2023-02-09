@@ -1,7 +1,7 @@
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
 <!DOCTYPE html>
-<html class="bg-white" lang="en">
+<html class="bg-white w-full p-0 m-0" lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,9 +22,9 @@
 
         {% block javascripts %}{% endblock %}
     </head>
-    <body class="bg-white h-full w-full">
+    <body class="bg-white h-full w-full p-0 m-0">
 
-        <div class="min-h-screen flex flex-col w-full sm:p-8">
+        <div class="min-h-screen flex flex-col w-full">
             <header class="flex flex-row justify-end absolute right-0 -top-1">
                 <a href="/">
                     <div
@@ -52,7 +52,8 @@
             </header>
 
 
-            <div class="flex flex-col flex-grow mx-auto w-full max-w-8xl">
+            <div class="flex flex-col flex-grow mx-auto w-full {% block mainWrapperClasses %}max-w-8xl{% endblock %}">
+
                 <main class="mb-auto">
                     {% block body %}{% endblock %}
                 </main>
