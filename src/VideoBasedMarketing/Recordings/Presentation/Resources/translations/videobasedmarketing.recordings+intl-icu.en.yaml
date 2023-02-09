@@ -65,6 +65,14 @@ video_landingpage:
   upgrade_promotion:
     custom_domain: 'Your own domain name in the address bar?'
     custom_logo: 'Your own logo on this page?'
+native_browser_recorder:
+  back_to_videos_overview_cta: 'Back to videos'
+  title: 'Record webcam or desktop'
+  intro_note: 'Start recording by choosing one of these options:'
+  screen_clip_note:
+    title: 'Note:'
+    text1: 'During recording, the screen or camera preview may appear clipped.'
+    text2: 'However, all content will be recorded and is available in the final video.'
 admin:
   videos_overview:
     title: 'Newest Videos'

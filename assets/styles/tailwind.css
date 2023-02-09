@@ -13,7 +13,7 @@
     }
 
     .padded-content-box {
-        @apply px-0 py-6 sm:px-12;
+        @apply px-4 py-6 sm:px-12;
     }
 
     .collection-box {

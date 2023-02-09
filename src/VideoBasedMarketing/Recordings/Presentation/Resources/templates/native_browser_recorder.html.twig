@@ -10,21 +10,59 @@
 
 {% block javascripts %}
 
-    <script defer="defer" src="{{ asset('assets/native-browser-recorder/main.fd68a16c.js') }}"></script>
+    <script defer="defer" src="{{ asset('assets/native-browser-recorder/main.b6997a13.js') }}"></script>
 
 {% endblock %}
 
 {% block body %}
 
-    <mercurius-web-recorder
-            init-id="v1stGXR8Z5jdHi6B"
-            brand-color="#009EE2"
-            brand-dark-color="#0185BD"
-            primary-color="#84CC16"
-            primary-dark-color="#65A30D"
-            accent-color="#fd5f00"
-            container-width="960px"
-    >
-    </mercurius-web-recorder>
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.recordings' %}
+
+        {% block contentBoxTitle %}
+            {{ 'native_browser_recorder.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <a
+                    href="{{ path('videobasedmarketing.recordings.presentation.videos.overview') }}"
+                    class="cta-link-back mb-12"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 010 1.06L4.81 8.25H15a6.75 6.75 0 010 13.5h-3a.75.75 0 010-1.5h3a5.25 5.25 0 100-10.5H4.81l4.72 4.72a.75.75 0 11-1.06 1.06l-6-6a.75.75 0 010-1.06l6-6a.75.75 0 011.06 0z" clip-rule="evenodd" />
+                </svg>
+
+                {{ 'native_browser_recorder.back_to_videos_overview_cta'|trans }}
+            </a>
+
+            <div class="mb-9">
+                {{ 'native_browser_recorder.intro_note'|trans }}
+            </div>
+
+            <div class="bg-neutral-100 rounded-md shadow-inner">
+                <mercurius-web-recorder
+                        init-id="v1stGXR8Z5jdHi6B"
+                        brand-color="#009EE2"
+                        brand-dark-color="#0185BD"
+                        primary-color="#84CC16"
+                        primary-dark-color="#65A30D"
+                        accent-color="#fd5f00"
+                        container-width="100%"
+                        container-height="600px"
+                >
+                </mercurius-web-recorder>
+            </div>
+
+            <div class="mt-9 bg-mercurius-blue-50 p-4 px-6 rounded-md text-mercurius-blue-700 text-center">
+                <span class="font-bold">{{ 'native_browser_recorder.screen_clip_note.title'|trans }}</span>
+                {{ 'native_browser_recorder.screen_clip_note.text1'|trans }}
+                {{ 'native_browser_recorder.screen_clip_note.text2'|trans }}
+            </div>
+
+        {% endblock %}
+
+    {% endembed %}
 
 {% endblock %}

@@ -13,8 +13,8 @@ class NativeBrowserRecorderController
 {
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recordings/native-browser-recorder',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmen/native-browser-recorder',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/native-browser-recorder',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/native-browser-recorder',
         ],
         name        : 'videobasedmarketing.recordings.presentation.show_native_browser_recorder',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
