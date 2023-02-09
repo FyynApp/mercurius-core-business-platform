@@ -24,7 +24,7 @@
     </head>
     <body class="bg-white h-full w-full">
 
-        <div class="min-h-screen flex flex-col w-full p-8">
+        <div class="min-h-screen flex flex-col w-full sm:p-8">
             <header class="flex flex-row justify-end absolute right-0 -top-1">
                 <a href="/">
                     <div
@@ -152,7 +152,9 @@
                     </div>
 
                     {% if TwigHelperService.symfonyEnv is not same as 'prod' %}
-                        Symfony env: {{ TwigHelperService.symfonyEnv }}
+                        <div class="font-mono text-neutral-400 text-xs mt-4 text-right">
+                            Symfony env: {{ TwigHelperService.symfonyEnv }}
+                        </div>
                     {% endif %}
 
                 </footer>
