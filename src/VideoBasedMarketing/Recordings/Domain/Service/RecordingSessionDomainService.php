@@ -98,4 +98,15 @@ readonly class RecordingSessionDomainService
         $this->entityManager->remove($recordingSession);
         $this->entityManager->flush();
     }
+
+    public function getMaxRecordingTime(
+        User $user
+    ): int
+    {
+        if ($user->isAdmin()) {
+            return 3600;
+        } else {
+            return 300;
+        }
+    }
 }
