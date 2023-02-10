@@ -36,6 +36,7 @@ const uppy = new Uppy({
 uppy.use(Tus, {
     endpoint: '/api/recordings/video-upload/v1/tus/',
     retryDelays: [0, 1000, 3000, 5000],
+    chunkSize: 41943040, // 40 MiB
 });
 
 uppy.use(Webcam, {
