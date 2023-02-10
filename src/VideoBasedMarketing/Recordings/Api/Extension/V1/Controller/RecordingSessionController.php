@@ -29,8 +29,8 @@ class RecordingSessionController
         methods     : [Request::METHOD_POST]
     )]
     public function createRecordingSessionAction(
-        RecordingSessionDomainService         $recordingSessionDomainService,
-        RouterInterface                       $router
+        RecordingSessionDomainService $recordingSessionDomainService,
+        RouterInterface               $router
     ): Response
     {
         $user = $this->getUser();
@@ -58,7 +58,7 @@ class RecordingSessionController
                 ),
 
                 'postChunkSize' => 5,
-                'maxRecordingTime' => 300,
+                'maxRecordingTime' => $recordingSessionDomainService->getMaxRecordingTime($user),
                 'videoBitsPerSecond' => 1250000, // 0.15 MiB, 5-second chunks are ~1.2 MiB. See https://developers.google.com/media/vp9/settings/vod#recommended_settings
                 'audioBitsPerSecond' => 64000,
 
