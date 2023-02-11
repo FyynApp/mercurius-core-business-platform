@@ -58,6 +58,7 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'shared.infrastructure.content_delivery.serve_external_asset',
             'shared.presentation.contentpages.cookie_settings',
             'shared.presentation.styleguide',
+            'shared.presentation.contentpages.homepage_native_recorder',
 
             'videobasedmarketing.account.presentation.claim_unregistered_user.',
             'videobasedmarketing.account.api.extension.',
