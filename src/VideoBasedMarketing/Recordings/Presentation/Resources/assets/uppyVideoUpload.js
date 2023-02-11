@@ -7,6 +7,7 @@ import de_DE from '@uppy/locales/lib/de_DE';
 import en_US from '@uppy/locales/lib/en_US';
 
 const appLocale = document.currentScript.getAttribute('data-lang');
+const maxFileSize = document.currentScript.getAttribute('data-max-file-size');
 
 let locale = en_US;
 if (appLocale === 'de') {
@@ -19,9 +20,9 @@ const uppy = new Uppy({
     allowMultipleUploadBatches: true,
     debug: true,
     restrictions: {
-        maxFileSize: 104857600,
+        maxFileSize: maxFileSize,
         minFileSize: null,
-        maxTotalFileSize: 104857600,
+        maxTotalFileSize: maxFileSize,
         maxNumberOfFiles: 1,
         minNumberOfFiles: 1,
         allowedFileTypes: ['video/*'],
@@ -36,6 +37,7 @@ const uppy = new Uppy({
 uppy.use(Tus, {
     endpoint: '/api/recordings/video-upload/v1/tus/',
     retryDelays: [0, 1000, 3000, 5000],
+    chunkSize: 41943040, // 40 MiB
 });
 
 uppy.use(Dashboard, {
