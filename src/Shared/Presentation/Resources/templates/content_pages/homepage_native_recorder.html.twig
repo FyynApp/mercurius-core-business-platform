@@ -15,12 +15,12 @@
 
 {% block body %}
 
-    {% set outerClasses = 'max-w-8xl flex flex-col lg:flex-row justify-center items-start gap-8 py-16 px-8 md:px-32' %}
+    {% set outerClasses = 'max-w-8xl flex flex-col lg:flex-row justify-center items-start gap-32 py-16 px-8 md:px-32' %}
 
     <div class="bg-gradient-to-tr from-mercurius-green-500 to-mercurius-blue-500">
 
         <div class="{{ outerClasses }}">
-            <div class="mb-16 max-w-lg">
+            <div class="mb-16 lg:w-6/12">
                 <div class="text-6xl text-white font-extrabold">
                     {{ 'contentpages.homepage_native_recorder.block_1.copy_1'|trans }}
                     <span class="text-mercurius-blue-900 drop-shadow-md">{{ 'contentpages.homepage_native_recorder.block_1.copy_2'|trans }}</span>
@@ -36,13 +36,27 @@
 
             </div>
 
-            <div class="max-w-lg w-96">
-                <div class="text-xl text-white font-normal">
+            <div class="w-6/12">
 
-                    Recorded videos are stored safely and reliably in the
-                    cloud, and are presented on a customizable landingpage.
+
+                <div class="flex flex-col items-start">
+
+                    <div class="flex flex-row justify-start">
+
+                        <div class="w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
+                            <span class="drop-shadow-sm">Step 1</span>
+                        </div>
+
+                        <div>
+                            foo
+                        </div>
+
+                    </div>
+
 
                 </div>
+
+
             </div>
 
         </div>
