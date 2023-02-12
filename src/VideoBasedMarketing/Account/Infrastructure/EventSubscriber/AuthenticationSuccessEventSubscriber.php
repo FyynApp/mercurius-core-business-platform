@@ -54,24 +54,20 @@ class AuthenticationSuccessEventSubscriber
         /** @var null|User $userBeingAuthenticated */
         $userBeingAuthenticated = $event->getAuthenticationToken()->getUser();
 
-        if (is_null($currentUser)) {
-            return;
-        } else {
+        if (   !is_null($currentUser)
+            && !is_null($userBeingAuthenticated)
+            && $currentUser->getId() !== $userBeingAuthenticated->getId()
+            && $currentUser->isUnregistered()
+            && $userBeingAuthenticated->isRegistered()
+        ) {
+            $success = $this->accountDomainService->unregisteredUserClaimsRegisteredUser(
+                $currentUser,
+                $userBeingAuthenticated
+            );
 
-            if ($currentUser->isUnregistered()) {
-                $success = $this->accountDomainService->unregisteredUserClaimsRegisteredUser(
-                    $currentUser,
-                    $userBeingAuthenticated
-                );
-
-                if (!$success) {
-                    throw new Exception('AccountDomainService::unregisteredUserClaimsRegisteredUser failed.');
-                }
+            if (!$success) {
+                throw new Exception('AccountDomainService::unregisteredUserClaimsRegisteredUser failed.');
             }
-
-            $this->logger->debug("User Identifier security: '{$currentUser->getUserIdentifier()}'");
         }
-
-        $this->logger->debug("User Identifier from event: '{$event->getAuthenticationToken()->getUserIdentifier()}'");
     }
 }
