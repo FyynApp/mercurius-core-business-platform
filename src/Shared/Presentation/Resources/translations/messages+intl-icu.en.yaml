@@ -38,10 +38,17 @@ contentpages:
     cta:
       get_started: 'Get started'
       live_demo: 'Live demo'
+  homepage_native_recorder:
+    block_1:
+      copy_1: 'Create'
+      copy_2: 'engaging video messages'
+      copy_3: 'that your customers love.'
+    cta:
+      download: 'Install the Chrome browser extension'
   homepage_extension:
     copy_1: 'From zero to an'
     copy_2: 'AI-optimized video email'
-    copy_3: "in three simple steps."
+    copy_3: 'in three simple steps.'
     title: 'The Fyyn.io Browser Extension'
     text:
       1: 'The Fyyn.io browser extension is a free plugin for Google Chrome that allows you to create screen and camera recordings directly from your browser.'

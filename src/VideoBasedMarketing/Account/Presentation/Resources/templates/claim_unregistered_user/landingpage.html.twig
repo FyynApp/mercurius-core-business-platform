@@ -1,196 +1,192 @@
-{% extends '@shared/base_extension_only_user.html.twig' %}
+{% extends '@shared/base_default.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 
 {% trans_default_domain 'videobasedmarketing.account' %}
 
+{% block mainWrapperClasses %}{% endblock %}
+
 {% block body %}
 
-    <div class="padded-content-box">
+    <div
+            class="
+            flex flex-col lg:flex-row gap-0 min-h-screen
+            bg-gradient-to-br
+            from-mercurius-blue-500 to-mercurius-green-500
+            p-0
+        "
+    >
+        <div class="w-full lg:w-6/12 p-16">
+
+            <h1 class="text-7xl font-extrabold text-white">
+                {{ 'claim_unregistered_user.form.greeting'|trans }}
+            </h1>
+
+            <div class="mt-4 text-4xl font-bold text-mercurius-blue-900">
+                {{ 'claim_unregistered_user.form.note1'|trans }}
+            </div>
+
+            {% if videos|length > 0 %}
+                <div class="mt-7 w-full">
+                    <img
+                            class="rounded-md w-full"
+                            src="{{ asset(
+                                TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(videos[0])
+                            ) }}"
+                    >
+                </div>
+            {% endif %}
+
+            <div
+                    data-test-id="note2"
+                    class="mt-8 text-2xl font-extralight text-neutral-100"
+            >
+                {% if videos|length > 0 %}
+                    {{ 'claim_unregistered_user.form.note2.has_videos'|trans }}
+                {% else %}
+                    {{ 'claim_unregistered_user.form.note2.no_videos'|trans }}
+                {% endif %}
+            </div>
+
+            <div class="mt-8 text-2xl font-semibold text-white">
+                {{ 'claim_unregistered_user.form.note3'|trans }}
+            </div>
+
+            <div class="lg:hidden text-white flex flex-row justify-center mt-16 animate-pulse">
+                {# Heroicon: arrow-down #}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+                </svg>
+            </div>
+
+        </div>
+
+
 
         <div
                 class="
-                mt-8 flex flex-col lg:flex-row gap-0 min-h-screen
-                bg-gradient-to-br
-                from-mercurius-blue-500 to-mercurius-green-500
-                rounded-md p-0
-            "
+                    w-full lg:w-6/12
+                    bg-gradient-to-b from-neutral-100 to-mercurius-blue-100
+                    p-16 lg:pt-32
+                "
         >
-            <div class="w-full lg:w-6/12 p-16">
+            <div class="">
 
-                <h1 class="text-7xl font-extrabold">
-                    {{ 'claim_unregistered_user.form.greeting'|trans }}
-                </h1>
-
-                <div class="mt-4 text-4xl font-bold">
-                    {{ 'claim_unregistered_user.form.note1'|trans }}
-                </div>
-
-                {% if videos|length > 0 %}
-                    <div class="mt-7 w-full">
-                        <img
-                                class="rounded-md w-full"
-                                src="{{ asset(
-                                    TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(videos[0])
-                                ) }}"
-                        >
-                    </div>
-                {% endif %}
-
-                <div
-                        data-test-id="note2"
-                        class="mt-8 text-2xl font-extralight text-neutral-100"
+                <form
+                        action="{{ path('videobasedmarketing.account.presentation.claim_unregistered_user.handle_form_submit') }}"
+                        method="post"
                 >
-                    {% if videos|length > 0 %}
-                        {{ 'claim_unregistered_user.form.note2.has_videos'|trans }}
-                    {% else %}
-                        {{ 'claim_unregistered_user.form.note2.no_videos'|trans }}
-                    {% endif %}
-                </div>
-
-                <div class="mt-8 text-2xl font-semibold text-white">
-                    {{ 'claim_unregistered_user.form.note3'|trans }}
-                </div>
-
-                <div class="lg:hidden text-white flex flex-row justify-center mt-16 animate-pulse">
-                    {# Heroicon: arrow-down #}
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
-                    </svg>
-                </div>
-
-            </div>
-
-
-
-            <div
-                    class="
-                        w-full lg:w-6/12
-                        bg-neutral-100
-                        p-16
-                        rounded-bl-md rounded-br-md
-                        lg:rounded-bl-none lg:rounded-tr-md
+                    <div
+                            class="
+                        flex flex-col gap-2 w-full
+                        justify-center items-center
+                        lg:items-end
                     "
-            >
-                <div class="">
-
-                    <form
-                            action="{{ path('videobasedmarketing.account.presentation.claim_unregistered_user.handle_form_submit') }}"
-                            method="post"
                     >
-                        <div
-                                class="
-                            flex flex-col gap-2 w-full
-                            justify-center items-center
-                            lg:items-end
-                        "
-                        >
 
-                            <div class="w-full">
-                                <label for="email" class="sr-only">
-                                    {{ 'sign_in.placeholder.email'|trans }}
-                                </label>
-                                <input
-                                        id="email"
-                                        name="{{ form.email.vars.full_name }}"
-                                        type="email"
-                                        autocomplete="email"
-                                        required
-                                        class="
-                                    appearance-none relative block
-                                    h-16 w-full px-3 py-2
-                                    border border-gray-300
-                                    placeholder-gray-500 text-gray-900
-                                    rounded-md
-                                    focus:outline-none
-                                    ring-mercurius-blue-500
-                                    border-mercurius-blue-500
-                                    border-2
-                                    bg-mercurius-blue-50
-                                    focus:z-10 sm:text-sm
-                                "
-                                        placeholder="{{ 'sign_in.placeholder.email'|trans }}"
-                                />
-                            </div>
-
-                            <button
-                                    data-test-id="submit"
-                                    type="submit"
+                        <div class="w-full">
+                            <label for="email" class="sr-only">
+                                {{ 'sign_in.placeholder.email'|trans }}
+                            </label>
+                            <input
+                                    id="email"
+                                    name="{{ form.email.vars.full_name }}"
+                                    type="email"
+                                    autocomplete="email"
+                                    required
                                     class="
-                                    mt-4
-                                    w-full flex items-center justify-center px-8
-                                    font-medium
-                                    rounded-md text-white
-                                    bg-gradient-to-r
-                                    from-mercurius-blue-500 to-mercurius-green-500
-                                    hover:from-mercurius-blue-700 hover:to-mercurius-green-700
-                                    py-4 text-lg px-10
-                                "
-                            >
-                                {{ 'claim_unregistered_user.form.cta'|trans }}
-                                {# Heroicon: cursor-arrow-rays solid #}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="ml-8 w-8 h-8 animate-pulse">
-                                    <path fill-rule="evenodd" d="M12 1.5a.75.75 0 01.75.75V4.5a.75.75 0 01-1.5 0V2.25A.75.75 0 0112 1.5zM5.636 4.136a.75.75 0 011.06 0l1.592 1.591a.75.75 0 01-1.061 1.06l-1.591-1.59a.75.75 0 010-1.061zm12.728 0a.75.75 0 010 1.06l-1.591 1.592a.75.75 0 01-1.06-1.061l1.59-1.591a.75.75 0 011.061 0zm-6.816 4.496a.75.75 0 01.82.311l5.228 7.917a.75.75 0 01-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 01-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 01-1.247-.606l.569-9.47a.75.75 0 01.554-.68zM3 10.5a.75.75 0 01.75-.75H6a.75.75 0 010 1.5H3.75A.75.75 0 013 10.5zm14.25 0a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18a.75.75 0 01-.75-.75zm-8.962 3.712a.75.75 0 010 1.061l-1.591 1.591a.75.75 0 11-1.061-1.06l1.591-1.592a.75.75 0 011.06 0z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
-
-                            <div class="text-xs text-neutral-500 w-full font-extralight text-center">
-                                <a
-                                        {% if app.request.locale is same as 'de' %}
-                                            href="https://help.fyyn.io/knowledge-base/datenschutzerklarung/"
-                                        {% else %}
-                                            href="https://help.fyyn.io/knowledge-base/privacy-policy/"
-                                        {% endif %}
-                                >
-                                    {{ 'claim_unregistered_user.form.fineprint'|trans }}
-                                </a>
-                            </div>
-
-                            <div class="flex flex-row w-full gap-4 mt-16 mb-8">
-                                <div class="border-t-2 border-neutral-200 flex-grow"></div>
-                                <div class="relative -top-2 text-neutral-500 font-extralight text-xs">
-                                    {{ 'claim_unregistered_user.form.continue_with'|trans }}
-                                </div>
-                                <div class="border-t-2 border-neutral-200 flex-grow"></div>
-                            </div>
-
-                            <div class="w-full">
-                                <a
-                                        href="{{ path('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start') }}"
-                                        class="
-                                        block w-full border-1 rounded-sm
-                                        p-4
-                                        bg-neutral-50 hover:bg-mercurius-blue-50
-                                        border-neutral-200 hover:border-mercurius-blue-200
-                                        flex flex-row justify-center items-center gap-2
-                                        text-neutral-500 hover:text-black
-                                    "
-                                >
-                                    <img
-                                            class="h-5"
-                                            src="{{ asset('assets/images/videobasedmarketing/account/third-party-auth/linkedin/LI-Bug.svg.original.svg') }}"
-                                    >
-                                    <div data-test-id="claim-by-thirdpartyauth-linkedin-text">
-                                        {{ 'claim_unregistered_user.form.third_party_auth.linkedin'|trans }}
-                                    </div>
-                                </a>
-                            </div>
-
-                            <div class="mt-4 w-full text-center text-neutral-400">
-                                {{ 'claim_unregistered_user.form.login_text'|trans }}
-                                <a href="{{ path('videobasedmarketing.account.presentation.sign_in') }}" class="text-mercurius-blue-700 hover:underline">
-                                    {{ 'claim_unregistered_user.form.login_cta'|trans }}
-                                </a>
-                            </div>
-
+                                appearance-none relative block
+                                h-16 w-full px-3 py-2
+                                border border-gray-300
+                                placeholder-gray-500 text-gray-900
+                                rounded-md
+                                focus:outline-none
+                                ring-mercurius-blue-500
+                                border-mercurius-blue-500
+                                border-2
+                                bg-mercurius-blue-50
+                                focus:z-10 sm:text-sm
+                            "
+                                    placeholder="{{ 'sign_in.placeholder.email'|trans }}"
+                            />
                         </div>
 
-                        {{ form_row(form._token) }}
-                    </form>
-                </div>
+                        <button
+                                data-test-id="submit"
+                                type="submit"
+                                class="
+                                mt-4
+                                w-full flex items-center justify-center px-8
+                                font-medium
+                                rounded-md text-white
+                                bg-gradient-to-r
+                                from-mercurius-blue-500 to-mercurius-green-500
+                                hover:from-mercurius-blue-700 hover:to-mercurius-green-700
+                                py-4 text-lg px-10
+                            "
+                        >
+                            {{ 'claim_unregistered_user.form.cta'|trans }}
+                            {# Heroicon: cursor-arrow-rays solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="ml-8 w-8 h-8 animate-pulse">
+                                <path fill-rule="evenodd" d="M12 1.5a.75.75 0 01.75.75V4.5a.75.75 0 01-1.5 0V2.25A.75.75 0 0112 1.5zM5.636 4.136a.75.75 0 011.06 0l1.592 1.591a.75.75 0 01-1.061 1.06l-1.591-1.59a.75.75 0 010-1.061zm12.728 0a.75.75 0 010 1.06l-1.591 1.592a.75.75 0 01-1.06-1.061l1.59-1.591a.75.75 0 011.061 0zm-6.816 4.496a.75.75 0 01.82.311l5.228 7.917a.75.75 0 01-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 01-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 01-1.247-.606l.569-9.47a.75.75 0 01.554-.68zM3 10.5a.75.75 0 01.75-.75H6a.75.75 0 010 1.5H3.75A.75.75 0 013 10.5zm14.25 0a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18a.75.75 0 01-.75-.75zm-8.962 3.712a.75.75 0 010 1.061l-1.591 1.591a.75.75 0 11-1.061-1.06l1.591-1.592a.75.75 0 011.06 0z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+
+                        <div class="text-xs text-neutral-500 w-full font-extralight text-center">
+                            <a
+                                    {% if app.request.locale is same as 'de' %}
+                                        href="https://help.fyyn.io/knowledge-base/datenschutzerklarung/"
+                                    {% else %}
+                                        href="https://help.fyyn.io/knowledge-base/privacy-policy/"
+                                    {% endif %}
+                            >
+                                {{ 'claim_unregistered_user.form.fineprint'|trans }}
+                            </a>
+                        </div>
+
+                        <div class="flex flex-row w-full gap-4 mt-16 mb-8">
+                            <div class="border-t-2 border-neutral-200 flex-grow"></div>
+                            <div class="relative -top-2 text-neutral-500 font-extralight text-xs">
+                                {{ 'claim_unregistered_user.form.continue_with'|trans }}
+                            </div>
+                            <div class="border-t-2 border-neutral-200 flex-grow"></div>
+                        </div>
+
+                        <div class="w-full">
+                            <a
+                                    href="{{ path('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start') }}"
+                                    class="
+                                    block w-full border-1 rounded-sm
+                                    p-4
+                                    bg-neutral-50 hover:bg-mercurius-blue-50
+                                    border-neutral-200 hover:border-mercurius-blue-200
+                                    flex flex-row justify-center items-center gap-2
+                                    text-neutral-500 hover:text-black
+                                "
+                            >
+                                <img
+                                        class="h-5"
+                                        src="{{ asset('assets/images/videobasedmarketing/account/third-party-auth/linkedin/LI-Bug.svg.original.svg') }}"
+                                >
+                                <div data-test-id="claim-by-thirdpartyauth-linkedin-text">
+                                    {{ 'claim_unregistered_user.form.third_party_auth.linkedin'|trans }}
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="mt-4 w-full text-center text-neutral-400">
+                            {{ 'claim_unregistered_user.form.login_text'|trans }}
+                            <a href="{{ path('videobasedmarketing.account.presentation.sign_in') }}" class="text-mercurius-blue-700 hover:underline">
+                                {{ 'claim_unregistered_user.form.login_cta'|trans }}
+                            </a>
+                        </div>
+
+                    </div>
+
+                    {{ form_row(form._token) }}
+                </form>
             </div>
         </div>
-
     </div>
 
 {% endblock %}

@@ -52,7 +52,7 @@ thirdpartyauth:
 claim_unregistered_user:
   form:
     greeting: 'Hallo auch,'
-    note1: 'vielen Dank für die Nutzung unserer Browser Extension.'
+    note1: 'schön dass du Fyyn nutzt um deine Videos aufzunehmen und zu teilen!'
     note2:
       has_videos: 'Wir haben dein Video sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell darauf zugreifen kannst.'
       no_videos: 'Sobald du Videos erstellst, werden diese sicher und zuverlässig gespeichert, damit du jederzeit einfach und schnell auf sie zugreifen kannst.'

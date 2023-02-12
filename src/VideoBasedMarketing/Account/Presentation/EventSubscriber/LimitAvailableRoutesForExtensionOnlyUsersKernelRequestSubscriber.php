@@ -58,6 +58,10 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'shared.infrastructure.content_delivery.serve_external_asset',
             'shared.presentation.contentpages.cookie_settings',
             'shared.presentation.styleguide',
+            'shared.presentation.contentpages.homepage_native_recorder',
+            'shared.presentation.contentpages.homepage',
+            'shared.presentation.catchall.root',
+            'shared.presentation.catchall.pattern',
 
             'videobasedmarketing.account.presentation.claim_unregistered_user.',
             'videobasedmarketing.account.api.extension.',
@@ -71,6 +75,7 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
             'videobasedmarketing.recordings.presentation.recording_session.extension',
             'videobasedmarketing.recordings.presentation.video.share_link',
+            'videobasedmarketing.recordings.presentation.show_native_browser_recorder',
 
             'videobasedmarketing.mailings.presentation.create_video_mailing',
             'videobasedmarketing.mailings.presentation.show_video_mailing_editor',

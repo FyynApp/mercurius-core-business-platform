@@ -28,6 +28,11 @@ readonly class CapabilitiesService
             &&  $user->isVerified();
     }
 
+    public function canRecordVideosWithNativeBrowserRecorder(): bool
+    {
+        return true;
+    }
+
     public function canEditVideos(User $user): bool
     {
         return  $user->isRegistered()

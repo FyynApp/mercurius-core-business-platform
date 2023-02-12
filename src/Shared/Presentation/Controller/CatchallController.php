@@ -2,7 +2,6 @@
 
 namespace App\Shared\Presentation\Controller;
 
-use App\Shared\Domain\Enum\Iso639_1Code;
 use App\Shared\Domain\Service\Iso639_1CodeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
