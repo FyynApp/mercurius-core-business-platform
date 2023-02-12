@@ -1,6 +1,7 @@
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 import Dashboard from '@uppy/dashboard';
+import StatusBar from '@uppy/status-bar';
 import de_DE from '@uppy/locales/lib/de_DE';
 import en_US from '@uppy/locales/lib/en_US';
 
@@ -8,6 +9,7 @@ const appLocale = document.currentScript.getAttribute('data-lang');
 const maxFileSize = document.currentScript.getAttribute('data-max-file-size');
 const showInline = document.currentScript.getAttribute('data-show-inline');
 const dashboardTarget = document.currentScript.getAttribute('data-dashboard-target');
+const statusBarTarget = document.currentScript.getAttribute('data-status-bar-target');
 const afterDoneLocation = document.currentScript.getAttribute('data-after-done-location');
 
 let locale = en_US;
@@ -80,4 +82,21 @@ uppy.use(Dashboard, {
     theme: 'light',
     autoOpenFileEditor: false,
     disableLocalFiles: false
+});
+
+uppy.use(StatusBar, {
+    id: 'StatusBar',
+    target: statusBarTarget,
+    hideAfterFinish: false,
+    showProgressDetails: false,
+    hideUploadButton: true,
+    hideRetryButton: true,
+    hidePauseResumeButton: true,
+    hideCancelButton: true,
+    doneButtonHandler: null,
+    locale: locale,
+})
+
+uppy.on('complete', () => {
+    window.location.href = afterDoneLocation;
 });

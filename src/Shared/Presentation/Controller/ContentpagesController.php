@@ -3,6 +3,8 @@
 namespace App\Shared\Presentation\Controller;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
+use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,15 +72,27 @@ class ContentpagesController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function homepageNativeRecorderAction(): Response
+    public function homepageNativeRecorderAction(
+        AccountDomainService                  $accountDomainService,
+        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
+    ): Response
     {
-        /** @var User|null $user */
+        /** @var null|User $user */
         $user = $this->getUser();
+
+        if (is_null($user)) {
+            $user = $accountDomainService->createUnregisteredUser();
+            return $requestParametersBasedUserAuthService->createRedirectResponse(
+                $user,
+                'shared.presentation.contentpages.homepage_native_recorder'
+            );
+        }
 
         if (   !is_null($user)
             && $user->isRegistered()
+            && $user->isVerified()
         ) {
-            return $this->redirectToRoute('videobasedmarketing.dashboard.presentation.show_registered');
+            return $this->redirectToRoute('videobasedmarketing.recordings.presentation.videos.overview');
         }
 
         return $this->render(

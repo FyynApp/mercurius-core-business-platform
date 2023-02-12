@@ -49,10 +49,25 @@
 
         {% block contentBoxContent %}
 
-            <div
-                    id="uppyVideoUploadDashboardTarget"
-            >
-            </div>
+            {% if is_mobile() %}
+                <button
+
+                        onclick="document.getElementsByClassName('uppy-DashboardTab-btn')[0].click();"
+                >
+                    Record or upload video
+                </button>
+
+                <div
+                        class="hidden"
+                        id="uppyVideoUploadDashboardTarget"
+                >
+                </div>
+            {% else %}
+                <div
+                        id="uppyVideoUploadDashboardTarget"
+                >
+                </div>
+            {% endif %}
 
         {% endblock %}
     {% endembed %}

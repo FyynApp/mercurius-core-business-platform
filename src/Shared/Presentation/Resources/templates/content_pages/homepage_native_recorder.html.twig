@@ -3,10 +3,26 @@
 {% block mainWrapperClasses %}{% endblock %}
 
 {% block javascripts %}
-    <script
-            defer="defer"
-            src="{{ asset('assets/native-browser-recorder/main.3931ecd8.js') }}"
-    ></script>
+    {% if is_mobile() %}
+        {{ encore_entry_script_tags(
+            'recordings/uppyVideoUpload',
+            null,
+            '_default',
+            {
+                'data-lang': app.request.locale,
+                'data-max-file-size': TwigHelperService.videoDomainService.maxVideoUploadFilesize(app.user),
+                'data-show-inline': 'true',
+                'data-dashboard-target': '#uppyVideoUploadDashboardTarget',
+                'data-status-bar-target': '#uppyVideoUploadStatusBarTarget',
+                'data-after-done-location': path('videobasedmarketing.account.presentation.claim_unregistered_user.landingpage')
+            }
+        ) }}
+    {% else %}
+        <script
+                defer="defer"
+                src="{{ asset('assets/native-browser-recorder/main.3931ecd8.js') }}"
+        ></script>
+    {% endif %}
 {% endblock %}
 
 
@@ -99,6 +115,12 @@
 
 
                 {% if is_mobile() %}
+                    <div
+                            class="hidden"
+                            id="uppyVideoUploadDashboardTarget"
+                    >
+                    </div>
+
                     <div class="text-xl text-black font-normal mt-8">
                         No installation required - just hit
                         <span class="font-bold">Tap to start!</span>
@@ -118,8 +140,8 @@
                 {% if is_mobile() %}
 
                     <div class="mt-8 rounded-md drop-shadow-2xl w-full max-w-lg flex flex-row justify-center">
-                        <a
-                                href="{{ path('videobasedmarketing.recordings.presentation.upload_video') }}"
+                        <button
+                                onclick="document.getElementsByClassName('uppy-DashboardTab-btn')[0].click();"
                                 class="
                                     cta-with-icon-primary
                                     bg-gradient-to-l from-mercurius-green-500 to-mercurius-blue-500
@@ -128,12 +150,18 @@
                                 "
                         >
                             Tap to start!
-                        </a>
+                        </button>
+                    </div>
+
+                    <div
+                            id="uppyVideoUploadStatusBarTarget"
+                            class="flex flex-row gap-2"
+                    >
                     </div>
 
                 {% else %}
 
-                    <div class="mt-8 rounded-md drop-shadow-2xl h-64 w-full max-w-lg flex flex-row justify-center">
+                    <div class="mt-8 rounded-md drop-shadow-2xl h-64 w-full max-w-lg">
 
                         <mercurius-web-recorder
                                 init-id="v1stGXR8Z5jdHi6B"
