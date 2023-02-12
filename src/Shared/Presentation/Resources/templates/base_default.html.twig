@@ -120,7 +120,10 @@
                                 </a>
                             </li>
 
-                            {% if app.user is defined and app.user is not null %}
+                            {% if app.user is defined
+                                and app.user is not null
+                                and app.user.registered
+                            %}
                                 <li>
                                     <form
                                             action="{{ path('videobasedmarketing.account.infrastructure.sign_out') }}"
@@ -133,6 +136,37 @@
                                             {{ 'footernav.sign_out'|trans }}
                                         </button>
                                     </form>
+                                </li>
+                            {% endif %}
+
+                            {% if app.user is not defined
+                                or app.user is null
+                                or app.user.unregistered
+                            %}
+                                <li>
+                                    <a
+                                            href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
+                                    >
+                                        <button
+                                                type="submit"
+                                                class="mr-4 hover:underline md:mr-6"
+                                        >
+                                            {{ 'footernav.sign_in'|trans }}
+                                        </button>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a
+                                            href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
+                                    >
+                                        <button
+                                                type="submit"
+                                                class="mr-4 hover:underline md:mr-6"
+                                        >
+                                            {{ 'footernav.sign_up'|trans }}
+                                        </button>
+                                    </a>
                                 </li>
                             {% endif %}
 

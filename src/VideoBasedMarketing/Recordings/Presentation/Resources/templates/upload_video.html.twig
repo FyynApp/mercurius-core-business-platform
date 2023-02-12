@@ -1,0 +1,60 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
+        {{ encore_entry_link_tags('uppy') }}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
+        {{ encore_entry_script_tags(
+            'recordings/uppyVideoUpload',
+            null,
+            '_default',
+            {
+                'data-lang': app.request.locale,
+                'data-max-file-size': TwigHelperService.videoDomainService.maxVideoUploadFilesize(app.user),
+                'data-show-inline': 'true',
+                'data-dashboard-target': '#uppyVideoUploadDashboardTarget',
+                'data-after-done-location': path('videobasedmarketing.account.presentation.claim_unregistered_user.landingpage')
+            }
+        ) }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.recordings' %}
+
+        {% block contentBoxTitle %}
+            {{
+                'upload_video.title'
+                |trans({
+                    numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideos(app.user)|length
+                })
+            }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'videos_overview.subtitle'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <div
+                    id="uppyVideoUploadDashboardTarget"
+            >
+            </div>
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

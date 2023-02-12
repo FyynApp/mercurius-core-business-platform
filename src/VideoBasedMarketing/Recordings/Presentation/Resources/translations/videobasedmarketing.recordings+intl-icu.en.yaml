@@ -36,6 +36,8 @@ video_manage_widget:
     title: 'Delete video'
     really: 'Do you really want to delete this video?'
     yes: 'Yes, delete'
+upload_video:
+  title: 'Upload video'
 videos_overview:
   title: 'Your videos'
   subtitle: 'Videos can be modified and shared here.'

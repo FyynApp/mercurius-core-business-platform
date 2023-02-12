@@ -1,13 +1,14 @@
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 import Dashboard from '@uppy/dashboard';
-import Webcam from '@uppy/webcam';
-import ScreenCapture from '@uppy/screen-capture';
 import de_DE from '@uppy/locales/lib/de_DE';
 import en_US from '@uppy/locales/lib/en_US';
 
 const appLocale = document.currentScript.getAttribute('data-lang');
 const maxFileSize = document.currentScript.getAttribute('data-max-file-size');
+const showInline = document.currentScript.getAttribute('data-show-inline');
+const dashboardTarget = document.currentScript.getAttribute('data-dashboard-target');
+const afterDoneLocation = document.currentScript.getAttribute('data-after-done-location');
 
 let locale = en_US;
 if (appLocale === 'de') {
@@ -42,10 +43,10 @@ uppy.use(Tus, {
 
 uppy.use(Dashboard, {
     id: 'uppyVideoUploadDashboard',
-    target: 'body',
+    target: dashboardTarget,
     metaFields: [],
     trigger: '#uppyVideoUploadDashboardOpenCta',
-    inline: false,
+    inline: showInline === 'true',
     width: 750,
     height: 550,
     thumbnailWidth: 280,
@@ -58,7 +59,7 @@ uppy.use(Dashboard, {
     hideProgressAfterFinish: false,
     doneButtonHandler: () => {
         uppy.cancelAll();
-        location.reload();
+        window.location.href = afterDoneLocation;
     },
     note: null,
     closeModalOnClickOutside: false,
@@ -74,39 +75,9 @@ uppy.use(Dashboard, {
     showSelectedFiles: true,
     showRemoveButtonAfterComplete: false,
     showNativePhotoCameraButton: false,
-    showNativeVideoCameraButton: true,
+    showNativeVideoCameraButton: false,
     browserBackButtonClose: false,
     theme: 'light',
     autoOpenFileEditor: false,
     disableLocalFiles: false
-});
-
-uppy.use(Webcam, {
-    modes: [
-        'video-audio',
-        'video-only',
-    ],
-    showVideoSourceDropdown: true,
-    preferredVideoMimeType: 'video/mp4',
-    target: Dashboard
-});
-
-uppy.use(ScreenCapture, {
-    displayMediaConstraints: {
-        video: {
-            width: 1280,
-            height: 720,
-            frameRate: {
-                ideal: 3,
-                max: 5,
-            },
-            cursor: 'motion',
-            displaySurface: 'monitor',
-        },
-    },
-    userMediaConstraints: {
-        audio: true,
-    },
-    preferredVideoMimeType: 'video/webm',
-    target: Dashboard
 });

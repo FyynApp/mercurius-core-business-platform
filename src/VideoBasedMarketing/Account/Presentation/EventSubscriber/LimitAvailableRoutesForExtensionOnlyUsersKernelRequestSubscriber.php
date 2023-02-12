@@ -71,6 +71,7 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.recordings.api.extension.',
             'videobasedmarketing.recordings.api.video_upload.',
             'videobasedmarketing.recordings.presentation.videos.',
+            'videobasedmarketing.recordings.presentation.upload_video',
             'videobasedmarketing.recordings.presentation.video.deletion',
             'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
             'videobasedmarketing.recordings.presentation.recording_session.extension',

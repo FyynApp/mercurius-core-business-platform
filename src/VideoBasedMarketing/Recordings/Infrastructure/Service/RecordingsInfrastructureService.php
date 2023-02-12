@@ -520,11 +520,21 @@ class RecordingsInfrastructureService
                     $video,
                     AssetMimeType::ImageWebp))
             ) {
-                $this
-                    ->logger
-                    ->info(
-                        "Failed to generate video asset 'poster still webp' for video {$video->getId()} from recording session {$video->getRecordingSession()->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
-                    );
+                if (!is_null($video->getRecordingSession())) {
+                    $this
+                        ->logger
+                        ->info(
+                            "Failed to generate video asset 'poster still webp' for video {$video->getId()} from recording session {$video->getRecordingSession()->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                        );
+                }
+
+                if (!is_null($video->getVideoUpload())) {
+                    $this
+                        ->logger
+                        ->info(
+                            "Failed to generate video asset 'poster still webp' for video {$video->getId()} from video upload {$video->getVideoUpload()->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                        );
+                }
                 continue;
             }
 
@@ -1521,6 +1531,9 @@ class RecordingsInfrastructureService
                 ]
             )
         );
+
+        $this->generateVideoAssetPosterStillWebp($video);
+        $this->generateVideoAssetPosterAnimatedWebp($video);
 
         $this->messageBus->dispatch(
             new ClearTusCacheCommandMessage($user, $token)

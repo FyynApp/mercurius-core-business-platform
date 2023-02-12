@@ -30,7 +30,6 @@
                 <div class="text-xl text-white font-normal mt-8">
 
                     Fyyn.io allows you to create screen and webcam recordings
-                    without any additional software,
                     <span class="text-mercurius-blue-900 font-bold">right from your browser</span>.
 
                 </div>
@@ -98,39 +97,73 @@
                     Try it here!
                 </div>
 
-                <div class="text-xl text-black font-normal mt-8">
-                    No installation required - just choose
-                    <span class="font-bold">Camera</span>
-                    or
-                    <span class="font-bold">Screen</span>
-                    and create your first video <span class="underline underline-offset-2">right now</span>!
 
-                </div>
+                {% if is_mobile() %}
+                    <div class="text-xl text-black font-normal mt-8">
+                        No installation required - just choose
+                        <span class="font-bold">Camera</span>
+                        or
+                        <span class="font-bold">Screen</span>
+                        and create your first video <span class="underline underline-offset-2">right now</span>!
 
-                <div class="mt-8 rounded-md drop-shadow-2xl h-64 w-full max-w-lg">
-                    <mercurius-web-recorder
-                            init-id="v1stGXR8Z5jdHi6B"
-                            brand-color="#009EE2"
-                            brand-dark-color="#0185BD"
-                            primary-color="#84CC16"
-                            primary-dark-color="#65A30D"
-                            accent-color="#fd5f00"
-                            container-width="100%"
-                            container-height="230px"
-                    >
-                    </mercurius-web-recorder>
-                </div>
+                    </div>
+                {% else %}
 
-                <div class="mt-48 flex flex-col items-center">
-                    <div>
-                        Want to record screen and camera together, wherever
-                        you are surfing the web?
+                    <div class="text-xl text-black font-normal mt-8">
+                        No installation required - just hit
+                        <span class="font-bold">Tap to start!</span>
+                        or
+                        <span class="font-bold">Screen</span>
+                        and create your first video <span class="underline underline-offset-2">right now</span>!
+
                     </div>
 
-                    <div>
+                {% endif %}
+
+
+                {% if is_mobile() %}
+
+                    <div class="mt-8 rounded-md drop-shadow-2xl w-full max-w-lg flex flex-row justify-center">
                         <a
-                                href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
+                                href="{{ path('videobasedmarketing.recordings.presentation.upload_video') }}"
                                 class="
+                                    cta-with-icon-primary
+                                    bg-gradient-to-l from-mercurius-green-500 to-mercurius-blue-500
+                                    text-2xl
+                                    animate-pulse
+                                "
+                        >
+                            Tap to start!
+                        </a>
+                    </div>
+
+                {% else %}
+
+                    <div class="mt-8 rounded-md drop-shadow-2xl h-64 w-full max-w-lg flex flex-row justify-center">
+
+                        <mercurius-web-recorder
+                                init-id="v1stGXR8Z5jdHi6B"
+                                brand-color="#009EE2"
+                                brand-dark-color="#0185BD"
+                                primary-color="#84CC16"
+                                primary-dark-color="#65A30D"
+                                accent-color="#fd5f00"
+                                container-width="100%"
+                                container-height="230px"
+                        >
+                        </mercurius-web-recorder>
+                    </div>
+
+                    <div class="mt-48 flex flex-col items-center">
+                        <div>
+                            Want to record screen and camera together, wherever
+                            you are surfing the web?
+                        </div>
+
+                        <div>
+                            <a
+                                    href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
+                                    class="
                             mt-8
                             w-full max-w-xl flex flex-row items-center gap-4 justify-center px-8 py-3
                             text-base font-medium
@@ -140,21 +173,23 @@
                             hover:from-mercurius-blue-700 hover:to-mercurius-blue-700
                             md:py-4 md:text-lg md:px-10
                         "
-                        >
-                            <div class="flex flex-col gap-2 items-start">
-                                <p class="text-left">
-                                    {{ 'contentpages.homepage_native_recorder.cta.download'|trans }}
-                                </p>
-                                <img class="w-32" src="{{ asset('assets/images/shared/chrome_web_store_badge.png') }}">
-                            </div>
+                            >
+                                <div class="flex flex-col gap-2 items-start">
+                                    <p class="text-left">
+                                        {{ 'contentpages.homepage_native_recorder.cta.download'|trans }}
+                                    </p>
+                                    <img class="w-32" src="{{ asset('assets/images/shared/chrome_web_store_badge.png') }}">
+                                </div>
 
-                            {# Heroicon: cursor-arrow-rays solid #}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 animate-pulse">
-                                <path fill-rule="evenodd" d="M12 1.5a.75.75 0 01.75.75V4.5a.75.75 0 01-1.5 0V2.25A.75.75 0 0112 1.5zM5.636 4.136a.75.75 0 011.06 0l1.592 1.591a.75.75 0 01-1.061 1.06l-1.591-1.59a.75.75 0 010-1.061zm12.728 0a.75.75 0 010 1.06l-1.591 1.592a.75.75 0 01-1.06-1.061l1.59-1.591a.75.75 0 011.061 0zm-6.816 4.496a.75.75 0 01.82.311l5.228 7.917a.75.75 0 01-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 01-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 01-1.247-.606l.569-9.47a.75.75 0 01.554-.68zM3 10.5a.75.75 0 01.75-.75H6a.75.75 0 010 1.5H3.75A.75.75 0 013 10.5zm14.25 0a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18a.75.75 0 01-.75-.75zm-8.962 3.712a.75.75 0 010 1.061l-1.591 1.591a.75.75 0 11-1.061-1.06l1.591-1.592a.75.75 0 011.06 0z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
+                                {# Heroicon: cursor-arrow-rays solid #}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 animate-pulse">
+                                    <path fill-rule="evenodd" d="M12 1.5a.75.75 0 01.75.75V4.5a.75.75 0 01-1.5 0V2.25A.75.75 0 0112 1.5zM5.636 4.136a.75.75 0 011.06 0l1.592 1.591a.75.75 0 01-1.061 1.06l-1.591-1.59a.75.75 0 010-1.061zm12.728 0a.75.75 0 010 1.06l-1.591 1.592a.75.75 0 01-1.06-1.061l1.59-1.591a.75.75 0 011.061 0zm-6.816 4.496a.75.75 0 01.82.311l5.228 7.917a.75.75 0 01-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 01-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 01-1.247-.606l.569-9.47a.75.75 0 01.554-.68zM3 10.5a.75.75 0 01.75-.75H6a.75.75 0 010 1.5H3.75A.75.75 0 013 10.5zm14.25 0a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18a.75.75 0 01-.75-.75zm-8.962 3.712a.75.75 0 010 1.061l-1.591 1.591a.75.75 0 11-1.061-1.06l1.591-1.592a.75.75 0 011.06 0z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
                     </div>
-                </div>
+
+                {% endif %}
             </div>
         </div>
 

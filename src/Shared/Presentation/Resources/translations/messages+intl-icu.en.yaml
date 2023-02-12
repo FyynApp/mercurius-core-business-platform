@@ -28,6 +28,8 @@ footernav:
   contact: 'Contact'
   privacy_policy: 'Privacy Policy'
   cookie_settings: 'Cookies'
+  sign_in: 'Sign in'
+  sign_up: 'Sign up'
   sign_out: 'Sign out'
 
 contentpages:

@@ -44,6 +44,8 @@ video_manage_widget:
     title: 'Video löschen'
     really: 'Möchtest du dieses Video wirklich löschen?'
     yes: 'Ja, löschen'
+upload_video:
+  title: 'Video hochladen'
 videos_overview:
   title: 'Deine Videos'
   subtitle: 'Hier können Videos bearbeitet und geteilt werden.'

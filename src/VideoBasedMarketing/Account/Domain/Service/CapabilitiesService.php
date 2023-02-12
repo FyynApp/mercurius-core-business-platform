@@ -24,8 +24,7 @@ readonly class CapabilitiesService
 
     public function canUploadVideos(User $user): bool
     {
-        return  $user->isRegistered()
-            &&  $user->isVerified();
+        return true;
     }
 
     public function canRecordVideosWithNativeBrowserRecorder(): bool
