@@ -43,6 +43,7 @@ class GenerateMissingAssetsCommandMessageHandler
             throw new UnrecoverableMessageHandlingException("Could not find video with id '{$message->getVideoId()}'.");
         }
 
+        set_time_limit(60 * 30);
         $this->recordingsInfrastructureService->generateMissingVideoAssets($video);
     }
 }

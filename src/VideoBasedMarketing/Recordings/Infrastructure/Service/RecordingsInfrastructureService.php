@@ -967,6 +967,8 @@ class RecordingsInfrastructureService
                 )
             ]
         );
+        $process->setIdleTimeout(0);
+        $process->setTimeout(60 * 30);
         $process->run();
 
         if ($process->isSuccessful()) {

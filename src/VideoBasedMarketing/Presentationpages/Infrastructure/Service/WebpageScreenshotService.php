@@ -97,6 +97,8 @@ class WebpageScreenshotService
                 . "'`"
             ]
         );
+        $process->setIdleTimeout(0);
+        $process->setTimeout(60 * 5);
         $process->run();
 
         $fs = new Filesystem();
