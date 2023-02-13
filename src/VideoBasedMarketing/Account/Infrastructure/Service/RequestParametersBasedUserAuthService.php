@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\RequestParameter;
 use App\VideoBasedMarketing\Account\Infrastructure\Security\RequestParametersBasedUserAuthenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -65,5 +66,19 @@ class RequestParametersBasedUserAuthService
                 ]
             )
         );
+    }
+
+    public function isAuthRequest(
+        Request $request
+    ): bool
+    {
+        if (   !is_null($request->get(RequestParameter::RequestParametersBasedUserAuthId->value))
+            && !is_null($request->get(RequestParameter::RequestParametersBasedUserAuthHash->value))
+            && !is_null($request->get(RequestParameter::RequestParametersBasedUserAuthValidUntil->value))
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

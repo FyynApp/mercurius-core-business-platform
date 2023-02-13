@@ -73,6 +73,7 @@ class ContentpagesController
         methods     : [Request::METHOD_GET]
     )]
     public function homepageNativeRecorderAction(
+        Request                               $request,
         AccountDomainService                  $accountDomainService,
         RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
     ): Response
@@ -93,6 +94,10 @@ class ContentpagesController
             && $user->isVerified()
         ) {
             return $this->redirectToRoute('videobasedmarketing.recordings.presentation.videos.overview');
+        }
+
+        if ($requestParametersBasedUserAuthService->isAuthRequest($request)) {
+            return $this->redirect('shared.presentation.contentpages.homepage_native_recorder');
         }
 
         return $this->render(
