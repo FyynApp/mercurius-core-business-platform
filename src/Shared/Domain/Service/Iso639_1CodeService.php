@@ -13,6 +13,10 @@ readonly class Iso639_1CodeService
     {
         $preferredLanguage = $request->getPreferredLanguage();
 
+        if (is_null($preferredLanguage)) {
+            return Iso639_1Code::En;
+        }
+
         if (   $preferredLanguage === Iso639_1Code::De->value
             || mb_substr($preferredLanguage, 0, 3) === Iso639_1Code::De->value . '_'
             || mb_substr($preferredLanguage, 0, 3) === Iso639_1Code::De->value . '-'
