@@ -86,11 +86,6 @@ readonly class CapabilitiesService
         return false;
     }
 
-    public function canSeeVideoTitle(User $user): bool
-    {
-        return false;
-    }
-
     public function mustBeForcedToClaimUnregisteredUser(User $user): bool
     {
         return !$user->isRegistered();

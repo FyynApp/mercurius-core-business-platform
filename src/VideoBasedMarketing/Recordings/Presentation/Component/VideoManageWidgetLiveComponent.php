@@ -37,11 +37,14 @@ class VideoManageWidgetLiveComponent
     #[LiveProp(writable: true)]
     public bool $editModalIsOpen = false;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp(writable: false)]
     public bool $shareModalIsOpen = false;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp(writable: false)]
     public bool $deleteModalIsOpen = false;
+
+    #[LiveProp(writable: true)]
+    public bool $titleIsEdited = false;
 
     #[LiveProp(writable: true)]
     public string $shareUrl = '';
@@ -114,6 +117,7 @@ class VideoManageWidgetLiveComponent
             $this->submitForm();
         }
         $this->storeDataAndRebuildForm();
+        $this->stopEditingTitle();
     }
 
     
@@ -154,6 +158,19 @@ class VideoManageWidgetLiveComponent
     public function hideDeleteModal(): void
     {
         $this->deleteModalIsOpen = false;
+    }
+
+
+    #[LiveAction]
+    public function startEditingTitle(): void
+    {
+        $this->titleIsEdited = true;
+    }
+
+    #[LiveAction]
+    public function stopEditingTitle(): void
+    {
+        $this->titleIsEdited = false;
     }
 
 
