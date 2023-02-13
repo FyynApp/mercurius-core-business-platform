@@ -103,25 +103,22 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
         }
 
 
-        if ($user->isExtensionOnly()) {
+        if ($user->isRegistered() && $user->isVerified()) {
+            $response = new RedirectResponse(
+                $this->router->generate(
+                    'videobasedmarketing.recordings.presentation.videos.overview'
+                )
+            );
+            $event->setResponse($response);
+        }
 
-            if ($user->isRegistered() && $user->isVerified()) {
-                $response = new RedirectResponse(
-                    $this->router->generate(
-                        'videobasedmarketing.recordings.presentation.videos.overview'
-                    )
-                );
-                $event->setResponse($response);
-            }
-
-            if (!$user->isRegistered()) {
-                $response = new RedirectResponse(
-                    $this->router->generate(
-                        'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage'
-                    )
-                );
-                $event->setResponse($response);
-            }
+        if (!$user->isRegistered()) {
+            $response = new RedirectResponse(
+                $this->router->generate(
+                    'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage'
+                )
+            );
+            $event->setResponse($response);
         }
     }
 }

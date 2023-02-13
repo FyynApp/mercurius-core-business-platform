@@ -17,9 +17,9 @@ readonly class CapabilitiesService
 
     public function canOpenRecordingStudio(User $user): bool
     {
-        return  $user->isRegistered()
-            &&  $user->isVerified()
-            && !$user->isExtensionOnly();
+        return $user->isRegistered()
+            && $user->isVerified()
+            && $user->isAdmin();
     }
 
     public function canUploadVideos(User $user): bool
@@ -34,9 +34,9 @@ readonly class CapabilitiesService
 
     public function canEditVideos(User $user): bool
     {
-        return  $user->isRegistered()
-            &&  $user->isVerified()
-            && !$user->isExtensionOnly();
+        return $user->isRegistered()
+            && $user->isVerified()
+            && $user->isAdmin();
     }
 
     public function canSendVideoMailing(User $user): bool
@@ -86,12 +86,12 @@ readonly class CapabilitiesService
 
     public function canSeeVideoOnlyPresentationpageTemplateTitle(User $user): bool
     {
-        return !$user->isExtensionOnly();
+        return $user->isAdmin();
     }
 
     public function canSeeVideoTitle(User $user): bool
     {
-        return !$user->isExtensionOnly();
+        return $user->isAdmin();
     }
 
     public function mustBeForcedToClaimUnregisteredUser(User $user): bool

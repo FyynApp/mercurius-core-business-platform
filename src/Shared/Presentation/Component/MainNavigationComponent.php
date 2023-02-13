@@ -39,7 +39,7 @@ class MainNavigationComponent
             || !$user->isRegistered()
         ) {
             if (   !is_null($user)
-                && !$user->isExtensionOnly()
+                && $user->isAdmin()
             ) {
                 $this->entries = [
                     new NavigationEntry(
@@ -48,7 +48,7 @@ class MainNavigationComponent
                     ),
                 ];
             }
-        } elseif (!$user->isExtensionOnly()) {
+        } elseif ($user->isAdmin()) {
             $this->entries = [
                 new NavigationEntry(
                     'mainnav.dashboard',
