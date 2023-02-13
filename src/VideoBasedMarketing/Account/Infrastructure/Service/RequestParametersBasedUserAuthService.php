@@ -11,6 +11,7 @@ use App\VideoBasedMarketing\Account\Infrastructure\Security\RequestParametersBas
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class RequestParametersBasedUserAuthService
@@ -42,7 +43,8 @@ class RequestParametersBasedUserAuthService
     public function createUrl(
         User   $user,
         string $routeName,
-        array  $routeParameters = []
+        array  $routeParameters = [],
+        int    $referenceType = UrlGeneratorInterface::RELATIVE_PATH
     ): string
     {
         $validUntil = DateAndTimeService::getDateTime('+1 minutes');
@@ -64,7 +66,8 @@ class RequestParametersBasedUserAuthService
                             $validUntil
                         )
                 ]
-            )
+            ),
+            $referenceType
         );
     }
 

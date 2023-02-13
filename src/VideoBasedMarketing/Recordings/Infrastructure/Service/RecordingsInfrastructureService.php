@@ -1364,15 +1364,19 @@ class RecordingsInfrastructureService
 
     public function checkAndHandleVideoAssetGenerationForUser(
         User $user,
-        bool $basicAssetsForAllVideosAreRequiredImmediately = true,
+        bool $basicAssetsForAllVideosAreRequiredImmediately = false,
         bool $basicAssetsForLatestVideoAreRequiredImmediately = false
     ): void
     {
-        $this
-            ->logger
-            ->debug("User '{$user->getId()}' has " . sizeof($user->getVideos()) . " videos.");
+        $this->entityManager->refresh($user);
 
-        foreach ($user->getVideos() as $key => $video) {
+        /** @var Video[] $videos */
+        $videos = $user->getVideos()->toArray();
+
+        usort($videos, fn(Video $a, Video $b) => $a->getCreatedAt() <=> $b->getCreatedAt());
+        rsort($videos);
+
+        foreach ($videos as $key => $video) {
             $basicAssetsAreRequiredImmediately = $basicAssetsForAllVideosAreRequiredImmediately;
             if ($key === 0 && $basicAssetsForLatestVideoAreRequiredImmediately) {
                 $basicAssetsAreRequiredImmediately = true;

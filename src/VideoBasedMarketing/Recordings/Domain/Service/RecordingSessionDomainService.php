@@ -59,7 +59,11 @@ readonly class RecordingSessionDomainService
 
         $this
             ->recordingsInfrastructureService
-            ->checkAndHandleVideoAssetGenerationForUser($recordingSession->getUser());
+            ->checkAndHandleVideoAssetGenerationForUser(
+                $recordingSession->getUser(),
+                false,
+                true
+            );
 
         return $video;
     }
