@@ -30,7 +30,9 @@ readonly class UnregisteredUserClaimedRegisteredUserEventSubscriber
         $this
             ->recordingsInfrastructureService
             ->checkAndHandleVideoAssetGenerationForUser(
-                $event->registeredUser
+                $event->registeredUser,
+                false,
+                true
             );
     }
 }
