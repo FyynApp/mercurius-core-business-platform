@@ -35,10 +35,8 @@ class VideoUploadTest extends PantherTestCase
         )->sendKeys(__DIR__ . '/../../../Resources/fixtures/videos/upload-video.mov');
 
         $crawler = $client->waitFor(
-            '.uppy-StatusBar-actionBtn--done'
+            '[data-test-class="videoUploadProcessingWidget"]'
         );
-
-        $crawler->filter('.uppy-StatusBar-actionBtn--done')->click();
 
         $this->assertSelectorExists('[data-test-class="videoUploadProcessingWidget"]');
     }

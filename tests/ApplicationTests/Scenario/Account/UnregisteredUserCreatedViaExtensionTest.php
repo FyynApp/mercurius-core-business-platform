@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class UnregisteredUserCreatedViaExtensionTest
     extends WebTestCase
 {
-    public function testSiteMostlyLimitsUnregisteredUsersToClaimPage(): void
+    public function testSomeRoutesAreNotAvailableForUnregisteredUsers(): void
     {
         $client = static::createClient();
         $client->followRedirects();
@@ -18,8 +18,6 @@ class UnregisteredUserCreatedViaExtensionTest
 
         foreach (
             [
-                '/',
-                '/en/',
                 '/en/features',
                 '/en/pricing',
             ]

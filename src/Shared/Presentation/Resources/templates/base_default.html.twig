@@ -146,26 +146,21 @@
                                 <li>
                                     <a
                                             href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
+                                            class="mr-4 hover:underline md:mr-6"
+                                            data-test-id="footerSignInCta"
                                     >
-                                        <button
-                                                type="submit"
-                                                class="mr-4 hover:underline md:mr-6"
-                                        >
-                                            {{ 'footernav.sign_in'|trans }}
-                                        </button>
+                                        {{ 'footernav.sign_in'|trans }}
                                     </a>
                                 </li>
 
                                 <li>
                                     <a
                                             href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
+                                            class="mr-4 hover:underline md:mr-6"
+                                            data-test-id="footerSignUpCta"
+
                                     >
-                                        <button
-                                                type="submit"
-                                                class="mr-4 hover:underline md:mr-6"
-                                        >
                                             {{ 'footernav.sign_up'|trans }}
-                                        </button>
                                     </a>
                                 </li>
                             {% endif %}

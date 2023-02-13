@@ -2,7 +2,6 @@
 
 namespace App\VideoBasedMarketing\Dashboard\Presentation\Controller;
 
-use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,15 +20,8 @@ class DashboardController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function showRegisteredAction(
-        DashboardDomainService $dashboardService
-    ): Response
+    public function showRegisteredAction(): Response
     {
-        return $this->render(
-            '@videobasedmarketing.dashboard/show_registered.html.twig',
-            [
-                'DashboardService' => $dashboardService
-            ]
-        );
+        return $this->redirectToRoute('videobasedmarketing.recordings.presentation.videos.overview');
     }
 }

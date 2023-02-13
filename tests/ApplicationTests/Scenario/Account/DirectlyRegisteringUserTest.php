@@ -19,7 +19,7 @@ class DirectlyRegisteringUserTest
         $crawler = $client->request('GET', '/');
         $crawler = $client->click(
             $crawler
-                ->filter('[data-test-id="extensionHomepageSignUpCta"]')
+                ->filter('[data-test-id="footerSignUpCta"]')
                 ->link()
         );
 

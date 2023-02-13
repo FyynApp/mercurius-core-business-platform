@@ -150,6 +150,7 @@ class UnregisteredUserWorkflowTest
 
 
         $client->followRedirect();
+        $client->followRedirect();
         $crawler = $client->followRedirect();
 
         $this->assertSelectorTextSame(
@@ -239,6 +240,7 @@ class UnregisteredUserWorkflowTest
 
         $videoId = $message->getVideoId();
 
+        $client->followRedirect();
         $crawler = $client->followRedirect();
 
         $this->assertSelectorTextSame(
