@@ -5,7 +5,6 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
-use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 
 
 readonly class CapabilitiesService
@@ -17,9 +16,7 @@ readonly class CapabilitiesService
 
     public function canOpenRecordingStudio(User $user): bool
     {
-        return $user->isRegistered()
-            && $user->isVerified()
-            && $user->isAdmin();
+        return false;
     }
 
     public function canUploadVideos(User $user): bool
@@ -86,12 +83,12 @@ readonly class CapabilitiesService
 
     public function canSeeVideoOnlyPresentationpageTemplateTitle(User $user): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 
     public function canSeeVideoTitle(User $user): bool
     {
-        return $user->isAdmin();
+        return false;
     }
 
     public function mustBeForcedToClaimUnregisteredUser(User $user): bool
