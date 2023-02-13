@@ -2,7 +2,6 @@
 
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\EventSubscriber;
 
-use App\VideoBasedMarketing\Account\Domain\Event\UnregisteredUserClaimedRegisteredUserEvent;
 use App\VideoBasedMarketing\Recordings\Domain\Event\RecordingSessionWillBeRemovedEvent;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
