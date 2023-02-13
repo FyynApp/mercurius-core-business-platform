@@ -97,7 +97,7 @@ class WebpageScreenshotService
                 . "'`"
             ]
         );
-        $process->setIdleTimeout(0);
+        $process->setIdleTimeout(null);
         $process->setTimeout(60 * 5);
         $process->run();
 
