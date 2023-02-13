@@ -3,11 +3,12 @@
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
+{% block title_prefix %}{% endblock %}
 {% block title %}{{ video.title }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 
 {% block metatags %}
-    <meta property="og:title" content="Fyyn.io - record your screen and camera with one click">
+    <meta property="og:title" content="{{ video.title }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ TwigHelperService.recordingsPresentationService.videoShareLinkUrl(video) }}">
     <meta property="og:image" content="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillWithPlayOverlayForEmailAssetUrl(video) }}">
@@ -222,11 +223,18 @@
         </div>
     </div>
 
+    <div class="text-center text-3xl text-black font-bold py-16 px-8 border-t-2 border-neutral-900 bg-gradient-to-t from-neutral-200 to-white">
+        {{ video.title }}
+    </div>
+
     <div
             class="
-                flex flex-row justify-start sm:justify-center
-                mt-0 pt-4 pl-4 pr-4 pb-16 border-t-2 border-neutral-900
-                bg-neutral-100
+                flex flex-row justify-start
+                sm:justify-center
+                sm:mt-0 pt-16 sm:pt-4 pl-4 pr-4 pb-16
+                bg-gradient-to-b from-neutral-300 to-white
+                text-neutral-400 font-light
+
             "
     >
         <div
@@ -244,7 +252,7 @@
                     >
                 {% endif %}
             </div>
-            <div class="text-sm font-semibold">
+            <div class="text-sm">
                 {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
                 {{ dateAndTimeMacros.full(video.createdAt) }}
             </div>
@@ -259,7 +267,7 @@
                     )
                     }}"
                     >
-                        <div class="flex flex-row justify-start sm:justify-end items-center gap-2 text-sm font-semibold">
+                        <div class="flex flex-row justify-start sm:justify-end items-center gap-2 text-sm">
                             {{ 'video_landingpage.download_video_file_cta'|trans }}
 
                             {# Heroicon: arrow-down-tray solid #}
