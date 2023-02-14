@@ -89,6 +89,30 @@ class VideoType
 
 
                 $form->add(
+                    'calendlyText',
+                    TextType::class,
+                    [
+                        'translation_domain' => 'videobasedmarketing.recordings',
+                        'label' => 'video_manage_widget.form.label.calendly_text',
+                        'trim' => false,
+                        'empty_data' => null
+                    ],
+                );
+
+
+                $form->add(
+                    'calendlyUrl',
+                    TextType::class,
+                    [
+                        'translation_domain' => 'videobasedmarketing.recordings',
+                        'label' => 'video_manage_widget.form.label.calendly_url',
+                        'trim' => true,
+                        'empty_data' => null
+                    ],
+                );
+
+
+                $form->add(
                     'videoOnlyPresentationpageTemplate',
                     EntityType::class,
                     [

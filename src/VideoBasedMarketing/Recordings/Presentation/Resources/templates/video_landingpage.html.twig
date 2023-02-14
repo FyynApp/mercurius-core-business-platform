@@ -253,6 +253,29 @@
                 </div>
             </div>
         {% endif %}
+
+        {% if video.calendlyIsUsable %}
+            <div class="mt-16">
+                {% if video.calendlyText is not empty %}
+                    <div class="text-xl text-black font-normal">
+                        {{ video.calendlyText }}
+                    </div>
+                {% endif %}
+
+                <div class="mx-auto w-full px-8 flex flex-row justify-center mt-0">
+
+                    <!-- Calendly Inline-Widget Start -->
+                    <div
+                            class="calendly-inline-widget w-full"
+                            data-url="{{ video.calendlyUrl|trim }}"
+                            style="height: 900px;"
+                    ></div>
+                    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+                    <!-- Calendly Inline-Widget End -->
+
+                </div>
+            </div>
+        {% endif %}
     </div>
 
 

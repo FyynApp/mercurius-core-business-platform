@@ -50,6 +50,9 @@ class VideoManageWidgetLiveComponent
     public bool $mainCtaIsBeingEdited = false;
 
     #[LiveProp(writable: true)]
+    public bool $calendlyIsBeingEdited = false;
+
+    #[LiveProp(writable: true)]
     public string $shareUrl = '';
 
     #[LiveProp]
@@ -122,6 +125,7 @@ class VideoManageWidgetLiveComponent
         $this->storeDataAndRebuildForm();
         $this->stopEditingTitle();
         $this->stopEditingMainCta();
+        $this->stopEditingCalendly();
     }
 
     
@@ -188,6 +192,19 @@ class VideoManageWidgetLiveComponent
     public function stopEditingMainCta(): void
     {
         $this->mainCtaIsBeingEdited = false;
+    }
+
+
+    #[LiveAction]
+    public function startEditingCalendly(): void
+    {
+        $this->calendlyIsBeingEdited = true;
+    }
+
+    #[LiveAction]
+    public function stopEditingCalendly(): void
+    {
+        $this->calendlyIsBeingEdited = false;
     }
 
 

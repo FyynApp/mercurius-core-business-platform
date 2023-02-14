@@ -42,6 +42,12 @@ video_manage_widget:
       text: 'Text'
       label: 'Button label'
       url: 'URL'
+  edit_calendly:
+    note1: ''
+    note2: 'embed'
+    placeholder:
+      text: 'Text'
+      url: 'Calendly-Share-URL'
 upload_video:
   title: 'Upload video'
 videos_overview:

@@ -180,7 +180,7 @@
                                         data-action="live#action"
                                         data-action-name="debounce(300)|save"
                                 >
-                                    {# Heroicon: pencil-square solid #}
+                                    {# Heroicon: check #}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                                         <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
                                     </svg>
@@ -235,7 +235,7 @@
                                     </span>
                                     <span>
                                         {# Heroicon: pencil-square solid #}
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                                             <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
                                             <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
                                         </svg>
@@ -246,6 +246,72 @@
                 {% endif %}
             </div>
 
+            <div>
+                {% if this.calendlyIsBeingEdited %}
+                    <div class="m-4 flex flex-col justify-start gap-2">
+                        <div class="flex flex-row gap-2 items-center">
+                            <div class="w-12">
+                                <button
+                                        class="cta-with-icon-success"
+                                        data-action="live#action"
+                                        data-action-name="debounce(300)|save"
+                                >
+                                    {# Heroicon: check #}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                        <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <input
+                                    class="rounded-md border-0 w-full"
+                                    placeholder="{{ 'video_manage_widget.edit_calendly.placeholder.text'|trans }}"
+                                    type="text"
+                                    value="{{ this.video.calendlyText }}"
+                                    data-model="{{ this.form.calendlyText.vars.full_name }}"
+                            >
+                        </div>
+
+                        <div class="flex flex-row gap-2 items-center">
+                            <div class="w-12">&nbsp;</div>
+
+                            <input
+                                    class="rounded-md border-0 w-full"
+                                    placeholder="{{ 'video_manage_widget.edit_calendly.placeholder.url'|trans }}"
+                                    type="text"
+                                    value="{{ this.video.calendlyUrl }}"
+                                    data-model="{{ this.form.calendlyUrl.vars.full_name }}"
+                            >
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
+                        <button
+                                class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                                data-action="live#action"
+                                data-action-name="startEditingCalendly"
+                                data-test-class="edit-video-main-cta"
+                        >
+                                <span class="flex flex-row justify-between items-center gap-2">
+                                    <span class="flex flex-row gap-1 items-center">
+                                        {{ 'video_manage_widget.edit_calendly.note1'|trans }}
+                                        <img class="inline h-5" src="{{ asset('assets/images/videobasedmarketing/recordings/calendly_logo.svg') }}">
+                                        {{ 'video_manage_widget.edit_calendly.note2'|trans }}
+                                    </span>
+                                    <span>
+                                        {# Heroicon: calendar-days solid #}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                                            <path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z" clip-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                </span>
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+            
             <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
                 <button
                         class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
@@ -289,34 +355,6 @@
                     </div>
                 </div>
             </a>
-
-            {% if TwigHelperService.capabilitiesService.canEditVideos(app.user) %}
-                <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
-                    <button
-                            class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
-                            data-action="live#action"
-                            data-action-name="showEditModal"
-                    >
-                        <span class="flex flex-row justify-between items-center gap-2">
-                            <span>
-                                {{ 'video_manage_widget.overview_box.cta_edit'|trans }}
-                            </span>
-                            <span>
-                                {# Heroicon: pencil-square solid #}
-                                <svg
-                                        class="h-4 w-4 text-mercurius-blue-900"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24"
-                                >
-                                    <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-                                    <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
-                                </svg>
-                            </span>
-                        </span>
-                    </button>
-                </div>
-            {% endif %}
 
             {% if TwigHelperService.capabilitiesService.canSendVideoMailing(app.user) %}
                 <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">

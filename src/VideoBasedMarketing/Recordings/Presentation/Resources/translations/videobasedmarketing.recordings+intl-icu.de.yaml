@@ -46,6 +46,16 @@ video_manage_widget:
     yes: 'Ja, löschen'
   edit_main_cta:
     note: 'Action Button bearbeiten'
+    placeholder:
+      text: 'Überschrift'
+      label: 'Button-Text'
+      url: 'URL'
+  edit_calendly:
+    note1: ''
+    note2: 'Einbettung'
+    placeholder:
+      text: 'Text'
+      url: 'Calendly-Share-URL'
 upload_video:
   title: 'Video hochladen'
 videos_overview:

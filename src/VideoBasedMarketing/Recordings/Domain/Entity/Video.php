@@ -807,6 +807,53 @@ class Video
     }
 
 
+    #[ORM\Column(
+        type: 'string',
+        length: 1024,
+        nullable: true
+    )]
+    private ?string $calendlyText = null;
+
+    public function setCalendlyText(?string $text): void
+    {
+        $this->calendlyText = $text;
+    }
+
+    public function getCalendlyText(): ?string
+    {
+        return $this->calendlyText;
+    }
+
+    #[ORM\Column(
+        type: 'string',
+        length: 1024,
+        nullable: true
+    )]
+    private ?string $calendlyUrl = null;
+
+    public function setCalendlyUrl(?string $url): void
+    {
+        $this->calendlyUrl = $url;
+    }
+
+    public function getCalendlyUrl(): ?string
+    {
+        return $this->calendlyUrl;
+    }
+
+
+    public function calendlyIsUsable(): bool
+    {
+        if (   !is_null($this->calendlyUrl)
+            && mb_substr($this->calendlyUrl, 0, 20) === 'https://calendly.com'
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     public function isFullAssetAvailable(): bool
     {
         return $this->hasAssetFullMp4 || $this->hasAssetFullWebm;

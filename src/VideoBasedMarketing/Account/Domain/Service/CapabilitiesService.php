@@ -32,8 +32,7 @@ readonly class CapabilitiesService
     public function canEditVideos(User $user): bool
     {
         return $user->isRegistered()
-            && $user->isVerified()
-            && $user->isAdmin();
+            && $user->isVerified();
     }
 
     public function canSendVideoMailing(User $user): bool
