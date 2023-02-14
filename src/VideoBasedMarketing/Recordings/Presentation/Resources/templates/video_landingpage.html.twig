@@ -223,16 +223,43 @@
         </div>
     </div>
 
-    <div class="text-center text-3xl text-black font-bold py-16 px-8 border-t-2 border-neutral-900 bg-gradient-to-t from-neutral-200 to-white">
-        {{ video.title }}
+    <div class="text-center pb-32 pt-10 px-8 border-t-2 border-neutral-900 bg-gradient-to-t from-neutral-300 to-mercurius-blue-50">
+
+        <div class="text-3xl text-black font-bold">
+            {{ video.title }}
+        </div>
+
+        {% if video.mainCtaIsUsable %}
+            <div class="mt-8">
+                {% if video.mainCtaText is not empty %}
+                    <div class="text-xl text-black font-normal">
+                        {{ video.mainCtaText }}
+                    </div>
+                {% endif %}
+
+                <div class="mx-auto w-full px-8 flex flex-row justify-center mt-4">
+                    <a
+                            href="{{ video.mainCtaUrl }}"
+                            target="_blank"
+                            class="
+                                w-fit block text-center text-xl font-bold text-mercurius-green-900 bg-mercurius-green-500 drop-shadow-md p-8 rounded-md
+                                hover:bg-mercurius-green-600 hover:text-black
+                            "
+                    >
+                        {{ video.mainCtaLabel }}
+                    </a>
+                </div>
+            </div>
+        {% endif %}
     </div>
+
 
     <div
             class="
                 flex flex-row justify-start
                 sm:justify-center
                 sm:mt-0 pt-16 sm:pt-4 pl-4 pr-4 pb-16
-                bg-gradient-to-b from-neutral-300 to-white
+                bg-neutral-300
                 text-neutral-400 font-light
 
             "

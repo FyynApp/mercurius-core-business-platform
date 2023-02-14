@@ -44,7 +44,10 @@ class VideoManageWidgetLiveComponent
     public bool $deleteModalIsOpen = false;
 
     #[LiveProp(writable: true)]
-    public bool $titleIsEdited = false;
+    public bool $titleIsBeingEdited = false;
+
+    #[LiveProp(writable: true)]
+    public bool $mainCtaIsBeingEdited = false;
 
     #[LiveProp(writable: true)]
     public string $shareUrl = '';
@@ -118,6 +121,7 @@ class VideoManageWidgetLiveComponent
         }
         $this->storeDataAndRebuildForm();
         $this->stopEditingTitle();
+        $this->stopEditingMainCta();
     }
 
     
@@ -164,13 +168,26 @@ class VideoManageWidgetLiveComponent
     #[LiveAction]
     public function startEditingTitle(): void
     {
-        $this->titleIsEdited = true;
+        $this->titleIsBeingEdited = true;
     }
 
     #[LiveAction]
     public function stopEditingTitle(): void
     {
-        $this->titleIsEdited = false;
+        $this->titleIsBeingEdited = false;
+    }
+
+
+    #[LiveAction]
+    public function startEditingMainCta(): void
+    {
+        $this->mainCtaIsBeingEdited = true;
+    }
+
+    #[LiveAction]
+    public function stopEditingMainCta(): void
+    {
+        $this->mainCtaIsBeingEdited = false;
     }
 
 

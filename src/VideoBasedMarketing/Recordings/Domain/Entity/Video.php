@@ -747,6 +747,66 @@ class Video
     }
 
 
+    #[ORM\Column(
+        type: 'string',
+        length: 1024,
+        nullable: true
+    )]
+    private ?string $mainCtaText = null;
+
+    public function setMainCtaText(?string $text): void
+    {
+        $this->mainCtaText = $text;
+    }
+
+    public function getMainCtaText(): ?string
+    {
+        return $this->mainCtaText;
+    }
+
+
+    #[ORM\Column(
+        type: 'string',
+        length: 1024,
+        nullable: true
+    )]
+    private ?string $mainCtaLabel = null;
+
+    public function setMainCtaLabel(?string $label): void
+    {
+        $this->mainCtaLabel = $label;
+    }
+
+    public function getMainCtaLabel(): ?string
+    {
+        return $this->mainCtaLabel;
+    }
+
+
+    #[ORM\Column(
+        type: 'string',
+        length: 1024,
+        nullable: true
+    )]
+    private ?string $mainCtaUrl = null;
+
+    public function setMainCtaUrl(?string $url): void
+    {
+        $this->mainCtaUrl = $url;
+    }
+
+    public function getMainCtaUrl(): ?string
+    {
+        return $this->mainCtaUrl;
+    }
+
+
+    public function mainCtaIsUsable(): bool
+    {
+        return !is_null($this->mainCtaLabel) && !is_null($this->mainCtaUrl);
+    }
+
+
     public function isFullAssetAvailable(): bool
     {
         return $this->hasAssetFullMp4 || $this->hasAssetFullWebm;

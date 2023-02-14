@@ -44,6 +44,8 @@ video_manage_widget:
     title: 'Video löschen'
     really: 'Möchtest du dieses Video wirklich löschen?'
     yes: 'Ja, löschen'
+  edit_main_cta:
+    note: 'Action Button bearbeiten'
 upload_video:
   title: 'Video hochladen'
 videos_overview:
