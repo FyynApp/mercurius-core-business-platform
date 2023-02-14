@@ -225,14 +225,14 @@
         </div>
     </div>
 
-    <div class="text-center pb-32 pt-10 px-8 border-t-2 border-neutral-900 bg-gradient-to-t from-neutral-300 to-mercurius-blue-50">
+    <div class="text-center pb-32 pt-10 border-t-2 border-neutral-900 bg-gradient-to-t from-neutral-300 to-mercurius-blue-50">
 
-        <div class="text-3xl text-black font-bold">
+        <div class="text-3xl text-black font-bold px-4 md:px-8">
             {{ video.title }}
         </div>
 
         {% if video.mainCtaIsUsable %}
-            <div class="mt-8">
+            <div class="mt-8 px-4 md:px-8">
                 {% if video.mainCtaText is not empty %}
                     <div class="text-xl text-black font-normal">
                         {{ video.mainCtaText }}
@@ -255,26 +255,23 @@
         {% endif %}
 
         {% if video.calendlyIsUsable %}
-            <div class="mt-16">
+            <div class="mt-16 px-4 md:px-8">
                 {% if video.calendlyText is not empty %}
                     <div class="text-xl text-black font-normal">
                         {{ video.calendlyText }}
                     </div>
                 {% endif %}
-
-                <div class="mx-auto w-full px-8 flex flex-row justify-center mt-0">
-
-                    <!-- Calendly Inline-Widget Start -->
-                    <div
-                            class="calendly-inline-widget w-full"
-                            data-url="{{ video.calendlyUrl|trim }}"
-                            style="height: 900px;"
-                    ></div>
-                    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-                    <!-- Calendly Inline-Widget End -->
-
-                </div>
             </div>
+
+            <!-- Calendly Inline-Widget Start -->
+            <div
+                    class="calendly-inline-widget w-full mt-4 md:-mt-8"
+                    data-url="{{ video.calendlyUrl|trim }}"
+                    style="height: 900px;"
+            ></div>
+            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+            <!-- Calendly Inline-Widget End -->
+
         {% endif %}
     </div>
 
