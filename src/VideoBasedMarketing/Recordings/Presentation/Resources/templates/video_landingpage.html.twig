@@ -12,7 +12,9 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ TwigHelperService.recordingsPresentationService.videoShareLinkUrl(video) }}">
     <meta property="og:image" content="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillWithPlayOverlayForEmailAssetUrl(video) }}">
-    <meta property="og:description" content="Record your screen and camera with one click - no special skills or additional software required.">
+    {% if video.mainCtaText is not empty %}
+        <meta property="og:description" content="{{ video.mainCtaText }}">
+    {% endif %}
     <meta property="og:site_name" content="Fyyn.io">
     <meta property="og:locale" content="en">
     <meta property="twitter:card" content="summary_large_image">
