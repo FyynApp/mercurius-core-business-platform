@@ -84,4 +84,4 @@ claim_unregistered_user:
     mail_info: 'Wir haben die Bestätigungsmail an {email} gesendet.'
 
 email_verification:
-  email_has_been_verified: 'Your email address has been verified.'
+  email_has_been_verified: 'Deine E-Mail wurde bestätigt.'
