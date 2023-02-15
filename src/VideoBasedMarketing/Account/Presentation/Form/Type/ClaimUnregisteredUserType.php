@@ -3,15 +3,23 @@
 namespace App\VideoBasedMarketing\Account\Presentation\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 
 class ClaimUnregisteredUserType
     extends AbstractType
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator
+    )
+    {
+    }
+
     public function buildForm(
         FormBuilderInterface $builder,
         array                $options
@@ -19,20 +27,33 @@ class ClaimUnregisteredUserType
     {
         $builder
             ->add('email', EmailType::class)
-            /*
             ->add(
-                'agreeTerms',
-                CheckboxType::class, [
+                'plainPassword',
+                PasswordType::class, [
                     'translation_domain' => 'videobasedmarketing.account',
-                    'mapped' => false,
                     'constraints' => [
-                        new IsTrue(
+                        new NotBlank(
                             [
-                                'message' => 'validation.agree_terms.must_be_true',
+                                'message' => $this->translator->trans(
+                                    'sign_up.validation.password.min_length',
+                                    [],
+                                    'videobasedmarketing.account'
+                                )
+                            ]
+                        ),
+                        new Length(
+                            [
+                                'min' => 6,
+                                'minMessage' => $this->translator->trans(
+                                    'sign_up.validation.password.min_length',
+                                    [],
+                                    'videobasedmarketing.account'
+                                ),
+                                'max' => 4096,
                             ]
                         ),
                     ],
                 ]
-            )*/;
+            );
     }
 }

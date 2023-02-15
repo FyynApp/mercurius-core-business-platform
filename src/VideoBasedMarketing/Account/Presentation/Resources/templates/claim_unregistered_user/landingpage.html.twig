@@ -1,6 +1,7 @@
 {% extends '@shared/base_default.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var form \Symfony\Component\Form\FormView #}
 
 {% trans_default_domain 'videobasedmarketing.account' %}
 
@@ -88,6 +89,13 @@
                             <label for="email" class="sr-only">
                                 {{ 'sign_in.placeholder.email'|trans }}
                             </label>
+
+                            {% if form_errors(form.email) %}
+                                <div class="mt-4 text-red-900">
+                                    {{ form_errors(form.email) }}
+                                </div>
+                            {% endif %}
+
                             <input
                                     id="email"
                                     name="{{ form.email.vars.full_name }}"
@@ -95,19 +103,53 @@
                                     autocomplete="email"
                                     required
                                     class="
-                                appearance-none relative block
-                                h-16 w-full px-3 py-2
-                                border border-gray-300
-                                placeholder-gray-500 text-gray-900
-                                rounded-md
-                                focus:outline-none
-                                ring-mercurius-blue-500
-                                border-mercurius-blue-500
-                                border-2
-                                bg-mercurius-blue-50
-                                focus:z-10 sm:text-sm
-                            "
+                                        appearance-none relative block
+                                        h-16 w-full px-3 py-2
+                                        border border-gray-300
+                                        placeholder-gray-500 text-gray-900
+                                        rounded-md
+                                        focus:outline-none
+                                        ring-mercurius-blue-500
+                                        border-mercurius-blue-500
+                                        border-2
+                                        bg-mercurius-blue-50
+                                        focus:z-10 sm:text-sm
+                                    "
                                     placeholder="{{ 'sign_in.placeholder.email'|trans }}"
+                            />
+                        </div>
+
+                        <div class="w-full">
+                            <label for="plainPassword" class="sr-only">
+                                {{ 'sign_in.placeholder.password'|trans }}
+                            </label>
+
+                            {% if form_errors(form.plainPassword) %}
+                                <div class="mt-4 text-red-900">
+                                    {{ form_errors(form.plainPassword) }}
+                                </div>
+                            {% endif %}
+
+                            <input
+                                    id="plainPassword"
+                                    name="{{ form.plainPassword.vars.full_name }}"
+                                    type="password"
+                                    autocomplete="new-password"
+                                    required
+                                    class="
+                                        appearance-none relative block
+                                        h-16 w-full px-3 py-2
+                                        border border-gray-300
+                                        placeholder-gray-500 text-gray-900
+                                        rounded-md
+                                        focus:outline-none
+                                        ring-mercurius-blue-500
+                                        border-mercurius-blue-500
+                                        border-2
+                                        bg-mercurius-blue-50
+                                        focus:z-10 sm:text-sm
+                                    "
+                                    placeholder="{{ 'sign_in.placeholder.password'|trans }}"
                             />
                         </div>
 
@@ -156,7 +198,7 @@
                             <a
                                     href="{{ path('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start') }}"
                                     class="
-                                    block w-full border-1 rounded-sm
+                                    block w-full border-1 rounded-md
                                     p-4
                                     bg-neutral-50 hover:bg-mercurius-blue-50
                                     border-neutral-200 hover:border-mercurius-blue-200

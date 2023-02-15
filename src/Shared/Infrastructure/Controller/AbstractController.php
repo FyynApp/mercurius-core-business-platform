@@ -7,18 +7,16 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use Doctrine\ORM\EntityManagerInterface;
-use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
 
 
 abstract class AbstractController
     extends SymfonyAbstractController
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    )
     {
-        $this->entityManager = $entityManager;
     }
 
 

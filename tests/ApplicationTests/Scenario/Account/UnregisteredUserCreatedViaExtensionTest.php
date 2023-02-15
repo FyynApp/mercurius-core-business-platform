@@ -77,6 +77,7 @@ class UnregisteredUserCreatedViaExtensionTest
         $form = $createAccountButton->form();
 
         $form['claim_unregistered_user[email]'] = 'j.doe@example.com';
+        $form['claim_unregistered_user[plainPassword]'] = 'test123';
 
         $client->submit($form);
         $this->assertSelectorTextSame('h1', 'A final step...');
@@ -89,6 +90,7 @@ class UnregisteredUserCreatedViaExtensionTest
         $form = $createAccountButton->form();
 
         $form['claim_unregistered_user[email]'] = 'j.doe@example.com';
+        $form['claim_unregistered_user[plainPassword]'] = 'test123';
         $client->submit($form);
 
         $this->assertSelectorTextSame('h1', 'A final step...');

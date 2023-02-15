@@ -15,12 +15,8 @@ use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\SignUpType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -30,24 +26,15 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 class SignUpController
     extends AbstractController
 {
-    private EmailVerifier $emailVerifier;
-
-    private MailService $mailService;
-
-    private AccountDomainService $accountDomainService;
-
-
     public function __construct(
-        EmailVerifier          $emailVerifier,
-        MailService            $mailService,
-        EntityManagerInterface $entityManager,
-        AccountDomainService   $accountDomainService
+        private readonly EmailVerifier          $emailVerifier,
+        private readonly MailService            $mailService,
+        private readonly AccountDomainService   $accountDomainService,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly TranslatorInterface    $translator
     )
     {
-        $this->emailVerifier = $emailVerifier;
-        $this->mailService = $mailService;
-        $this->accountDomainService = $accountDomainService;
-        parent::__construct($entityManager);
+        parent::__construct($this->entityManager);
     }
 
     #[Route(
@@ -186,7 +173,14 @@ class SignUpController
             return $this->redirectToRoute('videobasedmarketing.account.presentation.sign_up');
         }
 
-        $this->addFlash(FlashMessageLabel::Success->value, 'Your email address has been verified.');
+        $this->addFlash(
+            FlashMessageLabel::Success->value,
+            $this->translator->trans(
+                'email_verification.email_has_been_verified',
+                [],
+                'videobasedmarketing.account'
+            )
+        );
 
         return $requestParametersBasedUserAuthService->createRedirectResponse(
             $user,
