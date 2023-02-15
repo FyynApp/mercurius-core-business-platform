@@ -17,37 +17,25 @@ use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 
-class AccountDomainService
+readonly class AccountDomainService
 {
-    private EntityManagerInterface $entityManager;
-
-    private AccountPresentationService $presentationService;
-
-    private MessageBusInterface $messageBus;
-
-    private VerifyEmailHelperInterface $verifyEmailHelper;
-
-    private EventDispatcherInterface $eventDispatcher;
 
 
     public function __construct(
-        EntityManagerInterface     $entityManager,
-        AccountPresentationService $presentationService,
-        MessageBusInterface        $messageBus,
-        VerifyEmailHelperInterface $verifyEmailHelper,
-        EventDispatcherInterface   $eventDispatcher
+        private EntityManagerInterface      $entityManager,
+        private AccountPresentationService  $presentationService,
+        private MessageBusInterface         $messageBus,
+        private VerifyEmailHelperInterface  $verifyEmailHelper,
+        private EventDispatcherInterface    $eventDispatcher,
+        private UserPasswordHasherInterface $userPasswordHasher
     )
     {
-        $this->entityManager = $entityManager;
-        $this->presentationService = $presentationService;
-        $this->messageBus = $messageBus;
-        $this->verifyEmailHelper = $verifyEmailHelper;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -92,8 +80,9 @@ class AccountDomainService
      * @throws TransportExceptionInterface
      */
     public function handleUnregisteredUserClaimsEmail(
-        User   $claimingUser,
-        string $claimedEmail
+        User    $claimingUser,
+        string  $claimedEmail,
+        ?string $plainPassword
     ): bool
     {
         if (!$claimingUser->isUnregistered()) {
@@ -112,6 +101,15 @@ class AccountDomainService
 
         $claimingUser->setEmail($claimedEmail);
         $claimingUser->makeRegistered();
+
+        if (!is_null($plainPassword)) {
+            $claimingUser->setPassword(
+                $this->userPasswordHasher->hashPassword(
+                    $claimingUser,
+                    $plainPassword
+                )
+            );
+        }
 
         $this->entityManager->persist($claimingUser);
         $this->entityManager->flush();

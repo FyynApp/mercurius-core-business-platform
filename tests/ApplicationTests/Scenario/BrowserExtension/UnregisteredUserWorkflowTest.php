@@ -88,6 +88,7 @@ class UnregisteredUserWorkflowTest
         $form = $buttonCrawlerNode->form();
 
         $form['claim_unregistered_user[email]'] = 'foo@bar.de';
+        $form['claim_unregistered_user[plainPassword]'] = 'test123';
 
         $client->followRedirects(false);
         $client->submit($form);

@@ -71,10 +71,10 @@ class ClaimUnregisteredUserController
         methods     : [Request::METHOD_POST]
     )]
     public function handleFormSubmitAction(
-        Request                               $request,
-        AccountDomainService                  $userService,
-        RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
-        EntityManagerInterface                $entityManager
+        Request                $request,
+        AccountDomainService   $userService,
+        EntityManagerInterface $entityManager,
+        VideoDomainService     $videoDomainService
     ): Response
     {
         $user = $this->getUser();
@@ -120,7 +120,8 @@ class ClaimUnregisteredUserController
 
             $success = $userService->handleUnregisteredUserClaimsEmail(
                 $user,
-                $form->getData()['email']
+                $form->getData()['email'],
+                $form->getData()['plainPassword']
             );
 
             if ($success) {
@@ -133,7 +134,14 @@ class ClaimUnregisteredUserController
             }
         }
 
-        return new Response('', Response::HTTP_NOT_IMPLEMENTED);
+        return $this->render(
+            '@videobasedmarketing.account/claim_unregistered_user/landingpage.html.twig',
+            [
+                'videos' => $videoDomainService->getAvailableVideos($user),
+                'form' => $form->createView()
+            ],
+            new Response(null, Response::HTTP_BAD_REQUEST)
+        );
     }
 
     #[Route(

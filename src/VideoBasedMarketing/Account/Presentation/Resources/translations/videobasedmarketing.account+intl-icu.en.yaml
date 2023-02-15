@@ -84,3 +84,6 @@ claim_unregistered_user:
     note2: 'Check your email inbox for our message and simply follow the instructions in the email.'
     note3: 'Just to be safe, please also check your spam folder.'
     mail_info: 'We have sent the confirmation email to address {email}.'
+
+email_verification:
+  email_has_been_verified: 'Your email address has been verified.'
