@@ -36,6 +36,18 @@ video_manage_widget:
     title: 'Delete video'
     really: 'Do you really want to delete this video?'
     yes: 'Yes, delete'
+  edit_main_cta:
+    note: 'Edit action button'
+    placeholder:
+      text: 'Text'
+      label: 'Button label'
+      url: 'URL'
+  edit_calendly:
+    note1: ''
+    note2: 'embed'
+    placeholder:
+      text: 'Text'
+      url: 'Calendly-Share-URL'
 upload_video:
   title: 'Upload video'
 videos_overview:

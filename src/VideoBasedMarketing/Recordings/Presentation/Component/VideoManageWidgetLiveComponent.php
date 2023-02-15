@@ -37,11 +37,20 @@ class VideoManageWidgetLiveComponent
     #[LiveProp(writable: true)]
     public bool $editModalIsOpen = false;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp(writable: false)]
     public bool $shareModalIsOpen = false;
 
-    #[LiveProp(writable: true)]
+    #[LiveProp(writable: false)]
     public bool $deleteModalIsOpen = false;
+
+    #[LiveProp(writable: true)]
+    public bool $titleIsBeingEdited = false;
+
+    #[LiveProp(writable: true)]
+    public bool $mainCtaIsBeingEdited = false;
+
+    #[LiveProp(writable: true)]
+    public bool $calendlyIsBeingEdited = false;
 
     #[LiveProp(writable: true)]
     public string $shareUrl = '';
@@ -114,6 +123,9 @@ class VideoManageWidgetLiveComponent
             $this->submitForm();
         }
         $this->storeDataAndRebuildForm();
+        $this->stopEditingTitle();
+        $this->stopEditingMainCta();
+        $this->stopEditingCalendly();
     }
 
     
@@ -154,6 +166,45 @@ class VideoManageWidgetLiveComponent
     public function hideDeleteModal(): void
     {
         $this->deleteModalIsOpen = false;
+    }
+
+
+    #[LiveAction]
+    public function startEditingTitle(): void
+    {
+        $this->titleIsBeingEdited = true;
+    }
+
+    #[LiveAction]
+    public function stopEditingTitle(): void
+    {
+        $this->titleIsBeingEdited = false;
+    }
+
+
+    #[LiveAction]
+    public function startEditingMainCta(): void
+    {
+        $this->mainCtaIsBeingEdited = true;
+    }
+
+    #[LiveAction]
+    public function stopEditingMainCta(): void
+    {
+        $this->mainCtaIsBeingEdited = false;
+    }
+
+
+    #[LiveAction]
+    public function startEditingCalendly(): void
+    {
+        $this->calendlyIsBeingEdited = true;
+    }
+
+    #[LiveAction]
+    public function stopEditingCalendly(): void
+    {
+        $this->calendlyIsBeingEdited = false;
     }
 
 

@@ -38,35 +38,96 @@ class VideoType
     ): void
     {
         $builder->addEventListener(
-            FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $form = $event->getForm();
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) {
+                $form = $event->getForm();
 
-            $form->add(
-                'title',
-                TextType::class,
-                [
-                    'translation_domain' => 'videobasedmarketing.recordings',
-                    'label' => 'video_manage_widget.edit_modal.label.title',
-                    'trim' => false,
-                    'empty_data' => ''
-                ],
-            );
+                $form->add(
+                    'title',
+                    TextType::class,
+                    [
+                        'translation_domain' => 'videobasedmarketing.recordings',
+                        'label' => 'video_manage_widget.edit_modal.label.title',
+                        'trim' => false,
+                        'empty_data' => ''
+                    ],
+                );
 
-            $form->add(
-                'videoOnlyPresentationpageTemplate',
-                EntityType::class,
-                [
-                    'translation_domain' => 'videobasedmarketing.recordings',
-                    'label' => 'video_manage_widget.edit_modal.label.video_only_presentationpage_template',
-                    'class' => Presentationpage::class,
-                    'choices' => $this
-                        ->presentationpagesService
-                        ->getVideoOnlyPresentationpageTemplatesForUser($this->security->getUser()),
-                    'choice_value' => 'id',
-                    'choice_label' => 'title'
-                ],
-            );
-        });
+
+                $form->add(
+                    'mainCtaText',
+                    TextType::class,
+                    [
+                        'translation_domain' => 'videobasedmarketing.recordings',
+                        'label' => 'video_manage_widget.form.label.main_cta_text',
+                        'trim' => false,
+                        'empty_data' => null
+                    ],
+                );
+
+                $form->add(
+                    'mainCtaLabel',
+                    TextType::class,
+                    [
+                        'translation_domain' => 'videobasedmarketing.recordings',
+                        'label' => 'video_manage_widget.form.label.main_cta_label',
+                        'trim' => false,
+                        'empty_data' => null
+                    ],
+                );
+
+                $form->add(
+                    'mainCtaUrl',
+                    TextType::class,
+                    [
+                        'translation_domain' => 'videobasedmarketing.recordings',
+                        'label' => 'video_manage_widget.form.label.main_cta_url',
+                        'trim' => true,
+                        'empty_data' => null
+                    ],
+                );
+
+
+                $form->add(
+                    'calendlyText',
+                    TextType::class,
+                    [
+                        'translation_domain' => 'videobasedmarketing.recordings',
+                        'label' => 'video_manage_widget.form.label.calendly_text',
+                        'trim' => false,
+                        'empty_data' => null
+                    ],
+                );
+
+
+                $form->add(
+                    'calendlyUrl',
+                    TextType::class,
+                    [
+                        'translation_domain' => 'videobasedmarketing.recordings',
+                        'label' => 'video_manage_widget.form.label.calendly_url',
+                        'trim' => true,
+                        'empty_data' => null
+                    ],
+                );
+
+
+                $form->add(
+                    'videoOnlyPresentationpageTemplate',
+                    EntityType::class,
+                    [
+                        'translation_domain' => 'videobasedmarketing.recordings',
+                        'label' => 'video_manage_widget.edit_modal.label.video_only_presentationpage_template',
+                        'class' => Presentationpage::class,
+                        'choices' => $this
+                            ->presentationpagesService
+                            ->getVideoOnlyPresentationpageTemplatesForUser($this->security->getUser()),
+                        'choice_value' => 'id',
+                        'choice_label' => 'title'
+                    ],
+                );
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
