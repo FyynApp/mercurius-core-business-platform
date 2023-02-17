@@ -104,3 +104,7 @@ claim_unregistered_user:
 
 email_verification:
   email_has_been_verified: 'Deine E-Mail wurde bestätigt.'
+
+password:
+  change:
+    title: 'Passwort ändern'

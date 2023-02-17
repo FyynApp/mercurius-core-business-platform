@@ -238,4 +238,17 @@ readonly class AccountDomainService
 
         return true;
     }
+
+    public function updatePassword(
+        User   $user,
+        string $plainPassword
+    ): void
+    {
+        $user->setPassword(
+            $this->userPasswordHasher->hashPassword(
+                $user,
+                $plainPassword
+            )
+        );
+    }
 }

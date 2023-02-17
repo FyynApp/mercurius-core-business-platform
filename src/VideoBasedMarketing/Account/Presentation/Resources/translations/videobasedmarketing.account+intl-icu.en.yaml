@@ -102,3 +102,16 @@ claim_unregistered_user:
 
 email_verification:
   email_has_been_verified: 'Your email address has been verified.'
+
+password:
+  change:
+    title: 'Change password'
+    note1: 'Please enter your new password:'
+    cta: 'Change password'
+    label:
+      plain_password: 'New password'
+      plain_password_repeat: 'New password (repeat)'
+    error:
+      not_identical: 'Passwords do not match.'
+      too_short: 'Passwords need to be at least 6 characters long.'
+    success_message: 'You have successfully changed your password.'
