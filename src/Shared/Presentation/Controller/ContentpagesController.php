@@ -85,7 +85,10 @@ class ContentpagesController
             $user = $accountDomainService->createUnregisteredUser();
             return $requestParametersBasedUserAuthService->createRedirectResponse(
                 $user,
-                'shared.presentation.contentpages.homepage_native_recorder'
+                'shared.presentation.contentpages.homepage_native_recorder',
+                !is_null($request->get('forceMobileView'))
+                    ? ['forceMobileView' => $request->get('forceMobileView')]
+                    : []
             );
         }
 
@@ -97,7 +100,12 @@ class ContentpagesController
         }
 
         if ($requestParametersBasedUserAuthService->isAuthRequest($request)) {
-            return $this->redirect('shared.presentation.contentpages.homepage_native_recorder');
+            return $this->redirectToRoute(
+                'shared.presentation.contentpages.homepage_native_recorder',
+                !is_null($request->get('forceMobileView'))
+                    ? ['forceMobileView' => $request->get('forceMobileView')]
+                    : []
+            );
         }
 
         return $this->render(

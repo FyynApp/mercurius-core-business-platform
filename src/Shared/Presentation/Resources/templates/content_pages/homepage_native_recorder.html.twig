@@ -3,7 +3,7 @@
 {% block mainWrapperClasses %}{% endblock %}
 
 {% block javascripts %}
-    {% if is_mobile() %}
+    {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
         {{ encore_entry_script_tags(
             'recordings/uppyVideoUpload',
             null,
@@ -114,7 +114,7 @@
                 </div>
 
 
-                {% if is_mobile() %}
+                {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
                     <div
                             class="hidden"
                             id="uppyVideoUploadDashboardTarget"
@@ -137,17 +137,29 @@
                 {% endif %}
 
 
-                {% if is_mobile() %}
+                {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
 
                     <div class="mt-8 rounded-md drop-shadow-2xl w-full max-w-lg flex flex-row justify-center">
+                        <script>
+                            function triggerUppy() {
+                                const className = 'uppy-Dashboard-browse';
+                                const $el = document.getElementsByClassName(className)[0];
+                                if ($el === undefined) {
+                                    throw new Error(`Could not find Uppy dashboard element with class "${className}".`);
+                                } else {
+                                    $el.click();
+                                }
+                            }
+                        </script>
                         <button
-                                onclick="document.getElementsByClassName('uppy-Dashboard-browse')[0].click();"
+                                onclick="triggerUppy()"
                                 class="
                                     cta-with-icon-primary
                                     bg-gradient-to-l from-mercurius-green-500 to-mercurius-blue-500
                                     text-2xl
                                     animate-pulse
                                 "
+                                data-test-id="mobileCreateVideoCta"
                         >
                             Tap to start!
                         </button>
