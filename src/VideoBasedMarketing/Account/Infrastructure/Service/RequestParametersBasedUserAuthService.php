@@ -8,6 +8,7 @@ use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\RequestParameter;
 use App\VideoBasedMarketing\Account\Infrastructure\Security\RequestParametersBasedUserAuthenticator;
+use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,14 +41,18 @@ class RequestParametersBasedUserAuthService
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public function createUrl(
         User   $user,
         string $routeName,
         array  $routeParameters = [],
-        int    $referenceType = UrlGeneratorInterface::RELATIVE_PATH
+        int    $referenceType = UrlGeneratorInterface::RELATIVE_PATH,
+        string $validUntil = '+1 minutes'
     ): string
     {
-        $validUntil = DateAndTimeService::getDateTime('+1 minutes');
+        $validUntil = DateAndTimeService::getDateTime($validUntil);
 
         return $this->router->generate(
             $routeName,

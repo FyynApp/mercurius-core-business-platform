@@ -20,8 +20,11 @@ sign_in:
       cta: 'Next step'
     request_reset_thanks:
       note1: 'Thanks. If an account for {email} exists, we will now send a link to this address which allows you to set a new password.'
-      note2: 'Check your mail account now and look for a message with subject „Fyyn.io - Password reset“.'
+      note2: 'Check your mail account now and look for a message with subject „Fyyn.io — Password reset“.'
       note3: "Don't forget to check your spam folder, just in case."
+      note4: 'The link we will send you in the e-mail can only be used within the next 20 minutes!'
+    reset_password_email:
+      subject: 'Fyyn.io — Password reset'
 
 sign_up:
   title: 'Sign up'

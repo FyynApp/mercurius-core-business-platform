@@ -3,9 +3,13 @@
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
+use App\Shared\Presentation\Service\MailService;
+use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
+use App\VideoBasedMarketing\Account\Presentation\Service\AccountPresentationService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -77,9 +81,19 @@ class SignInController
         methods     : [Request::METHOD_POST]
     )]
     public function forgotPasswordHandleRequestResetAction(
-        Request $request
+        Request                    $request,
+        AccountPresentationService $accountPresentationService
     ): Response
     {
+        /** @var null|string $email */
+        $email = $request->get('email');
+
+        if (is_null($email)) {
+            throw new BadRequestHttpException('No email given.');
+        }
+
+        $accountPresentationService->sendPasswordResetEmail($request->get('email'));
+
         return $this->redirectToRoute(
             'videobasedmarketing.account.presentation.sign_in.forgot_password.request_reset.thanks',
             ['email' => $request->get('email')],
@@ -102,25 +116,6 @@ class SignInController
     {
         return $this->render(
             '@videobasedmarketing.account/sign_in/forgot_password/request_reset_thanks.html.twig',
-            ['email' => $request->get('email')]
-        );
-    }
-
-    #[Route(
-        path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password/reset',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen/zurücksetzen',
-        ],
-        name        : 'videobasedmarketing.account.presentation.sign_in.forgot_password.reset',
-        requirements: ['_locale' => '%app.routing.locale_requirement%'],
-        methods     : [Request::METHOD_GET]
-    )]
-    public function forgotPasswordResetAction(
-        Request $request
-    ): Response
-    {
-        return $this->render(
-            '@videobasedmarketing.account/sign_in/forgot_password/reset.html.twig',
             ['email' => $request->get('email')]
         );
     }

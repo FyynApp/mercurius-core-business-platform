@@ -20,8 +20,15 @@ sign_in:
       cta: 'Nächster Schritt'
     request_reset_thanks:
       note1: 'Vielen Dank. Sofern für {email} ein Konto besteht, senden wir an diese Adresse nun einen Link mit dem du ein neues Passwort setzen kannst.'
-      note2: 'Überprüfe nun deine Mails und schaue nach einer Nachricht mit dem Betreff „Fyyn.io - Password zurücksetzen“.'
+      note2: 'Überprüfe nun deine Mails und schaue nach einer Nachricht mit dem Betreff „Fyyn.io — Password zurücksetzen“.'
       note3: 'Vergiss’ nicht, für den Fall der Fälle auch im Spam-Ordner nachzuschauen.'
+      note4: 'Wichtig: Der Link in der E-Mail kann nur in den kommenden 20 Minuten zum Zurücksetzen deines Passworts genutzt werden!'
+    reset_password_email:
+      subject: 'Fyyn.io — Password zurücksetzen'
+      greeting: 'Hallo,'
+      note1: 'für deine E-Mail Adresse wurde der Passwort-zurücksetzen Prozess angestossen.'
+      note2: 'Klicke hier, um jetzt ein neues Passwort für deinen Fynn.io Account festzulegen:'
+      cta: 'Passwort zurücksetzen'
 
 sign_up:
   title: 'Registrieren'
