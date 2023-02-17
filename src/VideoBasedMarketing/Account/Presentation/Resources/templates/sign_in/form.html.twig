@@ -17,6 +17,12 @@
 
                     <div class="mt-8 space-y-6">
 
+                        <div class="-mb-5 text-right text-xs text-neutral-500 hover:text-black w-full">
+                            <a href="{{ path('videobasedmarketing.account.presentation.forgot_password_form') }}">
+                                {{ 'sign_in.cta.forgot_password'|trans }}
+                            </a>
+                        </div>
+
                         <input type="hidden" name="remember" value="true">
                         <div class="rounded-md -space-y-px">
                             <div>
@@ -48,9 +54,10 @@
                                         placeholder="{{ 'sign_in.placeholder.password'|trans }}"
                                 />
                             </div>
+
                         </div>
 
-                        <div>
+                        <div class="-mb-4">
                             <button
                                     type="submit"
                                     class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-mercurius-blue-500 hover:bg-mercurius-blue-700 py-4 text-lg px-10"

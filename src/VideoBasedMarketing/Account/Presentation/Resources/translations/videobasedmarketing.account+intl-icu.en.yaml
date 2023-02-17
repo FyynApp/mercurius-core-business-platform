@@ -7,9 +7,21 @@ sign_in:
   cta:
     sign_in: 'Sign in'
     sign_in_with_linkedin: 'Sign in with LinkedIn'
+    forgot_password: 'Forgot password?'
   or: 'or'
   sign_in_with_linkedin_question: 'Already on LinkedIn?'
   sign_in_with_linkedin_info: 'Use LinkedIn to sign in to Fyyn.io with a single click - no sign up required!'
+  forgot_password:
+    form:
+      title: 'Forgot password'
+      note1: 'Please enter your e-mail address to receive a link which will allow you to set a new password.'
+      placeholder:
+        email: 'E-mail address'
+      cta: 'Next step'
+    thanks:
+      note1: 'Thanks. If an account for {email} exists, we will now send a link to this address which allows you to set a new password.'
+      note2: 'Check your mail account now and look for a message with subject „Fyyn.io - Password reset“.'
+      note3: "Don't forget to check your spam folder, just in case."
 
 sign_up:
   title: 'Sign up'

@@ -22,7 +22,7 @@ class SignInController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET, Request::METHOD_POST]
     )]
-    public function indexAction(
+    public function signInFormAction(
         AuthenticationUtils   $authenticationUtils,
         ThirdPartyAuthService $thirdPartyAuthService,
         Request               $request
@@ -47,6 +47,62 @@ class SignInController
                 'username' => $lastUsername,
                 'error' => $error,
             ]
+        );
+    }
+
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen',
+        ],
+        name        : 'videobasedmarketing.account.presentation.forgot_password_form',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function forgotPasswordFormAction(): Response
+    {
+        return $this->render(
+            '@videobasedmarketing.account/sign_in/forgot_password_form.html.twig'
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password/handle',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen/verarbeiten',
+        ],
+        name        : 'videobasedmarketing.account.presentation.forgot_password_handle_form',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function forgotPasswordHandleFormAction(
+        Request $request
+    ): Response
+    {
+        return $this->redirectToRoute(
+            'videobasedmarketing.account.presentation.forgot_password_thanks',
+            ['email' => $request->get('email')],
+            Response::HTTP_SEE_OTHER
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password/thanks',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen/danke',
+        ],
+        name        : 'videobasedmarketing.account.presentation.forgot_password_thanks',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function forgotPasswordThanksAction(
+        Request $request
+    ): Response
+    {
+        return $this->render(
+            '@videobasedmarketing.account/sign_in/forgot_password_thanks.html.twig',
+            ['email' => $request->get('email')]
         );
     }
 }

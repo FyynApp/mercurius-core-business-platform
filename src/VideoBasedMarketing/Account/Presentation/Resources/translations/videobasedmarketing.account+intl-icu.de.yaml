@@ -7,9 +7,21 @@ sign_in:
   cta:
     sign_in: 'Einloggen'
     sign_in_with_linkedin: 'Einloggen mit LinkedIn'
+    forgot_password: 'Passwort vergessen?'
   or: 'oder'
   sign_in_with_linkedin_question: 'Bist du LinkedIn-Nutzer?'
   sign_in_with_linkedin_info: 'Dann kannst du dich hier mit nur einem Klick direkt bei Fyyn.io einloggen - eine vorherige Registrierung ist nicht erforderlich!'
+  forgot_password:
+    form:
+      title: 'Password vergessen'
+      note1: 'Bitte gib deine E-Mail Adresse ein um einen Link zu erhalten, mit dem du ein neues Passwort setzen kannst.'
+      placeholder:
+        email: 'E-Mail Adresse'
+      cta: 'Nächster Schritt'
+    thanks:
+      note1: 'Vielen Dank. Sofern für {email} ein Konto besteht, senden wir an diese Adresse nun einen Link mit dem du ein neues Passwort setzen kannst.'
+      note2: 'Überprüfe nun deine Mails und schaue nach einer Nachricht mit dem Betreff „Fyyn.io - Password zurücksetzen“.'
+      note3: 'Vergiss’ nicht, für den Fall der Fälle auch im Spam-Ordner nachzuschauen.'
 
 sign_up:
   title: 'Registrieren'
