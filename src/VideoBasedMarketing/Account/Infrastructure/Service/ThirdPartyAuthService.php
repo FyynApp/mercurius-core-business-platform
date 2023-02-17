@@ -93,13 +93,7 @@ class ThirdPartyAuthService
                 $receivedResourceOwner->getLastName()
             );
         } else {
-            if ($receivedResourceOwner->getEmail() !== $resourceOwner->getEmail()) {
-                return new HandleReceivedLinkedInResourceOwnerResult(
-                    false,
-                    HandleReceivedLinkedInResourceOwnerResult::ERROR_RETRIEVED_EMAIL_DIFFERS_FROM_STORED_EMAIL
-                );
-            }
-
+            $resourceOwner->setEmail($receivedResourceOwner->getEmail());
             $resourceOwner->setFirstName($receivedResourceOwner->getFirstName());
             $resourceOwner->setLastName($receivedResourceOwner->getLastName());
         }
