@@ -53,35 +53,35 @@ class SignInController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password/request-reset',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen/zurücksetzen-anfordern',
         ],
-        name        : 'videobasedmarketing.account.presentation.forgot_password_form',
+        name        : 'videobasedmarketing.account.presentation.sign_in.forgot_password.request_reset',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function forgotPasswordFormAction(): Response
+    public function forgotPasswordRequestResetAction(): Response
     {
         return $this->render(
-            '@videobasedmarketing.account/sign_in/forgot_password_form.html.twig'
+            '@videobasedmarketing.account/sign_in/forgot_password/request_reset.html.twig'
         );
     }
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password/handle',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen/verarbeiten',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password/handle-request-reset',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen/zurücksetzen-anfordern-verarbeiten',
         ],
-        name        : 'videobasedmarketing.account.presentation.forgot_password_handle_form',
+        name        : 'videobasedmarketing.account.presentation.sign_in.forgot_password.handle_request_reset',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_POST]
     )]
-    public function forgotPasswordHandleFormAction(
+    public function forgotPasswordHandleRequestResetAction(
         Request $request
     ): Response
     {
         return $this->redirectToRoute(
-            'videobasedmarketing.account.presentation.forgot_password_thanks',
+            'videobasedmarketing.account.presentation.sign_in.forgot_password.request_reset.thanks',
             ['email' => $request->get('email')],
             Response::HTTP_SEE_OTHER
         );
@@ -89,19 +89,38 @@ class SignInController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password/thanks',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen/danke',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password/request-reset/thanks',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen/zurücksetzen-anfordern/danke',
         ],
-        name        : 'videobasedmarketing.account.presentation.forgot_password_thanks',
+        name        : 'videobasedmarketing.account.presentation.sign_in.forgot_password.request_reset.thanks',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function forgotPasswordThanksAction(
+    public function forgotPasswordRequestResetThanksAction(
         Request $request
     ): Response
     {
         return $this->render(
-            '@videobasedmarketing.account/sign_in/forgot_password_thanks.html.twig',
+            '@videobasedmarketing.account/sign_in/forgot_password/request_reset_thanks.html.twig',
+            ['email' => $request->get('email')]
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/account/sign-in/forgot-password/reset',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/benutzerkonto/einloggen/password-vergessen/zurücksetzen',
+        ],
+        name        : 'videobasedmarketing.account.presentation.sign_in.forgot_password.reset',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function forgotPasswordResetAction(
+        Request $request
+    ): Response
+    {
+        return $this->render(
+            '@videobasedmarketing.account/sign_in/forgot_password/reset.html.twig',
             ['email' => $request->get('email')]
         );
     }

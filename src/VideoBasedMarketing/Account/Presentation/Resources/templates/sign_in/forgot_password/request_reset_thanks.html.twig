@@ -2,8 +2,8 @@
 
 {% trans_default_domain 'videobasedmarketing.account' %}
 
-{% block title %}{{ 'sign_in.forgot_password.form.title'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'sign_in.forgot_password.form.title'|trans }}{% endblock %}
+{% block title %}{{ 'sign_in.forgot_password.request_reset.title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'sign_in.forgot_password.request_reset.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="mt-32">
@@ -11,15 +11,15 @@
             <div class="max-w-md w-full space-y-8">
 
                 <p class="mb-4">
-                    {{ 'sign_in.forgot_password.thanks.note1'|trans({ email: email }) }}
+                    {{ 'sign_in.forgot_password.request_reset_thanks.note1'|trans({ email: email }) }}
                 </p>
 
                 <p class="mb-4 font-bold">
-                    {{ 'sign_in.forgot_password.thanks.note2'|trans }}
+                    {{ 'sign_in.forgot_password.request_reset_thanks.note2'|trans }}
                 </p>
 
                 <p class="mb-4">
-                    {{ 'sign_in.forgot_password.thanks.note3'|trans }}
+                    {{ 'sign_in.forgot_password.request_reset_thanks.note3'|trans }}
                 </p>
 
             </div>
