@@ -22,4 +22,4 @@ video_mailing_editor:
     to: 'To:'
   email_sent_successfully_flash_message: 'Your email has been sent successfully.'
   email:
-    subject_prefix: '[Fyyn.io] '
+    subject_prefix: 'Fyyn.io — '
