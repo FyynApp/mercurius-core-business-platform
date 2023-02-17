@@ -48,7 +48,7 @@ sign_up:
       not_blank: 'Das Passwort darf nicht leer sein.'
       min_length: 'Das Passwort muss mindestens 6 Zeichen lang sein.'
   verification_email:
-    subject: 'E-Mail Adresse bestätigen'
+    subject: 'Fyyn.io — E-Mail Adresse bestätigen'
     greeting: 'Fast geschafft!'
     text1: 'Vielen Dank für deine Registrierung bei Fyyn.io.'
     text2: 'Bitte klicke auf den untenstehenden Button, um deine Registrierung abzuschließen.'
@@ -90,7 +90,7 @@ claim_unregistered_user:
         other {Deine vorherigen Videos sind selbstverständlich ebenfalls verfügbar!}
       }
   verification_email:
-    subject: 'E-Mail Adresse bestätigen'
+    subject: 'Fyyn.io — E-Mail Adresse bestätigen'
     greeting: 'Fast geschafft!'
     text1: 'Vielen Dank für deine Registrierung bei Fyyn.io.'
     text2: 'Bitte klicke auf den untenstehenden Button, um deine Registrierung abzuschließen.'

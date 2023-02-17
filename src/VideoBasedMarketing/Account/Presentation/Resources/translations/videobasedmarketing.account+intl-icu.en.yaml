@@ -46,7 +46,7 @@ sign_up:
       not_blank: 'The password must not be empty.'
       min_length: 'The password must be at least 6 characters long.'
   verification_email:
-    subject: 'Verify your email address'
+    subject: 'Fyyn.io — Verify your email address'
     greeting: "It's nearly done!"
     text1: 'Thanks for creating your Fyyn.io account.'
     text2: 'Please click the button below to verify your email address.'
@@ -88,7 +88,7 @@ claim_unregistered_user:
         other {Your previous videos are of course available, too!}
       }
   verification_email:
-    subject: 'Verify your email address'
+    subject: 'Fyyn.io — Verify your email address'
     greeting: "It's nearly done!"
     text1: 'Thanks for creating your Fyyn.io account.'
     text2: 'Please click the button below to verify your email address.'
