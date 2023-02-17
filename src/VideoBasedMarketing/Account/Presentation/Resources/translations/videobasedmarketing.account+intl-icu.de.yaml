@@ -98,8 +98,8 @@ claim_unregistered_user:
   please_verify_email_address:
     greeting: 'Ein letzter Schritt...'
     note1: 'Bitte bestätige abschließend noch deine E-Mail Adresse, um dein Konto zu aktivieren.'
-    note2: "Schau' in deinem E-Mail Postfach nach unserer Nachricht, und folge einfach den Anweisungen in der E-Mail."
-    note3: "Sieh' sicherheitshalber bitte auch im Spam-Ordner nach."
+    note2: "Schau’ in deinem E-Mail Postfach nach unserer Nachricht, und folge einfach den Anweisungen in der E-Mail."
+    note3: "Sieh’ sicherheitshalber bitte auch im Spam-Ordner nach."
     mail_info: 'Wir haben die Bestätigungsmail an {email} gesendet.'
 
 email_verification:
@@ -108,3 +108,12 @@ email_verification:
 password:
   change:
     title: 'Passwort ändern'
+    note1: 'Bitte gib’ dein neues Passwort ein:'
+    cta: 'Passwort speichern'
+    label:
+      plain_password: 'Neues Passwort'
+      plain_password_repeat: 'Neues Passwort (Wiederholung)'
+    error:
+      not_identical: 'Die Passwörter sind nicht identisch.'
+      too_short: 'Passwörter müssen mindestens 6 Zeichen lang sein.'
+    success_message: 'Du hast erfolgreich dein Passwort geändert.'
