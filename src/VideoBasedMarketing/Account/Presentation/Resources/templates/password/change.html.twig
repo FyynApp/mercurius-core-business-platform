@@ -10,12 +10,6 @@
         <div class="min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8">
             <div class="max-w-md w-full space-y-8">
 
-                {% if error is defined and error is not empty %}
-                    <div class="text-red-700 font-bold">
-                        {{ error }}
-                    </div>
-                {% endif %}
-
                 <div>
                     {{ 'password.change.note1'|trans }}
                 </div>
@@ -66,7 +60,7 @@
                         </div>
                     </div>
 
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('password-change') }}">
 
                 </form>
 

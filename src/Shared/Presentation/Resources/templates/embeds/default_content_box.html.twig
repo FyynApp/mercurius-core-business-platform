@@ -11,31 +11,6 @@
         </h3>
     </div>
 
-
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="pl-4 pr-4">
-                <div class="
-                {% apply spaceless %}
-                    rounded-md
-                    p-8
-                    m-4
-                    sm:m-8
-                    text-lg
-                    font-normal
-                    border-1
-                    {% if label is same as 'success' %} bg-mercurius-green-100 text-mercurius-green-900 border-mercurius-green-500{% endif %}
-                    {% if label is same as 'info' %} bg-mercurius-blue-100 text-mercurius-blue-900 text-mercurius-blue-500 {% endif %}
-                    {% if label is same as 'warning' %} bg-orange-50 text-orange-600 border-orange-300{% endif %}
-                    {% if label is same as 'danger' %} bg-red-100 text-red-900 border-red-500 {% endif %}
-                {% endapply %}
-            ">
-                    {{ message }}
-                </div>
-            </div>
-        {% endfor %}
-    {% endfor %}
-
     <div
             class="padded-content-box"
     >

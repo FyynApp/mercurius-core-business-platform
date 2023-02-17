@@ -48,6 +48,10 @@ class PasswordController
         RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService
     ): Response
     {
+        if (!$this->isCsrfTokenValid('password-change', $request->get('_csrf_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
+
         $plainPassword = $request->get('plainPassword');
         $plainPasswordRepeat = $request->get('plainPasswordRepeat');
 
@@ -56,16 +60,28 @@ class PasswordController
         }
 
         if ($plainPassword !== $plainPasswordRepeat) {
-            return $this->render(
-                '@videobasedmarketing.account/password/change.html.twig',
-                ['error' => $translator->trans('password.change.error.not_identical', [], 'videobasedmarketing.account')]
+            $this->addFlash(
+                FlashMessageLabel::Warning->value,
+                $translator->trans('password.change.error.not_identical', [], 'videobasedmarketing.account')
+            );
+
+            return $this->redirectToRoute(
+                'videobasedmarketing.account.presentation.password.change',
+                [],
+                Response::HTTP_SEE_OTHER
             );
         }
 
         if (mb_strlen($plainPassword) < 6 || mb_strlen($plainPassword) > 4096) {
-            return $this->render(
-                '@videobasedmarketing.account/password/change.html.twig',
-                ['error' => $translator->trans('password.change.error.too_short', [], 'videobasedmarketing.account')]
+            $this->addFlash(
+                FlashMessageLabel::Warning->value,
+                $translator->trans('password.change.error.too_short', [], 'videobasedmarketing.account')
+            );
+
+            return $this->redirectToRoute(
+                'videobasedmarketing.account.presentation.password.change',
+                [],
+                Response::HTTP_SEE_OTHER
             );
         }
 

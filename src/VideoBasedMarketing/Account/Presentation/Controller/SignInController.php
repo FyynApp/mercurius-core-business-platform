@@ -85,6 +85,10 @@ class SignInController
         AccountPresentationService $accountPresentationService
     ): Response
     {
+        if (!$this->isCsrfTokenValid('request-reset', $request->get('_csrf_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
+
         /** @var null|string $email */
         $email = $request->get('email');
 
