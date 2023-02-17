@@ -66,6 +66,8 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.account.presentation.claim_unregistered_user.',
             'videobasedmarketing.account.api.extension.',
             'videobasedmarketing.account.presentation.sign',
+            'videobasedmarketing.account.presentation.forgot_password',
+            'videobasedmarketing.account.presentation.password',
             'videobasedmarketing.account.infrastructure.thirdpartyauth.',
 
             'videobasedmarketing.recordings.api.extension.',

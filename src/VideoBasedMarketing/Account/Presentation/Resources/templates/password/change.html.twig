@@ -1,0 +1,77 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{% trans_default_domain 'videobasedmarketing.account' %}
+
+{% block title %}{{ 'password.change.title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'password.change.title'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="mt-32">
+        <div class="min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-md w-full space-y-8">
+
+                {% if error is defined and error is not empty %}
+                    <div class="text-red-700 font-bold">
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <div>
+                    {{ 'password.change.note1'|trans }}
+                </div>
+
+                <form action="{{ path('videobasedmarketing.account.presentation.password.handle_change') }}" method="post">
+
+                    <div class="mt-8 space-y-6">
+
+                        <div class="-space-y-px">
+                            <div>
+                                <label for="plainPassword" class="sr-only">
+                                    {{ 'password.change.label.plain_password'|trans }}
+                                </label>
+                                <input
+                                        id="plainPassword"
+                                        name="plainPassword"
+                                        type="password"
+                                        autocomplete="password"
+                                        required
+                                        class="appearance-none relative block h-16 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-mercurius-blue-500 focus:border-mercurius-blue-500 focus:z-10 sm:text-sm"
+                                        placeholder="{{ 'password.change.label.plain_password'|trans }}"
+                                />
+                            </div>
+
+                            <div>
+                                <label for="plainPasswordRepeat" class="sr-only">
+                                    {{ 'password.change.label.plain_password_repeat'|trans }}
+                                </label>
+                                <input
+                                        id="plainPasswordRepeat"
+                                        name="plainPasswordRepeat"
+                                        type="password"
+                                        autocomplete="password"
+                                        required
+                                        class="appearance-none relative block h-16 w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-mercurius-blue-500 focus:border-mercurius-blue-500 focus:z-10 sm:text-sm"
+                                        placeholder="{{ 'password.change.label.plain_password_repeat'|trans }}"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <button
+                                    type="submit"
+                                    class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-mercurius-blue-500 hover:bg-mercurius-blue-700 py-4 text-lg px-10"
+                            >
+                                {{ 'password.change.cta'|trans }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
