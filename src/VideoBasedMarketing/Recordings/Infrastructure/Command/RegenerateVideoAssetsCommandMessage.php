@@ -60,6 +60,7 @@ class RegenerateVideoAssetsCommandMessage
         $video->setHasAssetPosterStillWebp(false);
         $video->setHasAssetPosterAnimatedWebp(false);
         $video->setHasAssetPosterAnimatedGif(false);
+        $video->setHasAssetPosterStillWithPlayOverlayForEmailPng(false);
 
         $this->entityManager->persist($video);
         $this->entityManager->flush();

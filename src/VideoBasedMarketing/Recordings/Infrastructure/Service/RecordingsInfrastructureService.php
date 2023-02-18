@@ -637,14 +637,42 @@ class RecordingsInfrastructureService
             352
         );
 
-        imagepng(
+        $resampledMaxWidth = 720;
+        $resampledMaxHeight = 720;
+
+        $dstImageRatio = $posterStillWidth / $posterStillHeight;
+
+        if ($resampledMaxWidth / $resampledMaxHeight > $dstImageRatio) {
+            $resampledWidth = $resampledMaxHeight * $dstImageRatio;
+            $resampledHeight = $resampledMaxHeight;
+        } else {
+            $resampledHeight = $resampledMaxWidth/$dstImageRatio;
+            $resampledWidth = $resampledMaxWidth;
+        }
+        $resampledImage = imagecreatetruecolor(
+            $resampledWidth,
+            $resampledHeight
+        );
+
+        imagecopyresampled(
+            $resampledImage,
             $dstImage,
+            0,
+            0,
+            0,
+            0,
+            $resampledWidth,
+            $resampledHeight,
+            $posterStillWidth,
+            $posterStillHeight
+        );
+
+        imagepng(
+            $resampledImage,
             $this->getVideoPosterStillWithPlayOverlayForEmailAssetFilePath(
                 $video,
                 AssetMimeType::ImagePng
-            ),
-            7,
-            PNG_ALL_FILTERS
+            )
         );
 
         $video->setHasAssetPosterStillWithPlayOverlayForEmailPng(true);
