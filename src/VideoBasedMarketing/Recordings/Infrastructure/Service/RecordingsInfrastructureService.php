@@ -642,7 +642,9 @@ class RecordingsInfrastructureService
             $this->getVideoPosterStillWithPlayOverlayForEmailAssetFilePath(
                 $video,
                 AssetMimeType::ImagePng
-            )
+            ),
+            7,
+            PNG_ALL_FILTERS
         );
 
         $video->setHasAssetPosterStillWithPlayOverlayForEmailPng(true);
