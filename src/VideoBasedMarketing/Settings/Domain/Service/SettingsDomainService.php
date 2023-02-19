@@ -90,12 +90,14 @@ readonly class SettingsDomainService
     {
         $domainName = trim(mb_strtolower($domainName));
 
-        if (mb_substr($domainName, -8) === '.fyyn.io') {
-            return SetCustomDomainNameResult::IsMercuriusDomain;
-        }
+        if (!$user->isAdmin()) {
+            if (mb_substr($domainName, -8) === '.fyyn.io') {
+                return SetCustomDomainNameResult::IsMercuriusDomain;
+            }
 
-        if (mb_substr($domainName, -9) === '.fyyn.app') {
-            return SetCustomDomainNameResult::IsMercuriusDomain;
+            if (mb_substr($domainName, -9) === '.fyyn.app') {
+                return SetCustomDomainNameResult::IsMercuriusDomain;
+            }
         }
 
         if (!mb_ereg(
