@@ -41,12 +41,14 @@ readonly class OrganizationDomainService
     }
 
     public function createOrganization(
-        User $orgOwnerUser
+        User $owningUser
     ): ?Organization
     {
-        if (!$this->userCanCreateOrganization($orgOwnerUser)) {
+        if (!$this->userCanCreateOrganization($owningUser)) {
             return null;
         }
+
+        $organization = new Organization($owningUser);
     }
 
     public function emailCanBeInvitedToOrganization(
