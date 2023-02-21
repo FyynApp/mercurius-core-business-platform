@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedin
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
@@ -474,6 +475,19 @@ class User
     }
 
 
+    #[ORM\OneToOne(
+        mappedBy: 'owningUser',
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    private ?Organization $ownedOrganization = null;
+
+    public function getOwnedOrganization(): ?Organization
+    {
+        return $this->ownedOrganization;
+    }
+
+    
     public function getUserIdentifier(): string
     {
         if (is_null($this->email)) {

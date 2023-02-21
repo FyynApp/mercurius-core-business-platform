@@ -2,25 +2,33 @@
 
 namespace App\VideoBasedMarketing\Organization\Domain\Entity;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\Shared\Infrastructure\Service\DateAndTimeService;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'organizations')]
+#[ORM\Table(name: 'organization_invitations')]
 class Invitation
 {
+    /**
+     * @throws Exception
+     */
     public function __construct(
-        User $ownerUser
+        Organization $organization,
+        string       $email
     )
     {
-        $this->ownerUser = $ownerUser;
+        $this->organization = $organization;
+        $this->email = $email;
+        $this->createdAt = DateAndTimeService::getDateTime();
     }
 
     #[ORM\ManyToOne(
-        targetEntity: User::class,
+        targetEntity: Organization::class,
         cascade: ['persist'],
-        inversedBy: 'subscriptions'
+        inversedBy: 'invitations'
     )]
     #[ORM\JoinColumn(
         name: 'owner_users_id',
@@ -28,28 +36,34 @@ class Invitation
         nullable: false,
         onDelete: 'CASCADE'
     )]
-    private readonly User $ownerUser;
+    private readonly Organization $organization;
 
-    public function getOwnerUser(): User
+    public function getOrganization(): Organization
     {
-        return $this->ownerUser;
+        return $this->organization;
     }
 
     #[ORM\Column(
         type: 'string',
         length: 256,
         unique: false,
-        nullable: true
+        nullable: false
     )]
-    private ?string $name;
+    private readonly string $email;
 
-    public function setName(?string $name): void
+    public function getEmail(): string
     {
-        $this->name = $name;
+        return $this->email;
     }
 
-    public function getName(): ?string
+    #[ORM\Column(
+        type: 'datetime',
+        nullable: false
+    )]
+    private DateTime $createdAt;
+
+    public function getCreatedAt(): DateTime
     {
-        return $this->name;
+        return $this->createdAt;
     }
 }

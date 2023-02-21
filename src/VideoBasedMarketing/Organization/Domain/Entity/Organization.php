@@ -11,28 +11,28 @@ use Doctrine\ORM\Mapping as ORM;
 class Organization
 {
     public function __construct(
-        User $ownerUser
+        User $owningUser
     )
     {
-        $this->ownerUser = $ownerUser;
+        $this->owningUser = $owningUser;
     }
 
-    #[ORM\ManyToOne(
+    #[ORM\OneToOne(
+        inversedBy: 'ownedOrganization',
         targetEntity: User::class,
-        cascade: ['persist'],
-        inversedBy: 'subscriptions'
+        cascade: ['persist']
     )]
     #[ORM\JoinColumn(
-        name: 'owner_users_id',
+        name: 'owning_users_id',
         referencedColumnName: 'id',
         nullable: false,
         onDelete: 'CASCADE'
     )]
-    private readonly User $ownerUser;
+    private readonly User $owningUser;
 
-    public function getOwnerUser(): User
+    public function getOwningUser(): User
     {
-        return $this->ownerUser;
+        return $this->owningUser;
     }
 
     #[ORM\Column(
