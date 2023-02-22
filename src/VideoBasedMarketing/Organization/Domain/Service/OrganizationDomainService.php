@@ -33,7 +33,28 @@ readonly class OrganizationDomainService
         User $user
     ): bool
     {
-        return !is_null($user->getOrganization());
+        if (   is_null($user->getOwnedOrganization())
+            && is_null($user->getOrganization())
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getOrganizationOfUser(
+        User $user
+    ): ?Organization
+    {
+        if (!is_null($user->getOwnedOrganization())) {
+            return $user->getOwnedOrganization();
+        }
+
+        if (!is_null($user->getOrganization())) {
+            return $user->getOrganization();
+        }
+
+        return null;
     }
 
     public function userCanCreateOrganization(
