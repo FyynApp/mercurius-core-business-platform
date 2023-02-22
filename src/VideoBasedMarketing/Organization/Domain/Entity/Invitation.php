@@ -6,6 +6,7 @@ use App\Shared\Infrastructure\Service\DateAndTimeService;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 
 #[ORM\Entity]
@@ -24,6 +25,25 @@ class Invitation
         $this->email = $email;
         $this->createdAt = DateAndTimeService::getDateTime();
     }
+
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\Column(type: 'guid', unique: true)]
+    private ?string $id = null;
+
+    /**
+     * @throws Exception
+     */
+    public function getId(): string
+    {
+        if (is_null($this->id)) {
+            throw new Exception('Entity of class ' . self::class . ' does not yet have an id.');
+        }
+        return $this->id;
+    }
+
 
     #[ORM\ManyToOne(
         targetEntity: Organization::class,

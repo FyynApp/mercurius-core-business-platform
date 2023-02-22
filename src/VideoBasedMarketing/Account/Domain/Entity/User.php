@@ -81,7 +81,7 @@ class User
 
     public function setEmail(string $email): void
     {
-        $this->email = $email;
+        $this->email = trim(mb_strtolower($email));
     }
 
 
@@ -487,7 +487,26 @@ class User
         return $this->ownedOrganization;
     }
 
-    
+
+    #[ORM\ManyToOne(
+        targetEntity: Organization::class,
+        cascade: ['persist'],
+        inversedBy: 'users'
+    )]
+    #[ORM\JoinColumn(
+        name: 'organizations_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?Organization $organization = null;
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+
     public function getUserIdentifier(): string
     {
         if (is_null($this->email)) {
@@ -521,6 +540,31 @@ class User
         }
 
         return null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getNameOrEmail(): string
+    {
+        $nameOrEmail = $this->getFirstName();
+        if (is_null($nameOrEmail)) {
+            $nameOrEmail = $this->getLastName();
+        } else {
+            if (!is_null($this->getLastName())) {
+                $nameOrEmail .= ' ' . $this->getLastName();
+            }
+            return $nameOrEmail;
+        }
+
+        if (is_null($nameOrEmail)) {
+            if (is_null($this->getEmail())) {
+                throw new Exception("No nameOrEmail for user '{$this->getId()}' because firstname, lastname, and email are all NULL.");
+            }
+            return $this->getEmail();
+        } else {
+            return $nameOrEmail;
+        }
     }
 
 

@@ -1,1 +1,8 @@
 default_organization_name: 'My organization'
+invitation:
+  email:
+    subject: 'Fyyn.io — {owningUserName} invites you to an organization'
+    greeting: 'Hey there,'
+    text1: '{owningUserName} uses Fyyn.io and asks you to join their organization.'
+    text2: 'Click here to get on board:'
+    cta: 'Join organization'
