@@ -26,6 +26,7 @@ readonly class OrganizationDomainService
         User $user
     ): bool
     {
+        return !is_null($user->getOwnedOrganization());
     }
 
     public function userIsMemberOfAnOrganization(
@@ -42,6 +43,8 @@ readonly class OrganizationDomainService
         if ($this->userIsMemberOfAnOrganization($user)) {
             return false;
         }
+
+        return true;
     }
 
     public function createOrganization(
