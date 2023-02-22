@@ -31,9 +31,14 @@ class OrganizationController
         $user = $this->getUser();
 
         if ($organizationDomainService->userIsMemberOfAnOrganization($user)) {
-
+            return $this->render(
+                '@videobasedmarketing.organization/organization/overview.html.twig',
+                ['organization' => $organizationDomainService->getOrganizationOfUser($user)]
+            );
         } else {
-
+            return $this->render(
+                '@videobasedmarketing.organization/organization/create_form.html.twig'
+            );
         }
     }
 
@@ -47,9 +52,14 @@ class OrganizationController
         methods     : [Request::METHOD_POST]
     )]
     public function createAction(
-        OrganizationDomainService $organizationDomainService
+        Request                   $request,
+        OrganizationDomainService $organizationDomainService,
     ): Response
     {
+        if (!$this->isCsrfTokenValid('create-organization', $request->request->get('csrf_token'))) {
+            throw $this->createAccessDeniedException('CSRF token is invalid');
+        }
+
         /** @var null|User $user */
         $user = $this->getUser();
 

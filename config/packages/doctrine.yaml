@@ -19,6 +19,12 @@ doctrine:
                 prefix: 'App\VideoBasedMarketing\Account\Infrastructure\Entity'
 
 
+            App\VideoBasedMarketing\Organization\Domain\Entity:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/VideoBasedMarketing/Organization/Domain/Entity'
+                prefix: 'App\VideoBasedMarketing\Organization\Domain\Entity'
+
+
             App\VideoBasedMarketing\Membership\Domain\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Membership/Domain/Entity'

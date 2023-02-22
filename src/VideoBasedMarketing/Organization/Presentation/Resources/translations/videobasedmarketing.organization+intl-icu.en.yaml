@@ -1,4 +1,11 @@
 default_organization_name: 'My organization'
+organization:
+  create_form:
+    title: 'Create an organization'
+    info1: 'Organizations allow you to manage your team on Fyyn.io'
+    info2: 'An organization allows you to invite team members and share your Fyyn.io contents with them.'
+    cta_text: 'Start by creating an organization:'
+    cta: 'Create organization'
 invitation:
   email:
     subject: 'Fyyn.io — {owningUserName} invites you to an organization'
