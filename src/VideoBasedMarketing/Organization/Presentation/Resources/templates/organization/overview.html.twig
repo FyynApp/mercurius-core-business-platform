@@ -61,11 +61,11 @@
 
                             {% for invitation in TwigHelperService.organizationDomainService.getPendingInvitations(organization) %}
                                 {# @var invitation \App\VideoBasedMarketing\Organization\Domain\Entity\Invitation #}
-                                <div class="mb-8">
+                                <div class="{% if not loop.last %}mb-8{% endif %}">
                                     <div class="font-semibold mb-1">{{ invitation.email }}</div>
 
                                     <div class="flex flex-row items-center">
-                                        <span class="text-sm">{{ dateAndTimeMacros.shortDateAndTime(invitation.createdAt) }}</span>
+                                        <span class="text-sm text-neutral-400">{{ dateAndTimeMacros.shortDateAndTime(invitation.createdAt) }}</span>
 
                                         <span class="px-3 text-neutral-300">|</span>
 
