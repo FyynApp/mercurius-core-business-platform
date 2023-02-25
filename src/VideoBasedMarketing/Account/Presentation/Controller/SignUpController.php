@@ -13,6 +13,7 @@ use App\VideoBasedMarketing\Account\Infrastructure\Security\EmailVerifier;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
 use App\VideoBasedMarketing\Account\Presentation\Form\Type\SignUpType;
+use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,14 +28,18 @@ class SignUpController
     extends AbstractController
 {
     public function __construct(
-        private readonly EmailVerifier          $emailVerifier,
-        private readonly MailService            $mailService,
-        private readonly AccountDomainService   $accountDomainService,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly TranslatorInterface    $translator
+        private readonly EmailVerifier             $emailVerifier,
+        private readonly MailService               $mailService,
+        private readonly AccountDomainService      $accountDomainService,
+        private readonly EntityManagerInterface    $entityManager,
+        private readonly TranslatorInterface       $translator,
+        private readonly OrganizationDomainService $organizationDomainService
     )
     {
-        parent::__construct($this->entityManager);
+        parent::__construct(
+            $this->entityManager,
+            $this->organizationDomainService
+        );
     }
 
     #[Route(
