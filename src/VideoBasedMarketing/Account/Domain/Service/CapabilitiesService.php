@@ -130,10 +130,6 @@ readonly class CapabilitiesService
             return false;
         }
 
-        if ($user->isAdmin()) {
-            return true;
-        }
-
         return $this
             ->membershipService
             ->getCurrentlySubscribedMembershipPlanForUser($user)
