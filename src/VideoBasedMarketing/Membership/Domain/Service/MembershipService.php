@@ -76,7 +76,14 @@ readonly class MembershipService
         User $user
     ): bool
     {
-        foreach ($user->getSubscriptions() as $subscription) {
+        $orgOwningUser = $this
+            ->organizationDomainService
+            ->getOrganizationOfUser($user)
+            ->getOwningUser()
+        ;
+
+
+        foreach ($orgOwningUser->getSubscriptions() as $subscription) {
             if ($subscription->getStatus() === SubscriptionStatus::Active) {
                 return true;
             }
