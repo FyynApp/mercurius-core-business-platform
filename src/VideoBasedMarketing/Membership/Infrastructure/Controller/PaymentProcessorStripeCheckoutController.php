@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Membership\Infrastructure\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
@@ -66,7 +67,7 @@ extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-        $subscription = $entityManager->find(\App\VideoBasedMarketing\Membership\Domain\Entity\Subscription::class, $subscriptionId);
+        $subscription = $entityManager->find(Subscription::class, $subscriptionId);
 
         if (is_null($subscription)) {
             throw $this->createNotFoundException("No subscription with id '$subscriptionId'.");
