@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Organization\Domain\Service;
 
 use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Invitation;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Presentation\Service\OrganizationPresentationService;
@@ -20,7 +21,8 @@ readonly class OrganizationDomainService
     public function __construct(
         private TranslatorInterface             $translator,
         private EntityManagerInterface          $entityManager,
-        private OrganizationPresentationService $organizationPresentationService
+        private OrganizationPresentationService $organizationPresentationService,
+        private AccountDomainService            $accountDomainService
     )
     {
     }
@@ -143,10 +145,51 @@ readonly class OrganizationDomainService
     }
 
     public function acceptInvitation(
-        Invitation $invitation
-    ): bool
+        Invitation $invitation,
+        ?User      $user
+    ): ?User
     {
+        if (!is_null($user) && $user->isRegistered()) {
 
+            if (!is_null($user->getOwnedOrganization())) {
+                return null;
+            }
+
+            if (!is_null($user->getOrganization())) {
+                if ($user->getOrganization()->getId() === $invitation->getOrganization()->getId()) {
+                    return $user;
+                }
+            }
+
+            if ($user->getEmail() !== $invitation->getEmail()) {
+
+                /** @var ObjectRepository<User> $repo */
+                $repo = $this->entityManager->getRepository(User::class);
+
+                /** @var null|User $userForInvitationEmail */
+                $userForInvitationEmail = $repo->findOneBy(['email' => $invitation->getEmail()]);
+
+                if (!is_null($userForInvitationEmail)) {
+                    return null;
+                }
+            }
+        } else {
+            $user = $this->accountDomainService->createRegisteredUser(
+                $invitation->getEmail()
+            );
+        }
+
+        $user->setOrganization($invitation->getOrganization());
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        $this->entityManager->refresh($invitation->getOrganization());
+
+        $this->entityManager->remove($invitation);
+        unset($invitation);
+        $this->entityManager->flush();
+
+        return $user;
     }
 
     public function getOrganizationName(

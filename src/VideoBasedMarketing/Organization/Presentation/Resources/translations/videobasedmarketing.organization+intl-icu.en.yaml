@@ -19,6 +19,13 @@ organization:
 invitation:
   sent_success: 'Invitation e-mail to {email} has been sent.'
   sent_impossible: 'E-mail address {email} cannot be invited.'
+  ask_accept:
+    title: 'Join organization'
+    question: 'Do you want to join the organization owned by {ownerNameOrEmail}?'
+    cta: 'Join organization'
+  accept:
+    success: 'You have successfully joined the organization.'
+    impossible: 'You cannot join this organization.'
   email:
     subject: 'Fyyn.io — {owningUserName} invites you to an organization'
     greeting: 'Hey there,'

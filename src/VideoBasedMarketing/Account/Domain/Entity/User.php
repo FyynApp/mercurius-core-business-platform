@@ -505,6 +505,13 @@ class User
         return $this->organization;
     }
 
+    public function setOrganization(
+        ?Organization $organization
+    ): void
+    {
+        $this->organization = $organization;
+    }
+
 
     public function getUserIdentifier(): string
     {
