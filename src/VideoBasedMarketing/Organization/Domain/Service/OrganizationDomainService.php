@@ -47,6 +47,21 @@ readonly class OrganizationDomainService
         return true;
     }
 
+    public function userCanCreateOrManageOrganization(
+        User $user
+    ): bool
+    {
+        if ($this->userOwnsAnOrganization($user)) {
+            return true;
+        }
+
+        if (!$this->userIsMemberOfAnOrganization($user)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function getOrganizationOfUser(
         User $user
     ): ?Organization

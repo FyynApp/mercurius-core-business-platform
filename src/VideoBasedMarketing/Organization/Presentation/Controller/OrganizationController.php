@@ -30,15 +30,19 @@ class OrganizationController
         /** @var null|User $user */
         $user = $this->getUser();
 
-        if ($organizationDomainService->userIsMemberOfAnOrganization($user)) {
+        if ($organizationDomainService->userOwnsAnOrganization($user)) {
             return $this->render(
                 '@videobasedmarketing.organization/organization/overview.html.twig',
                 ['organization' => $organizationDomainService->getOrganizationOfUser($user)]
             );
         } else {
-            return $this->render(
-                '@videobasedmarketing.organization/organization/create_form.html.twig'
-            );
+            if ($organizationDomainService->userIsMemberOfAnOrganization($user)) {
+                throw $this->createAccessDeniedException();
+            } else {
+                return $this->render(
+                    '@videobasedmarketing.organization/organization/create_form.html.twig'
+                );
+            }
         }
     }
 
