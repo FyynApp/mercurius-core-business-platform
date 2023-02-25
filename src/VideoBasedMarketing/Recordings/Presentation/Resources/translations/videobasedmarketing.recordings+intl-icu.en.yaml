@@ -51,6 +51,7 @@ video_manage_widget:
 upload_video:
   title: 'Upload video'
 videos_overview:
+  back_cta: 'Back to videos'
   title: 'Your videos'
   subtitle: 'Videos can be modified and shared here.'
   no_videos_available: 'You do not yet have any videos.'
@@ -65,6 +66,7 @@ videos_overview:
     remove_video: 'Remove video'
     custom_logo: 'Change logo for landingpage'
     custom_domain: 'Change domain for landingpage'
+    manage_organization: 'Manage organization'
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
 video_landingpage:

@@ -30,11 +30,12 @@ readonly class OrganizationPresentationService
     ): void
     {
         $context = [
-            'joinUrl' => $this->router->generate(
+            'acceptUrl' => $this->router->generate(
                 'videobasedmarketing.organization.invitation.accept',
                 ['invitationId' => $invitation->getId()],
                 UrlGeneratorInterface::ABSOLUTE_URL
-            )
+            ),
+            'owningUserName' => $invitation->getOrganization()->getOwningUser()->getNameOrEmail()
         ];
 
         $this->mailService->send(

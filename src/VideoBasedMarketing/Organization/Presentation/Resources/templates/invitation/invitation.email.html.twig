@@ -48,7 +48,7 @@
     </h2>
 
     <p>
-        {{ 'invitation.email.text1'|trans }}
+        {{ 'invitation.email.text1'|trans({ '{owningUserName}': owningUserName }) }}
     </p>
 
     <p>
@@ -58,12 +58,12 @@
     </p>
 
     <p style="margin-top: 2rem;">
-        <a class="cta_button" href="{{ joinUrl }}">
+        <a class="cta_button" href="{{ acceptUrl }}">
             {{ 'invitation.email.cta'|trans }}
         </a>
     </p>
 
     <p style="display: none;">
-        {{ ctaUrl }}
+        {{ acceptUrl }}
     </p>
 {% endapply %}

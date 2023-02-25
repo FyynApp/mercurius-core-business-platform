@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
@@ -51,6 +52,7 @@ class TwigHelperService
 
     private SettingsInfrastructureService $settingsInfrastructureService;
 
+    private OrganizationDomainService $organizationDomainService;
 
     public function __construct(
         ContentDeliveryService          $contentDeliveryService,
@@ -67,7 +69,8 @@ class TwigHelperService
         RecordingRequestsDomainService  $recordingRequestsDomainService,
         CapabilitiesService             $capabilitiesService,
         SettingsDomainService           $settingsDomainService,
-        SettingsInfrastructureService   $settingsInfrastructureService
+        SettingsInfrastructureService   $settingsInfrastructureService,
+        OrganizationDomainService       $organizationDomainService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
@@ -85,6 +88,7 @@ class TwigHelperService
         $this->capabilitiesService = $capabilitiesService;
         $this->settingsDomainService = $settingsDomainService;
         $this->settingsInfrastructureService = $settingsInfrastructureService;
+        $this->organizationDomainService = $organizationDomainService;
     }
 
     public function getSymfonyEnv(): string
@@ -170,5 +174,10 @@ class TwigHelperService
     public function getSettingsInfrastructureService(): SettingsInfrastructureService
     {
         return $this->settingsInfrastructureService;
+    }
+
+    public function getOrganizationDomainService(): OrganizationDomainService
+    {
+        return $this->organizationDomainService;
     }
 }

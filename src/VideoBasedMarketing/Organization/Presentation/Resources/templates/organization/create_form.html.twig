@@ -15,21 +15,32 @@
         {% block contentBoxSubtitle %}{% endblock %}
 
         {% block contentBoxContent %}
-            {{ 'organization.create_form.info1'|trans }}
-            {{ 'organization.create_form.info2'|trans }}
-            {{ 'organization.create_form.cta_text'|trans }}
 
-            <form
-                    action="{{ path('videobasedmarketing.organization.create') }}"
-                    method="post"
-            >
-                <input type="hidden" name="csrf_token" value="{{ csrf_token('create-organization') }}">
-                <button
-                        type="submit"
+            {% include '@videobasedmarketing.recordings/includes/back_to_videos_overview.html.twig' %}
+
+            <div class="w-full max-w-4xl">
+                <p class="font-bold">
+                    {{ 'organization.create_form.info1'|trans }}
+                </p>
+
+                <p class="mt-4">
+                    {{ 'organization.create_form.info2'|trans }}
+                </p>
+
+                <form
+                        class="mt-8"
+                        action="{{ path('videobasedmarketing.organization.create') }}"
+                        method="post"
                 >
-                    {{ 'organization.create_form.cta'|trans }}
-                </button>
-            </form>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token('create-organization') }}">
+                    <button
+                            class="cta-with-icon-primary"
+                            type="submit"
+                    >
+                        {{ 'organization.create_form.cta'|trans }}
+                    </button>
+                </form>
+            </div>
         {% endblock %}
 
     {% endembed %}

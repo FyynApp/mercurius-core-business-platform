@@ -490,8 +490,7 @@ class User
 
     #[ORM\ManyToOne(
         targetEntity: Organization::class,
-        cascade: ['persist'],
-        inversedBy: 'users'
+        cascade: ['persist']
     )]
     #[ORM\JoinColumn(
         name: 'organizations_id',

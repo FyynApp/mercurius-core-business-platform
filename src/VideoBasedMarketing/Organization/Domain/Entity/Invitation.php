@@ -47,11 +47,10 @@ class Invitation
 
     #[ORM\ManyToOne(
         targetEntity: Organization::class,
-        cascade: ['persist'],
-        inversedBy: 'invitations'
+        cascade: ['persist']
     )]
     #[ORM\JoinColumn(
-        name: 'owner_users_id',
+        name: 'organizations_id',
         referencedColumnName: 'id',
         nullable: false,
         onDelete: 'CASCADE'

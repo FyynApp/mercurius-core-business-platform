@@ -1,0 +1,101 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var organization \App\VideoBasedMarketing\Organization\Domain\Entity\Organization #}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.organization' %}
+
+        {% block contentBoxTitle %}
+            {{ 'organization.overview.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}{% endblock %}
+
+        {% block contentBoxContent %}
+
+            {% include '@videobasedmarketing.recordings/includes/back_to_videos_overview.html.twig' %}
+
+            <div class="w-full flex flex-col lg:flex-row gap-16">
+
+                <div class="lg:w-6/12">
+                    <p class="text-lg font-bold mb-4">
+                        {{ 'organization.overview.invite.title'|trans }}
+                    </p>
+
+                    <div class="">
+                        <form
+                                class="flex flex-row gap-2 items-center"
+                                action="{{ path('videobasedmarketing.organization.invitation.send') }}"
+                                method="post"
+                        >
+                            <input
+                                    class="text-input lg:w-72"
+                                    type="email"
+                                    name="email"
+                                    placeholder="{{ 'organization.overview.invite.label_email'|trans }}"
+                            >
+                            <button
+                                    class="cta-with-icon-primary"
+                                    type="submit"
+                            >
+                                {{ 'organization.overview.invite.cta'|trans }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="lg:w-6/12">
+                    <p class="text-lg font-bold mb-4">
+                        {{ 'organization.overview.pending_invitations.title'|trans }}
+                    </p>
+
+                    {% if TwigHelperService.organizationDomainService.pendingInvitations(organization) %}
+
+                        {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+                        <div class="shadow-inner bg-neutral-100 p-4 rounded-md">
+
+                            {% for invitation in TwigHelperService.organizationDomainService.getPendingInvitations(organization) %}
+                                {# @var invitation \App\VideoBasedMarketing\Organization\Domain\Entity\Invitation #}
+                                <div class="mb-8">
+                                    <div class="font-semibold mb-1">{{ invitation.email }}</div>
+
+                                    <div class="flex flex-row items-center">
+                                        <span class="text-sm">{{ dateAndTimeMacros.shortDateAndTime(invitation.createdAt) }}</span>
+
+                                        <span class="px-3 text-neutral-300">|</span>
+
+                                        <form
+                                                action="{{ path('videobasedmarketing.organization.invitation.send') }}"
+                                                method="post"
+                                        >
+                                            <input type="hidden" name="email" value="{{ invitation.email }}">
+                                            <button
+                                                    type="submit"
+                                                    class="cta-with-icon-inline-primary text-sm"
+                                            >
+                                                {{ 'organization.overview.pending_invitations.resend'|trans }}
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    {% else %}
+                        <p class="text-neutral-500">
+                            {{ 'organization.overview.pending_invitations.no_pending'|trans }}
+                        </p>
+                    {% endif %}
+                </div>
+
+            </div>
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

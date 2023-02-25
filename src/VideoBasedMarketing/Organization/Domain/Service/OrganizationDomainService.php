@@ -7,8 +7,11 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Invitation;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Presentation\Service\OrganizationPresentationService;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Exception;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
@@ -106,7 +109,7 @@ readonly class OrganizationDomainService
     }
 
     /**
-     * @throws Exception
+     * @throws Exception|TransportExceptionInterface
      */
     public function inviteEmailToOrganization(
         string       $email,
@@ -118,9 +121,25 @@ readonly class OrganizationDomainService
             return null;
         }
 
-        $invitation = new Invitation($organization, $email);
+        /** @var ObjectRepository<Invitation> $repo */
+        $repo = $this->entityManager->getRepository(Invitation::class);
+
+        /** @var null|Invitation $invitation */
+        $invitation = $repo->findOneBy(['email' => $email]);
+
+        if (is_null($invitation)) {
+            $invitation = new Invitation($organization, $email);
+            $this->entityManager->persist($invitation);
+            $this->entityManager->flush();
+        } else {
+            if ($invitation->getOrganization()->getId() !== $organization->getId()) {
+                return null;
+            }
+        }
 
         $this->organizationPresentationService->sendInvitationMail($invitation);
+
+        return $invitation;
     }
 
     public function acceptInvitation(
@@ -145,5 +164,26 @@ readonly class OrganizationDomainService
         } else {
             return $organization->getName();
         }
+    }
+
+    public function hasPendingInvitations(
+        Organization $organization
+    ): bool
+    {
+        return sizeof($this->getPendingInvitations($organization)) > 0;
+    }
+
+    /** @return Invitation[] */
+    public function getPendingInvitations(
+        Organization $organization
+    ): array
+    {
+        /** @var ObjectRepository<Invitation> $repo */
+        $repo = $this->entityManager->getRepository(Invitation::class);
+
+        return $repo->findBy(
+            ['organization' => $organization],
+            ['createdAt' => Criteria::DESC]
+        );
     }
 }
