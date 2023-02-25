@@ -3,6 +3,10 @@
 namespace App\VideoBasedMarketing\Organization\Domain\Entity;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
+use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
+use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -72,5 +76,48 @@ class Organization
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+
+    #[ORM\OneToOne(
+        mappedBy: 'organization',
+        targetEntity: CustomLogoSetting::class,
+        cascade: ['persist']
+    )]
+    private ?CustomLogoSetting $customLogoSetting = null;
+
+    public function getCustomLogoSetting(): ?CustomLogoSetting
+    {
+        return $this->customLogoSetting;
+    }
+
+
+    /** @var LogoUpload[]|Collection */
+    #[ORM\OneToMany(
+        mappedBy: 'organization',
+        targetEntity: LogoUpload::class,
+        cascade: ['persist']
+    )]
+    private array|Collection $logoUploads;
+
+    /**
+     * @return LogoUpload[]|Collection
+     */
+    public function getLogoUploads(): array|Collection
+    {
+        return $this->logoUploads;
+    }
+    
+
+    #[ORM\OneToOne(
+        mappedBy: 'organization',
+        targetEntity: CustomDomainSetting::class,
+        cascade: ['persist']
+    )]
+    private ?CustomDomainSetting $customDomainSetting = null;
+
+    public function getCustomDomainSetting(): ?CustomDomainSetting
+    {
+        return $this->customDomainSetting;
     }
 }

@@ -16,9 +16,6 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResp
 use App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity\RecordingSettingsBag;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
-use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
-use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -429,49 +426,6 @@ class User
         if (!$this->videoMailings->contains($videoMailing)) {
             $this->videoMailings->add($videoMailing);
         }
-    }
-
-
-    /** @var LogoUpload[]|Collection */
-    #[ORM\OneToMany(
-        mappedBy: 'user',
-        targetEntity: LogoUpload::class,
-        cascade: ['persist']
-    )]
-    private array|Collection $logoUploads;
-
-    /**
-     * @return LogoUpload[]|Collection
-     */
-    public function getLogoUploads(): array|Collection
-    {
-        return $this->logoUploads;
-    }
-
-
-    #[ORM\OneToOne(
-        mappedBy: 'user',
-        targetEntity: CustomLogoSetting::class,
-        cascade: ['persist']
-    )]
-    private ?CustomLogoSetting $customLogoSetting = null;
-
-    public function getCustomLogoSetting(): ?CustomLogoSetting
-    {
-        return $this->customLogoSetting;
-    }
-
-
-    #[ORM\OneToOne(
-        mappedBy: 'user',
-        targetEntity: CustomDomainSetting::class,
-        cascade: ['persist']
-    )]
-    private ?CustomDomainSetting $customDomainSetting = null;
-
-    public function getCustomDomainSetting(): ?CustomDomainSetting
-    {
-        return $this->customDomainSetting;
     }
 
 

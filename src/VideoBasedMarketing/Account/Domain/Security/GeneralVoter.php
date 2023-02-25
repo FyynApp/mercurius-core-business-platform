@@ -6,6 +6,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -45,6 +46,9 @@ class GeneralVoter
         return false;
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function voteOnAttribute(
         string         $attribute,
         mixed          $subject,
@@ -71,20 +75,39 @@ class GeneralVoter
             return false;
         }
 
-        /** @var UserOwnedEntityInterface $typedSubject */
-        $typedSubject = $subject;
-
-        if (    $typedSubject->getUser()->getId()
-            === $user->getId()
+        if (in_array(
+            UserOwnedEntityInterface::class,
+            class_implements($subject))
         ) {
-            return true;
+            /** @var UserOwnedEntityInterface $typedSubject */
+            $typedSubject = $subject;
+
+            if (    $typedSubject->getUser()->getId()
+                === $user->getId()
+            ) {
+                return true;
+            }
+
+            if ($this->organizationDomainService->userIsMemberOfAnOrganization($user)) {
+                return $this->organizationDomainService->userOwnedEntityBelongsToOrganization(
+                    $typedSubject,
+                    $this->organizationDomainService->getOrganizationOfUser($user)
+                );
+            }
         }
 
-        if ($this->organizationDomainService->userIsMemberOfAnOrganization($user)) {
-            return $this->organizationDomainService->userOwnedEntityBelongsToOrganization(
-                $typedSubject,
-                $this->organizationDomainService->getOrganizationOfUser($user)
-            );
+        if (in_array(
+            OrganizationOwnedEntityInterface::class,
+            class_implements($subject))
+        ) {
+            /** @var OrganizationOwnedEntityInterface $typedSubject */
+            $typedSubject = $subject;
+
+            if (    $typedSubject->getOrganization()->getId()
+                === $this->organizationDomainService->getOrganizationOfUser($user)->getId()
+            ) {
+                return true;
+            }
         }
 
         return false;

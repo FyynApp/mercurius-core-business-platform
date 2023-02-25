@@ -63,13 +63,11 @@ class CustomLogoSettingsController
         SettingsDomainService $settingsDomainService
     ): Response
     {
-        $r = $this->verifyAndGetUserAndEntity(
+        $r = $this->verifyAndGetOrganizationAndEntity(
             LogoUpload::class,
             $logoUploadId,
             VotingAttribute::Edit
         );
-
-        $user = $r->getUser();
 
         /** @var LogoUpload $logoUpload */
         $logoUpload = $r->getEntity();

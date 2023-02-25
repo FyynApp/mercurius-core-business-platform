@@ -15,6 +15,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Exception;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use ValueError;
 
 
 readonly class OrganizationDomainService
@@ -65,7 +66,7 @@ readonly class OrganizationDomainService
 
     public function getOrganizationOfUser(
         User $user
-    ): ?Organization
+    ): Organization
     {
         if (!is_null($user->getOwnedOrganization())) {
             return $user->getOwnedOrganization();
@@ -75,7 +76,7 @@ readonly class OrganizationDomainService
             return $user->getOrganization();
         }
 
-        return null;
+        return $this->createOrganization($user);
     }
 
     public function userCanCreateOrganization(
@@ -91,10 +92,10 @@ readonly class OrganizationDomainService
 
     public function createOrganization(
         User $owningUser
-    ): ?Organization
+    ): Organization
     {
         if (!$this->userCanCreateOrganization($owningUser)) {
-            return null;
+            throw new ValueError("User '{$owningUser->getId()}' cannot create organization.");
         }
 
         $organization = new Organization($owningUser);

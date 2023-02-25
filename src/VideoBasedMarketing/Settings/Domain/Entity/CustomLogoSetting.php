@@ -3,8 +3,8 @@
 namespace App\VideoBasedMarketing\Settings\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,16 +15,16 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Table(name: 'custom_logo_settings')]
 #[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
 class CustomLogoSetting
-    implements UserOwnedEntityInterface
+    implements OrganizationOwnedEntityInterface
 {
     /**
      * @throws Exception
      */
     public function __construct(
-        User $user
+        Organization $organization
     )
     {
-        $this->user = $user;
+        $this->organization = $organization;
         $this->createdAt = DateAndTimeService::getDateTime();
     }
 
@@ -46,20 +46,20 @@ class CustomLogoSetting
 
     #[ORM\OneToOne(
         inversedBy: 'customLogoSetting',
-        targetEntity: User::class,
+        targetEntity: Organization::class,
         cascade: ['persist']
     )]
     #[ORM\JoinColumn(
-        name: 'users_id',
+        name: 'organizations_id',
         referencedColumnName: 'id',
         nullable: false,
         onDelete: 'CASCADE'
     )]
-    private User $user;
+    private Organization $organization;
 
-    public function getUser(): User
+    public function getOrganization(): Organization
     {
-        return $this->user;
+        return $this->organization;
     }
 
 
