@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use Exception;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -39,7 +40,9 @@ class GeneralVoter
             return false;
         }
 
-        if ($subject instanceof UserOwnedEntityInterface) {
+        if (   $subject instanceof UserOwnedEntityInterface
+            || $subject instanceof OrganizationOwnedEntityInterface
+        ) {
             return true;
         }
 
@@ -47,7 +50,7 @@ class GeneralVoter
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     protected function voteOnAttribute(
         string         $attribute,
@@ -75,11 +78,7 @@ class GeneralVoter
             return false;
         }
 
-        if (in_array(
-            UserOwnedEntityInterface::class,
-            class_implements($subject))
-        ) {
-            /** @var UserOwnedEntityInterface $typedSubject */
+        if ($subject instanceof UserOwnedEntityInterface) {
             $typedSubject = $subject;
 
             if (    $typedSubject->getUser()->getId()
@@ -96,11 +95,7 @@ class GeneralVoter
             }
         }
 
-        if (in_array(
-            OrganizationOwnedEntityInterface::class,
-            class_implements($subject))
-        ) {
-            /** @var OrganizationOwnedEntityInterface $typedSubject */
+        if ($subject instanceof OrganizationOwnedEntityInterface) {
             $typedSubject = $subject;
 
             if (    $typedSubject->getOrganization()->getId()

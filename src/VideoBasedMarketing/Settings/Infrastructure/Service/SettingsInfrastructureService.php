@@ -8,7 +8,6 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
@@ -87,7 +86,7 @@ readonly class SettingsInfrastructureService
                 [
                     self::ROOT_FOLDER_NAME,
                     self::LOGO_UPLOADS_SUBFOLDER_NAME,
-                    $user->getId(),
+                    $organization->getId(),
                     $logoUpload->getId()
                 ]
             )

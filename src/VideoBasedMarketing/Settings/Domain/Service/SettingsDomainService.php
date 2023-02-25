@@ -57,7 +57,9 @@ readonly class SettingsDomainService
     {
         foreach ($logoUpload->getOrganization()->getLogoUploads() as $existingLogoUpload) {
             $existingLogoUpload->setCustomLogoSetting(null);
+            $this->entityManager->persist($logoUpload);
         }
+        $this->entityManager->flush();
 
         $customLogoSetting = $this->getCustomLogoSetting($logoUpload->getOrganization()->getOwningUser());
 
