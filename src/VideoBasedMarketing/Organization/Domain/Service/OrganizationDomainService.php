@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Organization\Domain\Service;
 
 use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Invitation;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
@@ -243,5 +244,36 @@ readonly class OrganizationDomainService
             ['organization' => $organization],
             ['createdAt' => Criteria::DESC]
         );
+    }
+
+    /** @return User[] */
+    public function getUsersOfOrganization(
+        Organization $organization
+    ): array
+    {
+        $users = [$organization->getOwningUser()];
+
+        /** @var ObjectRepository<User> $repo */
+        $repo = $this->entityManager->getRepository(User::class);
+
+        return array_merge($users, $repo->findBy(
+            ['organization' => $organization]
+        ));
+    }
+
+    public function userOwnedEntityBelongsToOrganization(
+        UserOwnedEntityInterface $entity,
+        Organization             $organization
+    ): bool
+    {
+        $user = $entity->getUser();
+
+        if (!$this->userIsMemberOfAnOrganization($user)) {
+            return false;
+        }
+
+        $entityOrganisation = $this->getOrganizationOfUser($user);
+
+        return $entityOrganisation->getId() === $organization->getId();
     }
 }

@@ -6,6 +6,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
+use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -16,11 +17,15 @@ class GeneralVoter
 {
     private CapabilitiesService $capabilitiesService;
 
+    private OrganizationDomainService $organizationDomainService;
+
     public function __construct(
-        CapabilitiesService $capabilitiesService
+        CapabilitiesService       $capabilitiesService,
+        OrganizationDomainService $organizationDomainService
     )
     {
         $this->capabilitiesService = $capabilitiesService;
+        $this->organizationDomainService = $organizationDomainService;
     }
 
     protected function supports(
@@ -73,6 +78,13 @@ class GeneralVoter
             === $user->getId()
         ) {
             return true;
+        }
+
+        if ($this->organizationDomainService->userIsMemberOfAnOrganization($user)) {
+            return $this->organizationDomainService->userOwnedEntityBelongsToOrganization(
+                $typedSubject,
+                $this->organizationDomainService->getOrganizationOfUser($user)
+            );
         }
 
         return false;
