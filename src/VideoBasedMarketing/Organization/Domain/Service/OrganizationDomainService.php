@@ -6,8 +6,10 @@ use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Group;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Invitation;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Enum\AccessRight;
 use App\VideoBasedMarketing\Organization\Presentation\Service\OrganizationPresentationService;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -90,6 +92,9 @@ readonly class OrganizationDomainService
         return true;
     }
 
+    /**
+     * @throws Exception
+     */
     public function createOrganization(
         User $owningUser
     ): Organization
@@ -99,6 +104,25 @@ readonly class OrganizationDomainService
         }
 
         $organization = new Organization($owningUser);
+
+        $adminGroup = new Group(
+            $organization,
+            'Administrators',
+            [AccessRight::FULL_ACCESS],
+            false
+        );
+
+        $this->entityManager->persist($adminGroup);
+
+        $teamMemberGroup = new Group(
+            $organization,
+            'Team Members',
+            [],
+            true
+        );
+
+        $this->entityManager->persist($teamMemberGroup);
+
         $this->entityManager->persist($organization);
         $this->entityManager->flush();
         $this->entityManager->refresh($owningUser);
@@ -161,6 +185,9 @@ readonly class OrganizationDomainService
         return $invitation;
     }
 
+    /**
+     * @throws Exception
+     */
     public function acceptInvitation(
         Invitation $invitation,
         ?User      $user
@@ -196,8 +223,14 @@ readonly class OrganizationDomainService
             );
         }
 
+        $defaultGroup = $this->getDefaultGroupForNewMembers(
+            $invitation->getOrganization()
+        );
+
         $user->setOrganization($invitation->getOrganization());
+        $defaultGroup->addMember($user);
         $this->entityManager->persist($user);
+        $this->entityManager->persist($defaultGroup);
         $this->entityManager->flush();
 
         $this->entityManager->refresh($invitation->getOrganization());
@@ -276,5 +309,69 @@ readonly class OrganizationDomainService
         $entityOrganisation = $this->getOrganizationOfUser($user);
 
         return $entityOrganisation->getId() === $organization->getId();
+    }
+
+    public function getGroupName(
+        Group        $group,
+        Iso639_1Code $iso639_1Code,
+    ): string
+    {
+        return $this->translator->trans(
+            "group.name.{$group->getName()}",
+            [],
+            'videobasedmarketing.organization',
+            $iso639_1Code->value,
+        );
+    }
+
+
+    /** @return Group[] */
+    public function getGroups(
+        Organization $organization
+    ): array
+    {
+        /** @var ObjectRepository<Group> $repo */
+        $repo = $this->entityManager->getRepository(Group::class);
+
+        return $repo->findBy(
+            ['organization' => $organization],
+            ['createdAt' => Criteria::DESC]
+        );
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function getDefaultGroupForNewMembers(
+        Organization $organization
+    ): Group
+    {
+        /** @var ObjectRepository<Group> $repo */
+        $repo = $this->entityManager->getRepository(Group::class);
+
+        /** @var Group|null $group */
+        $group = $repo->findOneBy(
+            [
+                'organization' => $organization,
+                'isDefaultForNewMembers' => true
+            ]
+        );
+
+        if (is_null($group)) {
+            throw new Exception(
+                "Organization '{$organization->getId()}' does not have default group for new members."
+            );
+        }
+
+        return $group;
+    }
+
+    /** @return User[] */
+    public function getGroupMembers(
+        Group $group
+    ): array
+    {
+        return $group->getMembers();
     }
 }

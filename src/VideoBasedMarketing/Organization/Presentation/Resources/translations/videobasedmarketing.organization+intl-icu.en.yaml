@@ -16,6 +16,12 @@ organization:
       note: 'Enter an e-mail address to invite a team member into your organization:'
       label_email: 'E-mail address to invite'
       cta: 'Send invitation'
+    groups_and_members:
+      title: 'Groups and members'
+      no_members: 'No group members yet.'
+      default_group_for_new_members_note: 'Default for new members'
+      make_administrator_cta: 'Make admin'
+      make_team_member_cta: 'Make team member'
 invitation:
   sent_success: 'Invitation e-mail to {email} has been sent.'
   sent_impossible: 'E-mail address {email} cannot be invited.'
@@ -32,3 +38,7 @@ invitation:
     text1: '{owningUserName} uses Fyyn.io and asks you to join their organization.'
     text2: 'Click here to get on board:'
     cta: 'Join organization'
+group:
+  name:
+    'Administrators': 'Administrators'
+    'Team Members': 'Team Members'

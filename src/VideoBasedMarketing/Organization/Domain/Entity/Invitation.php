@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity]
 #[ORM\Table(name: 'organization_invitations')]
 class Invitation
+    implements OrganizationOwnedEntityInterface
 {
     /**
      * @throws Exception
