@@ -41,7 +41,62 @@ class GroupController
                 throw $this->createNotFoundException("User with id '$userIdToMove' not found.");
             }
 
-            #$organizationDomainService->;
+            if (    $organizationDomainService->getOrganizationOfUser($user)->getId()
+                !== $organizationDomainService->getOrganizationOfUser($userToMove)->getId()
+            ) {
+                throw $this->createAccessDeniedException(
+                    "User to move '$userIdToMove' is in another organization than the owner."
+                );
+            }
+
+            $organizationDomainService->moveUserToAdministratorsGroup(
+                $userToMove
+            );
+
+            return $this->redirectToRoute('videobasedmarketing.organization.overview');
+        } else {
+            throw $this->createAccessDeniedException();
+        }
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/organization/groups/move-to-team-members',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/organisation/gruppen/zu-team-mitgliedern-verschieben',
+        ],
+        name        : 'videobasedmarketing.organization.group.move_to_team_members',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function moveToTeamMembersAction(
+        Request                   $request,
+        OrganizationDomainService $organizationDomainService,
+        EntityManagerInterface    $entityManager
+    ): Response
+    {
+        /** @var null|User $user */
+        $user = $this->getUser();
+
+        if ($organizationDomainService->userOwnsAnOrganization($user)) {
+            $userIdToMove = $request->get('userId');
+            /** @var null|User $userToMove */
+            $userToMove = $entityManager->find(User::class, $userIdToMove);
+
+            if (is_null($userToMove)) {
+                throw $this->createNotFoundException("User with id '$userIdToMove' not found.");
+            }
+
+            if (    $organizationDomainService->getOrganizationOfUser($user)->getId()
+                !== $organizationDomainService->getOrganizationOfUser($userToMove)->getId()
+            ) {
+                throw $this->createAccessDeniedException(
+                    "User to move '$userIdToMove' is in another organization than the owner."
+                );
+            }
+
+            $organizationDomainService->moveUserToTeamMembersGroup(
+                $userToMove
+            );
 
             return $this->redirectToRoute('videobasedmarketing.organization.overview');
         } else {

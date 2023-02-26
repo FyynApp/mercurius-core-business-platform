@@ -155,6 +155,13 @@ class Group
         $this->members->add($user);
     }
 
+    public function removeMember(
+        User $user
+    ): void
+    {
+        $this->members->removeElement($user);
+    }
+
     /**
      * @return User[]
      */

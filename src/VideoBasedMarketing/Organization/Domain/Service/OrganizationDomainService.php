@@ -374,4 +374,42 @@ readonly class OrganizationDomainService
     {
         return $group->getMembers();
     }
+
+    public function moveUserToAdministratorsGroup(
+        User  $user
+    ): void {
+        $groups = $this->getGroups(
+            $this->getOrganizationOfUser($user)
+        );
+
+        foreach ($groups as $group) {
+            if ($group->isAdministratorsGroup()) {
+                $group->addMember($user);
+            } else {
+                $group->removeMember($user);
+            }
+            $this->entityManager->persist($group);
+        }
+
+        $this->entityManager->flush();
+    }
+
+    public function moveUserToTeamMembersGroup(
+        User  $user
+    ): void {
+        $groups = $this->getGroups(
+            $this->getOrganizationOfUser($user)
+        );
+
+        foreach ($groups as $group) {
+            if ($group->isTeamMembersGroup()) {
+                $group->addMember($user);
+            } else {
+                $group->removeMember($user);
+            }
+            $this->entityManager->persist($group);
+        }
+
+        $this->entityManager->flush();
+    }
 }
