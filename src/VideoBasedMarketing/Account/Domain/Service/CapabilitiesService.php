@@ -136,10 +136,34 @@ readonly class CapabilitiesService
         );
     }
 
-
     public function canPresentAdFreeLandingpage(User $user): bool
     {
         return $this->hasCapability($user, Capability::AdFreeLandingpages);
+    }
+
+
+    public function canInviteOrganizationMembers(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::INVITE_ORGANIZATION_MEMBERS
+        );
+    }
+
+    public function canSeeOrganizationGroupsAndMembers(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::SEE_ORGANIZATION_GROUPS_AND_MEMBERS
+        );
+    }
+
+    public function canMoveOrganizationMembersIntoGroups(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::MOVE_ORGANIZATION_MEMBERS_INTO_GROUPS
+        );
     }
 
     private function hasCapability(

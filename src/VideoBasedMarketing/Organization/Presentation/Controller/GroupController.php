@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Organization\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,13 +27,14 @@ class GroupController
     public function moveToAdministratorsAction(
         Request                   $request,
         OrganizationDomainService $organizationDomainService,
-        EntityManagerInterface    $entityManager
+        EntityManagerInterface    $entityManager,
+        CapabilitiesService       $capabilitiesService
     ): Response
     {
         /** @var null|User $user */
         $user = $this->getUser();
 
-        if ($organizationDomainService->userOwnsAnOrganization($user)) {
+        if ($capabilitiesService->canMoveOrganizationMembersIntoGroups($user)) {
             $userIdToMove = $request->get('userId');
             /** @var null|User $userToMove */
             $userToMove = $entityManager->find(User::class, $userIdToMove);
@@ -41,11 +43,17 @@ class GroupController
                 throw $this->createNotFoundException("User with id '$userIdToMove' not found.");
             }
 
+            if ($userToMove->getId() === $user->getId()) {
+                throw $this->createAccessDeniedException(
+                    "User to move '$userIdToMove' cannot move itself."
+                );
+            }
+
             if (    $organizationDomainService->getOrganizationOfUser($user)->getId()
                 !== $organizationDomainService->getOrganizationOfUser($userToMove)->getId()
             ) {
                 throw $this->createAccessDeniedException(
-                    "User to move '$userIdToMove' is in another organization than the owner."
+                    "User to move '$userIdToMove' is in another organization than the user trying to do the move."
                 );
             }
 
@@ -71,13 +79,14 @@ class GroupController
     public function moveToTeamMembersAction(
         Request                   $request,
         OrganizationDomainService $organizationDomainService,
-        EntityManagerInterface    $entityManager
+        EntityManagerInterface    $entityManager,
+        CapabilitiesService       $capabilitiesService
     ): Response
     {
         /** @var null|User $user */
         $user = $this->getUser();
 
-        if ($organizationDomainService->userOwnsAnOrganization($user)) {
+        if ($capabilitiesService->canMoveOrganizationMembersIntoGroups($user)) {
             $userIdToMove = $request->get('userId');
             /** @var null|User $userToMove */
             $userToMove = $entityManager->find(User::class, $userIdToMove);
@@ -86,11 +95,17 @@ class GroupController
                 throw $this->createNotFoundException("User with id '$userIdToMove' not found.");
             }
 
+            if ($userToMove->getId() === $user->getId()) {
+                throw $this->createAccessDeniedException(
+                    "User to move '$userIdToMove' cannot move itself."
+                );
+            }
+
             if (    $organizationDomainService->getOrganizationOfUser($user)->getId()
                 !== $organizationDomainService->getOrganizationOfUser($userToMove)->getId()
             ) {
                 throw $this->createAccessDeniedException(
-                    "User to move '$userIdToMove' is in another organization than the owner."
+                    "User to move '$userIdToMove' is in another organization than the user trying to do the move."
                 );
             }
 
