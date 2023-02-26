@@ -339,6 +339,35 @@ readonly class OrganizationDomainService
         );
     }
 
+    /** @return Group[] */
+    public function getGroupsOfUser(
+        User $user
+    ): array
+    {
+        $organization = $this->getOrganizationOfUser($user);
+
+        /** @var ObjectRepository<Group> $repo */
+        $repo = $this->entityManager->getRepository(Group::class);
+
+        /** @var Group[] $allGroups */
+        $allGroups = $repo->findBy(
+            ['organization' => $organization],
+            ['createdAt' => Criteria::DESC]
+        );
+
+        /** @var Group[] $foundGroups */
+        $foundGroups = [];
+        foreach ($allGroups as $group) {
+            foreach ($group->getMembers() as $member) {
+                if ($member->getId() === $user->getId()) {
+                    $foundGroups[] = $group;
+                }
+            }
+        }
+
+        return $foundGroups;
+    }
+
 
     /**
      * @throws Exception
@@ -411,5 +440,33 @@ readonly class OrganizationDomainService
         }
 
         $this->entityManager->flush();
+    }
+
+    public function userHasAccessRight(
+        User        $user,
+        AccessRight $accessRight
+    ): bool
+    {
+        if (!$this->userIsMemberOfAnOrganization($user)) {
+            return false;
+        }
+
+        if (    $this->getOrganizationOfUser($user)->getOwningUser()->getId()
+            === $user->getId()
+        ) {
+            return true;
+        }
+
+        foreach ($this->getGroupsOfUser($user) as $group) {
+            foreach ($group->getAccessRights() as $groupAccessRight) {
+                if (   $groupAccessRight === AccessRight::FULL_ACCESS
+                    || $groupAccessRight === $accessRight
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
