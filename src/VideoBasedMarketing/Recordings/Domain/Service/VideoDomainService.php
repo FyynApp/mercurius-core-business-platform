@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
@@ -21,10 +22,11 @@ use InvalidArgumentException;
 readonly class VideoDomainService
 {
     public function __construct(
-        private EntityManagerInterface   $entityManager,
-        private PresentationpagesService $presentationpagesService,
-        private ShortIdService           $shortIdService,
-        private MembershipService        $membershipService
+        private EntityManagerInterface    $entityManager,
+        private PresentationpagesService  $presentationpagesService,
+        private ShortIdService            $shortIdService,
+        private MembershipService         $membershipService,
+        private OrganizationDomainService $organizationDomainService
     )
     {
     }
@@ -36,7 +38,17 @@ readonly class VideoDomainService
     public function getAvailableVideos(User $user): array
     {
         /** @var Video[] $allVideos */
-        $allVideos = $user->getVideos()->toArray();
+        $allVideos = [];
+
+        if ($this->organizationDomainService->userIsMemberOfAnOrganization($user)) {
+            foreach ($this->organizationDomainService->getUsersOfOrganization(
+                $this->organizationDomainService->getOrganizationOfUser($user)
+            ) as $userOfOrganisation) {
+                $allVideos = array_merge($allVideos, $userOfOrganisation->getVideos()->toArray());
+            }
+        } else {
+            $allVideos = $user->getVideos()->toArray();
+        }
 
         $videos = [];
         foreach ($allVideos as $video) {

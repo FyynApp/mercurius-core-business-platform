@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Settings\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
@@ -17,8 +18,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 readonly class SettingsDomainService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private MessageBusInterface    $messageBus
+        private EntityManagerInterface    $entityManager,
+        private MessageBusInterface       $messageBus,
+        private OrganizationDomainService $organizationDomainService
     )
     {
     }
@@ -26,31 +28,40 @@ readonly class SettingsDomainService
     /**
      * @throws Exception
      */
-    private function getCustomLogoSetting(
+    public function getCustomLogoSetting(
         User $user
     ): CustomLogoSetting
     {
-        if (is_null($user->getCustomLogoSetting())) {
-            $customLogoSetting = new CustomLogoSetting($user);
+        $organization = $this
+            ->organizationDomainService
+            ->getOrganizationOfUser($user);
+
+        if (is_null($organization->getCustomLogoSetting())) {
+            $customLogoSetting = new CustomLogoSetting($organization);
 
             $this->entityManager->persist($customLogoSetting);
             $this->entityManager->flush($customLogoSetting);
 
-            $this->entityManager->refresh($user);
+            $this->entityManager->refresh($organization);
         }
 
-        return $user->getCustomLogoSetting();
+        return $organization->getCustomLogoSetting();
     }
 
+    /**
+     * @throws Exception
+     */
     public function makeLogoUploadActive(
         LogoUpload $logoUpload
     ): void
     {
-        foreach ($logoUpload->getUser()->getLogoUploads() as $existingLogoUpload) {
+        foreach ($logoUpload->getOrganization()->getLogoUploads() as $existingLogoUpload) {
             $existingLogoUpload->setCustomLogoSetting(null);
+            $this->entityManager->persist($logoUpload);
         }
+        $this->entityManager->flush();
 
-        $customLogoSetting = $this->getCustomLogoSetting($logoUpload->getUser());
+        $customLogoSetting = $this->getCustomLogoSetting($logoUpload->getOrganization()->getOwningUser());
 
         $customLogoSetting->setLogoUpload($logoUpload);
         $logoUpload->setCustomLogoSetting($customLogoSetting);
@@ -68,16 +79,20 @@ readonly class SettingsDomainService
         User $user
     ): CustomDomainSetting
     {
-        if (is_null($user->getCustomDomainSetting())) {
-            $customDomainSetting = new CustomDomainSetting($user);
+        $organization = $this
+            ->organizationDomainService
+            ->getOrganizationOfUser($user);
+
+        if (is_null($organization->getCustomDomainSetting())) {
+            $customDomainSetting = new CustomDomainSetting($organization);
 
             $this->entityManager->persist($customDomainSetting);
             $this->entityManager->flush($customDomainSetting);
 
-            $this->entityManager->refresh($user);
+            $this->entityManager->refresh($organization);
         }
 
-        return $user->getCustomDomainSetting();
+        return $organization->getCustomDomainSetting();
     }
 
     /**
@@ -133,7 +148,7 @@ readonly class SettingsDomainService
         }
 
         $this->getCustomDomainSetting($user)->setDomainName($domainName);
-        $this->entityManager->persist($user->getCustomDomainSetting());
+        $this->entityManager->persist($this->getCustomDomainSetting($user));
         $this->entityManager->flush();
 
         $this->triggerDomainNameCheck($user);
@@ -141,6 +156,9 @@ readonly class SettingsDomainService
         return SetCustomDomainNameResult::Success;
     }
 
+    /**
+     * @throws Exception
+     */
     public function triggerDomainNameCheck(
         User $user
     ): void
@@ -153,26 +171,43 @@ readonly class SettingsDomainService
             ->getCustomDomainSetting($user)
             ->setHttpSetupStatus(CustomDomainHttpSetupStatus::CheckOutstanding);
 
-        $this->entityManager->persist($user->getCustomDomainSetting());
+        $this->entityManager->persist($this->getCustomDomainSetting($user));
         $this->entityManager->flush();
 
         $this->messageBus->dispatch(
             new CheckCustomDomainNameSetupCommandMessage(
-                $user->getCustomDomainSetting()
+                $this->getCustomDomainSetting($user)
             )
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public function getUsableCustomDomain(User $user): ?string
     {
-        if (   !is_null($user->getCustomDomainSetting())
-            && !is_null($user->getCustomDomainSetting()->getDomainName())
-            && $user->getCustomDomainSetting()->getDnsSetupStatus() === CustomDomainDnsSetupStatus::CheckPositive
-            && $user->getCustomDomainSetting()->getHttpSetupStatus() === CustomDomainHttpSetupStatus::CheckPositive
+        if (   !is_null($this->getCustomDomainSetting($user))
+            && !is_null($this->getCustomDomainSetting($user)->getDomainName())
+            && $this->getCustomDomainSetting($user)->getDnsSetupStatus() === CustomDomainDnsSetupStatus::CheckPositive
+            && $this->getCustomDomainSetting($user)->getHttpSetupStatus() === CustomDomainHttpSetupStatus::CheckPositive
         ) {
-            return $user->getCustomDomainSetting()->getDomainName();
+            return $this->getCustomDomainSetting($user)->getDomainName();
         }
 
         return null;
+    }
+
+    public function userCanChangeCustomDomainSetting(
+        User $user
+    ): bool
+    {
+        return true;
+    }
+
+    public function userCanChangeCustomLogoSetting(
+        User $user
+    ): bool
+    {
+        return true;
     }
 }

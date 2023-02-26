@@ -5,9 +5,9 @@ namespace App\VideoBasedMarketing\Settings\Infrastructure\Service;
 use App\Shared\Infrastructure\Message\ClearTusCacheCommandMessage;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
@@ -22,11 +22,12 @@ readonly class SettingsInfrastructureService
     private const LOGO_UPLOADS_SUBFOLDER_NAME = 'logo-uploads';
 
     public function __construct(
-        private FilesystemService      $filesystemService,
-        private EntityManagerInterface $entityManager,
-        private MessageBusInterface    $messageBus,
-        private SettingsDomainService  $settingsDomainService,
-        private RouterInterface        $router
+        private FilesystemService         $filesystemService,
+        private EntityManagerInterface    $entityManager,
+        private MessageBusInterface       $messageBus,
+        private SettingsDomainService     $settingsDomainService,
+        private RouterInterface           $router,
+        private OrganizationDomainService $organizationDomainService
     )
     {
 
@@ -61,18 +62,20 @@ readonly class SettingsInfrastructureService
     {
         $fileMeta = $event->getFile()->details();
 
+        $organization = $this->organizationDomainService->getOrganizationOfUser($user);
+
         $logoUpload = new LogoUpload(
-            $user,
+            $organization,
             $token,
             $fileMeta['metadata']['filename'],
             $fileMeta['metadata']['filetype']
         );
 
         $this->entityManager->persist($logoUpload);
-        $this->entityManager->persist($user);
+        $this->entityManager->persist($organization);
         $this->entityManager->flush();
 
-        if (sizeof($user->getLogoUploads()) === 1) {
+        if (sizeof($organization->getLogoUploads()) === 1) {
             $this->settingsDomainService->makeLogoUploadActive($logoUpload);
         }
 
@@ -83,7 +86,7 @@ readonly class SettingsInfrastructureService
                 [
                     self::ROOT_FOLDER_NAME,
                     self::LOGO_UPLOADS_SUBFOLDER_NAME,
-                    $user->getId(),
+                    $organization->getId(),
                     $logoUpload->getId()
                 ]
             )
@@ -102,7 +105,7 @@ readonly class SettingsInfrastructureService
                 [
                     self::ROOT_FOLDER_NAME,
                     self::LOGO_UPLOADS_SUBFOLDER_NAME,
-                    $user->getId(),
+                    $organization->getId(),
                     $logoUpload->getId(),
                     $logoUpload->getFileName()
                 ]
@@ -115,13 +118,14 @@ readonly class SettingsInfrastructureService
     }
 
     /**
-     * @return LogoUpload[]|Collection
+     * @return LogoUpload[]
      */
     public function getLogoUploads(
         User $user
-    ): array|Collection
+    ): array
     {
-        $logoUploads = $user->getLogoUploads()->toArray();
+        $organization = $this->organizationDomainService->getOrganizationOfUser($user);
+        $logoUploads = $organization->getLogoUploads()->toArray();
 
         usort($logoUploads, function(LogoUpload $a, LogoUpload $b) {
             return (int)($a->getCreatedAt() < $b->getCreatedAt());
@@ -130,19 +134,34 @@ readonly class SettingsInfrastructureService
         return $logoUploads;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getCustomLogoAssetUrl(
         User $user
     ): ?string
     {
-        if (   !is_null($user->getCustomLogoSetting())
-            && !is_null($user->getCustomLogoSetting()->getLogoUpload())
+        $organization = $this->organizationDomainService->getOrganizationOfUser($user);
+
+        if (   !is_null($this->settingsDomainService->getCustomLogoSetting($user))
+            && !is_null($this->settingsDomainService->getCustomLogoSetting($user)->getLogoUpload())
         ) {
             return $this->router->generate(
                 'videobasedmarketing.settings.presentation.logo_upload_asset',
                 [
-                    'userId' => $user->getId(),
-                    'logoUploadId' => $user->getCustomLogoSetting()->getLogoUpload()->getId(),
-                    'logoUploadFileName' => $user->getCustomLogoSetting()->getLogoUpload()->getFileName()
+                    'organizationId' => $organization->getId(),
+
+                    'logoUploadId' => $this
+                        ->settingsDomainService
+                        ->getCustomLogoSetting($user)
+                        ->getLogoUpload()
+                        ->getId(),
+
+                    'logoUploadFileName' => $this
+                        ->settingsDomainService
+                        ->getCustomLogoSetting($user)
+                        ->getLogoUpload()
+                        ->getFileName()
                 ]
             );
         }

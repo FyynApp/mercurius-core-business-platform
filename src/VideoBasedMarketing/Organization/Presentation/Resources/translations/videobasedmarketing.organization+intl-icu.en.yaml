@@ -1,0 +1,44 @@
+default_organization_name: 'My organization'
+organization:
+  create_form:
+    title: 'Create an organization'
+    info1: 'Organizations allow you to manage your team on Fyyn.io.'
+    info2: 'After creating an organization, you can invite team members and share your Fyyn.io contents with them.'
+    cta: 'Create organization'
+  overview:
+    title: 'Your organization'
+    pending_invitations:
+      title: 'Pending invitations'
+      no_pending: 'Your organization does not have any pending invitations.'
+      resend: 'Resend invitation'
+    invite:
+      title: 'Invite team member'
+      note: 'Enter an e-mail address to invite a team member into your organization:'
+      label_email: 'E-mail address to invite'
+      cta: 'Send invitation'
+    groups_and_members:
+      title: 'Groups and members'
+      no_members: 'No group members yet.'
+      default_group_for_new_members_note: 'Default for new members'
+      make_administrator_cta: 'Make admin'
+      make_team_member_cta: 'Make team member'
+invitation:
+  sent_success: 'Invitation e-mail to {email} has been sent.'
+  sent_impossible: 'E-mail address {email} cannot be invited.'
+  ask_accept:
+    title: 'Join organization'
+    question: 'Do you want to join the organization owned by {ownerNameOrEmail}?'
+    cta: 'Join organization'
+  accept:
+    success: 'You have successfully joined the organization.'
+    impossible: 'You cannot join this organization.'
+  email:
+    subject: 'Fyyn.io — {owningUserName} invites you to an organization'
+    greeting: 'Hey there,'
+    text1: '{owningUserName} uses Fyyn.io and asks you to join their organization.'
+    text2: 'Click here to get on board:'
+    cta: 'Join organization'
+group:
+  name:
+    'Administrators': 'Administrators'
+    'Team Members': 'Team Members'

@@ -34,6 +34,10 @@ class CustomLogoSettingsController
     {
         $user = $this->getUser();
 
+        if (!$capabilitiesService->canEditCustomLogoSetting($user)) {
+            throw $this->createAccessDeniedException("User '{$user->getId()} cannot edit custom logo setting.");
+        }
+
         return $this->render(
             '@videobasedmarketing.settings/custom_logo.html.twig',
             [
@@ -63,13 +67,11 @@ class CustomLogoSettingsController
         SettingsDomainService $settingsDomainService
     ): Response
     {
-        $r = $this->verifyAndGetUserAndEntity(
+        $r = $this->verifyAndGetOrganizationAndEntity(
             LogoUpload::class,
             $logoUploadId,
             VotingAttribute::Edit
         );
-
-        $user = $r->getUser();
 
         /** @var LogoUpload $logoUpload */
         $logoUpload = $r->getEntity();

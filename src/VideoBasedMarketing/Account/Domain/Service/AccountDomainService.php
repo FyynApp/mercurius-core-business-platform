@@ -21,6 +21,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use ValueError;
 
 
 readonly class AccountDomainService
@@ -39,6 +40,37 @@ readonly class AccountDomainService
     }
 
 
+    public function createRegisteredUser(
+        string $email
+    ): User
+    {
+        $email = trim(mb_strtolower($email));
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(
+            ['email' => $email]
+        );
+
+        if (!is_null($user)) {
+            throw new ValueError("User with email '$email' already exists.");
+        }
+
+        $user = new User();
+        $user->setEmail($email);
+        $user->setIsVerified(true);
+        $user->addRole(Role::REGISTERED_USER);
+
+        $user->setPassword(
+            password_hash(
+                random_int(PHP_INT_MIN, PHP_INT_MAX),
+                PASSWORD_DEFAULT
+            )
+        );
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return $user;
+    }
+
     /**
      * @throws Exception
      */
@@ -50,8 +82,8 @@ readonly class AccountDomainService
         $user->setEmail(
             sha1(
                 'fh45897z784787h!8997/%drh==iuh'
-                . random_int(PHP_INT_MIN,  PHP_INT_MAX)
-                . random_int(PHP_INT_MIN,  PHP_INT_MAX)
+                . random_int(PHP_INT_MIN, PHP_INT_MAX)
+                . random_int(PHP_INT_MIN, PHP_INT_MAX)
             )
             . '@unregistered.fyyn.io'
         );

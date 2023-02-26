@@ -9,15 +9,13 @@ use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedin
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity\RecordingSettingsBag;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
-use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
-use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -80,7 +78,7 @@ class User
 
     public function setEmail(string $email): void
     {
-        $this->email = $email;
+        $this->email = trim(mb_strtolower($email));
     }
 
 
@@ -431,46 +429,41 @@ class User
     }
 
 
-    /** @var LogoUpload[]|Collection */
-    #[ORM\OneToMany(
-        mappedBy: 'user',
-        targetEntity: LogoUpload::class,
+    #[ORM\OneToOne(
+        mappedBy: 'owningUser',
+        targetEntity: Organization::class,
         cascade: ['persist']
     )]
-    private array|Collection $logoUploads;
+    private ?Organization $ownedOrganization = null;
 
-    /**
-     * @return LogoUpload[]|Collection
-     */
-    public function getLogoUploads(): array|Collection
+    public function getOwnedOrganization(): ?Organization
     {
-        return $this->logoUploads;
+        return $this->ownedOrganization;
     }
 
 
-    #[ORM\OneToOne(
-        mappedBy: 'user',
-        targetEntity: CustomLogoSetting::class,
+    #[ORM\ManyToOne(
+        targetEntity: Organization::class,
         cascade: ['persist']
     )]
-    private ?CustomLogoSetting $customLogoSetting = null;
+    #[ORM\JoinColumn(
+        name: 'organizations_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?Organization $organization = null;
 
-    public function getCustomLogoSetting(): ?CustomLogoSetting
+    public function getOrganization(): ?Organization
     {
-        return $this->customLogoSetting;
+        return $this->organization;
     }
 
-
-    #[ORM\OneToOne(
-        mappedBy: 'user',
-        targetEntity: CustomDomainSetting::class,
-        cascade: ['persist']
-    )]
-    private ?CustomDomainSetting $customDomainSetting = null;
-
-    public function getCustomDomainSetting(): ?CustomDomainSetting
+    public function setOrganization(
+        ?Organization $organization
+    ): void
     {
-        return $this->customDomainSetting;
+        $this->organization = $organization;
     }
 
 
@@ -507,6 +500,31 @@ class User
         }
 
         return null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getNameOrEmail(): string
+    {
+        $nameOrEmail = $this->getFirstName();
+        if (is_null($nameOrEmail)) {
+            $nameOrEmail = $this->getLastName();
+        } else {
+            if (!is_null($this->getLastName())) {
+                $nameOrEmail .= ' ' . $this->getLastName();
+            }
+            return $nameOrEmail;
+        }
+
+        if (is_null($nameOrEmail)) {
+            if (is_null($this->getEmail())) {
+                throw new Exception("No nameOrEmail for user '{$this->getId()}' because firstname, lastname, and email are all NULL.");
+            }
+            return $this->getEmail();
+        } else {
+            return $nameOrEmail;
+        }
     }
 
 

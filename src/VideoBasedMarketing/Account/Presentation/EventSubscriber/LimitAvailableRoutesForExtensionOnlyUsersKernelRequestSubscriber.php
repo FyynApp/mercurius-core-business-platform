@@ -70,6 +70,8 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.account.presentation.password',
             'videobasedmarketing.account.infrastructure.thirdpartyauth.',
 
+            'videobasedmarketing.organization.',
+
             'videobasedmarketing.recordings.api.extension.',
             'videobasedmarketing.recordings.api.video_upload.',
             'videobasedmarketing.recordings.presentation.videos.',

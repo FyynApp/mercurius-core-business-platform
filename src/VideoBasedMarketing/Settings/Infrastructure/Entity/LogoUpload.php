@@ -3,8 +3,8 @@
 namespace App\VideoBasedMarketing\Settings\Infrastructure\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,19 +19,19 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
     name: 'created_at_idx'
 )]
 class LogoUpload
-    implements UserOwnedEntityInterface
+    implements OrganizationOwnedEntityInterface
 {
     /**
      * @throws Exception
      */
     public function __construct(
-        User   $user,
-        string $tusToken,
-        string $fileName,
-        string $fileType,
+        Organization $organization,
+        string       $tusToken,
+        string       $fileName,
+        string       $fileType,
     )
     {
-        $this->user = $user;
+        $this->organization = $organization;
         $this->tusToken = $tusToken;
         $this->fileName = $fileName;
         $this->fileType = $fileType;
@@ -54,26 +54,26 @@ class LogoUpload
 
 
     #[ORM\ManyToOne(
-        targetEntity: User::class,
+        targetEntity: Organization::class,
         cascade: ['persist'],
         inversedBy: 'logoUploads'
     )]
     #[ORM\JoinColumn(
-        name: 'users_id',
+        name: 'organizations_id',
         referencedColumnName: 'id',
         nullable: false,
         onDelete: 'CASCADE'
     )]
-    private User $user;
+    private Organization $organization;
 
-    public function getUser(): User
+    public function getOrganization(): Organization
     {
-        return $this->user;
+        return $this->organization;
     }
 
-    public function setUser(User $user): void
+    public function setOrganization(Organization $organization): void
     {
-        $this->user = $user;
+        $this->organization = $organization;
     }
 
     #[ORM\Column(

@@ -9,20 +9,19 @@ use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
+use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use ValueError;
 
 
-class MembershipService
+readonly class MembershipService
 {
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        EntityManagerInterface $entityManager
+        private EntityManagerInterface    $entityManager,
+        private OrganizationDomainService $organizationDomainService
     )
     {
-        $this->entityManager = $entityManager;
     }
 
     public function getPaymentProcessorForUser(
@@ -36,7 +35,13 @@ class MembershipService
         User $user
     ): MembershipPlan
     {
-        foreach ($user->getSubscriptions() as $subscription) {
+        $orgOwningUser = $this
+            ->organizationDomainService
+            ->getOrganizationOfUser($user)
+            ->getOwningUser()
+        ;
+
+        foreach ($orgOwningUser->getSubscriptions() as $subscription) {
             if ($subscription->getStatus() === SubscriptionStatus::Active) {
                 return $this->getMembershipPlanByName($subscription->getMembershipPlanName());
             }
@@ -71,7 +76,14 @@ class MembershipService
         User $user
     ): bool
     {
-        foreach ($user->getSubscriptions() as $subscription) {
+        $orgOwningUser = $this
+            ->organizationDomainService
+            ->getOrganizationOfUser($user)
+            ->getOwningUser()
+        ;
+
+
+        foreach ($orgOwningUser->getSubscriptions() as $subscription) {
             if ($subscription->getStatus() === SubscriptionStatus::Active) {
                 return true;
             }

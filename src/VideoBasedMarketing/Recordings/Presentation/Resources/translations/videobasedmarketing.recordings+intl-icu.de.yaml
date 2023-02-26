@@ -59,6 +59,7 @@ video_manage_widget:
 upload_video:
   title: 'Video hochladen'
 videos_overview:
+  back_cta: 'Zurück zu Videos'
   title: 'Deine Videos'
   subtitle: 'Hier können Videos bearbeitet und geteilt werden.'
   no_videos_available: 'Du hast bisher noch keine Videos.'
@@ -73,6 +74,7 @@ videos_overview:
     remove_video: 'Video löschen'
     custom_logo: 'Logo für Landingpage ändern'
     custom_domain: 'Domainname für Landingpage ändern'
+    manage_organization: 'Organisation verwalten'
 video_player_embedded:
   full_asset_outstanding: 'Video wird verarbeitet · · ·'
 video_landingpage:

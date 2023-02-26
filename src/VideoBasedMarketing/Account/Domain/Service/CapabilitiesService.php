@@ -5,12 +5,15 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Organization\Domain\Enum\AccessRight;
+use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 
 
 readonly class CapabilitiesService
 {
     public function __construct(
-        private MembershipService $membershipService
+        private MembershipService         $membershipService,
+        private OrganizationDomainService $organizationDomainService
     )
     {}
 
@@ -111,10 +114,28 @@ readonly class CapabilitiesService
         return $this->hasCapability($user, Capability::CustomDomain);
     }
 
+    public function canEditCustomDomainSetting(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::EDIT_CUSTOM_DOMAIN_SETTINGS
+        );
+    }
+
+
     public function canPresentOwnLogoOnLandingpage(User $user): bool
     {
         return $this->hasCapability($user, Capability::CustomLogoOnLandingpage);
     }
+
+    public function canEditCustomLogoSetting(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::EDIT_CUSTOM_LOGO_SETTINGS
+        );
+    }
+
 
     public function canPresentAdFreeLandingpage(User $user): bool
     {
@@ -128,10 +149,6 @@ readonly class CapabilitiesService
     {
         if (is_null($user)) {
             return false;
-        }
-
-        if ($user->isAdmin()) {
-            return true;
         }
 
         return $this

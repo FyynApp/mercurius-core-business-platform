@@ -1,0 +1,51 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var invitation \App\VideoBasedMarketing\Organization\Domain\Entity\Invitation #}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.organization' %}
+
+        {% block contentBoxTitle %}
+            {{ 'invitation.ask_accept.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}{% endblock %}
+
+        {% block contentBoxContent %}
+
+            <div class="w-full flex flex-col justify-center items-center gap-4">
+
+                <div class="font-bold">
+                    {{ 'invitation.ask_accept.question'|trans(
+                        { '{ownerNameOrEmail}': invitation.organization.owningUser.nameOrEmail }
+                    )
+                    }}
+                </div>
+
+                <div>
+                    <form
+                            action="{{ path(
+                                'videobasedmarketing.organization.invitation.accept',
+                                { invitationId: invitation.id }
+                            ) }}"
+                            method="post"
+                    >
+                        <button
+                                type="submit"
+                                class="cta-with-icon-primary"
+                        >
+                            {{ 'invitation.ask_accept.cta'|trans }}
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

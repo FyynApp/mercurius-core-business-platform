@@ -6,7 +6,10 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
+use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use Exception;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -16,11 +19,15 @@ class GeneralVoter
 {
     private CapabilitiesService $capabilitiesService;
 
+    private OrganizationDomainService $organizationDomainService;
+
     public function __construct(
-        CapabilitiesService $capabilitiesService
+        CapabilitiesService       $capabilitiesService,
+        OrganizationDomainService $organizationDomainService
     )
     {
         $this->capabilitiesService = $capabilitiesService;
+        $this->organizationDomainService = $organizationDomainService;
     }
 
     protected function supports(
@@ -33,13 +40,18 @@ class GeneralVoter
             return false;
         }
 
-        if ($subject instanceof UserOwnedEntityInterface) {
+        if (   $subject instanceof UserOwnedEntityInterface
+            || $subject instanceof OrganizationOwnedEntityInterface
+        ) {
             return true;
         }
 
         return false;
     }
 
+    /**
+     * @throws Exception
+     */
     protected function voteOnAttribute(
         string         $attribute,
         mixed          $subject,
@@ -66,13 +78,31 @@ class GeneralVoter
             return false;
         }
 
-        /** @var UserOwnedEntityInterface $typedSubject */
-        $typedSubject = $subject;
+        if ($subject instanceof UserOwnedEntityInterface) {
+            $typedSubject = $subject;
 
-        if (    $typedSubject->getUser()->getId()
-            === $user->getId()
-        ) {
-            return true;
+            if (    $typedSubject->getUser()->getId()
+                === $user->getId()
+            ) {
+                return true;
+            }
+
+            if ($this->organizationDomainService->userIsMemberOfAnOrganization($user)) {
+                return $this->organizationDomainService->userOwnedEntityBelongsToOrganization(
+                    $typedSubject,
+                    $this->organizationDomainService->getOrganizationOfUser($user)
+                );
+            }
+        }
+
+        if ($subject instanceof OrganizationOwnedEntityInterface) {
+            $typedSubject = $subject;
+
+            if (    $typedSubject->getOrganization()->getId()
+                === $this->organizationDomainService->getOrganizationOfUser($user)->getId()
+            ) {
+                return true;
+            }
         }
 
         return false;
