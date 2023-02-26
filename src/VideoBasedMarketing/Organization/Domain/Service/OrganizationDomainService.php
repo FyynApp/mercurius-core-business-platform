@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use ValueError;
@@ -26,7 +27,8 @@ readonly class OrganizationDomainService
         private TranslatorInterface             $translator,
         private EntityManagerInterface          $entityManager,
         private OrganizationPresentationService $organizationPresentationService,
-        private AccountDomainService            $accountDomainService
+        private AccountDomainService            $accountDomainService,
+        private LoggerInterface                 $logger
     )
     {
     }
@@ -144,11 +146,7 @@ readonly class OrganizationDomainService
             return true;
         }
 
-        if ($this->userIsMemberOfAnOrganization($user)) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 
     /**
@@ -196,6 +194,9 @@ readonly class OrganizationDomainService
         if (!is_null($user) && $user->isRegistered()) {
 
             if (!is_null($user->getOwnedOrganization())) {
+                $this->logger->info(
+                    "User '{$user->getId()} cannot accept invitation '{$invitation->getId()}' because they own another organization."
+                );
                 return null;
             }
 
@@ -205,18 +206,11 @@ readonly class OrganizationDomainService
                 }
             }
 
-            if ($user->getEmail() !== $invitation->getEmail()) {
+            $this->logger->info(
+                "User '{$user->getId()} cannot accept invitation '{$invitation->getId()}' because they belong to another organization."
+            );
+            return null;
 
-                /** @var ObjectRepository<User> $repo */
-                $repo = $this->entityManager->getRepository(User::class);
-
-                /** @var null|User $userForInvitationEmail */
-                $userForInvitationEmail = $repo->findOneBy(['email' => $invitation->getEmail()]);
-
-                if (!is_null($userForInvitationEmail)) {
-                    return null;
-                }
-            }
         } else {
             $user = $this->accountDomainService->createRegisteredUser(
                 $invitation->getEmail()
