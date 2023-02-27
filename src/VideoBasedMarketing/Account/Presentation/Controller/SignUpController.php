@@ -78,9 +78,11 @@ class SignUpController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->accountDomainService->makeUserRegistered(
-                $user,
-                $form->get('plainPassword')->getData()
+            $this->accountDomainService->createRegisteredUser(
+                $form->get('email')->getData(),
+                $form->get('plainPassword')->getData(),
+                false,
+                $user
             );
 
             $this->emailVerifier->sendEmailAskingForVerification(

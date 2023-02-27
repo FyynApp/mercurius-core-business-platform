@@ -106,7 +106,7 @@ abstract class AbstractController
         );
 
         return new VerifyAndGetOrganizationAndEntityResult(
-            $this->organizationDomainService->getOrganizationOfUser($user),
+            $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user),
             $entity
         );
     }

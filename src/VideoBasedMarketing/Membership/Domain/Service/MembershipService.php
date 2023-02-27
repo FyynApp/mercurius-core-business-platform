@@ -37,7 +37,7 @@ readonly class MembershipService
     {
         $orgOwningUser = $this
             ->organizationDomainService
-            ->getOrganizationOfUser($user)
+            ->getCurrentlyActiveOrganizationOfUser($user)
             ->getOwningUser()
         ;
 
@@ -78,7 +78,7 @@ readonly class MembershipService
     {
         $orgOwningUser = $this
             ->organizationDomainService
-            ->getOrganizationOfUser($user)
+            ->getCurrentlyActiveOrganizationOfUser($user)
             ->getOwningUser()
         ;
 

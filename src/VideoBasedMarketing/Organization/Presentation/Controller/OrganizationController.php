@@ -30,13 +30,13 @@ class OrganizationController
         /** @var null|User $user */
         $user = $this->getUser();
 
-        if (!$organizationDomainService->userIsMemberOfAnOrganization($user)) {
+        if (!$organizationDomainService->userJoinedOrganizations($user)) {
             $organizationDomainService->createOrganization($user);
         }
 
         return $this->render(
             '@videobasedmarketing.organization/organization/overview.html.twig',
-            ['organization' => $organizationDomainService->getOrganizationOfUser($user)]
+            ['organization' => $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)]
         );
     }
 
@@ -61,9 +61,9 @@ class OrganizationController
         /** @var null|User $user */
         $user = $this->getUser();
 
-        if ($organizationDomainService->userIsMemberOfAnOrganization($user)) {
+        if ($organizationDomainService->userJoinedOrganizations($user)) {
             throw new BadRequestHttpException(
-                "User '{$user->getId()}' is already associated with organization '{$organizationDomainService->getOrganizationOfUser($user)->getId()}'."
+                "User '{$user->getId()}' is already associated with organization '{$organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()}'."
             );
         }
 

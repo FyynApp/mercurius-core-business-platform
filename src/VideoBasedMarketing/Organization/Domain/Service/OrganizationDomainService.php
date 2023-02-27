@@ -32,54 +32,29 @@ readonly class OrganizationDomainService
     {
     }
 
-    public function userOwnsAnOrganization(
+    public function userJoinedOrganizations(
         User $user
     ): bool
     {
-        return !is_null($user->getOwnedOrganization());
-    }
-
-    public function userIsMemberOfAnOrganization(
-        User $user
-    ): bool
-    {
-        if (   is_null($user->getOwnedOrganization())
-            && is_null($user->getOrganization())
-        ) {
-            return false;
-        }
-
-        return true;
+        return sizeof($user->getJoinedOrganizations()->toArray()) > 0;
     }
 
     public function userCanCreateOrManageOrganization(
         User $user
     ): bool
     {
-        if ($this->userOwnsAnOrganization($user)) {
-            return true;
-        }
-
-        if (!$this->userIsMemberOfAnOrganization($user)) {
+        if (!$this->userJoinedOrganizations($user)) {
             return true;
         }
 
         return false;
     }
 
-    public function getOrganizationOfUser(
+    public function getCurrentlyActiveOrganizationOfUser(
         User $user
     ): Organization
     {
-        if (!is_null($user->getOwnedOrganization())) {
-            return $user->getOwnedOrganization();
-        }
-
-        if (!is_null($user->getOrganization())) {
-            return $user->getOrganization();
-        }
-
-        return $this->createOrganization($user);
+        return $user->getCurrentlyActiveOrganization();
     }
 
     /**
@@ -282,11 +257,11 @@ readonly class OrganizationDomainService
     {
         $user = $entity->getUser();
 
-        if (!$this->userIsMemberOfAnOrganization($user)) {
+        if (!$this->userJoinedOrganizations($user)) {
             return false;
         }
 
-        $entityOrganisation = $this->getOrganizationOfUser($user);
+        $entityOrganisation = $this->getCurrentlyActiveOrganizationOfUser($user);
 
         return $entityOrganisation->getId() === $organization->getId();
     }
@@ -320,11 +295,11 @@ readonly class OrganizationDomainService
     }
 
     /** @return Group[] */
-    public function getGroupsOfUser(
+    public function getGroupsOfUserForCurrentlyActiveOrganization(
         User $user
     ): array
     {
-        $organization = $this->getOrganizationOfUser($user);
+        $organization = $this->getCurrentlyActiveOrganizationOfUser($user);
 
         /** @var ObjectRepository<Group> $repo */
         $repo = $this->entityManager->getRepository(Group::class);
@@ -388,7 +363,7 @@ readonly class OrganizationDomainService
         User  $user
     ): void {
         $groups = $this->getGroups(
-            $this->getOrganizationOfUser($user)
+            $this->getCurrentlyActiveOrganizationOfUser($user)
         );
 
         foreach ($groups as $group) {
@@ -407,7 +382,7 @@ readonly class OrganizationDomainService
         User  $user
     ): void {
         $groups = $this->getGroups(
-            $this->getOrganizationOfUser($user)
+            $this->getCurrentlyActiveOrganizationOfUser($user)
         );
 
         foreach ($groups as $group) {
@@ -427,17 +402,13 @@ readonly class OrganizationDomainService
         AccessRight $accessRight
     ): bool
     {
-        if (!$this->userIsMemberOfAnOrganization($user)) {
-            return false;
-        }
-
-        if (    $this->getOrganizationOfUser($user)->getOwningUser()->getId()
+        if (    $this->getCurrentlyActiveOrganizationOfUser($user)->getOwningUser()->getId()
             === $user->getId()
         ) {
             return true;
         }
 
-        foreach ($this->getGroupsOfUser($user) as $group) {
+        foreach ($this->getGroupsOfUserForCurrentlyActiveOrganization($user) as $group) {
             foreach ($group->getAccessRights() as $groupAccessRight) {
                 if (   $groupAccessRight === AccessRight::FULL_ACCESS
                     || $groupAccessRight === $accessRight

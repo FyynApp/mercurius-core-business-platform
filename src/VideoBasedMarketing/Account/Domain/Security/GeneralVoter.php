@@ -87,10 +87,10 @@ class GeneralVoter
                 return true;
             }
 
-            if ($this->organizationDomainService->userIsMemberOfAnOrganization($user)) {
+            if ($this->organizationDomainService->userJoinedOrganizations($user)) {
                 return $this->organizationDomainService->userOwnedEntityBelongsToOrganization(
                     $typedSubject,
-                    $this->organizationDomainService->getOrganizationOfUser($user)
+                    $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)
                 );
             }
         }
@@ -99,7 +99,7 @@ class GeneralVoter
             $typedSubject = $subject;
 
             if (    $typedSubject->getOrganization()->getId()
-                === $this->organizationDomainService->getOrganizationOfUser($user)->getId()
+                === $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()
             ) {
                 return true;
             }

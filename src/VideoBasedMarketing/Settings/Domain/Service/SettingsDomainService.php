@@ -34,7 +34,7 @@ readonly class SettingsDomainService
     {
         $organization = $this
             ->organizationDomainService
-            ->getOrganizationOfUser($user);
+            ->getCurrentlyActiveOrganizationOfUser($user);
 
         if (is_null($organization->getCustomLogoSetting())) {
             $customLogoSetting = new CustomLogoSetting($organization);
@@ -81,7 +81,7 @@ readonly class SettingsDomainService
     {
         $organization = $this
             ->organizationDomainService
-            ->getOrganizationOfUser($user);
+            ->getCurrentlyActiveOrganizationOfUser($user);
 
         if (is_null($organization->getCustomDomainSetting())) {
             $customDomainSetting = new CustomDomainSetting($organization);

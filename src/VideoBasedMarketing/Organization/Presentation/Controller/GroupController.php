@@ -49,8 +49,8 @@ class GroupController
                 );
             }
 
-            if (    $organizationDomainService->getOrganizationOfUser($user)->getId()
-                !== $organizationDomainService->getOrganizationOfUser($userToMove)->getId()
+            if (    $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()
+                !== $organizationDomainService->getCurrentlyActiveOrganizationOfUser($userToMove)->getId()
             ) {
                 throw $this->createAccessDeniedException(
                     "User to move '$userIdToMove' is in another organization than the user trying to do the move."
@@ -101,8 +101,8 @@ class GroupController
                 );
             }
 
-            if (    $organizationDomainService->getOrganizationOfUser($user)->getId()
-                !== $organizationDomainService->getOrganizationOfUser($userToMove)->getId()
+            if (    $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()
+                !== $organizationDomainService->getCurrentlyActiveOrganizationOfUser($userToMove)->getId()
             ) {
                 throw $this->createAccessDeniedException(
                     "User to move '$userIdToMove' is in another organization than the user trying to do the move."

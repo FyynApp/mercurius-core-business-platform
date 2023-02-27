@@ -40,9 +40,9 @@ readonly class VideoDomainService
         /** @var Video[] $allVideos */
         $allVideos = [];
 
-        if ($this->organizationDomainService->userIsMemberOfAnOrganization($user)) {
+        if ($this->organizationDomainService->userJoinedOrganizations($user)) {
             foreach ($this->organizationDomainService->getUsersOfOrganization(
-                $this->organizationDomainService->getOrganizationOfUser($user)
+                $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)
             ) as $userOfOrganisation) {
                 $allVideos = array_merge($allVideos, $userOfOrganisation->getVideos()->toArray());
             }

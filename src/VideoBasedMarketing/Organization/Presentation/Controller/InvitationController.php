@@ -61,7 +61,7 @@ class InvitationController
 
         $invitation = $organizationDomainService->inviteEmailToOrganization(
             $email,
-            $organizationDomainService->getOrganizationOfUser($user)
+            $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)
         );
 
         if (is_null($invitation)) {

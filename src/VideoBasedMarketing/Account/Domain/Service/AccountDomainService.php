@@ -47,30 +47,45 @@ readonly class AccountDomainService
     public function createRegisteredUser(
         string  $email,
         ?string $plainPassword = null,
-        bool    $isVerified = false
+        bool    $isVerified = false,
+        ?User   $user = null
     ): User
     {
         $email = trim(mb_strtolower($email));
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(
+        $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(
             ['email' => $email]
         );
 
-        if (!is_null($user)) {
+        if (!is_null($existingUser)) {
             throw new ValueError("User with email '$email' already exists.");
         }
 
-        $user = new User();
+        if (is_null($user)) {
+            $user = new User();
+        }
+
         $user->setEmail($email);
 
         if (is_null($plainPassword)) {
             $plainPassword = random_int(PHP_INT_MIN, PHP_INT_MAX);
         }
 
+        $user->addRole(Role::REGISTERED_USER);
+        $user->addRole(Role::EXTENSION_ONLY_USER);
+
+        $user->setPassword(
+            $this->userPasswordHasher->hashPassword(
+                $user,
+                $plainPassword
+            )
+        );
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
         $this->eventDispatcher->dispatch(
             new UserCreatedEvent($user)
         );
-
-        $this->makeUserRegistered($user, $plainPassword);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -255,25 +270,6 @@ readonly class AccountDomainService
         );
 
         $this->makeUserVerified($user);
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-    }
-
-    public function makeUserRegistered(
-        User   $user,
-        string $plainPassword
-    ): void
-    {
-        $user->addRole(Role::REGISTERED_USER);
-        $user->addRole(Role::EXTENSION_ONLY_USER);
-
-        $user->setPassword(
-            $this->userPasswordHasher->hashPassword(
-                $user,
-                $plainPassword
-            )
-        );
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
