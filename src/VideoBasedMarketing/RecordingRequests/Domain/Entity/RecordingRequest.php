@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -43,7 +44,7 @@ class RecordingRequest
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private ?string $id = null;
@@ -55,7 +56,7 @@ class RecordingRequest
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 12,
         unique: true,
         nullable: true
@@ -93,7 +94,7 @@ class RecordingRequest
 
 
     #[ORM\Column(
-        type: 'datetime',
+        type: Types::DATETIME_MUTABLE,
         nullable: false
     )]
     private DateTime $createdAt;

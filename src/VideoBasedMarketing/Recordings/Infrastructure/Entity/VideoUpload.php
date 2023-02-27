@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Recordings\Infrastructure\Entity;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -39,7 +40,7 @@ class VideoUpload
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private ?string $id = null;
@@ -51,7 +52,7 @@ class VideoUpload
 
 
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private string $tusToken;
@@ -63,7 +64,7 @@ class VideoUpload
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 256,
         unique: false,
         nullable: false
@@ -82,7 +83,7 @@ class VideoUpload
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 32,
         unique: false,
         nullable: false
@@ -95,7 +96,7 @@ class VideoUpload
     }
 
     #[ORM\Column(
-        type: 'datetime',
+        type: Types::DATETIME_MUTABLE,
         nullable: false
     )]
     private DateTime $createdAt;

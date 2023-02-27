@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Infrastructure\Entity;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -27,7 +28,7 @@ class ThirdPartyAuthLinkedinResourceOwner
     }
 
     #[ORM\Id]
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     private string $id;
 
     public function getId(): string
@@ -36,7 +37,12 @@ class ThirdPartyAuthLinkedinResourceOwner
     }
 
 
-    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: false)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 180,
+        unique: true,
+        nullable: false
+    )]
     private string $email;
 
     public function getEmail(): ?string
@@ -50,7 +56,12 @@ class ThirdPartyAuthLinkedinResourceOwner
     }
 
 
-    #[ORM\Column(type: 'string', length: 256, unique: false, nullable: true)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 256,
+        unique: false,
+        nullable: true
+    )]
     private ?string $firstName;
 
     public function getFirstName(): ?string
@@ -64,7 +75,12 @@ class ThirdPartyAuthLinkedinResourceOwner
     }
 
 
-    #[ORM\Column(type: 'string', length: 256, unique: false, nullable: true)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 256,
+        unique: false,
+        nullable: true
+    )]
     private ?string $lastName;
 
     public function getLastName(): ?string
@@ -78,7 +94,13 @@ class ThirdPartyAuthLinkedinResourceOwner
     }
 
 
-    #[ORM\Column(name: 'sorted_profile_picture_800_url', type: 'string', length: 2048, unique: true, nullable: true)]
+    #[ORM\Column(
+        name: 'sorted_profile_picture_800_url',
+        type: Types::STRING,
+        length: 2048,
+        unique: true,
+        nullable: true
+    )]
     private ?string $sortedProfilePicture800Url;
 
     public function setSortedProfilePicture800Url(?string $url): void
@@ -92,7 +114,13 @@ class ThirdPartyAuthLinkedinResourceOwner
     }
 
 
-    #[ORM\Column(name: 'sorted_profile_picture_800_content_type', type: 'string', length: 100, unique: false, nullable: true)]
+    #[ORM\Column(
+        name: 'sorted_profile_picture_800_content_type',
+        type: Types::STRING,
+        length: 100,
+        unique: false,
+        nullable: true
+    )]
     private ?string $sortedProfilePicture800ContentType;
 
     public function setSortedProfilePicture800ContentType(?string $contentType): void

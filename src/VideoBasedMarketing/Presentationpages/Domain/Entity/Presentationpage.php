@@ -16,6 +16,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use InvalidArgumentException;
@@ -42,7 +43,10 @@ class Presentationpage
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(
+        type: Types::GUID,
+        unique: true
+    )]
     private ?string $id = null;
 
     public function getId(): ?string
@@ -51,7 +55,10 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        nullable: false
+    )]
     private DateTime $createdAt;
 
     public function getCreatedAt(): DateTime
@@ -65,7 +72,10 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        nullable: true
+    )]
     private ?DateTime $updatedAt;
 
     public function getUpdatedAt(): DateTime
@@ -89,7 +99,11 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageType::class)]
+    #[ORM\Column(
+        type: Types::STRING,
+        nullable: false,
+        enumType: PresentationpageType::class
+    )]
     private PresentationpageType $type = PresentationpageType::Page;
 
     public function getType(): PresentationpageType
@@ -103,7 +117,11 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageCategory::class)]
+    #[ORM\Column(
+        type: Types::STRING,
+        nullable: false,
+        enumType: PresentationpageCategory::class
+    )]
     private PresentationpageCategory $category = PresentationpageCategory::Default;
 
     public function getCategory(): PresentationpageCategory
@@ -117,7 +135,10 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'boolean', nullable: false)]
+    #[ORM\Column(
+        type: Types::BOOLEAN,
+        nullable: false
+    )]
     private bool $isDraft = false;
 
     public function isDraft(): bool
@@ -131,7 +152,10 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'boolean', nullable: false)]
+    #[ORM\Column(
+        type: Types::BOOLEAN,
+        nullable: false
+    )]
     private bool $hasScreenshot = false;
 
     public function hasScreenshot(): bool
@@ -145,7 +169,10 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'boolean', nullable: false)]
+    #[ORM\Column(
+        type: Types::BOOLEAN,
+        nullable: false
+    )]
     private bool $screenshotCaptureOutstanding = false;
 
     public function screenshotCaptureOutstanding(): bool
@@ -207,7 +234,12 @@ class Presentationpage
 
     #[Assert\NotBlank]
     #[Assert\Length(max: 256)]
-    #[ORM\Column(type: 'string', length: 256, unique: false, nullable: true)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 256,
+        unique: false,
+        nullable: true
+    )]
     private ?string $title = null;
 
     public function getTitle(): ?string
@@ -221,7 +253,12 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'string', length: 64, nullable: false, enumType: PresentationpageBackground::class)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 64,
+        nullable: false,
+        enumType: PresentationpageBackground::class
+    )]
     private PresentationpageBackground $background = PresentationpageBackground::BgColor;
 
     public function getBackground(): PresentationpageBackground
@@ -235,7 +272,12 @@ class Presentationpage
     }
 
 
-    #[ORM\Column(type: 'string', length: 7, nullable: false, enumType: BgColor::class)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 7,
+        nullable: false,
+        enumType: BgColor::class
+    )]
     private BgColor $bgColor = BgColor::_FFFFFF;
 
     public function getBgColor(): BgColor
@@ -248,7 +290,12 @@ class Presentationpage
         $this->bgColor = $bgColor;
     }
 
-    #[ORM\Column(type: 'string', length: 7, nullable: false, enumType: FgColor::class)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 7,
+        nullable: false,
+        enumType: FgColor::class
+    )]
     private FgColor $fgColor = FgColor::_37474F;
 
     public function getFgColor(): FgColor
@@ -261,7 +308,12 @@ class Presentationpage
         $this->fgColor = $fgColor;
     }
 
-    #[ORM\Column(type: 'string', length: 7, nullable: false, enumType: TextColor::class)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 7,
+        nullable: false,
+        enumType: TextColor::class
+    )]
     private TextColor $textColor = TextColor::_000000;
 
     public function getTextColor(): TextColor

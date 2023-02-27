@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityIn
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -34,7 +35,7 @@ class CustomDomainSetting
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private ?string $id = null;
@@ -65,7 +66,7 @@ class CustomDomainSetting
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 256,
         unique: false,
         nullable: true
@@ -86,7 +87,7 @@ class CustomDomainSetting
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: false,
         enumType: CustomDomainDnsSetupStatus::class
     )]
@@ -106,7 +107,7 @@ class CustomDomainSetting
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: false,
         enumType: CustomDomainHttpSetupStatus::class
     )]
@@ -125,7 +126,10 @@ class CustomDomainSetting
     }
 
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        nullable: false
+    )]
     private DateTime $createdAt;
 
     public function getCreatedAt(): DateTime

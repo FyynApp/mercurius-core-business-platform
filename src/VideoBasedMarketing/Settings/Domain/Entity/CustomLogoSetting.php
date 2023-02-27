@@ -7,6 +7,7 @@ use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -33,7 +34,7 @@ class CustomLogoSetting
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private ?string $id = null;
@@ -63,7 +64,10 @@ class CustomLogoSetting
     }
 
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        nullable: false
+    )]
     private DateTime $createdAt;
 
     public function getCreatedAt(): DateTime

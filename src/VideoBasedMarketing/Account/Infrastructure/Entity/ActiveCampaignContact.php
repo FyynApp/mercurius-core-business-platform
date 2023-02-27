@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Infrastructure\Entity;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ValueError;
 
@@ -26,7 +27,7 @@ class ActiveCampaignContact
 
     #[ORM\Id]
     #[ORM\Column(
-        type: 'integer',
+        type: Types::INTEGER,
         options: ['unsigned' => true]
     )]
     readonly private int $id;

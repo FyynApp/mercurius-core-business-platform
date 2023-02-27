@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -37,14 +38,14 @@ class Subscription
         private readonly User $user,
 
         #[ORM\Column(
-            type: 'string',
+            type: Types::STRING,
             nullable: false,
             enumType: MembershipPlanName::class
         )]
         private readonly MembershipPlanName $membershipPlanName,
 
         #[ORM\Column(
-            type: 'string',
+            type: Types::STRING,
             nullable: false,
             enumType: SubscriptionStatus::class
         )]
@@ -58,7 +59,10 @@ class Subscription
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(
+        type: Types::GUID,
+        unique: true
+    )]
     private ?string $id = null;
 
     public function getId(): ?string
@@ -67,7 +71,10 @@ class Subscription
     }
 
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        nullable: false
+    )]
     private DateTime $createdAt;
 
     public function getCreatedAt(): DateTime

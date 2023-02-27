@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Presentationpages\Domain\Entity;
 
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementHorizontalPosition;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,7 +27,10 @@ class PresentationpageElement
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(
+        type: Types::GUID,
+        unique: true
+    )]
     private ?string $id = null;
 
     public function getId(): ?string
@@ -55,7 +59,11 @@ class PresentationpageElement
     }
 
 
-    #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageElementVariant::class)]
+    #[ORM\Column(
+        type: Types::STRING,
+        nullable: false,
+        enumType: PresentationpageElementVariant::class
+    )]
     private PresentationpageElementVariant $elementVariant = PresentationpageElementVariant::Headline;
 
     public function getElementVariant(): PresentationpageElementVariant
@@ -69,7 +77,11 @@ class PresentationpageElement
     }
 
 
-    #[ORM\Column(type: 'string', nullable: false, enumType: PresentationpageElementHorizontalPosition::class)]
+    #[ORM\Column(
+        type: Types::STRING,
+        nullable: false,
+        enumType: PresentationpageElementHorizontalPosition::class
+    )]
     private PresentationpageElementHorizontalPosition $elementHorizontalPosition = PresentationpageElementHorizontalPosition::Center;
 
     public function getElementHorizontalPosition(): PresentationpageElementHorizontalPosition
@@ -83,7 +95,11 @@ class PresentationpageElement
     }
 
 
-    #[ORM\Column(type: 'integer', nullable: false, options: ['unsigned' => true])]
+    #[ORM\Column(
+        type: Types::INTEGER,
+        nullable: false,
+        options: ['unsigned' => true]
+    )]
     private int $position;
 
     public function getPosition(): int
@@ -98,7 +114,11 @@ class PresentationpageElement
 
 
     #[Assert\Length(min: 3, max: 4)]
-    #[ORM\Column(type: 'text', length: 32768, nullable: true)]
+    #[ORM\Column(
+        type: Types::TEXT,
+        length: 32768,
+        nullable: true
+    )]
     private ?string $textContent = null;
 
     public function getTextContent(): ?string
