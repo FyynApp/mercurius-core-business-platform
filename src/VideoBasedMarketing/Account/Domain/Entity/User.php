@@ -104,7 +104,7 @@ class User
     #[ORM\JoinColumn(
         name: 'currently_active_organizations_id',
         referencedColumnName: 'id',
-        nullable: false,
+        nullable: true,
         onDelete: 'CASCADE'
     )]
     private ?Organization $currentlyActiveOrganization = null;
@@ -271,19 +271,6 @@ class User
     {
         return $this->hasRole(Role::UNREGISTERED_USER);
     }
-
-    /**
-     * @throws Exception
-     */
-    public function makeRegistered(): void
-    {
-        if ($this->isRegistered()) {
-            throw new Exception("User '{$this->getUserIdentifier()}' is already registered");
-        }
-        $this->removeRole(Role::UNREGISTERED_USER);
-        $this->addRole(Role::REGISTERED_USER);
-    }
-
 
     public function isExtensionOnly(): bool
     {

@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Domain\Event\UnregisteredUserClaimedRegisteredUserEvent;
+use App\VideoBasedMarketing\Account\Domain\Event\UserCreatedEvent;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\ActiveCampaignContactTag;
 use App\VideoBasedMarketing\Account\Infrastructure\Event\UserVerifiedEvent;
 use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
@@ -60,17 +61,16 @@ readonly class AccountDomainService
 
         $user = new User();
         $user->setEmail($email);
-        $user->addRole(Role::REGISTERED_USER);
 
         if (is_null($plainPassword)) {
             $plainPassword = random_int(PHP_INT_MIN, PHP_INT_MAX);
         }
-        $user->setPassword(
-            password_hash(
-                $plainPassword,
-                PASSWORD_DEFAULT
-            )
+
+        $this->eventDispatcher->dispatch(
+            new UserCreatedEvent($user)
         );
+
+        $this->makeUserRegistered($user, $plainPassword);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -143,7 +143,8 @@ readonly class AccountDomainService
         }
 
         $claimingUser->setEmail($claimedEmail);
-        $claimingUser->makeRegistered();
+        $claimingUser->removeRole(Role::UNREGISTERED_USER);
+        $claimingUser->addRole(Role::REGISTERED_USER);
 
         if (!is_null($plainPassword)) {
             $claimingUser->setPassword(

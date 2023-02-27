@@ -18,7 +18,6 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use ValueError;
 
 
 readonly class OrganizationDomainService
@@ -83,17 +82,6 @@ readonly class OrganizationDomainService
         return $this->createOrganization($user);
     }
 
-    public function userCanCreateOrganization(
-        User $user
-    ): bool
-    {
-        if ($this->userIsMemberOfAnOrganization($user)) {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * @throws Exception
      */
@@ -101,10 +89,6 @@ readonly class OrganizationDomainService
         User $owningUser
     ): Organization
     {
-        if (!$this->userCanCreateOrganization($owningUser)) {
-            throw new ValueError("User '{$owningUser->getId()}' cannot create organization.");
-        }
-
         $organization = new Organization($owningUser);
 
         $adminGroup = new Group(
