@@ -46,8 +46,8 @@ class Organization
     }
 
 
-    #[ORM\OneToOne(
-        inversedBy: 'ownedOrganization',
+    #[ORM\OneToMany(
+        mappedBy: 'ownedOrganizations',
         targetEntity: User::class,
         cascade: ['persist']
     )]

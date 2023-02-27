@@ -25,6 +25,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ValueError;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -46,6 +47,8 @@ class User
         $this->recordingRequests = new ArrayCollection();
         $this->recordingRequestResponses = new ArrayCollection();
         $this->videoMailings = new ArrayCollection();
+        $this->ownedOrganizations = new ArrayCollection();
+        $this->joinedOrganizations = new ArrayCollection();
     }
 
 
@@ -63,6 +66,112 @@ class User
         return $this->id;
     }
 
+
+    /** @var Organization[] */
+    #[ORM\OneToMany(
+        mappedBy: 'owningUser',
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    private array|Collection $ownedOrganizations;
+
+    public function getOwnedOrganizations(): array|Collection
+    {
+        return $this->ownedOrganizations;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function addOwnedOrganization(
+        Organization $organization
+    ): void
+    {
+        foreach ($this->ownedOrganizations as $ownedOrganization) {
+            if ($ownedOrganization->getId() === $organization->getId()) {
+                throw new ValueError(
+                    "Organization '{$organization->getId()}' already in list of owned organizations."
+                );
+            }
+        }
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'currently_active_organizations_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
+    private ?Organization $currentlyActiveOrganization = null;
+
+    public function getCurrentlyActiveOrganization(): Organization
+    {
+        return $this->currentlyActiveOrganization;
+    }
+
+    public function setCurrentlyActiveOrganization(
+        Organization $organization
+    ): void
+    {
+        foreach ($this->ownedOrganizations as $ownedOrganization) {
+            if ($ownedOrganization->getId() === $organization->getId()) {
+                $this->currentlyActiveOrganization = $organization;
+                return;
+            }
+        }
+
+        foreach ($this->joinedOrganizations as $joinedOrganization) {
+            if ($joinedOrganization->getId() === $organization->getId()) {
+                $this->currentlyActiveOrganization = $organization;
+                return;
+            }
+        }
+
+        throw new ValueError(
+            "Cannot set organization '{$organization->getId()}' as currently active because it is neither owned nor joined."
+        );
+    }
+
+
+    /**
+     * @var Collection|Organization[]
+     */
+    #[ORM\JoinTable(name: 'users_organizations')]
+    #[ORM\JoinColumn(
+        name: 'users_id',
+        referencedColumnName: 'id',
+        unique: false
+    )]
+    #[ORM\InverseJoinColumn(
+        name: 'organizations_id',
+        referencedColumnName: 'id',
+        unique: false
+    )]
+    #[ORM\ManyToMany(targetEntity: Organization::class)]
+    private array|Collection $joinedOrganizations;
+
+    public function getJoinedOrganizations(): Collection|array
+    {
+        return $this->joinedOrganizations;
+    }
+
+    public function addJoinedOrganization(
+        Organization $organization
+    ): void
+    {
+        foreach ($this->joinedOrganizations as $joinedOrganization) {
+            if ($joinedOrganization->getId() === $organization->getId()) {
+                throw new ValueError(
+                    "Organization '{$organization->getId()}' already in list of joined organizations."
+                );
+            }
+        }
+    }
 
     #[ORM\Column(
         type: Types::STRING,
@@ -427,44 +536,6 @@ class User
         if (!$this->videoMailings->contains($videoMailing)) {
             $this->videoMailings->add($videoMailing);
         }
-    }
-
-
-    #[ORM\OneToOne(
-        mappedBy: 'owningUser',
-        targetEntity: Organization::class,
-        cascade: ['persist']
-    )]
-    private ?Organization $ownedOrganization = null;
-
-    public function getOwnedOrganization(): ?Organization
-    {
-        return $this->ownedOrganization;
-    }
-
-
-    #[ORM\ManyToOne(
-        targetEntity: Organization::class,
-        cascade: ['persist']
-    )]
-    #[ORM\JoinColumn(
-        name: 'organizations_id',
-        referencedColumnName: 'id',
-        nullable: true,
-        onDelete: 'SET NULL'
-    )]
-    private ?Organization $organization = null;
-
-    public function getOrganization(): ?Organization
-    {
-        return $this->organization;
-    }
-
-    public function setOrganization(
-        ?Organization $organization
-    ): void
-    {
-        $this->organization = $organization;
     }
 
 
