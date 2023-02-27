@@ -82,19 +82,10 @@ class SignUpController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user->addRole(Role::REGISTERED_USER);
-            $user->addRole(Role::EXTENSION_ONLY_USER);
-
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')
-                         ->getData()
-                )
+            $this->accountDomainService->makeUserRegistered(
+                $user,
+                $form->get('plainPassword')->getData()
             );
-
-            $entityManager->persist($user);
-            $entityManager->flush();
 
             $this->emailVerifier->sendEmailAskingForVerification(
                 'videobasedmarketing.account.presentation.sign_up.email_verification',

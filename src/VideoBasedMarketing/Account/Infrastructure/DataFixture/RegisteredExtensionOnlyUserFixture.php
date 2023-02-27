@@ -2,11 +2,11 @@
 
 namespace App\VideoBasedMarketing\Account\Infrastructure\DataFixture;
 
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Exception;
 
 
 class RegisteredExtensionOnlyUserFixture
@@ -14,26 +14,26 @@ class RegisteredExtensionOnlyUserFixture
 {
     const EMAIL = 'registered.extensiononly.user@example.com';
 
-    private UserPasswordHasherInterface $userPasswordHasher;
+    private AccountDomainService $accountDomainService;
 
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher)
+    public function __construct(
+        AccountDomainService $accountDomainService
+    )
     {
-        $this->userPasswordHasher = $userPasswordHasher;
+        $this->accountDomainService = $accountDomainService;
     }
 
+    /**
+     * @throws Exception
+     */
     public function load(ObjectManager $manager): void
     {
-        $user = new User();
-        $user->setEmail(self::EMAIL);
-        $user->setIsVerified(true);
-        $user->addRole(Role::REGISTERED_USER);
-        $user->addRole(Role::EXTENSION_ONLY_USER);
-        $user->setPassword(
-            $this->userPasswordHasher->hashPassword(
-                $user,
-                'test123'
-            )
+        $user = $this->accountDomainService->createRegisteredUser(
+            self::EMAIL,
+            'test123',
+            true
         );
+        $user->addRole(Role::EXTENSION_ONLY_USER);
 
         $manager->persist($user);
         $manager->flush();

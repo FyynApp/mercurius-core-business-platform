@@ -60,7 +60,6 @@ readonly class AccountDomainService
 
         $user = new User();
         $user->setEmail($email);
-        $user->setIsVerified($isVerified);
         $user->addRole(Role::REGISTERED_USER);
 
         if (is_null($plainPassword)) {
@@ -75,6 +74,10 @@ readonly class AccountDomainService
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        if ($isVerified) {
+            $this->makeUserVerified($user);
+        }
 
         return $user;
     }
@@ -251,6 +254,25 @@ readonly class AccountDomainService
         );
 
         $this->makeUserVerified($user);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
+
+    public function makeUserRegistered(
+        User   $user,
+        string $plainPassword
+    ): void
+    {
+        $user->addRole(Role::REGISTERED_USER);
+        $user->addRole(Role::EXTENSION_ONLY_USER);
+
+        $user->setPassword(
+            $this->userPasswordHasher->hashPassword(
+                $user,
+                $plainPassword
+            )
+        );
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

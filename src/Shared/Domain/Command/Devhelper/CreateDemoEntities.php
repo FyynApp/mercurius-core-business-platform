@@ -3,6 +3,7 @@
 namespace App\Shared\Domain\Command\Devhelper;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,9 +26,12 @@ class CreateDemoEntities
 
     private UserPasswordHasherInterface $userPasswordHasher;
 
+    private AccountDomainService $accountDomainService;
+
     public function __construct(
         EntityManagerInterface      $entityManager,
-        UserPasswordHasherInterface $userPasswordHasher
+        UserPasswordHasherInterface $userPasswordHasher,
+        AccountDomainService        $accountDomainService
     )
     {
         $this->entityManager = $entityManager;
@@ -46,7 +50,11 @@ class CreateDemoEntities
                                     ->findOneBy(['email' => $email]);
 
         if (is_null($user)) {
-            $user = new User();
+            $user = $this->accountDomainService->createRegisteredUser(
+                $email,
+                $password,
+                true
+            );
             $user->setEmail($email);
             $user->setIsVerified(true);
             $user->setPassword(

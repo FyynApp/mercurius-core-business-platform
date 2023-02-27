@@ -99,27 +99,24 @@ class ThirdPartyAuthService
         }
 
         if (is_null($resourceOwner->getUser())) {
-            $user = $this->entityManager->getRepository(User::class)
-                                        ->findOneBy(['email' => $resourceOwner->getEmail()]);
+            $user = $this
+                ->entityManager
+                ->getRepository(User::class)
+                ->findOneBy(['email' => $resourceOwner->getEmail()]);
+
             if (is_null($user)) {
-                $user = new User();
-                $user->setEmail($resourceOwner->getEmail());
-                $user->setPassword(
-                    $this->userPasswordHasher->hashPassword(
-                        $user,
-                        random_bytes(255)
-                    )
+                $user = $this->accountDomainService->createRegisteredUser(
+                    $resourceOwner->getEmail(),
+                    null,
+                    true
                 );
             }
-            $user->addRole(Role::REGISTERED_USER);
             $user->addRole(Role::EXTENSION_ONLY_USER);
             $resourceOwner->setUser($user);
 
             $this->entityManager->persist($resourceOwner);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-
-            $this->accountDomainService->makeUserVerified($user);
         }
 
         if (array_key_exists(3, $receivedResourceOwner->getSortedProfilePictures())) {
