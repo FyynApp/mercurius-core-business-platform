@@ -7,6 +7,7 @@ use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -42,7 +43,7 @@ class LogoUpload
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private ?string $id = null;
@@ -77,7 +78,7 @@ class LogoUpload
     }
 
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private string $tusToken;
@@ -89,7 +90,7 @@ class LogoUpload
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 256,
         unique: false,
         nullable: false
@@ -108,7 +109,7 @@ class LogoUpload
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 32,
         unique: false,
         nullable: false
@@ -121,7 +122,7 @@ class LogoUpload
     }
 
     #[ORM\Column(
-        type: 'datetime',
+        type: Types::DATETIME_MUTABLE,
         nullable: false
     )]
     private DateTime $createdAt;

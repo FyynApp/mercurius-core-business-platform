@@ -52,7 +52,10 @@ class Group
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: Types::GUID, unique: true)]
+    #[ORM\Column(
+        type: Types::GUID,
+        unique: true
+    )]
     private ?string $id = null;
 
     /**

@@ -7,6 +7,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -39,7 +40,7 @@ class VideoMailing
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private ?string $id = null;
@@ -89,7 +90,7 @@ class VideoMailing
 
 
     #[ORM\Column(
-        type: 'datetime',
+        type: Types::DATETIME_MUTABLE,
         nullable: false
     )]
     private DateTime $createdAt;
@@ -101,7 +102,7 @@ class VideoMailing
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 256,
         nullable: false
     )]
@@ -120,7 +121,7 @@ class VideoMailing
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 512,
         nullable: false
     )]
@@ -138,7 +139,7 @@ class VideoMailing
 
     
     #[ORM\Column(
-        type: 'text',
+        type: Types::TEXT,
         length: 4096,
         nullable: false
     )]
@@ -156,7 +157,7 @@ class VideoMailing
 
     
     #[ORM\Column(
-        type: 'text',
+        type: Types::TEXT,
         length: 4096,
         nullable: false
     )]
@@ -173,7 +174,7 @@ class VideoMailing
     }
 
     #[ORM\Column(
-        type: 'boolean',
+        type: Types::BOOLEAN,
         nullable: false
     )]
     private bool $improvedBodyAboveVideoIsCurrentlyBeingGenerated = false;
@@ -192,7 +193,7 @@ class VideoMailing
 
 
     #[ORM\Column(
-        type: 'text',
+        type: Types::TEXT,
         length: 4096,
         nullable: false
     )]
@@ -210,7 +211,7 @@ class VideoMailing
 
 
     #[ORM\Column(
-        type: 'text',
+        type: Types::TEXT,
         length: 4096,
         nullable: false
     )]
@@ -227,7 +228,7 @@ class VideoMailing
     }
 
     #[ORM\Column(
-        type: 'boolean',
+        type: Types::BOOLEAN,
         nullable: false
     )]
     private bool $improvedBodyBelowVideoIsCurrentlyBeingGenerated = false;

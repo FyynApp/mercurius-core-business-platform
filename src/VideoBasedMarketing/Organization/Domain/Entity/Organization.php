@@ -7,6 +7,7 @@ use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -27,7 +28,10 @@ class Organization
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(
+        type: Types::GUID,
+        unique: true
+    )]
     private ?string $id = null;
 
     /**
@@ -61,7 +65,7 @@ class Organization
     }
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 256,
         unique: false,
         nullable: true

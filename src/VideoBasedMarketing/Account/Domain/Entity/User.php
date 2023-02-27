@@ -18,6 +18,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -52,7 +53,7 @@ class User
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private ?string $id = null;
@@ -64,7 +65,7 @@ class User
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 180,
         unique: true,
         nullable: false
@@ -82,7 +83,7 @@ class User
     }
 
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
     public function getRoles(): array
@@ -124,7 +125,7 @@ class User
     }
 
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     private string $password;
 
     public function getPassword(): string
@@ -138,7 +139,7 @@ class User
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isVerified = false;
 
     public function isVerified(): bool
@@ -199,7 +200,7 @@ class User
     }
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 2,
         nullable: true,
         enumType: Iso639_1Code::class
@@ -220,7 +221,7 @@ class User
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 128,
         nullable: true
     )]

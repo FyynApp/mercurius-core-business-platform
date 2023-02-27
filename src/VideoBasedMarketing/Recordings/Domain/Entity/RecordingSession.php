@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVid
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -33,7 +34,10 @@ class RecordingSession
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(
+        type: Types::GUID,
+        unique: true
+    )]
     private ?string $id = null;
 
     public function getId(): ?string
@@ -42,7 +46,10 @@ class RecordingSession
     }
 
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        nullable: false
+    )]
     private DateTime $createdAt;
 
     public function getCreatedAt(): DateTime
@@ -51,7 +58,7 @@ class RecordingSession
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isDone = false;
 
     public function isDone(): bool
@@ -65,7 +72,7 @@ class RecordingSession
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $recordingPreviewAssetHasBeenGenerated = false;
 
     public function hasRecordingPreviewAssetBeenGenerated(): bool
@@ -79,7 +86,7 @@ class RecordingSession
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isFinished = false;
 
     public function isFinished(): bool

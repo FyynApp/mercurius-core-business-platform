@@ -14,6 +14,7 @@ use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use InvalidArgumentException;
@@ -45,7 +46,7 @@ class Video
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     #[ORM\Column(
-        type: 'guid',
+        type: Types::GUID,
         unique: true
     )]
     private ?string $id = null;
@@ -56,7 +57,7 @@ class Video
     }
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 12,
         unique: true,
         nullable: true
@@ -75,7 +76,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'datetime',
+        type: Types::DATETIME_MUTABLE,
         nullable: false
     )]
     private DateTime $createdAt;
@@ -110,7 +111,7 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isDeleted = false;
 
     public function isDeleted(): bool
@@ -125,7 +126,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 512,
         nullable: false
     )]
@@ -240,7 +241,7 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $hasAssetPosterStillWebp = false;
 
     public function hasAssetPosterStillWebp(): bool
@@ -255,7 +256,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -273,7 +274,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -290,7 +291,7 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $hasAssetPosterAnimatedWebp = false;
 
     public function hasAssetPosterAnimatedWebp(): bool
@@ -305,7 +306,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -323,7 +324,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -340,7 +341,7 @@ class Video
     }
 
     
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $hasAssetPosterAnimatedGif = false;
 
     public function hasAssetPosterAnimatedGif(): bool
@@ -354,7 +355,7 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $hasAssetOriginal = false;
 
     public function hasAssetOriginal(): bool
@@ -369,7 +370,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'float',
+        type: Types::FLOAT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -387,7 +388,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'float',
+        type: Types::FLOAT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -405,7 +406,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -423,7 +424,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -441,7 +442,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 32,
         nullable: true,
         enumType: AssetMimeType::class
@@ -461,7 +462,7 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $hasAssetFullWebm = false;
 
     public function hasAssetFullWebm(): bool
@@ -476,7 +477,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'float',
+        type: Types::FLOAT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -494,7 +495,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'float',
+        type: Types::FLOAT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -512,7 +513,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -530,7 +531,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -547,7 +548,7 @@ class Video
     }
 
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $hasAssetFullMp4 = false;
 
     public function hasAssetFullMp4(): bool
@@ -562,7 +563,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'float',
+        type: Types::FLOAT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -580,7 +581,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'float',
+        type: Types::FLOAT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -598,7 +599,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -616,7 +617,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -633,7 +634,7 @@ class Video
     }
 
     
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $hasAssetPosterStillWithPlayOverlayForEmailPng = false;
 
     public function hasAssetPosterStillWithPlayOverlayForEmailPng(): bool
@@ -650,7 +651,7 @@ class Video
 
     
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -668,7 +669,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'smallint',
+        type: Types::SMALLINT,
         nullable: true,
         options: ['unsigned' => true]
     )]
@@ -748,7 +749,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 1024,
         nullable: true
     )]
@@ -766,7 +767,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 1024,
         nullable: true
     )]
@@ -784,7 +785,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 1024,
         nullable: true
     )]
@@ -808,7 +809,7 @@ class Video
 
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 1024,
         nullable: true
     )]
@@ -825,7 +826,7 @@ class Video
     }
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 1024,
         nullable: true
     )]

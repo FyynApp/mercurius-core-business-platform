@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Infrastructure\Entity;
 
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -17,7 +18,10 @@ class RecordingSessionVideoChunk
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(
+        type: Types::GUID,
+        unique: true
+    )]
     private ?string $id = null;
 
     public function getId(): ?string
@@ -41,7 +45,12 @@ class RecordingSessionVideoChunk
     }
 
 
-    #[ORM\Column(type: 'string', length: 256, unique: false, nullable: false)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 256,
+        unique: false,
+        nullable: false
+    )]
     private string $name;
 
     public function getName(): string
@@ -55,7 +64,12 @@ class RecordingSessionVideoChunk
     }
 
 
-    #[ORM\Column(type: 'string', length: 32, unique: false, nullable: false)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 32,
+        unique: false,
+        nullable: false
+    )]
     private string $mimeType;
 
     public function getMimeType(): string
@@ -69,7 +83,10 @@ class RecordingSessionVideoChunk
     }
 
 
-    #[ORM\Column(type: 'datetime', nullable: false)]
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        nullable: false
+    )]
     private DateTime $createdAt;
 
     public function getCreatedAt(): DateTime

@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Organization\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
@@ -31,7 +32,10 @@ class Invitation
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[ORM\Column(type: 'guid', unique: true)]
+    #[ORM\Column(
+        type: Types::GUID,
+        unique: true
+    )]
     private ?string $id = null;
 
     /**
@@ -64,7 +68,7 @@ class Invitation
     }
 
     #[ORM\Column(
-        type: 'string',
+        type: Types::STRING,
         length: 256,
         unique: false,
         nullable: false
@@ -77,7 +81,7 @@ class Invitation
     }
 
     #[ORM\Column(
-        type: 'datetime',
+        type: Types::DATETIME_MUTABLE,
         nullable: false
     )]
     private DateTime $createdAt;

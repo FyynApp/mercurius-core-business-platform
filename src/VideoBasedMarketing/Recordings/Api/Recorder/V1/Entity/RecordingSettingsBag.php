@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -18,7 +19,10 @@ class RecordingSettingsBag
     }
 
     #[ORM\Id]
-    #[ORM\Column(type: 'string', length: 32)]
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 32
+    )]
     private string $clientId = '';
 
     public function getClientId(): string
@@ -46,7 +50,7 @@ class RecordingSettingsBag
     }
 
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: Types::TEXT)]
     private string $settings = '';
 
     public function getSettings(): string
