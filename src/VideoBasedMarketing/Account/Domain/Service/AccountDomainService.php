@@ -40,8 +40,13 @@ readonly class AccountDomainService
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function createRegisteredUser(
-        string $email
+        string  $email,
+        ?string $plainPassword = null,
+        bool    $isVerified = false
     ): User
     {
         $email = trim(mb_strtolower($email));
@@ -55,12 +60,15 @@ readonly class AccountDomainService
 
         $user = new User();
         $user->setEmail($email);
-        $user->setIsVerified(true);
+        $user->setIsVerified($isVerified);
         $user->addRole(Role::REGISTERED_USER);
 
+        if (is_null($plainPassword)) {
+            $plainPassword = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        }
         $user->setPassword(
             password_hash(
-                random_int(PHP_INT_MIN, PHP_INT_MAX),
+                $plainPassword,
                 PASSWORD_DEFAULT
             )
         );

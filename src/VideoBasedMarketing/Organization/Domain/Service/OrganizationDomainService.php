@@ -213,7 +213,9 @@ readonly class OrganizationDomainService
 
         } else {
             $user = $this->accountDomainService->createRegisteredUser(
-                $invitation->getEmail()
+                $invitation->getEmail(),
+                null,
+                true
             );
         }
 
