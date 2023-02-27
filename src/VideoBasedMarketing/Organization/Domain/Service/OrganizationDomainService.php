@@ -78,7 +78,7 @@ readonly class OrganizationDomainService
         $teamMemberGroup = new Group(
             $organization,
             'Team Members',
-            [],
+            [AccessRight::SEE_ORGANIZATION_GROUPS_AND_MEMBERS],
             true
         );
 
@@ -172,8 +172,11 @@ readonly class OrganizationDomainService
 
         $user->addJoinedOrganization($invitation->getOrganization());
         $user->setCurrentlyActiveOrganization($invitation->getOrganization());
+        $invitation->getOrganization()->addJoinedUser($user);
         $defaultGroup->addMember($user);
+
         $this->entityManager->persist($user);
+        $this->entityManager->persist($invitation->getOrganization());
         $this->entityManager->persist($defaultGroup);
         $this->entityManager->flush();
 
@@ -225,18 +228,14 @@ readonly class OrganizationDomainService
     }
 
     /** @return User[] */
-    public function getUsersOfOrganization(
+    public function getAllUsersOfOrganization(
         Organization $organization
     ): array
     {
-        $users = [$organization->getOwningUser()];
-
-        /** @var ObjectRepository<User> $repo */
-        $repo = $this->entityManager->getRepository(User::class);
-
-        return array_merge($users, $repo->findBy(
-            ['organization' => $organization]
-        ));
+        return array_merge(
+            [$organization->getOwningUser()],
+            $organization->getJoinedUsers()->toArray()
+        );
     }
 
     public function userOwnedEntityBelongsToOrganization(

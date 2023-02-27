@@ -6,11 +6,13 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomLogoSetting;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use ValueError;
 
 
 #[ORM\Entity]
@@ -22,6 +24,7 @@ class Organization
     )
     {
         $this->owningUser = $owningUser;
+        $this->joinedUsers = new ArrayCollection();
     }
 
 
@@ -64,6 +67,37 @@ class Organization
         return $this->owningUser;
     }
 
+
+    /**
+     * @var Collection|User[]
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'joinedOrganizations')]
+    private array|Collection $joinedUsers;
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getJoinedUsers(): Collection|array
+    {
+        return $this->joinedUsers;
+    }
+
+    public function addJoinedUser(
+        User $user
+    ): void
+    {
+        foreach ($this->joinedUsers as $joinedUser) {
+            if ($joinedUser->getId() === $user->getId()) {
+                throw new ValueError(
+                    "User '{$user->getId()}' already in list of joined users."
+                );
+            }
+        }
+
+        $this->joinedUsers->add($user);
+    }
+    
+    
     #[ORM\Column(
         type: Types::STRING,
         length: 256,

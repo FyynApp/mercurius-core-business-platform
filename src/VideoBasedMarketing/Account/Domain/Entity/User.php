@@ -152,7 +152,7 @@ class User
         referencedColumnName: 'id',
         unique: false
     )]
-    #[ORM\ManyToMany(targetEntity: Organization::class)]
+    #[ORM\ManyToMany(targetEntity: Organization::class, inversedBy: 'joinedUsers')]
     private array|Collection $joinedOrganizations;
 
     /**
@@ -174,6 +174,8 @@ class User
                 );
             }
         }
+
+        $this->joinedOrganizations->add($organization);
     }
 
     #[ORM\Column(
