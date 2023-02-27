@@ -155,6 +155,9 @@ class User
     #[ORM\ManyToMany(targetEntity: Organization::class)]
     private array|Collection $joinedOrganizations;
 
+    /**
+     * @return Collection|Organization[]
+     */
     public function getJoinedOrganizations(): Collection|array
     {
         return $this->joinedOrganizations;

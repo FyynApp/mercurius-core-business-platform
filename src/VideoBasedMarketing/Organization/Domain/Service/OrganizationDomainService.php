@@ -150,25 +150,13 @@ readonly class OrganizationDomainService
         ?User      $user
     ): ?User
     {
-        if (!is_null($user) && $user->isRegistered()) {
+        if (!is_null($user)) {
 
-            if (!is_null($user->getOwnedOrganization())) {
-                $this->logger->info(
-                    "User '{$user->getId()} cannot accept invitation '{$invitation->getId()}' because they own another organization."
-                );
-                return null;
-            }
-
-            if (!is_null($user->getOrganization())) {
-                if ($user->getOrganization()->getId() === $invitation->getOrganization()->getId()) {
+            foreach ($user->getJoinedOrganizations() as $joinedOrganization) {
+                if ($joinedOrganization->getId() === $invitation->getOrganization()->getId()) {
                     return $user;
                 }
             }
-
-            $this->logger->info(
-                "User '{$user->getId()} cannot accept invitation '{$invitation->getId()}' because they belong to another organization."
-            );
-            return null;
 
         } else {
             $user = $this->accountDomainService->createRegisteredUser(
@@ -182,7 +170,8 @@ readonly class OrganizationDomainService
             $invitation->getOrganization()
         );
 
-        $user->setOrganization($invitation->getOrganization());
+        $user->addJoinedOrganization($invitation->getOrganization());
+        $user->setCurrentlyActiveOrganization($invitation->getOrganization());
         $defaultGroup->addMember($user);
         $this->entityManager->persist($user);
         $this->entityManager->persist($defaultGroup);
