@@ -16,6 +16,9 @@ final class Version20230227130431 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql('DELETE FROM users;');
+        $this->addSql('DELETE FROM organizations;');
+
         $this->addSql('
             CREATE TABLE users_organizations 
             (
