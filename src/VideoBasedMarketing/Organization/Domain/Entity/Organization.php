@@ -46,10 +46,10 @@ class Organization
     }
 
 
-    #[ORM\OneToMany(
-        mappedBy: 'ownedOrganizations',
+    #[ORM\ManyToOne(
         targetEntity: User::class,
-        cascade: ['persist']
+        cascade: ['persist'],
+        inversedBy: 'ownedOrganizations'
     )]
     #[ORM\JoinColumn(
         name: 'owning_users_id',
