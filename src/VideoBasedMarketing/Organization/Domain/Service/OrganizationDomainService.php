@@ -106,7 +106,8 @@ readonly class OrganizationDomainService
     }
 
     public function emailCanBeInvitedToOrganization(
-        string $email
+        string       $email,
+        Organization $organization
     ): bool
     {
         /** @var null|User $user */
@@ -119,7 +120,19 @@ readonly class OrganizationDomainService
             return true;
         }
 
-        return false;
+        foreach ($user->getJoinedOrganizations() as $joinedOrganization) {
+            if ($joinedOrganization->getId() === $organization->getId()) {
+                return false;
+            }
+        }
+
+        foreach ($user->getOwnedOrganizations() as $ownedOrganization) {
+            if ($ownedOrganization->getId() === $organization->getId()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -131,7 +144,7 @@ readonly class OrganizationDomainService
     ): ?Invitation
     {
         $email = trim(mb_strtolower($email));
-        if (!$this->emailCanBeInvitedToOrganization($email)) {
+        if (!$this->emailCanBeInvitedToOrganization($email, $organization)) {
             return null;
         }
 
@@ -448,7 +461,10 @@ readonly class OrganizationDomainService
         User $user
     ): bool
     {
-        return $user->getJoinedOrganizations()->count() > 0;
+        return $user->getJoinedOrganizations()->count()
+            + $user->getOwnedOrganizations()->count()
+            > 1;
+
     }
 
     /** @return Organization[] */
