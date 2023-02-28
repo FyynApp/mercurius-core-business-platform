@@ -39,6 +39,20 @@ readonly class OrganizationDomainService
         return sizeof($user->getJoinedOrganizations()->toArray()) > 0;
     }
 
+    public function userJoinedOrganization(
+        User         $user,
+        Organization $organization
+    ): bool
+    {
+        foreach ($user->getJoinedOrganizations() as $joinedOrganization) {
+            if ($joinedOrganization->getId() === $organization->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function userCanCreateOrManageOrganization(
         User $user
     ): bool
@@ -351,10 +365,11 @@ readonly class OrganizationDomainService
     }
 
     public function moveUserToAdministratorsGroup(
-        User  $user
+        User         $user,
+        Organization $organization
     ): void {
         $groups = $this->getGroups(
-            $this->getCurrentlyActiveOrganizationOfUser($user)
+            $organization
         );
 
         foreach ($groups as $group) {
@@ -370,10 +385,11 @@ readonly class OrganizationDomainService
     }
 
     public function moveUserToTeamMembersGroup(
-        User  $user
+        User         $user,
+        Organization $organization
     ): void {
         $groups = $this->getGroups(
-            $this->getCurrentlyActiveOrganizationOfUser($user)
+            $organization
         );
 
         foreach ($groups as $group) {

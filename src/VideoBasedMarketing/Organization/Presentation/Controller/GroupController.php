@@ -49,16 +49,18 @@ class GroupController
                 );
             }
 
-            if (    $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()
-                !== $organizationDomainService->getCurrentlyActiveOrganizationOfUser($userToMove)->getId()
+            if (!$organizationDomainService->userJoinedOrganization(
+                $userToMove,
+                $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user))
             ) {
                 throw $this->createAccessDeniedException(
-                    "User to move '$userIdToMove' is in another organization than the user trying to do the move."
+                    "User to move '$userIdToMove' cannot be moved because they are not in the currently active organization of the user doing the move."
                 );
             }
 
             $organizationDomainService->moveUserToAdministratorsGroup(
-                $userToMove
+                $userToMove,
+                $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)
             );
 
             return $this->redirectToRoute('videobasedmarketing.organization.overview');
@@ -101,16 +103,18 @@ class GroupController
                 );
             }
 
-            if (    $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()
-                !== $organizationDomainService->getCurrentlyActiveOrganizationOfUser($userToMove)->getId()
+            if (!$organizationDomainService->userJoinedOrganization(
+                $userToMove,
+                $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user))
             ) {
                 throw $this->createAccessDeniedException(
-                    "User to move '$userIdToMove' is in another organization than the user trying to do the move."
+                    "User to move '$userIdToMove' cannot be moved because they are not in the currently active organization of the user doing the move."
                 );
             }
 
             $organizationDomainService->moveUserToTeamMembersGroup(
-                $userToMove
+                $userToMove,
+                $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)
             );
 
             return $this->redirectToRoute('videobasedmarketing.organization.overview');
