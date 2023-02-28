@@ -5,6 +5,8 @@ namespace App\VideoBasedMarketing\Recordings\Domain\Entity;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,10 +18,13 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'recording_sessions', indexes: [])]
-#[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
+#[ORM\Table(name: 'recording_sessions')]
+#[ORM\Index(
+    fields: ['createdAt'],
+    name: 'created_at_idx'
+)]
 class RecordingSession
-    implements UserOwnedEntityInterface
+    implements UserOwnedEntityInterface, OrganizationOwnedEntityInterface
 {
     /**
      * @throws Exception
@@ -27,6 +32,7 @@ class RecordingSession
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->organization = $user->getCurrentlyActiveOrganization();
         $this->createdAt = DateAndTimeService::getDateTime();
         $this->recordingSessionVideoChunks = new ArrayCollection();
     }
@@ -100,18 +106,55 @@ class RecordingSession
     }
 
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'recordingSessions')]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private User $user;
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        cascade: ['persist'],
+        inversedBy: 'recordingSessions'
+    )]
+    #[ORM\JoinColumn(
+        name: 'users_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?User $user;
 
     public function getUser(): User
     {
+        if (is_null($this->user)) {
+            return $this->organization->getOwningUser();
+        }
         return $this->user;
     }
 
     public function setUser(User $user): void
     {
         $this->user = $user;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'organizations_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
+    private Organization $organization;
+
+    public function getOrganization(): Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(
+        Organization $organization
+    ): void
+    {
+        $this->organization = $organization;
     }
 
 

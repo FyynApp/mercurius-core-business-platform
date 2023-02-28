@@ -218,6 +218,9 @@ readonly class AccountDomainService
         /** @var RecordingSession $recordingSession */
         foreach ($unregisteredUser->getRecordingSessions() as $recordingSession) {
             $recordingSession->setUser($registeredUser);
+            $recordingSession->setOrganization(
+                $registeredUser->getCurrentlyActiveOrganization()
+            );
             $this->entityManager->persist($recordingSession);
         }
         $unregisteredUser->setRecordingSessions([]);
@@ -226,6 +229,9 @@ readonly class AccountDomainService
         /** @var Video $video */
         foreach ($unregisteredUser->getVideos() as $video) {
             $video->setUser($registeredUser);
+            $recordingSession->setOrganization(
+                $registeredUser->getCurrentlyActiveOrganization()
+            );
             $this->entityManager->persist($video);
         }
         $unregisteredUser->setVideos([]);

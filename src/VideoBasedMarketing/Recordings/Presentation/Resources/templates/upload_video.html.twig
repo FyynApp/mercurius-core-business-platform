@@ -38,7 +38,7 @@
             {{
                 'upload_video.title'
                 |trans({
-                    numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideos(app.user)|length
+                    numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideosForCurrentlyActiveOrganization(app.user)|length
                 })
             }}
         {% endblock %}

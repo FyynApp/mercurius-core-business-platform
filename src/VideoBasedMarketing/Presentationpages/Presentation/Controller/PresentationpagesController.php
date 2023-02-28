@@ -52,7 +52,7 @@ class PresentationpagesController
         TranslatorInterface $translator
     ): Response
     {
-        if (sizeof($videoDomainService->getAvailableVideos($this->getUser())) === 0) {
+        if (sizeof($videoDomainService->getAvailableVideosForCurrentlyActiveOrganization($this->getUser())) === 0) {
             $this->addFlash(
                 FlashMessageLabel::Info->value,
                 $translator->trans('flash.need_to_create_video_to_create_presentationpage')

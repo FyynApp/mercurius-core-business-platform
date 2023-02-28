@@ -42,7 +42,7 @@ class DashboardDomainService
     /** @return Video[] */
     public function getLatestVideos(User $user): array
     {
-        $videos = $this->videoDomainService->getAvailableVideos($user);
+        $videos = $this->videoDomainService->getAvailableVideosForCurrentlyActiveOrganization($user);
 
         return array_slice($videos, 0, 3);
     }

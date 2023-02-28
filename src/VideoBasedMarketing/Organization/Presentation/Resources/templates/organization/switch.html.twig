@@ -28,14 +28,14 @@
                         {# @var organization \App\VideoBasedMarketing\Organization\Domain\Entity\Organization #}
 
                         <tr class="h-20 border-b-2 border-neutral-100">
-                            <td class="text-left font-light text-neutral-500 pr-4 align-top">
+                            <td class="text-left font-light text-neutral-500 pr-4">
                                 {{ TwigHelperService.organizationDomainService.organizationName(
                                     organization,
                                     app.user.uiLanguageCode
                                 ) }}
                             </td>
 
-                            <td class="text-left align-top">
+                            <td class="text-left">
                                 {% if organization.owningUser.id is same as app.user.id %}
                                     <span class="text-mercurius-green-600 font-semibold">
                                         {{ 'organization.switch.table.note_owned_by_you'|trans }}
@@ -45,7 +45,7 @@
                                 {% endif %}
                             </td>
 
-                            <td class="text-left align-top">
+                            <td class="text-left">
                                 {% if organization.id is same as app.user.currentlyActiveOrganization.id %}
 
                                     <div

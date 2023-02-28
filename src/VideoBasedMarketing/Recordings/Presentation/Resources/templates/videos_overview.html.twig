@@ -37,7 +37,7 @@
             {{
                 'videos_overview.title'
                 |trans({
-                    numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideos(app.user)|length
+                    numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideosForCurrentlyActiveOrganization(app.user)|length
                 })
             }}
         {% endblock %}
@@ -54,7 +54,7 @@
             >
             </div>
 
-            <div class="flex flex-row gap-6 justify-between items-start mb-10">
+            <div class="flex flex-col md:flex-row gap-6 justify-between items-start mb-10">
 
                 <div class="flex flex-col lg:flex-row justify-start lg:justify-between gap-6">
                     {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
@@ -101,9 +101,7 @@
                 </div>
 
 
-                {% if TwigHelperService.capabilitiesService.canInviteOrganizationMembers(app.user)
-                    or TwigHelperService.capabilitiesService.canSeeOrganizationGroupsAndMembers(app.user)
-                    or TwigHelperService.capabilitiesService.canEditCustomLogoSetting(app.user)
+                {% if TwigHelperService.capabilitiesService.canEditCustomLogoSetting(app.user)
                     or TwigHelperService.capabilitiesService.canEditCustomDomainSetting(app.user)
                 %}
                     <div class="flex flex-row gap-3 items-center p-4 bg-neutral-100 rounded-md shadow-inner">
@@ -117,17 +115,6 @@
                         </div>
 
                         <div class="flex flex-col items-start border-l-2 pl-4">
-                            {% if TwigHelperService.capabilitiesService.canInviteOrganizationMembers(app.user)
-                                or TwigHelperService.capabilitiesService.canSeeOrganizationGroupsAndMembers(app.user)
-                            %}
-                                <a
-                                        class="flex flex-row gap-1 text-xs text-neutral-500 hover:text-black mb-2"
-                                        href="{{ path('videobasedmarketing.organization.overview') }}"
-                                >
-                                    {{ 'videos_overview.cta.manage_organization'|trans }}
-                                </a>
-                            {% endif %}
-
                             {% if TwigHelperService.capabilitiesService.canEditCustomLogoSetting(app.user) %}
                                 <a
                                         class="flex flex-row gap-1 text-xs text-neutral-500 hover:text-black mb-2"
@@ -153,7 +140,7 @@
 
 
 
-            {% if TwigHelperService.videoDomainService.availableVideos(app.user)|length is same as 0 %}
+            {% if TwigHelperService.videoDomainService.availableVideosForCurrentlyActiveOrganization(app.user)|length is same as 0 %}
                 <h2 class="font-bold text-xl mb-2">
                     {{ 'videos_overview.no_videos_available'|trans }}
                 </h2>
@@ -196,7 +183,7 @@
                         </div>
                     {% endif %}
 
-                    {% for video in TwigHelperService.videoDomainService.availableVideos(app.user) %}
+                    {% for video in TwigHelperService.videoDomainService.availableVideosForCurrentlyActiveOrganization(app.user) %}
                         {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
                         {{ component('videobasedmarketing_recordings_video_manage_widget', {

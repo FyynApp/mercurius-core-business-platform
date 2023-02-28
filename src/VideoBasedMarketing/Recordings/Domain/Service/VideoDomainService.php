@@ -33,22 +33,19 @@ readonly class VideoDomainService
 
 
     /**
-     * @return array|Video[]
+     * @return Video[]
      */
-    public function getAvailableVideos(User $user): array
+    public function getAvailableVideosForCurrentlyActiveOrganization(
+        User $user
+    ): array
     {
-        /** @var Video[] $allVideos */
-        $allVideos = [];
+        /** @var ObjectRepository<Video> $repo */
+        $repo = $this->entityManager->getRepository(Video::class);
 
-        if ($this->organizationDomainService->userJoinedOrganizations($user)) {
-            foreach ($this->organizationDomainService->getAllUsersOfOrganization(
-                $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)
-            ) as $userOfOrganisation) {
-                $allVideos = array_merge($allVideos, $userOfOrganisation->getVideos()->toArray());
-            }
-        } else {
-            $allVideos = $user->getVideos()->toArray();
-        }
+        $allVideos = $repo->findBy(
+            ['organization' => $user->getCurrentlyActiveOrganization()->getId()],
+            ['createdAt' => Criteria::DESC]
+        );
 
         $videos = [];
         foreach ($allVideos as $video) {
@@ -56,8 +53,6 @@ readonly class VideoDomainService
                 $videos[] = $video;
             }
         }
-
-        rsort($videos);
 
         return $videos;
     }

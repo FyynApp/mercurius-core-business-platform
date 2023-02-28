@@ -78,6 +78,16 @@ class GeneralVoter
             return false;
         }
 
+        if ($subject instanceof OrganizationOwnedEntityInterface) {
+            $typedSubject = $subject;
+
+            if (    $typedSubject->getOrganization()->getId()
+                === $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()
+            ) {
+                return true;
+            }
+        }
+
         if ($subject instanceof UserOwnedEntityInterface) {
             $typedSubject = $subject;
 
@@ -92,16 +102,6 @@ class GeneralVoter
                     $typedSubject,
                     $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)
                 );
-            }
-        }
-
-        if ($subject instanceof OrganizationOwnedEntityInterface) {
-            $typedSubject = $subject;
-
-            if (    $typedSubject->getOrganization()->getId()
-                === $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()
-            ) {
-                return true;
             }
         }
 
