@@ -18,21 +18,6 @@
             {% endif %}
         {% endblock %}
 
-        {% block contentBoxSubtitle %}
-            {% if TwigHelperService.organizationDomainService.currentlyActiveOrganizationIsOwnOrganization(app.user) %}
-                <div class="mt-2 text-xs text-mercurius-green-600 font-normal">
-                    {{ 'organization.overview.owned_org_note'|trans }}
-                </div>
-            {% else %}
-                <div class="mt-2 text-xs text-mercurius-blue-600 font-normal">
-                    {{ 'organization.overview.joined_org_note'|trans(
-                        { '{ownerNameOrEmail}': currentlyActiveOrganization.owningUser.nameOrEmail }
-                    ) }}
-                </div>
-            {% endif %}
-        {% endblock %}
-
-
         {% block contentBoxContent %}
 
             {% include '@videobasedmarketing.recordings/includes/back_to_videos_overview.html.twig' %}

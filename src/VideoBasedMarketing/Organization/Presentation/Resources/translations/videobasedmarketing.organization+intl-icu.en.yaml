@@ -1,4 +1,8 @@
 default_organization_name: 'My organization'
+nav_info:
+  info: 'Active organization:'
+  owned: 'owned by you'
+  joined: 'owned by {ownerNameOrEmail}'
 organization:
   create_form:
     title: 'Create an organization'

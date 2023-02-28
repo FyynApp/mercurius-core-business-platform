@@ -5,11 +5,37 @@
         pt-4 pb-0 border-0 border-t-0 border-l-0 border-r-0 border-neutral-100
         mb-4
     ">
-        <h3 class="text-xl leading-6 font-extralight text-neutral-600">
+        <h3 class="text-xl leading-6 font-extralight text-mercurius-blue-800 md:flex md:flex-row items-baseline gap-4">
             {% block contentBoxTitle %}{% endblock %}
-            <div class="mt-2 rounded-sm bg-gradient-to-r h-2 from-mercurius-blue-200 to-mercurius-green-300"></div>
-            {% block contentBoxSubtitle %}{% endblock %}
+
+            <div class="text-xs text-neutral-500 mt-1 mb-1.5 md:mt-0 md:mb-0">
+                {% block contentBoxSubtitle %}{% endblock %}
+            </div>
         </h3>
+
+        <div class="mt-1 rounded-sm bg-gradient-to-r h-2 from-mercurius-blue-200 to-mercurius-green-300"></div>
+
+        <div class="flex flex-row justify-end w-full">
+            <div class="-mt-0 text-right">
+                <a href="{{ path('videobasedmarketing.organization.overview') }}">
+                    <div class="mt-2 text-xs text-mercurius-green-600 font-normal">
+                        {{ 'nav_info.info'|trans({}, 'videobasedmarketing.organization') }}
+
+                        <div class="inline-block font-semibold">
+                            {% if TwigHelperService.organizationDomainService.currentlyActiveOrganizationIsOwnOrganization(app.user) %}
+                                {{ 'nav_info.owned'|trans({}, 'videobasedmarketing.organization') }}
+                            {% else %}
+                                {{ 'nav_info.joined'|trans(
+                                    { '{ownerNameOrEmail}': currentlyActiveOrganization.owningUser.nameOrEmail },
+                                    'videobasedmarketing.organization'
+                                ) }}
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 
     <div
