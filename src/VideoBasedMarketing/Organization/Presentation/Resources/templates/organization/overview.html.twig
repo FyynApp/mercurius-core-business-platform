@@ -37,18 +37,6 @@
 
             {% include '@videobasedmarketing.recordings/includes/back_to_videos_overview.html.twig' %}
 
-            <div class="rounded-md mb-16">
-                <div class="font-semibold">
-                    {% if TwigHelperService.organizationDomainService.currentlyActiveOrganizationIsOwnOrganization(app.user) %}
-                        {{ 'organization.overview.owned_org_note'|trans }}
-                    {% else %}
-                        {{ 'organization.overview.joined_org_note'|trans(
-                            { '{ownerNameOrEmail}': currentlyActiveOrganization.owningUser.nameOrEmail }
-                        ) }}
-                    {% endif %}
-                </div>
-            </div>
-
             <div class="w-full flex flex-col lg:flex-row gap-16">
 
                 <div class="lg:w-6/12">

@@ -12,11 +12,11 @@ organization:
     joined_org_note: 'This organization is owned by {ownerNameOrEmail}'
     pending_invitations:
       title: 'Pending invitations'
-      no_pending: 'Your organization does not have any pending invitations.'
+      no_pending: 'This organization does not have any pending invitations.'
       resend: 'Resend invitation'
     invite:
       title: 'Invite team member'
-      note: 'Enter an e-mail address to invite a team member into your organization:'
+      note: 'Enter an e-mail address to invite a team member into this organization:'
       label_email: 'E-mail address to invite'
       cta: 'Send invitation'
     groups_and_members:
