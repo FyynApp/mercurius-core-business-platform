@@ -408,4 +408,12 @@ readonly class OrganizationDomainService
 
         return false;
     }
+
+    public function currentlyActiveOrganizationIsOwnOrganization(
+        User $user
+    ): bool
+    {
+        return $user->getCurrentlyActiveOrganization()->getOwningUser()->getId()
+            === $user->getId();
+    }
 }

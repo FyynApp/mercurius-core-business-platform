@@ -36,7 +36,10 @@ class OrganizationController
 
         return $this->render(
             '@videobasedmarketing.organization/organization/overview.html.twig',
-            ['organization' => $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)]
+            [
+                'currentlyActiveOrganization' => $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user),
+                'currentlyActiveOrganization'
+            ]
         );
     }
 
