@@ -419,4 +419,37 @@ readonly class OrganizationDomainService
         return $user->getCurrentlyActiveOrganization()->getOwningUser()->getId()
             === $user->getId();
     }
+
+    public function userCanSwitchOrganizations(
+        User $user
+    ): bool
+    {
+        return $user->getJoinedOrganizations()->count() > 0;
+    }
+
+    /** @return Organization[] */
+    public function organizationsUserCanSwitchTo(
+        User $user
+    ): array
+    {
+        return array_merge(
+            $user->getJoinedOrganizations()->toArray(),
+            $user->getOwnedOrganizations()->toArray()
+        );
+    }
+
+    public function switchOrganization(
+        User         $user,
+        Organization $organization
+    ): void
+    {
+        foreach ($this->organizationsUserCanSwitchTo($user) as $switchableOrganization) {
+            if ($switchableOrganization->getId() === $organization->getId()) {
+                $user->setCurrentlyActiveOrganization($organization);
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+                return;
+            }
+        }
+    }
 }

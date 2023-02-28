@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Organization\Presentation\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,8 +37,7 @@ class OrganizationController
             '@videobasedmarketing.organization/organization/overview.html.twig',
             [
                 'currentlyActiveOrganization' => $organizationDomainService
-                    ->getCurrentlyActiveOrganizationOfUser($user),
-                'currentlyActiveOrganization'
+                    ->getCurrentlyActiveOrganizationOfUser($user)
             ]
         );
     }
@@ -73,6 +73,64 @@ class OrganizationController
             $entityManager->persist($user->getCurrentlyActiveOrganization());
             $entityManager->flush();
         }
+
+        return $this->redirectToRoute('videobasedmarketing.organization.overview');
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/organization/switch',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/organisation/wechseln',
+        ],
+        name        : 'videobasedmarketing.organization.switch',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function switchAction(
+        OrganizationDomainService $organizationDomainService
+    ): Response
+    {
+        /** @var null|User $user */
+        $user = $this->getUser();
+
+        if (!$organizationDomainService->userCanSwitchOrganizations($user)) {
+            return $this->redirectToRoute('videobasedmarketing.organization.overview');
+        }
+
+        return $this->render(
+            '@videobasedmarketing.organization/organization/switch.html.twig',
+            [
+                'currentlyActiveOrganization' =>
+                    $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user),
+
+                'organizationsUserCanSwitchTo' =>
+                    $organizationDomainService->organizationsUserCanSwitchTo($user)
+            ]
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/organization/{organizationId}/switch-to',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/organisation/{organizationId}/wechseln-zu',
+        ],
+        name        : 'videobasedmarketing.organization.handle_switch',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function handleSwitchAction(
+        string                    $organizationId,
+        OrganizationDomainService $organizationDomainService,
+        EntityManagerInterface    $entityManager
+    ): Response
+    {
+        /** @var null|User $user */
+        $user = $this->getUser();
+
+        $organizationDomainService->switchOrganization(
+            $user,
+            $entityManager->find(Organization::class, $organizationId)
+        );
 
         return $this->redirectToRoute('videobasedmarketing.organization.overview');
     }

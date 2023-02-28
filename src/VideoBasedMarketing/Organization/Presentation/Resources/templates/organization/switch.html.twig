@@ -1,0 +1,90 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var currentlyActiveOrganization \App\VideoBasedMarketing\Organization\Domain\Entity\Organization #}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.organization' %}
+
+        {% block contentBoxTitle %}
+            {{ 'organization.switch.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <table class="table-auto w-full max-w-4xl min-w-fit">
+                <thead class="h-20">
+                    <tr>
+                        <th class="text-left">{{ 'organization.switch.table.head_org_name'|trans }}</th>
+                        <th class="text-left">{{ 'organization.switch.table.head_org_owned_by'|trans }}</th>
+                        <th class="text-left">{{ 'organization.switch.table.head_org_switch_to'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for organization in TwigHelperService.organizationDomainService.organizationsUserCanSwitchTo(app.user) %}
+                        {# @var organization \App\VideoBasedMarketing\Organization\Domain\Entity\Organization #}
+
+                        <tr class="h-20 border-b-2 border-neutral-100">
+                            <td class="text-left font-semibold pr-4">
+                                {{ TwigHelperService.organizationDomainService.organizationName(
+                                    organization,
+                                    app.user.uiLanguageCode
+                                ) }}
+                            </td>
+
+                            <td class="text-left">
+                                {% if organization.owningUser.id is same as app.user.id %}
+                                    <span class="text-mercurius-green-600 font-semibold">
+                                        {{ 'organization.switch.table.note_owned_by_you'|trans }}
+                                    </span>
+                                {% else %}
+                                    {{ organization.owningUser.nameOrEmail }}
+                                {% endif %}
+                            </td>
+
+                            <td class="text-left">
+                                {% if organization.id is same as app.user.currentlyActiveOrganization.id %}
+
+                                    <div
+                                            class="
+                                                w-fit
+                                                bg-mercurius-green-50
+                                                border-1 border-dotted border-mercurius-green-400
+                                                text-mercurius-green-600 rounded-md p-2
+                                                text-xs
+                                            "
+                                    >
+                                        {{ 'organization.switch.table.currently_active'|trans }}
+                                    </div>
+
+                                {% else %}
+                                    <form
+                                            action="{{ path(
+                                                'videobasedmarketing.organization.handle_switch',
+                                                { organizationId: organization.id }
+                                            ) }}"
+                                            method="post"
+                                    >
+                                        <button
+                                                type="submit"
+                                                class="cta-with-icon-primary text-xs"
+                                        >
+                                            {{ 'organization.switch.table.switch_to_cta'|trans }}
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

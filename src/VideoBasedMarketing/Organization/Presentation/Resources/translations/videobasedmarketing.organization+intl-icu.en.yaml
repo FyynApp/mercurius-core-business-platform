@@ -3,6 +3,7 @@ nav_info:
   info: 'Active organization:'
   owned: 'owned by you'
   joined: 'owned by {ownerNameOrEmail}'
+  switch: 'Switch'
 organization:
   edit_name:
     save_cta: 'Save'
@@ -11,6 +12,15 @@ organization:
     info1: 'Organizations allow you to manage your team on Fyyn.io.'
     info2: 'After creating an organization, you can invite team members and share your Fyyn.io contents with them.'
     cta: 'Create organization'
+  switch:
+    title: 'Switch organization'
+    table:
+      head_org_name: 'Organization name'
+      head_org_owned_by: 'owned by'
+      head_org_switch_to: ''
+      note_owned_by_you: 'Owned by you'
+      switch_to_cta: 'Switch to'
+      currently_active: 'currently active'
   overview:
     title_owned: 'Your organization'
     title_joined: 'Your currently active organization'
