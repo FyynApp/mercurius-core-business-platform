@@ -24,15 +24,14 @@
 
             <div class="mb-16">
                 <h1 class="font-light text-2xl">
-                    {{ TwigHelperService.organizationDomainService.organizationName(
-                        currentlyActiveOrganization,
-                        app.user.uiLanguageCode
-                    ) }}
-                </h1>
 
-                {% if TwigHelperService.capabilitiesService.canEditOrganizationName(app.user) %}
-                    edit
-                {% endif %}
+                    {{ component(
+                        'videobasedmarketing_organization_edit_organization_name',
+                        {
+                            organization: currentlyActiveOrganization
+                        })
+                    }}
+                </h1>
             </div>
 
             <div class="w-full flex flex-col lg:flex-row gap-16">

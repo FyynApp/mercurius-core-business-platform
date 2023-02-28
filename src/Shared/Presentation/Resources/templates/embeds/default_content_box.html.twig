@@ -22,13 +22,21 @@
                         {{ 'nav_info.info'|trans({}, 'videobasedmarketing.organization') }}
 
                         <div class="inline-block font-semibold">
+
+                            {{ TwigHelperService.organizationDomainService.organizationName(
+                                app.user.currentlyActiveOrganization,
+                                app.user.uiLanguageCode
+                            ) }}
+                        </div>
+
+                        <div>
                             {% if TwigHelperService.organizationDomainService.currentlyActiveOrganizationIsOwnOrganization(app.user) %}
                                 {{ 'nav_info.owned'|trans({}, 'videobasedmarketing.organization') }}
                             {% else %}
                                 {{ 'nav_info.joined'|trans(
-                                    { '{ownerNameOrEmail}': app.user.currentlyActiveOrganization.owningUser.nameOrEmail },
-                                    'videobasedmarketing.organization'
-                                ) }}
+                                { '{ownerNameOrEmail}': app.user.currentlyActiveOrganization.owningUser.nameOrEmail },
+                                'videobasedmarketing.organization'
+                            ) }}
                             {% endif %}
                         </div>
 

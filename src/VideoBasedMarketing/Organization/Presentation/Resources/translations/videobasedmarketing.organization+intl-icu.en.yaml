@@ -4,6 +4,8 @@ nav_info:
   owned: 'owned by you'
   joined: 'owned by {ownerNameOrEmail}'
 organization:
+  edit_name:
+    save_cta: 'Save'
   create_form:
     title: 'Create an organization'
     info1: 'Organizations allow you to manage your team on Fyyn.io.'
