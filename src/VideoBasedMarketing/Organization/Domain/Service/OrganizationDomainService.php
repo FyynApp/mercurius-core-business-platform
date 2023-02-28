@@ -464,7 +464,6 @@ readonly class OrganizationDomainService
         return $user->getJoinedOrganizations()->count()
             + $user->getOwnedOrganizations()->count()
             > 1;
-
     }
 
     /** @return Organization[] */
