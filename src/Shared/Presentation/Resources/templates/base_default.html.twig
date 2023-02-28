@@ -88,15 +88,15 @@
                     <div
                             class="
                                 mt-32
-                                bg-neutral-100 rounded-lg
+                                bg-gradient-to-b lg:bg-gradient-to-r from-mercurius-blue-50 to-mercurius-green-100 rounded-lg
                                 min-h-max w-full bottom-0 p-6 pb-8
                                 lg:flex lg:items-center lg:justify-between
                                 font-extralight
-                                text-neutral-500 text-sm
+                                text-neutral-900 text-sm
                             "
                     >
                         <ul class="flex flex-wrap items-center mt-3 mr-6">
-                            <li>
+                            <li class="text-mercurius-blue-900">
                                 © {{ "now"|date("Y") }} smart DSGVO GmbH
                             </li>
                         </ul>
@@ -110,7 +110,7 @@
                             </li>
                         </ul>
 
-                        <ul class="flex flex-wrap items-center mt-3">
+                        <ul class="flex flex-wrap items-center mt-3 text-mercurius-green-900">
                             <li>
                                 <a
                                         {% if app.request.locale is same as 'de' %}
