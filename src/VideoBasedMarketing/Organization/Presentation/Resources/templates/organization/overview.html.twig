@@ -70,7 +70,7 @@
 
                     {% if TwigHelperService.capabilitiesService.canSeeOrganizationGroupsAndMembers(app.user) %}
                         <div>
-                            <p class="text-lg font-bold mb-3">
+                            <p class="text-lg font-bold mb-4">
                                 {{ 'organization.overview.groups_and_members.title'|trans }}
                             </p>
 
@@ -81,12 +81,12 @@
                                     <div class="mb-2">
 
                                         <div class="flex flex-row items-baseline gap-2">
-                                            <div class="font-light">
+                                            <div class="font-light border-b-2 w-full max-w-2xl">
                                                 {{ TwigHelperService.organizationDomainService.groupName(group, app.user.uiLanguageCode) }}
                                             </div>
 
                                             {% if TwigHelperService.organizationDomainService.defaultGroupForNewMembers(currentlyActiveOrganization).id is same as group.id %}
-                                                <div class="text-xs text-mercurius-green-700 bg-mercurius-green-200 rounded-md px-2 border-1 border-mercurius-green-600">
+                                                <div class="text-xs text-center text-mercurius-green-600 bg-mercurius-green-100 rounded-md px-2 border-1 border-mercurius-green-500">
                                                     {{ 'organization.overview.groups_and_members.default_group_for_new_members_note'|trans }}
                                                 </div>
                                             {% endif %}
@@ -98,52 +98,57 @@
                                             {{ 'organization.overview.groups_and_members.no_members'|trans }}
                                         </p>
                                     {% else %}
-                                        {% for user in TwigHelperService.organizationDomainService.groupMembers(group) %}
-                                            {# @var user \App\VideoBasedMarketing\Account\Domain\Entity\User #}
-                                            <div class="flex flex-row gap-2 items-center">
 
-                                                {% if TwigHelperService.capabilitiesService.canMoveOrganizationMembersIntoGroups(app.user)
-                                                    and app.user.id is not same as user.id
-                                                %}
+                                        <table class="table-auto">
+                                            {% for user in TwigHelperService.organizationDomainService.groupMembers(group) %}
+                                                {# @var user \App\VideoBasedMarketing\Account\Domain\Entity\User #}
+                                                <tr class="">
+                                                    <td class="pr-4">
+                                                        {{ user.nameOrEmail }}
+                                                    </td>
 
-                                                    {# @var group \App\VideoBasedMarketing\Organization\Domain\Entity\Group #}
-                                                    {% if group.teamMembersGroup %}
-                                                        <form
-                                                                method="post"
-                                                                action="{{ path('videobasedmarketing.organization.group.move_to_administrators') }}"
-                                                        >
-                                                            <input type="hidden" name="userId" value="{{ user.id }}">
-                                                            <button
-                                                                    type="submit"
-                                                                    class="cta-with-icon-inline-primary underline text-xs opacity-50 hover:opacity-100"
-                                                            >
-                                                                {{ 'organization.overview.groups_and_members.make_administrator_cta'|trans }}
-                                                            </button>
-                                                        </form>
-                                                    {% endif %}
+                                                    <td>
+                                                        {% if TwigHelperService.capabilitiesService.canMoveOrganizationMembersIntoGroups(app.user)
+                                                            and app.user.id is not same as user.id
+                                                        %}
 
-                                                    {% if group.administratorsGroup %}
-                                                        <form
-                                                                method="post"
-                                                                action="{{ path('videobasedmarketing.organization.group.move_to_team_members') }}"
-                                                        >
-                                                            <input type="hidden" name="userId" value="{{ user.id }}">
-                                                            <button
-                                                                    type="submit"
-                                                                    class="cta-with-icon-inline-primary underline text-xs opacity-50 hover:opacity-100"
-                                                            >
-                                                                {{ 'organization.overview.groups_and_members.make_team_member_cta'|trans }}
-                                                            </button>
-                                                        </form>
-                                                    {% endif %}
+                                                            {# @var group \App\VideoBasedMarketing\Organization\Domain\Entity\Group #}
+                                                            {% if group.teamMembersGroup %}
+                                                                <form
+                                                                        method="post"
+                                                                        action="{{ path('videobasedmarketing.organization.group.move_to_administrators') }}"
+                                                                >
+                                                                    <input type="hidden" name="userId" value="{{ user.id }}">
+                                                                    <button
+                                                                            type="submit"
+                                                                            class="cta-with-icon-inline-primary text-xs bg-neutral-100 border-1 p-1 rounded-md opacity-50 hover:opacity-100"
+                                                                    >
+                                                                        {{ 'organization.overview.groups_and_members.make_administrator_cta'|trans }}
+                                                                    </button>
+                                                                </form>
+                                                            {% endif %}
 
-                                                {% endif %}
+                                                            {% if group.administratorsGroup %}
+                                                                <form
+                                                                        method="post"
+                                                                        action="{{ path('videobasedmarketing.organization.group.move_to_team_members') }}"
+                                                                >
+                                                                    <input type="hidden" name="userId" value="{{ user.id }}">
+                                                                    <button
+                                                                            type="submit"
+                                                                            class="cta-with-icon-inline-primary text-xs bg-neutral-100 border-1 p-1 rounded-md opacity-50 hover:opacity-100"
+                                                                    >
+                                                                        {{ 'organization.overview.groups_and_members.make_team_member_cta'|trans }}
+                                                                    </button>
+                                                                </form>
+                                                            {% endif %}
 
-                                                <div>
-                                                    {{ user.nameOrEmail }}
-                                                </div>
-                                            </div>
-                                        {% endfor %}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </table>
+
                                     {% endif %}
                                 </div>
 
