@@ -114,6 +114,14 @@ readonly class CapabilitiesService
         return $this->hasCapability($user, Capability::CustomDomain);
     }
 
+    public function canEditOrganizationName(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::EDIT_ORGANIZATION_NAME
+        );
+    }
+
     public function canEditCustomDomainSetting(User $user): bool
     {
         return $this->organizationDomainService->userHasAccessRight(

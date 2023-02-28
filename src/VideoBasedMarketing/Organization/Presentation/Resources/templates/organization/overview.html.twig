@@ -22,6 +22,19 @@
 
             {% include '@videobasedmarketing.recordings/includes/back_to_videos_overview.html.twig' %}
 
+            <div class="mb-16">
+                <h1 class="font-light text-2xl">
+                    {{ TwigHelperService.organizationDomainService.organizationName(
+                        currentlyActiveOrganization,
+                        app.user.uiLanguageCode
+                    ) }}
+                </h1>
+
+                {% if TwigHelperService.capabilitiesService.canEditOrganizationName(app.user) %}
+                    edit
+                {% endif %}
+            </div>
+
             <div class="w-full flex flex-col lg:flex-row gap-16">
 
                 <div class="lg:w-6/12">
@@ -58,7 +71,7 @@
 
                     {% if TwigHelperService.capabilitiesService.canSeeOrganizationGroupsAndMembers(app.user) %}
                         <div>
-                            <p class="text-lg font-bold mb-8">
+                            <p class="text-lg font-bold mb-3">
                                 {{ 'organization.overview.groups_and_members.title'|trans }}
                             </p>
 
@@ -69,7 +82,9 @@
                                     <div class="mb-2">
 
                                         <div class="flex flex-row items-baseline gap-2">
-                                            <div class="font-bold">{{ TwigHelperService.organizationDomainService.groupName(group, app.user.uiLanguageCode) }}</div>
+                                            <div class="font-light">
+                                                {{ TwigHelperService.organizationDomainService.groupName(group, app.user.uiLanguageCode) }}
+                                            </div>
 
                                             {% if TwigHelperService.organizationDomainService.defaultGroupForNewMembers(currentlyActiveOrganization).id is same as group.id %}
                                                 <div class="text-xs text-mercurius-green-700 bg-mercurius-green-200 rounded-md px-2 border-1 border-mercurius-green-600">

@@ -191,9 +191,12 @@ readonly class OrganizationDomainService
 
     public function getOrganizationName(
         Organization $organization,
-        Iso639_1Code $iso639_1Code,
+        ?Iso639_1Code $iso639_1Code,
     ): string
     {
+        if (is_null($iso639_1Code)) {
+            $iso639_1Code = Iso639_1Code::En;
+        }
         if (is_null($organization->getName())) {
             return $this->translator->trans(
                 'default_organization_name',
