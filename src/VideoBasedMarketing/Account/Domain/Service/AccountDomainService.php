@@ -87,9 +87,6 @@ readonly class AccountDomainService
             new UserCreatedEvent($user)
         );
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-
         if ($isVerified) {
             $this->makeUserVerified($user);
         }
@@ -129,6 +126,10 @@ readonly class AccountDomainService
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(
+            new UserCreatedEvent($user)
+        );
 
         return $user;
     }

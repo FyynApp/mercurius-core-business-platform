@@ -172,6 +172,14 @@ readonly class OrganizationDomainService
                 }
             }
 
+            if ($user->isUnregistered()) {
+                $this->accountDomainService->handleUnregisteredUserClaimsEmail(
+                    $user,
+                    $invitation->getEmail(),
+                    null
+                );
+            }
+
         } else {
             $user = $this->accountDomainService->createRegisteredUser(
                 $invitation->getEmail(),
