@@ -95,22 +95,22 @@
                                 text-neutral-900 text-sm
                             "
                     >
-                        <ul class="flex flex-wrap items-center mt-3 mr-6">
+                        <ul class="flex flex-wrap items-center mt-3">
                             <li class="text-mercurius-blue-900">
                                 © {{ "now"|date("Y") }} smart DSGVO GmbH
                             </li>
                         </ul>
 
-                        <ul class="flex flex-wrap items-center mt-3 mr-6">
+                        <ul class="flex flex-wrap gap-4 items-center mt-3">
                             <li>
-                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="mr-4 hover:underline md:mr-6 ">{{ 'footernav.english'|trans }}</a>
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="hover:underline">{{ 'footernav.english'|trans }}</a>
                             </li>
                             <li>
-                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="mr-4 hover:underline md:mr-6">{{ 'footernav.german'|trans }}</a>
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="hover:underline">{{ 'footernav.german'|trans }}</a>
                             </li>
                         </ul>
 
-                        <ul class="flex flex-wrap items-center mt-3 text-mercurius-green-900">
+                        <ul class="flex flex-wrap gap-4 items-center mt-3 text-mercurius-green-900">
                             <li>
                                 <a
                                         {% if app.request.locale is same as 'de' %}
@@ -119,7 +119,7 @@
                                             href="https://help.fyyn.io/knowledge-base/privacy-policy/"
                                         {% endif %}
 
-                                        class="mr-4 hover:underline md:mr-6"
+                                        class="hover:underline"
                                 >
                                     {{ 'footernav.privacy_policy'|trans }}
                                 </a>
@@ -132,7 +132,7 @@
                                             href="https://help.fyyn.io/knowledge-base/imprint-site-notice/"
                                         {% endif %}
 
-                                        class="mr-4 hover:underline md:mr-6"
+                                        class="hover:underline"
                                 >
                                     {{ 'footernav.imprint'|trans }}
                                 </a>
@@ -140,7 +140,7 @@
                             <li>
                                 <a
                                         href="{{ path('shared.presentation.contentpages.cookie_settings') }}"
-                                        class="mr-4 hover:underline md:mr-6"
+                                        class="hover:underline"
                                 >
                                     {{ 'footernav.cookie_settings'|trans }}
                                 </a>
@@ -157,7 +157,7 @@
                                     >
                                         <button
                                                 type="submit"
-                                                class="mr-4 hover:underline md:mr-6"
+                                                class="hover:underline"
                                         >
                                             {{ 'footernav.sign_out'|trans }}
                                         </button>
@@ -172,7 +172,7 @@
                                 <li>
                                     <a
                                             href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
-                                            class="mr-4 hover:underline md:mr-6"
+                                            class="hover:underline"
                                             data-test-id="footerSignInCta"
                                     >
                                         {{ 'footernav.sign_in'|trans }}
@@ -182,7 +182,7 @@
                                 <li>
                                     <a
                                             href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
-                                            class="mr-4 hover:underline md:mr-6"
+                                            class="hover:underline"
                                             data-test-id="footerSignUpCta"
 
                                     >
@@ -198,7 +198,7 @@
                                 <li>
                                     <a
                                             href="{{ path('videobasedmarketing.recordings.presentation.admin.videos.overview') }}"
-                                            class="mr-4 hover:underline md:mr-6 text-red-700 font-semibold"
+                                            class="hover:underline text-red-700 font-semibold"
                                     >
                                         Admin
                                     </a>
