@@ -203,54 +203,54 @@ readonly class AccountDomainService
     }
 
     public function unregisteredUserClaimsRegisteredUser(
-        User $unregisteredUser,
-        User $registeredUser
+        User $claimingUser,
+        User $claimedUser
     ): bool
     {
-        if (!$unregisteredUser->isUnregistered()) {
+        if (!$claimingUser->isUnregistered()) {
             throw new LogicException('Only unregistered user sessions can claim.');
         }
 
-        if (!$registeredUser->isRegistered()) {
+        if (!$claimedUser->isRegistered()) {
             throw new LogicException('Only registered user can be claimed.');
         }
 
         /** @var RecordingSession $recordingSession */
-        foreach ($unregisteredUser->getRecordingSessions() as $recordingSession) {
-            $recordingSession->setUser($registeredUser);
+        foreach ($claimingUser->getRecordingSessions() as $recordingSession) {
+            $recordingSession->setUser($claimedUser);
             $recordingSession->setOrganization(
-                $registeredUser->getCurrentlyActiveOrganization()
+                $claimedUser->getCurrentlyActiveOrganization()
             );
             $this->entityManager->persist($recordingSession);
         }
-        $unregisteredUser->setRecordingSessions([]);
-        $this->entityManager->persist($unregisteredUser);
+        $claimingUser->setRecordingSessions([]);
+        $this->entityManager->persist($claimingUser);
 
         /** @var Video $video */
-        foreach ($unregisteredUser->getVideos() as $video) {
-            $video->setUser($registeredUser);
+        foreach ($claimingUser->getVideos() as $video) {
+            $video->setUser($claimedUser);
             $recordingSession->setOrganization(
-                $registeredUser->getCurrentlyActiveOrganization()
+                $claimedUser->getCurrentlyActiveOrganization()
             );
             $this->entityManager->persist($video);
         }
-        $unregisteredUser->setVideos([]);
-        $this->entityManager->persist($unregisteredUser);
+        $claimingUser->setVideos([]);
+        $this->entityManager->persist($claimingUser);
 
-        $this->entityManager->persist($registeredUser);
+        $this->entityManager->persist($claimedUser);
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
             new UnregisteredUserClaimedRegisteredUserEvent(
-                $unregisteredUser,
-                $registeredUser
+                $claimingUser,
+                $claimedUser
             )
         );
 
-        $this->entityManager->remove($unregisteredUser);
+        $this->entityManager->remove($claimingUser);
         $this->entityManager->flush();
 
-        unset($unregisteredUser);
+        unset($claimingUser);
 
         return true;
     }
