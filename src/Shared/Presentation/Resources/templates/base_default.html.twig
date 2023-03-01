@@ -211,13 +211,6 @@
                         <div class="font-mono text-neutral-400 text-xs mt-4 text-right">
                             Symfony env: {{ TwigHelperService.symfonyEnv }}
                         </div>
-
-                        {% if app.user is defined and app.user is not null %}
-                            <div class="font-mono text-neutral-400 text-xs mt-4 text-right">
-                                Subscribed plan:
-                                {{ TwigHelperService.membershipService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).name.value }}
-                            </div>
-                        {% endif %}
                     {% endif %}
 
                 </footer>

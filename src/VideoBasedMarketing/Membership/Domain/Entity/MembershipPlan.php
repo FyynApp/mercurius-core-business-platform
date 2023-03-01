@@ -45,6 +45,11 @@ readonly class MembershipPlan
         return $this->name;
     }
 
+    public function getNiceName(): string
+    {
+        return ucfirst($this->name->value);
+    }
+
     public function mustBeBought(): bool
     {
         return $this->mustBeBought;
