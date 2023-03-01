@@ -15,7 +15,7 @@
         "@uppy/tus": "^3.0.5",
         "@uppy/webcam": "^3.2.1",
         "autoprefixer": "^10.4.13",
-        "core-js": "^3.28.0",
+        "core-js": "^3.29.0",
         "js-cookie": "^3.0.1",
         "jstimezonedetect": "^1.0.7",
         "postcss-loader": "^7.0.2",
