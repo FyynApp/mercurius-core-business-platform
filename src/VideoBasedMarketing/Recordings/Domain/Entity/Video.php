@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use ValueError;
 
 
 #[ORM\Entity]
@@ -883,6 +884,38 @@ class Video
         }
 
         return false;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: VideoFolder::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'video_folders_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?VideoFolder $videoFolder;
+
+    public function getVideoFolder(): ?VideoFolder
+    {
+        return $this->videoFolder;
+    }
+
+    public function setVideoFolder(
+        ?VideoFolder $videoFolder
+    ): void
+    {
+        if (!is_null($videoFolder)) {
+            if ($videoFolder->getId() !== $this->organization->getId()) {
+                throw new ValueError(
+                    "Video folder '{$videoFolder->getId()}' is linked to another organization than video '$this->id'."
+                );
+            }
+        }
+        $this->videoFolder = $videoFolder;
     }
 
 

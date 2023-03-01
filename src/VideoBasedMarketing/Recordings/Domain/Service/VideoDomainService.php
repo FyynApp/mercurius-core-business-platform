@@ -5,13 +5,12 @@ namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
-use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -25,8 +24,7 @@ readonly class VideoDomainService
         private EntityManagerInterface    $entityManager,
         private PresentationpagesService  $presentationpagesService,
         private ShortIdService            $shortIdService,
-        private MembershipService         $membershipService,
-        private OrganizationDomainService $organizationDomainService
+        private MembershipService         $membershipService
     )
     {
     }
@@ -34,18 +32,39 @@ readonly class VideoDomainService
 
     /**
      * @return Video[]
+     * @throws Exception
      */
     public function getAvailableVideosForCurrentlyActiveOrganization(
-        User $user
+        User $user,
+        VideoFolder|null|false $videoFolder = false
     ): array
     {
         /** @var ObjectRepository<Video> $repo */
         $repo = $this->entityManager->getRepository(Video::class);
 
-        $allVideos = $repo->findBy(
-            ['organization' => $user->getCurrentlyActiveOrganization()->getId()],
-            ['createdAt' => Criteria::DESC]
-        );
+        if ($videoFolder !== false) {
+
+            if (!is_null($videoFolder)) {
+                if ($user->getCurrentlyActiveOrganization()->getId() !== $videoFolder->getOrganization()->getId()) {
+                    throw new Exception(
+                        "User '{$user->getId()}' and video folder '{$videoFolder->getId()}' do not belong to the same organization."
+                    );
+                }
+            }
+
+            $allVideos = $repo->findBy(
+                [
+                    'organization' => $user->getCurrentlyActiveOrganization()->getId(),
+                    'videoFolder' => $videoFolder
+                ],
+                ['createdAt' => Criteria::DESC]
+            );
+        } else {
+            $allVideos = $repo->findBy(
+                ['organization' => $user->getCurrentlyActiveOrganization()->getId()],
+                ['createdAt' => Criteria::DESC]
+            );
+        }
 
         $videos = [];
         foreach ($allVideos as $video) {

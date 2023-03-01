@@ -1,6 +1,8 @@
 {% extends '@shared/base_default.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var videos \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[] #}
+{# @var videoFolders \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder[] #}
 
 {% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
@@ -34,12 +36,7 @@
         {% trans_default_domain 'videobasedmarketing.recordings' %}
 
         {% block contentBoxTitle %}
-            {{
-                'videos_overview.title'
-                |trans({
-                    numberOfRecordingSessions: TwigHelperService.videoDomainService.availableVideosForCurrentlyActiveOrganization(app.user)|length
-                })
-            }}
+            {{ 'videos_overview.title' }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
