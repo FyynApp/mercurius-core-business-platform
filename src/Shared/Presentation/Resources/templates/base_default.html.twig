@@ -215,7 +215,7 @@
                         {% if app.user is defined and app.user is not null %}
                             <div class="font-mono text-neutral-400 text-xs mt-4 text-right">
                                 Subscribed plan:
-                                {{ TwigHelperService.membershipService.currentlySubscribedMembershipPlanForUser(app.user).name.value }}
+                                {{ TwigHelperService.membershipService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).name.value }}
                             </div>
                         {% endif %}
                     {% endif %}

@@ -179,7 +179,7 @@ readonly class VideoDomainService
     ): int
     {
         if (   $user->isAdmin()
-            || $this->membershipService->getCurrentlySubscribedMembershipPlanForUser($user)->getName() === MembershipPlanName::Pro
+            || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Pro
         ) {
             return 2684354560; // 2.5 GiB
         }

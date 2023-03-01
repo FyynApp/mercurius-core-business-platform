@@ -31,7 +31,7 @@ readonly class MembershipService
         return PaymentProcessor::Stripe;
     }
 
-    public function getCurrentlySubscribedMembershipPlanForUser(
+    public function getSubscribedMembershipPlanForCurrentlyActiveOrganization(
         User $user
     ): MembershipPlan
     {
@@ -63,7 +63,7 @@ readonly class MembershipService
             return false;
         }
 
-        if ($this->getCurrentlySubscribedMembershipPlanForUser($user)->getName()
+        if ($this->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName()
             === $membershipPlan->getName()
         ) {
             return false;

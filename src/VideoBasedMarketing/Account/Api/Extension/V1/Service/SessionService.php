@@ -41,7 +41,7 @@ class SessionService
             $user,
             $this
                 ->membershipService
-                ->getCurrentlySubscribedMembershipPlanForUser($user)
+                ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
         );
     }
 }

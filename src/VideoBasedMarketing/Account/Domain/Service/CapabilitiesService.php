@@ -185,7 +185,7 @@ readonly class CapabilitiesService
 
         return $this
             ->membershipService
-            ->getCurrentlySubscribedMembershipPlanForUser($user)
+            ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
             ->hasCapability($capability);
     }
 }
