@@ -37,11 +37,13 @@
 
                             <td class="text-left">
                                 {% if organization.owningUser.id is same as app.user.id %}
-                                    <span class="text-mercurius-green-600 font-semibold">
+                                    <span class="text-mercurius-green-600 font-semibold" data-test-class="ownedByNote">
                                         {{ 'organization.switch.table.note_owned_by_you'|trans }}
                                     </span>
                                 {% else %}
-                                    {{ organization.owningUser.nameOrEmail }}
+                                    <span data-test-class="ownedByNote">
+                                        {{ organization.owningUser.nameOrEmail }}
+                                    </span>
                                 {% endif %}
                             </td>
 
