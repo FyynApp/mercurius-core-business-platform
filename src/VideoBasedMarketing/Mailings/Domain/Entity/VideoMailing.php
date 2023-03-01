@@ -5,10 +5,13 @@ namespace App\VideoBasedMarketing\Mailings\Domain\Entity;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,14 +26,18 @@ use Symfony\Component\Validator\Constraints as Assert;
     name: 'created_at_idx'
 )]
 class VideoMailing
-    implements UserOwnedEntityInterface
+    implements UserOwnedEntityInterface, OrganizationOwnedEntityInterface
 {
+    /**
+     * @throws Exception
+     */
     public function __construct(
         User  $user,
         Video $video
     )
     {
         $this->user = $user;
+        $this->organization = $user->getCurrentlyActiveOrganization();
         $this->video = $video;
         $this->createdAt = DateAndTimeService::getDateTime();
     }
@@ -59,14 +66,42 @@ class VideoMailing
     #[ORM\JoinColumn(
         name: 'users_id',
         referencedColumnName: 'id',
-        nullable: false,
-        onDelete: 'CASCADE'
+        nullable: true,
+        onDelete: 'SET NULL'
     )]
-    private User $user;
+    private ?User $user;
 
     public function getUser(): User
     {
+        if (is_null($this->user)) {
+            return $this->organization->getOwningUser();
+        }
         return $this->user;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'organizations_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
+    private Organization $organization;
+
+    public function getOrganization(): Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(
+        Organization $organization
+    ): void
+    {
+        $this->organization = $organization;
     }
 
 

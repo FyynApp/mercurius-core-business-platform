@@ -96,13 +96,6 @@ class GeneralVoter
             ) {
                 return true;
             }
-
-            if ($this->organizationDomainService->userJoinedOrganizations($user)) {
-                return $this->organizationDomainService->userOwnedEntityBelongsToOrganization(
-                    $typedSubject,
-                    $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)
-                );
-            }
         }
 
         return false;

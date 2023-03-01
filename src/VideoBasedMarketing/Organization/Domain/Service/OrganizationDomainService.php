@@ -4,7 +4,6 @@ namespace App\VideoBasedMarketing\Organization\Domain\Service;
 
 use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Group;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Invitation;
@@ -274,22 +273,6 @@ readonly class OrganizationDomainService
             [$organization->getOwningUser()],
             $organization->getJoinedUsers()->toArray()
         );
-    }
-
-    public function userOwnedEntityBelongsToOrganization(
-        UserOwnedEntityInterface $entity,
-        Organization             $organization
-    ): bool
-    {
-        $user = $entity->getUser();
-
-        if (!$this->userJoinedOrganizations($user)) {
-            return false;
-        }
-
-        $entityOrganisation = $this->getCurrentlyActiveOrganizationOfUser($user);
-
-        return $entityOrganisation->getId() === $organization->getId();
     }
 
     public function getGroupName(
