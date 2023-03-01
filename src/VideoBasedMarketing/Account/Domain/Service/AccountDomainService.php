@@ -229,7 +229,7 @@ readonly class AccountDomainService
         /** @var Video $video */
         foreach ($claimingUser->getVideos() as $video) {
             $video->setUser($claimedUser);
-            $recordingSession->setOrganization(
+            $video->setOrganization(
                 $claimedUser->getCurrentlyActiveOrganization()
             );
             $this->entityManager->persist($video);
