@@ -71,7 +71,7 @@ class InvitationTest
 
         $form = $crawler->selectButton('Join organization')->form();
         $client->followRedirects(false);
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
         /** @var Email $email */
         $email = $this->getMailerMessage();
