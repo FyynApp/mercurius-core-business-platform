@@ -3,6 +3,7 @@
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 {# @var videos \App\VideoBasedMarketing\Recordings\Domain\Entity\Video[] #}
 {# @var videoFolders \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder[] #}
+{# @var videoFolder null|\App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder #}
 
 {% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
@@ -36,7 +37,7 @@
         {% trans_default_domain 'videobasedmarketing.recordings' %}
 
         {% block contentBoxTitle %}
-            {{ 'videos_overview.title' }}
+            {{ 'videos_overview.title'|trans }}
         {% endblock %}
 
         {% block contentBoxSubtitle %}
@@ -136,8 +137,117 @@
             </div>
 
 
+            <script>
+                function dragstartHandler(event) {
+                    console.debug('dragstart');
+                    event.target.classList.add('opacity-50');
+                    event.dataTransfer.setData('text', event.target.id);
+                    event.effectAllowed = 'move';
+                }
 
-            {% if TwigHelperService.videoDomainService.availableVideosForCurrentlyActiveOrganization(app.user)|length is same as 0 %}
+                function dragoverHandler(event) {
+                    console.debug('dragover');
+                    event.currentTarget.classList.add('opacity-50');
+                    event.preventDefault();
+                }
+
+                function dragleaveHandler(event) {
+                    console.debug('dragleave');
+                    event.currentTarget.classList.remove('opacity-50');
+                    event.preventDefault();
+                }
+
+                function dropHandler(event) {
+                    console.debug('drop');
+                    event.preventDefault();
+                    let id = event.dataTransfer.getData('text');
+                    console.debug('id', id);
+                    console.debug('event.target.id', event.target.id);
+
+                    const req = new XMLHttpRequest();
+                    //req.addEventListener('load', reqListener);
+                    req.open(
+                        'POST',
+                        '{{ path('videobasedmarketing.recordings.presentation.video_folders.move_video') }}'
+                            + '?videoId=' + id
+                            + '&videoFolderId=' + event.target.id
+                            + '&_csrf_token={{ csrf_token('move-video-into-folder') }}'
+                    );
+                    req.send();
+
+                    document.getElementById(id).remove();
+                }
+
+                function dragendHandler(event) {
+                    console.log('dragEnd');
+                    event.dataTransfer.clearData();
+                }
+            </script>
+
+            <div>
+
+                <form
+                        action="{{ path('videobasedmarketing.recordings.presentation.video_folders.create') }}"
+                        method="post"
+                >
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('create-video-folder') }}">
+                    {% if videoFolder is not null %}
+                        <input type="hidden" name="parentVideoFolderId" value="{{ videoFolder.id }}">
+                    {% endif %}
+                    <label><input type="text" name="name"></label>
+                    <button
+                            type="submit"
+                    >
+                        create
+                    </button>
+
+                </form>
+
+                {% if videoFolder is not null %}
+                    <div class="font-bold">
+                        <a
+                                href="{{ path(
+                                    'videobasedmarketing.recordings.presentation.videos.overview',
+                                    { videoFolderId: videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }
+                                ) }}"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="font-bold">
+                        {{ videoFolder.name }}
+                    </div>
+                {% endif %}
+
+                {% for videoFolder in videoFolders %}
+                    {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder #}
+
+                    <div
+                            class="h-20 bg-neutral-300"
+                            id="{{ videoFolder.id }}"
+                            ondrop="dropHandler(event);"
+                            ondragover="dragoverHandler(event);"
+                            ondragleave="dragleaveHandler(event);"
+                    >
+                        <a
+                                href="{{ path(
+                                    'videobasedmarketing.recordings.presentation.videos.overview',
+                                    { videoFolderId: videoFolder.id }
+                                ) }}"
+                        >
+                            {{ videoFolder.name }}
+                        </a>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            {% if videos|length is same as 0 %}
                 <h2 class="font-bold text-xl mb-2">
                     {{ 'videos_overview.no_videos_available'|trans }}
                 </h2>
@@ -180,14 +290,21 @@
                         </div>
                     {% endif %}
 
-                    {% for video in TwigHelperService.videoDomainService.availableVideosForCurrentlyActiveOrganization(app.user) %}
+                    {% for video in videos %}
                         {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
+                    <div
+                            draggable="true"
+                            id="{{ video.id }}"
+                            ondragstart="dragstartHandler(event)"
+                            ondragend="dragendHandler(event)"
+                    >
                         {{ component('videobasedmarketing_recordings_video_manage_widget', {
                             video: video,
                             showEditModal: showEditModalForVideoId is same as video.id,
                             doneCtaMustRedirectToOverview: showEditModalForVideoId is same as video.id,
                         }) }}
+                    </div>
                     {% endfor %}
 
                 </div>

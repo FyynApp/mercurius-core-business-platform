@@ -909,7 +909,7 @@ class Video
     ): void
     {
         if (!is_null($videoFolder)) {
-            if ($videoFolder->getId() !== $this->organization->getId()) {
+            if ($videoFolder->getOrganization()->getId() !== $this->organization->getId()) {
                 throw new ValueError(
                     "Video folder '{$videoFolder->getId()}' is linked to another organization than video '$this->id'."
                 );

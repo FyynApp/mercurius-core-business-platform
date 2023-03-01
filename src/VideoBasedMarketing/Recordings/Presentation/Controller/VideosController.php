@@ -10,6 +10,7 @@ use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoFolderDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,8 +32,9 @@ class VideosController
         methods     : [Request::METHOD_GET]
     )]
     public function videosOverviewAction(
-        Request            $request,
-        VideoDomainService $videoDomainService
+        Request                  $request,
+        VideoDomainService       $videoDomainService,
+        VideoFolderDomainService $videoFolderDomainService
     ): Response
     {
         $videoFolderId = $request->get('videoFolderId');
@@ -64,7 +66,14 @@ class VideosController
                         $videoFolder
                     ),
 
-                'videoFolders' => [],
+                'videoFolders' => $videoFolderDomainService
+                    ->getAvailableVideoFoldersForCurrentlyActiveOrganization(
+                        $user,
+                        $videoFolder
+                    ),
+
+                'videoFolder' => $videoFolder,
+
                 'showEditModalForVideoId' => $request->get('showEditModalForVideoId')
             ]
         );

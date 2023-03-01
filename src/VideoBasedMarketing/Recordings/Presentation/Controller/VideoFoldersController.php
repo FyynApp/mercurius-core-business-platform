@@ -5,10 +5,13 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoFolderDomainService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -29,6 +32,10 @@ class VideoFoldersController
         VideoFolderDomainService $videoFolderDomainService
     ): Response
     {
+        if (!$this->isCsrfTokenValid('create-video-folder', $request->get('_csrf_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
+
         $parentVideoFolderId = $request->get('parentVideoFolderId');
 
         $parentVideoFolder = null;
@@ -56,7 +63,7 @@ class VideoFoldersController
         );
 
         if (is_null($videoFolder)) {
-            throw $this->createAccessDeniedException('Could not create video folder.');
+            throw new BadRequestHttpException('Could not create video folder.');
         }
 
         return $this
@@ -64,5 +71,56 @@ class VideoFoldersController
                 'videobasedmarketing.recordings.presentation.videos.overview',
                 ['videoFolderId' => $parentVideoFolderId]
             );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/video-folders/move-video',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/video-ordner/video-verschieben',
+        ],
+        name        : 'videobasedmarketing.recordings.presentation.video_folders.move_video',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function moveVideoIntoFolderAction(
+        Request                  $request,
+        VideoFolderDomainService $videoFolderDomainService
+    ): Response
+    {
+        if (!$this->isCsrfTokenValid('move-video-into-folder', $request->get('_csrf_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
+
+        $r = $this->verifyAndGetUserAndEntity(
+            Video::class,
+            $request->get('videoId'),
+            VotingAttribute::Edit
+        );
+
+        /** @var Video $video */
+        $video = $r->getEntity();
+        $user = $r->getUser();
+
+        $videoFolderId = $request->get('videoFolderId');
+
+        $videoFolder = null;
+
+        if (!is_null($videoFolderId)) {
+            $r = $this->verifyAndGetUserAndEntity(
+                VideoFolder::class,
+                $videoFolderId,
+                VotingAttribute::Use
+            );
+
+            /** @var VideoFolder $videoFolder */
+            $videoFolder = $r->getEntity();
+        }
+
+        $videoFolderDomainService->moveVideoIntoFolder(
+            $video,
+            $videoFolder
+        );
+
+        return new JsonResponse();
     }
 }
