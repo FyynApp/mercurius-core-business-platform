@@ -11,15 +11,12 @@ use App\VideoBasedMarketing\Account\Infrastructure\Event\UserAuthenticatedViaThi
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 
 class ThirdPartyAuthService
 {
     private EntityManagerInterface $entityManager;
-
-    private UserPasswordHasherInterface $userPasswordHasher;
 
     private RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService;
 
@@ -29,14 +26,12 @@ class ThirdPartyAuthService
 
     public function __construct(
         EntityManagerInterface                $entityManager,
-        UserPasswordHasherInterface           $userPasswordHasher,
         RequestParametersBasedUserAuthService $requestParametersBasedUserAuthService,
         AccountDomainService                  $accountDomainService,
         EventDispatcherInterface              $eventDispatcher
     )
     {
         $this->entityManager = $entityManager;
-        $this->userPasswordHasher = $userPasswordHasher;
         $this->requestParametersBasedUserAuthService = $requestParametersBasedUserAuthService;
         $this->accountDomainService = $accountDomainService;
         $this->eventDispatcher = $eventDispatcher;
