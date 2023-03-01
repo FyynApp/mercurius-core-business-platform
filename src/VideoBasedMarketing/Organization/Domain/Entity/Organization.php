@@ -42,10 +42,7 @@ class Organization
      */
     public function getId(): string
     {
-        if (is_null($this->id)) {
-            throw new Exception('Entity of class ' . self::class . ' does not yet have an id.');
-        }
-        return $this->id;
+        return (string)$this->id;
     }
 
 

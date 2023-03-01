@@ -94,6 +94,7 @@ class User
                 );
             }
         }
+        $this->ownedOrganizations->add($organization);
     }
 
 
