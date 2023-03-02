@@ -204,7 +204,13 @@
                 </form>
 
                 {% if videoFolder is not null %}
-                    <div class="font-bold">
+                    <div
+                            class="h-20 bg-neutral-300"
+                            id="{{ videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }}"
+                            ondrop="dropHandler(event);"
+                            ondragover="dragoverHandler(event);"
+                            ondragleave="dragleaveHandler(event);"
+                    >
                         <a
                                 href="{{ path(
                                     'videobasedmarketing.recordings.presentation.videos.overview',
