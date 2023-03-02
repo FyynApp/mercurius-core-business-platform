@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Domain\Enum\VideosListViewMode;
 use App\VideoBasedMarketing\Account\Domain\Event\UnregisteredUserClaimedRegisteredUserEvent;
 use App\VideoBasedMarketing\Account\Domain\Event\UserCreatedEvent;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\ActiveCampaignContactTag;
@@ -316,5 +317,19 @@ readonly class AccountDomainService
                 $plainPassword
             )
         );
+    }
+
+    public function switchVideosListViewMode(
+        User $user
+    ): void
+    {
+        if ($user->getVideosListViewMode() === VideosListViewMode::Tiles) {
+            $user->setVideosListViewMode(VideosListViewMode::Dense);
+        } else {
+            $user->setVideosListViewMode(VideosListViewMode::Tiles);
+        }
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 }

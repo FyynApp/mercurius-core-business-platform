@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Account\Domain\Entity;
 
 use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Domain\Enum\VideosListViewMode;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ActiveCampaignContact;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
@@ -529,6 +530,28 @@ class User
         if (!$this->videoMailings->contains($videoMailing)) {
             $this->videoMailings->add($videoMailing);
         }
+    }
+
+    #[ORM\Column(
+        type: Types::STRING,
+        nullable: true,
+        enumType: VideosListViewMode::class
+    )]
+    private ?VideosListViewMode $videosListViewMode = null;
+
+    public function getVideosListViewMode(): VideosListViewMode
+    {
+        if (is_null($this->videosListViewMode)) {
+            return VideosListViewMode::Tiles;
+        }
+        return $this->videosListViewMode;
+    }
+
+    public function setVideosListViewMode(
+        VideosListViewMode $videosListViewMode
+    ): void
+    {
+        $this->videosListViewMode = $videosListViewMode;
     }
 
 

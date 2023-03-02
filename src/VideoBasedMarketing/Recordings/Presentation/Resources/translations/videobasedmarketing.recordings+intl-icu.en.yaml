@@ -67,6 +67,9 @@ videos_overview:
     custom_logo: 'Change logo for landingpage'
     custom_domain: 'Change domain for landingpage'
     manage_organization: 'Manage organization'
+  list_view_mode:
+    dense: 'View mode: dense'
+    tiles: 'View mode: tiles'
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
 video_landingpage:
