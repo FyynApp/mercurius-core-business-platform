@@ -38,6 +38,16 @@ class VideoFoldersController
 
         $parentVideoFolderId = $request->get('parentVideoFolderId');
 
+        $name = trim((string)$request->get('name'));
+
+        if ($name === '') {
+            return $this
+                ->redirectToRoute(
+                    'videobasedmarketing.recordings.presentation.videos.overview',
+                    ['videoFolderId' => $parentVideoFolderId]
+                );
+        }
+
         $parentVideoFolder = null;
 
         if (!is_null($parentVideoFolderId)) {
@@ -58,7 +68,7 @@ class VideoFoldersController
 
         $videoFolder = $videoFolderDomainService->createVideoFolder(
             $user,
-            (string)$request->get('name'),
+            $name,
             $parentVideoFolder
         );
 
@@ -99,9 +109,11 @@ class VideoFoldersController
 
         /** @var Video $video */
         $video = $r->getEntity();
-        $user = $r->getUser();
 
         $videoFolderId = $request->get('videoFolderId');
+        if (trim($videoFolderId) === '') {
+            $videoFolderId = null;
+        }
 
         $videoFolder = null;
 

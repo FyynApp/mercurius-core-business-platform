@@ -65,6 +65,10 @@ videos_overview:
   no_videos_available: 'Du hast bisher noch keine Videos.'
   use_extension_note: 'Benutze die Browser Extension um Videos aufzuzeichnen.'
   use_upload_note: 'Alternativ kannst du auch eine bereits erstellte Video-Datei hochladen.'
+  video_folders:
+    up_cta: 'Parent folder'
+    create_cta: 'Create folder'
+    create_placeholder: 'New folder name'
   cta:
     upload: 'Video-Datei hochladen'
     record_with_native_browser_recorder: 'Webcam oder Desktop aufnehmen'
