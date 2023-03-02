@@ -53,7 +53,7 @@ upload_video:
 videos_overview:
   back_cta: 'Back to videos'
   title: 'Your videos'
-  subtitle: ''
+  subtitle: 'From here, videos can be created, edited, and shared.'
   no_videos_available: 'No videos.'
   use_extension_note: 'Use the Browser Extension to record a video.'
   use_upload_note: 'You can also upload an already created video file.'
