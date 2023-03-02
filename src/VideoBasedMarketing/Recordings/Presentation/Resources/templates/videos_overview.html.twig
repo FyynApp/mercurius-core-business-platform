@@ -356,33 +356,6 @@
                 </div>
 
 
-                <form
-                        class="w-full flex flex-row justify-end mb-8"
-                        action="{{ path('videobasedmarketing.account.presentation.switch_videos_list_view_mode') }}"
-                        method="post"
-                >
-                    <input
-                            type="hidden"
-                            name="_csrf_token"
-                            value="{{ csrf_token('switch-videos-list-view-mode') }}"
-                    >
-
-                    <button type="submit" class="flex flex-row gap-2">
-                        {% if app.user.videosListViewMode is same as constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\VideosListViewMode::Tiles') %}
-                            {{ 'videos_overview.list_view_mode.tiles'|trans }}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h2.25a3 3 0 013 3v2.25a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm9.75 0a3 3 0 013-3H18a3 3 0 013 3v2.25a3 3 0 01-3 3h-2.25a3 3 0 01-3-3V6zM3 15.75a3 3 0 013-3h2.25a3 3 0 013 3V18a3 3 0 01-3 3H6a3 3 0 01-3-3v-2.25zm9.75 0a3 3 0 013-3H18a3 3 0 013 3V18a3 3 0 01-3 3h-2.25a3 3 0 01-3-3v-2.25z" clip-rule="evenodd" />
-                            </svg>
-                        {% else %}
-                            {{ 'videos_overview.list_view_mode.dense'|trans }}
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                            </svg>
-                        {% endif %}
-                    </button>
-                </form>
-
-
                 {% if videos|length is same as 0 %}
                     <h2 class="font-bold text-xl mb-2">
                         {{ 'videos_overview.no_videos_available'|trans }}
@@ -401,6 +374,33 @@
                     {% endif %}
 
                 {% else %}
+
+                    <form
+                            class="w-full flex flex-row justify-end mb-8"
+                            action="{{ path('videobasedmarketing.account.presentation.switch_videos_list_view_mode') }}"
+                            method="post"
+                    >
+                        <input
+                                type="hidden"
+                                name="_csrf_token"
+                                value="{{ csrf_token('switch-videos-list-view-mode') }}"
+                        >
+
+                        <button type="submit" class="flex flex-row gap-2">
+                            {% if app.user.videosListViewMode is same as constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\VideosListViewMode::Tiles') %}
+                                {{ 'videos_overview.list_view_mode.tiles'|trans }}
+                                {# Heroicon: squares-2x2 #}
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                                </svg>
+                            {% else %}
+                                {{ 'videos_overview.list_view_mode.dense'|trans }}
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                </svg>
+                            {% endif %}
+                        </button>
+                    </form>
 
                     {% if app.user.videosListViewMode is same as constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\VideosListViewMode::Dense') %}
 

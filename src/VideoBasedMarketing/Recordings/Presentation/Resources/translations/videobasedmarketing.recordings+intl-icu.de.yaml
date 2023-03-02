@@ -62,7 +62,7 @@ videos_overview:
   back_cta: 'Zurück zu Videos'
   title: 'Deine Videos'
   subtitle: 'Hier können Videos bearbeitet und geteilt werden.'
-  no_videos_available: 'Du hast bisher noch keine Videos.'
+  no_videos_available: 'Keine Videos.'
   use_extension_note: 'Benutze die Browser Extension um Videos aufzuzeichnen.'
   use_upload_note: 'Alternativ kannst du auch eine bereits erstellte Video-Datei hochladen.'
   video_folders:
