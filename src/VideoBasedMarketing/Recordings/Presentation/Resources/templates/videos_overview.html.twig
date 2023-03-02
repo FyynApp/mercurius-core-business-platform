@@ -180,11 +180,12 @@
 
                 function dropHandler(event) {
                     console.debug('dropHandler');
-                    event.preventDefault();
 
                     event.target.classList.remove('font-bold');
-                    document.getElementById('folder-icon-normal-' + event.target.id).classList.remove('hidden');
-                    document.getElementById('folder-icon-open-' + event.target.id).classList.add('hidden');
+                    document.getElementById('folder-icon-normal-' + event.currentTarget.id).classList.remove('hidden');
+                    document.getElementById('folder-icon-open-' + event.currentTarget.id).classList.add('hidden');
+
+                    event.preventDefault();
 
                     const id = event.dataTransfer.getData('text');
                     console.debug('id', id);
@@ -215,7 +216,7 @@
 
             <div class="h-full">
 
-                <div class="mb-8 pb-6 pt-8 border-b-2 border-t-2 border-neutral-200 sticky top-0 z-40 bg-white">
+                <div class="mb-8 pb-6 pt-8 border-b-2 border-t-2 border-neutral-200 sticky top-0 z-40 bg-white mb-4">
                     <form
                             class="mb-7"
                             action="{{ path('videobasedmarketing.recordings.presentation.video_folders.create') }}"
