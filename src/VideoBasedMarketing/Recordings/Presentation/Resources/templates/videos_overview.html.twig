@@ -145,6 +145,7 @@
                     event.effectAllowed = 'move';
 
                     const img = document.createElement('img');
+                    img.id = 'dragImage';
                     img.src = event.target.dataset.dragImageUrl;
                     img.classList.add('w-32');
                     img.classList.add('rounded-md');
@@ -182,7 +183,7 @@
                 function dropHandler(event) {
                     console.debug('dropHandler');
 
-                    event.target.classList.remove('font-bold');
+                    event.currentTarget.classList.remove('font-bold');
                     document.getElementById('folder-icon-normal-' + event.currentTarget.id).classList.remove('hidden');
                     document.getElementById('folder-icon-open-' + event.currentTarget.id).classList.add('hidden');
 
@@ -211,6 +212,7 @@
                 function dragendHandler(event) {
                     console.debug('dragendHandler');
                     event.target.classList.remove('opacity-10');
+                    document.getElementById('dragImage').remove();
                     event.dataTransfer.clearData();
                 }
             </script>
@@ -317,7 +319,7 @@
 
                                     draggable="false"
 
-                                    class="flex flex-row justify-start items-center gap-2 w-full hover:underline"
+                                    class="flex flex-row justify-start items-center gap-2 w-fit hover:underline"
                                     id="{{ videoFolder.id }}"
 
                                     ondrop="dropHandler(event);"
