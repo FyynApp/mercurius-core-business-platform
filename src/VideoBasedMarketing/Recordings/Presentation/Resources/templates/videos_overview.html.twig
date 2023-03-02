@@ -213,147 +213,149 @@
                 }
             </script>
 
-            <div class="mb-8 pb-6 pt-8 border-b-2 border-t-2 border-neutral-200">
-                <form
-                        class="mb-7"
-                        action="{{ path('videobasedmarketing.recordings.presentation.video_folders.create') }}"
-                        method="post"
-                >
-                    <input
-                            type="hidden"
-                            name="_csrf_token"
-                            value="{{ csrf_token('create-video-folder') }}"
-                    >
+            <div class="h-full">
 
-                    {% if videoFolder is not null %}
+                <div class="mb-8 pb-6 pt-8 border-b-2 border-t-2 border-neutral-200 sticky top-0 z-40 bg-white">
+                    <form
+                            class="mb-7"
+                            action="{{ path('videobasedmarketing.recordings.presentation.video_folders.create') }}"
+                            method="post"
+                    >
                         <input
                                 type="hidden"
-                                name="parentVideoFolderId"
-                                value="{{ videoFolder.id }}"
+                                name="_csrf_token"
+                                value="{{ csrf_token('create-video-folder') }}"
                         >
-                    {% endif %}
 
-                    <div class="flex flex-row gap-2 justify-start items-center">
-                        <label>
+                        {% if videoFolder is not null %}
                             <input
-                                    class="text-input"
-                                    type="text"
-                                    name="name"
-                                    placeholder="{{ 'videos_overview.video_folders.create_placeholder'|trans }}"
+                                    type="hidden"
+                                    name="parentVideoFolderId"
+                                    value="{{ videoFolder.id }}"
                             >
-                        </label>
-                        <button
-                                class="cta-with-icon-primary"
-                                type="submit"
-                        >
-                            {{ 'videos_overview.video_folders.create_cta'|trans }}
-                        </button>
-                    </div>
-                </form>
+                        {% endif %}
 
-                <div class="flex flex-col justify-center items-start gap-2">
-                    {% if videoFolder is not null %}
-                        <div class="font-bold text-lg mb-2">
-                            {{ videoFolder.name }}
-                        </div>
-
-                        <div
-                                class="w-full"
-                                id="{{ videoFolder.parentVideoFolder is null ? '' : videoFolder.parentVideoFolder.id }}"
-                                ondrop="dropHandler(event);"
-                                ondragover="dragoverHandler(event);"
-                                ondragleave="dragleaveHandler(event);"
-                        >
-                            <a
-                                    class="flex flex-row justify-start items-center gap-2 hover:underline"
-                                    href="{{ path(
-                                        'videobasedmarketing.recordings.presentation.videos.overview',
-                                        { videoFolderId: videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }
-                                    ) }}"
+                        <div class="flex flex-row gap-2 justify-start items-center">
+                            <label>
+                                <input
+                                        class="text-input"
+                                        type="text"
+                                        name="name"
+                                        placeholder="{{ 'videos_overview.video_folders.create_placeholder'|trans }}"
+                                >
+                            </label>
+                            <button
+                                    class="cta-with-icon-primary"
+                                    type="submit"
                             >
-                                {# Heroicon: arrow-long-up #}
-                                <svg
-                                        id="folder-icon-normal-{{ videoFolder.parentVideoFolder is null ? '' : videoFolder.parentVideoFolder.id }}"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
-                                        class="w-5 h-5"
-                                >
-                                    <path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 011.06 0l3.75 3.75a.75.75 0 01-1.06 1.06l-2.47-2.47V21a.75.75 0 01-1.5 0V4.81L8.78 7.28a.75.75 0 01-1.06-1.06l3.75-3.75z" clip-rule="evenodd" />
-                                </svg>
-
-                                {# Heroicon: arrow-up-on-square #}
-                                <svg
-                                        id="folder-icon-open-{{ videoFolder.parentVideoFolder is null ? '' : videoFolder.parentVideoFolder.id }}"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        class="hidden w-5 h-5"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" />
-                                </svg>
-
-                                <div>
-                                    {{ 'videos_overview.video_folders.up_cta'|trans }}
-                                </div>
-                            </a>
+                                {{ 'videos_overview.video_folders.create_cta'|trans }}
+                            </button>
                         </div>
-                    {% endif %}
+                    </form>
 
-                    {% for videoFolder in videoFolders %}
-                        {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder #}
-
-                        <a
-                                href="{{ path(
-                                    'videobasedmarketing.recordings.presentation.videos.overview',
-                                    { videoFolderId: videoFolder.id }
-                                ) }}"
-
-                                class="flex flex-row justify-start items-center gap-2 w-full hover:underline"
-                                id="{{ videoFolder.id }}"
-
-                                ondrop="dropHandler(event);"
-                                ondragover="dragoverHandler(event);"
-                                ondragleave="dragleaveHandler(event);"
-                        >
-                            <div>
-                                {# Heroicons: folder solid #}
-                                <svg
-                                        id="folder-icon-normal-{{ videoFolder.id }}"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        class="w-5 h-5"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
-
-                                {# Heroicons: folder-arrow-down #}
-                                <svg
-                                        id="folder-icon-open-{{ videoFolder.id }}"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        class="hidden w-5 h-5"
-                                >
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                </svg>
-                            </div>
-                            <div>
+                    <div class="flex flex-col justify-center items-start gap-2">
+                        {% if videoFolder is not null %}
+                            <div class="font-bold text-lg mb-2">
                                 {{ videoFolder.name }}
                             </div>
-                        </a>
-                    {% endfor %}
+
+                            <div
+                                    class="w-full"
+                                    id="{{ videoFolder.parentVideoFolder is null ? '' : videoFolder.parentVideoFolder.id }}"
+                                    ondrop="dropHandler(event);"
+                                    ondragover="dragoverHandler(event);"
+                                    ondragleave="dragleaveHandler(event);"
+                            >
+                                <a
+                                        class="flex flex-row justify-start items-center gap-2 hover:underline"
+                                        href="{{ path(
+                                            'videobasedmarketing.recordings.presentation.videos.overview',
+                                            { videoFolderId: videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }
+                                        ) }}"
+                                >
+                                    {# Heroicon: arrow-long-up #}
+                                    <svg
+                                            id="folder-icon-normal-{{ videoFolder.parentVideoFolder is null ? '' : videoFolder.parentVideoFolder.id }}"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="currentColor"
+                                            class="w-5 h-5"
+                                    >
+                                        <path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 011.06 0l3.75 3.75a.75.75 0 01-1.06 1.06l-2.47-2.47V21a.75.75 0 01-1.5 0V4.81L8.78 7.28a.75.75 0 01-1.06-1.06l3.75-3.75z" clip-rule="evenodd" />
+                                    </svg>
+
+                                    {# Heroicon: arrow-up-on-square #}
+                                    <svg
+                                            id="folder-icon-open-{{ videoFolder.parentVideoFolder is null ? '' : videoFolder.parentVideoFolder.id }}"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="hidden w-5 h-5"
+                                    >
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" />
+                                    </svg>
+
+                                    <div>
+                                        {{ 'videos_overview.video_folders.up_cta'|trans }}
+                                    </div>
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% for videoFolder in videoFolders %}
+                            {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder #}
+
+                            <a
+                                    href="{{ path(
+                                        'videobasedmarketing.recordings.presentation.videos.overview',
+                                        { videoFolderId: videoFolder.id }
+                                    ) }}"
+
+                                    class="flex flex-row justify-start items-center gap-2 w-full hover:underline"
+                                    id="{{ videoFolder.id }}"
+
+                                    ondrop="dropHandler(event);"
+                                    ondragover="dragoverHandler(event);"
+                                    ondragleave="dragleaveHandler(event);"
+                            >
+                                <div>
+                                    {# Heroicons: folder solid #}
+                                    <svg
+                                            id="folder-icon-normal-{{ videoFolder.id }}"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            class="w-5 h-5"
+                                    >
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                                    </svg>
+
+                                    {# Heroicons: folder-arrow-down #}
+                                    <svg
+                                            id="folder-icon-open-{{ videoFolder.id }}"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="hidden w-5 h-5"
+                                    >
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    {{ videoFolder.name }}
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
 
 
-            {% if videos|length is same as 0 %}
+                {% if videos|length is same as 0 %}
                 <h2 class="font-bold text-xl mb-2">
                     {{ 'videos_overview.no_videos_available'|trans }}
                 </h2>
@@ -370,7 +372,7 @@
                     </h3>
                 {% endif %}
 
-            {% else %}
+                {% else %}
 
                 <div class="grid-outer">
 
@@ -399,24 +401,26 @@
                     {% for video in videos %}
                         {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
-                    <div
-                            draggable="true"
-                            id="{{ video.id }}"
+                        <div
+                                draggable="true"
+                                id="{{ video.id }}"
 
-                            ondragstart="dragstartHandler(event)"
-                            ondragend="dragendHandler(event)"
+                                ondragstart="dragstartHandler(event)"
+                                ondragend="dragendHandler(event)"
 
-                            data-drag-image-url="{{ asset(TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video)) }}"
-                    >
-                        {{ component('videobasedmarketing_recordings_video_manage_widget', {
-                            video: video,
-                            showEditModal: showEditModalForVideoId is same as video.id,
-                            doneCtaMustRedirectToOverview: showEditModalForVideoId is same as video.id,
-                        }) }}
-                    </div>
+                                data-drag-image-url="{{ asset(TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video)) }}"
+                        >
+                            {{ component('videobasedmarketing_recordings_video_manage_widget', {
+                                video: video,
+                                showEditModal: showEditModalForVideoId is same as video.id,
+                                doneCtaMustRedirectToOverview: showEditModalForVideoId is same as video.id,
+                            }) }}
+                        </div>
                     {% endfor %}
 
                 </div>
+
+            </div>
 
             {% endif %}
 
