@@ -70,6 +70,10 @@ videos_overview:
   list_view_mode:
     dense: 'View mode: dense'
     tiles: 'View mode: tiles'
+  list_view_mode_dense:
+    table_th_title: 'Title'
+    table_th_date: 'Date'
+    table_th_duration: 'Duration'
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
 video_landingpage:
