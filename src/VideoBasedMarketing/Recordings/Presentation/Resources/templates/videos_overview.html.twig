@@ -228,7 +228,7 @@
                         <input
                                 type="hidden"
                                 name="_csrf_token"
-                                value="{{ csrf_token('create-videso-folder') }}"
+                                value="{{ csrf_token('create-video-folder') }}"
                         >
 
                         {% if videoFolder is not null %}
@@ -319,7 +319,7 @@
 
                                     draggable="false"
 
-                                    class="flex flex-row justify-start items-center gap-2 w-fit hover:underline"
+                                    class="flex flex-row justify-start items-center gap-2 w-fit"
                                     id="{{ videoFolder.id }}"
 
                                     ondrop="dropHandler(event);"
@@ -352,8 +352,13 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                                     </svg>
                                 </div>
-                                <div>
-                                    {{ videoFolder.name }}
+                                <div class="flex flex-row gap-1.5 justify-start items-center">
+                                    <div class="hover:underline">
+                                        {{ videoFolder.name }}
+                                    </div>
+                                    <div class="text-neutral-500 font-mono text-xs bg-neutral-200 opacity-60 rounded-sm w-fit px-1 h-5 flex flex-row justify-center items-center">
+                                        {{ TwigHelperService.videoFolderDomainService.numberOfVideosInFolder(videoFolder, app.user.currentlyActiveOrganization) }}
+                                    </div>
                                 </div>
                             </a>
                         {% endfor %}

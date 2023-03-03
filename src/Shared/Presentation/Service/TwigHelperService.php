@@ -14,6 +14,7 @@ use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesSe
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoFolderDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Presentation\Service\RecordingsPresentationService;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
@@ -31,6 +32,8 @@ class TwigHelperService
     private CookiesService $cookiesService;
 
     private VideoDomainService $videoDomainService;
+
+    private VideoFolderDomainService $videoFolderDomainService;
 
     private RecordingsInfrastructureService $recordingsInfrastructureService;
 
@@ -60,6 +63,7 @@ class TwigHelperService
         MembershipService               $membershipService,
         CookiesService                  $cookiesService,
         VideoDomainService              $videoDomainService,
+        VideoFolderDomainService        $videoFolderDomainService,
         RecordingsInfrastructureService $recordingsInfrastructureService,
         RecordingSessionDomainService   $recordingSessionDomainService,
         RecordingsPresentationService   $recordingsPresentationService,
@@ -78,6 +82,7 @@ class TwigHelperService
         $this->membershipService = $membershipService;
         $this->cookiesService = $cookiesService;
         $this->videoDomainService = $videoDomainService;
+        $this->videoFolderDomainService = $videoFolderDomainService;
         $this->recordingsInfrastructureService = $recordingsInfrastructureService;
         $this->recordingSessionDomainService = $recordingSessionDomainService;
         $this->recordingsPresentationService = $recordingsPresentationService;
@@ -124,6 +129,11 @@ class TwigHelperService
     public function getVideoDomainService(): VideoDomainService
     {
         return $this->videoDomainService;
+    }
+
+    public function getVideoFolderDomainService(): VideoFolderDomainService
+    {
+        return $this->videoFolderDomainService;
     }
 
     public function getRecordingsInfrastructureService(): RecordingsInfrastructureService

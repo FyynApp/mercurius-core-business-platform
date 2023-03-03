@@ -3,12 +3,14 @@
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Exception;
+use ValueError;
 
 
 readonly class VideoFolderDomainService
@@ -89,5 +91,58 @@ readonly class VideoFolderDomainService
         $video->setVideoFolder($videoFolder);
         $this->entityManager->persist($video);
         $this->entityManager->flush();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getNumberOfVideosInFolder(
+        ?VideoFolder $videoFolder,
+        Organization $organization
+    ): int
+    {
+        if (!is_null($videoFolder)) {
+            if ($videoFolder->getOrganization()->getId() !== $organization->getId()) {
+                throw new ValueError(
+                    "Video folder '{$videoFolder->getId()}' does not belong to organization '{$organization->getId()}'."
+                );
+            }
+        }
+
+        /** @var ObjectRepository<Video> $videoRepo */
+        $videoRepo = $this
+            ->entityManager
+            ->getRepository(Video::class);
+
+        if (is_null($videoFolder)) {
+            return sizeof(
+                $videoRepo->findBy(
+                    [
+                        'organization' => $organization->getId(),
+                        'isDeleted'    => false
+                    ]
+                )
+            );
+        }
+
+        /** @var ObjectRepository<VideoFolder> $videoFolderRepo */
+        $videoFolderRepo = $this
+            ->entityManager
+            ->getRepository(VideoFolder::class);
+
+
+        $count = sizeof(
+            $videoRepo
+                ->findBy(['videoFolder' => $videoFolder->getId()]));
+
+        /** @var VideoFolder[] $childFolders */
+        $childFolders = $videoFolderRepo
+            ->findBy(['parentVideoFolder' => $videoFolder->getId()]);
+
+        foreach ($childFolders as $childFolder) {
+            $count += $this->getNumberOfVideosInFolder($childFolder, $organization);
+        }
+
+        return $count;
     }
 }
