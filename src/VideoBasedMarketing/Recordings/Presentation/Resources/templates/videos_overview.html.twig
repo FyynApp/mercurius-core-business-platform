@@ -137,87 +137,11 @@
             </div>
 
 
-            <script>
-                function dragstartHandler(event) {
-                    console.debug('dragstartHandler');
-                    event.target.classList.add('opacity-10');
-                    event.dataTransfer.setData('text', event.target.id);
-                    event.effectAllowed = 'move';
-
-                    const img = document.createElement('img');
-                    img.id = 'dragImage';
-                    img.src = event.target.dataset.dragImageUrl;
-                    img.classList.add('w-32');
-                    img.classList.add('rounded-md');
-                    img.classList.add('animate-rotate');
-                    img.style.position = 'absolute';
-                    img.style.width = '40px';
-                    img.style.top = '-1000px'; img.style.right = '-1000px';
-                    document.body.appendChild(img);
-                    event.dataTransfer.setDragImage(img, 0, 0);
-                }
-
-                function dragoverHandler(event) {
-                    console.debug('dragoverHandler');
-                    event.preventDefault();
-                    event.dataTransfer.dropEffect = 'move';
-                    if (!event.currentTarget.classList.contains('font-bold')) {
-                        event.currentTarget.classList.add('font-bold');
-                    }
-
-                    document.getElementById('folder-icon-normal-' + event.currentTarget.id).classList.add('hidden');
-                    document.getElementById('folder-icon-open-' + event.currentTarget.id).classList.remove('hidden');
-                }
-
-                function dragleaveHandler(event) {
-                    console.debug('dragleaveHandler');
-                    event.preventDefault();
-                    if (event.currentTarget.classList.contains('font-bold')) {
-                        event.currentTarget.classList.remove('font-bold');
-                    }
-
-                    document.getElementById('folder-icon-normal-' + event.currentTarget.id).classList.remove('hidden');
-                    document.getElementById('folder-icon-open-' + event.currentTarget.id).classList.add('hidden');
-                }
-
-                function dropHandler(event) {
-                    console.debug('dropHandler');
-
-                    event.currentTarget.classList.remove('font-bold');
-                    document.getElementById('folder-icon-normal-' + event.currentTarget.id).classList.remove('hidden');
-                    document.getElementById('folder-icon-open-' + event.currentTarget.id).classList.add('hidden');
-
-                    event.preventDefault();
-
-                    const id = event.dataTransfer.getData('text');
-                    console.debug('id', id);
-                    console.debug('event.currentTarget.id', event.currentTarget.id);
-
-                    const req = new XMLHttpRequest();
-                    //req.addEventListener('load', reqListener);
-                    req.open(
-                        'POST',
-                        '{{ path('videobasedmarketing.recordings.presentation.video_folders.move_video') }}'
-                            + '?videoId=' + id
-                            + '&videoFolderId=' + event.currentTarget.id
-                            + '&_csrf_token={{ csrf_token('move-video-into-folder') }}'
-                    );
-                    req.send();
-
-                    console.debug('saved');
-
-                    document.getElementById(id).remove();
-                }
-
-                function dragendHandler(event) {
-                    console.debug('dragendHandler');
-                    event.target.classList.remove('opacity-10');
-                    document.getElementById('dragImage').remove();
-                    event.dataTransfer.clearData();
-                }
-            </script>
-
-            <div class="h-full">
+            <div
+                    class="h-full"
+                    {{ stimulus_controller('videoBasedMarketing-recordings-videoFolderDragAndDrop') }}
+                    data-action="dragend->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragend"
+            >
 
                 <div class="mb-8 pb-6 pt-8 border-b-2 border-t-2 border-neutral-200 sticky top-0 z-40 bg-white mb-4">
                     <form
@@ -264,11 +188,18 @@
                             </div>
 
                             <div
+                                    id="video-folder-{{ videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }}"
+                                    data-move-video-into-folder-url="{{ path('videobasedmarketing.recordings.presentation.video_folders.move_video') }}"
                                     class="w-full"
-                                    id="{{ videoFolder.parentVideoFolder is null ? '' : videoFolder.parentVideoFolder.id }}"
-                                    ondrop="dropHandler(event);"
-                                    ondragover="dragoverHandler(event);"
-                                    ondragleave="dragleaveHandler(event);"
+                                    draggable="false"
+                                    data-video-folder-drag-and-drop-video-folder-id="{{ videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }}"
+                                    data-action="
+                                        dragover->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragover
+                                        dragenter->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragenter
+                                        dragleave->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragleave
+                                        drop->videoBasedMarketing-recordings-videoFolderDragAndDrop#drop
+                                        dragend->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragend
+                                    "
                             >
                                 <a
                                         class="flex flex-row justify-start items-center gap-2 hover:underline"
@@ -312,19 +243,25 @@
                             {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder #}
 
                             <a
+                                    id="video-folder-{{ videoFolder.id }}"
+                                    data-move-video-into-folder-url="{{ path('videobasedmarketing.recordings.presentation.video_folders.move_video') }}"
+
                                     href="{{ path(
                                         'videobasedmarketing.recordings.presentation.videos.overview',
                                         { videoFolderId: videoFolder.id }
                                     ) }}"
 
-                                    draggable="false"
-
                                     class="flex flex-row justify-start items-center gap-2 w-fit"
-                                    id="{{ videoFolder.id }}"
 
-                                    ondrop="dropHandler(event);"
-                                    ondragover="dragoverHandler(event);"
-                                    ondragleave="dragleaveHandler(event);"
+                                    draggable="false"
+                                    data-video-folder-drag-and-drop-video-folder-id="{{ videoFolder.id }}"
+                                    data-action="
+                                        dragover->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragover
+                                        dragenter->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragenter
+                                        dragleave->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragleave
+                                        drop->videoBasedMarketing-recordings-videoFolderDragAndDrop#drop
+                                        dragend->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragend
+                                    "
                             >
                                 <div>
                                     {# Heroicons: folder solid #}
@@ -356,8 +293,13 @@
                                     <div class="hover:underline">
                                         {{ videoFolder.name }}
                                     </div>
-                                    <div class="text-neutral-500 font-mono text-xs bg-neutral-200 opacity-60 rounded-sm w-fit px-1 h-5 flex flex-row justify-center items-center">
-                                        {{ TwigHelperService.videoFolderDomainService.numberOfVideosInFolder(videoFolder, app.user.currentlyActiveOrganization) }}
+                                    <div
+
+                                            class="text-neutral-500 font-light text-xs bg-neutral-200 opacity-60 rounded-sm w-fit px-1 h-5 flex flex-row justify-center items-center"
+                                    >
+                                        <div>
+                                            <span id="number-of-videos-in-folder-{{ videoFolder.id }}">{{ TwigHelperService.videoFolderDomainService.numberOfVideosInFolder(videoFolder, app.user.currentlyActiveOrganization) }}</span>&nbsp;{{ 'videos_overview.number_of_videos_label'|trans }}
+                                        </div>
                                     </div>
                                 </div>
                             </a>
@@ -431,15 +373,17 @@
                                         {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
                                         <tr
+                                                id="video-{{ video.id }}"
+                                                data-move-video-into-folder-csrf-token="{{ csrf_token('move-video-into-folder-' ~ video.id) }}"
+
                                                 class="hover:bg-neutral-200"
 
                                                 draggable="true"
-                                                id="{{ video.id }}"
 
-                                                ondragstart="dragstartHandler(event)"
-                                                ondragend="dragendHandler(event)"
+                                                data-video-folder-drag-and-drop-video-id="{{ video.id }}"
+                                                data-video-folder-drag-and-drop-video-drag-image-url="{{ asset(TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video)) }}"
 
-                                                data-drag-image-url="{{ asset(TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video)) }}"
+                                                data-action="dragstart->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragstart"
                                         >
                                             <td class="h-8 rounded-l-md">
                                                 <img
@@ -494,13 +438,14 @@
                                 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
                                 <div
+                                        id="video-{{ video.id }}"
+                                        data-move-video-into-folder-csrf-token="{{ csrf_token('move-video-into-folder-' ~ video.id) }}"
+
                                         draggable="true"
-                                        id="{{ video.id }}"
 
-                                        ondragstart="dragstartHandler(event)"
-                                        ondragend="dragendHandler(event)"
-
-                                        data-drag-image-url="{{ asset(TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video)) }}"
+                                        data-video-folder-drag-and-drop-video-id="{{ video.id }}"
+                                        data-video-folder-drag-and-drop-video-drag-image-url="{{ asset(TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video)) }}"
+                                        data-action="dragstart->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragstart"
                                 >
                                     {{ component('videobasedmarketing_recordings_video_manage_widget', {
                                         video: video,

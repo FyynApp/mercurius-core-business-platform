@@ -74,6 +74,7 @@ videos_overview:
     table_th_title: 'Title'
     table_th_date: 'Date'
     table_th_duration: 'Duration'
+  number_of_videos_label: 'videos'
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
 video_landingpage:

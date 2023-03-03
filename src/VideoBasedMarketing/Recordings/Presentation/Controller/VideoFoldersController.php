@@ -97,10 +97,6 @@ class VideoFoldersController
         VideoFolderDomainService $videoFolderDomainService
     ): Response
     {
-        if (!$this->isCsrfTokenValid('move-video-into-folder', $request->get('_csrf_token'))) {
-            throw new BadRequestHttpException('Invalid CSRF token.');
-        }
-
         $r = $this->verifyAndGetUserAndEntity(
             Video::class,
             $request->get('videoId'),
@@ -109,6 +105,10 @@ class VideoFoldersController
 
         /** @var Video $video */
         $video = $r->getEntity();
+
+        if (!$this->isCsrfTokenValid("move-video-into-folder-{$video->getId()}", $request->get('_csrf_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
 
         $videoFolderId = $request->get('videoFolderId');
         if (trim($videoFolderId) === '') {
