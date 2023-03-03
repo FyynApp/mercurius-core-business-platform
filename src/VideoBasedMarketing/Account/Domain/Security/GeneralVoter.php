@@ -78,28 +78,21 @@ class GeneralVoter
             return false;
         }
 
+        if ($subject instanceof OrganizationOwnedEntityInterface) {
+            $typedSubject = $subject;
+
+            if (    $typedSubject->getOrganization()->getId()
+                === $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()
+            ) {
+                return true;
+            }
+        }
+
         if ($subject instanceof UserOwnedEntityInterface) {
             $typedSubject = $subject;
 
             if (    $typedSubject->getUser()->getId()
                 === $user->getId()
-            ) {
-                return true;
-            }
-
-            if ($this->organizationDomainService->userIsMemberOfAnOrganization($user)) {
-                return $this->organizationDomainService->userOwnedEntityBelongsToOrganization(
-                    $typedSubject,
-                    $this->organizationDomainService->getOrganizationOfUser($user)
-                );
-            }
-        }
-
-        if ($subject instanceof OrganizationOwnedEntityInterface) {
-            $typedSubject = $subject;
-
-            if (    $typedSubject->getOrganization()->getId()
-                === $this->organizationDomainService->getOrganizationOfUser($user)->getId()
             ) {
                 return true;
             }

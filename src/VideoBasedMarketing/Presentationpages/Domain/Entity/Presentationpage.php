@@ -5,6 +5,8 @@ namespace App\VideoBasedMarketing\Presentationpages\Domain\Entity;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\BgColor;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\FgColor;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageBackground;
@@ -27,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: 'presentationpages')]
 class Presentationpage
-    implements UserOwnedEntityInterface
+    implements UserOwnedEntityInterface, OrganizationOwnedEntityInterface
 {
     /**
      * @throws Exception
@@ -35,6 +37,7 @@ class Presentationpage
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->organization = $user->getCurrentlyActiveOrganization();
         $this->presentationpageElements = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTime();
     }
@@ -180,20 +183,34 @@ class Presentationpage
         return $this->screenshotCaptureOutstanding;
     }
 
-    public function setScreenshotCaptureOutstanding(bool $screenshotCaptureOutstanding): void
+    public function setScreenshotCaptureOutstanding(
+        bool $screenshotCaptureOutstanding
+    ): void
     {
         $this->screenshotCaptureOutstanding = $screenshotCaptureOutstanding;
     }
 
 
-    #[ORM\ManyToOne(targetEntity: Presentationpage::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(name: 'draft_of_presentationpages_id', referencedColumnName: 'id', nullable: true, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(
+        targetEntity: Presentationpage::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'draft_of_presentationpages_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'CASCADE'
+    )]
     private ?Presentationpage $draftOfPresentationpage;
 
-    public function setDraftOfPresentationpage(?Presentationpage $draftOfPresentationpage): void
+    public function setDraftOfPresentationpage(
+        ?Presentationpage $draftOfPresentationpage
+    ): void
     {
         if (!is_null($draftOfPresentationpage) && !$this->isDraft()) {
-            throw new InvalidArgumentException('Cannot set draftOfPresentationpage because this is not a draft.');
+            throw new InvalidArgumentException(
+                'Cannot set draftOfPresentationpage because this is not a draft.'
+            );
         }
         $this->draftOfPresentationpage = $draftOfPresentationpage;
     }
@@ -204,13 +221,50 @@ class Presentationpage
     }
 
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'presentationpages')]
-    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
-    private User $user;
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        cascade: ['persist'],
+        inversedBy: 'presentationpages'
+    )]
+    #[ORM\JoinColumn(
+        name: 'users_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?User $user;
 
     public function getUser(): User
     {
+        if (is_null($this->user)) {
+            return $this->organization->getOwningUser();
+        }
         return $this->user;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'organizations_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
+    private Organization $organization;
+
+    public function getOrganization(): Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(
+        Organization $organization
+    ): void
+    {
+        $this->organization = $organization;
     }
 
 

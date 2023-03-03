@@ -6,6 +6,8 @@ use App\Shared\Infrastructure\Entity\SupportsShortIdInterface;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,16 +18,13 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 
 #[ORM\Entity]
-#[ORM\Table(
-    name: 'recording_requests',
-    indexes: []
-)]
+#[ORM\Table(name: 'recording_requests')]
 #[ORM\Index(
     fields: ['createdAt'],
     name: 'created_at_idx'
 )]
 class RecordingRequest
-    implements UserOwnedEntityInterface, SupportsShortIdInterface
+    implements UserOwnedEntityInterface, OrganizationOwnedEntityInterface, SupportsShortIdInterface
 {
     /**
      * @throws Exception
@@ -35,6 +34,7 @@ class RecordingRequest
     )
     {
         $this->user = $user;
+        $this->organization = $user->getCurrentlyActiveOrganization();
         $this->recordingRequestResponses = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTime();
     }
@@ -82,14 +82,42 @@ class RecordingRequest
     #[ORM\JoinColumn(
         name: 'users_id',
         referencedColumnName: 'id',
-        nullable: false,
-        onDelete: 'CASCADE'
+        nullable: true,
+        onDelete: 'SET NULL'
     )]
-    private User $user;
+    private ?User $user;
 
     public function getUser(): User
     {
+        if (is_null($this->user)) {
+            return $this->organization->getOwningUser();
+        }
         return $this->user;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'organizations_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
+    private Organization $organization;
+
+    public function getOrganization(): Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(
+        Organization $organization
+    ): void
+    {
+        $this->organization = $organization;
     }
 
 

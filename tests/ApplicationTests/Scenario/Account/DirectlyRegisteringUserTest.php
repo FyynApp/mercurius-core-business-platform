@@ -3,6 +3,7 @@
 namespace App\Tests\ApplicationTests\Scenario\Account;
 
 
+use App\Tests\ApplicationTests\Helper\AccountHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Mime\Email;
 
@@ -29,33 +30,14 @@ class DirectlyRegisteringUserTest
         $form['sign_up[agreeTerms]'] = 'on';
 
         $client->followRedirects(false);
-        $crawler = $client->submit($form);
-
+        $client->submit($form);
 
         $this->assertEmailCount(1);
 
         /** @var Email $email */
         $email = $this->getMailerMessage();
 
-        $crawler->clear();
-        $crawler->addHtmlContent($email->getHtmlBody());
-
-        $this->assertSame(
-            "It's nearly done!",
-            $crawler->filter('h2')->first()->text()
-        );
-
-
-        $client->followRedirects(true);
-        $crawler = $client->request(
-            'GET',
-            $crawler->filter('a')->first()->attr('href')
-        );
-
-        $this->assertSelectorTextContains(
-            'body',
-            'Your email address has been verified.'
-        );
+        $crawler = AccountHelper::verifyUserByEmail($client, $email);
 
         // verifies that we get the site with the minimalistic extension-only navigation
         $this->assertEmpty(

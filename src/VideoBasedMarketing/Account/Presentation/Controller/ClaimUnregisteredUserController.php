@@ -55,7 +55,7 @@ class ClaimUnregisteredUserController
         return $this->render(
             '@videobasedmarketing.account/claim_unregistered_user/landingpage.html.twig',
             [
-                'videos' => $videoDomainService->getAvailableVideos($user),
+                'videos' => $videoDomainService->getAvailableVideosForCurrentlyActiveOrganization($user),
                 'form' => $form->createView()
             ]
         );
@@ -137,7 +137,7 @@ class ClaimUnregisteredUserController
         return $this->render(
             '@videobasedmarketing.account/claim_unregistered_user/landingpage.html.twig',
             [
-                'videos' => $videoDomainService->getAvailableVideos($user),
+                'videos' => $videoDomainService->getAvailableVideosForCurrentlyActiveOrganization($user),
                 'form' => $form->createView()
             ],
             new Response(null, Response::HTTP_BAD_REQUEST)

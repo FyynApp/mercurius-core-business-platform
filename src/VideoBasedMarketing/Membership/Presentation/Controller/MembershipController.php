@@ -37,7 +37,7 @@ class MembershipController
             '@videobasedmarketing.membership/overview.html.twig',
             [
                 'isSubscribed' => $membershipService->userIsSubscribedToPlanThatMustBeBought($user),
-                'currentPlan' => $membershipService->getCurrentlySubscribedMembershipPlanForUser($user),
+                'currentPlan' => $membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user),
                 'availablePlans' => $membershipService->getAvailablePlansForUser($user)
             ]
         );
@@ -123,7 +123,7 @@ class MembershipController
             [
                 'capabilities' => $capabilities,
                 'membershipPlan' => $membershipPlan,
-                'currentMembershipPlan' => $membershipService->getCurrentlySubscribedMembershipPlanForUser($user)
+                'currentMembershipPlan' => $membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
             ]
         );
     }
@@ -159,7 +159,7 @@ class MembershipController
             '@videobasedmarketing.membership/upgrade_offer.html.twig',
             [
                 'membershipPlan' => $membershipPlan,
-                'currentMembershipPlan' => $membershipService->getCurrentlySubscribedMembershipPlanForUser($user)
+                'currentMembershipPlan' => $membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
             ]
         );
     }

@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Account\Domain\Entity;
 
 use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Domain\Enum\VideosListViewMode;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ActiveCampaignContact;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
@@ -25,6 +26,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ValueError;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -46,6 +48,8 @@ class User
         $this->recordingRequests = new ArrayCollection();
         $this->recordingRequestResponses = new ArrayCollection();
         $this->videoMailings = new ArrayCollection();
+        $this->ownedOrganizations = new ArrayCollection();
+        $this->joinedOrganizations = new ArrayCollection();
     }
 
 
@@ -63,6 +67,118 @@ class User
         return $this->id;
     }
 
+
+    /** @var Organization[] */
+    #[ORM\OneToMany(
+        mappedBy: 'owningUser',
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    private array|Collection $ownedOrganizations;
+
+    public function getOwnedOrganizations(): array|Collection
+    {
+        return $this->ownedOrganizations;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function addOwnedOrganization(
+        Organization $organization
+    ): void
+    {
+        foreach ($this->ownedOrganizations as $ownedOrganization) {
+            if ($ownedOrganization->getId() === $organization->getId()) {
+                throw new ValueError(
+                    "Organization '{$organization->getId()}' already in list of owned organizations."
+                );
+            }
+        }
+        $this->ownedOrganizations->add($organization);
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'currently_active_organizations_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'CASCADE'
+    )]
+    private ?Organization $currentlyActiveOrganization = null;
+
+    public function getCurrentlyActiveOrganization(): Organization
+    {
+        return $this->currentlyActiveOrganization;
+    }
+
+    public function setCurrentlyActiveOrganization(
+        Organization $organization
+    ): void
+    {
+        foreach ($this->ownedOrganizations as $ownedOrganization) {
+            if ($ownedOrganization->getId() === $organization->getId()) {
+                $this->currentlyActiveOrganization = $organization;
+                return;
+            }
+        }
+
+        foreach ($this->joinedOrganizations as $joinedOrganization) {
+            if ($joinedOrganization->getId() === $organization->getId()) {
+                $this->currentlyActiveOrganization = $organization;
+                return;
+            }
+        }
+
+        throw new ValueError(
+            "Cannot set organization '{$organization->getId()}' as currently active because it is neither owned nor joined."
+        );
+    }
+
+
+    /**
+     * @var Collection|Organization[]
+     */
+    #[ORM\JoinTable(name: 'users_organizations')]
+    #[ORM\JoinColumn(
+        name: 'users_id',
+        referencedColumnName: 'id',
+        unique: false
+    )]
+    #[ORM\InverseJoinColumn(
+        name: 'organizations_id',
+        referencedColumnName: 'id',
+        unique: false
+    )]
+    #[ORM\ManyToMany(targetEntity: Organization::class, inversedBy: 'joinedUsers')]
+    private array|Collection $joinedOrganizations;
+
+    /**
+     * @return Collection|Organization[]
+     */
+    public function getJoinedOrganizations(): Collection|array
+    {
+        return $this->joinedOrganizations;
+    }
+
+    public function addJoinedOrganization(
+        Organization $organization
+    ): void
+    {
+        foreach ($this->joinedOrganizations as $joinedOrganization) {
+            if ($joinedOrganization->getId() === $organization->getId()) {
+                throw new ValueError(
+                    "Organization '{$organization->getId()}' already in list of joined organizations."
+                );
+            }
+        }
+
+        $this->joinedOrganizations->add($organization);
+    }
 
     #[ORM\Column(
         type: Types::STRING,
@@ -162,19 +278,6 @@ class User
     {
         return $this->hasRole(Role::UNREGISTERED_USER);
     }
-
-    /**
-     * @throws Exception
-     */
-    public function makeRegistered(): void
-    {
-        if ($this->isRegistered()) {
-            throw new Exception("User '{$this->getUserIdentifier()}' is already registered");
-        }
-        $this->removeRole(Role::UNREGISTERED_USER);
-        $this->addRole(Role::REGISTERED_USER);
-    }
-
 
     public function isExtensionOnly(): bool
     {
@@ -429,42 +532,26 @@ class User
         }
     }
 
-
-    #[ORM\OneToOne(
-        mappedBy: 'owningUser',
-        targetEntity: Organization::class,
-        cascade: ['persist']
-    )]
-    private ?Organization $ownedOrganization = null;
-
-    public function getOwnedOrganization(): ?Organization
-    {
-        return $this->ownedOrganization;
-    }
-
-
-    #[ORM\ManyToOne(
-        targetEntity: Organization::class,
-        cascade: ['persist']
-    )]
-    #[ORM\JoinColumn(
-        name: 'organizations_id',
-        referencedColumnName: 'id',
+    #[ORM\Column(
+        type: Types::STRING,
         nullable: true,
-        onDelete: 'SET NULL'
+        enumType: VideosListViewMode::class
     )]
-    private ?Organization $organization = null;
+    private ?VideosListViewMode $videosListViewMode = null;
 
-    public function getOrganization(): ?Organization
+    public function getVideosListViewMode(): VideosListViewMode
     {
-        return $this->organization;
+        if (is_null($this->videosListViewMode)) {
+            return VideosListViewMode::Tiles;
+        }
+        return $this->videosListViewMode;
     }
 
-    public function setOrganization(
-        ?Organization $organization
+    public function setVideosListViewMode(
+        VideosListViewMode $videosListViewMode
     ): void
     {
-        $this->organization = $organization;
+        $this->videosListViewMode = $videosListViewMode;
     }
 
 

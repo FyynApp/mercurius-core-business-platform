@@ -63,10 +63,7 @@ class Group
      */
     public function getId(): string
     {
-        if (is_null($this->id)) {
-            throw new Exception('Entity of class ' . self::class . ' does not yet have an id.');
-        }
-        return $this->id;
+        return (string)$this->id;
     }
 
 
@@ -130,19 +127,20 @@ class Group
 
 
     /**
-     * @var Collection<int, User>
+     * @var Collection|User[]
      */
     #[ORM\JoinTable(name: 'users_organization_groups')]
     #[ORM\JoinColumn(
         name: 'users_id',
-        referencedColumnName: 'id')]
+        referencedColumnName: 'id'
+    )]
     #[ORM\InverseJoinColumn(
         name: 'organization_groups_id',
         referencedColumnName: 'id',
         unique: false
     )]
     #[ORM\ManyToMany(targetEntity: User::class)]
-    private Collection $members;
+    private array|Collection $members;
 
     public function addMember(
         User $user

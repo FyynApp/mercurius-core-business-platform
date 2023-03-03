@@ -1,14 +1,71 @@
-<div class="overflow-hidden mt-6">
+<div class="mt-6">
 
     <div class="
         padded-content-box
         pt-4 pb-0 border-0 border-t-0 border-l-0 border-r-0 border-neutral-100
         mb-4
     ">
-        <h3 class="text-xl leading-6 font-extralight text-neutral-600">
+        <h3 class="text-xl leading-6 font-extralight text-mercurius-blue-800 md:flex md:flex-row items-baseline gap-4">
             {% block contentBoxTitle %}{% endblock %}
-            <div class="mt-2 bg-gradient-to-l h-0.5 bg-mercurius-blue-50"></div>
+
+            <div class="text-xs text-neutral-500">
+                {% block contentBoxSubtitle %}{% endblock %}
+            </div>
         </h3>
+
+        <div class="mt-1 rounded-sm bg-gradient-to-r h-2 from-mercurius-blue-500 to-mercurius-green-200"></div>
+
+        {% if app.user is defined and app.user is not null %}
+            <div class="flex flex-row justify-end w-full">
+                <div class="mt-2 text-xs text-mercurius-green-600 font-normal flex flex-col gap-1 items-end">
+                    <div class="flex flex-row gap-2 items-baseline">
+                        <a
+                                href="{{ path('videobasedmarketing.organization.overview') }}"
+                                class="font-semibold"
+                                title="{% apply spaceless %}{% if TwigHelperService.organizationDomainService.currentlyActiveOrganizationIsOwnOrganization(app.user) %}
+                                {{ 'nav_info.owned'|trans({}, 'videobasedmarketing.organization') }}
+                            {% else %}
+                                {{ 'nav_info.joined'|trans(
+                                    { '{ownerNameOrEmail}': app.user.currentlyActiveOrganization.owningUser.nameOrEmail },
+                                    'videobasedmarketing.organization'
+                                ) }}
+                            {% endif %}{% endapply %}"
+                        >
+                            {{ TwigHelperService.organizationDomainService.organizationName(
+                                app.user.currentlyActiveOrganization,
+                                app.user.uiLanguageCode
+                            ) }}
+                        </a>
+
+                        <div
+                                {% if TwigHelperService.membershipService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).mustBeBought %}
+                                    class="bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500 text-mercurius-green-50 border-1 border-mercurius-green-500 p-0.5 px-1 rounded-md w-fit flex flex-row gap-0.5 items-center"
+                                {% else %}
+                                    class="bg-neutral-100 border-1 border-neutral-200 text-neutral-400 p-0.5 px-1 rounded-md w-fit flex flex-row gap-0.5 items-center"
+                                {% endif %}
+                        >
+                            {{ TwigHelperService.membershipService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).niceName }}
+                        </div>
+
+                        {% if TwigHelperService.organizationDomainService.userCanSwitchOrganizations(app.user) %}
+                            <a
+                                    href="{{ path('videobasedmarketing.organization.switch') }}"
+                                    class="bg-mercurius-green-50 hover:bg-mercurius-green-200 hover:text-mercurius-green-800 border-1 border-mercurius-green-300 p-0.5 px-1 rounded-md w-fit flex flex-row gap-0.5 items-center"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-2.5 h-2.5">
+                                    <path fill-rule="evenodd" d="M15.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 010 1.06l-4.5 4.5a.75.75 0 11-1.06-1.06l3.22-3.22H7.5a.75.75 0 010-1.5h11.69l-3.22-3.22a.75.75 0 010-1.06zm-7.94 9a.75.75 0 010 1.06l-3.22 3.22H16.5a.75.75 0 010 1.5H4.81l3.22 3.22a.75.75 0 11-1.06 1.06l-4.5-4.5a.75.75 0 010-1.06l4.5-4.5a.75.75 0 011.06 0z" clip-rule="evenodd" />
+                                </svg>
+                                <div>
+                                    {{ 'nav_info.switch'|trans({}, 'videobasedmarketing.organization') }}
+                                </div>
+
+                            </a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        {% endif %}
     </div>
 
     <div

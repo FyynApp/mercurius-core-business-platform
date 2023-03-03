@@ -63,11 +63,8 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'shared.presentation.catchall.root',
             'shared.presentation.catchall.pattern',
 
-            'videobasedmarketing.account.presentation.claim_unregistered_user.',
+            'videobasedmarketing.account.presentation.',
             'videobasedmarketing.account.api.extension.',
-            'videobasedmarketing.account.presentation.sign',
-            'videobasedmarketing.account.presentation.forgot_password',
-            'videobasedmarketing.account.presentation.password',
             'videobasedmarketing.account.infrastructure.thirdpartyauth.',
 
             'videobasedmarketing.organization.',
@@ -75,6 +72,7 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             'videobasedmarketing.recordings.api.extension.',
             'videobasedmarketing.recordings.api.video_upload.',
             'videobasedmarketing.recordings.presentation.videos.',
+            'videobasedmarketing.recordings.presentation.video_folders.',
             'videobasedmarketing.recordings.presentation.upload_video',
             'videobasedmarketing.recordings.presentation.video.deletion',
             'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',

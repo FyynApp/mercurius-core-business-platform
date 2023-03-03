@@ -6,7 +6,6 @@ use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\Shared\Presentation\Service\MailService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Account\Infrastructure\Security\EmailVerifier;
@@ -18,7 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
@@ -53,8 +51,6 @@ class SignUpController
     )]
     public function registerAction(
         Request                     $request,
-        UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface      $entityManager,
         ThirdPartyAuthService       $thirdPartyAuthService
     ): Response
     {
@@ -82,19 +78,12 @@ class SignUpController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user->addRole(Role::REGISTERED_USER);
-            $user->addRole(Role::EXTENSION_ONLY_USER);
-
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')
-                         ->getData()
-                )
+            $this->accountDomainService->createRegisteredUser(
+                $form->get('email')->getData(),
+                $form->get('plainPassword')->getData(),
+                false,
+                $user
             );
-
-            $entityManager->persist($user);
-            $entityManager->flush();
 
             $this->emailVerifier->sendEmailAskingForVerification(
                 'videobasedmarketing.account.presentation.sign_up.email_verification',

@@ -4,7 +4,9 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Domain\Enum\VideosListViewMode;
 use App\VideoBasedMarketing\Account\Domain\Event\UnregisteredUserClaimedRegisteredUserEvent;
+use App\VideoBasedMarketing\Account\Domain\Event\UserCreatedEvent;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\ActiveCampaignContactTag;
 use App\VideoBasedMarketing\Account\Infrastructure\Event\UserVerifiedEvent;
 use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
@@ -40,33 +42,55 @@ readonly class AccountDomainService
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function createRegisteredUser(
-        string $email
+        string  $email,
+        ?string $plainPassword = null,
+        bool    $isVerified = false,
+        ?User   $user = null
     ): User
     {
         $email = trim(mb_strtolower($email));
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(
+        $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(
             ['email' => $email]
         );
 
-        if (!is_null($user)) {
+        if (!is_null($existingUser)) {
             throw new ValueError("User with email '$email' already exists.");
         }
 
-        $user = new User();
+        if (is_null($user)) {
+            $user = new User();
+        }
+
         $user->setEmail($email);
-        $user->setIsVerified(true);
+
+        if (is_null($plainPassword)) {
+            $plainPassword = random_int(PHP_INT_MIN, PHP_INT_MAX);
+        }
+
         $user->addRole(Role::REGISTERED_USER);
+        $user->addRole(Role::EXTENSION_ONLY_USER);
 
         $user->setPassword(
-            password_hash(
-                random_int(PHP_INT_MIN, PHP_INT_MAX),
-                PASSWORD_DEFAULT
+            $this->userPasswordHasher->hashPassword(
+                $user,
+                $plainPassword
             )
         );
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(
+            new UserCreatedEvent($user)
+        );
+
+        if ($isVerified) {
+            $this->makeUserVerified($user);
+        }
 
         return $user;
     }
@@ -104,6 +128,10 @@ readonly class AccountDomainService
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
+        $this->eventDispatcher->dispatch(
+            new UserCreatedEvent($user)
+        );
+
         return $user;
     }
 
@@ -132,7 +160,8 @@ readonly class AccountDomainService
         }
 
         $claimingUser->setEmail($claimedEmail);
-        $claimingUser->makeRegistered();
+        $claimingUser->removeRole(Role::UNREGISTERED_USER);
+        $claimingUser->addRole(Role::REGISTERED_USER);
 
         if (!is_null($plainPassword)) {
             $claimingUser->setPassword(
@@ -175,48 +204,54 @@ readonly class AccountDomainService
     }
 
     public function unregisteredUserClaimsRegisteredUser(
-        User $unregisteredUser,
-        User $registeredUser
+        User $claimingUser,
+        User $claimedUser
     ): bool
     {
-        if (!$unregisteredUser->isUnregistered()) {
+        if (!$claimingUser->isUnregistered()) {
             throw new LogicException('Only unregistered user sessions can claim.');
         }
 
-        if (!$registeredUser->isRegistered()) {
+        if (!$claimedUser->isRegistered()) {
             throw new LogicException('Only registered user can be claimed.');
         }
 
         /** @var RecordingSession $recordingSession */
-        foreach ($unregisteredUser->getRecordingSessions() as $recordingSession) {
-            $recordingSession->setUser($registeredUser);
+        foreach ($claimingUser->getRecordingSessions() as $recordingSession) {
+            $recordingSession->setUser($claimedUser);
+            $recordingSession->setOrganization(
+                $claimedUser->getCurrentlyActiveOrganization()
+            );
             $this->entityManager->persist($recordingSession);
         }
-        $unregisteredUser->setRecordingSessions([]);
-        $this->entityManager->persist($unregisteredUser);
+        $claimingUser->setRecordingSessions([]);
+        $this->entityManager->persist($claimingUser);
 
         /** @var Video $video */
-        foreach ($unregisteredUser->getVideos() as $video) {
-            $video->setUser($registeredUser);
+        foreach ($claimingUser->getVideos() as $video) {
+            $video->setUser($claimedUser);
+            $video->setOrganization(
+                $claimedUser->getCurrentlyActiveOrganization()
+            );
             $this->entityManager->persist($video);
         }
-        $unregisteredUser->setVideos([]);
-        $this->entityManager->persist($unregisteredUser);
+        $claimingUser->setVideos([]);
+        $this->entityManager->persist($claimingUser);
 
-        $this->entityManager->persist($registeredUser);
+        $this->entityManager->persist($claimedUser);
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
             new UnregisteredUserClaimedRegisteredUserEvent(
-                $unregisteredUser,
-                $registeredUser
+                $claimingUser,
+                $claimedUser
             )
         );
 
-        $this->entityManager->remove($unregisteredUser);
+        $this->entityManager->remove($claimingUser);
         $this->entityManager->flush();
 
-        unset($unregisteredUser);
+        unset($claimingUser);
 
         return true;
     }
@@ -282,5 +317,19 @@ readonly class AccountDomainService
                 $plainPassword
             )
         );
+    }
+
+    public function switchVideosListViewMode(
+        User $user
+    ): void
+    {
+        if ($user->getVideosListViewMode() === VideosListViewMode::Tiles) {
+            $user->setVideosListViewMode(VideosListViewMode::Dense);
+        } else {
+            $user->setVideosListViewMode(VideosListViewMode::Tiles);
+        }
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 }

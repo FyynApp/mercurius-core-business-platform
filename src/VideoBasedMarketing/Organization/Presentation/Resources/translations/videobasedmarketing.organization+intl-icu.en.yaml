@@ -1,19 +1,38 @@
-default_organization_name: 'My organization'
+default_organization_name: 'Untitled Organization'
+nav_info:
+  info: 'Active organization:'
+  owned: 'owned by you'
+  joined: 'owned by {ownerNameOrEmail}'
+  switch: 'Switch'
 organization:
+  edit_name:
+    save_cta: 'Save'
   create_form:
     title: 'Create an organization'
     info1: 'Organizations allow you to manage your team on Fyyn.io.'
     info2: 'After creating an organization, you can invite team members and share your Fyyn.io contents with them.'
     cta: 'Create organization'
+  switch:
+    title: 'Switch organization'
+    table:
+      head_org_name: 'Organization name'
+      head_org_owned_by: 'owned by'
+      head_org_switch_to: ''
+      note_owned_by_you: 'Owned by you'
+      switch_to_cta: 'Switch to'
+      currently_active: 'currently active'
   overview:
-    title: 'Your organization'
+    title_owned: 'Your organization'
+    title_joined: 'Your currently active organization'
+    owned_org_note: 'This organization is owned by you'
+    joined_org_note: 'This organization is owned by {ownerNameOrEmail}'
     pending_invitations:
       title: 'Pending invitations'
-      no_pending: 'Your organization does not have any pending invitations.'
+      no_pending: 'This organization does not have any pending invitations.'
       resend: 'Resend invitation'
     invite:
       title: 'Invite team member'
-      note: 'Enter an e-mail address to invite a team member into your organization:'
+      note: 'Enter an e-mail address to invite a team member into this organization:'
       label_email: 'E-mail address to invite'
       cta: 'Send invitation'
     groups_and_members:

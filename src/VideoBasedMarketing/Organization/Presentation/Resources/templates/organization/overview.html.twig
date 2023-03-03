@@ -1,7 +1,7 @@
 {% extends '@shared/base_default.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
-{# @var organization \App\VideoBasedMarketing\Organization\Domain\Entity\Organization #}
+{# @var currentlyActiveOrganization \App\VideoBasedMarketing\Organization\Domain\Entity\Organization #}
 
 {% block body %}
 
@@ -10,164 +10,200 @@
         {% trans_default_domain 'videobasedmarketing.organization' %}
 
         {% block contentBoxTitle %}
-            {{ 'organization.overview.title'|trans }}
-        {% endblock %}
 
-        {% block contentBoxSubtitle %}{% endblock %}
+            {% if TwigHelperService.organizationDomainService.currentlyActiveOrganizationIsOwnOrganization(app.user) %}
+                {{ 'organization.overview.title_owned'|trans }}
+            {% else %}
+                {{ 'organization.overview.title_joined'|trans }}
+            {% endif %}
+        {% endblock %}
 
         {% block contentBoxContent %}
 
             {% include '@videobasedmarketing.recordings/includes/back_to_videos_overview.html.twig' %}
 
+            <div class="mb-16">
+                <h1 class="font-light text-2xl">
+
+                    {{ component(
+                        'videobasedmarketing_organization_edit_organization_name',
+                        {
+                            organization: currentlyActiveOrganization
+                        })
+                    }}
+                </h1>
+            </div>
+
             <div class="w-full flex flex-col lg:flex-row gap-16">
 
                 <div class="lg:w-6/12">
-                    <div>
-                        <p class="text-lg font-bold mb-4">
-                            {{ 'organization.overview.invite.title'|trans }}
-                        </p>
 
-                        <div class="">
-                            <form
-                                    class="flex flex-row gap-2 items-center"
-                                    action="{{ path('videobasedmarketing.organization.invitation.send') }}"
-                                    method="post"
-                            >
-                                <input
-                                        class="text-input lg:w-72"
-                                        type="email"
-                                        name="email"
-                                        placeholder="{{ 'organization.overview.invite.label_email'|trans }}"
+                    {% if TwigHelperService.capabilitiesService.canInviteOrganizationMembers(app.user) %}
+                        <div class="mb-16">
+                            <p class="text-lg font-bold mb-4">
+                                {{ 'organization.overview.invite.title'|trans }}
+                            </p>
+
+                            <div class="">
+                                <form
+                                        class="flex flex-row gap-2 items-center"
+                                        action="{{ path('videobasedmarketing.organization.invitation.send') }}"
+                                        method="post"
                                 >
-                                <button
-                                        class="cta-with-icon-primary"
-                                        type="submit"
-                                >
-                                    {{ 'organization.overview.invite.cta'|trans }}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-
-                    <div class="mt-16">
-                        <p class="text-lg font-bold mb-8">
-                            {{ 'organization.overview.groups_and_members.title'|trans }}
-                        </p>
-
-                        {% for group in TwigHelperService.organizationDomainService.groups(organization) %}
-                            {# @var group \App\VideoBasedMarketing\Organization\Domain\Entity\Group #}
-
-                            <div class="mb-8">
-                                <div class="mb-2">
-
-                                    <div class="flex flex-row items-baseline gap-2">
-                                        <div class="font-bold">{{ TwigHelperService.organizationDomainService.groupName(group, app.user.uiLanguageCode) }}</div>
-
-                                        {% if TwigHelperService.organizationDomainService.defaultGroupForNewMembers(organization).id is same as group.id %}
-                                            <div class="text-xs text-mercurius-green-700 bg-mercurius-green-200 rounded-md px-2 border-1 border-mercurius-green-600">
-                                                {{ 'organization.overview.groups_and_members.default_group_for_new_members_note'|trans }}
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-
-                                {% if TwigHelperService.organizationDomainService.groupMembers(group)|length is same as 0 %}
-                                    <p class="text-neutral-500">
-                                        {{ 'organization.overview.groups_and_members.no_members'|trans }}
-                                    </p>
-                                {% else %}
-                                    {% for user in TwigHelperService.organizationDomainService.groupMembers(group) %}
-                                        {# @var user \App\VideoBasedMarketing\Account\Domain\Entity\User #}
-                                        <div class="flex flex-row gap-2 items-center">
-
-                                            {# @var group \App\VideoBasedMarketing\Organization\Domain\Entity\Group #}
-                                            {% if group.teamMembersGroup %}
-                                                <form
-                                                        method="post"
-                                                        action="{{ path('videobasedmarketing.organization.group.move_to_administrators') }}"
-                                                >
-                                                    <input type="hidden" name="userId" value="{{ user.id }}">
-                                                    <button
-                                                            type="submit"
-                                                            class="cta-with-icon-inline-danger underline text-xs opacity-50 hover:opacity-100"
-                                                    >
-                                                        {{ 'organization.overview.groups_and_members.make_administrator_cta'|trans }}
-                                                    </button>
-                                                </form>
-                                            {% endif %}
-
-                                            {% if group.administratorsGroup %}
-                                                <form
-                                                        method="post"
-                                                        action="{{ path('videobasedmarketing.organization.group.move_to_team_members') }}"
-                                                >
-                                                    <input type="hidden" name="userId" value="{{ user.id }}">
-                                                    <button
-                                                            type="submit"
-                                                            class="cta-with-icon-inline-danger underline text-xs opacity-50 hover:opacity-100"
-                                                    >
-                                                        {{ 'organization.overview.groups_and_members.make_team_member_cta'|trans }}
-                                                    </button>
-                                                </form>
-                                            {% endif %}
-
-                                            <div>
-                                                {{ user.nameOrEmail }}
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
+                                    <input
+                                            class="text-input lg:w-72"
+                                            type="email"
+                                            name="email"
+                                            placeholder="{{ 'organization.overview.invite.label_email'|trans }}"
+                                    >
+                                    <button
+                                            class="cta-with-icon-primary"
+                                            type="submit"
+                                    >
+                                        {{ 'organization.overview.invite.cta'|trans }}
+                                    </button>
+                                </form>
                             </div>
-
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <div class="lg:w-6/12">
-                    <p class="text-lg font-bold mb-4">
-                        {{ 'organization.overview.pending_invitations.title'|trans }}
-                    </p>
-
-                    {% if TwigHelperService.organizationDomainService.pendingInvitations(organization) %}
-
-                        {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
-
-                        <div class="shadow-inner bg-neutral-100 p-4 rounded-md">
-
-                            {% for invitation in TwigHelperService.organizationDomainService.getPendingInvitations(organization) %}
-                                {# @var invitation \App\VideoBasedMarketing\Organization\Domain\Entity\Invitation #}
-                                <div class="{% if not loop.last %}mb-8{% endif %}">
-                                    <div class="font-semibold mb-1">{{ invitation.email }}</div>
-
-                                    <div class="flex flex-row items-center">
-                                        <span class="text-sm text-neutral-400">{{ dateAndTimeMacros.shortDateAndTime(invitation.createdAt) }}</span>
-
-                                        <span class="px-3 text-neutral-300">|</span>
-
-                                        <form
-                                                action="{{ path('videobasedmarketing.organization.invitation.send') }}"
-                                                method="post"
-                                        >
-                                            <input type="hidden" name="email" value="{{ invitation.email }}">
-                                            <button
-                                                    type="submit"
-                                                    class="cta-with-icon-inline-primary text-sm"
-                                            >
-                                                {{ 'organization.overview.pending_invitations.resend'|trans }}
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            {% endfor %}
-
                         </div>
-                    {% else %}
-                        <p class="text-neutral-500">
-                            {{ 'organization.overview.pending_invitations.no_pending'|trans }}
-                        </p>
+                    {% endif %}
+
+
+                    {% if TwigHelperService.capabilitiesService.canSeeOrganizationGroupsAndMembers(app.user) %}
+                        <div>
+                            <p class="text-lg font-bold mb-4">
+                                {{ 'organization.overview.groups_and_members.title'|trans }}
+                            </p>
+
+                            {% for group in TwigHelperService.organizationDomainService.groups(currentlyActiveOrganization) %}
+                                {# @var group \App\VideoBasedMarketing\Organization\Domain\Entity\Group #}
+
+                                <div class="mb-8">
+                                    <div class="mb-2">
+
+                                        <div class="flex flex-row items-baseline gap-2">
+                                            <div class="font-light border-b-2 w-full max-w-2xl">
+                                                {{ TwigHelperService.organizationDomainService.groupName(group, app.user.uiLanguageCode) }}
+                                            </div>
+
+                                            {% if TwigHelperService.organizationDomainService.defaultGroupForNewMembers(currentlyActiveOrganization).id is same as group.id %}
+                                                <div class="text-xs text-center text-mercurius-green-600 bg-mercurius-green-100 rounded-md px-2 border-1 border-mercurius-green-500">
+                                                    {{ 'organization.overview.groups_and_members.default_group_for_new_members_note'|trans }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    {% if TwigHelperService.organizationDomainService.groupMembers(group)|length is same as 0 %}
+                                        <p class="text-neutral-500">
+                                            {{ 'organization.overview.groups_and_members.no_members'|trans }}
+                                        </p>
+                                    {% else %}
+
+                                        <table class="table-auto">
+                                            {% for user in TwigHelperService.organizationDomainService.groupMembers(group) %}
+                                                {# @var user \App\VideoBasedMarketing\Account\Domain\Entity\User #}
+                                                <tr class="">
+                                                    <td class="pr-4">
+                                                        {{ user.nameOrEmail }}
+                                                    </td>
+
+                                                    <td>
+                                                        {% if TwigHelperService.capabilitiesService.canMoveOrganizationMembersIntoGroups(app.user)
+                                                            and app.user.id is not same as user.id
+                                                        %}
+
+                                                            {# @var group \App\VideoBasedMarketing\Organization\Domain\Entity\Group #}
+                                                            {% if group.teamMembersGroup %}
+                                                                <form
+                                                                        method="post"
+                                                                        action="{{ path('videobasedmarketing.organization.group.move_to_administrators') }}"
+                                                                >
+                                                                    <input type="hidden" name="userId" value="{{ user.id }}">
+                                                                    <button
+                                                                            type="submit"
+                                                                            class="cta-with-icon-inline-primary text-xs bg-neutral-100 border-1 p-1 rounded-md opacity-50 hover:opacity-100"
+                                                                    >
+                                                                        {{ 'organization.overview.groups_and_members.make_administrator_cta'|trans }}
+                                                                    </button>
+                                                                </form>
+                                                            {% endif %}
+
+                                                            {% if group.administratorsGroup %}
+                                                                <form
+                                                                        method="post"
+                                                                        action="{{ path('videobasedmarketing.organization.group.move_to_team_members') }}"
+                                                                >
+                                                                    <input type="hidden" name="userId" value="{{ user.id }}">
+                                                                    <button
+                                                                            type="submit"
+                                                                            class="cta-with-icon-inline-primary text-xs bg-neutral-100 border-1 p-1 rounded-md opacity-50 hover:opacity-100"
+                                                                    >
+                                                                        {{ 'organization.overview.groups_and_members.make_team_member_cta'|trans }}
+                                                                    </button>
+                                                                </form>
+                                                            {% endif %}
+
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </table>
+
+                                    {% endif %}
+                                </div>
+
+                            {% endfor %}
+                        </div>
                     {% endif %}
                 </div>
+
+
+                {% if TwigHelperService.capabilitiesService.canInviteOrganizationMembers(app.user) %}
+                    <div class="lg:w-6/12">
+                        <p class="text-lg font-bold mb-4">
+                            {{ 'organization.overview.pending_invitations.title'|trans }}
+                        </p>
+
+                        {% if TwigHelperService.organizationDomainService.pendingInvitations(currentlyActiveOrganization) %}
+
+                            {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+                            <div class="shadow-inner bg-neutral-100 p-4 rounded-md">
+
+                                {% for invitation in TwigHelperService.organizationDomainService.getPendingInvitations(currentlyActiveOrganization) %}
+                                    {# @var invitation \App\VideoBasedMarketing\Organization\Domain\Entity\Invitation #}
+                                    <div class="{% if not loop.last %}mb-8{% endif %}">
+                                        <div class="font-semibold mb-1">{{ invitation.email }}</div>
+
+                                        <div class="flex flex-row items-center">
+                                            <span class="text-sm text-neutral-400">{{ dateAndTimeMacros.shortDateAndTime(invitation.createdAt) }}</span>
+
+                                            <span class="px-3 text-neutral-300">|</span>
+
+                                            <form
+                                                    action="{{ path('videobasedmarketing.organization.invitation.send') }}"
+                                                    method="post"
+                                            >
+                                                <input type="hidden" name="email" value="{{ invitation.email }}">
+                                                <button
+                                                        type="submit"
+                                                        class="cta-with-icon-inline-primary text-sm"
+                                                >
+                                                    {{ 'organization.overview.pending_invitations.resend'|trans }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        {% else %}
+                            <p class="text-neutral-500">
+                                {{ 'organization.overview.pending_invitations.no_pending'|trans }}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endif %}
 
             </div>
         {% endblock %}

@@ -7,6 +7,8 @@ use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
@@ -19,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use ValueError;
 
 
 #[ORM\Entity]
@@ -28,7 +31,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
     name: 'created_at_idx'
 )]
 class Video
-    implements UserOwnedEntityInterface, SupportsShortIdInterface
+    implements UserOwnedEntityInterface, OrganizationOwnedEntityInterface, SupportsShortIdInterface
 {
     /**
      * @throws Exception
@@ -36,6 +39,7 @@ class Video
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->setOrganization($user->getCurrentlyActiveOrganization());
         $this->presentationpages = new ArrayCollection();
         $this->videoMailings = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTime();
@@ -95,19 +99,47 @@ class Video
     #[ORM\JoinColumn(
         name: 'users_id',
         referencedColumnName: 'id',
-        nullable: false,
-        onDelete: 'CASCADE'
+        nullable: true,
+        onDelete: 'SET NULL'
     )]
-    private User $user;
+    private ?User $user;
 
     public function getUser(): User
     {
+        if (is_null($this->user)) {
+            return $this->organization->getOwningUser();
+        }
         return $this->user;
     }
 
     public function setUser(User $user): void
     {
         $this->user = $user;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: Organization::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'organizations_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
+    private Organization $organization;
+
+    public function getOrganization(): Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(
+        Organization $organization
+    ): void
+    {
+        $this->organization = $organization;
     }
 
 
@@ -852,6 +884,38 @@ class Video
         }
 
         return false;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: VideoFolder::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'video_folders_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?VideoFolder $videoFolder;
+
+    public function getVideoFolder(): ?VideoFolder
+    {
+        return $this->videoFolder;
+    }
+
+    public function setVideoFolder(
+        ?VideoFolder $videoFolder
+    ): void
+    {
+        if (!is_null($videoFolder)) {
+            if ($videoFolder->getOrganization()->getId() !== $this->organization->getId()) {
+                throw new ValueError(
+                    "Video folder '{$videoFolder->getId()}' is linked to another organization than video '$this->id'."
+                );
+            }
+        }
+        $this->videoFolder = $videoFolder;
     }
 
 

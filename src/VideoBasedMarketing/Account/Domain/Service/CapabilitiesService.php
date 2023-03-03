@@ -114,6 +114,14 @@ readonly class CapabilitiesService
         return $this->hasCapability($user, Capability::CustomDomain);
     }
 
+    public function canEditOrganizationName(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::EDIT_ORGANIZATION_NAME
+        );
+    }
+
     public function canEditCustomDomainSetting(User $user): bool
     {
         return $this->organizationDomainService->userHasAccessRight(
@@ -136,10 +144,34 @@ readonly class CapabilitiesService
         );
     }
 
-
     public function canPresentAdFreeLandingpage(User $user): bool
     {
         return $this->hasCapability($user, Capability::AdFreeLandingpages);
+    }
+
+
+    public function canInviteOrganizationMembers(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::INVITE_ORGANIZATION_MEMBERS
+        );
+    }
+
+    public function canSeeOrganizationGroupsAndMembers(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::SEE_ORGANIZATION_GROUPS_AND_MEMBERS
+        );
+    }
+
+    public function canMoveOrganizationMembersIntoGroups(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::MOVE_ORGANIZATION_MEMBERS_INTO_GROUPS
+        );
     }
 
     private function hasCapability(
@@ -153,7 +185,7 @@ readonly class CapabilitiesService
 
         return $this
             ->membershipService
-            ->getCurrentlySubscribedMembershipPlanForUser($user)
+            ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
             ->hasCapability($capability);
     }
 }

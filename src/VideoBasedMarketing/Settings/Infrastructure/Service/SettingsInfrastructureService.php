@@ -62,7 +62,7 @@ readonly class SettingsInfrastructureService
     {
         $fileMeta = $event->getFile()->details();
 
-        $organization = $this->organizationDomainService->getOrganizationOfUser($user);
+        $organization = $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user);
 
         $logoUpload = new LogoUpload(
             $organization,
@@ -124,7 +124,7 @@ readonly class SettingsInfrastructureService
         User $user
     ): array
     {
-        $organization = $this->organizationDomainService->getOrganizationOfUser($user);
+        $organization = $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user);
         $logoUploads = $organization->getLogoUploads()->toArray();
 
         usort($logoUploads, function(LogoUpload $a, LogoUpload $b) {
@@ -141,7 +141,7 @@ readonly class SettingsInfrastructureService
         User $user
     ): ?string
     {
-        $organization = $this->organizationDomainService->getOrganizationOfUser($user);
+        $organization = $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user);
 
         if (   !is_null($this->settingsDomainService->getCustomLogoSetting($user))
             && !is_null($this->settingsDomainService->getCustomLogoSetting($user)->getLogoUpload())

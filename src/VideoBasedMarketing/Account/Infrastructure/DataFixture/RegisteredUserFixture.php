@@ -4,8 +4,10 @@ namespace App\VideoBasedMarketing\Account\Infrastructure\DataFixture;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
@@ -14,24 +16,24 @@ class RegisteredUserFixture
 {
     const EMAIL = 'registered.user@example.com';
 
-    private UserPasswordHasherInterface $userPasswordHasher;
+    private AccountDomainService $accountDomainService;
 
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher)
+    public function __construct(
+        AccountDomainService $accountDomainService
+    )
     {
-        $this->userPasswordHasher = $userPasswordHasher;
+        $this->accountDomainService = $accountDomainService;
     }
 
+    /**
+     * @throws Exception
+     */
     public function load(ObjectManager $manager): void
     {
-        $user = new User();
-        $user->setEmail(self::EMAIL);
-        $user->setIsVerified(true);
-        $user->addRole(Role::REGISTERED_USER);
-        $user->setPassword(
-            $this->userPasswordHasher->hashPassword(
-                $user,
-                'test123'
-            )
+        $user = $this->accountDomainService->createRegisteredUser(
+            self::EMAIL,
+            'test123',
+            true
         );
 
         $manager->persist($user);

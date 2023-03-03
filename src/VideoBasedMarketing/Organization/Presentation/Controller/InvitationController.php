@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Organization\Presentation\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Invitation;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
@@ -33,15 +34,16 @@ class InvitationController
     public function sendInvitationAction(
         Request                   $request,
         OrganizationDomainService $organizationDomainService,
-        TranslatorInterface       $translator
+        TranslatorInterface       $translator,
+        CapabilitiesService       $capabilitiesService
     ): Response
     {
         /** @var null|User $user */
         $user = $this->getUser();
 
-        if (!$organizationDomainService->userOwnsAnOrganization($user)) {
+        if (!$capabilitiesService->canInviteOrganizationMembers($user)) {
             throw $this->createAccessDeniedException(
-                "User '{$user->getId()}' does not own an organization."
+                "User '{$user->getId()}' cannot invite organization members."
             );
         }
 
@@ -59,7 +61,7 @@ class InvitationController
 
         $invitation = $organizationDomainService->inviteEmailToOrganization(
             $email,
-            $user->getOwnedOrganization()
+            $organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)
         );
 
         if (is_null($invitation)) {
