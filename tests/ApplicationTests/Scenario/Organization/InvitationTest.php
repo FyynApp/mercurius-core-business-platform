@@ -79,13 +79,6 @@ class InvitationTest
         $client->followRedirect();
         $client->followRedirect();
 
-        $this->assertSelectorTextContains(
-            'body',
-            'Fyyn.io You have successfully joined the organization. A final step...'
-        );
-
-        $crawler = AccountHelper::verifyUserByEmail($client, $email);
-
         $crawler = $client->request(
             'GET',
             '/en/my/organization/switch'

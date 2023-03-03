@@ -109,7 +109,7 @@ class InvitationController
         $invitation = $entityManager->find(Invitation::class, $invitationId);
 
         if (is_null($invitation)) {
-            throw $this->createNotFoundException("No invitation with id '$invitationId'.");
+            $this->redirectToRoute('shared.presentation.contentpages.homepage');
         }
 
         if ($request->getMethod() === Request::METHOD_GET) {

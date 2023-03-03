@@ -190,6 +190,7 @@ readonly class OrganizationDomainService
                     $invitation->getEmail(),
                     null
                 );
+                $user->setIsVerified(true);
             }
 
         } else {
