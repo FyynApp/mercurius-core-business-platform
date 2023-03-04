@@ -244,6 +244,9 @@
 
                             <a
                                     id="video-folder-{{ videoFolder.id }}"
+
+                                    data-test-id="video-folder-{{ loop.index0 }}"
+
                                     data-move-video-into-folder-url="{{ path('videobasedmarketing.recordings.presentation.video_folders.move_video') }}"
 
                                     href="{{ path(
@@ -374,6 +377,9 @@
 
                                         <tr
                                                 id="video-{{ video.id }}"
+
+                                                data-test-id="video-{{ loop.index0 }}"
+
                                                 data-move-video-into-folder-csrf-token="{{ csrf_token('move-video-into-folder-' ~ video.id) }}"
 
                                                 class="hover:bg-neutral-200"
@@ -439,6 +445,9 @@
 
                                 <div
                                         id="video-{{ video.id }}"
+
+                                        data-test-id="video-{{ loop.index0 }}"
+
                                         data-move-video-into-folder-csrf-token="{{ csrf_token('move-video-into-folder-' ~ video.id) }}"
 
                                         draggable="true"
