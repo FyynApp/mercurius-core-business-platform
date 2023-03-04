@@ -53,7 +53,6 @@ class VideoFoldersTest extends PantherTestCase
 
         $actions = new WebDriverActions($client->getWebDriver());
 
-        $client->takeScreenshot('/Users/manuel/Desktop/1.png');
         $actions->dragAndDrop(
             $crawler->findElement(WebDriverBy::cssSelector('[data-test-class="videoUploadProcessingWidget"]')),
             $crawler->findElement(WebDriverBy::cssSelector('[data-test-id="video-folder-0"]'))
@@ -62,7 +61,5 @@ class VideoFoldersTest extends PantherTestCase
         $actions->moveToElement($crawler->findElement(WebDriverBy::cssSelector('[data-test-class="videoUploadProcessingWidget"]')));
         $actions->clickAndHold();
         $actions->moveToElement($crawler->findElement(WebDriverBy::cssSelector('[data-test-id="video-folder-0"]')));
-
-        $client->takeScreenshot('/Users/manuel/Desktop/2.png');
     }
 }
