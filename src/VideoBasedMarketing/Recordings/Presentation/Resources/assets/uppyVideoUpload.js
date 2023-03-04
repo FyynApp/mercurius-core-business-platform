@@ -6,7 +6,7 @@ import de_DE from '@uppy/locales/lib/de_DE';
 import en_US from '@uppy/locales/lib/en_US';
 
 const appLocale = document.currentScript.getAttribute('data-lang');
-const maxFileSize = document.currentScript.getAttribute('data-max-file-size');
+const maxFileSize = Number(document.currentScript.getAttribute('data-max-file-size'));
 const showInline = document.currentScript.getAttribute('data-show-inline');
 const dashboardTarget = document.currentScript.getAttribute('data-dashboard-target');
 const statusBarTarget = document.currentScript.getAttribute('data-status-bar-target');
