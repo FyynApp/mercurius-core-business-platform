@@ -15,6 +15,8 @@ class VideoFoldersTest extends PantherTestCase
 {
     public function test(): void
     {
+        $this->markTestSkipped('Not yet working, see https://bugs.chromium.org/p/chromedriver/issues/detail?id=841');
+
         $client = static::createPantherClient(['browser' => self::FIREFOX]);
         $container = static::getContainer();
         $userRepository = $container->get(UserRepository::class);
@@ -57,9 +59,5 @@ class VideoFoldersTest extends PantherTestCase
             $crawler->findElement(WebDriverBy::cssSelector('[data-test-class="videoUploadProcessingWidget"]')),
             $crawler->findElement(WebDriverBy::cssSelector('[data-test-id="video-folder-0"]'))
         );
-
-        $actions->moveToElement($crawler->findElement(WebDriverBy::cssSelector('[data-test-class="videoUploadProcessingWidget"]')));
-        $actions->clickAndHold();
-        $actions->moveToElement($crawler->findElement(WebDriverBy::cssSelector('[data-test-id="video-folder-0"]')));
     }
 }
