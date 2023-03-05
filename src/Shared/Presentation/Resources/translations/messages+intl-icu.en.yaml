@@ -1,7 +1,13 @@
 dateformat:
   datetime_normal: "{date}"
 
-mainnav:
+topnav:
+  sign_in: 'Sign in'
+  sign_up: 'Sign up'
+  sign_out: 'Sign out'
+  download_browser_extension_chrome: 'Get Chrome Extension'
+
+sidenav:
   homepage: 'About'
   features: 'Features'
   pricing: 'Pricing'
@@ -13,12 +19,10 @@ mainnav:
   presentationpages: 'Landingpages'
   mailings: 'Mailings'
   settings: 'Settings'
+  settings_custom_logo: 'Logo'
+  settings_custom_domain: 'Domain'
+  organization: 'Organization'
 
-sidenav:
-  sign_in: 'Sign in'
-  sign_up: 'Sign up'
-  sign_out: 'Sign out'
-  download_browser_extension_chrome: 'Get Chrome Extension'
 
 footernav:
   german: 'Deutsch'

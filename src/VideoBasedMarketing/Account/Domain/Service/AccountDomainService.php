@@ -361,4 +361,11 @@ readonly class AccountDomainService
 
         return $user->isRegistered();
     }
+
+    public function userIsSignedIn(
+        ?User $user
+    ): bool
+    {
+        return $this->userCanSignOut($user);
+    }
 }

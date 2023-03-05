@@ -5,8 +5,8 @@
 {# @var videoFolders \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder[] #}
 {# @var videoFolder null|\App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder #}
 
-{% block title %}{{ 'mainnav.recordings'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'mainnav.recordings'|trans }}{% endblock %}
+{% block title %}{{ 'sidenav.recordings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'sidenav.recordings'|trans }}{% endblock %}
 
 {% block stylesheets %}
     {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
