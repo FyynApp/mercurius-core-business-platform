@@ -36,9 +36,9 @@
                 <div class="w-full max-w-8xl h-14 flex flex-row items-center justify-between">
                     <a
                             href="{{ path('shared.presentation.contentpages.homepage') }}"
-                            class="mx-4 sm:mx-12 flex flex-row justify-start items-center gap-3
+                            class="mx-4 pl-0.5 sm:mx-12 flex flex-row justify-start items-center gap-3
                             {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
-                            absolute sm:left-0 left-0
+                            absolute sm:left-0 -left-6
                             {% endif %}
                             "
                     >
