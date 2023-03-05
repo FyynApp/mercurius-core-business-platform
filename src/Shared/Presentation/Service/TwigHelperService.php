@@ -6,6 +6,7 @@ use App\Shared\Infrastructure\Service\ContentDeliveryService;
 use App\Shared\Infrastructure\Service\CookiesService;
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\Shared\Presentation\Entity\NavigationEntry;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
@@ -233,9 +234,11 @@ class TwigHelperService
     }
 
     /** @return NavigationEntry[] */
-    public function getSidenavEntries(): array
+    public function getSidenavEntries(
+        User $user
+    ): array
     {
-        return [
+        $result = [
             new NavigationEntry(
                 'sidenav.recordings',
                 'videobasedmarketing.recordings.presentation.videos.overview',
@@ -246,17 +249,23 @@ class TwigHelperService
                 'sidenav.organization',
                 'videobasedmarketing.organization.overview',
                 ['videobasedmarketing.organization.']
-            ),
+            )
+        ];
 
-            new NavigationEntry(
+        if ($this->capabilitiesService->canEditCustomLogoSetting($user)) {
+            $result[] = new NavigationEntry(
                 'sidenav.settings_custom_logo',
                 'videobasedmarketing.settings.presentation.custom_logo'
-            ),
-
-            new NavigationEntry(
+            );
+        }
+        
+        if ($this->capabilitiesService->canEditCustomDomainSetting($user)) {
+            $result[] = new NavigationEntry(
                 'sidenav.settings_custom_domain',
                 'videobasedmarketing.settings.presentation.custom_domain'
-            ),
-        ];
+            );
+        }
+        
+        return $result;
     }
 }
