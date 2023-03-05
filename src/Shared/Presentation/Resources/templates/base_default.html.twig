@@ -24,9 +24,9 @@
     </head>
     <body class="bg-white h-full w-full p-0 m-0">
 
-        <div class="min-h-screen flex flex-col w-full">
+        <div class="flex flex-col w-full">
             <header
-                    class="flex flex-col items-center flex-grow
+                    class="flex flex-col items-center
                     mx-auto w-full
                     bg-gradient-to-l from-mercurius-blue-900 to-mercurius-green-400
                     shadow-md
@@ -36,7 +36,11 @@
                 <div class="w-full max-w-8xl h-14 flex flex-row items-center justify-between">
                     <a
                             href="{{ path('shared.presentation.contentpages.homepage') }}"
-                            class="mx-4 sm:mx-12 flex flex-row justify-start items-center gap-3"
+                            class="mx-4 sm:mx-12 flex flex-row justify-start items-center gap-3
+                            {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
+                            absolute sm:left-0 left-0
+                            {% endif %}
+                            "
                     >
                         <div
                                 class="absolute z-10
@@ -113,15 +117,15 @@
             <div class="flex flex-row justify-start items-start h-full">
                 {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
                     <nav
-                            class="collapse sm:visible w-40 h-full flex-shrink-0
-                            bg-neutral-100 border-1 border-t-0 border-l-0 border-b-0 border-mercurius-green-400
+                            class="collapse sm:visible w-36 h-full flex-shrink-0
+                            bg-gradient-to-b from-neutral-100 to-white border-1 border-t-0 border-l-0 border-b-0 border-mercurius-green-400
                             flex flex-col justify-start items-center pl-4 pt-14 gap-4"
                     >
                         <a
                                 href="{{ path('videobasedmarketing.recordings.presentation.videos.overview') }}"
-                                class="bg-mercurius-green-400 p-4 rounded-l-md
+                                class="bg-mercurius-green-400 p-4 rounded-l-md rounded-r-full
                                 hover:bg-mercurius-green-600 hover:text-black
-                                h-9 w-full text-black
+                                h-9 text-black -mr-0 w-40 pr-8
                                 text-xs sm:text-sm font-bold whitespace-nowrap
                                 flex flex-row justify-end items-center"
                         >
@@ -130,7 +134,7 @@
 
                         <a
                                 href="{{ path('videobasedmarketing.organization.overview') }}"
-                                class="bg-neutral-300 p-4 rounded-l-md
+                                class="bg-neutral-300 p-4 rounded-l-full
                                 hover:bg-mercurius-green-600 hover:text-black
                                 h-9 w-full text-neutral-900
                                 text-xs sm:text-sm font-light whitespace-nowrap
@@ -141,7 +145,7 @@
 
                         <a
                                 href="{{ path('videobasedmarketing.settings.presentation.custom_logo') }}"
-                                class="bg-neutral-300 p-4 rounded-l-md
+                                class="bg-neutral-300 p-4 rounded-l-full
                                 hover:bg-mercurius-green-600 hover:text-black
                                 h-9 w-full text-neutral-900
                                 text-xs sm:text-sm font-light whitespace-nowrap
@@ -152,7 +156,7 @@
 
                         <a
                                 href="{{ path('videobasedmarketing.settings.presentation.custom_domain') }}"
-                                class="bg-neutral-300 p-4 rounded-l-md
+                                class="bg-neutral-300 p-4 rounded-l-full
                                 hover:bg-mercurius-green-600 hover:text-black
                                 h-9 w-full text-neutral-900
                                 text-xs sm:text-sm font-light whitespace-nowrap
@@ -201,7 +205,7 @@
                                 class="
                                 mt-32
                                 bg-gradient-to-b lg:bg-gradient-to-r from-mercurius-blue-50 to-mercurius-green-100 rounded-lg
-                                min-h-max w-full bottom-0 p-6 pb-8
+                                w-full bottom-0 p-6 pb-8
                                 lg:flex lg:items-center lg:justify-between
                                 font-extralight
                                 text-neutral-900 text-sm
