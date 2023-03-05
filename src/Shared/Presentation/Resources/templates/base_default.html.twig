@@ -118,49 +118,50 @@
                 {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
                     <nav
                             class="collapse sm:visible w-36 h-full flex-shrink-0
-                            bg-gradient-to-b from-neutral-100 to-white border-1 border-t-0 border-l-0 border-b-0 border-mercurius-green-400
+                            bg-gradient-to-b from-neutral-100 to-white
+                            border-1 border-t-0 border-l-0 border-b-0 border-neutral-300
                             flex flex-col justify-start items-center pl-4 pt-14 gap-4"
                     >
                         <a
                                 href="{{ path('videobasedmarketing.recordings.presentation.videos.overview') }}"
-                                class="bg-mercurius-green-400 p-4 rounded-l-md rounded-r-full
-                                hover:bg-mercurius-green-600 hover:text-black
-                                h-9 text-black -mr-0 w-40 pr-8
-                                text-xs sm:text-sm font-bold whitespace-nowrap
-                                flex flex-row justify-end items-center"
+                                {% if TwigHelperService.routeStartsWith(app.current_route, 'videobasedmarketing.recordings.') %}
+                                    class="sidenav-button-active"
+                                {% else %}
+                                    class="sidenav-button-inactive"
+                                {% endif %}
                         >
                             {{ 'sidenav.recordings'|trans }}
                         </a>
 
                         <a
                                 href="{{ path('videobasedmarketing.organization.overview') }}"
-                                class="bg-neutral-300 p-4 rounded-l-full
-                                hover:bg-mercurius-green-600 hover:text-black
-                                h-9 w-full text-neutral-900
-                                text-xs sm:text-sm font-light whitespace-nowrap
-                                flex flex-row justify-end items-center"
+                                {% if TwigHelperService.routeStartsWith(app.current_route, 'videobasedmarketing.organization.') %}
+                                    class="sidenav-button-active"
+                                {% else %}
+                                    class="sidenav-button-inactive"
+                                {% endif %}
                         >
                             {{ 'sidenav.organization'|trans }}
                         </a>
 
                         <a
                                 href="{{ path('videobasedmarketing.settings.presentation.custom_logo') }}"
-                                class="bg-neutral-300 p-4 rounded-l-full
-                                hover:bg-mercurius-green-600 hover:text-black
-                                h-9 w-full text-neutral-900
-                                text-xs sm:text-sm font-light whitespace-nowrap
-                                flex flex-row justify-end items-center"
+                                {% if TwigHelperService.routeStartsWith(app.current_route, 'videobasedmarketing.settings.presentation.custom_logo') %}
+                                    class="sidenav-button-active"
+                                {% else %}
+                                    class="sidenav-button-inactive"
+                                {% endif %}
                         >
                             {{ 'sidenav.settings_custom_logo'|trans }}
                         </a>
 
                         <a
                                 href="{{ path('videobasedmarketing.settings.presentation.custom_domain') }}"
-                                class="bg-neutral-300 p-4 rounded-l-full
-                                hover:bg-mercurius-green-600 hover:text-black
-                                h-9 w-full text-neutral-900
-                                text-xs sm:text-sm font-light whitespace-nowrap
-                                flex flex-row justify-end items-center"
+                                {% if TwigHelperService.routeStartsWith(app.current_route, 'videobasedmarketing.settings.presentation.custom_domain') %}
+                                    class="sidenav-button-active"
+                                {% else %}
+                                    class="sidenav-button-inactive"
+                                {% endif %}
                         >
                             {{ 'sidenav.settings_custom_domain'|trans }}
                         </a>
@@ -168,7 +169,7 @@
                 {% endif %}
 
 
-                <div class="flex flex-col mx-auto w-full {% block mainWrapperClasses %}max-w-8xl{% endblock %}">
+                <div class="flex flex-col mx-auto w-full h-full min-h-screen {% block mainWrapperClasses %}max-w-8xl{% endblock %}">
 
                     <main class="mb-auto">
 

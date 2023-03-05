@@ -20,6 +20,7 @@ use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastr
 use App\VideoBasedMarketing\Recordings\Presentation\Service\RecordingsPresentationService;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructureService;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class TwigHelperService
@@ -199,5 +200,16 @@ class TwigHelperService
     public function getOrganizationDomainService(): OrganizationDomainService
     {
         return $this->organizationDomainService;
+    }
+
+    public function routeStartsWith(
+        string $route,
+        string $startsWith
+    ): bool
+    {
+        return str_starts_with(
+            $route,
+            $startsWith
+        );
     }
 }
