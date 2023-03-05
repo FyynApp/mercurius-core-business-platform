@@ -33,10 +33,18 @@
                     border-1 border-t-0 border-l-0 border-r-0 border-black
                     "
             >
-                <div class="w-full max-w-8xl h-14 flex flex-row items-center justify-between">
+                <div
+                        class="w-full w-full h-14 flex flex-row items-center
+                        {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
+                        justify-end
+                        {% else %}
+                        justify-between
+                        {% endif %}
+                        "
+                >
                     <a
                             href="{{ path('shared.presentation.contentpages.homepage') }}"
-                            class="mx-4 pl-0.5 sm:mx-12 flex flex-row justify-start items-center gap-3
+                            class="mx-4 pl-0.5 sm:mx-12 flex flex-row justify-start items-center gap-3 z-30
                             {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
                             absolute sm:left-0 -left-6
                             {% endif %}
@@ -107,6 +115,63 @@
                                 {{ 'topnav.sign_in'|trans }}
                             </a>
                         {% endif %}
+
+                        {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
+                            <div
+                                    {{ stimulus_controller('shared-navMobileMenuSwitch') }}
+                            >
+                                <button
+                                        {{ stimulus_action('shared-navMobileMenuSwitch', 'click') }}
+                                        class="text-white sm:collapse visible -mr-1"
+                                >
+                                    {# Heroicon: bars-3 #}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-9 h-9">
+                                        <path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+
+                                <div
+                                        {{ stimulus_target('shared-navMobileMenuSwitch', 'menu') }}
+                                        class="absolute top-0 left-0 bottom-0 right-0 w-full z-40 hidden
+                                        min-h-screen
+                                        bg-white
+                                        p-4 shadow-lg
+                                        border-1 border-t-0 border-r-0 border-l-0
+                                        border-neutral-300
+                                        "
+                                >
+                                    <div class="flex flex-col gap-4">
+                                        <button
+                                                {{ stimulus_action('shared-navMobileMenuSwitch', 'click') }}
+                                                class="flex flex-row justify-end text-black"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+
+                                        {% for sidenavEntry in TwigHelperService.sidenavEntries %}
+
+                                            {# @var sidenavEntry \App\Shared\Presentation\Entity\NavigationEntry #}
+
+                                            <a
+                                                    href="{{ path(sidenavEntry.routeName) }}"
+                                                    {% if TwigHelperService.navigationEntryIsActive(app.current_route, sidenavEntry) %}
+                                                        class="w-full rounded-md h-14 bg-mercurius-green-400 text-black font-bold flex flex-row justify-center items-center"
+                                                    {% else %}
+                                                        class="w-full rounded-md h-14 bg-neutral-300 text-neutral-900 hover:text-black hover:bg-mercurius-green-400 font-light text-center  flex flex-row justify-center items-center"
+                                                    {% endif %}
+                                            >
+                                                {{ (sidenavEntry.displayNameTransId)|trans }}
+                                            </a>
+
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
                     </nav>
 
                 </div>
@@ -122,49 +187,22 @@
                             border-1 border-t-0 border-l-0 border-b-0 border-neutral-300
                             flex flex-col justify-start items-center pl-4 pt-14 gap-4"
                     >
-                        <a
-                                href="{{ path('videobasedmarketing.recordings.presentation.videos.overview') }}"
-                                {% if TwigHelperService.routeStartsWith(app.current_route, 'videobasedmarketing.recordings.') %}
-                                    class="sidenav-button-active"
-                                {% else %}
-                                    class="sidenav-button-inactive"
-                                {% endif %}
-                        >
-                            {{ 'sidenav.recordings'|trans }}
-                        </a>
+                        {% for sidenavEntry in TwigHelperService.sidenavEntries %}
 
-                        <a
-                                href="{{ path('videobasedmarketing.organization.overview') }}"
-                                {% if TwigHelperService.routeStartsWith(app.current_route, 'videobasedmarketing.organization.') %}
-                                    class="sidenav-button-active"
-                                {% else %}
-                                    class="sidenav-button-inactive"
-                                {% endif %}
-                        >
-                            {{ 'sidenav.organization'|trans }}
-                        </a>
+                            {# @var sidenavEntry \App\Shared\Presentation\Entity\NavigationEntry #}
 
-                        <a
-                                href="{{ path('videobasedmarketing.settings.presentation.custom_logo') }}"
-                                {% if TwigHelperService.routeStartsWith(app.current_route, 'videobasedmarketing.settings.presentation.custom_logo') %}
-                                    class="sidenav-button-active"
-                                {% else %}
-                                    class="sidenav-button-inactive"
-                                {% endif %}
-                        >
-                            {{ 'sidenav.settings_custom_logo'|trans }}
-                        </a>
+                            <a
+                                    href="{{ path(sidenavEntry.routeName) }}"
+                                    {% if TwigHelperService.navigationEntryIsActive(app.current_route, sidenavEntry) %}
+                                        class="sidenav-button-active"
+                                    {% else %}
+                                        class="sidenav-button-inactive"
+                                    {% endif %}
+                            >
+                                {{ (sidenavEntry.displayNameTransId)|trans }}
+                            </a>
 
-                        <a
-                                href="{{ path('videobasedmarketing.settings.presentation.custom_domain') }}"
-                                {% if TwigHelperService.routeStartsWith(app.current_route, 'videobasedmarketing.settings.presentation.custom_domain') %}
-                                    class="sidenav-button-active"
-                                {% else %}
-                                    class="sidenav-button-inactive"
-                                {% endif %}
-                        >
-                            {{ 'sidenav.settings_custom_domain'|trans }}
-                        </a>
+                        {% endfor %}
                     </nav>
                 {% endif %}
 
