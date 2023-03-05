@@ -28,23 +28,47 @@
             <header
                     class="flex flex-col items-center flex-grow
                     mx-auto w-full
-                    bg-gradient-to-r from-mercurius-blue-900 to-mercurius-green-400
-                    border-1 border-t-0 border-l-0 border-r-0 border-neutral-400 border-opacity-50"
+                    bg-gradient-to-l from-mercurius-blue-900 to-mercurius-green-400
+                    shadow-md
+                    border-1 border-t-0 border-l-0 border-r-0 border-mercurius-blue-900 border-opacity-50"
             >
-                <nav class="w-full max-w-8xl h-20 flex flex-row items-center">
-                    <div class="mx-4 sm:mx-12 flex flex-row justify-start items-center gap-3">
-                        <div>
+                <nav class="w-full max-w-8xl h-12 flex flex-row items-center">
+                    <div
+                            class="mx-4 sm:mx-12 flex flex-row justify-start items-center gap-3"
+                    >
+                        <div
+                                class="absolute z-10
+                                w-52 h-24
+                                bg-mercurius-blue-900
+                                border-1 border-black border-opacity-10
+                                rounded-bl-lg rounded-br-lg overflow-clip
+                                shadow-md
+                                -mb-6 -mt-6
+                                "
+                        >
                             <img
-                                    src="{{ asset('assets/images/shared/logos/fyyn-logo-head-only-240x241.png') }}"
-                                    class="h-10"
+                                    class="opacity-5 w-52 contrast-200"
+                                    src="{{ asset('assets/images/shared/logos/fyyn-logo-background-cloth-640x426.png') }}"
                             >
                         </div>
-                        <div class="flex flex-col gap-0 items-start">
-                            <div class="font-black text-white text-2xl">
-                                Fyyn.io
+
+                        <div class="flex flex-row justify-start items-center gap-3 ml-5 mt-4">
+                            <div class="z-20 flex-shrink-0">
+                                <img
+                                        src="{{ asset('assets/images/shared/logos/fyyn-logo-head-only-240x241.png') }}"
+                                        class="h-10"
+                                >
                             </div>
-                            <div class="text-xs font-light text-white -mt-1.5">
-                                Succeed with video.
+                            <div class="flex flex-col gap-0 items-start z-20">
+                                <div
+                                        class="font-black text-white text-2xl whitespace-nowrap drop-shadow-md"
+                                        style="font-family: 'IBM Plex serif', 'Times New Roman', serif;"
+                                >
+                                    Fyyn.io
+                                </div>
+                                <div class="text-xs font-light text-mercurius-green-400 -mt-1.5 whitespace-nowrap">
+                                    Succeed with video.
+                                </div>
                             </div>
                         </div>
                     </div>
