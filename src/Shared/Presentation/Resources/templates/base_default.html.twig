@@ -182,10 +182,10 @@
             <div class="flex flex-row justify-start items-start h-full">
                 {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
                     <nav
-                            class="collapse sm:visible w-36 h-full flex-shrink-0
+                            class="hidden w-36 h-full flex-shrink-0
                             bg-gradient-to-b from-neutral-100 to-white
                             border-1 border-t-0 border-l-0 border-b-0 border-neutral-300
-                            flex flex-col justify-start items-center pl-4 pt-14 gap-4"
+                            sm:flex flex-col justify-start items-center pl-4 pt-14 gap-4"
                     >
                         {% for sidenavEntry in TwigHelperService.sidenavEntries %}
 
