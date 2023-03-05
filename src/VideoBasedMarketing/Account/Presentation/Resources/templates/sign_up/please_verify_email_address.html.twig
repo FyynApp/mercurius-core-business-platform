@@ -9,27 +9,29 @@
 
 {% block body %}
 
-    <h1 class="text-8xl font-extrabold">
-        {{ 'sign_up.please_verify_email_address.greeting'|trans }}
-    </h1>
+    <div class="max-w-7xl mt-24 mx-auto">
+        <h1 class="text-8xl font-extrabold">
+            {{ 'sign_up.please_verify_email_address.greeting'|trans }}
+        </h1>
 
-    <div class="mt-4 text-4xl font-bold">
-        {{ 'sign_up.please_verify_email_address.note1'|trans }}
-    </div>
+        <div class="mt-4 text-4xl font-bold">
+            {{ 'sign_up.please_verify_email_address.note1'|trans }}
+        </div>
 
-    <div class="mt-8 text-2xl font-extralight text-neutral-400">
-        {{ 'sign_up.please_verify_email_address.note2'|trans }}
-    </div>
+        <div class="mt-8 text-2xl font-extralight text-neutral-400">
+            {{ 'sign_up.please_verify_email_address.note2'|trans }}
+        </div>
 
-    <div class="mt-8 text-2xl font-extralight text-neutral-400">
-        {{
+        <div class="mt-8 text-2xl font-extralight text-neutral-400">
+            {{
             'sign_up.please_verify_email_address.mail_info'
             |trans({ '{email}': email })
-        }}
-    </div>
+            }}
+        </div>
 
-    <div class="mt-8 text-2xl font-semibold text-mercurius-blue-900">
-        {{ 'sign_up.please_verify_email_address.note3'|trans }}
+        <div class="mt-8 text-2xl font-semibold text-mercurius-blue-900">
+            {{ 'sign_up.please_verify_email_address.note3'|trans }}
+        </div>
     </div>
 
 {% endblock %}
