@@ -30,24 +30,27 @@
                     mx-auto w-full
                     bg-gradient-to-l from-mercurius-blue-900 to-mercurius-green-400
                     shadow-md
-                    border-1 border-t-0 border-l-0 border-r-0 border-mercurius-blue-900 border-opacity-50"
+                    border-1 border-t-0 border-l-0 border-r-0 border-black"
             >
-                <nav class="w-full max-w-8xl h-12 flex flex-row items-center">
-                    <div
+                <div class="w-full max-w-8xl h-12 flex flex-row items-center justify-between">
+                    <a
+                            href="{{ path('shared.presentation.contentpages.homepage') }}"
                             class="mx-4 sm:mx-12 flex flex-row justify-start items-center gap-3"
                     >
                         <div
                                 class="absolute z-10
                                 w-52 h-24
-                                bg-mercurius-blue-900
-                                border-1 border-black border-opacity-10
+                                bg-gradient-to-bl
+                                from-mercurius-blue-800
+                                to-mercurius-blue-900
+                                border-1 border-black
                                 rounded-bl-lg rounded-br-lg overflow-clip
                                 shadow-md
                                 -mb-6 -mt-6
                                 "
                         >
                             <img
-                                    class="opacity-5 w-52 contrast-200"
+                                    class="opacity-5 w-52 contrast-200 brightness-50"
                                     src="{{ asset('assets/images/shared/logos/fyyn-logo-background-cloth-640x426.png') }}"
                             >
                         </div>
@@ -71,8 +74,37 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </nav>
+                    </a>
+
+                    <nav class="flex flex-row justify-start items-center mx-4 sm:mx-12 gap-4">
+                        {% if TwigHelperService.accountDomainService.userCanSignUp(app.user) %}
+                            <a
+                                    href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
+                                    class="bg-mercurius-green-100 p-4 rounded-md
+                                    hover:bg-mercurius-green-300 hover:text-black
+                                    h-9 text-mercurius-green-900
+                                    text-xs sm:text-sm font-light whitespace-nowrap
+                                    flex flex-row justify-center items-center"
+                            >
+                                {{ 'sidenav.sign_up'|trans }}
+                            </a>
+                        {% endif %}
+
+                        {% if TwigHelperService.accountDomainService.userCanSignIn(app.user) %}
+                            <a
+                                    href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
+                                    class="bg-mercurius-green-100 p-4 rounded-md
+                                    hover:bg-mercurius-green-300 hover:text-black
+                                    h-9 text-mercurius-green-900
+                                    text-xs sm:text-sm font-light whitespace-nowrap
+                                    flex flex-row justify-center items-center"
+                            >
+                                {{ 'sidenav.sign_in'|trans }}
+                            </a>
+                        {% endif %}
+                    </nav>
+
+                </div>
 
             </header>
 
@@ -171,10 +203,7 @@
                                 </a>
                             </li>
 
-                            {% if app.user is defined
-                                and app.user is not null
-                                and app.user.registered
-                            %}
+                            {% if TwigHelperService.accountDomainService.userCanSignOut(app.user) %}
                                 <li>
                                     <form
                                             action="{{ path('videobasedmarketing.account.infrastructure.sign_out') }}"
@@ -190,10 +219,7 @@
                                 </li>
                             {% endif %}
 
-                            {% if app.user is not defined
-                                or app.user is null
-                                or app.user.unregistered
-                            %}
+                            {% if TwigHelperService.accountDomainService.userCanSignIn(app.user) %}
                                 <li>
                                     <a
                                             href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
@@ -203,7 +229,9 @@
                                         {{ 'footernav.sign_in'|trans }}
                                     </a>
                                 </li>
+                            {% endif %}
 
+                            {% if TwigHelperService.accountDomainService.userCanSignUp(app.user) %}
                                 <li>
                                     <a
                                             href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"

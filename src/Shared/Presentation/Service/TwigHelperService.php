@@ -5,6 +5,7 @@ namespace App\Shared\Presentation\Service;
 use App\Shared\Infrastructure\Service\ContentDeliveryService;
 use App\Shared\Infrastructure\Service\CookiesService;
 use App\Shared\Infrastructure\Service\ShortIdService;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
@@ -24,6 +25,8 @@ use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructu
 class TwigHelperService
 {
     private ContentDeliveryService $contentDeliveryService;
+
+    private AccountDomainService $accountDomainService;
 
     private AccountAssetsService $accountAssetsService;
 
@@ -59,6 +62,7 @@ class TwigHelperService
 
     public function __construct(
         ContentDeliveryService          $contentDeliveryService,
+        AccountDomainService            $accountDomainService,
         AccountAssetsService            $accountAssetsService,
         MembershipService               $membershipService,
         CookiesService                  $cookiesService,
@@ -78,6 +82,7 @@ class TwigHelperService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
+        $this->accountDomainService = $accountDomainService;
         $this->accountAssetsService = $accountAssetsService;
         $this->membershipService = $membershipService;
         $this->cookiesService = $cookiesService;
@@ -109,6 +114,11 @@ class TwigHelperService
     public function getContentDeliveryService(): ContentDeliveryService
     {
         return $this->contentDeliveryService;
+    }
+
+    public function getAccountDomainService(): AccountDomainService
+    {
+        return $this->accountDomainService;
     }
 
     public function getAccountAssetsService(): AccountAssetsService
