@@ -150,7 +150,7 @@
                                             </svg>
                                         </button>
 
-                                        {% for sidenavEntry in TwigHelperService.sidenavEntries %}
+                                        {% for sidenavEntry in TwigHelperService.sidenavEntries(app.user) %}
 
                                             {# @var sidenavEntry \App\Shared\Presentation\Entity\NavigationEntry #}
 
@@ -187,7 +187,7 @@
                             border-1 border-t-0 border-l-0 border-b-0 border-neutral-300
                             sm:flex flex-col justify-start items-center pl-4 pt-14 gap-4"
                     >
-                        {% for sidenavEntry in TwigHelperService.sidenavEntries %}
+                        {% for sidenavEntry in TwigHelperService.sidenavEntries(app.user) %}
 
                             {# @var sidenavEntry \App\Shared\Presentation\Entity\NavigationEntry #}
 
