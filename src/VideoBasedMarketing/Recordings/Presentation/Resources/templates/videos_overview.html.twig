@@ -24,7 +24,9 @@
                 'data-lang': app.request.locale,
                 'data-max-file-size': TwigHelperService.videoDomainService.maxVideoUploadFilesize(app.user),
                 'data-show-inline': 'false',
-                'data-dashboard-target': 'body'
+                'data-dashboard-target': 'body',
+                'data-current-video-folder-id': videoFolder is null ? null : videoFolder.id,
+                'data-after-done-location': app.request.uri
             }
         ) }}
     {% endif %}

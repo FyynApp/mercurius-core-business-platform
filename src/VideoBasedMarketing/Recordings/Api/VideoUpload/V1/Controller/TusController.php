@@ -67,14 +67,20 @@ class TusController
             {
                 $fileMeta = $event->getFile()->details();
 
+                $currentVideoFolderId = null;
+                if (array_key_exists('metadata', $fileMeta)) {
+                    if (array_key_exists('currentVideoFolderId', $fileMeta['metadata'])) {
+                        $currentVideoFolderId = $fileMeta['metadata']['currentVideoFolderId'];
+                    }
+                }
+
                 $recordingsInfrastructureService
                     ->handleCompletedVideoUpload(
                         $user,
                         $token,
-                        $event
+                        $event,
+                        $currentVideoFolderId
                     );
-
-                $logger->debug("fileMeta: " . json_encode($fileMeta));
             }
         );
 

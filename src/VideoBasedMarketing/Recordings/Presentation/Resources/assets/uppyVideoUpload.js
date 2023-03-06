@@ -11,6 +11,7 @@ const showInline = document.currentScript.getAttribute('data-show-inline');
 const dashboardTarget = document.currentScript.getAttribute('data-dashboard-target');
 const statusBarTarget = document.currentScript.getAttribute('data-status-bar-target');
 const afterDoneLocation = document.currentScript.getAttribute('data-after-done-location');
+const currentVideoFolderId = document.currentScript.getAttribute('data-current-video-folder-id');
 
 let locale = en_US;
 if (appLocale === 'de') {
@@ -30,7 +31,7 @@ const uppy = new Uppy({
         minNumberOfFiles: 1,
         allowedFileTypes: ['video/*'],
     },
-    meta: {},
+    meta: { 'currentVideoFolderId': currentVideoFolderId },
     onBeforeFileAdded: (currentFile, files) => currentFile,
     onBeforeUpload: (files, record) => {},
     locale: locale,
