@@ -46,7 +46,9 @@
                             href="{{ path('shared.presentation.contentpages.homepage') }}"
                             class="mx-4 pl-0.5 sm:mx-12 flex flex-row justify-start items-center gap-3 z-30
                             {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
-                            absolute sm:left-0 -left-6
+                                absolute sm:left-0 -left-6
+                            {% else %}
+                                sm:ml-0 -ml-3
                             {% endif %}
                             "
                     >
@@ -89,7 +91,7 @@
                         </div>
                     </a>
 
-                    <nav class="flex flex-row justify-start items-center mx-4 sm:mx-12 gap-4">
+                    <nav class="flex flex-row justify-start items-center mx-2 sm:mx-12 gap-2 sm:gap-4">
                         {% if TwigHelperService.accountDomainService.userCanSignUp(app.user) %}
                             <a
                                     href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
