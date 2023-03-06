@@ -13,8 +13,8 @@
     }
 
     .sidenav-button-active {
-        @apply bg-mercurius-green-400 p-4 rounded-r-md
-        h-9 text-black -mr-0 w-40 pr-8
+        @apply bg-mercurius-green-400 p-4 rounded-l-md
+        h-9 text-black -mr-0 w-40
         text-xs sm:text-sm font-bold whitespace-nowrap
         flex flex-row justify-end items-center;
     }

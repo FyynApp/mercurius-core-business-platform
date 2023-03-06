@@ -181,195 +181,201 @@
             </header>
 
 
-            <div class="flex flex-row justify-start items-start h-full">
-                {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
-                    <nav
-                            class="hidden w-36 h-full flex-shrink-0
-                            bg-gradient-to-b from-neutral-100 to-white
-                            border-1 border-t-0 border-l-0 border-b-0 border-neutral-300
-                            sm:flex flex-col justify-start items-center pl-4 pt-14 gap-4"
-                    >
-                        {% for sidenavEntry in TwigHelperService.sidenavEntries(app.user) %}
-
-                            {# @var sidenavEntry \App\Shared\Presentation\Entity\NavigationEntry #}
-
-                            <a
-                                    href="{{ path(sidenavEntry.routeName) }}"
-                                    {% if TwigHelperService.navigationEntryIsActive(app.current_route, sidenavEntry) %}
-                                        class="sidenav-button-active"
-                                    {% else %}
-                                        class="sidenav-button-inactive"
-                                    {% endif %}
-                            >
-                                {{ (sidenavEntry.displayNameTransId)|trans }}
-                            </a>
-
-                        {% endfor %}
-                    </nav>
-                {% endif %}
-
-
-                <div class="flex flex-col mx-auto w-full h-full min-h-screen {% block mainWrapperClasses %}max-w-8xl{% endblock %}">
-
-                    <main class="mb-auto">
-
-                        {% for label, messages in app.flashes %}
-                            {% for message in messages %}
-                                <div class="pl-1 sm:pl-4 pr-1 sm:pr-4">
-                                    <div class="
-                                        {% apply spaceless %}
-                                            rounded-md
-                                            p-8
-                                            m-4
-                                            sm:m-8
-                                            text-lg
-                                            font-normal
-                                            border-1
-                                            {% if label is same as 'success' %} bg-mercurius-green-100 text-mercurius-green-900 border-mercurius-green-500{% endif %}
-                                            {% if label is same as 'info' %} bg-mercurius-blue-100 text-mercurius-blue-900 text-mercurius-blue-500 {% endif %}
-                                            {% if label is same as 'warning' %} bg-orange-50 text-orange-600 border-orange-300{% endif %}
-                                            {% if label is same as 'danger' %} bg-red-100 text-red-900 border-red-500 {% endif %}
-                                        {% endapply %}
-                                     "
-                                    >
-                                        {{ message }}
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-
-                        {% block body %}{% endblock %}
-                    </main>
-
-                    <footer class="padded-content-box">
-                        <div
-                                class="
-                                mt-32
-                                bg-gradient-to-b lg:bg-gradient-to-r from-mercurius-blue-50 to-mercurius-green-100 rounded-lg
-                                w-full bottom-0 p-6 pb-8
-                                lg:flex lg:items-center lg:justify-between
-                                font-extralight
-                                text-neutral-900 text-sm
-                            "
+            <table class="w-full min-h-screen border-collapse border-spacing-0">
+                <tr>
+                    {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
+                        <td
+                                class="w-36 align-top p-0 m-0
+                                hidden sm:table-cell
+                                bg-gradient-to-b from-neutral-100 to-white
+                                border-1 border-t-0 border-l-0 border-b-0 border-neutral-300
+                                pl-4 pt-14
+                                "
                         >
-                            <ul class="flex flex-wrap items-center mt-3">
-                                <li class="text-mercurius-blue-900">
-                                    © {{ "now"|date("Y") }} smart DSGVO GmbH
-                                </li>
-                            </ul>
 
-                            <ul class="flex flex-wrap gap-4 items-center mt-3">
-                                <li>
-                                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="hover:underline">{{ 'footernav.english'|trans }}</a>
-                                </li>
-                                <li>
-                                    <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="hover:underline">{{ 'footernav.german'|trans }}</a>
-                                </li>
-                            </ul>
+                            <nav
+                                    class="flex flex-col justify-start items-center gap-4"
+                            >
+                                {% for sidenavEntry in TwigHelperService.sidenavEntries(app.user) %}
 
-                            <ul class="flex flex-wrap gap-4 items-center mt-3 text-mercurius-green-900">
-                                <li>
+                                    {# @var sidenavEntry \App\Shared\Presentation\Entity\NavigationEntry #}
+
                                     <a
-                                            {% if app.request.locale is same as 'de' %}
-                                                href="https://help.fyyn.io/knowledge-base/datenschutzerklarung/"
+                                            href="{{ path(sidenavEntry.routeName) }}"
+                                            {% if TwigHelperService.navigationEntryIsActive(app.current_route, sidenavEntry) %}
+                                                class="sidenav-button-active"
                                             {% else %}
-                                                href="https://help.fyyn.io/knowledge-base/privacy-policy/"
+                                                class="sidenav-button-inactive"
                                             {% endif %}
-
-                                            class="hover:underline"
                                     >
-                                        {{ 'footernav.privacy_policy'|trans }}
+                                        {{ (sidenavEntry.displayNameTransId)|trans }}
                                     </a>
-                                </li>
-                                <li>
-                                    <a
-                                            {% if app.request.locale is same as 'de' %}
-                                                href="https://help.fyyn.io/knowledge-base/impressum/"
-                                            {% else %}
-                                                href="https://help.fyyn.io/knowledge-base/imprint-site-notice/"
-                                            {% endif %}
 
-                                            class="hover:underline"
-                                    >
-                                        {{ 'footernav.imprint'|trans }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                            href="{{ path('shared.presentation.contentpages.cookie_settings') }}"
-                                            class="hover:underline"
-                                    >
-                                        {{ 'footernav.cookie_settings'|trans }}
-                                    </a>
-                                </li>
+                                {% endfor %}
+                            </nav>
+                        </td>
+                    {% endif %}
 
-                                {% if TwigHelperService.accountDomainService.userCanSignOut(app.user) %}
-                                    <li>
-                                        <form
-                                                action="{{ path('videobasedmarketing.account.infrastructure.sign_out') }}"
-                                                method="post"
+                    <td class="w-full p-0 m-0 align-top">
+                        <main class="mb-auto min-h-screen {% block mainWrapperClasses %}max-w-8xl{% endblock %}">
+
+                            {% for label, messages in app.flashes %}
+                                {% for message in messages %}
+                                    <div class="pl-1 sm:pl-4 pr-1 sm:pr-4">
+                                        <div class="
+                                    {% apply spaceless %}
+                                        rounded-md
+                                        p-8
+                                        m-4
+                                        sm:m-8
+                                        text-lg
+                                        font-normal
+                                        border-1
+                                        {% if label is same as 'success' %} bg-mercurius-green-100 text-mercurius-green-900 border-mercurius-green-500{% endif %}
+                                        {% if label is same as 'info' %} bg-mercurius-blue-100 text-mercurius-blue-900 text-mercurius-blue-500 {% endif %}
+                                        {% if label is same as 'warning' %} bg-orange-50 text-orange-600 border-orange-300{% endif %}
+                                        {% if label is same as 'danger' %} bg-red-100 text-red-900 border-red-500 {% endif %}
+                                    {% endapply %}
+                                 "
                                         >
-                                            <button
-                                                    type="submit"
-                                                    class="hover:underline"
+                                            {{ message }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+
+                            {% block body %}{% endblock %}
+                        </main>
+
+                        <footer class="padded-content-box">
+                            <div
+                                    class="
+                            mt-32
+                            bg-gradient-to-b lg:bg-gradient-to-r from-mercurius-blue-50 to-mercurius-green-100 rounded-lg
+                            w-full bottom-0 p-6 pb-8
+                            lg:flex lg:items-center lg:justify-between
+                            font-extralight
+                            text-neutral-900 text-sm
+                        "
+                            >
+                                <ul class="flex flex-wrap items-center mt-3">
+                                    <li class="text-mercurius-blue-900">
+                                        © {{ "now"|date("Y") }} smart DSGVO GmbH
+                                    </li>
+                                </ul>
+
+                                <ul class="flex flex-wrap gap-4 items-center mt-3">
+                                    <li>
+                                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="hover:underline">{{ 'footernav.english'|trans }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="hover:underline">{{ 'footernav.german'|trans }}</a>
+                                    </li>
+                                </ul>
+
+                                <ul class="flex flex-wrap gap-4 items-center mt-3 text-mercurius-green-900">
+                                    <li>
+                                        <a
+                                                {% if app.request.locale is same as 'de' %}
+                                                    href="https://help.fyyn.io/knowledge-base/datenschutzerklarung/"
+                                                {% else %}
+                                                    href="https://help.fyyn.io/knowledge-base/privacy-policy/"
+                                                {% endif %}
+
+                                                class="hover:underline"
+                                        >
+                                            {{ 'footernav.privacy_policy'|trans }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                                {% if app.request.locale is same as 'de' %}
+                                                    href="https://help.fyyn.io/knowledge-base/impressum/"
+                                                {% else %}
+                                                    href="https://help.fyyn.io/knowledge-base/imprint-site-notice/"
+                                                {% endif %}
+
+                                                class="hover:underline"
+                                        >
+                                            {{ 'footernav.imprint'|trans }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                                href="{{ path('shared.presentation.contentpages.cookie_settings') }}"
+                                                class="hover:underline"
+                                        >
+                                            {{ 'footernav.cookie_settings'|trans }}
+                                        </a>
+                                    </li>
+
+                                    {% if TwigHelperService.accountDomainService.userCanSignOut(app.user) %}
+                                        <li>
+                                            <form
+                                                    action="{{ path('videobasedmarketing.account.infrastructure.sign_out') }}"
+                                                    method="post"
                                             >
-                                                {{ 'footernav.sign_out'|trans }}
-                                            </button>
-                                        </form>
-                                    </li>
-                                {% endif %}
+                                                <button
+                                                        type="submit"
+                                                        class="hover:underline"
+                                                >
+                                                    {{ 'footernav.sign_out'|trans }}
+                                                </button>
+                                            </form>
+                                        </li>
+                                    {% endif %}
 
-                                {% if TwigHelperService.accountDomainService.userCanSignIn(app.user) %}
-                                    <li>
-                                        <a
-                                                href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
-                                                class="hover:underline"
-                                                data-test-id="footerSignInCta"
-                                        >
-                                            {{ 'footernav.sign_in'|trans }}
-                                        </a>
-                                    </li>
-                                {% endif %}
+                                    {% if TwigHelperService.accountDomainService.userCanSignIn(app.user) %}
+                                        <li>
+                                            <a
+                                                    href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
+                                                    class="hover:underline"
+                                                    data-test-id="footerSignInCta"
+                                            >
+                                                {{ 'footernav.sign_in'|trans }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
 
-                                {% if TwigHelperService.accountDomainService.userCanSignUp(app.user) %}
-                                    <li>
-                                        <a
-                                                href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
-                                                class="hover:underline"
-                                                data-test-id="footerSignUpCta"
+                                    {% if TwigHelperService.accountDomainService.userCanSignUp(app.user) %}
+                                        <li>
+                                            <a
+                                                    href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
+                                                    class="hover:underline"
+                                                    data-test-id="footerSignUpCta"
 
-                                        >
-                                            {{ 'footernav.sign_up'|trans }}
-                                        </a>
-                                    </li>
-                                {% endif %}
+                                            >
+                                                {{ 'footernav.sign_up'|trans }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
 
-                                {% if app.user is defined
-                                    and app.user is not null
-                                    and TwigHelperService.capabilitiesService.canAdministerVideos(app.user)
-                                %}
-                                    <li>
-                                        <a
-                                                href="{{ path('videobasedmarketing.recordings.presentation.admin.videos.overview') }}"
-                                                class="hover:underline text-red-700 font-semibold"
-                                        >
-                                            Admin
-                                        </a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-                        </div>
-
-                        {% if TwigHelperService.symfonyEnv is not same as 'prod' %}
-                            <div class="font-mono text-neutral-400 text-xs mt-4 text-right">
-                                Symfony env: {{ TwigHelperService.symfonyEnv }}
+                                    {% if app.user is defined
+                                        and app.user is not null
+                                        and TwigHelperService.capabilitiesService.canAdministerVideos(app.user)
+                                    %}
+                                        <li>
+                                            <a
+                                                    href="{{ path('videobasedmarketing.recordings.presentation.admin.videos.overview') }}"
+                                                    class="hover:underline text-red-700 font-semibold"
+                                            >
+                                                Admin
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
                             </div>
-                        {% endif %}
 
-                    </footer>
+                            {% if TwigHelperService.symfonyEnv is not same as 'prod' %}
+                                <div class="font-mono text-neutral-400 text-xs mt-4 text-right">
+                                    Symfony env: {{ TwigHelperService.symfonyEnv }}
+                                </div>
+                            {% endif %}
 
-                </div>
-            </div>
+                        </footer>
+                    </td>
+                </tr>
+            </table>
 
 
         </div>
