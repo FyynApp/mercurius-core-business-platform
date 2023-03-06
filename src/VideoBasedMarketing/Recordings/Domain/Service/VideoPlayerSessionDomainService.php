@@ -123,8 +123,7 @@ readonly class VideoPlayerSessionDomainService
                     v.id = :vid
                     AND
                     e.player_current_time >= $second
-                    AND
-                    e.player_current_time < $second + 1
+                    
                     
                 ;
             ";
