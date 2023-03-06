@@ -41,6 +41,7 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
         RequestEvent $event
     ): void
     {
+        return;
         if ($event->getRequestType() === HttpKernelInterface::SUB_REQUEST) {
             return;
         }

@@ -939,4 +939,16 @@ class Video
             return gmdate('i:s', (int)$seconds);
         }
     }
+
+    public function getSeconds(): ?float
+    {
+        $seconds = null;
+        if (!is_null($this->getAssetFullMp4Seconds())) {
+            $seconds = $this->getAssetFullMp4Seconds();
+        } elseif (!is_null($this->getAssetFullWebmSeconds())) {
+            $seconds = $this->getAssetFullWebmSeconds();
+        }
+
+        return $seconds;
+    }
 }

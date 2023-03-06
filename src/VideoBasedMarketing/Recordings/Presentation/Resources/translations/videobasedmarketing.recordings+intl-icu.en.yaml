@@ -6,6 +6,7 @@ seconds: >-
     one   {Length: 1 second}
     other {Length: # seconds}
   }
+seconds_word: 'seconds'
 video_successfully_deleted: 'Video “{title}” has been removed.'
 video_manage_widget:
   processing:
@@ -14,6 +15,7 @@ video_manage_widget:
   overview_box:
     cta_share: 'Share video'
     cta_show_landingpage: 'Show landingpage'
+    cta_show_analytics: 'Show engagement'
     cta_edit: 'Edit video'
     cta_send_video_mailing: 'Send video email'
     cta_delete: 'Delete video'
@@ -89,6 +91,8 @@ video_landingpage:
   upgrade_promotion:
     custom_domain: 'Your own domain name in the address bar?'
     custom_logo: 'Your own logo on this page?'
+video_analytics:
+  title: 'Video analytics'
 native_browser_recorder:
   back_to_videos_overview_cta: 'Back to videos'
   title: 'Record webcam or desktop'
