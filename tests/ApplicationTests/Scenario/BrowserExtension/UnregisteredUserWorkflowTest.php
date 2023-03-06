@@ -157,7 +157,7 @@ class UnregisteredUserWorkflowTest
 
         $this->assertSelectorTextSame(
             'title',
-            'Fyyn — Videos'
+            'Fyyn — Video Library'
         );
 
         $this->assertSelectorTextContains(
@@ -248,7 +248,7 @@ class UnregisteredUserWorkflowTest
 
         $this->assertSelectorTextSame(
             'title',
-            'Fyyn — Videos'
+            'Fyyn — Video Library'
         );
 
         $this->assertSelectorTextNotContains(
