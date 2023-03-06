@@ -332,4 +332,40 @@ readonly class AccountDomainService
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
+
+    public function userCanSignIn(
+        ?User $user
+    ): bool
+    {
+        if (is_null($user)) {
+            return true;
+        }
+
+        return $user->isUnregistered();
+    }
+
+    public function userCanSignUp(
+        ?User $user
+    ): bool
+    {
+        return $this->userCanSignIn($user);
+    }
+
+    public function userCanSignOut(
+        ?User $user
+    ): bool
+    {
+        if (is_null($user)) {
+            return false;
+        }
+
+        return $user->isRegistered();
+    }
+
+    public function userIsSignedIn(
+        ?User $user
+    ): bool
+    {
+        return $this->userCanSignOut($user);
+    }
 }

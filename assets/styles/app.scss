@@ -22,3 +22,9 @@ body {
     url('../../public/assets/fonts/tiro-gurmukhi-v6-latin-ext_latin/tiro-gurmukhi-v6-latin-ext_latin-regular.woff2') format('woff2'),
     url('../../public/assets/fonts/tiro-gurmukhi-v6-latin-ext_latin/tiro-gurmukhi-v6-latin-ext_latin-regular.woff') format('woff');
 }
+
+@font-face {
+    font-family: 'IBM Plex serif';
+    src: local(''),
+    url('../../public/assets/fonts/ibm-plex-serif/IBMPlexSerif-Bold.woff') format('woff');
+}

@@ -4,8 +4,8 @@
 {# @var hasCapability bool #}
 {# @var requiredMembershipPlan \App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan #}
 
-{% block title %}{{ 'mainnav.settings'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'mainnav.settings'|trans }}{% endblock %}
+{% block title %}{{ 'sidenav.settings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'sidenav.settings'|trans }}{% endblock %}
 
 {% block body %}
 
@@ -18,8 +18,6 @@
         {% endblock %}
 
         {% block contentBoxContent %}
-
-            {% include '@videobasedmarketing.recordings/includes/back_to_videos_overview.html.twig' %}
 
             {% if not hasCapability %}
 
@@ -65,7 +63,7 @@
 
             <div class="flex flex-col lg:flex-row gap-8">
 
-                <div>
+                <div class="w-full">
                     <form
                             method="post"
                             action="{{ path('videobasedmarketing.settings.presentation.custom_domain.update_name') }}"
@@ -77,7 +75,7 @@
 
                             <div class="flex flex-row gap-2">
                                 <input
-                                        class="text-input w-96"
+                                        class="text-input w-full max-w-xl"
                                         type="text"
                                         id="domainName"
                                         name="domainName"
@@ -119,7 +117,7 @@
 
                 <div
                         class="
-                            mt-8 rounded-md p-4 border-1 border-orange-300 border-dotted w-96 max-w-full
+                            mt-8 rounded-md p-4 border-1 border-orange-300 border-dotted w-full sm:w-96 max-w-full
                             flex flex-col gap-4 bg-orange-50
                         "
                 >

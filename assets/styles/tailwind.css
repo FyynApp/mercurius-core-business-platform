@@ -12,6 +12,21 @@
         border-width: 1px;
     }
 
+    .sidenav-button-active {
+        @apply bg-mercurius-green-400 p-4 rounded-l-md
+        h-9 text-black -mr-0 w-40
+        text-xs sm:text-sm font-bold whitespace-nowrap
+        flex flex-row justify-end items-center;
+    }
+
+    .sidenav-button-inactive {
+        @apply bg-neutral-300 p-4 rounded-l-md
+        hover:bg-mercurius-green-400 hover:text-black
+        h-9 w-full text-neutral-900
+        text-xs sm:text-sm font-light whitespace-nowrap
+        flex flex-row justify-end items-center;
+    }
+
     .padded-content-box {
         @apply px-4 py-6 sm:px-12;
     }
@@ -24,19 +39,6 @@
         @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 w-full pb-12;
     }
 
-    .nav-btn-default {
-        @apply text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium;
-    }
-    .nav-btn-active {
-        @apply bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium;
-    }
-
-    .nav-btn-default-mobile {
-        @apply text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium;
-    }
-    .nav-btn-active-mobile {
-        @apply bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium;
-    }
 
     .cta-link-primary {
         @apply flex flex-row gap-2 rounded-md bg-mercurius-blue-100 text-mercurius-blue-700 p-4 text-start w-full ease-in-out delay-75 duration-100 border-mercurius-blue-300 border-1;

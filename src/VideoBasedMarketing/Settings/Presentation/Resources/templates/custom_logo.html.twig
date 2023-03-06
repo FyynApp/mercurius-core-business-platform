@@ -4,8 +4,8 @@
 {# @var hasCapability bool #}
 {# @var requiredMembershipPlan \App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan #}
 
-{% block title %}{{ 'mainnav.settings'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'mainnav.settings'|trans }}{% endblock %}
+{% block title %}{{ 'sidenav.settings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'sidenav.settings'|trans }}{% endblock %}
 
 {% block stylesheets %}
     {{ encore_entry_link_tags('uppy') }}
@@ -31,8 +31,6 @@
         {% endblock %}
 
         {% block contentBoxContent %}
-
-            {% include '@videobasedmarketing.recordings/includes/back_to_videos_overview.html.twig' %}
 
             {% if not hasCapability %}
 

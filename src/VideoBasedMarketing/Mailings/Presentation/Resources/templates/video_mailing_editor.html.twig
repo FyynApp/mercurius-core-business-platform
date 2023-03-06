@@ -3,8 +3,8 @@
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 {# @var videoMailing \App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing #}
 
-{% block title %}{{ 'mainnav.mailings'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'mainnav.mailings'|trans }}{% endblock %}
+{% block title %}{{ 'sidenav.mailings'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'sidenav.mailings'|trans }}{% endblock %}
 
 
 {% block body %}
@@ -19,8 +19,6 @@
 
 
         {% block contentBoxContent %}
-
-            {% include '@videobasedmarketing.recordings/includes/back_to_videos_overview.html.twig' %}
 
             {{ component(
                 'videobasedmarketing_mailings_video_mailing_editor',

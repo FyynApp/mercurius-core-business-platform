@@ -11,8 +11,6 @@ class NavigationEntry
     /** @var string[] */
     private array $additionalRouteNames;
 
-    private bool $isActive;
-
     /**
      * @param string[] $additionalRouteNames
      */
@@ -25,7 +23,6 @@ class NavigationEntry
         $this->displayNameTransId = $displayNameTransId;
         $this->routeName = $routeName;
         $this->additionalRouteNames = $additionalRouteNames;
-        $this->isActive = false;
     }
 
     public function getDisplayNameTransId(): string
@@ -46,16 +43,5 @@ class NavigationEntry
     public function getAdditionalRouteNames(): array
     {
         return $this->additionalRouteNames;
-    }
-
-
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
     }
 }

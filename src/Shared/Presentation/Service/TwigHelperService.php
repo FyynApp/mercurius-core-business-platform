@@ -5,6 +5,9 @@ namespace App\Shared\Presentation\Service;
 use App\Shared\Infrastructure\Service\ContentDeliveryService;
 use App\Shared\Infrastructure\Service\CookiesService;
 use App\Shared\Infrastructure\Service\ShortIdService;
+use App\Shared\Presentation\Entity\NavigationEntry;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
@@ -19,11 +22,14 @@ use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastr
 use App\VideoBasedMarketing\Recordings\Presentation\Service\RecordingsPresentationService;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructureService;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class TwigHelperService
 {
     private ContentDeliveryService $contentDeliveryService;
+
+    private AccountDomainService $accountDomainService;
 
     private AccountAssetsService $accountAssetsService;
 
@@ -59,6 +65,7 @@ class TwigHelperService
 
     public function __construct(
         ContentDeliveryService          $contentDeliveryService,
+        AccountDomainService            $accountDomainService,
         AccountAssetsService            $accountAssetsService,
         MembershipService               $membershipService,
         CookiesService                  $cookiesService,
@@ -78,6 +85,7 @@ class TwigHelperService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
+        $this->accountDomainService = $accountDomainService;
         $this->accountAssetsService = $accountAssetsService;
         $this->membershipService = $membershipService;
         $this->cookiesService = $cookiesService;
@@ -109,6 +117,11 @@ class TwigHelperService
     public function getContentDeliveryService(): ContentDeliveryService
     {
         return $this->contentDeliveryService;
+    }
+
+    public function getAccountDomainService(): AccountDomainService
+    {
+        return $this->accountDomainService;
     }
 
     public function getAccountAssetsService(): AccountAssetsService
@@ -189,5 +202,70 @@ class TwigHelperService
     public function getOrganizationDomainService(): OrganizationDomainService
     {
         return $this->organizationDomainService;
+    }
+
+    public function routeStartsWith(
+        string $route,
+        string $startsWith
+    ): bool
+    {
+        return str_starts_with(
+            $route,
+            $startsWith
+        );
+    }
+
+    public function navigationEntryIsActive(
+        string $currentRoute,
+        NavigationEntry $navigationEntry
+    ): bool
+    {
+        if ($this->routeStartsWith($currentRoute, $navigationEntry->getRouteName())) {
+            return true;
+        }
+
+        foreach ($navigationEntry->getAdditionalRouteNames() as $additionalRouteName) {
+            if ($this->routeStartsWith($currentRoute, $additionalRouteName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /** @return NavigationEntry[] */
+    public function getSidenavEntries(
+        User $user
+    ): array
+    {
+        $result = [
+            new NavigationEntry(
+                'sidenav.recordings',
+                'videobasedmarketing.recordings.presentation.videos.overview',
+                ['videobasedmarketing.recordings.presentation.']
+            ),
+
+            new NavigationEntry(
+                'sidenav.organization',
+                'videobasedmarketing.organization.overview',
+                ['videobasedmarketing.organization.']
+            )
+        ];
+
+        if ($this->capabilitiesService->canEditCustomLogoSetting($user)) {
+            $result[] = new NavigationEntry(
+                'sidenav.settings_custom_logo',
+                'videobasedmarketing.settings.presentation.custom_logo'
+            );
+        }
+        
+        if ($this->capabilitiesService->canEditCustomDomainSetting($user)) {
+            $result[] = new NavigationEntry(
+                'sidenav.settings_custom_domain',
+                'videobasedmarketing.settings.presentation.custom_domain'
+            );
+        }
+        
+        return $result;
     }
 }
