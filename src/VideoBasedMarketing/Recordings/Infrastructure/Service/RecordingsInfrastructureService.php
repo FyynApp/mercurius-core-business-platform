@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
@@ -1518,7 +1519,8 @@ class RecordingsInfrastructureService
     public function handleCompletedVideoUpload(
         User           $user,
         string         $token,
-        UploadComplete $event
+        UploadComplete $event,
+        ?string        $videoFolderId
     ): void
     {
         $fileMeta = $event->getFile()->details();
@@ -1549,6 +1551,12 @@ class RecordingsInfrastructureService
         );
 
         $video->setVideoUpload($videoUpload);
+
+        $videoFolder = null;
+        if (!is_null($videoFolderId)) {
+            $videoFolder = $this->entityManager->find(VideoFolder::class, $videoFolderId);
+        }
+        $video->setVideoFolder($videoFolder);
 
         $this->entityManager->persist($videoUpload);
         $this->entityManager->persist($video);
