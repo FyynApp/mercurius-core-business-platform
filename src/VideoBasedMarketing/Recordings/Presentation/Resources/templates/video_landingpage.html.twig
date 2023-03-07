@@ -222,7 +222,7 @@
                     let latestCurrentTime = 0;
                     videojs('#video-js-player').on('timeupdate', function() {
                         const currentTime = this.currentTime();
-                        if (   currentTime - latestCurrentTime > 0.5
+                        if (   currentTime - latestCurrentTime > 1.0
                             || currentTime < latestCurrentTime
                             || currentTime === 0
                         ) {
