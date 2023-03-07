@@ -98,6 +98,12 @@ video_analytics:
   note2: 'The chart below the video illustrates how many % of all video playbacks have reached a certain point in time in the video.'
   note3: 'Move the mouse over the video preview to show how a certain point in time in the video correlates with viewer churn.'
   note4: 'The video player for this video has been shown {numberOfVideoPlayerSessions} times, and {numberOfStartedVideoPlayerSessions} of these player sessions have watched at least one second of the video.'
+  total_plays: 'Total Plays'
+  play_rate: 'Play Rate'
+  play_rate_note: 'Out of <span class="font-bold">{numberOfVideoPlayerSessions}</span> times that the player for this video was loaded, it was played <span class="font-bold">{numberOfStartedVideoPlayerSessions}</span> times.'
+  play_rate_formula: '{playRate}% play rate'
+  plays_formula: '{plays} plays'
+  player_loads: '{playerLoads} player loads'
 native_browser_recorder:
   back_to_videos_overview_cta: 'Back to videos'
   title: 'Record webcam or desktop'
