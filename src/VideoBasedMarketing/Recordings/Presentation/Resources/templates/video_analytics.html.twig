@@ -34,7 +34,7 @@
                         id="video"
                         class="z-40 rounded-md"
                         style="width: 100%;"
-                        src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
+                        src="{{ TwigHelperService.recordingsInfrastructureService.videoForAnalyticsWidgetAssetUrl(video) }}"
                 >
                 </video>
 
@@ -91,53 +91,74 @@
                     }
                     let x = e.offsetX;
 
-                    console.debug(document.getElementById('video').offsetWidth);
-
                     let pos = {{ video.seconds }} / document.getElementById('video').offsetWidth * x;
+
+                    document.getElementById('video').currentTime = pos;
 
                     for (let i=0; i < {{ viewPercentagesPerSecond|length }}; i++)
                     {
-                        document.getElementById('bar-' + i).classList.remove('bg-mercurius-green-400');
-                        document.getElementById('percentage-' + i).classList.add('hidden');
+                        let $el = document.getElementById('bar-' + i);
+                        if ($el !== null) {
+                            $el.classList.remove('bg-mercurius-green-400')
+                        }
+
+                        $el = document.getElementById('percentage-' + i);
+                        if ($el !== null) {
+                            $el.classList.add('hidden')
+                        }
                     }
 
                     if (pos > 0) {
-                        document.getElementById('bar-' + Math.floor(pos)).classList.add('bg-mercurius-green-400');
+                        let $el = document.getElementById('bar-' + Math.floor(pos));
+                        if ($el !== null) {
+                            $el.classList.add('bg-mercurius-green-400');
+                        }
                     }
-
-                    //console.debug('pos' + pos);
-
-                    document.getElementById('video').fastSeek(pos);
-                    document.getElementById('video').currentTime = pos;
 
                     const minutes = Math.floor(Math.floor(pos) / 60);
                     const seconds = Math.floor(pos) - minutes * 60;
 
                     document.getElementById('seconds-info').textContent = str_pad_left(minutes, '0', 2) + ':' + str_pad_left(seconds, '0', 2);
-                    document.getElementById('percentage-' + Math.floor(pos)).classList.remove('hidden');
+
+                    let $el = document.getElementById('percentage-' + Math.floor(pos));
+                    if ($el !== null) {
+                        $el.classList.remove('hidden');
+                    }
                 }
 
                 function jumpTo(e, second) {
                     //console.debug(e.target.id);
                     //console.debug('second' + second);
 
+                    document.getElementById('video').currentTime = second;
+
                     for (let i=0; i < {{ viewPercentagesPerSecond|length }}; i++)
                     {
-                        document.getElementById('bar-' + i).classList.remove('bg-mercurius-green-400');
-                        document.getElementById('percentage-' + i).classList.add('hidden');
+                        let $el = document.getElementById('bar-' + i);
+                        if ($el !== null) {
+                            $el.classList.remove('bg-mercurius-green-400')
+                        }
+
+                        $el = document.getElementById('percentage-' + i);
+                        if ($el !== null) {
+                            $el.classList.add('hidden')
+                        }
                     }
 
-                    document.getElementById('bar-' + second).classList.add('bg-mercurius-green-400');
-
-                    document.getElementById('video').fastSeek(second);
-                    document.getElementById('video').currentTime = second;
+                    let $el = document.getElementById('bar-' + second);
+                    if ($el !== null) {
+                        $el.classList.add('bg-mercurius-green-400');
+                    }
 
                     const minutes = Math.floor(Math.floor(second) / 60);
                     const rSeconds = Math.floor(second) - minutes * 60;
 
                     document.getElementById('seconds-info').textContent = str_pad_left(minutes, '0', 2) + ':' + str_pad_left(rSeconds, '0', 2);
 
-                    document.getElementById('percentage-' + second).classList.remove('hidden');
+                    $el = document.getElementById('percentage-' + second);
+                    if ($el !== null) {
+                        $el.classList.remove('hidden');
+                    }
                 }
             </script>
 

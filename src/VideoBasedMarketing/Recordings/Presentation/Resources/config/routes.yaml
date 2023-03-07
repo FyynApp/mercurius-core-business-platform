@@ -23,3 +23,6 @@ videobasedmarketing.recordings.presentation.video.poster_animated.asset:
 
 videobasedmarketing.recordings.presentation.video.full.asset:
   path: /generated-content/video-assets/{videoId}/full.{extension}
+
+videobasedmarketing.recordings.presentation.video.for_analytics_widget.asset:
+  path: /generated-content/video-assets/{videoId}/for-analytics-widget.{extension}

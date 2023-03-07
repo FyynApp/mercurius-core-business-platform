@@ -417,6 +417,19 @@ class RecordingsInfrastructureService
         }
     }
 
+    public function getVideoForAnalyticsWidgetAssetUrl(Video $video, bool $absoluteUrl = false): string
+    {
+        if ($video->hasAssetForAnalyticsWidgetMp4()) {
+            return $this->router->generate(
+                'videobasedmarketing.recordings.presentation.video.for_analytics_widget.asset',
+                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4)],
+                $absoluteUrl ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+            );
+        } else {
+            return $this->router->generate('videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder');
+        }
+    }
+    
 
     /** @throws InvalidArgumentException */
     public function mimeTypeToFileSuffix(AssetMimeType $mimeType): string
@@ -475,6 +488,10 @@ class RecordingsInfrastructureService
 
         if (!$video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
             $this->generateVideoAssetPosterStillWithPlayOverlayForEmailPng($video);
+        }
+
+        if (!$video->hasAssetForAnalyticsWidgetMp4()) {
+            $this->generateVideoAssetForAnalyticsWidgetMp4($video);
         }
     }
 
@@ -1076,6 +1093,120 @@ class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
+    private function generateVideoAssetForAnalyticsWidgetMp4(
+        Video $video
+    ): void
+    {
+        if (!is_null($video->getRecordingSession())) {
+            if (!$video->hasAssetOriginal()) {
+                $this->generateVideoAssetOriginal($video);
+            }
+
+            $sourceWidth = $video->getAssetOriginalWidth();
+            $sourceHeight = $video->getAssetOriginalHeight();
+
+            $sourcePath = $this->getVideoAssetOriginalFilePath(
+                $video
+            );
+
+        } else {
+            $sourcePath = $this->getContentStoragePathForVideoUpload($video->getVideoUpload());
+
+            $sourceWidth = $this->probeForVideoAssetWidth(
+                $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
+            );
+
+            $sourceHeight = $this->probeForVideoAssetHeight(
+                $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
+            );
+        }
+
+        $sourceHeight = (int)floor($sourceHeight / ($sourceWidth / 320));
+        $sourceWidth = 320;
+
+        // The libx264 encoder cannot work with uneven resolutions,
+        // we therefore try to feed it even resolutions
+
+        if (!is_null($sourceWidth) && $sourceWidth % 2 !== 0) {
+            $sourceWidth += 1;
+        }
+
+        if (!is_null($sourceHeight) && $sourceHeight % 2 !== 0) {
+            $sourceHeight += 1;
+        }
+
+        if (is_null($sourceWidth) && is_null($sourceHeight)) {
+            $scaleParam = ''; // in this case, if the input video has an uneven resolution in
+            // one or two of it's dimensions, encoding will fail.
+            // Encoding without a scaleParam is therefore a best-effort approach
+        } else {
+            $scaleParam = ',scale=';
+            if (is_null($sourceWidth)) {
+                $scaleParam .= 'iw:';
+            } else {
+                $scaleParam .= "$sourceWidth:";
+            }
+
+            if (is_null($sourceHeight)) {
+                $scaleParam .= 'ih';
+            } else {
+                $scaleParam .= "$sourceHeight";
+            }
+        }
+
+        $process = new Process(
+            [
+                'ffmpeg',
+
+                '-i',
+                $sourcePath,
+
+                '-c:v',
+                'libx264',
+
+                '-profile:v',
+                'main',
+
+                '-level',
+                '4.2',
+
+                '-preset',
+                'ultrafast',
+
+                '-crf',
+                '40',
+
+                '-vf',
+                "format=yuv420p,fps=1$scaleParam",
+
+                '-c:a',
+                'aac',
+
+                '-movflags',
+                '+faststart',
+
+                '-y',
+                $this->getVideoForAnalyticsWidgetAssetFilePath(
+                    $video,
+                    AssetMimeType::VideoMp4
+                )
+            ]
+        );
+        $process->setIdleTimeout(null);
+        $process->setTimeout(60 * 30);
+        $process->run();
+
+        if ($process->isSuccessful()) {
+            $video->setHasAssetForAnalyticsWidgetMp4(true);
+
+            $this->entityManager->persist($video);
+            $this->entityManager->flush();
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
     private function probeForVideoAssetFps(
         string $filepath
     ): ?float
@@ -1335,6 +1466,20 @@ class RecordingsInfrastructureService
                 self::VIDEO_ASSETS_SUBFOLDER_NAME,
                 $video->getId(),
                 'full.' . $this->mimeTypeToFileSuffix($mimeType)
+            ]
+        );
+    }
+
+    private function getVideoForAnalyticsWidgetAssetFilePath(
+        Video         $video,
+        AssetMimeType $mimeType
+    ): string
+    {
+        return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
+            [
+                self::VIDEO_ASSETS_SUBFOLDER_NAME,
+                $video->getId(),
+                'for-analytics-widget.' . $this->mimeTypeToFileSuffix($mimeType)
             ]
         );
     }

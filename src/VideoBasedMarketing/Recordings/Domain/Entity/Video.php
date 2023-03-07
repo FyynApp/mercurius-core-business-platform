@@ -682,6 +682,22 @@ class Video
     }
 
     
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $hasAssetForAnalyticsWidgetMp4 = false;
+
+    public function hasAssetForAnalyticsWidgetMp4(): bool
+    {
+        return $this->hasAssetForAnalyticsWidgetMp4;
+    }
+
+    public function setHasAssetForAnalyticsWidgetMp4(
+        bool $hasAssetForAnalyticsWidgetMp4
+    ): void
+    {
+        $this->hasAssetForAnalyticsWidgetMp4 = $hasAssetForAnalyticsWidgetMp4;
+    }
+
+
     #[ORM\Column(
         type: Types::SMALLINT,
         nullable: true,
