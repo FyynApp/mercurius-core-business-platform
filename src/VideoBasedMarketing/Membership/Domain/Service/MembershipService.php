@@ -127,6 +127,14 @@ readonly class MembershipService
                     []
                 ),
 
+            MembershipPlanName::Independent =>
+            new MembershipPlan(
+                $name,
+                true,
+                27.00,
+                []
+            ),
+
             MembershipPlanName::Plus =>
                 new MembershipPlan(
                     $name,
@@ -139,7 +147,7 @@ readonly class MembershipService
                 new MembershipPlan(
                     $name,
                     true,
-                    49.99,
+                    47.99,
                     [
                         Capability::CustomDomain,
                         Capability::CustomLogoOnLandingpage,

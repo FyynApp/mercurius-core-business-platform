@@ -66,6 +66,7 @@ class PaymentProcessorStripeService
 
                 'line_items' => [[
                     'price' => match ($membershipPlan->getName()) {
+                        MembershipPlanName::Independent => $_ENV['STRIPE_API_ID_PRODUCT_INDEPENDENT_PLAN'],
                         MembershipPlanName::Plus => $_ENV['STRIPE_API_ID_PRODUCT_PLUS_PLAN'],
                         MembershipPlanName::Pro => $_ENV['STRIPE_API_ID_PRODUCT_PRO_PLAN'],
 
