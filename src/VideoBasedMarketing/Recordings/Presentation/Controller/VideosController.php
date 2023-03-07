@@ -11,6 +11,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoFolderDomainService;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoPlayerSessionDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,11 +90,12 @@ class VideosController
         methods     : [Request::METHOD_GET]
     )]
     public function videoShareLinkAction(
-        string                 $videoShortId,
-        EntityManagerInterface $entityManager,
-        VideoDomainService     $videoDomainService,
-        Request                $request,
-        CapabilitiesService    $capabilitiesService
+        string                          $videoShortId,
+        EntityManagerInterface          $entityManager,
+        VideoDomainService              $videoDomainService,
+        Request                         $request,
+        CapabilitiesService             $capabilitiesService,
+        VideoPlayerSessionDomainService $videoPlayerSessionDomainService
     ): Response
     {
         /** @var EntityRepository $r */
@@ -124,9 +126,18 @@ class VideosController
             throw $this->createNotFoundException("Video '{$video->getId()}' does not have a video only presentationpage template.");
         }
 
+        $videoPlayerSession = $videoPlayerSessionDomainService->createVideoPlayerSession(
+            $this->getUser(),
+            $video,
+            (string)$request->getClientIp()
+        );
+
         return $this->render(
             '@videobasedmarketing.recordings/video_landingpage.html.twig',
-            ['video' => $video]
+            [
+                'video' => $video,
+                'videoPlayerSession' => $videoPlayerSession
+            ]
         );
     }
 

@@ -2,6 +2,7 @@
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+{# @var videoPlayerSession \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSession #}
 
 {% block title_prefix %}{% endblock %}
 {% block title %}{{ video.title }}{% endblock %}
@@ -63,13 +64,6 @@
 
 {% block javascripts %}
     <script src="{{ asset('assets/vendor-static/Video.js/7.20.3/video.min.js') }}"></script>
-
-    <script>
-        videojs('video-js-player').ready(function() {
-            const img = this.controlBar.addChild('Component', {}, 0);
-            img.addClass('video-js-logo-image');
-        });
-    </script>
 {% endblock %}
 
 {% block body %}
@@ -222,6 +216,33 @@
                     web browser that supports HTML5 video.
                 </p>
             </video>
+
+            {% if videoPlayerSession is not null %}
+                <script>
+                    let latestCurrentTime = 0;
+                    videojs('#video-js-player').on('timeupdate', function() {
+                        const currentTime = this.currentTime();
+                        if (   currentTime - latestCurrentTime > 0.5
+                            || currentTime < latestCurrentTime
+                            || currentTime === 0
+                        ) {
+                            //console.log('the time was updated to: ' + currentTime + ', latest was ' + latestCurrentTime);
+                            latestCurrentTime = currentTime;
+
+                            const req = new XMLHttpRequest();
+                            req.open(
+                                'POST',
+                                '{{ path(
+                                    'videobasedmarketing.recordings.track_video_player_session_event',
+                                    { videoPlayerSessionId: videoPlayerSession.id }
+                                ) }}'
+                                + '?playerCurrentTime=' + encodeURIComponent(currentTime)
+                            );
+                            req.send();
+                        }
+                    });
+                </script>
+            {% endif %}
         </div>
     </div>
 

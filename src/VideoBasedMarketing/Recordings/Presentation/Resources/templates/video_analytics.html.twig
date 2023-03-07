@@ -1,0 +1,168 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+{# @var viewPercentagesPerSecond float[] #}
+
+{% trans_default_domain 'videobasedmarketing.recordings' %}
+{% block title %}{{ 'video_analytics.title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'video_analytics.title'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.recordings' %}
+
+        {% block contentBoxTitle %}
+            {{ 'video_analytics.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+
+            <div
+                    id="video-overlay"
+                    class="relative h-full w-full max-w-2xl"
+                    style="width: 100%"
+                    onmousemove="onMouseOver(event)"
+            >
+                <video
+                        id="video"
+                        class="z-40 rounded-md"
+                        style="width: 100%;"
+                        src="{{ TwigHelperService.recordingsInfrastructureService.videoForAnalyticsWidgetAssetUrl(video) }}"
+                >
+                </video>
+
+                <div class="absolute mt-12 left-0 right-0 h-40 z-50">
+                    <div
+                            class="flex flex-row gap-0 justify-start items-end h-full"
+                            style="width: 100%"
+                            onmousemove="onMouseOver(event)"
+                    >
+                        {% for viewPercentagePerSecond in viewPercentagesPerSecond %}
+                            <div
+                                    data-type="bar"
+                                    id="bar-{{ loop.index0 }}"
+                                    class="
+                                    opacity-100
+                                    bg-mercurius-blue-900
+                                    border-mercurius-blue-900
+                                    border-b-2
+                                    border-t-2
+                                    border-t-mercurius-green-400
+                                    "
+
+                                    style="
+                                            width: {{ 100 / viewPercentagesPerSecond|length }}%;
+                                            height: {{ viewPercentagePerSecond }}%;
+                                            "
+
+                                    onmousemove="jumpTo(event, {{ loop.index0 }})"
+                            >
+                                <div
+                                        id="percentage-{{ loop.index0 }}"
+                                        class="absolute border-1 border-mercurius-green-400 rounded-r-md px-2 hidden text-mercurius-green-400 bg-mercurius-blue-900"
+                                >
+                                    {{ viewPercentagePerSecond|round }}%
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <div id="seconds-info">{{ video.seconds|round }} {{ 'seconds_word'|trans }}</div>
+            </div>
+
+            <script>
+                function str_pad_left(string, pad, length) {
+                    return (new Array(length + 1).join(pad) + string).slice(-length);
+                }
+
+                function onMouseOver(e) {
+                    if (e.target.getAttribute('data-type') === 'bar') {
+                        return;
+                    }
+                    let x = e.offsetX;
+
+                    let pos = {{ video.seconds }} / document.getElementById('video').offsetWidth * x;
+
+                    document.getElementById('video').currentTime = pos;
+
+                    for (let i=0; i < {{ viewPercentagesPerSecond|length }}; i++)
+                    {
+                        let $el = document.getElementById('bar-' + i);
+                        if ($el !== null) {
+                            $el.classList.remove('bg-mercurius-green-400')
+                        }
+
+                        $el = document.getElementById('percentage-' + i);
+                        if ($el !== null) {
+                            $el.classList.add('hidden')
+                        }
+                    }
+
+                    if (pos > 0) {
+                        let $el = document.getElementById('bar-' + Math.floor(pos));
+                        if ($el !== null) {
+                            $el.classList.add('bg-mercurius-green-400');
+                        }
+                    }
+
+                    const minutes = Math.floor(Math.floor(pos) / 60);
+                    const seconds = Math.floor(pos) - minutes * 60;
+
+                    document.getElementById('seconds-info').textContent = str_pad_left(minutes, '0', 2) + ':' + str_pad_left(seconds, '0', 2);
+
+                    let $el = document.getElementById('percentage-' + Math.floor(pos));
+                    if ($el !== null) {
+                        $el.classList.remove('hidden');
+                    }
+                }
+
+                function jumpTo(e, second) {
+                    //console.debug(e.target.id);
+                    //console.debug('second' + second);
+
+                    document.getElementById('video').currentTime = second;
+
+                    for (let i=0; i < {{ viewPercentagesPerSecond|length }}; i++)
+                    {
+                        let $el = document.getElementById('bar-' + i);
+                        if ($el !== null) {
+                            $el.classList.remove('bg-mercurius-green-400')
+                        }
+
+                        $el = document.getElementById('percentage-' + i);
+                        if ($el !== null) {
+                            $el.classList.add('hidden')
+                        }
+                    }
+
+                    let $el = document.getElementById('bar-' + second);
+                    if ($el !== null) {
+                        $el.classList.add('bg-mercurius-green-400');
+                    }
+
+                    const minutes = Math.floor(Math.floor(second) / 60);
+                    const rSeconds = Math.floor(second) - minutes * 60;
+
+                    document.getElementById('seconds-info').textContent = str_pad_left(minutes, '0', 2) + ':' + str_pad_left(rSeconds, '0', 2);
+
+                    $el = document.getElementById('percentage-' + second);
+                    if ($el !== null) {
+                        $el.classList.remove('hidden');
+                    }
+                }
+            </script>
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

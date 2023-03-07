@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
     description: '',
     aliases: ['regenerate-video-assets']
 )]
-class RegenerateVideoAssetsCommandMessage
+class RegenerateVideoAssetsCommand
     extends Command
 {
     private EntityManagerInterface $entityManager;
@@ -61,9 +61,10 @@ class RegenerateVideoAssetsCommandMessage
         $video->setHasAssetPosterAnimatedWebp(false);
         $video->setHasAssetPosterAnimatedGif(false);
         $video->setHasAssetPosterStillWithPlayOverlayForEmailPng(false);
+        $video->setHasAssetForAnalyticsWidgetMp4(false);
 
-        $this->entityManager->persist($video);
-        $this->entityManager->flush();
+        #$this->entityManager->persist($video);
+        #$this->entityManager->flush();
 
         $this->recordingsInfrastructureService->generateMissingVideoAssets($video);
 

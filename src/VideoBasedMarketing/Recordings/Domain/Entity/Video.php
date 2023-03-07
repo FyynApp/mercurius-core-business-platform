@@ -682,6 +682,22 @@ class Video
     }
 
     
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $hasAssetForAnalyticsWidgetMp4 = false;
+
+    public function hasAssetForAnalyticsWidgetMp4(): bool
+    {
+        return $this->hasAssetForAnalyticsWidgetMp4;
+    }
+
+    public function setHasAssetForAnalyticsWidgetMp4(
+        bool $hasAssetForAnalyticsWidgetMp4
+    ): void
+    {
+        $this->hasAssetForAnalyticsWidgetMp4 = $hasAssetForAnalyticsWidgetMp4;
+    }
+
+
     #[ORM\Column(
         type: Types::SMALLINT,
         nullable: true,
@@ -938,5 +954,17 @@ class Video
         } else {
             return gmdate('i:s', (int)$seconds);
         }
+    }
+
+    public function getSeconds(): ?float
+    {
+        $seconds = null;
+        if (!is_null($this->getAssetFullMp4Seconds())) {
+            $seconds = $this->getAssetFullMp4Seconds();
+        } elseif (!is_null($this->getAssetFullWebmSeconds())) {
+            $seconds = $this->getAssetFullWebmSeconds();
+        }
+
+        return $seconds;
     }
 }
