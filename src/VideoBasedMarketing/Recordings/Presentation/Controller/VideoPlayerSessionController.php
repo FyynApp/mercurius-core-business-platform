@@ -37,14 +37,19 @@ class VideoPlayerSessionController
         /** @var Video $video */
         $video = $r->getEntity();
 
-        $viewPercentagesPerSecond = $videoPlayerSessionDomainService
-            ->getViewPercentagesPerSecond($video);
-
         return $this->render(
             '@videobasedmarketing.recordings/video_analytics.html.twig',
             [
                 'video' => $video,
-                'viewPercentagesPerSecond' => $viewPercentagesPerSecond
+
+                'viewPercentagesPerSecond' => $videoPlayerSessionDomainService
+                    ->getViewPercentagesPerSecond($video),
+
+                'numberOfVideoPlayerSessions' => $videoPlayerSessionDomainService
+                    ->getNumberOfVideoPlayerSessions($video),
+
+                'numberOfStartedVideoPlayerSessions' => $videoPlayerSessionDomainService
+                    ->getNumberOfStartedVideoPlayerSessions($video)
             ]
         );
     }

@@ -224,7 +224,6 @@
                         const currentTime = this.currentTime();
                         if (   currentTime - latestCurrentTime > 1.0
                             || currentTime < latestCurrentTime
-                            || currentTime === 0
                         ) {
                             //console.log('the time was updated to: ' + currentTime + ', latest was ' + latestCurrentTime);
                             latestCurrentTime = currentTime;
