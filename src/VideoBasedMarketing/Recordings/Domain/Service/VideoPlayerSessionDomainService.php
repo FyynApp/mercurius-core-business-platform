@@ -80,9 +80,76 @@ readonly class VideoPlayerSessionDomainService
             return [];
         }
 
-        /** @var ObjectRepository<VideoPlayerSession> $r */
-        $r = $this->entityManager->getRepository(VideoPlayerSession::class);
+        $numberOfStartedVideoPlayerSessions = $this
+            ->getNumberOfStartedVideoPlayerSessions($video);
 
+        $result = [];
+        for ($second = 0; $second < floor($video->getSeconds()); $second++) {
+
+            if ($numberOfStartedVideoPlayerSessions === 0) {
+                $result[$second] = 0;
+                continue;
+            }
+
+            $sql = "
+                SELECT COUNT(DISTINCT(s.id)) AS cnt
+                FROM {$this->entityManager->getClassMetadata(VideoPlayerSessionEvent::class)->getTableName()} e
+                INNER JOIN {$this->entityManager->getClassMetadata(VideoPlayerSession::class)->getTableName()} s
+                ON s.id = e.video_player_sessions_id
+                INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+                ON v.id = s.videos_id
+                WHERE
+                    v.id = :vid
+                    AND
+                    e.player_current_time >= $second
+                ;
+            ";
+
+            $stmt = $this->entityManager->getConnection()->prepare($sql);
+            $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+
+            foreach ($resultSet->fetchAllAssociative() as $row) {
+                $result[$second] = 100 / $numberOfStartedVideoPlayerSessions * $row['cnt'];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getNumberOfVideoPlayerSessions(
+        Video $video
+    ): int
+    {
+        $sql = "
+                SELECT COUNT(DISTINCT(s.id)) AS cnt
+                FROM {$this->entityManager->getClassMetadata(VideoPlayerSession::class)->getTableName()} s
+                INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+                ON v.id = s.videos_id
+                WHERE
+                    v.id = :vid
+                ;
+            ";
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+
+        $numberOfVideoPlayerSessions = 0;
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $numberOfVideoPlayerSessions = $row['cnt'];
+        }
+
+        return $numberOfVideoPlayerSessions;
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getNumberOfStartedVideoPlayerSessions(
+        Video $video
+    ): int
+    {
         $sql = "
                 SELECT COUNT(DISTINCT(s.id)) AS cnt
                 FROM {$this->entityManager->getClassMetadata(VideoPlayerSession::class)->getTableName()} s
@@ -104,38 +171,6 @@ readonly class VideoPlayerSessionDomainService
             $numberOfStartedVideoPlayerSessions = $row['cnt'];
         }
 
-        $result = [];
-        for ($second = 0; $second < floor($video->getSeconds()); $second++) {
-
-            if ($numberOfStartedVideoPlayerSessions === 0) {
-                $result[$second] = 0;
-                continue;
-            }
-
-            $sql = "
-                SELECT COUNT(DISTINCT(s.id)) AS cnt
-                FROM {$this->entityManager->getClassMetadata(VideoPlayerSessionEvent::class)->getTableName()} e
-                INNER JOIN {$this->entityManager->getClassMetadata(VideoPlayerSession::class)->getTableName()} s
-                ON s.id = e.video_player_sessions_id
-                INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
-                ON v.id = s.videos_id
-                WHERE
-                    v.id = :vid
-                    AND
-                    e.player_current_time >= $second
-                    
-                    
-                ;
-            ";
-
-            $stmt = $this->entityManager->getConnection()->prepare($sql);
-            $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
-
-            foreach ($resultSet->fetchAllAssociative() as $row) {
-                $result[$second] = 100 / $numberOfStartedVideoPlayerSessions * $row['cnt'];
-            }
-        }
-
-        return $result;
+        return $numberOfStartedVideoPlayerSessions;
     }
 }

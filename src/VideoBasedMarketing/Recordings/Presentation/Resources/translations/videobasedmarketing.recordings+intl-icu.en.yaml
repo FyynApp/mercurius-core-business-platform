@@ -93,6 +93,11 @@ video_landingpage:
     custom_logo: 'Your own logo on this page?'
 video_analytics:
   title: 'Video analytics'
+  subtitle: 'For video “{videoTitle}”.'
+  note1: 'This analysis shows how viewers behave when playing this video.'
+  note2: 'The chart below the video illustrates how many % of all video playbacks have reached a certain point in time in the video.'
+  note3: 'Move the mouse over the video preview to show how a certain point in time in the video correlates with viewer churn.'
+  note4: 'The video player for this video has been shown {numberOfVideoPlayerSessions} times, and {numberOfStartedVideoPlayerSessions} of these player sessions have watched at least one second of the video.'
 native_browser_recorder:
   back_to_videos_overview_cta: 'Back to videos'
   title: 'Record webcam or desktop'

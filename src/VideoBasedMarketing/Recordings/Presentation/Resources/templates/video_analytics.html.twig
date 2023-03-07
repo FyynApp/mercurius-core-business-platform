@@ -3,6 +3,8 @@
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 {# @var viewPercentagesPerSecond float[] #}
+{# @var numberOfVideoPlayerSessions int #}
+{# @var numberOfStartedVideoPlayerSessions int #}
 
 {% trans_default_domain 'videobasedmarketing.recordings' %}
 {% block title %}{{ 'video_analytics.title'|trans }}{% endblock %}
@@ -19,10 +21,10 @@
         {% endblock %}
 
         {% block contentBoxSubtitle %}
+            {{ 'video_analytics.subtitle'|trans({ '{videoTitle}': video.title }) }}
         {% endblock %}
 
         {% block contentBoxContent %}
-
 
             <div
                     id="video-overlay"
@@ -30,6 +32,25 @@
                     style="width: 100%"
                     onmousemove="onMouseOver(event)"
             >
+                <div class="w-full flex flex-col gap-4 justify-start bg-mercurius-green-100 text-mercurius-green-900 rounded-md p-4 border-1 border-t-mercurius-green-900 mb-8">
+                    <div class="font-bold">
+                        {{ 'video_analytics.note1'|trans }}
+                    </div>
+                    <div>
+                        {{ 'video_analytics.note2'|trans }}
+                    </div>
+                    <div>
+                        {{ 'video_analytics.note4'|trans({
+                            '{numberOfVideoPlayerSessions}': numberOfVideoPlayerSessions,
+                            '{numberOfStartedVideoPlayerSessions}': numberOfStartedVideoPlayerSessions
+                        }) }}
+                    </div>
+                </div>
+
+                <div class="mb-8 w-full bg-mercurius-blue-100 text-mercurius-blue-900 rounded-md p-4 border-1 border-t-mercurius-blue-900">
+                    {{ 'video_analytics.note3'|trans }}
+                </div>
+
                 <video
                         id="video"
                         class="z-40 rounded-md"
