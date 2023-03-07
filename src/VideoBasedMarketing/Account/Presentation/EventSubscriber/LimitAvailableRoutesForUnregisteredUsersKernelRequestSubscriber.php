@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
-readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
+readonly class LimitAvailableRoutesForUnregisteredUsersKernelRequestSubscriber
     implements EventSubscriberInterface
 {
     public function __construct(
@@ -41,7 +41,6 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
         RequestEvent $event
     ): void
     {
-        return;
         if ($event->getRequestType() === HttpKernelInterface::SUB_REQUEST) {
             return;
         }
@@ -50,6 +49,10 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
         $user = $this->tokenStorage->getToken()?->getUser();
 
         if (is_null($user)) {
+            return;
+        }
+
+        if ($user->isRegistered() && $user->isVerified()) {
             return;
         }
 
@@ -103,16 +106,6 @@ readonly class LimitAvailableRoutesForExtensionOnlyUsersKernelRequestSubscriber
             if (str_starts_with($routeName, $allowedRouteName)) {
                 return;
             }
-        }
-
-
-        if ($user->isRegistered() && $user->isVerified()) {
-            $response = new RedirectResponse(
-                $this->router->generate(
-                    'videobasedmarketing.recordings.presentation.videos.overview'
-                )
-            );
-            $event->setResponse($response);
         }
 
         if (!$user->isRegistered()) {
