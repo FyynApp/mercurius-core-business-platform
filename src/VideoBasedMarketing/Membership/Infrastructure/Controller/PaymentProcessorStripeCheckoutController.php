@@ -89,7 +89,7 @@ extends AbstractController
                     'videobasedmarketing.membership'
                 )
             );
-            return $this->redirectToRoute('videobasedmarketing.membership.presentation.overview');
+            return $this->redirectToRoute('shared.presentation.contentpages.homepage');
         } else {
             throw new BadRequestHttpException('Successful checkout return did not result in an active subscription.');
         }
@@ -116,6 +116,6 @@ extends AbstractController
                 'videobasedmarketing.membership'
             )
         );
-        return $this->redirectToRoute('videobasedmarketing.membership.presentation.overview');
+        return $this->redirectToRoute('shared.presentation.contentpages.homepage');
     }
 }
