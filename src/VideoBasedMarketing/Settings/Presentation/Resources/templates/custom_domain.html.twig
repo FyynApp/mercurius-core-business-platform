@@ -97,7 +97,7 @@
                                 action="{{ path('videobasedmarketing.settings.presentation.custom_domain.trigger_domain_name_check') }}"
                         >
                             <div class="flex flex-row gap-2 mt-4">
-                                <div class="w-96 flex-shrink p-3 bg-neutral-100 shadow-inner rounded-md flex flex-row gap-2 justify-start items-center">
+                                <div class="w-full max-w-xl flex-shrink p-3 bg-neutral-100 shadow-inner rounded-md flex flex-row gap-2 justify-start items-center">
                                     {{ component(
                                         'videobasedmarketing_settings_custom_domain_name_check_result',
                                         { 'customDomainSetting': TwigHelperService.settingsDomainService.customDomainSetting(app.user) }
