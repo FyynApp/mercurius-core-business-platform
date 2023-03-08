@@ -720,9 +720,11 @@ class RecordingsInfrastructureService
             [
                 'ffmpeg',
 
+                # seek input to position '1 second'
                 '-ss',
                 '1',
 
+                # read 3 seconds from source
                 '-t',
                 '3',
 
@@ -732,6 +734,7 @@ class RecordingsInfrastructureService
                 '-vf',
                 'scale=520:-1',
 
+                # framerate
                 '-r',
                 '7',
 
