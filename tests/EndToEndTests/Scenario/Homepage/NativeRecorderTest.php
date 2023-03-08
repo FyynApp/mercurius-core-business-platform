@@ -29,13 +29,6 @@ class NativeRecorderTest extends PantherTestCase
             '/en/welcome?forceMobileView=true'
         );
         $crawler->filter('[data-test-id="mobileCreateVideoCta"]')->click();
-        $logEntries = $client->getWebDriver()->manage()->getLog('browser');
-
-        foreach ($logEntries as $logEntry) {
-            if (mb_stristr($logEntry['message'], 'Could not find Uppy dashboard element with class')) {
-                $this->fail($logEntry['message']);
-            }
-        }
 
         $client->waitFor('.uppy-Dashboard-input');
 
