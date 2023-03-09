@@ -30,6 +30,12 @@ use ValueError;
     fields: ['createdAt'],
     name: 'created_at_idx'
 )]
+#[ORM\Index(
+    fields: ['title'],
+    name: 'title_fulltext_idx',
+    flags: ['fulltext']
+
+)]
 class Video
     implements UserOwnedEntityInterface, OrganizationOwnedEntityInterface, SupportsShortIdInterface
 {
