@@ -114,6 +114,12 @@ native_browser_recorder:
     text2: 'However, all content will be recorded and is available in the final video.'
 video_folders:
   save_edited_name_cta: 'Save'
+  delete:
+    really_delete_question: 'Delete folder {folderName}?'
+    really_delete_cta_yes: 'Yes'
+    really_delete_cta_no: 'No'
+    really_delete_note1: 'All subfolders within folder {folderName} will be deleted, too.'
+    really_delete_note2: 'Videos contained in folder {folderName} and its subfolders will NOT be deleted - instead, they will be moved up into the current folder.'
 admin:
   videos_overview:
     title: 'Newest Videos'

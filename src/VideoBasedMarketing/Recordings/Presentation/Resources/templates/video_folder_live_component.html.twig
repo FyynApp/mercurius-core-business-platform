@@ -8,105 +8,178 @@
 >
     <div class="flex flex-row gap-2 justify-start items-start">
 
-        <button
-                data-action="live#action"
-                data-action-name="startEditingName"
-        >
-            {# Heroicons: pencil-square mini #}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-neutral-300 hover:text-black">
-                <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
-                <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
-            </svg>
-        </button>
-
-        {% if this.nameIsBeingEdited %}
+        {% if this.deleteModalIsOpen %}
             <form
-                    class="flex flex-row gap-2"
-                    data-action="live#action"
-                    data-action-name="prevent|stopEditingName"
+                    class="my-4 py-2 px-4 bg-red-100 rounded-md"
+                    action="{{ path(
+                        'videobasedmarketing.recordings.presentation.video_folders.delete',
+                        { videoFoldersId: this.videoFolder.id }
+                    ) }}"
+                    method="post"
             >
-                <input
-                        class="text-input h-8"
-                        type="text"
-                        name="name"
-                        data-model="norender|name"
-                        value="{{ this.name }}"
-                >
-                <button
-                        class="cta-with-icon-success h-8 py-1"
-                        type="button"
-                        data-action="live#action"
-                        data-action-name="stopEditingName"
-                >
-                    {{ 'video_folders.save_edited_name_cta'|trans }}
-                </button>
+                <div>
+                    <input
+                            type="hidden"
+                            name="_csrf_token"
+                            value="{{ csrf_token('delete-video-folder-' ~ this.videoFolder.id) }}"
+                    >
+
+                    <span class="font-semibold">
+                        {{ 'video_folders.delete.really_delete_question'|trans(
+                            { folderName: this.videoFolder.name }
+                        ) }}
+                    </span>
+
+                    <button
+                            class="ml-4 p-1 bg-red-800 text-white rounded-sm"
+                            type="submit"
+                    >
+                        {{ 'video_folders.delete.really_delete_cta_yes'|trans }}
+                    </button>
+
+                    <button
+                            class="ml-4"
+                            type="button"
+                            data-action="live#action"
+                            data-action-name="closeDeleteModal"
+                    >
+                        {{ 'video_folders.delete.really_delete_cta_no'|trans }}
+                    </button>
+                </div>
+                <div class="mt-4 text-sm">
+                    <div>
+                        {{ 'video_folders.delete.really_delete_note1'|trans(
+                            { folderName: this.videoFolder.name }
+                        ) }}
+                    </div>
+                    <div class="mt-4">
+                        {{ 'video_folders.delete.really_delete_note2'|trans(
+                            { folderName: this.videoFolder.name }
+                        ) }}
+                    </div>
+                </div>
             </form>
         {% else %}
-            <a
-                    id="video-folder-{{ this.videoFolder.id }}"
 
-                    data-test-id="video-folder-{{ this.index }}"
+            <button
+                    data-action="live#action"
+                    data-action-name="startEditingName"
+            >
+                {# Heroicons: pencil-square mini #}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-neutral-300 hover:text-black">
+                    <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
+                    <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
+                </svg>
+            </button>
 
-                    data-move-video-into-folder-url="{{ path('videobasedmarketing.recordings.presentation.video_folders.move_video') }}"
+            {% if this.nameIsBeingEdited %}
+                <form
+                        class="flex flex-row gap-2"
+                        data-action="live#action"
+                        data-action-name="prevent|stopEditingName"
+                >
+                    <input
+                            class="text-input h-8"
+                            type="text"
+                            name="name"
+                            data-model="norender|name"
+                            value="{{ this.name }}"
+                    >
+                    <button
+                            class="cta-with-icon-success h-8 py-1"
+                            type="button"
+                            data-action="live#action"
+                            data-action-name="stopEditingName"
+                    >
+                        {{ 'video_folders.save_edited_name_cta'|trans }}
+                    </button>
+                </form>
+            {% else %}
+                <a
+                        id="video-folder-{{ this.videoFolder.id }}"
 
-                    href="{{ path(
-                        'videobasedmarketing.recordings.presentation.videos.overview',
-                        { videoFolderId: this.videoFolder.id }
-                    ) }}"
+                        data-test-id="video-folder-{{ this.index }}"
 
-                    class="flex flex-row justify-start items-start gap-2 w-fit"
+                        data-move-video-into-folder-url="{{ path('videobasedmarketing.recordings.presentation.video_folders.move_video') }}"
 
-                    draggable="false"
-                    data-video-folder-drag-and-drop-video-folder-id="{{ this.videoFolder.id }}"
-                    data-action="
+                        href="{{ path(
+                            'videobasedmarketing.recordings.presentation.videos.overview',
+                            { videoFolderId: this.videoFolder.id }
+                        ) }}"
+
+                        class="flex flex-row justify-start items-start gap-2 w-fit"
+
+                        draggable="false"
+                        data-video-folder-drag-and-drop-video-folder-id="{{ this.videoFolder.id }}"
+                        data-action="
                                                 dragover->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragover
                                                 dragenter->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragenter
                                                 dragleave->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragleave
                                                 drop->videoBasedMarketing-recordings-videoFolderDragAndDrop#drop
                                                 dragend->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragend
                                             "
-            >
-                <div>
+                >
+                    <div>
 
-                    {# Heroicons: folder solid #}
-                    <svg
-                            id="folder-icon-normal-{{ this.videoFolder.id }}"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            class="w-5 h-5"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                    </svg>
+                        {# Heroicons: folder solid #}
+                        <svg
+                                id="folder-icon-normal-{{ this.videoFolder.id }}"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                class="w-5 h-5"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                        </svg>
 
-                    {# Heroicons: folder-arrow-down #}
-                    <svg
-                            id="folder-icon-open-{{ this.videoFolder.id }}"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="hidden w-5 h-5"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                    </svg>
-                </div>
-                <div class="flex flex-row gap-1.5 justify-start items-start">
-                    <div class="hover:underline">
-                        {{ this.videoFolder.name }}
+                        {# Heroicons: folder-arrow-down #}
+                        <svg
+                                id="folder-icon-open-{{ this.videoFolder.id }}"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="hidden w-5 h-5"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                        </svg>
                     </div>
-                    <div
+                    <div class="flex flex-row gap-1.5 justify-start items-start">
+                        <div class="hover:underline">
+                            {{ this.videoFolder.name }}
+                        </div>
 
-                            class="text-neutral-500 font-light text-xs bg-neutral-200 opacity-60 rounded-sm w-fit px-1 h-4 flex flex-row justify-center items-center mt-1"
-                    >
-                        <div>
-                            <span id="number-of-videos-in-folder-{{ this.videoFolder.id }}">{{ TwigHelperService.videoFolderDomainService.numberOfVideosInFolder(videoFolder, app.user.currentlyActiveOrganization) }}</span>&nbsp;{{ 'videos_overview.number_of_videos_label'|trans }}
+                        <div
+
+                                class="text-neutral-500 font-light text-xs bg-neutral-200 opacity-60 rounded-sm w-fit px-1 h-4 flex flex-row justify-center items-center mt-1"
+                        >
+                            <div>
+                                <span id="number-of-videos-in-folder-{{ this.videoFolder.id }}">{{ TwigHelperService.videoFolderDomainService.numberOfVideosInFolder(videoFolder, app.user.currentlyActiveOrganization) }}</span>&nbsp;{{ 'videos_overview.number_of_videos_label'|trans }}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+
+                <button
+                        type="button"
+                        data-action="live#action"
+                        data-action-name="openDeleteModal"
+                >
+                    <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            class="w-5 h-5 pt-1 text-neutral-300 hover:text-red-900"
+                    >
+                        {# Heroicon: folder-minus mini #}
+                        <path fill-rule="evenodd" d="M2 4.75C2 3.784 2.784 3 3.75 3h4.836c.464 0 .909.184 1.237.513l1.414 1.414a.25.25 0 00.177.073h4.836c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0116.25 17H3.75A1.75 1.75 0 012 15.25V4.75zm10.25 7a.75.75 0 000-1.5h-4.5a.75.75 0 000 1.5h4.5z" clip-rule="evenodd" />
+                    </svg>
+
+                </button>
+            {% endif %}
+
         {% endif %}
     </div>
 </div>

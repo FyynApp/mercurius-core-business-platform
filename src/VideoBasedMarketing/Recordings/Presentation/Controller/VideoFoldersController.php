@@ -135,4 +135,48 @@ class VideoFoldersController
 
         return new JsonResponse();
     }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/video-folders/{videoFoldersId}/delete',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/video-ordner/{videoFoldersId}/löschen',
+        ],
+        name        : 'videobasedmarketing.recordings.presentation.video_folders.delete',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function deleteFolderAction(
+        string                   $videoFoldersId,
+        Request                  $request,
+        VideoFolderDomainService $videoFolderDomainService
+    ): Response
+    {
+        $r = $this->verifyAndGetUserAndEntity(
+            VideoFolder::class,
+            $videoFoldersId,
+            AccessAttribute::Delete
+        );
+
+        /** @var VideoFolder $videoFolder */
+        $videoFolder = $r->getEntity();
+
+        $parentVideoFolder = $videoFolder->getParentVideoFolder();
+
+        if (!$this->isCsrfTokenValid("delete-video-folder-{$videoFolder->getId()}", $request->get('_csrf_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
+
+        $videoFolderDomainService->deleteFolder($videoFolder);
+
+        if (is_null($parentVideoFolder)) {
+            return $this->redirectToRoute(
+                'videobasedmarketing.recordings.presentation.videos.overview'
+            );
+        } else {
+            return $this->redirectToRoute(
+                'videobasedmarketing.recordings.presentation.videos.overview',
+                ['videoFolderId' => $parentVideoFolder->getId()]
+            );
+        }
+    }
 }
