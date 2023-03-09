@@ -200,17 +200,6 @@
                     data-setup=''
 
             >
-                {% if (video.assetFullMp4) %}
-                    <source
-                            class="w-full"
-                            src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
-                                video,
-                                constant('\\App\\VideoBasedMarketing\\Recordings\\Infrastructure\\Enum\\AssetMimeType::VideoMp4')
-                            ) }}"
-                            type="video/mp4"
-                    />
-                {% endif %}
-
                 {% if (video.assetFullWebm) %}
                     <source
                             class="w-full"
@@ -219,6 +208,17 @@
                                 constant('\\App\\VideoBasedMarketing\\Recordings\\Infrastructure\\Enum\\AssetMimeType::VideoWebm')
                             ) }}"
                             type="video/webm"
+                    />
+                {% endif %}
+
+                {% if (video.assetFullMp4) %}
+                    <source
+                            class="w-full"
+                            src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
+                                video,
+                                constant('\\App\\VideoBasedMarketing\\Recordings\\Infrastructure\\Enum\\AssetMimeType::VideoMp4')
+                            ) }}"
+                            type="video/mp4"
                     />
                 {% endif %}
 
