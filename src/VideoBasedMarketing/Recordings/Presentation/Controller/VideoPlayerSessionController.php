@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoPlayerSessionDomainService;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +31,7 @@ class VideoPlayerSessionController
         $r = $this->verifyAndGetOrganizationAndEntity(
             Video::class,
             $videoId,
-            VotingAttribute::Use
+            AccessAttribute::Use
         );
 
         /** @var Video $video */

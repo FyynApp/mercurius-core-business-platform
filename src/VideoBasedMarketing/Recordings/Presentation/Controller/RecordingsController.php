@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
@@ -71,7 +71,7 @@ class RecordingsController
             throw $this->createNotFoundException("No recording session with id '$recordingSessionId'.");
         }
 
-        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $recordingSession);
+        $this->denyAccessUnlessGranted(AccessAttribute::Use->value, $recordingSession);
 
         $video = $recordingSessionDomainService
             ->handleRecordingSessionFinished(
@@ -98,7 +98,7 @@ class RecordingsController
         $r = $this->verifyAndGetUserAndEntity(
             RecordingSession::class,
             $recordingSessionId,
-            VotingAttribute::Use
+            AccessAttribute::Use
         );
 
         /** @var RecordingSession $recordingSession */

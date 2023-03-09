@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
@@ -35,7 +35,7 @@ class RecordingSessionsController
         $r = $this->verifyAndGetUserAndEntity(
             RecordingSession::class,
             $recordingSessionId,
-            VotingAttribute::Use
+            AccessAttribute::Use
         );
 
         /** @var RecordingSession $recordingSession */
@@ -94,7 +94,7 @@ class RecordingSessionsController
         }
 
         $this->denyAccessUnlessGranted(
-            VotingAttribute::Use->value,
+            AccessAttribute::Use->value,
             $recordingSession
         );
 

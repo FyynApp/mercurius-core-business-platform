@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Recordings\Presentation\Component;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -40,7 +40,7 @@ class VideoDurationLiveComponent
 
     public function getDuration(): ?string
     {
-        $this->denyAccessUnlessGranted(VotingAttribute::View->value, $this->video);
+        $this->denyAccessUnlessGranted(AccessAttribute::View->value, $this->video);
 
         return $this->video->getDuration();
     }

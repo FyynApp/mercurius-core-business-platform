@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Presentationpages\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Presentationpages\Presentation\Form\Type\PresentationpageType;
@@ -115,7 +115,7 @@ class PresentationpagesController
             throw $this->createNotFoundException("No video with id '$videoId' found.");
         }
 
-        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $video);
+        $this->denyAccessUnlessGranted(AccessAttribute::Use->value, $video);
 
         $user = $this->getUser();
 
@@ -163,7 +163,7 @@ class PresentationpagesController
             throw $this->createNotFoundException("No video with id '$videoId' found.");
         }
 
-        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $video);
+        $this->denyAccessUnlessGranted(AccessAttribute::Use->value, $video);
 
 
         $template = $entityManager->find(Presentationpage::class, $templateId);
@@ -172,7 +172,7 @@ class PresentationpagesController
             throw $this->createNotFoundException("No presentationpage with id '$templateId' found.");
         }
 
-        $this->denyAccessUnlessGranted(VotingAttribute::Use->value, $template);
+        $this->denyAccessUnlessGranted(AccessAttribute::Use->value, $template);
 
 
         $originalPresentationpage = $presentationpagesService->createPageFromVideoAndTemplate($video, $template);
@@ -208,7 +208,7 @@ class PresentationpagesController
             throw $this->createNotFoundException("No presentationpage with id '$presentationpageId'.");
         }
 
-        $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $presentationpage);
+        $this->denyAccessUnlessGranted(AccessAttribute::Edit->value, $presentationpage);
 
         $draft = $presentationpagesService->createDraft($presentationpage);
 
@@ -243,7 +243,7 @@ class PresentationpagesController
             throw $this->createNotFoundException("No presentationpage with id '$presentationpageId'.");
         }
 
-        $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $presentationpage);
+        $this->denyAccessUnlessGranted(AccessAttribute::Edit->value, $presentationpage);
 
         $form = $this->createForm(PresentationpageType::class, $presentationpage);
 
@@ -287,7 +287,7 @@ class PresentationpagesController
             throw $this->createNotFoundException("No presentationpage with id '$presentationpageId' found.");
         }
 
-        $this->denyAccessUnlessGranted(VotingAttribute::View->value, $presentationpage);
+        $this->denyAccessUnlessGranted(AccessAttribute::View->value, $presentationpage);
 
         return $this->render(
             '@videobasedmarketing.presentationpages/preview.html.twig',

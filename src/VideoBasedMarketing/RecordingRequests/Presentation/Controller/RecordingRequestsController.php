@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\RecordingRequests\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
@@ -186,7 +186,7 @@ class RecordingRequestsController
         $result = $this->verifyAndGetUserAndEntity(
             Video::class,
             $videoId,
-            VotingAttribute::Use
+            AccessAttribute::Use
         );
 
         $responsesThatNeedToBeAnswered = $recordingRequestsDomainService
@@ -231,7 +231,7 @@ class RecordingRequestsController
         $result = $this->verifyAndGetUserAndEntity(
             Video::class,
             $videoId,
-            VotingAttribute::Use
+            AccessAttribute::Use
         );
 
         /** @var Video $video */
@@ -240,7 +240,7 @@ class RecordingRequestsController
         $result = $this->verifyAndGetUserAndEntity(
             RecordingRequestResponse::class,
             $recordingRequestResponseId,
-            VotingAttribute::Use
+            AccessAttribute::Use
         );
 
         /** @var RecordingRequestResponse $recordingRequestResponse */

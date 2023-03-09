@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Settings\Presentation\Component;
 
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Settings\Domain\Entity\CustomDomainSetting;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
@@ -45,7 +45,7 @@ class CustomDomainNameCheckResultLiveComponent
     public function getDnsSetupStatus(): CustomDomainDnsSetupStatus
     {
         $this->denyAccessUnlessGranted(
-            VotingAttribute::View->value,
+            AccessAttribute::View->value,
             $this->customDomainSetting
         );
 
@@ -55,7 +55,7 @@ class CustomDomainNameCheckResultLiveComponent
     public function getHttpSetupStatus(): CustomDomainHttpSetupStatus
     {
         $this->denyAccessUnlessGranted(
-            VotingAttribute::View->value,
+            AccessAttribute::View->value,
             $this->customDomainSetting
         );
 

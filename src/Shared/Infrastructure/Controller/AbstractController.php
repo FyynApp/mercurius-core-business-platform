@@ -6,7 +6,7 @@ use App\Shared\Infrastructure\Entity\VerifyAndGetOrganizationAndEntityResult;
 use App\Shared\Infrastructure\Entity\VerifyAndGetUserAndEntityResult;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,7 +44,7 @@ abstract class AbstractController
     public function verifyAndGetUserAndEntity(
         string          $entityClassName,
         string          $entityId,
-        VotingAttribute $votingAttribute
+        AccessAttribute $votingAttribute
     ): VerifyAndGetUserAndEntityResult
     {
         $user = $this->getUser();
@@ -79,7 +79,7 @@ abstract class AbstractController
     public function verifyAndGetOrganizationAndEntity(
         string          $entityClassName,
         string          $entityId,
-        VotingAttribute $votingAttribute
+        AccessAttribute $votingAttribute
     ): VerifyAndGetOrganizationAndEntityResult
     {
         $user = $this->getUser();

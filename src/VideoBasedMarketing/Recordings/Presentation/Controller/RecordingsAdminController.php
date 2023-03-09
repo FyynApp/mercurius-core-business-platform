@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use Doctrine\ORM\EntityManagerInterface;

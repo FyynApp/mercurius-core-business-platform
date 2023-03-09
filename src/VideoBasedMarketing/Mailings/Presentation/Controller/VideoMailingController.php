@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Mailings\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Mailings\Domain\Service\VideoMailingDomainService;
 use App\VideoBasedMarketing\Mailings\Presentation\Service\MailingsPresentationService;
@@ -35,7 +35,7 @@ class VideoMailingController
         $r = $this->verifyAndGetUserAndEntity(
             Video::class,
             $request->get('videoId'),
-            VotingAttribute::Use
+            AccessAttribute::Use
         );
 
         /** @var Video $video */
@@ -67,7 +67,7 @@ class VideoMailingController
         $r = $this->verifyAndGetUserAndEntity(
             VideoMailing::class,
             $videoMailingId,
-            VotingAttribute::Edit
+            AccessAttribute::Edit
         );
 
         return $this->render(
@@ -94,7 +94,7 @@ class VideoMailingController
         $r = $this->verifyAndGetUserAndEntity(
             VideoMailing::class,
             $videoMailingId,
-            VotingAttribute::Use
+            AccessAttribute::Use
         );
 
         /** @var VideoMailing $videoMailing */

@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Component;
 
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Presentation\Form\Type\VideoType;
@@ -94,7 +94,7 @@ class VideoManageWidgetLiveComponent
         bool $doneCtaMustRedirectToOverview = false
     )
     {
-        $this->denyAccessUnlessGranted(VotingAttribute::View->value, $video);
+        $this->denyAccessUnlessGranted(AccessAttribute::View->value, $video);
 
         if (is_null($video->getVideoOnlyPresentationpageTemplate())) {
             $video->setVideoOnlyPresentationpageTemplate(
@@ -132,7 +132,7 @@ class VideoManageWidgetLiveComponent
     #[LiveAction]
     public function showEditModal(): void
     {
-        $this->denyAccessUnlessGranted(VotingAttribute::View->value, $this->video);
+        $this->denyAccessUnlessGranted(AccessAttribute::View->value, $this->video);
         $this->editModalIsOpen = true;
     }
 

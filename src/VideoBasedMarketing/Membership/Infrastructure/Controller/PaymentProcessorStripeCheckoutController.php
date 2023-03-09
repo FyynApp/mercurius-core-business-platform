@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Membership\Infrastructure\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
@@ -73,7 +73,7 @@ extends AbstractController
             throw $this->createNotFoundException("No subscription with id '$subscriptionId'.");
         }
 
-        $this->denyAccessUnlessGranted(VotingAttribute::Edit->value, $subscription);
+        $this->denyAccessUnlessGranted(AccessAttribute::Edit->value, $subscription);
 
         $success = $stripeService->handleSubscriptionCheckoutSuccess(
             $subscription,

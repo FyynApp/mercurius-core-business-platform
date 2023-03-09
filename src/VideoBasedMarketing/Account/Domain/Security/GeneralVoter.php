@@ -4,7 +4,8 @@ namespace App\VideoBasedMarketing\Account\Domain\Security;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
+use App\VideoBasedMarketing\Account\Domain\Service\AccessService;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
@@ -19,14 +20,18 @@ class GeneralVoter
 {
     private CapabilitiesService $capabilitiesService;
 
+    private AccessService $accessService;
+
     private OrganizationDomainService $organizationDomainService;
 
     public function __construct(
         CapabilitiesService       $capabilitiesService,
+        AccessService             $accessService,
         OrganizationDomainService $organizationDomainService
     )
     {
         $this->capabilitiesService = $capabilitiesService;
+        $this->accessService       = $accessService;
         $this->organizationDomainService = $organizationDomainService;
     }
 
@@ -35,7 +40,7 @@ class GeneralVoter
         mixed  $subject
     ): bool
     {
-        $resolvedAttribute = VotingAttribute::tryFrom($attribute);
+        $resolvedAttribute = AccessAttribute::tryFrom($attribute);
         if (is_null($resolvedAttribute)) {
             return false;
         }
@@ -65,7 +70,7 @@ class GeneralVoter
         }
 
         if (   $subject instanceof Video
-            && $attribute === VotingAttribute::Edit->value
+            && $attribute === AccessAttribute::Edit->value
         ) {
             if (!$this->capabilitiesService->canEditVideos($user)) {
                 return false;
@@ -78,22 +83,14 @@ class GeneralVoter
             return false;
         }
 
-        if ($subject instanceof OrganizationOwnedEntityInterface) {
-            $typedSubject = $subject;
-
-            if (    $typedSubject->getOrganization()->getId()
-                === $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user)->getId()
-            ) {
-                return true;
-            }
-        }
-
-        if ($subject instanceof UserOwnedEntityInterface) {
-            $typedSubject = $subject;
-
-            if (    $typedSubject->getUser()->getId()
-                === $user->getId()
-            ) {
+        if (   $subject instanceof OrganizationOwnedEntityInterface
+            || $subject instanceof UserOwnedEntityInterface
+        ) {
+            if ($this->accessService->userCanAccessEntity(
+                $user,
+                AccessAttribute::from($attribute),
+                $subject
+            )) {
                 return true;
             }
         }

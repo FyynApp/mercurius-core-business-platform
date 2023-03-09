@@ -31,6 +31,17 @@ readonly class OrganizationDomainService
     {
     }
 
+    /** @return Organization[] */
+    public function getAllOrganizationsForUser(
+        User $user
+    ): array
+    {
+        return array_merge(
+            $user->getOwnedOrganizations()->toArray(),
+            $user->getJoinedOrganizations()->toArray()
+        );
+    }
+
     public function userJoinedOrganizations(
         User $user
     ): bool

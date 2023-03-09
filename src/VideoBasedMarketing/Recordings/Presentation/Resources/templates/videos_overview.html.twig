@@ -210,70 +210,11 @@
                             {% for videoFolder in videoFolders %}
                                 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder #}
 
-                                <a
-                                        id="video-folder-{{ videoFolder.id }}"
+                                {{ component('videobasedmarketing_recordings_video_folder', {
+                                    videoFolder: videoFolder,
+                                    index: loop.index0
+                                }) }}
 
-                                        data-test-id="video-folder-{{ loop.index0 }}"
-
-                                        data-move-video-into-folder-url="{{ path('videobasedmarketing.recordings.presentation.video_folders.move_video') }}"
-
-                                        href="{{ path(
-                                            'videobasedmarketing.recordings.presentation.videos.overview',
-                                            { videoFolderId: videoFolder.id }
-                                        ) }}"
-
-                                        class="flex flex-row justify-start items-center gap-2 w-fit"
-
-                                        draggable="false"
-                                        data-video-folder-drag-and-drop-video-folder-id="{{ videoFolder.id }}"
-                                        data-action="
-                                            dragover->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragover
-                                            dragenter->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragenter
-                                            dragleave->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragleave
-                                            drop->videoBasedMarketing-recordings-videoFolderDragAndDrop#drop
-                                            dragend->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragend
-                                        "
-                                >
-                                    <div>
-                                        {# Heroicons: folder solid #}
-                                        <svg
-                                                id="folder-icon-normal-{{ videoFolder.id }}"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                class="w-5 h-5"
-                                        >
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                        </svg>
-
-                                        {# Heroicons: folder-arrow-down #}
-                                        <svg
-                                                id="folder-icon-open-{{ videoFolder.id }}"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke-width="1.5"
-                                                stroke="currentColor"
-                                                class="hidden w-5 h-5"
-                                        >
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 13.5l3 3m0 0l3-3m-3 3v-6m1.06-4.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                                        </svg>
-                                    </div>
-                                    <div class="flex flex-row gap-1.5 justify-start items-center">
-                                        <div class="hover:underline">
-                                            {{ videoFolder.name }}
-                                        </div>
-                                        <div
-
-                                                class="text-neutral-500 font-light text-xs bg-neutral-200 opacity-60 rounded-sm w-fit px-1 h-5 flex flex-row justify-center items-center"
-                                        >
-                                            <div>
-                                                <span id="number-of-videos-in-folder-{{ videoFolder.id }}">{{ TwigHelperService.videoFolderDomainService.numberOfVideosInFolder(videoFolder, app.user.currentlyActiveOrganization) }}</span>&nbsp;{{ 'videos_overview.number_of_videos_label'|trans }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
                             {% endfor %}
                         </div>
                     </div>

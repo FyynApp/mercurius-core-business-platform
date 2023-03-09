@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Recordings\Api\Extension\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
@@ -113,7 +113,7 @@ class RecordingSessionController
         $r = $this->verifyAndGetUserAndEntity(
             RecordingSession::class,
             $recordingSessionId,
-            VotingAttribute::Use
+            AccessAttribute::Use
         );
 
         $user = $r->getUser();
@@ -222,7 +222,7 @@ class RecordingSessionController
         $r = $this->verifyAndGetUserAndEntity(
             RecordingSession::class,
             $recordingSessionId,
-            VotingAttribute::Delete
+            AccessAttribute::Delete
         );
         /** @var RecordingSession $recordingSession */
         $recordingSession = $r->getEntity();

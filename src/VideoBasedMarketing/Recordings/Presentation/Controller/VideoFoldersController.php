@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Enum\VotingAttribute;
+use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoFolderDomainService;
@@ -54,7 +54,7 @@ class VideoFoldersController
             $r = $this->verifyAndGetUserAndEntity(
                 VideoFolder::class,
                 $parentVideoFolderId,
-                VotingAttribute::Use
+                AccessAttribute::Use
             );
 
             /** @var VideoFolder $parentVideoFolder */
@@ -100,7 +100,7 @@ class VideoFoldersController
         $r = $this->verifyAndGetUserAndEntity(
             Video::class,
             $request->get('videoId'),
-            VotingAttribute::Edit
+            AccessAttribute::Edit
         );
 
         /** @var Video $video */
@@ -121,7 +121,7 @@ class VideoFoldersController
             $r = $this->verifyAndGetUserAndEntity(
                 VideoFolder::class,
                 $videoFolderId,
-                VotingAttribute::Use
+                AccessAttribute::Use
             );
 
             /** @var VideoFolder $videoFolder */

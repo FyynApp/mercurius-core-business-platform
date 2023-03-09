@@ -112,6 +112,8 @@ native_browser_recorder:
     title: 'Note:'
     text1: 'During recording, the screen or camera preview may appear clipped.'
     text2: 'However, all content will be recorded and is available in the final video.'
+video_folders:
+  save_edited_name_cta: 'Save'
 admin:
   videos_overview:
     title: 'Newest Videos'

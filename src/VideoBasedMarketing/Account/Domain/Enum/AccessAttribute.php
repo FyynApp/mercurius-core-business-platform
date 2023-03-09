@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Account\Domain\Enum;
 
-enum VotingAttribute: string
+enum AccessAttribute: string
 {
     case View = 'view';
     case Edit = 'edit';
