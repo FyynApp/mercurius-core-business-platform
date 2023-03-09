@@ -512,10 +512,6 @@ class RecordingsInfrastructureService
             $this->generateVideoAssetPosterAnimatedWebp($video);
         }
 
-        if (!$video->hasAssetFullWebm()) {
-            $this->generateVideoAssetFullWebm($video);
-        }
-
         if (!$video->hasAssetFullMp4()) {
             $this->generateVideoAssetFullMp4($video);
         }
@@ -530,6 +526,10 @@ class RecordingsInfrastructureService
 
         if (!$video->hasAssetForAnalyticsWidgetMp4()) {
             $this->generateVideoAssetForAnalyticsWidgetMp4($video);
+        }
+
+        if (!$video->hasAssetFullWebm()) {
+            $this->generateVideoAssetFullWebm($video);
         }
     }
 
