@@ -1100,7 +1100,7 @@ class RecordingsInfrastructureService
         Video $video
     ): void
     {
-        if ($video->hasAssetOriginal()
+        if (   $video->hasAssetOriginal()
             && $video->getAssetOriginalMimeType() === AssetMimeType::VideoWebm
         ) {
             $fs = new Filesystem();
@@ -1128,6 +1128,80 @@ class RecordingsInfrastructureService
             $this->entityManager->flush();
 
             return;
+        }
+
+
+        $sourcePath = null;
+
+        if ($video->hasAssetOriginal()) {
+            $sourcePath = $this->getVideoAssetOriginalFilePath($video);
+        }
+
+        if ($video->hasAssetFullMp4()) {
+            $sourcePath = $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4);
+        }
+
+        if (!is_null($sourcePath)) {
+            $process = new Process(
+                [
+                    'ffmpeg',
+
+                    '-i',
+                    $sourcePath,
+
+                    '-c:v',
+                    'libvpx-vp9',
+
+                    '-b:v',
+                    '4M',
+
+                    '-vf',
+                    'fps=60',
+
+                    '-c:a',
+                    'libopus',
+
+                    '-y',
+                    $this->getVideoFullAssetFilePath(
+                        $video,
+                        AssetMimeType::VideoWebm
+                    )
+                ]
+            );
+            $process->setIdleTimeout(null);
+            $process->setTimeout(60 * 30);
+            $process->run();
+
+            if ($process->isSuccessful()) {
+                $video->setHasAssetFullWebm(true);
+
+                $video->setAssetFullWebmFps(
+                    $this->probeForVideoAssetFps(
+                        $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    )
+                );
+
+                $video->setAssetFullWebmSeconds(
+                    $this->probeForVideoAssetSeconds(
+                        $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    )
+                );
+
+                $video->setAssetFullWebmWidth(
+                    $this->probeForVideoAssetWidth(
+                        $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    )
+                );
+
+                $video->setAssetFullWebmHeight(
+                    $this->probeForVideoAssetHeight(
+                        $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoWebm)
+                    )
+                );
+
+                $this->entityManager->persist($video);
+                $this->entityManager->flush();
+            }
         }
     }
 
