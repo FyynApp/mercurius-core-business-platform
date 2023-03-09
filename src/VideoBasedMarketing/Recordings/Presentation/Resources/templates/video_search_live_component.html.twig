@@ -1,0 +1,42 @@
+{# @var this \App\VideoBasedMarketing\Recordings\Presentation\Component\VideoSearchLiveComponent #}
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.recordings' %}
+
+<div
+        {{ attributes }}
+>
+
+    <input
+            type="text"
+            name="q"
+            data-model="norender|q"
+    >
+
+    <button
+            type="button"
+            data-action="live#action"
+            data-action-name="search"
+    >
+        search
+    </button>
+
+    {% if this.resultset is not null %}
+        <div class="grid-outer">
+            {% for result in this.resultset.results %}
+                {# @var result \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoSearchResult #}
+                <div>
+                    {{ result.video.id }}
+                    {{ result.video.title }}
+
+                    {{ component('videobasedmarketing_recordings_video_manage_widget', {
+                        video: result.video,
+                        showEditModal: false,
+                        doneCtaMustRedirectToOverview: false,
+                    }) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>

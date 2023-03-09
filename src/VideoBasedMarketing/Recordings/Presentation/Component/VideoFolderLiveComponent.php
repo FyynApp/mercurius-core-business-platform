@@ -82,6 +82,9 @@ class VideoFolderLiveComponent
         $this->nameIsBeingEdited = true;
     }
 
+    /**
+     * @throws Exception
+     */
     #[LiveAction]
     public function stopEditingName(): void
     {
