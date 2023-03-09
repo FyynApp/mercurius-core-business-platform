@@ -1158,7 +1158,7 @@ class RecordingsInfrastructureService
 
                     # Constant quality: https://trac.ffmpeg.org/wiki/Encode/VP9#constantq
                     '-crf',
-                    '20',
+                    '31',
                     '-b:v',
                     '0',
 
