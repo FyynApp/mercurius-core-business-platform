@@ -388,33 +388,71 @@ class RecordingsInfrastructureService
         }
     }
 
-    public function getVideoFullAssetUrl(Video $video): string
+    /**
+     * @throws Exception
+     */
+    public function getVideoFullAssetUrl(
+        Video $video,
+        AssetMimeType $preferredAssetMimeType = AssetMimeType::VideoMp4
+    ): string
     {
-        if ($video->hasAssetFullMp4()) {
-            return $this->router->generate(
-                'videobasedmarketing.recordings.presentation.video.full.asset',
-                [
-                    'videoId' => $video->getId(),
-                    'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4),
-                    'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4)}"
-                ]
-            );
-        } elseif ($video->hasAssetFullWebm()) {
-            return $this->router->generate(
-                'videobasedmarketing.recordings.presentation.video.full.asset',
-                [
-                    'videoId' => $video->getId(),
-                    'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
-                    'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)}"
-                ]
-            );
-        } else {
-            return $this
-                ->router
-                ->generate(
-                    'videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder'
+        if ($preferredAssetMimeType === AssetMimeType::VideoMp4) {
+            if ($video->hasAssetFullMp4()) {
+                return $this->router->generate(
+                    'videobasedmarketing.recordings.presentation.video.full.asset',
+                    [
+                        'videoId' => $video->getId(),
+                        'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4),
+                        'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4)}"
+                    ]
                 );
+            } elseif ($video->hasAssetFullWebm()) {
+                return $this->router->generate(
+                    'videobasedmarketing.recordings.presentation.video.full.asset',
+                    [
+                        'videoId' => $video->getId(),
+                        'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                        'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)}"
+                    ]
+                );
+            } else {
+                return $this
+                    ->router
+                    ->generate(
+                        'videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder'
+                    );
+            }
+
+        } elseif ($preferredAssetMimeType === AssetMimeType::VideoWebm) {
+            if ($video->hasAssetFullWebm()) {
+                return $this->router->generate(
+                    'videobasedmarketing.recordings.presentation.video.full.asset',
+                    [
+                        'videoId' => $video->getId(),
+                        'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
+                        'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)}"
+                    ]
+                );
+            }
+            elseif ($video->hasAssetFullMp4()) {
+                return $this->router->generate(
+                    'videobasedmarketing.recordings.presentation.video.full.asset',
+                    [
+                        'videoId' => $video->getId(),
+                        'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4),
+                        'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4)}"
+                    ]
+                );
+            } else {
+                return $this
+                    ->router
+                    ->generate(
+                        'videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder'
+                    );
+            }
         }
+
+        throw new Exception("Asset mime type '{$preferredAssetMimeType->value}' is not supported.");
     }
 
     public function getVideoForAnalyticsWidgetAssetUrl(Video $video, bool $absoluteUrl = false): string
