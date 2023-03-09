@@ -145,4 +145,38 @@ readonly class VideoFolderDomainService
 
         return $count;
     }
+
+    public function deleteFolder(
+        VideoFolder $videoFolder
+    ): void
+    {
+        /** @var ObjectRepository<VideoFolder> $repo */
+        $repo = $this->entityManager->getRepository(VideoFolder::class);
+
+        /** @var VideoFolder[] $videoFolders */
+        $videoFolders = $repo->findBy(
+            ['parentVideoFolder' => $videoFolder->getId()]
+        );
+
+        foreach ($videoFolders as $childVideoFolder) {
+            $this->deleteFolder($childVideoFolder);
+        }
+
+
+        /** @var ObjectRepository<Video> $repo */
+        $repo = $this->entityManager->getRepository(Video::class);
+
+        /** @var Video[] $videos */
+        $videos = $repo->findBy(
+            ['videoFolder' => $videoFolder->getId()]
+        );
+
+        foreach ($videos as $video) {
+            $video->setVideoFolder($videoFolder->getParentVideoFolder());
+            $this->entityManager->persist($video);
+        }
+
+        $this->entityManager->remove($videoFolder);
+        $this->entityManager->flush();
+    }
 }

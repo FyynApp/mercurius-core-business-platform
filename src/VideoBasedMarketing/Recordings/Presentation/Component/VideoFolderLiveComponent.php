@@ -37,6 +37,9 @@ class VideoFolderLiveComponent
     #[LiveProp]
     public bool $nameIsBeingEdited = false;
 
+    #[LiveProp]
+    public bool $deleteModalIsOpen = false;
+
 
     private LoggerInterface $logger;
 
@@ -96,5 +99,17 @@ class VideoFolderLiveComponent
             $this->entityManager->flush();
             $this->nameIsBeingEdited = false;
         }
+    }
+
+    #[LiveAction]
+    public function openDeleteModal(): void
+    {
+        $this->deleteModalIsOpen = true;
+    }
+
+    #[LiveAction]
+    public function closeDeleteModal(): void
+    {
+        $this->deleteModalIsOpen = false;
     }
 }
