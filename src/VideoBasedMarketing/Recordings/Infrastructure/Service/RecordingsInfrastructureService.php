@@ -1149,12 +1149,20 @@ class RecordingsInfrastructureService
                     '-i',
                     $sourcePath,
 
+                    # Row based multithreading: https://trac.ffmpeg.org/wiki/Encode/VP9#rowmt
+                    '-row-mt',
+                    '1',
+
                     '-c:v',
                     'libvpx-vp9',
 
+                    # Constant quality: https://trac.ffmpeg.org/wiki/Encode/VP9#constantq
+                    '-crf',
+                    '20',
                     '-b:v',
-                    '4M',
+                    '0',
 
+                    # Frame rate
                     '-vf',
                     'fps=60',
 
