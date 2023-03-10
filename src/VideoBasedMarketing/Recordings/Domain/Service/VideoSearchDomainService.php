@@ -29,12 +29,12 @@ readonly class VideoSearchDomainService
     {
         $q = trim($q);
         $q = mb_strtolower($q);
-        $q = preg_replace(
+        $qForFulltext = preg_replace(
             '/[^\p{L}0-9]/u',
             ' ',
             $q
         );
-        $q = trim($q);
+        $qForFulltext = trim($qForFulltext);
 
         if ($q === '') {
             return new VideoFinderResultset([]);
@@ -45,8 +45,8 @@ readonly class VideoSearchDomainService
             FROM {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
             WHERE
             (
-                MATCH(title) AGAINST (:qwildcard IN BOOLEAN MODE)
-                OR MATCH(title) AGAINST (:q)
+                   MATCH(title) AGAINST (:qwildcard IN BOOLEAN MODE)
+                OR MATCH(title) AGAINST (:qliterally)
                 OR title LIKE :qlike
             )
             AND organizations_id = :organizationId
@@ -58,8 +58,8 @@ readonly class VideoSearchDomainService
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
         $resultSet = $stmt->executeQuery([
-            ':q' => $q,
-            ':qwildcard' => "*$q*",
+            ':qwildcard' => "\"*$qForFulltext*\"",
+            ':qliterally' => '"' . $qForFulltext . '"',
             ':qlike' => "%$q%",
             ':organizationId' => $organization->getId()
         ]);
