@@ -28,6 +28,13 @@ readonly class VideoSearchDomainService
     ): VideoFinderResultset
     {
         $q = trim($q);
+        $q = mb_strtolower($q);
+        $q = preg_replace(
+            '/[^a-zA-Z0-9äöüÄÖÜßáàâéèêíìîóòôúùûçñőűéáűíóöü]/u',
+            ' ',
+            $q
+        );
+        $q = trim($q);
 
         if ($q === '') {
             return new VideoFinderResultset([]);

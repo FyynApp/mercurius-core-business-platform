@@ -82,8 +82,6 @@ videos_overview:
   list_view_mode:
     dense: 'Ansicht: kompakt'
     tiles: 'Ansicht: Kacheln'
-videos_finder:
-  search_input_placeholder: 'Search in video titles...'
 video_player_embedded:
   full_asset_outstanding: 'Video wird verarbeitet · · ·'
 video_landingpage:

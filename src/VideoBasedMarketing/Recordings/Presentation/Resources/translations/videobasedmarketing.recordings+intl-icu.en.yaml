@@ -77,6 +77,12 @@ videos_overview:
     table_th_date: 'Date'
     table_th_duration: 'Duration'
   number_of_videos_label: 'videos'
+videos_finder:
+  search_input_placeholder: 'Search in video titles...'
+  no_results_note1: 'No video titles match your search.'
+  no_results_note2: 'Try changing your search term.'
+  results_note1: 'Search results'
+  results_note2: 'Note that these results are not limited to videos from the current folder.'
 video_player_embedded:
   full_asset_outstanding: 'Video is being encoded · · ·'
 video_landingpage:

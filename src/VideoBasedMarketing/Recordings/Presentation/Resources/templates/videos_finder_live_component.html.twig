@@ -7,83 +7,106 @@
         {{ attributes }}
 >
     <div class="mt-6">
+
+        <div class="flex flex-row gap-4 justify-between items-center mb-8">
+            <div>
+                <input
+                        class="text-input"
+                        placeholder="{{ 'videos_finder.search_input_placeholder'|trans }}"
+                        type="text"
+                        name="q"
+                        data-action="live#action"
+                        data-action-name="debounce(250)|search"
+                        data-model="norender|q"
+                >
+            </div>
+
+            <div>
+                <form
+                        class="w-full flex flex-row justify-end"
+                        action="{{ path('videobasedmarketing.account.presentation.switch_videos_list_view_mode') }}"
+                        method="post"
+                >
+                    <input
+                            type="hidden"
+                            name="_csrf_token"
+                            value="{{ csrf_token('switch-videos-list-view-mode') }}"
+                    >
+
+                    <input
+                            type="hidden"
+                            name="q"
+                            value="{{ this.q }}"
+                    >
+
+                    <input
+                            type="hidden"
+                            name="videoFolderId"
+                            {% if this.videoFolder is not null %}
+                                value="{{ this.videoFolder.id }}"
+                            {% else %}
+                                value=""
+                            {% endif %}
+                    >
+
+                    <button type="submit" class="flex flex-row gap-2">
+                        {% if app.user.videosListViewMode is same as constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\VideosListViewMode::Tiles') %}
+                            {{ 'videos_overview.list_view_mode.tiles'|trans }}
+                            {# Heroicon: squares-2x2 #}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                            </svg>
+                        {% else %}
+                            {{ 'videos_overview.list_view_mode.dense'|trans }}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                            </svg>
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+
         {% if this.results|length is same as 0 %}
-            <h2 class="font-bold text-xl mb-2">
-                {{ 'videos_overview.no_videos_available'|trans }}
-            </h2>
 
-            {% if TwigHelperService.capabilitiesService.canBeAskedToUseExtension(app.user) %}
+            {% if this.q|trim|length > 0 %}
+                <h2 class="font-bold text-xl mb-2">
+                    {{ 'videos_finder.no_results_note1'|trans }}
+                </h2>
                 <h3 class="text-neutral-500">
-                    {{ 'videos_overview.use_extension_note'|trans }}
+                    {{ 'videos_finder.no_results_note2'|trans }}
                 </h3>
-            {% endif %}
 
-            {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
-                <h3 class="text-neutral-500">
-                    {{ 'videos_overview.use_upload_note'|trans }}
-                </h3>
+            {% else %}
+                <h2 class="font-bold text-xl mb-2">
+                    {{ 'videos_overview.no_videos_available'|trans }}
+                </h2>
+
+                {% if TwigHelperService.capabilitiesService.canBeAskedToUseExtension(app.user) %}
+                    <h3 class="text-neutral-500">
+                        {{ 'videos_overview.use_extension_note'|trans }}
+                    </h3>
+                {% endif %}
+
+                {% if TwigHelperService.capabilitiesService.canUploadVideos(app.user) %}
+                    <h3 class="text-neutral-500">
+                        {{ 'videos_overview.use_upload_note'|trans }}
+                    </h3>
+                {% endif %}
             {% endif %}
 
         {% else %}
 
-            <div class="flex flex-row gap-4 justify-between items-center mb-8">
-                <div>
-                    <input
-                            class="text-input"
-                            placeholder="{{ 'videos_finder.search_input_placeholder'|trans }}"
-                            type="text"
-                            name="q"
-                            data-action="live#action"
-                            data-action-name="debounce(250)|search"
-                            data-model="norender|q"
-                    >
+            {% if this.q|trim|length > 0 %}
+                <div class="mb-8">
+                    <h2 class="font-bold text-xl mb-2">
+                        {{ 'videos_finder.results_note1'|trans }}
+                    </h2>
+                    <h3 class="text-neutral-500">
+                        {{ 'videos_finder.results_note2'|trans }}
+                    </h3>
                 </div>
-
-                <div>
-                    <form
-                            class="w-full flex flex-row justify-end"
-                            action="{{ path('videobasedmarketing.account.presentation.switch_videos_list_view_mode') }}"
-                            method="post"
-                    >
-                        <input
-                                type="hidden"
-                                name="_csrf_token"
-                                value="{{ csrf_token('switch-videos-list-view-mode') }}"
-                        >
-
-                        <input
-                                type="hidden"
-                                name="q"
-                                value="{{ this.q }}"
-                        >
-
-                        <input
-                                type="hidden"
-                                name="videoFolderId"
-                                {% if this.videoFolder is not null %}
-                                    value="{{ this.videoFolder.id }}"
-                                {% else %}
-                                    value=""
-                                {% endif %}
-                        >
-
-                        <button type="submit" class="flex flex-row gap-2">
-                            {% if app.user.videosListViewMode is same as constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\VideosListViewMode::Tiles') %}
-                                {{ 'videos_overview.list_view_mode.tiles'|trans }}
-                                {# Heroicon: squares-2x2 #}
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-                                </svg>
-                            {% else %}
-                                {{ 'videos_overview.list_view_mode.dense'|trans }}
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                                </svg>
-                            {% endif %}
-                        </button>
-                    </form>
-                </div>
-            </div>
+            {% endif %}
 
 
             {% if app.user.videosListViewMode is same as constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\VideosListViewMode::Dense') %}
