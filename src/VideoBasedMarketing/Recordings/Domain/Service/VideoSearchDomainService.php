@@ -30,7 +30,7 @@ readonly class VideoSearchDomainService
         $q = trim($q);
         $q = mb_strtolower($q);
         $q = preg_replace(
-            '/[^a-zA-Z0-9äöüÄÖÜßáàâéèêíìîóòôúùûçñőűéáűíóöü]/u',
+            '/[^\p{L}0-9]/u',
             ' ',
             $q
         );
