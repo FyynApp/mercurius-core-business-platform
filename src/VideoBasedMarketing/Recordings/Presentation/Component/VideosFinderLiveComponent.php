@@ -29,8 +29,9 @@ class VideosFinderLiveComponent
     #[LiveProp]
     public ?VideoFolder $videoFolder = null;
 
+    /** @var VideoFinderResult[] */
     #[LiveProp]
-    public ?VideoFinderResultset $resultset = null;
+    public array $results = [];
 
     #[LiveProp(writable: true)]
     public string $q = '';
@@ -57,14 +58,16 @@ class VideosFinderLiveComponent
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function mount(?VideoFolder $videoFolder = null)
+    public function mount(
+        ?VideoFolder $videoFolder
+    ): void
     {
         $this->videoFolder = $videoFolder;
 
         /** @var User $user */
         $user = $this->getUser();
 
-        $this->resultset = $this->getResultset($user);
+        $this->results = $this->getResultset($user)->getResults();
     }
 
     /**
@@ -76,7 +79,7 @@ class VideosFinderLiveComponent
         /** @var User $user */
         $user = $this->getUser();
 
-        $this->resultset = $this->getResultset($user);
+        $this->results = $this->getResultset($user)->getResults();
     }
 
     /**
