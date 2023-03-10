@@ -4,8 +4,8 @@ namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoSearchResult;
-use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoSearchResultset;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFinderResult;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFinderResultset;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -25,12 +25,12 @@ readonly class VideoSearchDomainService
     public function findVideosByTitle(
         string       $q,
         Organization $organization
-    ): VideoSearchResultset
+    ): VideoFinderResultset
     {
         $q = trim($q);
 
         if ($q === '') {
-            return new VideoSearchResultset([]);
+            return new VideoFinderResultset([]);
         }
 
         $sql = "
@@ -40,9 +40,12 @@ readonly class VideoSearchDomainService
             (
                 MATCH(title) AGAINST (:qwildcard IN BOOLEAN MODE)
                 OR MATCH(title) AGAINST (:q)
+                OR title LIKE :qlike
             )
             AND organizations_id = :organizationId
             AND is_deleted = FALSE
+            
+            LIMIT 50
             ;
         ";
 
@@ -50,16 +53,17 @@ readonly class VideoSearchDomainService
         $resultSet = $stmt->executeQuery([
             ':q' => $q,
             ':qwildcard' => "*$q*",
+            ':qlike' => "%$q%",
             ':organizationId' => $organization->getId()
         ]);
 
-        $videoSearchResults = [];
+        $videoFinderResults = [];
         foreach ($resultSet->fetchAllAssociative() as $row) {
-            $videoSearchResults[] = new VideoSearchResult(
+            $videoFinderResults[] = new VideoFinderResult(
                 $this->entityManager->find(Video::class, $row['id'])
             );
         }
 
-        return new VideoSearchResultset($videoSearchResults);
+        return new VideoFinderResultset($videoFinderResults);
     }
 }

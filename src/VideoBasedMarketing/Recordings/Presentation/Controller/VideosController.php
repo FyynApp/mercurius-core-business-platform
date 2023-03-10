@@ -61,12 +61,6 @@ class VideosController
         return $this->render(
             '@videobasedmarketing.recordings/videos_overview.html.twig',
             [
-                'videos' => $videoDomainService
-                    ->getAvailableVideosForCurrentlyActiveOrganization(
-                        $user,
-                        $videoFolder
-                    ),
-
                 'videoFolders' => $videoFolderDomainService
                     ->getAvailableVideoFoldersForCurrentlyActiveOrganization(
                         $user,
