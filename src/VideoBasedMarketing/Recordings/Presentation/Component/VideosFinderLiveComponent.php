@@ -3,11 +3,13 @@
 namespace App\VideoBasedMarketing\Recordings\Presentation\Component;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Enum\VideosListViewMode;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFinderResult;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFinderResultset;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoSearchDomainService;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,6 +38,9 @@ class VideosFinderLiveComponent
     #[LiveProp(writable: true)]
     public string $q = '';
 
+    #[LiveProp]
+    public VideosListViewMode $videosListViewMode = VideosListViewMode::Tiles;
+
 
     private LoggerInterface $logger;
 
@@ -43,31 +48,40 @@ class VideosFinderLiveComponent
 
     private VideoSearchDomainService $videoSearchDomainService;
 
+    private EntityManagerInterface $entityManager;
+
 
     public function __construct(
         LoggerInterface          $logger,
         VideoDomainService       $videoDomainService,
-        VideoSearchDomainService $videoSearchDomainService
+        VideoSearchDomainService $videoSearchDomainService,
+        EntityManagerInterface   $entityManager
     )
     {
         $this->logger = $logger;
         $this->videoDomainService = $videoDomainService;
         $this->videoSearchDomainService = $videoSearchDomainService;
+        $this->entityManager = $entityManager;
     }
 
     /**
      * @throws \Doctrine\DBAL\Exception
      */
     public function mount(
-        ?VideoFolder $videoFolder
+        ?VideoFolder $videoFolder,
+        string       $q
     ): void
     {
         $this->videoFolder = $videoFolder;
+
+        $this->q = $q;
 
         /** @var User $user */
         $user = $this->getUser();
 
         $this->results = $this->getResultset($user)->getResults();
+
+        $this->videosListViewMode = $user->getVideosListViewMode();
     }
 
     /**

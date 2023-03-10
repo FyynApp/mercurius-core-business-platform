@@ -3,6 +3,7 @@
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
 {# @var videoFolders \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder[] #}
 {# @var videoFolder null|\App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder #}
+{# @var q string #}
 
 {% block title %}{{ 'sidenav.recordings'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'sidenav.recordings'|trans }}{% endblock %}
@@ -223,7 +224,7 @@
                 <div>
                     {{ component(
                         'videobasedmarketing_recordings_videos_finder',
-                        { 'videoFolder': videoFolder }
+                        { 'videoFolder': videoFolder, 'q': q }
                     ) }}
                 </div>
 

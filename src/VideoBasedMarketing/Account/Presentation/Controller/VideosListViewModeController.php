@@ -50,6 +50,12 @@ class VideosListViewModeController
 
         $accountDomainService->switchVideosListViewMode($user);
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirectToRoute(
+            'videobasedmarketing.recordings.presentation.videos.overview',
+            [
+                'q' => trim($request->get('q', '')),
+                'videoFolderId' => trim($request->get('videoFolderId')) === '' ? null : $request->get('videoFolderId')
+            ]
+        );
     }
 }

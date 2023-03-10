@@ -34,7 +34,6 @@ class VideosController
     )]
     public function videosOverviewAction(
         Request                  $request,
-        VideoDomainService       $videoDomainService,
         VideoFolderDomainService $videoFolderDomainService
     ): Response
     {
@@ -61,6 +60,8 @@ class VideosController
         return $this->render(
             '@videobasedmarketing.recordings/videos_overview.html.twig',
             [
+                'q' => trim($request->get('q', '')),
+
                 'videoFolders' => $videoFolderDomainService
                     ->getAvailableVideoFoldersForCurrentlyActiveOrganization(
                         $user,

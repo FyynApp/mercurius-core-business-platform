@@ -70,8 +70,8 @@ videos_overview:
     custom_domain: 'Change domain for landingpage'
     manage_organization: 'Manage organization'
   list_view_mode:
-    dense: 'View mode: dense'
-    tiles: 'View mode: tiles'
+    dense: 'Style: dense'
+    tiles: 'Style: tiles'
   list_view_mode_dense:
     table_th_title: 'Title'
     table_th_date: 'Date'

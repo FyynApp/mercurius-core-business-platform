@@ -28,7 +28,7 @@ class VideoFolder
      */
     public function __construct(
         User   $user,
-        string $name = ''
+        string $name
     )
     {
         $this->user = $user;
