@@ -139,6 +139,13 @@
                                         draggable="true"
 
                                         data-video-folder-drag-and-drop-video-id="{{ result.video.id }}"
+
+                                        {% if result.video.videoFolder is not null %}
+                                            data-video-folder-drag-and-drop-current-video-folder-id="{{ result.video.videoFolder.id }}"
+                                        {% else %}
+                                            data-video-folder-drag-and-drop-current-video-folder-id=""
+                                        {% endif %}
+
                                         data-video-folder-drag-and-drop-video-drag-image-url="{{ asset(TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(result.video)) }}"
 
                                         data-action="dragstart->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragstart"
@@ -205,6 +212,13 @@
                                 draggable="true"
 
                                 data-video-folder-drag-and-drop-video-id="{{ result.video.id }}"
+
+                                {% if result.video.videoFolder is not null %}
+                                    data-video-folder-drag-and-drop-current-video-folder-id="{{ result.video.videoFolder.id }}"
+                                {% else %}
+                                    data-video-folder-drag-and-drop-current-video-folder-id=""
+                                {% endif %}
+
                                 data-video-folder-drag-and-drop-video-drag-image-url="{{ asset(TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(result.video)) }}"
                                 data-action="dragstart->videoBasedMarketing-recordings-videoFolderDragAndDrop#dragstart"
                         >

@@ -8,6 +8,11 @@ export default class extends Controller {
             event.target.getAttribute('data-video-folder-drag-and-drop-video-id')
         );
 
+        event.dataTransfer.setData(
+            'application/current-video-folder-id',
+            event.target.getAttribute('data-video-folder-drag-and-drop-current-video-folder-id')
+        );
+
         const img = document.createElement('img');
         img.id = 'dragImage';
         img.src = event.target.getAttribute('data-video-folder-drag-and-drop-video-drag-image-url');
@@ -59,6 +64,8 @@ export default class extends Controller {
 
     drop(event): void {
         const videoId = event.dataTransfer.getData('application/drag-key');
+        const currentVideoFolderId = event.dataTransfer.getData('application/current-video-folder-id');
+
         const $dropTarget: HTMLElement = event.target;
 
         if (videoId === '') {
@@ -73,35 +80,31 @@ export default class extends Controller {
         const url = $videoFolder.getAttribute('data-move-video-into-folder-url');
         const csrfToken = $video.getAttribute('data-move-video-into-folder-csrf-token');
 
-        const req = new XMLHttpRequest();
-        req.open(
-            'POST',
-            url
+        if (videoFolderId !== currentVideoFolderId) {
+            const req = new XMLHttpRequest();
+            req.open(
+                'POST',
+                url
                 + '?videoId=' + encodeURIComponent(videoId)
                 + '&videoFolderId=' + encodeURIComponent(videoFolderId)
                 + '&_csrf_token=' + encodeURIComponent(csrfToken)
-        );
-        req.send();
+            );
+            req.send();
 
-        const $numberOfVideosInFolder = document.getElementById(
-            `number-of-videos-in-folder-${videoFolderId}`
-        );
+            const $numberOfVideosInFolder = document.getElementById(
+                `number-of-videos-in-folder-${videoFolderId}`
+            );
 
-        if ($numberOfVideosInFolder !== null) {
-            $numberOfVideosInFolder.textContent = `${Number($numberOfVideosInFolder.textContent) + 1}`;
+            if ($numberOfVideosInFolder !== null) {
+                $numberOfVideosInFolder.textContent = `${Number($numberOfVideosInFolder.textContent) + 1}`;
+            }
+
+            $video.remove();
         }
-
-        console.debug(
-            'videoId', videoId,
-            'videoFolderId', this.getVideoFolderId($dropTarget),
-            '$dropTarget', event.target
-        );
 
         $videoFolder.classList.remove('font-bold');
         document.getElementById('folder-icon-normal-' + videoFolderId).classList.remove('hidden');
         document.getElementById('folder-icon-open-' + videoFolderId).classList.add('hidden');
-
-        $video.remove();
 
         event.preventDefault();
     }
