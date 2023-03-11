@@ -30,7 +30,6 @@
                     id="video-overlay"
                     class="relative h-full w-full max-w-2xl"
                     style="width: 100%"
-                    onmousemove="onMouseOver(event)"
             >
                 <div class="w-full flex flex-col gap-4 justify-start bg-mercurius-green-100 text-mercurius-green-900 rounded-md p-4 border-1 border-mercurius-green-900 mb-8">
                     <div class="font-bold">
@@ -112,15 +111,8 @@
                     {{ 'video_analytics.note3'|trans }}
                 </div>
 
-                <video
-                        id="video"
-                        class="z-40 rounded-md"
-                        style="width: 100%;"
-                        src="{{ TwigHelperService.recordingsInfrastructureService.videoForAnalyticsWidgetAssetUrl(video) }}"
-                >
-                </video>
 
-                <div class="absolute mt-12 left-0 right-0 h-40 z-50">
+                <div class="mt-12 h-40 z-50 mb-2">
                     <div
                             class="flex flex-row gap-0 justify-start items-end h-full"
                             style="width: 100%"
@@ -156,10 +148,25 @@
                         {% endfor %}
                     </div>
                 </div>
-            </div>
 
-            <div class="flex flex-col gap-2">
-                <div id="seconds-info">{{ video.seconds|round }} {{ 'seconds_word'|trans }}</div>
+                <div class="flex flex-row gap-2 text-neutral-700 mb-2">
+                    <div>
+                        {{ 'video_analytics.seconds_label'|trans }}
+                    </div>
+                    <div id="seconds-info" class="font-semibold">
+                        {{ video.seconds|round }} {{ 'seconds_word'|trans }}
+                    </div>
+                </div>
+
+                <video
+                        id="video"
+                        class="z-40 rounded-md"
+                        style="width: 100%;"
+                        src="{{ TwigHelperService.recordingsInfrastructureService.videoForAnalyticsWidgetAssetUrl(video) }}"
+                        onmousemove="onMouseOver(event)"
+                >
+                </video>
+
             </div>
 
             <script>

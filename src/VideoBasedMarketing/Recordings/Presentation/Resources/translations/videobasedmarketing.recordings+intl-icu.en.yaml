@@ -123,6 +123,7 @@ video_analytics:
   play_rate_formula: '{playRate}% play rate'
   plays_formula: '{plays} plays'
   player_loads: '{playerLoads} player loads'
+  seconds_label: 'Timestamp:'
 native_browser_recorder:
   back_to_videos_overview_cta: 'Back to videos'
   title: 'Record webcam or desktop'
