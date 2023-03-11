@@ -42,6 +42,39 @@ class RecordingRequestsController
 
     #[Route(
         path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recording-requests/create-form',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahme-anfragen/erstellen-formular',
+        ],
+        name        : 'videobasedmarketing.recording_requests.create_recording_request_form',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function createRecordingRequestFormAction(
+        Request                        $request,
+        RecordingRequestsDomainService $recordingRequestsDomainService
+    ): Response
+    {
+        $requestVideoId = $request->get('requestVideoId');
+
+        $requestVideo = null;
+        if (!is_null($requestVideoId)) {
+            $r = $this->verifyAndGetOrganizationAndEntity(
+                Video::class,
+                $requestVideoId,
+                AccessAttribute::Use
+            );
+            /** @var Video $requestVideo */
+            $requestVideo = $r->getEntity();
+        }
+
+        return $this->render(
+            '@videobasedmarketing.recording_requests/create_recording_request_form.html.twig',
+            ['requestVideo' => $requestVideo]
+        );
+    }
+
+    #[Route(
+        path        : [
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/recording-requests/',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahme-anfragen/',
         ],
@@ -50,12 +83,33 @@ class RecordingRequestsController
         methods     : [Request::METHOD_POST]
     )]
     public function createRecordingRequestAction(
+        Request                        $request,
         RecordingRequestsDomainService $recordingRequestsDomainService
     ): Response
     {
         $user = $this->getUser(true);
 
-        $recordingRequest = $recordingRequestsDomainService->createRequest($user);
+        $requestVideoId = $request->get('requestVideoId');
+
+        $requestVideo = null;
+        if (!is_null($requestVideoId)) {
+            $r = $this->verifyAndGetUserAndEntity(
+                Video::class,
+                $requestVideoId,
+                AccessAttribute::Use
+            );
+            /** @var Video $requestVideo */
+            $requestVideo = $r->getEntity();
+        }
+
+        $requestText = mb_substr($request->get('requestText'), 0, 4096);
+
+        $recordingRequest = $recordingRequestsDomainService
+            ->createRequest(
+                $user,
+                $requestText,
+                $requestVideo
+            );
 
         return $this->redirectToRoute(
             'videobasedmarketing.recording_requests.recording_request_share',

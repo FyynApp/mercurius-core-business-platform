@@ -1,2 +1,24 @@
+overview:
+  title: 'Video Requests'
+  cta_add: 'Create new request'
+
+recording_request_owner_info:
+  share_url_label: 'Response URL:'
+  no_answered_responses_yet: 'No responses yet.'
+  responses: 'Received responses'
+
 response_instructions:
-  greeting: 'Welcome'
+  greeting: 'Your video recordings'
+  start_cta: 'Start process'
+  text1: 'User {userIdentifier} asks for a video recording.'
+  text2: 'Simply follow the steps below to create and send a video.'
+  step1: 'step 1'
+  step2: 'step 2'
+  step3: 'step 3'
+
+ask_to_handle_responses:
+  greeting: 'Your video recording'
+  text1:
+    singular: "Do you want to use this video to respond to {userIdentifier}'s video request?"
+    plural: 'Do you want to use this video to respond to one of the following video requests?'
+  cta_attach: 'Respond to this request'

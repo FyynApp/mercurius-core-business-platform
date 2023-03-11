@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,10 +31,14 @@ class RecordingRequest
      * @throws Exception
      */
     public function __construct(
-        User $user
+        User   $user,
+        string $requestText,
+        ?Video $requestVideo = null
     )
     {
         $this->user = $user;
+        $this->requestText = $requestText;
+        $this->requestVideo = $requestVideo;
         $this->organization = $user->getCurrentlyActiveOrganization();
         $this->recordingRequestResponses = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTime();
@@ -130,6 +135,33 @@ class RecordingRequest
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: Video::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'request_videos_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?Video $requestVideo;
+
+    public function getRequestVideo(): ?Video
+    {
+        return $this->requestVideo;
+    }
+
+
+    #[ORM\Column(type: Types::TEXT)]
+    private string $requestText;
+
+    public function getRequestText(): string
+    {
+        return $this->requestText;
     }
 
 
