@@ -49,10 +49,16 @@ class RecordingRequestsDomainService
      * @throws Exception
      */
     public function createRequest(
-        User $user
+        User   $user,
+        string $requestText,
+        ?Video $requestVideo = null
     ): RecordingRequest
     {
-        $recordingRequest = new RecordingRequest($user);
+        $recordingRequest = new RecordingRequest(
+            $user,
+            $requestText,
+            $requestVideo
+        );
         $this->entityManager->persist($recordingRequest);
         $this->shortIdService->encodeObject($recordingRequest);
 
