@@ -1,0 +1,35 @@
+{# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+{# @var videoPlayerSession \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSession #}
+
+const videoShortId = '{{ video.shortId }}';
+
+{% if videoPlayerSession is not null %}
+
+    const videoPlayerSessionId = '{{ videoPlayerSession.id }}';
+    let latestCurrentTime = 0;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const $video = document.querySelector('.fyyn-video-' + videoShortId + '-player-embed-video');
+
+        $video.addEventListener('timeupdate', () => {
+            const currentTime = $video.currentTime;
+            if (   currentTime - latestCurrentTime > 1.0
+                || currentTime < latestCurrentTime
+            ) {
+                latestCurrentTime = currentTime;
+
+                const req = new XMLHttpRequest();
+                req.open(
+                    'POST',
+                    '{{ url(
+                        'videobasedmarketing.recordings.track_video_player_session_event',
+                        { videoPlayerSessionId: videoPlayerSession.id }
+                    ) }}'
+                    + '?playerCurrentTime=' + encodeURIComponent(currentTime)
+                );
+                req.send();
+            }
+        });
+    });
+
+{% endif %}

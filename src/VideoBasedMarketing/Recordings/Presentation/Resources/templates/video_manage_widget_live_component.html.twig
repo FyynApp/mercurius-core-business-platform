@@ -383,6 +383,31 @@
             {% endif %}
 
 
+            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
+                <button
+                        class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                        data-action="live#action"
+                        data-action-name="showEmbedModal"
+                >
+                    <span class="flex flex-row justify-between items-center gap-2">
+                        <span>
+                            {{ 'video_manage_widget.overview_box.cta_show_embed'|trans }}
+                        </span>
+                        <span>
+                            {# Heroicon: code-bracket-square solid #}
+                            <svg
+                                    class="h-4 w-4"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                            >
+                                <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm14.25 6a.75.75 0 01-.22.53l-2.25 2.25a.75.75 0 11-1.06-1.06L15.44 12l-1.72-1.72a.75.75 0 111.06-1.06l2.25 2.25c.141.14.22.331.22.53zm-10.28-.53a.75.75 0 000 1.06l2.25 2.25a.75.75 0 101.06-1.06L8.56 12l1.72-1.72a.75.75 0 10-1.06-1.06l-2.25 2.25z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                    </span>
+                </button>
+            </div>
+
             <a
                     data-test-class="videoManageWidgetShowAnalyticsCta"
                     href="{{ path(
@@ -551,6 +576,74 @@
         </div>
     {% endif %}
 
+
+    {% if this.embedModalIsOpen %}
+        <div
+                class="
+                    fixed w-full h-full top-0 left-0 bg-opacity-90 bg-neutral-900
+                    z-30 flex flex-row justify-center items-center
+                    p-4
+                "
+        >
+            <div class="
+                bg-white max-w-screen-lg max-h-screen max-w-full
+                p-4 w-fit rounded-md
+                flex flex-col justify-start
+            ">
+                <div class="flex flex-row justify-between mb-8">
+
+                    <div class="flex flex-row gap-2 items-center text-gray-700">
+                        {# Heroicon: code-bracket-square solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm14.25 6a.75.75 0 01-.22.53l-2.25 2.25a.75.75 0 11-1.06-1.06L15.44 12l-1.72-1.72a.75.75 0 111.06-1.06l2.25 2.25c.141.14.22.331.22.53zm-10.28-.53a.75.75 0 000 1.06l2.25 2.25a.75.75 0 101.06-1.06L8.56 12l1.72-1.72a.75.75 0 10-1.06-1.06l-2.25 2.25z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="font-bold">
+                            {{ 'video_manage_widget.embed_modal.headline'|trans }}
+                        </span>
+                    </div>
+
+                    <button
+                            class=""
+                            data-action="live#action"
+                            data-action-name="hideEmbedModal"
+                    >
+                        {# Heroicon: x-mark solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div
+                        class="flex flex-row mb-8"
+                        data-controller="clipboard"
+                        data-clipboard-success-content='{{ 'video_manage_widget.embed_modal.copied'|trans }}'
+                >
+
+                    <textarea
+                            contenteditable="false"
+                            rows="20"
+                            cols="100"
+                            class="w-full text-mercurius-blue-500 bg-gray-200 rounded-tl-md border-0 rounded-bl-md"
+                    >
+                        {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(this.video) }}
+                    </textarea>
+
+                    <button class="
+                                bg-mercurius-blue-900 text-mercurius-blue-200 p-2 flex flex-row gap-1
+                                rounded-tr-md
+                                rounded-br-md
+                            "
+                            data-clipboard-target="button"
+                            data-action="clipboard#copy"
+                    >
+                        {{ 'video_manage_widget.embed_modal.copy_cta'|trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
 
     {% if this.deleteModalIsOpen %}
         <div

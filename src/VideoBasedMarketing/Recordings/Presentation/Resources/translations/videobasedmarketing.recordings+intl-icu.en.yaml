@@ -19,6 +19,7 @@ video_manage_widget:
     cta_edit: 'Edit video'
     cta_send_video_mailing: 'Send video email'
     cta_delete: 'Delete video'
+    cta_show_embed: 'Show embed code'
   edit_modal:
     cta_share: 'Share'
     cta_preview: 'Preview'
@@ -34,6 +35,12 @@ video_manage_widget:
     headline: 'Share video'
     direct_link: 'Link'
     twitter_note: "Watch my new video!"
+  embed_modal:
+    headline: 'Embed this video on any webpage'
+    explanation1: 'Simply copy the HTML code snippet below and paste it into your own webpage.'
+    explanation2: ''
+    copy_cta: 'copy'
+    copied: 'Copied!'
   delete_modal:
     title: 'Delete video'
     really: 'Do you really want to delete this video?'

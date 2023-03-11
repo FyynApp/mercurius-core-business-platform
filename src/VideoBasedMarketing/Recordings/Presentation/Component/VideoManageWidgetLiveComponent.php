@@ -41,6 +41,9 @@ class VideoManageWidgetLiveComponent
     public bool $shareModalIsOpen = false;
 
     #[LiveProp(writable: false)]
+    public bool $embedModalIsOpen = false;
+
+    #[LiveProp(writable: false)]
     public bool $deleteModalIsOpen = false;
 
     #[LiveProp(writable: true)]
@@ -153,6 +156,19 @@ class VideoManageWidgetLiveComponent
     public function hideShareModal(): void
     {
         $this->shareModalIsOpen = false;
+    }
+
+
+    #[LiveAction]
+    public function showEmbedModal(): void
+    {
+        $this->embedModalIsOpen = true;
+    }
+
+    #[LiveAction]
+    public function hideEmbedModal(): void
+    {
+        $this->embedModalIsOpen = false;
     }
 
 
