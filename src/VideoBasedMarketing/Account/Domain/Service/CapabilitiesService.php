@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
+use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Organization\Domain\Enum\AccessRight;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;

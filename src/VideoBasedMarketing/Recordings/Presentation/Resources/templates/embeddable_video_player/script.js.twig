@@ -5,31 +5,130 @@ const videoShortId = '{{ video.shortId }}';
 
 {% if videoPlayerSession is not null %}
 
-    const videoPlayerSessionId = '{{ videoPlayerSession.id }}';
-    let latestCurrentTime = 0;
+const videoPlayerSessionId = '{{ videoPlayerSession.id }}';
+let latestCurrentTime = 0;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const $video = document.querySelector('.fyyn-video-' + videoShortId + '-player-embed-video');
+document.addEventListener('DOMContentLoaded', () => {
+    const $video = document.querySelector(`.fyyn-video-${videoShortId}-player-embed-video`);
 
-        $video.addEventListener('timeupdate', () => {
-            const currentTime = $video.currentTime;
-            if (   currentTime - latestCurrentTime > 1.0
-                || currentTime < latestCurrentTime
-            ) {
-                latestCurrentTime = currentTime;
+    $video.addEventListener('timeupdate', () => {
+        const currentTime = $video.currentTime;
+        if (   currentTime - latestCurrentTime > 1.0
+            || currentTime < latestCurrentTime
+        ) {
+            latestCurrentTime = currentTime;
 
-                const req = new XMLHttpRequest();
-                req.open(
-                    'POST',
-                    '{{ url(
-                        'videobasedmarketing.recordings.track_video_player_session_event',
-                        { videoPlayerSessionId: videoPlayerSession.id }
-                    ) }}'
-                    + '?playerCurrentTime=' + encodeURIComponent(currentTime)
-                );
-                req.send();
-            }
-        });
+            const req = new XMLHttpRequest();
+            req.open(
+                'POST',
+                '{{ url(
+                    'videobasedmarketing.recordings.track_video_player_session_event',
+                    { videoPlayerSessionId: videoPlayerSession.id }
+                ) }}'
+                + '?playerCurrentTime=' + encodeURIComponent(currentTime)
+            );
+            req.send();
+        }
     });
+});
 
 {% endif %}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const $outer = document.querySelector(`.fyyn-video-${videoShortId}-player-embed-outer`);
+    const $video = document.querySelector(`.fyyn-video-${videoShortId}-player-embed-video`);
+
+    $video.removeAttribute('controls');
+
+    $outer.insertAdjacentHTML(
+        'beforeend',
+
+        `
+            <div
+                id="fyyn-video-${videoShortId}-player-embed-central-play-button-wrapper"
+
+                style="
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    backdrop-filter: blur(4px);
+                    border-radius: 0.375rem;
+                    "
+            >
+                <div
+                    id="fyyn-video-${videoShortId}-player-embed-central-play-button"
+
+                    class="
+                        fyyn-video-${videoShortId}-player-embed-gradient
+                        fyyn-video-${videoShortId}-player-embed-rounded-full
+                        fyyn-video-${videoShortId}-player-embed-opacity-90
+                        fyyn-video-${videoShortId}-player-embed-hover-opacity-100
+                        fyyn-video-${videoShortId}-player-embed-cursor-pointer
+                        "
+
+                    style="
+                        width: 100px;
+                        height: 100px;
+                        color: white;
+                        border: 1px solid white;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        "
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="" style="padding-left: 8px; width: 70%; opacity: 80%;">
+                        <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
+        `
+    );
+
+    const $centralPlayButtonWrapper = document.querySelector(`#fyyn-video-${videoShortId}-player-embed-central-play-button-wrapper`);
+
+    function togglePlay() {
+        if ($video.paused || $video.ended) {
+            $video.play();
+            $video.setAttribute('controls', '');
+            $centralPlayButtonWrapper.remove();
+        } else {
+            $video.pause();
+        }
+    }
+
+    $centralPlayButtonWrapper.addEventListener('click', togglePlay);
+
+
+    {% if TwigHelperService.embeddableVideoPlayerPresentationService.embedMustBeBranded(video) %}
+        $centralPlayButtonWrapper.insertAdjacentHTML(
+            'beforeend',
+            `
+                <div
+                    style="
+                        color: white;
+                        font-family: Arial, Verdana, sans-serif;
+                        font-size: 8pt;
+                        padding-top: 6px;
+                        padding-bottom: 6px;
+                        padding-left: 12px;
+                        padding-right: 12px;
+                        margin-top: 6px;
+                        background-color: #00354c;
+                        border-radius: 0.375rem;
+                        "
+                >
+                    powered by Fyyn.io
+                </div>
+            `
+        );
+    {% endif %}
+});

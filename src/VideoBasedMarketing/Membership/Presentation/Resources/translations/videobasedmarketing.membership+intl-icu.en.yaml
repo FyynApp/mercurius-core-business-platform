@@ -42,6 +42,9 @@ capabilities:
   AdFreeLandingpages:
     title: 'Ad free landingpages'
     description: ''
+  BrandingFreeEmbeddableVideoPlayer:
+    title: 'Branding-free Video Player widget'
+    description: ''
 
 subscription_checkout:
   success_flash_message: 'Plan has been booked successfully.'

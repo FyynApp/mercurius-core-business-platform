@@ -2,9 +2,41 @@
 
 .fyyn-video-{{ video.shortId }}-player-embed-outer {
     max-width: 100%;
+    position: relative;
 }
 
 .fyyn-video-{{ video.shortId }}-player-embed-video {
     width: 100%;
     border-radius: 0.375rem;
+}
+
+.fyyn-video-{{ video.shortId }}-player-embed-gradient {
+    --tw-gradient-from: #009ee2;
+    --tw-gradient-to: #84cc16;
+    --tw-gradient-stops: var(--tw-gradient-from),var(--tw-gradient-to);
+    background-image: linear-gradient(to right,var(--tw-gradient-stops));
+}
+
+.fyyn-video-{{ video.shortId }}-player-embed-rounded-full {
+    border-radius: 9999px;
+}
+
+.fyyn-video-{{ video.shortId }}-player-embed-opacity-0 {
+    opacity: .8;
+}
+
+.fyyn-video-{{ video.shortId }}-player-embed-opacity-90 {
+    opacity: 0.95;
+}
+
+.fyyn-video-{{ video.shortId }}-player-embed-hover-opacity-100:hover {
+    opacity: 1;
+}
+
+.fyyn-video-{{ video.shortId }}-player-embed-cursor-pointer {
+    cursor: pointer;
+}
+
+.fyyn-video-{{ video.shortId }}-player-embed-hidden {
+    display: none !important;
 }
