@@ -5,6 +5,7 @@
 {# @var viewPercentagesPerSecond float[] #}
 {# @var numberOfVideoPlayerSessions int #}
 {# @var numberOfStartedVideoPlayerSessions int #}
+{# @var sessionAnalyticsInfos \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSessionAnalyticsInfo[] #}
 
 {% trans_default_domain 'videobasedmarketing.recordings' %}
 {% block title %}{{ 'video_analytics.title'|trans }}{% endblock %}
@@ -166,6 +167,44 @@
                         onmousemove="onMouseOver(event)"
                 >
                 </video>
+
+                <div class="flex flex-col gap-2 mt-8">
+
+                    {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+                    {% for sessionAnalyticsInfo in sessionAnalyticsInfos %}
+
+                        {# @var sessionAnalyticsInfo \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSessionAnalyticsInfo #}
+
+                        <div class="flex flex-col gap-0.5 mb-4">
+                            <div class="flex flex-row gap-2">
+                                <div>
+                                    {{ dateAndTimeMacros.shortDateAndTime(sessionAnalyticsInfo.videoPlayerSession.createdAt) }}
+                                </div>
+                            </div>
+
+                            <div class="flex flex-row gap-0">
+                                {% for didWatch in sessionAnalyticsInfo.secondsToDidWatch %}
+                                    <div
+                                            class="
+                                                {% if didWatch %}
+                                                    bg-mercurius-blue-900
+                                                    border-t-2
+                                                    border-t-mercurius-green-400
+                                                {% else %}
+                                                    bg-neutral-100
+                                                {% endif %}
+                                            "
+
+                                            style="width: {{ 100 / viewPercentagesPerSecond|length }}%;"
+                                    >
+                                        &nbsp;
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
 
             </div>
 

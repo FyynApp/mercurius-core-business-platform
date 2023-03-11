@@ -235,10 +235,9 @@
                     let latestCurrentTime = 0;
                     videojs('#video-js-player').on('timeupdate', function() {
                         const currentTime = this.currentTime();
-                        if (   currentTime - latestCurrentTime > 1.0
+                        if (   currentTime - latestCurrentTime > 0.6
                             || currentTime < latestCurrentTime
                         ) {
-                            //console.log('the time was updated to: ' + currentTime + ', latest was ' + latestCurrentTime);
                             latestCurrentTime = currentTime;
 
                             const req = new XMLHttpRequest();
