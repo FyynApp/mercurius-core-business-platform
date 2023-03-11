@@ -124,6 +124,7 @@ video_analytics:
   plays_formula: '{plays} plays'
   player_loads: '{playerLoads} player loads'
   seconds_label: 'Timestamp:'
+  note_watch_sessions: 'The following graphs visualize the watched seconds for each watch session.'
 native_browser_recorder:
   back_to_videos_overview_cta: 'Back to videos'
   title: 'Record webcam or desktop'
