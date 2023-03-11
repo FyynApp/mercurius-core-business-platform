@@ -15,7 +15,7 @@
             { videoShortId: video.shortId }
         ) }}"></script>
 <div class="fyyn-video-{{ video.shortId }}-player-embed-outer">
-    <video class="fyyn-video-{{ video.shortId }}-player-embed-video" preload="metadata" controls poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}">
+    <video style="width: 100%;" class="fyyn-video-{{ video.shortId }}-player-embed-video" preload="metadata" controls poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}">
         <source src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}" type="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetMimeType(video).value }}">
     </video>
 </div>
