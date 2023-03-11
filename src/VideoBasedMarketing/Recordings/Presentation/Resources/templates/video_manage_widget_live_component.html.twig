@@ -579,6 +579,7 @@
 
     {% if this.embedModalIsOpen %}
         <div
+                draggable="false"
                 class="
                     fixed w-full h-full top-0 left-0 bg-opacity-90 bg-neutral-900
                     z-30 flex flex-row justify-center items-center
@@ -615,23 +616,27 @@
                 </div>
 
                 <div
-                        class="flex flex-row mb-8"
+                        class="flex flex-col gap-0"
                         data-controller="clipboard"
                         data-clipboard-success-content='{{ 'video_manage_widget.embed_modal.copied'|trans }}'
                 >
 
-                    <textarea
+                    <input
+                            type="hidden"
+                            value="{{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(this.video) }}"
+                            data-clipboard-target="source"
+                    />
+
+                    <div
+                            class="w-full font-mono text-xs text-black bg-gray-200 rounded-tl-md border-0 rounded-tr-md overflow-clip whitespace-pre-wrap p-4 pt-0"
                             contenteditable="false"
-                            rows="20"
-                            cols="100"
-                            class="w-full text-mercurius-blue-500 bg-gray-200 rounded-tl-md border-0 rounded-bl-md"
-                    >
-                        {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(this.video) }}
-                    </textarea>
+                    >{{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(this.video) }}</div>
 
                     <button class="
-                                bg-mercurius-blue-900 text-mercurius-blue-200 p-2 flex flex-row gap-1
-                                rounded-tr-md
+                                bg-mercurius-blue-900 text-white p-2 flex flex-row gap-1
+                                font-semibold
+                                h-16 justify-center items-center
+                                rounded-bl-md
                                 rounded-br-md
                             "
                             data-clipboard-target="button"

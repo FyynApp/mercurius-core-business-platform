@@ -8,6 +8,12 @@ seconds: >-
   }
 seconds_word: 'seconds'
 video_successfully_deleted: 'Video “{title}” has been removed.'
+video_share_widget:
+  headline: 'Share video'
+  direct_link: 'Direct link'
+  twitter_note: 'Watch my new video!'
+  copy_cta: 'copy'
+  copied: 'copied!'
 video_manage_widget:
   processing:
     note: 'Processing...'
@@ -39,7 +45,7 @@ video_manage_widget:
     headline: 'Embed this video on any webpage'
     explanation1: 'Simply copy the HTML code snippet below and paste it into your own webpage.'
     explanation2: ''
-    copy_cta: 'copy'
+    copy_cta: 'Copy this code'
     copied: 'Copied!'
   delete_modal:
     title: 'Delete video'

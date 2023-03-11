@@ -2,22 +2,14 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Service;
 
-use App\Shared\Infrastructure\Service\ShortIdService;
-use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use Exception;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 readonly class EmbeddableVideoPlayerPresentationService
 {
     public function __construct(
-        private CapabilitiesService   $capabilitiesService,
-        private SettingsDomainService $settingsDomainService,
-        private RouterInterface       $router,
-        private RequestStack          $requestStack,
-        private ShortIdService        $shortIdService
+        private Environment $twigEnvironment
     )
     {}
 
@@ -28,6 +20,9 @@ readonly class EmbeddableVideoPlayerPresentationService
         Video $video
     ): string
     {
-        return '<!-- embed code -->';
+        return $this->twigEnvironment->render(
+            '@videobasedmarketing.recordings/embeddable_video_player/embed.html.twig',
+            ['video' => $video]
+        );
     }
 }
