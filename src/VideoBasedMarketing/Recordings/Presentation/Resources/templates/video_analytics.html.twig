@@ -170,7 +170,17 @@
 
                 {% if sessionAnalyticsInfos|length > 0 %}
                     <div class="w-full flex flex-col gap-4 justify-start bg-mercurius-green-100 text-mercurius-green-900 rounded-md p-4 border-1 border-mercurius-green-900 mb-8 mt-16">
-                        {{ 'video_analytics.note_watch_sessions'|trans }}
+                        {% if sessionAnalyticsInfos|length is same as 1 %}
+                            {{ 'video_analytics.note_watch_sessions_one'|trans }}
+                        {% endif %}
+
+                        {% if sessionAnalyticsInfos|length > 1 and sessionAnalyticsInfos|length < 100 %}
+                            {{ 'video_analytics.note_watch_sessions_more_than_one'|trans({ 'numSessions': sessionAnalyticsInfos|length }) }}
+                        {% endif %}
+
+                        {% if sessionAnalyticsInfos|length > 100 %}
+                            {{ 'video_analytics.note_watch_sessions_more_than_limit'|trans }}
+                        {% endif %}
                     </div>
 
                     <div class="flex flex-col gap-2">
