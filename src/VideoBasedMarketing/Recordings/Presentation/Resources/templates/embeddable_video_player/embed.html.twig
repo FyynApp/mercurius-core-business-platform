@@ -1,0 +1,22 @@
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video  #}
+
+<!-- Fyyn.io Video Player Embed - Start -->
+<link rel="stylesheet" href="{{ url(
+            'videobasedmarketing.recordings.presentation.embeddable_video_player.style',
+            { videoShortId: video.shortId }
+        ) }}">
+<script src="{{ url(
+            'videobasedmarketing.recordings.presentation.embeddable_video_player.data',
+            { videoShortId: video.shortId }
+        ) }}" async></script>
+<script src="{{ url(
+            'videobasedmarketing.recordings.presentation.embeddable_video_player.script',
+            { videoShortId: video.shortId }
+        ) }}"></script>
+<div class="fyyn-video-{{ video.shortId }}-player-embed-outer">
+    <video style="width: 100%;" class="fyyn-video-{{ video.shortId }}-player-embed-video" preload="metadata" controls poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}">
+        <source src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}" type="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetMimeType(video).value }}">
+    </video>
+</div>
+<!-- Fyyn.io Video Player Embed - End -->

@@ -7,6 +7,7 @@ use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSession;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSessionAnalyticsInfo;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSessionEvent;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -102,6 +103,8 @@ readonly class VideoPlayerSessionDomainService
                     v.id = :vid
                     AND
                     e.player_current_time >= $second
+                    AND
+                    e.player_current_time < ($second + 1)
                 ;
             ";
 
@@ -115,6 +118,72 @@ readonly class VideoPlayerSessionDomainService
 
         return $result;
     }
+
+    /**
+     * @return VideoPlayerSessionAnalyticsInfo[]
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getVideoPlayerSessionAnalyticsInfos(
+        Video $video
+    ): array
+    {
+        $infos = [];
+        $sql = "
+                SELECT s.id AS id
+                FROM {$this->entityManager->getClassMetadata(VideoPlayerSession::class)->getTableName()} s
+                INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+                ON v.id = s.videos_id
+                WHERE
+                    v.id = :vid
+                ORDER BY s.created_at DESC
+                LIMIT 100
+                ;
+            ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+
+        foreach ($resultSet->fetchAllAssociative() as $sessionRow) {
+            $session = $this->entityManager->find(VideoPlayerSession::class, $sessionRow['id']);
+
+
+            $sql = "
+                SELECT e.player_current_time AS playerCurrentTime
+                FROM {$this->entityManager->getClassMetadata(VideoPlayerSessionEvent::class)->getTableName()} e
+                INNER JOIN {$this->entityManager->getClassMetadata(VideoPlayerSession::class)->getTableName()} s
+                ON s.id = e.video_player_sessions_id
+                WHERE
+                    s.id = :sid
+                ORDER BY e.created_at DESC
+                ;
+            ";
+
+            $stmt = $this->entityManager->getConnection()->prepare($sql);
+            $resultSet = $stmt->executeQuery([':sid' => $session->getId()]);
+
+            $watchedSeconds = [];
+            foreach ($resultSet->fetchAllAssociative() as $eventRow) {
+                $watchedSeconds[] = (int)floor($eventRow['playerCurrentTime']) - 1;
+            }
+
+            $secondsToDidWatch = [];
+            for ($i = 0; $i < (int)$video->getSeconds(); $i++) {
+                if (in_array($i, $watchedSeconds)) {
+                    $secondsToDidWatch[$i] = true;
+                } else {
+                    $secondsToDidWatch[$i] = false;
+                }
+            }
+
+            $infos[] = new VideoPlayerSessionAnalyticsInfo(
+                $session,
+                $secondsToDidWatch
+            );
+        }
+
+        return $infos;
+    }
+
 
     /**
      * @throws \Doctrine\DBAL\Exception

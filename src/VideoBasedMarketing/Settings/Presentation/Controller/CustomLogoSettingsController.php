@@ -3,9 +3,9 @@
 namespace App\VideoBasedMarketing\Settings\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
+use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;

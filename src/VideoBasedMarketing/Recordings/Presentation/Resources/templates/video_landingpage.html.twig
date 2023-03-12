@@ -90,9 +90,9 @@
                             path(
                                 'videobasedmarketing.membership.presentation.show_upgrade_offer.for_capabilities',
                                 { capabilityNames: [
-                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage').value,
-                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomDomain').value,
-                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::AdFreeLandingpages').value
+                                    constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\Capability::CustomLogoOnLandingpage').value,
+                                    constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\Capability::CustomDomain').value,
+                                    constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\Capability::AdFreeLandingpages').value
                                 ] }
                             )
                         }}"
@@ -114,8 +114,8 @@
                             path(
                                 'videobasedmarketing.membership.presentation.show_upgrade_offer.for_capabilities',
                                 { capabilityNames: [
-                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomLogoOnLandingpage').value,
-                                    constant('\\App\\VideoBasedMarketing\\Account\\Domain\\Enum\\Capability::CustomDomain').value,
+                                    constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\Capability::CustomLogoOnLandingpage').value,
+                                    constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\Capability::CustomDomain').value,
                                 ] }
                             )
                         }}"
@@ -235,10 +235,9 @@
                     let latestCurrentTime = 0;
                     videojs('#video-js-player').on('timeupdate', function() {
                         const currentTime = this.currentTime();
-                        if (   currentTime - latestCurrentTime > 1.0
+                        if (   currentTime - latestCurrentTime > 0.6
                             || currentTime < latestCurrentTime
                         ) {
-                            //console.log('the time was updated to: ' + currentTime + ', latest was ' + latestCurrentTime);
                             latestCurrentTime = currentTime;
 
                             const req = new XMLHttpRequest();

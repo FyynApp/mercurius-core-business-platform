@@ -5,7 +5,7 @@ namespace App\VideoBasedMarketing\Membership\Presentation\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
+use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;

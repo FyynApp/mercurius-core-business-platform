@@ -356,7 +356,11 @@ class RecordingsInfrastructureService
         if ($video->hasAssetPosterStillWebp()) {
             return $this->router->generate(
                 'videobasedmarketing.recordings.presentation.video.poster_still.asset',
-                ['videoId' => $video->getId(), 'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)]
+                [
+                    'videoId' => $video->getId(),
+                    'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::ImageWebp)
+                ],
+                UrlGeneratorInterface::ABSOLUTE_URL
             );
         } else {
             return $this->router->generate('videobasedmarketing.recordings.presentation.video.missing_poster_asset_placeholder');
@@ -404,7 +408,8 @@ class RecordingsInfrastructureService
                         'videoId' => $video->getId(),
                         'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4),
                         'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoMp4)}"
-                    ]
+                    ],
+                    UrlGeneratorInterface::ABSOLUTE_URL
                 );
             } elseif ($video->hasAssetFullWebm()) {
                 return $this->router->generate(
@@ -413,13 +418,16 @@ class RecordingsInfrastructureService
                         'videoId' => $video->getId(),
                         'extension' => $this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm),
                         'filename' => "fyyn.io-recording-{$video->getId()}.{$this->mimeTypeToFileSuffix(AssetMimeType::VideoWebm)}"
-                    ]
+                    ],
+                    UrlGeneratorInterface::ABSOLUTE_URL
                 );
             } else {
                 return $this
                     ->router
                     ->generate(
-                        'videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder'
+                        'videobasedmarketing.recordings.presentation.video.missing_full_asset_placeholder',
+                        [],
+                        UrlGeneratorInterface::ABSOLUTE_URL
                     );
             }
 
@@ -453,6 +461,30 @@ class RecordingsInfrastructureService
         }
 
         throw new Exception("Asset mime type '{$preferredAssetMimeType->value}' is not supported.");
+    }
+
+    public function getVideoFullAssetMimeType(
+        Video $video,
+        AssetMimeType $preferredAssetMimeType = AssetMimeType::VideoMp4
+    ): ?AssetMimeType
+    {
+        if ($preferredAssetMimeType === AssetMimeType::VideoMp4) {
+            if ($video->hasAssetFullMp4()) {
+                return AssetMimeType::VideoMp4;
+            } elseif ($video->hasAssetFullWebm()) {
+                return AssetMimeType::VideoWebm;
+            } else {
+                return null;
+            }
+        } else {
+            if ($video->hasAssetFullWebm()) {
+                return AssetMimeType::VideoWebm;
+            } elseif ($video->hasAssetFullMp4()) {
+                return AssetMimeType::VideoMp4;
+            } else {
+                return null;
+            }
+        }
     }
 
     public function getVideoForAnalyticsWidgetAssetUrl(Video $video, bool $absoluteUrl = false): string

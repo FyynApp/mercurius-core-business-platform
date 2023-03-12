@@ -19,6 +19,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainServ
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoFolderDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
+use App\VideoBasedMarketing\Recordings\Presentation\Service\EmbeddableVideoPlayerPresentationService;
 use App\VideoBasedMarketing\Recordings\Presentation\Service\RecordingsPresentationService;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructureService;
@@ -47,6 +48,8 @@ class TwigHelperService
 
     private RecordingsPresentationService $recordingsPresentationService;
 
+    private EmbeddableVideoPlayerPresentationService $embeddableVideoPlayerPresentationService;
+
     private ShortIdService $shortIdService;
 
     private DashboardDomainService $dashboardService;
@@ -64,24 +67,25 @@ class TwigHelperService
     private OrganizationDomainService $organizationDomainService;
 
     public function __construct(
-        ContentDeliveryService          $contentDeliveryService,
-        AccountDomainService            $accountDomainService,
-        AccountAssetsService            $accountAssetsService,
-        MembershipService               $membershipService,
-        CookiesService                  $cookiesService,
-        VideoDomainService              $videoDomainService,
-        VideoFolderDomainService        $videoFolderDomainService,
-        RecordingsInfrastructureService $recordingsInfrastructureService,
-        RecordingSessionDomainService   $recordingSessionDomainService,
-        RecordingsPresentationService   $recordingsPresentationService,
-        ShortIdService                  $shortIdService,
-        DashboardDomainService          $dashboardService,
-        PresentationpagesService        $presentationpagesService,
-        RecordingRequestsDomainService  $recordingRequestsDomainService,
-        CapabilitiesService             $capabilitiesService,
-        SettingsDomainService           $settingsDomainService,
-        SettingsInfrastructureService   $settingsInfrastructureService,
-        OrganizationDomainService       $organizationDomainService
+        ContentDeliveryService                   $contentDeliveryService,
+        AccountDomainService                     $accountDomainService,
+        AccountAssetsService                     $accountAssetsService,
+        MembershipService                        $membershipService,
+        CookiesService                           $cookiesService,
+        VideoDomainService                       $videoDomainService,
+        VideoFolderDomainService                 $videoFolderDomainService,
+        RecordingsInfrastructureService          $recordingsInfrastructureService,
+        RecordingSessionDomainService            $recordingSessionDomainService,
+        RecordingsPresentationService            $recordingsPresentationService,
+        EmbeddableVideoPlayerPresentationService $embeddableVideoPlayerPresentationService,
+        ShortIdService                           $shortIdService,
+        DashboardDomainService                   $dashboardService,
+        PresentationpagesService                 $presentationpagesService,
+        RecordingRequestsDomainService           $recordingRequestsDomainService,
+        CapabilitiesService                      $capabilitiesService,
+        SettingsDomainService                    $settingsDomainService,
+        SettingsInfrastructureService            $settingsInfrastructureService,
+        OrganizationDomainService                $organizationDomainService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
@@ -94,6 +98,7 @@ class TwigHelperService
         $this->recordingsInfrastructureService = $recordingsInfrastructureService;
         $this->recordingSessionDomainService = $recordingSessionDomainService;
         $this->recordingsPresentationService = $recordingsPresentationService;
+        $this->embeddableVideoPlayerPresentationService = $embeddableVideoPlayerPresentationService;
         $this->shortIdService = $shortIdService;
         $this->dashboardService = $dashboardService;
         $this->presentationpagesService = $presentationpagesService;
@@ -162,6 +167,11 @@ class TwigHelperService
     public function getRecordingsPresentationService(): RecordingsPresentationService
     {
         return $this->recordingsPresentationService;
+    }
+
+    public function getEmbeddableVideoPlayerPresentationService(): EmbeddableVideoPlayerPresentationService
+    {
+        return $this->embeddableVideoPlayerPresentationService;
     }
 
     public function getShortIdService(): ShortIdService
