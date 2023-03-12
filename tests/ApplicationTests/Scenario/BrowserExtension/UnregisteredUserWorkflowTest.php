@@ -171,7 +171,7 @@ class UnregisteredUserWorkflowTest
 
 
         $this->assertStringContainsString(
-            "background-image: url('/generated-content/video-assets/$videoId/poster-still.webp');",
+            "background-image: url('http://localhost/generated-content/video-assets/$videoId/poster-still.webp');",
             $crawler
                 ->filter('[data-test-class="videoManageWidgetPosterStill"]')
                 ->first()
@@ -261,7 +261,7 @@ class UnregisteredUserWorkflowTest
         );
 
         $this->assertStringContainsString(
-            "background-image: url('/generated-content/video-assets/$videoId/poster-still.webp');",
+            "background-image: url('http://localhost/generated-content/video-assets/$videoId/poster-still.webp');",
             $crawler
                 ->filter('[data-test-class="videoManageWidgetPosterStill"]')
                 ->first()
