@@ -32,6 +32,7 @@ class AudioTranscription
         $this->user = $user;
         $this->setOrganization($user->getCurrentlyActiveOrganization());
         $this->createdAt = DateAndTimeService::getDateTime();
+        $this->happyScribeTranscriptions = new ArrayCollection();
     }
 
 
