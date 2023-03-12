@@ -148,8 +148,8 @@
                 </div>
 
                 {% if videoFolder is not null or videoFolders|length > 0 %}
-                    <div class="sticky top-0 z-30 bg-white border-1 border-l-0 border-r-0 border-t-0 border-neutral-200 pb-6 pt-6">
-                        <div class="flex flex-col justify-center items-start gap-2">
+                    <div class="sticky top-0 z-30 border-1 border-b-0 border-l-0 border-r-0 border-neutral-200">
+                        <div class="flex flex-col justify-center items-start gap-2 bg-white max-h-64 overflow-y-scroll">
                             {% if videoFolder is not null %}
                                 <div class="font-bold text-lg mb-2">
                                     {{ videoFolder.name }}
@@ -216,6 +216,9 @@
                                 }) }}
 
                             {% endfor %}
+                        </div>
+                        <div class="bg-gradient-to-b from-white to-transparent pt-4 h-8">
+
                         </div>
                     </div>
                 {% endif %}
