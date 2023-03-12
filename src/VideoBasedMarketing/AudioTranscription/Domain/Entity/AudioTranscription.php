@@ -3,11 +3,9 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
-use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
-use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,17 +18,32 @@ use ValueError;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'custom_logo_settings')]
-#[ORM\Index(fields: ['createdAt'], name: 'created_at_idx')]
+#[ORM\Index(
+    fields: ['createdAt'],
+    name: 'created_at_idx'
+)]
+#[ORM\Index(
+    fields: ['webVtt'],
+    name: 'web_vtt_fulltext_idx',
+    flags: ['fulltext']
+)]
+#[ORM\Index(
+    fields: ['suggestedSummary'],
+    name: 'suggested_summary_fulltext_idx',
+    flags: ['fulltext']
+)]
 class AudioTranscription
-    implements OrganizationOwnedEntityInterface, UserOwnedEntityInterface
 {
     /**
      * @throws Exception
      */
-    public function __construct(User $user)
+    public function __construct(
+        Video                               $video,
+        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
+    )
     {
-        $this->user = $user;
-        $this->setOrganization($user->getCurrentlyActiveOrganization());
+        $this->video = $video;
+        $this->audioTranscriptionBcp47LanguageCode = $audioTranscriptionBcp47LanguageCode;
         $this->createdAt = DateAndTimeService::getDateTime();
         $this->happyScribeTranscriptions = new ArrayCollection();
     }
@@ -64,56 +77,43 @@ class AudioTranscription
 
 
     #[ORM\ManyToOne(
-        targetEntity: User::class,
+        targetEntity: Video::class,
         cascade: ['persist'],
     )]
     #[ORM\JoinColumn(
-        name: 'users_id',
-        referencedColumnName: 'id',
-        nullable: true,
-        onDelete: 'SET NULL'
-    )]
-    private ?User $user;
-
-    public function getUser(): User
-    {
-        if (is_null($this->user)) {
-            return $this->organization->getOwningUser();
-        }
-        return $this->user;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
-    }
-
-
-    #[ORM\ManyToOne(
-        targetEntity: Organization::class,
-        cascade: ['persist']
-    )]
-    #[ORM\JoinColumn(
-        name: 'organizations_id',
+        name: 'videos_id',
         referencedColumnName: 'id',
         nullable: false,
         onDelete: 'CASCADE'
     )]
-    private Organization $organization;
+    private Video $video;
 
-    public function getOrganization(): Organization
+    public function getVideo(): Video
     {
-        return $this->organization;
+        return $this->video;
     }
 
-    public function setOrganization(
-        Organization $organization
+
+    #[ORM\Column(
+        type: Types::STRING,
+        nullable: false,
+        enumType: AudioTranscriptionBcp47LanguageCode::class
+    )]
+    private AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode;
+
+    public function getAudioTranscriptionBcp47LanguageCode(): AudioTranscriptionBcp47LanguageCode
+    {
+        return $this->audioTranscriptionBcp47LanguageCode;
+    }
+
+    public function setAudioTranscriptionBcp47LanguageCode(
+        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
     ): void
     {
-        $this->organization = $organization;
+        $this->audioTranscriptionBcp47LanguageCode = $audioTranscriptionBcp47LanguageCode;
     }
 
-
+    
     /** @var HappyScribeTranscription[]|Collection */
     #[ORM\OneToMany(
         mappedBy: 'audioTranscription',
@@ -160,5 +160,22 @@ class AudioTranscription
     public function getWebVtt(): ?string
     {
         return $this->webVtt;
+    }
+
+
+    #[ORM\Column(
+        type: Types::TEXT,
+        nullable: true
+    )]
+    private ?string $suggestedSummary = null;
+
+    public function setSuggestedSummary(string $suggestedSummary): void
+    {
+        $this->suggestedSummary = $suggestedSummary;
+    }
+
+    public function getSuggestedSummary(): ?string
+    {
+        return $this->suggestedSummary;
     }
 }

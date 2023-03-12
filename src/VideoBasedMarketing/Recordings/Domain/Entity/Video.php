@@ -34,7 +34,6 @@ use ValueError;
     fields: ['title'],
     name: 'title_fulltext_idx',
     flags: ['fulltext']
-
 )]
 class Video
     implements UserOwnedEntityInterface, OrganizationOwnedEntityInterface, SupportsShortIdInterface
