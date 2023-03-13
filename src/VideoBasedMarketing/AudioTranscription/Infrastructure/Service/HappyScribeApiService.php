@@ -46,7 +46,7 @@ readonly class HappyScribeApiService
             {
                 "transcription": {
                     "name": "{$audioTranscription->getId()}",
-                    "language": "{$audioTranscription->getAudioTranscriptionBcp47LanguageCode()->value}",
+                    "language": "{$audioTranscription->getOriginalLanguageBcp47LanguageCode()->value}",
                     "tmp_url": "{$this->recordingsInfrastructureService->getVideoFullAssetUrl($audioTranscription->getVideo())}",
                     "is_subtitle": false,
                     "organization_id": "$this->happyScribeOrganizationId",

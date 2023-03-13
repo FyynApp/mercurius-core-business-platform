@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'custom_logo_settings')]
+#[ORM\Table(name: 'audio_transcription_happy_scribe_transcriptions')]
 #[ORM\Index(
     fields: ['createdAt'],
     name: 'created_at_idx'

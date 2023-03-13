@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportState;
+use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranslationTaskState;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,25 +12,25 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'audio_transcription_happy_scribe_exports')]
+#[ORM\Table(name: 'audio_transcription_happy_scribe_translationTasks')]
 #[ORM\Index(
     fields: ['createdAt'],
     name: 'created_at_idx'
 )]
-class HappyScribeExport
+class HappyScribeTranslationTask
 {
     /**
      * @throws Exception
      */
     public function __construct(
-        HappyScribeTranscription $happyScribeTranscription,
-        string                   $happyScribeExportId,
-        HappyScribeExportState   $happyScribeExportState
+        HappyScribeTranscription        $happyScribeTranscription,
+        string                          $happyScribeTranslationTaskId,
+        HappyScribeTranslationTaskState $happyScribeTranslationTaskState
     )
     {
         $this->happyScribeTranscription = $happyScribeTranscription;
-        $this->happyScribeExportId = $happyScribeExportId;
-        $this->state = $happyScribeExportState;
+        $this->happyScribeTranslationTaskId = $happyScribeTranslationTaskId;
+        $this->state = $happyScribeTranslationTaskState;
         $this->createdAt = DateAndTimeService::getDateTime();
     }
 
@@ -66,7 +66,7 @@ class HappyScribeExport
         cascade: ['persist'],
     )]
     #[ORM\JoinColumn(
-        name: 'audio_exports_id',
+        name: 'audio_translationTasks_id',
         referencedColumnName: 'id',
         nullable: false,
         onDelete: 'CASCADE'
@@ -82,17 +82,17 @@ class HappyScribeExport
     #[ORM\Column(
         type: Types::STRING,
         nullable: false,
-        enumType: HappyScribeExportState::class
+        enumType: HappyScribeTranslationTaskState::class
     )]
-    private HappyScribeExportState $state;
+    private HappyScribeTranslationTaskState $state;
 
-    public function getState(): HappyScribeExportState
+    public function getState(): HappyScribeTranslationTaskState
     {
         return $this->state;
     }
 
     public function setState(
-        HappyScribeExportState $state
+        HappyScribeTranslationTaskState $state
     ): void
     {
         $this->state = $state;
@@ -103,11 +103,11 @@ class HappyScribeExport
         type: Types::STRING,
         nullable: false,
     )]
-    private string $happyScribeExportId;
+    private string $happyScribeTranslationTaskId;
 
-    public function getHappyScribeExportId(): string
+    public function getHappyScribeTranslationTaskId(): string
     {
-        return $this->happyScribeExportId;
+        return $this->happyScribeTranslationTaskId;
     }
 
 
@@ -116,15 +116,15 @@ class HappyScribeExport
         length: 1024,
         nullable: true
     )]
-    private ?string $downloadLink;
+    private ?string $translatedTranscriptionId;
 
-    public function getDownloadLink(): ?string
+    public function getTranslatedTranscriptionId(): ?string
     {
-        return $this->downloadLink;
+        return $this->translatedTranscriptionId;
     }
 
-    public function setDownloadLink(string $downloadLink): void
+    public function setTranslatedTranscriptionId(string $translatedTranscriptionId): void
     {
-        $this->downloadLink = $downloadLink;
+        $this->translatedTranscriptionId = $translatedTranscriptionId;
     }
 }

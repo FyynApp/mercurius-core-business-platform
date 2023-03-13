@@ -17,7 +17,7 @@ use ValueError;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'custom_logo_settings')]
+#[ORM\Table(name: 'audio_transcriptions')]
 #[ORM\Index(
     fields: ['createdAt'],
     name: 'created_at_idx'
@@ -39,11 +39,11 @@ class AudioTranscription
      */
     public function __construct(
         Video                               $video,
-        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
+        AudioTranscriptionBcp47LanguageCode $originalLanguageBcp47LanguageCode
     )
     {
         $this->video = $video;
-        $this->audioTranscriptionBcp47LanguageCode = $audioTranscriptionBcp47LanguageCode;
+        $this->originalLanguageBcp47LanguageCode = $originalLanguageBcp47LanguageCode;
         $this->createdAt = DateAndTimeService::getDateTime();
         $this->happyScribeTranscriptions = new ArrayCollection();
     }
@@ -99,18 +99,18 @@ class AudioTranscription
         nullable: false,
         enumType: AudioTranscriptionBcp47LanguageCode::class
     )]
-    private AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode;
+    private AudioTranscriptionBcp47LanguageCode $originalLanguageBcp47LanguageCode;
 
-    public function getAudioTranscriptionBcp47LanguageCode(): AudioTranscriptionBcp47LanguageCode
+    public function getOriginalLanguageBcp47LanguageCode(): AudioTranscriptionBcp47LanguageCode
     {
-        return $this->audioTranscriptionBcp47LanguageCode;
+        return $this->originalLanguageBcp47LanguageCode;
     }
 
-    public function setAudioTranscriptionBcp47LanguageCode(
-        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
+    public function setOriginalLanguageBcp47LanguageCode(
+        AudioTranscriptionBcp47LanguageCode $originalLanguageBcp47LanguageCode
     ): void
     {
-        $this->audioTranscriptionBcp47LanguageCode = $audioTranscriptionBcp47LanguageCode;
+        $this->originalLanguageBcp47LanguageCode = $originalLanguageBcp47LanguageCode;
     }
 
     
@@ -143,39 +143,5 @@ class AudioTranscription
         }
 
         $this->happyScribeTranscriptions->add($happyScribeTranscription);
-    }
-
-
-    #[ORM\Column(
-        type: Types::TEXT,
-        nullable: true
-    )]
-    private ?string $webVtt = null;
-
-    public function setWebVtt(string $webVtt): void
-    {
-        $this->webVtt = $webVtt;
-    }
-
-    public function getWebVtt(): ?string
-    {
-        return $this->webVtt;
-    }
-
-
-    #[ORM\Column(
-        type: Types::TEXT,
-        nullable: true
-    )]
-    private ?string $suggestedSummary = null;
-
-    public function setSuggestedSummary(string $suggestedSummary): void
-    {
-        $this->suggestedSummary = $suggestedSummary;
-    }
-
-    public function getSuggestedSummary(): ?string
-    {
-        return $this->suggestedSummary;
     }
 }
