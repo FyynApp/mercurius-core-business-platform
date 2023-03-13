@@ -14,6 +14,7 @@ use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTr
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranslationTaskState;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -31,13 +32,14 @@ readonly class HappyScribeApiService
 
     public function __construct(
         private HttpClientInterface             $httpClient,
-        private RecordingsInfrastructureService $recordingsInfrastructureService
+        private RecordingsInfrastructureService $recordingsInfrastructureService,
+        private LoggerInterface                 $logger
     )
     {
         $this->apiUrl = 'https://www.happyscribe.com/api/v1';
-        $this->apiKey = getenv('HAPPY_SCRIBE_API_KEY');
-        $this->happyScribeOrganizationId = getenv('HAPPY_SCRIBE_ORGANIZATION_ID');
-        $this->happyScribeFolderId = getenv('HAPPY_SCRIBE_FOLDER_ID');
+        $this->apiKey = $_ENV['HAPPY_SCRIBE_API_KEY'];
+        $this->happyScribeOrganizationId = $_ENV['HAPPY_SCRIBE_ORGANIZATION_ID'];
+        $this->happyScribeFolderId = $_ENV['HAPPY_SCRIBE_FOLDER_ID'];
     }
 
     /**
@@ -76,6 +78,9 @@ readonly class HappyScribeApiService
             );
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
+
+                $this->logger->warning("Got response: {$response->getContent()}");
+
                 throw new Exception(
                     "Instead of status code '" . Response::HTTP_OK . "', HappyScribe returned status code '{$response->getStatusCode()}' with message '{$response->getContent()}'"
                 );
@@ -92,7 +97,11 @@ readonly class HappyScribeApiService
                 $audioTranscription->getOriginalLanguageBcp47LanguageCode()
             );
         } catch (Throwable $throwable) {
-            throw new Exception('', null, $throwable);
+            $this->logger->debug("Got throwable: {$throwable->getMessage()}");
+            if (isset($response)) {
+                $this->logger->warning("Got response: {$response->getContent()}");
+            }
+            throw new Exception($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
     }
 
@@ -106,7 +115,7 @@ readonly class HappyScribeApiService
         try {
             $response = $this->httpClient->request(
                 Request::METHOD_GET,
-                "$this->apiUrl/transcriptions/{$happyScribeTranscription->getId()}",
+                "$this->apiUrl/transcriptions/{$happyScribeTranscription->getHappyScribeTranscriptionId()}",
                 [
                     'headers' => [
                         'Content-Type'  => 'application/json',
@@ -117,6 +126,9 @@ readonly class HappyScribeApiService
             );
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
+
+                $this->logger->warning("Got response: {$response->getContent()}");
+
                 throw new Exception(
                     "Instead of status code '" . Response::HTTP_OK . "', HappyScribe returned status code '{$response->getStatusCode()}' with message '{$response->getContent()}'"
                 );
@@ -131,7 +143,11 @@ readonly class HappyScribeApiService
             );
 
         } catch (Throwable $throwable) {
-            throw new Exception('', null, $throwable);
+            $this->logger->debug("Got throwable: {$throwable->getMessage()}");
+            if (isset($response)) {
+                $this->logger->warning("Got response: {$response->getContent()}");
+            }
+            throw new Exception($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
     }
 
@@ -149,7 +165,7 @@ readonly class HappyScribeApiService
                 "export": {
                     "format": "$exportFormat->value",
                     "transcription_ids": [
-                        "{$happyScribeTranscription->getId()}"
+                        "{$happyScribeTranscription->getHappyScribeTranscriptionId()}"
                   ]
                 }
             }
@@ -171,6 +187,9 @@ readonly class HappyScribeApiService
             );
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
+
+                $this->logger->warning("Got response: {$response->getContent()}");
+
                 throw new Exception(
                     "Instead of status code '" . Response::HTTP_OK . "', HappyScribe returned status code '{$response->getStatusCode()}' with message '{$response->getContent()}'"
                 );
@@ -187,7 +206,11 @@ readonly class HappyScribeApiService
                 $exportFormat
             );
         } catch (Throwable $throwable) {
-            throw new Exception('', null, $throwable);
+            $this->logger->debug("Got throwable: {$throwable->getMessage()}");
+            if (isset($response)) {
+                $this->logger->warning("Got response: {$response->getContent()}");
+            }
+            throw new Exception($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
     }
 
@@ -201,7 +224,7 @@ readonly class HappyScribeApiService
         try {
             $response = $this->httpClient->request(
                 Request::METHOD_GET,
-                "$this->apiUrl/exports/{$happyScribeExport->getId()}",
+                "$this->apiUrl/exports/{$happyScribeExport->getHappyScribeExportId()}",
                 [
                     'headers' => [
                         'Content-Type'  => 'application/json',
@@ -212,6 +235,9 @@ readonly class HappyScribeApiService
             );
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
+
+                $this->logger->warning("Got response: {$response->getContent()}");
+
                 throw new Exception(
                     "Instead of status code '" . Response::HTTP_OK . "', HappyScribe returned status code '{$response->getStatusCode()}' with message '{$response->getContent()}'"
                 );
@@ -230,7 +256,11 @@ readonly class HappyScribeApiService
             }
 
         } catch (Throwable $throwable) {
-            throw new Exception('', null, $throwable);
+            $this->logger->debug("Got throwable: {$throwable->getMessage()}");
+            if (isset($response)) {
+                $this->logger->warning("Got response: {$response->getContent()}");
+            }
+            throw new Exception($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
     }
 
@@ -244,20 +274,22 @@ readonly class HappyScribeApiService
     ): HappyScribeTranslationTask
     {
         if ($audioTranscriptionBcp47LanguageCode === AudioTranscriptionBcp47LanguageCode::DeDe) {
-            $targetLanguage = 'en';
-        } elseif ($audioTranscriptionBcp47LanguageCode === AudioTranscriptionBcp47LanguageCode::EnUs) {
             $targetLanguage = 'de';
+        } elseif ($audioTranscriptionBcp47LanguageCode === AudioTranscriptionBcp47LanguageCode::EnUs) {
+            $targetLanguage = 'en';
         } else {
             throw new Exception("Unexpected language code '$audioTranscriptionBcp47LanguageCode->value'.");
         }
 
         $body = <<<EOT
             {
-                "source_transcription_id": "{$happyScribeTranscription->getId()}",
-                "target_language": "$targetLanguage",
+                "source_transcription_id": "{$happyScribeTranscription->getHappyScribeTranscriptionId()}",
+                "target_language": "$targetLanguage"
             }
         EOT;
         $body = trim($body);
+
+        $this->logger->debug("task/transcription_translation body is: $body");
 
         try {
             $response = $this->httpClient->request(
@@ -274,6 +306,9 @@ readonly class HappyScribeApiService
             );
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
+
+                $this->logger->warning("Got response: {$response->getContent()}");
+
                 throw new Exception(
                     "Instead of status code '" . Response::HTTP_OK . "', HappyScribe returned status code '{$response->getStatusCode()}' with message '{$response->getContent()}'"
                 );
@@ -290,7 +325,11 @@ readonly class HappyScribeApiService
                 $audioTranscriptionBcp47LanguageCode
             );
         } catch (Throwable $throwable) {
-            throw new Exception('', null, $throwable);
+            $this->logger->debug("Got throwable: {$throwable->getMessage()}");
+            if (isset($response)) {
+                $this->logger->warning("Got response: {$response->getContent()}");
+            }
+            throw new Exception($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
     }
 
@@ -304,7 +343,7 @@ readonly class HappyScribeApiService
         try {
             $response = $this->httpClient->request(
                 Request::METHOD_GET,
-                "$this->apiUrl/task/transcription_translation/{$happyScribeTranslationTask->getId()}",
+                "$this->apiUrl/task/transcription_translation/{$happyScribeTranslationTask->getHappyScribeTranslationTaskId()}",
                 [
                     'headers' => [
                         'Content-Type'  => 'application/json',
@@ -315,6 +354,9 @@ readonly class HappyScribeApiService
             );
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
+
+                $this->logger->warning("Got response: {$response->getContent()}");
+
                 throw new Exception(
                     "Instead of status code '" . Response::HTTP_OK . "', HappyScribe returned status code '{$response->getStatusCode()}' with message '{$response->getContent()}'"
                 );
@@ -333,7 +375,11 @@ readonly class HappyScribeApiService
             }
 
         } catch (Throwable $throwable) {
-            throw new Exception('', null, $throwable);
+            $this->logger->debug("Got throwable: {$throwable->getMessage()}");
+            if (isset($response)) {
+                $this->logger->warning("Got response: {$response->getContent()}");
+            }
+            throw new Exception($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
     }
 }

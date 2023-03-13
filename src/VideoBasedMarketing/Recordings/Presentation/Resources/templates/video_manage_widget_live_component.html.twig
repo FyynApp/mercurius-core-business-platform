@@ -416,7 +416,7 @@
                 >
                     <span class="flex flex-row justify-between items-center gap-2">
                         <span>
-                            {{ 'video_manage_widget.overview_box.cta_show_embed'|trans }}
+                            {{ 'video_manage_widget.overview_box.cta_show_audio_transcription_modal'|trans }}
                         </span>
                         <span>
                             {# Heroicon: chat-bubble-bottom-center-text solid #}
@@ -753,7 +753,7 @@
                             type="submit"
                             class="cta-with-icon-primary"
                     >
-                        {{ 'video_manage_widget.audio_transcription_modal.cta_language.de_DE'|trans }}
+                        {{ 'video_manage_widget.audio_transcription_modal.cta_language.en_US'|trans }}
                     </button>
                 </form>
 
@@ -770,7 +770,7 @@
                     <input
                             type="hidden"
                             name="audioTranscriptionBcp47LanguageCode"
-                            value="{{ constant('App\\VideoBasedMarketing\\AudioTranscription\\Domain\\Enum\\AudioTranscriptionBcp47LanguageCode::DeDE').value }}"
+                            value="{{ constant('App\\VideoBasedMarketing\\AudioTranscription\\Domain\\Enum\\AudioTranscriptionBcp47LanguageCode::DeDe').value }}"
                     >
 
                     <input
@@ -780,7 +780,7 @@
                                 'start-audio-transcription-'
                                 ~ this.video.id
                                 ~ '-'
-                                ~ constant('App\\VideoBasedMarketing\\AudioTranscription\\Domain\\Enum\\AudioTranscriptionBcp47LanguageCode::DeDE').value
+                                ~ constant('App\\VideoBasedMarketing\\AudioTranscription\\Domain\\Enum\\AudioTranscriptionBcp47LanguageCode::DeDe').value
                             ) }}"
                     >
 
@@ -788,7 +788,7 @@
                             type="submit"
                             class="cta-with-icon-primary"
                     >
-                        {{ 'video_manage_widget.audio_transcription_modal.cta_language.en_US'|trans }}
+                        {{ 'video_manage_widget.audio_transcription_modal.cta_language.de_DE'|trans }}
                     </button>
                 </form>
 

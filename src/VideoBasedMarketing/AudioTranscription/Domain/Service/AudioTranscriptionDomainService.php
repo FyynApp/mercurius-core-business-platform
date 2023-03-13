@@ -11,6 +11,7 @@ use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribe
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranscriptionState;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CreateHappyScribeTranscriptionCommandMessage;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -76,10 +77,45 @@ readonly class AudioTranscriptionDomainService
         }
     }
 
-    public function getWebVtt(
-        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
-    ): ?AudioTranscriptionWebVtt
+    /**
+     * @return AudioTranscriptionWebVtt[]
+     * @throws Exception
+     */
+    public function getWebVtts(
+        Video $video
+    ): array
     {
+        $sql = "
+                SELECT w.id AS id
+                FROM {$this->entityManager->getClassMetadata(AudioTranscriptionWebVtt::class)->getTableName()} w
+                
+                INNER JOIN {$this->entityManager->getClassMetadata(AudioTranscription::class)->getTableName()} a
+                ON a.id = w.audio_transcriptions_id
+                
+                INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+                ON v.id = a.videos_id
+                
+                WHERE
+                    v.id = :vid
+                ;
+            ";
 
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+
+        $seenLanguages = [];
+        $webVtts = [];
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $vtt = $this->entityManager->find(
+                AudioTranscriptionWebVtt::class,
+                $row['id']
+            );
+            if (!in_array($vtt->getAudioTranscriptionBcp47LanguageCode(), $seenLanguages)) {
+                $webVtts[] = $vtt;
+            }
+            $seenLanguages[] = $vtt->getAudioTranscriptionBcp47LanguageCode();
+        }
+
+        return $webVtts;
     }
 }

@@ -10,6 +10,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
@@ -66,6 +67,8 @@ class TwigHelperService
 
     private OrganizationDomainService $organizationDomainService;
 
+    private AudioTranscriptionDomainService $audioTranscriptionDomainService;
+
     public function __construct(
         ContentDeliveryService                   $contentDeliveryService,
         AccountDomainService                     $accountDomainService,
@@ -85,7 +88,8 @@ class TwigHelperService
         CapabilitiesService                      $capabilitiesService,
         SettingsDomainService                    $settingsDomainService,
         SettingsInfrastructureService            $settingsInfrastructureService,
-        OrganizationDomainService                $organizationDomainService
+        OrganizationDomainService                $organizationDomainService,
+        AudioTranscriptionDomainService          $audioTranscriptionDomainService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
@@ -107,6 +111,7 @@ class TwigHelperService
         $this->settingsDomainService = $settingsDomainService;
         $this->settingsInfrastructureService = $settingsInfrastructureService;
         $this->organizationDomainService = $organizationDomainService;
+        $this->audioTranscriptionDomainService = $audioTranscriptionDomainService;
     }
 
     public function getSymfonyEnv(): string
@@ -212,6 +217,11 @@ class TwigHelperService
     public function getOrganizationDomainService(): OrganizationDomainService
     {
         return $this->organizationDomainService;
+    }
+
+    public function getAudioTranscriptionDomainService(): AudioTranscriptionDomainService
+    {
+        return $this->audioTranscriptionDomainService;
     }
 
     public function routeStartsWith(

@@ -3,7 +3,6 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\MessageHandler;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranslationTask;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranscriptionState;
@@ -38,7 +37,7 @@ readonly class CheckHappyScribeTranslationTaskCommandMessageHandler
     {
         /** @var null|HappyScribeTranslationTask $happyScribeTranslationTask */
         $happyScribeTranslationTask = $this->entityManager->find(
-            AudioTranscription::class,
+            HappyScribeTranslationTask::class,
             $message->getHappyScribeTranslationTaskId()
         );
 

@@ -3,7 +3,6 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\MessageHandler;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportFormat;
@@ -39,7 +38,7 @@ readonly class CheckHappyScribeTranscriptionCommandMessageHandler
     {
         /** @var null|HappyScribeTranscription $happyScribeTranscription */
         $happyScribeTranscription = $this->entityManager->find(
-            AudioTranscription::class,
+            HappyScribeTranscription::class,
             $message->getHappyScribeTranscriptionId()
         );
 
@@ -72,6 +71,7 @@ readonly class CheckHappyScribeTranscriptionCommandMessageHandler
                     DateAndTimeService::getDateTime('+30 seconds')
                 )]
             );
+
         } else {
 
             $happyScribeExport = $this
@@ -94,6 +94,7 @@ readonly class CheckHappyScribeTranscriptionCommandMessageHandler
             );
 
 
+            /* Inactive because we cannot parse the resulting JSON
             $happyScribeExport = $this
                 ->happyScribeApiService
                 ->createExport(
@@ -112,7 +113,7 @@ readonly class CheckHappyScribeTranscriptionCommandMessageHandler
                     DateAndTimeService::getDateTime('+30 seconds')
                 )]
             );
-
+            */
 
             if (    $happyScribeTranscription->getAudioTranscriptionBcp47LanguageCode()
                 === $happyScribeTranscription->getAudioTranscription()->getOriginalLanguageBcp47LanguageCode()

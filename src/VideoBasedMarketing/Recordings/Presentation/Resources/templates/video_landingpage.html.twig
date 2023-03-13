@@ -228,6 +228,22 @@
                     To view this video please enable JavaScript, and consider upgrading to a
                     web browser that supports HTML5 video.
                 </p>
+
+                {% for vtt in TwigHelperService.audioTranscriptionDomainService.webVtts(video) %}
+                    {# @var vtt \App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt #}
+                    <track
+                            {% if loop.first %}default{% endif %}
+
+                            src="{{ url(
+                                'videobasedmarketing.audio_transcription.infrastructure.web_vtt',
+                                { webVttId: vtt.id }
+                            ) }}"
+
+                            label="{{ vtt.audioTranscriptionBcp47LanguageCode.value }}"
+
+                            kind="subtitles"
+                    >
+                {% endfor %}
             </video>
 
             {% if videoPlayerSession is not null %}

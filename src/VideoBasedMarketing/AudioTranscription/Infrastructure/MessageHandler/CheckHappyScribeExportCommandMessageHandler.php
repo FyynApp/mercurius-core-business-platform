@@ -3,7 +3,6 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\MessageHandler;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWord;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeExport;
@@ -13,6 +12,7 @@ use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CheckHappy
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Service\HappyScribeApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -24,7 +24,8 @@ readonly class CheckHappyScribeExportCommandMessageHandler
     public function __construct(
         private EntityManagerInterface $entityManager,
         private HappyScribeApiService  $happyScribeApiService,
-        private MessageBusInterface    $messageBus
+        private MessageBusInterface    $messageBus,
+        private LoggerInterface        $logger
     )
     {
     }
@@ -38,13 +39,13 @@ readonly class CheckHappyScribeExportCommandMessageHandler
     {
         /** @var null|HappyScribeExport $happyScribeExport */
         $happyScribeExport = $this->entityManager->find(
-            AudioTranscription::class,
+            HappyScribeExport::class,
             $message->getHappyScribeExportId()
         );
 
         if (is_null($happyScribeExport)) {
             throw new UnrecoverableMessageHandlingException(
-                "No Happy Scribe transcription with id '{$message->getHappyScribeExportId()}'."
+                "No Happy Scribe export with id '{$message->getHappyScribeExportId()}'."
             );
         }
 
@@ -81,6 +82,8 @@ readonly class CheckHappyScribeExportCommandMessageHandler
 
             $content = file_get_contents($downloadLink);
 
+            $this->logger->debug("Downloaded content is: START>$content<END");
+
             if ($happyScribeExport->getFormat() === HappyScribeExportFormat::Vtt) {
                 $vtt = new AudioTranscriptionWebVtt(
                     $happyScribeExport
@@ -100,27 +103,45 @@ readonly class CheckHappyScribeExportCommandMessageHandler
 
             if ($happyScribeExport->getFormat() === HappyScribeExportFormat::Json) {
 
-                $contentArray = json_decode($content, true);
-
-                foreach ($contentArray as $speakerEntry) {
-                    foreach ($speakerEntry['words'] as $wordEntry) {
-                        $audioTranscriptionWord = new AudioTranscriptionWord(
-                            $happyScribeExport->getHappyScribeTranscription()->getAudioTranscription(),
-                            $happyScribeExport->getHappyScribeTranscription()->getAudioTranscriptionBcp47LanguageCode(),
-                            $speakerEntry['speaker'],
-                            $speakerEntry['speaker_number'],
-                            $wordEntry['text'],
-                            $wordEntry['type'],
-                            $wordEntry['data_start'],
-                            $wordEntry['data_end'],
-                            $wordEntry['confidence']
-                        );
-
-                        $this->entityManager->persist($audioTranscriptionWord);
-                    }
-                    $this->entityManager->flush();
+                if (!mb_check_encoding($content, 'UTF-8')) {
+                    $this->logger->warning('$content is not valid UTTF-8!');
+                    return;
                 }
 
+                $contentArray = json_decode(trim($content), true);
+
+                if (!is_null($contentArray)) {
+                    foreach ($contentArray as $key => $speakerEntry) {
+
+                        $this->logger->debug('Speaker entry is ' . print_r($speakerEntry, true));
+                        if (!is_null($speakerEntry['words'])) {
+                            foreach ($speakerEntry['words'] as $wordEntry) {
+
+                                $this->logger->debug('Word entry is ' . print_r($wordEntry, true));
+
+                                $audioTranscriptionWord = new AudioTranscriptionWord(
+                                    $happyScribeExport->getHappyScribeTranscription()->getAudioTranscription(),
+                                    $happyScribeExport->getHappyScribeTranscription()->getAudioTranscriptionBcp47LanguageCode(),
+                                    $speakerEntry['speaker'],
+                                    $speakerEntry['speaker_number'],
+                                    $wordEntry['text'],
+                                    $wordEntry['type'],
+                                    $wordEntry['data_start'],
+                                    $wordEntry['data_end'],
+                                    $wordEntry['confidence']
+                                );
+
+                                $this->entityManager->persist($audioTranscriptionWord);
+                            }
+                        } else {
+                            $this->logger->warning("contentArray[words] entry $key is null.");
+                        }
+
+                        $this->entityManager->flush();
+                    }
+                } else {
+                    $this->logger->warning('$contentArray is null: ' . json_last_error_msg());
+                }
             }
         }
     }
