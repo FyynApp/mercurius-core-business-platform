@@ -49,6 +49,12 @@ class AudioTranscriptionProcessingController
         /** @var Video $video */
         $video = $r->getEntity();
 
+        if (!is_null($audioTranscriptionDomainService->getAudioTranscription($video))) {
+            throw new BadRequestHttpException(
+                "Video '{$video->getId()}' already has audio transcription '{$audioTranscriptionDomainService->getAudioTranscription($video)->getId()}'."
+            );
+        }
+
         $audioTranscriptionDomainService->startProcessingVideo(
             $video,
             AudioTranscriptionBcp47LanguageCode::from(

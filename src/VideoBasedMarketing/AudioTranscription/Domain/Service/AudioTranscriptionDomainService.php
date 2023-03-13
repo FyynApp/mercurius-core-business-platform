@@ -127,16 +127,19 @@ readonly class AudioTranscriptionDomainService
      * @throws Exception
      */
     public function getSuggestedSummary(
-        Video        $video,
-        Iso639_1Code $iso639_1Code
+        Video                                $video,
+        ?Iso639_1Code                        $iso639_1Code,
+        ?AudioTranscriptionBcp47LanguageCode $languageCode = null
     ): ?AudioTranscriptionSuggestedSummary
     {
-        if ($iso639_1Code === Iso639_1Code::De) {
-            $languageCode = AudioTranscriptionBcp47LanguageCode::DeDe;
-        } elseif ($iso639_1Code === Iso639_1Code::En) {
-            $languageCode = AudioTranscriptionBcp47LanguageCode::EnUs;
-        } else {
-            $languageCode = AudioTranscriptionBcp47LanguageCode::EnUs;
+        if (is_null($languageCode)) {
+            if ($iso639_1Code === Iso639_1Code::De) {
+                $languageCode = AudioTranscriptionBcp47LanguageCode::DeDe;
+            } elseif ($iso639_1Code === Iso639_1Code::En) {
+                $languageCode = AudioTranscriptionBcp47LanguageCode::EnUs;
+            } else {
+                $languageCode = AudioTranscriptionBcp47LanguageCode::EnUs;
+            }
         }
 
         $sql = "
