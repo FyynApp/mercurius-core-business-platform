@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranscriptionState;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -24,14 +25,16 @@ class HappyScribeTranscription
      * @throws Exception
      */
     public function __construct(
-        AudioTranscription            $audioTranscription,
-        string                        $happyScribeTranscriptionId,
-        HappyScribeTranscriptionState $happyScribeTranscriptionState
+        AudioTranscription                  $audioTranscription,
+        string                              $happyScribeTranscriptionId,
+        HappyScribeTranscriptionState       $happyScribeTranscriptionState,
+        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
     )
     {
         $this->audioTranscription = $audioTranscription;
         $this->happyScribeTranscriptionId = $happyScribeTranscriptionId;
         $this->state = $happyScribeTranscriptionState;
+        $this->audioTranscriptionBcp47LanguageCode = $audioTranscriptionBcp47LanguageCode;
         $this->createdAt = DateAndTimeService::getDateTime();
     }
 
@@ -97,6 +100,19 @@ class HappyScribeTranscription
     ): void
     {
         $this->state = $state;
+    }
+
+
+    #[ORM\Column(
+        type: Types::STRING,
+        nullable: false,
+        enumType: AudioTranscriptionBcp47LanguageCode::class
+    )]
+    private AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode;
+
+    public function getAudioTranscriptionBcp47LanguageCode(): AudioTranscriptionBcp47LanguageCode
+    {
+        return $this->audioTranscriptionBcp47LanguageCode;
     }
 
 

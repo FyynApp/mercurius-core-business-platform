@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CheckHappy
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CreateHappyScribeTranscriptionCommandMessage;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Service\HappyScribeApiService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -26,7 +27,7 @@ readonly class CreateHappyScribeTranscriptionCommandMessageHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function __invoke(
         CreateHappyScribeTranscriptionCommandMessage $message
@@ -67,8 +68,7 @@ readonly class CreateHappyScribeTranscriptionCommandMessageHandler
                 ),
                 [DelayStamp::delayUntil(
                     DateAndTimeService::getDateTime("+$expectedDuration seconds")
-                )
-                ]
+                )]
             );
         }
     }

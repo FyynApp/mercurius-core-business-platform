@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranslationTaskState;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'audio_transcription_happy_scribe_translationTasks')]
+#[ORM\Table(name: 'audio_transcription_happy_scribe_translation_tasks')]
 #[ORM\Index(
     fields: ['createdAt'],
     name: 'created_at_idx'
@@ -23,14 +24,16 @@ class HappyScribeTranslationTask
      * @throws Exception
      */
     public function __construct(
-        HappyScribeTranscription        $happyScribeTranscription,
-        string                          $happyScribeTranslationTaskId,
-        HappyScribeTranslationTaskState $happyScribeTranslationTaskState
+        HappyScribeTranscription            $happyScribeTranscription,
+        string                              $happyScribeTranslationTaskId,
+        HappyScribeTranslationTaskState     $happyScribeTranslationTaskState,
+        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
     )
     {
         $this->happyScribeTranscription = $happyScribeTranscription;
         $this->happyScribeTranslationTaskId = $happyScribeTranslationTaskId;
         $this->state = $happyScribeTranslationTaskState;
+        $this->audioTranscriptionBcp47LanguageCode = $audioTranscriptionBcp47LanguageCode;
         $this->createdAt = DateAndTimeService::getDateTime();
     }
 
@@ -96,6 +99,19 @@ class HappyScribeTranslationTask
     ): void
     {
         $this->state = $state;
+    }
+
+
+    #[ORM\Column(
+        type: Types::STRING,
+        nullable: false,
+        enumType: AudioTranscriptionBcp47LanguageCode::class
+    )]
+    private AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode;
+
+    public function getAudioTranscriptionBcp47LanguageCode(): AudioTranscriptionBcp47LanguageCode
+    {
+        return $this->audioTranscriptionBcp47LanguageCode;
     }
 
 

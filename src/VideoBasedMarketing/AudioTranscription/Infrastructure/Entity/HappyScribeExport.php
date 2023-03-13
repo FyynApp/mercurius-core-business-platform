@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
+use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportFormat;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportState;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
@@ -25,12 +26,14 @@ class HappyScribeExport
     public function __construct(
         HappyScribeTranscription $happyScribeTranscription,
         string                   $happyScribeExportId,
-        HappyScribeExportState   $happyScribeExportState
+        HappyScribeExportState   $happyScribeExportState,
+        HappyScribeExportFormat $happyScribeExportFormat
     )
     {
         $this->happyScribeTranscription = $happyScribeTranscription;
         $this->happyScribeExportId = $happyScribeExportId;
         $this->state = $happyScribeExportState;
+        $this->format = $happyScribeExportFormat;
         $this->createdAt = DateAndTimeService::getDateTime();
     }
 
@@ -96,6 +99,19 @@ class HappyScribeExport
     ): void
     {
         $this->state = $state;
+    }
+
+
+    #[ORM\Column(
+        type: Types::STRING,
+        nullable: false,
+        enumType: HappyScribeExportFormat::class
+    )]
+    private HappyScribeExportFormat $format;
+
+    public function getFormat(): HappyScribeExportFormat
+    {
+        return $this->format;
     }
 
 

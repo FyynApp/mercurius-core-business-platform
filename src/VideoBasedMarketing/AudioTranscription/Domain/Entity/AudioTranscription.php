@@ -106,13 +106,6 @@ class AudioTranscription
         return $this->originalLanguageBcp47LanguageCode;
     }
 
-    public function setOriginalLanguageBcp47LanguageCode(
-        AudioTranscriptionBcp47LanguageCode $originalLanguageBcp47LanguageCode
-    ): void
-    {
-        $this->originalLanguageBcp47LanguageCode = $originalLanguageBcp47LanguageCode;
-    }
-
     
     /** @var HappyScribeTranscription[]|Collection */
     #[ORM\OneToMany(
