@@ -85,6 +85,7 @@ class HappyScribeTranscription
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 32,
         nullable: false,
         enumType: HappyScribeTranscriptionState::class
     )]
@@ -105,6 +106,7 @@ class HappyScribeTranscription
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 16,
         nullable: false,
         enumType: AudioTranscriptionBcp47LanguageCode::class
     )]
@@ -118,6 +120,7 @@ class HappyScribeTranscription
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 256,
         nullable: false,
     )]
     private string $happyScribeTranscriptionId;

@@ -69,7 +69,7 @@ class HappyScribeExport
         cascade: ['persist'],
     )]
     #[ORM\JoinColumn(
-        name: 'audio_exports_id',
+        name: 'audio_transcription_happy_scribe_transcriptions_id',
         referencedColumnName: 'id',
         nullable: false,
         onDelete: 'CASCADE'
@@ -84,6 +84,7 @@ class HappyScribeExport
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 32,
         nullable: false,
         enumType: HappyScribeExportState::class
     )]
@@ -104,6 +105,7 @@ class HappyScribeExport
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 32,
         nullable: false,
         enumType: HappyScribeExportFormat::class
     )]
@@ -117,6 +119,7 @@ class HappyScribeExport
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 256,
         nullable: false,
     )]
     private string $happyScribeExportId;
@@ -129,7 +132,7 @@ class HappyScribeExport
 
     #[ORM\Column(
         type: Types::STRING,
-        length: 1024,
+        length: 4192,
         nullable: true
     )]
     private ?string $downloadLink;

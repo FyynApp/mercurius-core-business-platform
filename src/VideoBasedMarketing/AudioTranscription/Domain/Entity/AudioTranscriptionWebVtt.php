@@ -15,6 +15,11 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
     fields: ['audioTranscription', 'audioTranscriptionBcp47LanguageCode'],
     name: 'main_idx'
 )]
+#[ORM\Index(
+    fields: ['vttContent'],
+    name: 'vtt_content_fulltext_idx',
+    flags: ['fulltext']
+)]
 class AudioTranscriptionWebVtt
 {
     /**
@@ -67,6 +72,7 @@ class AudioTranscriptionWebVtt
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 16,
         nullable: false,
         enumType: AudioTranscriptionBcp47LanguageCode::class
     )]

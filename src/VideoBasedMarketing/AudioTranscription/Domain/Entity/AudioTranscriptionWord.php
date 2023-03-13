@@ -83,6 +83,7 @@ class AudioTranscriptionWord
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 16,
         nullable: false,
         enumType: AudioTranscriptionBcp47LanguageCode::class
     )]
@@ -109,7 +110,8 @@ class AudioTranscriptionWord
 
 
     #[ORM\Column(
-        type: Types::TEXT,
+        type: Types::STRING,
+        length: 256,
         nullable: false
     )]
     private string $speaker;
@@ -133,7 +135,8 @@ class AudioTranscriptionWord
 
 
     #[ORM\Column(
-        type: Types::TEXT,
+        type: Types::STRING,
+        length: 256,
         nullable: false
     )]
     private string $word;
@@ -145,7 +148,8 @@ class AudioTranscriptionWord
 
 
     #[ORM\Column(
-        type: Types::TEXT,
+        type: Types::STRING,
+        length: 64,
         nullable: false
     )]
     private string $wordType;

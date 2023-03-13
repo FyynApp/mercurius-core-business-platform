@@ -21,16 +21,6 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
     fields: ['createdAt'],
     name: 'created_at_idx'
 )]
-#[ORM\Index(
-    fields: ['webVtt'],
-    name: 'web_vtt_fulltext_idx',
-    flags: ['fulltext']
-)]
-#[ORM\Index(
-    fields: ['suggestedSummary'],
-    name: 'suggested_summary_fulltext_idx',
-    flags: ['fulltext']
-)]
 class AudioTranscription
 {
     /**
@@ -95,6 +85,7 @@ class AudioTranscription
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 16,
         nullable: false,
         enumType: AudioTranscriptionBcp47LanguageCode::class
     )]

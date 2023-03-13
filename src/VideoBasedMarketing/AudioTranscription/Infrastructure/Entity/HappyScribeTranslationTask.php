@@ -69,7 +69,7 @@ class HappyScribeTranslationTask
         cascade: ['persist'],
     )]
     #[ORM\JoinColumn(
-        name: 'audio_translationTasks_id',
+        name: 'audio_transcription_happy_scribe_transcriptions_id',
         referencedColumnName: 'id',
         nullable: false,
         onDelete: 'CASCADE'
@@ -84,6 +84,7 @@ class HappyScribeTranslationTask
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 32,
         nullable: false,
         enumType: HappyScribeTranslationTaskState::class
     )]
@@ -104,6 +105,7 @@ class HappyScribeTranslationTask
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 16,
         nullable: false,
         enumType: AudioTranscriptionBcp47LanguageCode::class
     )]
@@ -117,6 +119,7 @@ class HappyScribeTranslationTask
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 256,
         nullable: false,
     )]
     private string $happyScribeTranslationTaskId;
@@ -129,7 +132,7 @@ class HappyScribeTranslationTask
 
     #[ORM\Column(
         type: Types::STRING,
-        length: 1024,
+        length: 256,
         nullable: true
     )]
     private ?string $translatedTranscriptionId;

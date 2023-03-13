@@ -15,6 +15,11 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
     fields: ['audioTranscription', 'audioTranscriptionBcp47LanguageCode'],
     name: 'main_idx'
 )]
+#[ORM\Index(
+    fields: ['summaryContent'],
+    name: 'summary_content_fulltext_idx',
+    flags: ['fulltext']
+)]
 class AudioTranscriptionSuggestedSummary
 {
     /**
@@ -65,6 +70,7 @@ class AudioTranscriptionSuggestedSummary
 
     #[ORM\Column(
         type: Types::STRING,
+        length: 16,
         nullable: false,
         enumType: AudioTranscriptionBcp47LanguageCode::class
     )]
