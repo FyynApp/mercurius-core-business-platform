@@ -15,7 +15,7 @@ twig:
         'src/VideoBasedMarketing/RecordingRequests/Presentation/Resources/templates':  'videobasedmarketing.recording_requests'
         'src/VideoBasedMarketing/Mailings/Presentation/Resources/templates':           'videobasedmarketing.mailings'
         'src/VideoBasedMarketing/Settings/Presentation/Resources/templates':           'videobasedmarketing.settings'
-        'src/VideoBasedMarketing/AudioTranscription/Presentation/Resources/templates': 'videobasedmarketing.settings'
+        'src/VideoBasedMarketing/AudioTranscription/Presentation/Resources/templates': 'videobasedmarketing.audio_transcription'
 
     globals:
         TwigHelperService: '@App\Shared\Presentation\Service\TwigHelperService'

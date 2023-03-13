@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribe
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportFormat;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportState;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CheckHappyScribeExportCommandMessage;
+use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\GenerateSuggestedSummaryCommandMessage;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Service\HappyScribeApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -99,6 +100,12 @@ readonly class CheckHappyScribeExportCommandMessageHandler
 
                 $this->entityManager->persist($vtt);
                 $this->entityManager->flush();
+
+                $this->messageBus->dispatch(
+                    new GenerateSuggestedSummaryCommandMessage(
+                        $vtt
+                    )
+                );
             }
 
             if ($happyScribeExport->getFormat() === HappyScribeExportFormat::Json) {

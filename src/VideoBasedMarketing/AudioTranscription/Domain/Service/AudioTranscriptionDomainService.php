@@ -3,7 +3,9 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Domain\Service;
 
 
+use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionSuggestedSummary;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionProcessingState;
@@ -44,38 +46,40 @@ readonly class AudioTranscriptionDomainService
         );
     }
 
-    public function getAudioTranscriptionProcessingState(
-        AudioTranscription $audioTranscription
-    ): AudioTranscriptionProcessingState {
-        $this->entityManager->refresh($audioTranscription);
 
-        $happyScribeTranscriptions = $audioTranscription->getHappyScribeTranscriptions();
+    /**
+     * @throws Exception
+     */
+    public function getAudioTranscription(
+        Video $video
+    ): ?AudioTranscription
+    {
+        $sql = "
+            SELECT a.id AS id
 
-        if ($happyScribeTranscriptions->count() === 0) {
-            return AudioTranscriptionProcessingState::Started;
+            FROM {$this->entityManager->getClassMetadata(AudioTranscription::class)->getTableName()} a
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+            ON v.id = a.videos_id
+            
+            WHERE
+                v.id = :vid
+            ;
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            return $this->entityManager->find(
+                AudioTranscription::class,
+                $row['id']
+            );
         }
 
-        $allFinished = true;
-
-        /** @var HappyScribeTranscription $happyScribeTranscription */
-        foreach ($happyScribeTranscriptions as $happyScribeTranscription) {
-            if (   $happyScribeTranscription->getState() === HappyScribeTranscriptionState::Failed
-                || $happyScribeTranscription->getState() === HappyScribeTranscriptionState::Locked
-            ) {
-                return AudioTranscriptionProcessingState::Failed;
-            }
-
-            if ($happyScribeTranscription->getState() !== HappyScribeTranscriptionState::AutomaticDone) {
-                $allFinished = false;
-            }
-        }
-
-        if ($allFinished) {
-            return AudioTranscriptionProcessingState::Finished;
-        } else {
-            return AudioTranscriptionProcessingState::PartlyFinished;
-        }
+        return null;
     }
+
 
     /**
      * @return AudioTranscriptionWebVtt[]
@@ -117,5 +121,60 @@ readonly class AudioTranscriptionDomainService
         }
 
         return $webVtts;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getSuggestedSummary(
+        Video        $video,
+        Iso639_1Code $iso639_1Code
+    ): ?AudioTranscriptionSuggestedSummary
+    {
+        if ($iso639_1Code === Iso639_1Code::De) {
+            $languageCode = AudioTranscriptionBcp47LanguageCode::DeDe;
+        } elseif ($iso639_1Code === Iso639_1Code::En) {
+            $languageCode = AudioTranscriptionBcp47LanguageCode::EnUs;
+        } else {
+            $languageCode = AudioTranscriptionBcp47LanguageCode::EnUs;
+        }
+
+        $sql = "
+                SELECT s.id AS id
+                FROM {$this->entityManager->getClassMetadata(AudioTranscriptionSuggestedSummary::class)->getTableName()} s
+                
+                INNER JOIN {$this->entityManager->getClassMetadata(AudioTranscription::class)->getTableName()} a
+                ON a.id = s.audio_transcriptions_id
+                
+                INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+                ON v.id = a.videos_id
+                
+                WHERE
+                        v.id = :vid
+                    AND s.audio_transcription_bcp47_language_code = :slanguagecode
+                ;
+            ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([
+            ':vid' => $video->getId(),
+            ':slanguagecode' => $languageCode->value
+        ]);
+
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            return $this->entityManager->find(
+                AudioTranscriptionSuggestedSummary::class,
+                $row['id']
+            );
+        }
+
+        return null;
+    }
+
+    public function stillRunning(
+        AudioTranscription $audioTranscription
+    ): bool
+    {
+        return sizeof($this->getWebVtts($audioTranscription->getVideo())) === 0;
     }
 }

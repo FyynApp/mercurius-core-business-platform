@@ -27,11 +27,13 @@ class AudioTranscriptionSuggestedSummary
      */
     public function __construct(
         AudioTranscription                  $audioTranscription,
-        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
+        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode,
+        string                              $summaryContent
     )
     {
         $this->audioTranscription = $audioTranscription;
         $this->audioTranscriptionBcp47LanguageCode = $audioTranscriptionBcp47LanguageCode;
+        $this->summaryContent = $summaryContent;
     }
 
 

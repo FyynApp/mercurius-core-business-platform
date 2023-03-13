@@ -279,6 +279,12 @@
             {{ video.title }}
         </div>
 
+        {% if TwigHelperService.audioTranscriptionDomainService.suggestedSummary(video, app.user.uiLanguageCode) is not null %}
+            <div class="text-lg text-black font-bold px-4 md:px-8">
+                {{ TwigHelperService.audioTranscriptionDomainService.suggestedSummary(video, app.user.uiLanguageCode).summaryContent }}
+            </div>
+        {% endif %}
+
         {% if video.mainCtaIsUsable %}
             <div class="mt-8 px-4 md:px-8">
                 {% if video.mainCtaText is not empty %}

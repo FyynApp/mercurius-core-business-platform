@@ -3,6 +3,9 @@
 namespace App\VideoBasedMarketing\Mailings\Infrastructure\Service;
 
 use App\Shared\Domain\Enum\Iso639_1Code;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
+use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Service\WebVttParserService;
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use Exception;
 use Orhanerday\OpenAi\OpenAi;
@@ -10,6 +13,12 @@ use ValueError;
 
 readonly class OpenAiService
 {
+    public function __construct(
+        private WebVttParserService $webVttParserService
+    )
+    {
+    }
+
     /**
      * @throws Exception
      */
@@ -66,5 +75,61 @@ EOT;
         $completionArray = json_decode($completion, true);
 
         return $completionArray['choices'][0]['text'] ?? throw new Exception("Improvement failed: $completion");
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function summarizeWebVtt(
+        AudioTranscriptionWebVtt $webVtt
+    ): string|bool
+    {
+        $openAiApiKey = $_ENV['OPENAI_API_KEY'];
+
+        $openAi = new OpenAi($openAiApiKey);
+
+        if ($webVtt->getAudioTranscriptionBcp47LanguageCode() === AudioTranscriptionBcp47LanguageCode::DeDe) {
+            $prompt = <<<EOT
+Bitte fasse den folgenden Text zusammen, und antworte ohne Einleitung oder Kommentare, nur mit der Zusammenfassung selbst:
+
+{$this->webVttParserService->getText($webVtt)}
+EOT;
+        } elseif (
+            $webVtt->getAudioTranscriptionBcp47LanguageCode() === AudioTranscriptionBcp47LanguageCode::EnUs
+        ) {
+            $prompt = <<<EOT
+Please create a summary of the following text, and in your response, do not add an introduction or any other comments, only respond with the summary itself:
+
+{$this->webVttParserService->getText($webVtt)}
+EOT;
+        } else {
+            throw new ValueError(
+                "Cannot handle language code '{$webVtt->getAudioTranscriptionBcp47LanguageCode()->value}'."
+            );
+        }
+
+
+        $maxTokens = (int)(mb_strlen($prompt) / 4);
+
+        if ($maxTokens > 2000) {
+            $maxTokens = 2000;
+        }
+
+        $maxTokens = 2000;
+
+        $completion = $openAi->completion([
+            'model' => 'text-davinci-003',
+            'prompt' => $prompt,
+            'temperature' => 0.5,
+            'max_tokens' => $maxTokens,
+            'top_p' => 1.0,
+            'frequency_penalty' => 0.0,
+            'presence_penalty' => 0.0,
+        ]);
+
+        $completionArray = json_decode($completion, true);
+
+        return $completionArray['choices'][0]['text']
+            ?? throw new Exception("Improvement failed: $completion");
     }
 }

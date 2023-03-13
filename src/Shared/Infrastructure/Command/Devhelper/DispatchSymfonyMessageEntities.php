@@ -2,8 +2,10 @@
 
 namespace App\Shared\Infrastructure\Command\Devhelper;
 
+use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CheckHappyScribeTranscriptionCommandMessage;
+use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\GenerateSuggestedSummaryCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -39,16 +41,16 @@ class DispatchSymfonyMessageEntities
         OutputInterface $output
     ): int
     {
-        $happyScribeTranscription = $this
+        $entity = $this
             ->entityManager
             ->find(
-                HappyScribeTranscription::class,
-                '1edc1956-c8f6-6c6a-abc1-ff8ab862640d'
+                AudioTranscriptionWebVtt::class,
+                '1edc1a22-0b21-6506-b80d-016d57482aa3'
             );
 
         $this->messageBus->dispatch(
-            new CheckHappyScribeTranscriptionCommandMessage(
-                $happyScribeTranscription
+            new GenerateSuggestedSummaryCommandMessage(
+                $entity
             )
         );
 

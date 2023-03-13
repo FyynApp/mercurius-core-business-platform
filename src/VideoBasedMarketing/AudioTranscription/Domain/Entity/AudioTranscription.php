@@ -4,11 +4,10 @@ namespace App\VideoBasedMarketing\AudioTranscription\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
-use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -22,6 +21,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
     name: 'created_at_idx'
 )]
 class AudioTranscription
+    implements OrganizationOwnedEntityInterface
 {
     /**
      * @throws Exception
@@ -34,7 +34,6 @@ class AudioTranscription
         $this->video = $video;
         $this->originalLanguageBcp47LanguageCode = $originalLanguageBcp47LanguageCode;
         $this->createdAt = DateAndTimeService::getDateTime();
-        $this->happyScribeTranscriptions = new ArrayCollection();
     }
 
 
@@ -96,20 +95,8 @@ class AudioTranscription
         return $this->originalLanguageBcp47LanguageCode;
     }
 
-    
-    /** @var HappyScribeTranscription[]|Collection */
-    #[ORM\OneToMany(
-        mappedBy: 'audioTranscription',
-        targetEntity: HappyScribeTranscription::class,
-        cascade: ['persist']
-    )]
-    private array|Collection $happyScribeTranscriptions;
-
-    /**
-     * @return HappyScribeTranscription[]|Collection
-     */
-    public function getHappyScribeTranscriptions(): array|Collection
+    public function getOrganization(): Organization
     {
-        return $this->happyScribeTranscriptions;
+        return $this->video->getOrganization();
     }
 }

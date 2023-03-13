@@ -61,7 +61,7 @@ class AudioTranscriptionProcessingController
             $translator->trans(
                 'processing_started',
                 ['title' => $video->getTitle()],
-                'videobasedmarketing.audio-transcription'
+                'videobasedmarketing.audio_transcription'
             )
         );
 

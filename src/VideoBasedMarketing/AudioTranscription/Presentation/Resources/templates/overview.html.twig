@@ -1,0 +1,70 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var audioTranscription \App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription #}
+
+{% trans_default_domain 'videobasedmarketing.audio_transcription' %}
+{% block title %}{{ 'overview.title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'overview.title'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.audio_transcription' %}
+
+        {% block contentBoxTitle %}
+            {{ 'overview.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'overview.subtitle'|trans({ '{videoTitle}': audioTranscription.video.title }) }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            {% if TwigHelperService.audioTranscriptionDomainService.stillRunning(audioTranscription) %}
+
+                {{ 'overview.still_running'|trans }}
+
+            {% else %}
+
+                <div>
+                    {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(audioTranscription.video)|raw }}
+                </div>
+
+                {{ 'overview.webvtts_available'|trans }}
+
+                <div class="flex flex-col gap-6">
+                    {% for webVtt in TwigHelperService.audioTranscriptionDomainService.webVtts(audioTranscription.video) %}
+                        {# @var webVtt \App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt #}
+
+
+                        <div>
+                        <span class="text-lg font-semibold">
+                            {{ ('video_manage_widget.audio_transcription_modal.language.' ~ webVtt.audioTranscriptionBcp47LanguageCode.value)|trans }}
+                        </span>
+
+                            <span class="text-sm font-mono">
+                            ({{ webVtt.audioTranscriptionBcp47LanguageCode.value }})
+                        </span>
+                        </div>
+
+                        <a
+                                target="_blank"
+                                href="{{ url(
+                                    'videobasedmarketing.audio_transcription.infrastructure.web_vtt',
+                                    { webVttId: webVtt.id }
+                                ) }}"
+                        >
+                            {{ 'overview.show_webvtt_file'|trans }}
+                        </a>
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}
