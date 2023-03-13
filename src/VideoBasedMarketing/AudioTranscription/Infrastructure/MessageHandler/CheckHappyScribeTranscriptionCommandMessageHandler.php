@@ -56,8 +56,8 @@ readonly class CheckHappyScribeTranscriptionCommandMessageHandler
         $this->entityManager->persist($happyScribeTranscription);
         $this->entityManager->flush();
 
-        if (   $happyScribeTranscription->getState() !== HappyScribeTranscriptionState::Failed
-            || $happyScribeTranscription->getState() !== HappyScribeTranscriptionState::Locked
+        if (   $happyScribeTranscription->getState() === HappyScribeTranscriptionState::Failed
+            || $happyScribeTranscription->getState() === HappyScribeTranscriptionState::Locked
         ) {
             return;
         }

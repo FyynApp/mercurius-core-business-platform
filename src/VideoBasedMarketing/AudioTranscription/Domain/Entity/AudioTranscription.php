@@ -13,7 +13,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
-use ValueError;
 
 
 #[ORM\Entity]
@@ -121,20 +120,5 @@ class AudioTranscription
     public function getHappyScribeTranscriptions(): array|Collection
     {
         return $this->happyScribeTranscriptions;
-    }
-
-    public function addHappyScribeTranscription(
-        HappyScribeTranscription $happyScribeTranscription
-    ): void
-    {
-        foreach ($this->happyScribeTranscriptions as $existingHappyScribeTranscription) {
-            if ($existingHappyScribeTranscription->getId() === $happyScribeTranscription->getId()) {
-                throw new ValueError(
-                    "Happy Scribe transcription '{$happyScribeTranscription->getId()}' already in list of Happy Scribe transcriptions of audio transcription '{$this->getId()}'."
-                );
-            }
-        }
-
-        $this->happyScribeTranscriptions->add($happyScribeTranscription);
     }
 }

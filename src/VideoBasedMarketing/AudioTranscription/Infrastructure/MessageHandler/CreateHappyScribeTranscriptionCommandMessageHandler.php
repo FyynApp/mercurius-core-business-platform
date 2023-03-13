@@ -52,7 +52,9 @@ readonly class CreateHappyScribeTranscriptionCommandMessageHandler
         $this->entityManager->persist($happyScribeTranscription);
         $this->entityManager->flush();
 
-        if ($happyScribeTranscription->getState() !== HappyScribeTranscriptionState::Failed) {
+        if (   $happyScribeTranscription->getState() !== HappyScribeTranscriptionState::Failed
+            && $happyScribeTranscription->getState() !== HappyScribeTranscriptionState::Locked
+        ) {
 
             $expectedDuration = $audioTranscription->getVideo()->getSeconds();
             if (is_null($expectedDuration)) {

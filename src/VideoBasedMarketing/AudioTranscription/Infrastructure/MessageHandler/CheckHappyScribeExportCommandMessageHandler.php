@@ -55,8 +55,8 @@ readonly class CheckHappyScribeExportCommandMessageHandler
         $this->entityManager->persist($happyScribeExport);
         $this->entityManager->flush();
 
-        if (   $happyScribeExport->getState() !== HappyScribeExportState::Failed
-            || $happyScribeExport->getState() !== HappyScribeExportState::Expired
+        if (   $happyScribeExport->getState() === HappyScribeExportState::Failed
+            || $happyScribeExport->getState() === HappyScribeExportState::Expired
         ) {
             return;
         }

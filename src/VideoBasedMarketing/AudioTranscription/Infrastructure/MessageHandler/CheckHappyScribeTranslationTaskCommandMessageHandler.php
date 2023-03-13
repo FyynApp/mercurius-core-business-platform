@@ -4,12 +4,9 @@ namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\MessageHandl
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWord;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranslationTask;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranscriptionState;
-use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranslationTaskFormat;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranslationTaskState;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CheckHappyScribeTranscriptionCommandMessage;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CheckHappyScribeTranslationTaskCommandMessage;
@@ -58,7 +55,7 @@ readonly class CheckHappyScribeTranslationTaskCommandMessageHandler
         $this->entityManager->persist($happyScribeTranslationTask);
         $this->entityManager->flush();
 
-        if (   $happyScribeTranslationTask->getState() !== HappyScribeTranslationTaskState::Failed) {
+        if ($happyScribeTranslationTask->getState() === HappyScribeTranslationTaskState::Failed) {
             return;
         }
 

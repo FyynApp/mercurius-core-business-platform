@@ -26,6 +26,7 @@ video_manage_widget:
     cta_send_video_mailing: 'Send video email'
     cta_delete: 'Delete video'
     cta_show_embed: 'Show embed code'
+    cta_show_audio_transcription_modal: 'Audio transcription'
   edit_modal:
     cta_share: 'Share'
     cta_preview: 'Preview'
@@ -47,6 +48,12 @@ video_manage_widget:
     explanation2: ''
     copy_cta: 'Click here to copy this code'
     copied: 'Copied!'
+  audio_transcription_modal:
+    headline: 'Generate audio transcriptions'
+    choose_language: 'Please choose the language that is spoken in this video:'
+    cta_language:
+      de_DE: 'German'
+      en_US: 'English'
   delete_modal:
     title: 'Delete video'
     really: 'Do you really want to delete this video?'
