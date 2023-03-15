@@ -34,22 +34,13 @@
             >
                 <div
                         class="w-full w-full h-14 flex flex-row items-center
-                        {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
-                        justify-end
-                        {% else %}
                         justify-between
-                        {% endif %}
                         "
                 >
                     <a
                             href="{{ path('shared.presentation.contentpages.homepage') }}"
-                            class="flex flex-row justify-start items-center gap-3 z-30
-                            {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
-                                absolute left-0
-                            {% else %}
-                                sm:ml-0
-                            {% endif %}
-                            "
+                            class="flex flex-row justify-start items-center gap-3 z-30 ml-0 sm:ml-12"
+
                     >
                         <div class="flex flex-row justify-start items-center gap-3 ml-4 mt-2 mb-2">
                             <div class="z-20 flex-shrink-0">
