@@ -8,27 +8,16 @@
         font-family: 'Titan One', serif;
     }
 
+    .pullup-for-transparent-nav {
+        @apply -mt-28 pt-28;
+    }
+
     .max-w-8xl {
         max-width: 100rem;
     }
 
     .border-1 {
         border-width: 1px;
-    }
-
-    .sidenav-button-active {
-        @apply bg-mercurius-green-400 p-4 rounded-l-md
-        h-9 text-black -mr-0 w-40
-        text-xs sm:text-sm font-bold whitespace-nowrap
-        flex flex-row justify-end items-center;
-    }
-
-    .sidenav-button-inactive {
-        @apply bg-neutral-300 p-4 rounded-l-md
-        hover:bg-mercurius-green-400 hover:text-black
-        h-9 w-full text-neutral-900
-        text-xs sm:text-sm font-light whitespace-nowrap
-        flex flex-row justify-end items-center;
     }
 
     .padded-content-box {

@@ -11,18 +11,22 @@ class NavigationEntry
     /** @var string[] */
     private array $additionalRouteNames;
 
+    private string $iconSvg;
+
     /**
      * @param string[] $additionalRouteNames
      */
     public function __construct(
         string $displayNameTransId,
         string $routeName,
-        array  $additionalRouteNames = []
+        array  $additionalRouteNames,
+        string $iconSvg
     )
     {
         $this->displayNameTransId = $displayNameTransId;
         $this->routeName = $routeName;
         $this->additionalRouteNames = $additionalRouteNames;
+        $this->iconSvg = $iconSvg;
     }
 
     public function getDisplayNameTransId(): string
@@ -43,5 +47,11 @@ class NavigationEntry
     public function getAdditionalRouteNames(): array
     {
         return $this->additionalRouteNames;
+    }
+
+
+    public function getIconSvg(): string
+    {
+        return $this->iconSvg;
     }
 }
