@@ -4,6 +4,10 @@
 
 @layer components {
 
+    .logo-font {
+        font-family: 'Titan One', serif;
+    }
+
     .max-w-8xl {
         max-width: 100rem;
     }

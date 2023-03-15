@@ -28,9 +28,8 @@
             <header
                     class="flex flex-col items-center
                     mx-auto w-full
-                    bg-gradient-to-l from-mercurius-blue-900 to-mercurius-green-400
-                    shadow-md
-                    border-1 border-t-0 border-l-0 border-r-0 border-black
+                    bg-transparent
+                    border-1 border-t-0 border-l-0 border-r-0 border-neutral-200
                     "
             >
                 <div
@@ -44,48 +43,26 @@
                 >
                     <a
                             href="{{ path('shared.presentation.contentpages.homepage') }}"
-                            class="mx-4 pl-0.5 sm:mx-12 flex flex-row justify-start items-center gap-3 z-30
+                            class="flex flex-row justify-start items-center gap-3 z-30
                             {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
-                                absolute sm:left-0 -left-6
+                                absolute left-0
                             {% else %}
-                                sm:ml-0 -ml-3
+                                sm:ml-0
                             {% endif %}
                             "
                     >
-                        <div
-                                class="absolute z-10
-                                w-52 h-20
-                                bg-gradient-to-bl
-                                from-mercurius-blue-800
-                                to-mercurius-blue-900
-                                border-1 border-black
-                                rounded-bl-lg rounded-br-lg overflow-clip
-                                shadow-md
-                                -mb-6 -mt-6
-                                "
-                        >
-                            <img
-                                    class="opacity-5 w-52 contrast-200 brightness-50"
-                                    src="{{ asset('assets/images/shared/logos/fyyn-logo-background-cloth-640x426.png') }}"
-                            >
-                        </div>
-
-                        <div class="flex flex-row justify-start items-center gap-3 ml-5 mt-2">
+                        <div class="flex flex-row justify-start items-center gap-3 ml-4 mt-2 mb-2">
                             <div class="z-20 flex-shrink-0">
                                 <img
                                         src="{{ asset('assets/images/shared/logos/fyyn-logo-head-only-240x241.png') }}"
-                                        class="h-10"
+                                        class="h-8"
                                 >
                             </div>
-                            <div class="flex flex-col gap-0 items-start z-20">
+                            <div class="flex flex-col gap-0 items-start z-20 pb-1">
                                 <div
-                                        class="font-black text-white text-2xl whitespace-nowrap drop-shadow-md"
-                                        style="font-family: 'IBM Plex serif', 'Times New Roman', serif;"
+                                        class="logo-font text-mercurius-blue-900 text-4xl whitespace-nowrap"
                                 >
-                                    Fyyn.io
-                                </div>
-                                <div class="text-xs font-light text-mercurius-green-400 -mt-1.5 whitespace-nowrap">
-                                    Succeed with video.
+                                    Fyyn
                                 </div>
                             </div>
                         </div>
@@ -120,7 +97,7 @@
 
                         {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
                             <div class="hidden sm:flex flex-row gap-3 justify-end items-center -mr-16 pr-1">
-                                <div class="text-white text-sm font-light">
+                                <div class="text-mercurius-blue-900 text-sm font-light">
                                     {{ app.user.email }}
                                 </div>
                                 <div>
@@ -148,7 +125,7 @@
                             >
                                 <button
                                         {{ stimulus_action('shared-navMobileMenuSwitch', 'click') }}
-                                        class="text-white sm:collapse visible -mr-1"
+                                        class="text-mercurius-blue-900 sm:collapse visible -mr-1"
                                 >
                                     {# Heroicon: bars-3 #}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 mt-2">
