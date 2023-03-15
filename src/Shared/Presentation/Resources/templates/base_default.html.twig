@@ -24,12 +24,38 @@
     </head>
     <body class="bg-white h-full w-full p-0 m-0">
 
-        <div class="flex flex-col w-full">
+        <div class="flex flex-col w-full relative">
+
+            {% if not TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
+                <script>
+                    const [red, green, blue] = [69, 111, 225]
+                    const $header = document.querySelector('#header');
+
+                    window.addEventListener('scroll', () => {
+                        let y = (window.scrollY || window.pageYOffset);
+                        //y = y < 1 ? 1 : y // ensure y is always >= 1 (due to Safari's elastic scroll)
+                        const opacity = (100 / 60 * y) / 100;
+                        $header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+                        if (y > 1) {
+                            $header.classList.add('shadow-xl');
+                        } else {
+                            $header.classList.remove('shadow-xl');
+                        }
+                    })
+                </script>
+            {% endif %}
+
             <header
+                    id="header"
                     class="flex flex-col items-center
                     mx-auto w-full
-                    bg-transparent
-                    border-1 border-t-0 border-l-0 border-r-0 border-neutral-200
+                    {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
+                        bg-white
+                        border-1 border-t-0 border-l-0 border-r-0 border-neutral-200
+                    {% else %}
+                        py-6
+                        z-50 sticky absolute top-0 left-0
+                    {% endif %}
                     "
             >
                 <div
