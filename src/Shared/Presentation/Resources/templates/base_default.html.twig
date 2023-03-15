@@ -28,12 +28,9 @@
 
             {% if not TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
                 <script>
-                    const [red, green, blue] = [69, 111, 225]
-                    const $header = document.querySelector('#header');
-
                     window.addEventListener('scroll', () => {
+                        const $header = document.querySelector('#header');
                         let y = (window.scrollY || window.pageYOffset);
-                        //y = y < 1 ? 1 : y // ensure y is always >= 1 (due to Safari's elastic scroll)
                         const opacity = (100 / 100 * y) / 100;
                         $header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
                         if (y > 1) {
