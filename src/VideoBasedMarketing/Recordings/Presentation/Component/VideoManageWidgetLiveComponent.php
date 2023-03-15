@@ -44,6 +44,9 @@ class VideoManageWidgetLiveComponent
     public bool $embedModalIsOpen = false;
 
     #[LiveProp(writable: false)]
+    public bool $audioTranscriptionModalIsOpen = false;
+
+    #[LiveProp(writable: false)]
     public bool $deleteModalIsOpen = false;
 
     #[LiveProp(writable: true)]
@@ -169,6 +172,19 @@ class VideoManageWidgetLiveComponent
     public function hideEmbedModal(): void
     {
         $this->embedModalIsOpen = false;
+    }
+
+
+    #[LiveAction]
+    public function showAudioTranscriptionModal(): void
+    {
+        $this->audioTranscriptionModalIsOpen = true;
+    }
+
+    #[LiveAction]
+    public function hideAudioTranscriptionModal(): void
+    {
+        $this->audioTranscriptionModalIsOpen = false;
     }
 
 

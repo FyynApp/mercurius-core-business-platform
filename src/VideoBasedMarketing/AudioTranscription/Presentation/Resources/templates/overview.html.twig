@@ -1,0 +1,95 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var audioTranscription \App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription #}
+
+{% trans_default_domain 'videobasedmarketing.audio_transcription' %}
+{% block title %}{{ 'overview.title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'overview.title'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.audio_transcription' %}
+
+        {% block contentBoxTitle %}
+            {{ 'overview.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'overview.subtitle'|trans({ '{videoTitle}': audioTranscription.video.title }) }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            {% if TwigHelperService.audioTranscriptionDomainService.stillRunning(audioTranscription) %}
+
+                {{ 'overview.still_running'|trans }}
+
+            {% else %}
+
+                <div class="max-w-lg mb-9">
+                    {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(audioTranscription.video)|raw }}
+                </div>
+
+                <div class="text-xl font-semibold mb-8">
+                    {{ 'overview.webvtts_available'|trans }}
+                </div>
+
+                <div class="flex flex-col gap-8 max-w-lg">
+                    {% for webVtt in TwigHelperService.audioTranscriptionDomainService.webVtts(audioTranscription.video) %}
+                        {# @var webVtt \App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt #}
+
+                        <div class="flex flex-col gap-2">
+                            <div class=" flex flex-row gap-2 justify-start items-baseline">
+                                <div class="font-semibold">
+                                    {{ ('overview.language.' ~ webVtt.audioTranscriptionBcp47LanguageCode.value)|trans }}
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <a
+                                        class="cta-with-icon-primary"
+                                        target="_blank"
+                                        href="{{ url(
+                                            'videobasedmarketing.audio_transcription.infrastructure.web_vtt',
+                                            { webVttId: webVtt.id }
+                                        ) }}"
+                                >
+                                    <div>
+                                        {# Heroicon: document-text solid #}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                                            <path fill-rule="evenodd" d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625zM7.5 15a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5A.75.75 0 017.5 15zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H8.25z" clip-rule="evenodd" />
+                                            <path d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z" />
+                                        </svg>
+                                    </div>
+
+                                    <div>
+                                        {{ 'overview.show_webvtt_file'|trans }}
+                                        -
+                                        {{ webVtt.audioTranscriptionBcp47LanguageCode.value }}.vtt
+                                    </div>
+                                </a>
+                            </div>
+
+                            {% if TwigHelperService.audioTranscriptionDomainService.suggestedSummary(audioTranscription.video, null, webVtt.audioTranscriptionBcp47LanguageCode) is not null %}
+                                <div>
+                                    <div>
+                                        {{ 'overview.suggested_summary'|trans }}
+                                    </div>
+                                    <div class="text-neutral-700 font-light">
+                                        {{ TwigHelperService.audioTranscriptionDomainService.suggestedSummary(audioTranscription.video, null, webVtt.audioTranscriptionBcp47LanguageCode).summaryContent }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

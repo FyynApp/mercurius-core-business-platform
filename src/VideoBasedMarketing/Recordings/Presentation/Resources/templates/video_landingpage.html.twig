@@ -228,6 +228,22 @@
                     To view this video please enable JavaScript, and consider upgrading to a
                     web browser that supports HTML5 video.
                 </p>
+
+                {% for vtt in TwigHelperService.audioTranscriptionDomainService.webVtts(video) %}
+                    {# @var vtt \App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt #}
+                    <track
+                            {% if vtt.originalLanguage %}default{% endif %}
+
+                            src="{{ url(
+                                'videobasedmarketing.audio_transcription.infrastructure.web_vtt',
+                                { webVttId: vtt.id }
+                            ) }}"
+
+                            label="{{ vtt.audioTranscriptionBcp47LanguageCode.value }}"
+
+                            kind="subtitles"
+                    >
+                {% endfor %}
             </video>
 
             {% if videoPlayerSession is not null %}
@@ -262,6 +278,12 @@
         <div class="text-3xl text-black font-bold px-4 md:px-8">
             {{ video.title }}
         </div>
+
+        {% if TwigHelperService.audioTranscriptionDomainService.suggestedSummary(video, app.user.uiLanguageCode) is not null %}
+            <div class="text-lg text-neutral-800 px-4 mt-4 md:px-8 mx-auto w-full max-w-lg text-justify">
+                {{ TwigHelperService.audioTranscriptionDomainService.suggestedSummary(video, app.user.uiLanguageCode).summaryContent }}
+            </div>
+        {% endif %}
 
         {% if video.mainCtaIsUsable %}
             <div class="mt-8 px-4 md:px-8">

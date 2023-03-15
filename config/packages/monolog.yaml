@@ -56,7 +56,7 @@ when@preprod:
             console:
                 type: console
                 process_psr_3_messages: false
-                channels: ["!event", "!doctrine", "!console"]
+                channels: ["!event", "!doctrine"]
 
 when@prod:
     monolog:
