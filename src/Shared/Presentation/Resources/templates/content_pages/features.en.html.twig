@@ -1,0 +1,155 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{% block mainWrapperClasses %}{% endblock %}
+
+{% block title %}{{ 'sidenav.features'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'sidenav.features'|trans }}{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const $videoElements = document.querySelectorAll('.video-element');
+        const options = { };
+
+        const videoElementObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.setAttribute('autoplay', '');
+                    entry.target.play();
+                } else {
+                    entry.target.removeAttribute('autoplay');
+                    entry.target.pause();
+                }
+            });
+        }, options);
+
+        $videoElements.forEach(function($videoElement) {
+            videoElementObserver.observe($videoElement);
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    {% set elements = {
+        'Homepage with native in-browser recording': {
+            'paragraphs': {
+                0: 'The homepage introduces users to the product, and allows to test-drive our platform by creating a camera or screen recording right in the browser.',
+                1: 'To do so, no software installation is required.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Homepage-and-Native-Recorder.mov',
+        },
+        'The Chrome Browser Extension': {
+            'paragraphs': {
+                0: 'For more advanced recording requirements, users can install the official Fyyn Chrome Extension.',
+                1: 'Using the extension allows create recordings on any website, to record the camera screen together, and to set different video resolutions.',
+                2: 'Whether unregistered users use the native web recorder or the Chrome extension to test-drive the prooduct: recordings are always safely stored on our systems, and users can decide to „claim“ their recordings afterwards by signing up, using username and password or via their LinkedIn account.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Chrome-Extension-and-Claim-Account.mov',
+        },
+        'The video library': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'Uploading an existing video': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'The folder system': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'Video search': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'Managing video title, the Action button, and embedding Calendly': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'Writing a Video Mail with AI text improvement': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'Embedding a video on an external site': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'Tracking and analyzing viewer engagement': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'Automatically creating subtitles in multiple languages, with an AI-powered video content summary': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'Landingpage branding with custom logos and custom domains': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+        'Managing your team with organizations and groups': {
+            'paragraphs': {
+                0: ''
+            },
+            'videoUrl': '',
+        },
+    }
+    %}
+
+    <div class="bg-gradient-to-tr from-mercurius-green-500 to-mercurius-blue-500 pullup-for-transparent-nav">
+
+        <div class="mt-32 mx-auto px-16 w-full max-w-2xl text-white">
+
+            {% for headline, element in elements %}
+                <div class="mb-32">
+                    <h2 class="text-xl text-mercurius-blue-900 font-semibold mb-4">
+                        {{ headline }}
+                    </h2>
+                    {% for paragraph in element.paragraphs %}
+                        <p class="mb-4">
+                            {{ paragraph }}
+                        </p>
+                    {% endfor %}
+                    <div>
+                        <video
+                                class="w-full video-element rounded-lg shadow-2xl mt-6 border-4 border-white border-opacity-10"
+                                loop
+                                muted
+                                playsinline
+                                preload="metadata"
+                        >
+                            <source
+                                    src="{{ element.videoUrl }}"
+                                    type="video/mp4"
+                            >
+                        </video>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+
+
+    </div>
+
+{% endblock %}

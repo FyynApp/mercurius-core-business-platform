@@ -61,6 +61,7 @@ readonly class LimitAvailableRoutesForUnregisteredUsersKernelRequestSubscriber
         $allowedRouteNames = [
             'shared.infrastructure.content_delivery.serve_external_asset',
             'shared.presentation.contentpages.cookie_settings',
+            'shared.presentation.contentpages.features',
             'shared.presentation.styleguide',
             'shared.presentation.contentpages.homepage_native_recorder',
             'shared.presentation.contentpages.homepage',
