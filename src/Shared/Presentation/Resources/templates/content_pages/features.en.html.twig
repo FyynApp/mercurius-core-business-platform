@@ -8,16 +8,17 @@
 {% block javascripts %}
     <script>
         const $videoElements = document.querySelectorAll('.video-element');
-        const options = { };
+        const options = { rootMargin: '150px' };
+        const $intersectedElements = [];
 
         const videoElementObserver = new IntersectionObserver(function (entries, observer) {
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
-                    entry.target.setAttribute('autoplay', '');
-                    entry.target.play();
-                } else {
-                    entry.target.removeAttribute('autoplay');
-                    entry.target.pause();
+                    if (!$intersectedElements.includes(entry.target.getAttribute('id'))) {
+                        entry.target.setAttribute('src', entry.target.getAttribute('data-src'));
+                        entry.target.play();
+                        $intersectedElements.push(entry.target.getAttribute('id'));
+                    }
                 }
             });
         }, options);
@@ -137,16 +138,15 @@
                     {% endfor %}
                     <div>
                         <video
+                                id="{{ loop.index0 }}"
                                 class="w-full video-element rounded-lg shadow-2xl mt-6 border-4 border-white border-opacity-10"
                                 loop
                                 muted
                                 playsinline
                                 preload="metadata"
+                                data-src="{{ element.videoUrl }}"
+                                type="video/mp4"
                         >
-                            <source
-                                    src="{{ element.videoUrl }}"
-                                    type="video/mp4"
-                            >
                         </video>
                     </div>
                 </div>
