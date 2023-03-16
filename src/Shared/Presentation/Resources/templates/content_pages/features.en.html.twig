@@ -15,7 +15,6 @@
             const videoElementObserver = new IntersectionObserver(function (entries, observer) {
                 entries.forEach(function(entry) {
                     if (entry.isIntersecting) {
-                        console.log(entry.target.getAttribute('id') + ' is now intersecting.');
                         if (!$intersectedElements.includes(entry.target.getAttribute('id'))) {
                             entry.target.setAttribute('src', entry.target.getAttribute('data-src'));
                             entry.target.play();
