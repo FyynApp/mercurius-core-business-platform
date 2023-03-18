@@ -28,17 +28,19 @@
 
             {% if not TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
                 <script>
-                    window.addEventListener('scroll', () => {
-                        const $header = document.querySelector('#header');
-                        let y = (window.scrollY || window.pageYOffset);
-                        const opacity = (100 / 100 * y) / 100;
-                        $header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
-                        if (y > 1) {
-                            $header.classList.add('shadow-xl');
-                        } else {
-                            $header.classList.remove('shadow-xl');
-                        }
-                    })
+                    document.addEventListener('DOMContentLoaded', function(event) {
+                        document.addEventListener('scroll', () => {
+                            const $header = document.querySelector('#header');
+                            let y = (window.scrollY || window.pageYOffset);
+                            const opacity = (100 / 100 * y) / 100;
+                            $header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+                            if (y > 1) {
+                                $header.classList.add('shadow-xl');
+                            } else {
+                                $header.classList.remove('shadow-xl');
+                            }
+                        });
+                    });
                 </script>
             {% endif %}
 
@@ -100,6 +102,7 @@
                                     hover:bg-mercurius-green-300 hover:text-black
                                     h-9 text-mercurius-green-900
                                     text-xs sm:text-sm font-light whitespace-nowrap
+                                    border-1 border-mercurius-green-600
                                     flex flex-row justify-center items-center"
                             >
                                 {{ 'topnav.sign_up'|trans }}
@@ -113,6 +116,7 @@
                                     hover:bg-mercurius-green-300 hover:text-black
                                     h-9 text-mercurius-green-900
                                     text-xs sm:text-sm font-light whitespace-nowrap
+                                    border-1 border-mercurius-green-600
                                     flex flex-row justify-center items-center"
                             >
                                 {{ 'topnav.sign_in'|trans }}
