@@ -279,7 +279,9 @@
             {{ video.title }}
         </div>
 
-        {% if TwigHelperService.audioTranscriptionDomainService.suggestedSummary(video, app.user.uiLanguageCode) is not null %}
+        {% if app.user is not null
+            and TwigHelperService.audioTranscriptionDomainService.suggestedSummary(video, app.user.uiLanguageCode) is not null
+        %}
             <div class="text-lg text-neutral-800 px-4 mt-4 md:px-8 mx-auto w-full max-w-lg text-justify">
                 {{ TwigHelperService.audioTranscriptionDomainService.suggestedSummary(video, app.user.uiLanguageCode).summaryContent }}
             </div>

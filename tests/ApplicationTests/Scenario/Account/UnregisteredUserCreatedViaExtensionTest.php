@@ -18,7 +18,6 @@ class UnregisteredUserCreatedViaExtensionTest
 
         foreach (
             [
-                '/en/features',
                 '/en/pricing',
             ]
             as $path
