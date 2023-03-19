@@ -14,25 +14,5 @@
             'videobasedmarketing.recordings.presentation.embeddable_video_player.script',
             { videoShortId: video.shortId }
         ) }}"></script>
-<div class="fyyn-video-{{ video.shortId }}-player-embed-outer">
-    <video style="width: 100%;" class="fyyn-video-{{ video.shortId }}-player-embed-video" preload="metadata" controls poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}">
-        <source src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}" type="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetMimeType(video).value }}">
-
-        {% for vtt in TwigHelperService.audioTranscriptionDomainService.webVtts(video) %}
-            {# @var vtt \App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt #}
-            <track
-                    {% if loop.first %}default{% endif %}
-
-                    src="{{ url(
-                        'videobasedmarketing.audio_transcription.infrastructure.web_vtt',
-                        { webVttId: vtt.id }
-                    ) }}"
-
-                    label="{{ vtt.audioTranscriptionBcp47LanguageCode.value }}"
-
-                    kind="subtitles"
-            >
-        {% endfor %}
-    </video>
-</div>
+<div class="fyyn-video-{{ video.shortId }}-player-embed-outer"></div>
 <!-- Fyyn.io Video Player Embed - End -->
