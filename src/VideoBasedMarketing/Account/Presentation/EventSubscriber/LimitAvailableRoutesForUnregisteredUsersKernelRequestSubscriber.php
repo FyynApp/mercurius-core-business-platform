@@ -84,6 +84,7 @@ readonly class LimitAvailableRoutesForUnregisteredUsersKernelRequestSubscriber
             'videobasedmarketing.recordings.presentation.recording_session.extension',
             'videobasedmarketing.recordings.presentation.video.share_link',
             'videobasedmarketing.recordings.presentation.show_native_browser_recorder',
+            'videobasedmarketing.recordings.presentation.embeddable_video_player.',
 
             'videobasedmarketing.mailings.presentation.create_video_mailing',
             'videobasedmarketing.mailings.presentation.show_video_mailing_editor',
