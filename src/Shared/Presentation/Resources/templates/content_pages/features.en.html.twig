@@ -8,7 +8,7 @@
 {% block javascripts %}
     <script>
         document.addEventListener('DOMContentLoaded', function(event) {
-            const $videoElements = document.querySelectorAll('.video-element');
+            const $videoElements = document.querySelectorAll('.lazy-loading-video-element');
             const options = { rootMargin: '400px' };
             const $intersectedElements = [];
 
@@ -154,7 +154,7 @@
                     <div>
                         <video
                                 id="video-{{ loop.index0 }}"
-                                class="w-full video-element rounded-lg shadow-2xl mt-6 border-4 border-white border-opacity-10"
+                                class="w-full lazy-loading-video-element rounded-lg shadow-2xl mt-6 border-4 border-white border-opacity-10"
                                 autoplay
                                 loop
                                 muted
