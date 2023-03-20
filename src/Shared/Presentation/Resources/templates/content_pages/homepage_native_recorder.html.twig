@@ -23,6 +23,31 @@
                 src="{{ asset('assets/native-browser-recorder/main.9a8cb793.js') }}"
         ></script>
     {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(event) {
+            const $videoElements = document.querySelectorAll('.lazy-loading-video-element');
+            const options = { rootMargin: '400px' };
+            const $intersectedElements = [];
+
+            const videoElementObserver = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        if (!$intersectedElements.includes(entry.target.getAttribute('id'))) {
+                            entry.target.setAttribute('src', entry.target.getAttribute('data-src'));
+                            entry.target.play();
+                            $intersectedElements.push(entry.target.getAttribute('id'));
+                        }
+                    }
+                });
+            }, options);
+
+            $videoElements.forEach(function($videoElement) {
+                videoElementObserver.observe($videoElement);
+            });
+        });
+    </script>
+
 {% endblock %}
 
 
@@ -400,24 +425,17 @@
 
                     <div class="lg:w-6/12">
                         <div class="max-w-sm">
-
                             <video
-                                    class="rounded-lg shadow-lg"
+                                    id="video-tile-custom-domain"
+                                    class="w-full rounded-lg shadow-lg lazy-loading-video-element"
                                     autoplay
                                     loop
                                     muted
                                     playsinline
                                     preload="metadata"
-                            >
-                                <source
-                                        src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-custom-domain-720x720.mp4"
-                                        type="video/mp4"
-                                >
-                                <source
-                                        src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-custom-domain-720x720.webm"
-                                        type="video/webm"
-                                >
-                            </video>
+                                    data-src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-custom-domain-720x720.mp4"
+                                    type="video/mp4"
+                            ></video>
                         </div>
                     </div>
                 </div>
@@ -429,22 +447,16 @@
                     <div class="lg:w-6/12">
                         <div class="max-w-sm">
                             <video
-                                    class="rounded-lg shadow-lg"
+                                    id="video-tile-folder"
+                                    class="w-full rounded-lg shadow-lg lazy-loading-video-element"
                                     autoplay
                                     loop
                                     muted
                                     playsinline
                                     preload="metadata"
-                            >
-                                <source
-                                        src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-folder-720x720.mp4"
-                                        type="video/mp4"
-                                >
-                                <source
-                                        src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-folder-720x720.webm"
-                                        type="video/webm"
-                                >
-                            </video>
+                                    data-src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-folder-720x720.mp4"
+                                    type="video/mp4"
+                            ></video>
                         </div>
                     </div>
 
@@ -457,6 +469,37 @@
                         </div>
                     </div>
 
+                </div>
+
+
+
+                <div class="flex flex-col lg:flex-row gap-16 justify-center items-center">
+
+                    <div class="flex flex-col gap-2 justify-center items-center lg:w-6/12 text-center">
+                        <div class="text-2xl font-bold text-mercurius-blue-900">
+                            Landing pages with benefits.
+                        </div>
+                        <div class="text-lg font-light text-white max-w-md">
+                            Every video has an easily shareable landing page that can include goodies like
+                            a Calendly embed.
+                        </div>
+                    </div>
+
+                    <div class="lg:w-6/12">
+                        <div class="max-w-sm">
+                            <video
+                                    id="video-tile-landingpage-calendar"
+                                    class="w-full rounded-lg shadow-lg lazy-loading-video-element"
+                                    autoplay
+                                    loop
+                                    muted
+                                    playsinline
+                                    preload="metadata"
+                                    data-src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-landingpage-calendar-720x720.mp4"
+                                    type="video/mp4"
+                            ></video>
+                        </div>
+                    </div>
                 </div>
 
             </div>
