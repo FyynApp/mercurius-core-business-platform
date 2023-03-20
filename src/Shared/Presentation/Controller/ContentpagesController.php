@@ -125,7 +125,7 @@ class ContentpagesController
     )]
     public function featuresAction(): Response
     {
-        return $this->render('@shared/content_pages/features.html.twig');
+        return $this->render('@shared/content_pages/features.en.html.twig');
     }
 
     #[Route(

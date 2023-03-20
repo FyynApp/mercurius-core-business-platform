@@ -1,0 +1,11 @@
+processing_started: 'Audio transcription processing started.'
+overview:
+  title: 'Audio transcriptions'
+  subtitle: 'For video “{videoTitle}”.'
+  still_running: 'The audio transcriptions for this video are currently generated - please check again later.'
+  webvtts_available: 'Available audio transcriptions:'
+  language:
+    'de-DE': 'German'
+    'en-US': 'English'
+  show_webvtt_file: 'Show WebVTT file'
+  suggested_summary: 'Audio summary suggested by our AI:'

@@ -68,17 +68,16 @@ class RecordingSessionController
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
 
-                'recordingSessionEditTargetUrl' => $router->generate(
-                    'videobasedmarketing.recordings.presentation.recording_session.extension_finished',
+                'shareUrl' => $router->generate(
+                    'videobasedmarketing.recordings.presentation.recording_session.share',
                     [
-                        'recordingSessionId' => $recordingSession->getId(),
-                        'userWantsToEdit' => true
+                        'recordingSessionShortId' => $recordingSession->getShortId()
                     ],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
 
                 'recordingSessionFinishedTargetUrl' => $router->generate(
-                    'videobasedmarketing.recordings.presentation.recording_session.extension_finished',
+                    'videobasedmarketing.recordings.presentation.recording_session.finished',
                     ['recordingSessionId' => $recordingSession->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),

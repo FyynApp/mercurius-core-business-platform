@@ -1,0 +1,177 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{% block mainWrapperClasses %}{% endblock %}
+
+{% block title %}{{ 'sidenav.features'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'sidenav.features'|trans }}{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function(event) {
+            const $videoElements = document.querySelectorAll('.lazy-loading-video-element');
+            const options = { rootMargin: '400px' };
+            const $intersectedElements = [];
+
+            const videoElementObserver = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        if (!$intersectedElements.includes(entry.target.getAttribute('id'))) {
+                            entry.target.setAttribute('src', entry.target.getAttribute('data-src'));
+                            entry.target.play();
+                            $intersectedElements.push(entry.target.getAttribute('id'));
+                        }
+                    }
+                });
+            }, options);
+
+            $videoElements.forEach(function($videoElement) {
+                videoElementObserver.observe($videoElement);
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+
+    {% set elements = {
+        'Homepage with native in-browser recording': {
+            'paragraphs': {
+                0: 'The homepage introduces users to the product, and allows to test-drive our platform by creating a camera or screen recording right in the browser.',
+                1: 'To do so, no software installation is required.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Homepage-and-Native-Recorder.mov',
+        },
+        'The Chrome Browser Extension': {
+            'paragraphs': {
+                0: 'For more advanced recording requirements, users can install the official Fyyn Chrome Extension.',
+                1: 'Using the extension allows create recordings on any website, to record the camera screen together, and to set different video resolutions.',
+                2: 'Whether unregistered users use the native web recorder or the Chrome extension to test-drive the prooduct: recordings are always safely stored on our systems, and users can decide to „claim“ their recordings afterwards by signing up, using username and password or via their LinkedIn account.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Chrome-Extension-and-Claim-Account.mov',
+        },
+        'The video library': {
+            'paragraphs': {
+                0: 'This is the central place where users manage their videos. Videos are organized in a folder structure, and each video is presented as a tile widget that allows access to all options and actions for the given video.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Video-Library.mov',
+        },
+        'Uploading an existing video': {
+            'paragraphs': {
+                0: 'The video library also allows to upload existing video files that are created outside of Fyyn.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Video-Upload.mov',
+        },
+        'The folder system': {
+            'paragraphs': {
+                0: 'Thanks to the folder system, even large video libraries can be managed with ease. Just drag and drop your videos to their destination folders.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Folders.mov',
+        },
+        'Video search': {
+            'paragraphs': {
+                0: 'A powerful and fast search feature allows you to find any video within your whole library quickly and easily.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Video-Search.mov',
+        },
+        'Managing video title, the Action button, and embedding Calendly': {
+            'paragraphs': {
+                0: 'A ready to use landing page is available for each of your videos, allowing you to share your videos with colleagues and customers without the need to send a heavy video file.',
+                1: 'Each landing page can be customizes with a title, a call-to-action, or a Calendly embed.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Title-Action-Button-Calendly-Landingpage.mov',
+        },
+        'Writing a Video Mail with AI text improvement': {
+            'paragraphs': {
+                0: 'Another way to share your videos is through Video Mails.',
+                1: 'A Video Mail is a great way to stand out in your customer\'s inbox.',
+                2: 'And our AI-powered text improvement feature makes sure that you find the right words to make an impression!'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Video-Mail.mov',
+        },
+        'Embedding a video on an external site': {
+            'paragraphs': {
+                0: 'Fyyn makes it easy to integrate your videos on external sites, with a simple copy-and-based embed code that works on any platform.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Video-Embed.mov',
+        },
+        'Tracking and analyzing viewer engagement': {
+            'paragraphs': {
+                0: 'Wherever your video is watched - on its landingpage, through a video mail, or on external sites via embed - you always get full-featured engagement tracking which not only tells you how often your video is played, but also visualized where in your video viewers bail out and stop watching.',
+                1: 'This is a powerful tool to help you improve your videos and keep viewers engaged.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Engagement-Tracking.mov',
+        },
+        'Automatically create subtitles in multiple languages, plus an AI-powered video content summary': {
+            'paragraphs': {
+                0: 'Fyyn enables you to make your videos accessible for everyone.',
+                1: 'Our AI-powered audio transcription feature allows you to automatically create subtitles, not in the original video language, but also translated to additional languages. And our AI automatically creates a succinct description of the video\'s content.',
+                1: 'All with a single click!'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Audio-Transkriptions.mov',
+        },
+        'Landingpage branding with custom logos and custom domains': {
+            'paragraphs': {
+                0: 'Strengthen your brand by setting up a custom landing page domain with your own logo.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Custom-Settings.mov',
+        },
+        'Managing your team with organizations and groups': {
+            'paragraphs': {
+                0: 'Invite team members to your Fyyn organization, handle groups and permissions, or join other organizations yourself.'
+            },
+            'videoUrl': 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/feature-list-videos/2023-03-16-Organizations.mov',
+        },
+    }
+    %}
+
+    <div class="bg-gradient-to-tr from-mercurius-green-500 to-mercurius-blue-500 pullup-for-transparent-nav pb-32">
+
+        <div class="mt-16 mx-auto px-16 w-full max-w-2xl text-white">
+
+            <h2 class="text-xl text-mercurius-blue-900 font-semibold mb-4">
+                Features available on the Fyyn platform
+            </h2>
+            <ul class="mb-32">
+                {% for headline, element in elements %}
+                    <li class="mb-4">
+                        <a href="#element-{{ loop.index0 }}">
+                            {{ headline }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            {% for headline, element in elements %}
+                <div class="mb-32" id="element-{{ loop.index0 }}">
+                    <h2 class="text-xl text-mercurius-blue-900 font-semibold mb-4">
+                        {{ headline }}
+                    </h2>
+                    {% for paragraph in element.paragraphs %}
+                        <p class="mb-4">
+                            {{ paragraph }}
+                        </p>
+                    {% endfor %}
+                    <div>
+                        <video
+                                id="video-{{ loop.index0 }}"
+                                class="w-full lazy-loading-video-element rounded-lg shadow-2xl mt-6 border-4 border-white border-opacity-10"
+                                autoplay
+                                loop
+                                muted
+                                playsinline
+                                preload="metadata"
+                                data-src="{{ element.videoUrl }}"
+                                type="video/mp4"
+                        >
+                        </video>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+
+
+    </div>
+
+{% endblock %}

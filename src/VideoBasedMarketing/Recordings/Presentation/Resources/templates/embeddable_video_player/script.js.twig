@@ -1,51 +1,103 @@
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 {# @var videoPlayerSession \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSession #}
 
-const videoShortId = '{{ video.shortId }}';
+(function _fyyn_video_embed_{{ video.shortId }}() {
 
-{% if videoPlayerSession is not null %}
+    const videoShortId = '{{ video.shortId }}';
 
-const videoPlayerSessionId = '{{ videoPlayerSession.id }}';
-let latestCurrentTime = 0;
+    const waitForElement = (selector) => {
+        return new Promise(resolve => {
+            if (document.querySelector(selector)) {
+                return resolve(document.querySelector(selector));
+            }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const $video = document.querySelector(`.fyyn-video-${videoShortId}-player-embed-video`);
+            const observer = new MutationObserver(() => {
+                if (document.querySelector(selector)) {
+                    resolve(document.querySelector(selector));
+                    observer.disconnect();
+                }
+            });
 
-    $video.addEventListener('timeupdate', () => {
-        const currentTime = $video.currentTime;
-        if (   currentTime - latestCurrentTime > 0.6
-            || currentTime < latestCurrentTime
-        ) {
-            latestCurrentTime = currentTime;
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+    }
 
-            const req = new XMLHttpRequest();
-            req.open(
-                'POST',
-                '{{ url(
-                    'videobasedmarketing.recordings.track_video_player_session_event',
-                    { videoPlayerSessionId: videoPlayerSession.id }
-                ) }}'
-                + '?playerCurrentTime=' + encodeURIComponent(currentTime)
-            );
-            req.send();
-        }
-    });
-});
+    {% if videoPlayerSession is not null %}
 
-{% endif %}
+        let latestCurrentTime = 0;
+
+        waitForElement(`.fyyn-video-${videoShortId}-player-embed-video`).then(($video) => {
+
+            $video.addEventListener('timeupdate', () => {
+                const currentTime = $video.currentTime;
+                if (   currentTime - latestCurrentTime > 0.6
+                    || currentTime < latestCurrentTime
+                ) {
+                    latestCurrentTime = currentTime;
+
+                    const req = new XMLHttpRequest();
+                    req.open(
+                        'POST',
+                        '{{ url(
+                            'videobasedmarketing.recordings.track_video_player_session_event',
+                            { videoPlayerSessionId: videoPlayerSession.id }
+                        ) }}'
+                        + '?playerCurrentTime=' + encodeURIComponent(currentTime)
+                    );
+                    req.send();
+                }
+            });
+        });
+
+    {% endif %}
 
 
-document.addEventListener('DOMContentLoaded', () => {
+    waitForElement(`.fyyn-video-${videoShortId}-player-embed-outer`).then(($outer) => {
 
-    const $outer = document.querySelector(`.fyyn-video-${videoShortId}-player-embed-outer`);
-    const $video = document.querySelector(`.fyyn-video-${videoShortId}-player-embed-video`);
 
-    $video.removeAttribute('controls');
+        {# Video tag #}
+        $outer.insertAdjacentHTML(
+            'beforeend',
 
-    $outer.insertAdjacentHTML(
-        'beforeend',
+            `
+            <video
+                    style="width: 100%;"
+                    class="fyyn-video-${videoShortId}-player-embed-video"
+                    preload="metadata"
+                    poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
+            >
+                <source
+                        src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
+                        type="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetMimeType(video).value }}"
+                >
+                {% for vtt in TwigHelperService.audioTranscriptionDomainService.webVtts(video) %}
+                    {# @var vtt \App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt #}
+                    <track
+                            {% if loop.first %}default{% endif %}
 
-        `
+                            src="{{ url(
+                'videobasedmarketing.audio_transcription.infrastructure.web_vtt',
+                { webVttId: vtt.id }
+            ) }}"
+
+                            label="{{ vtt.audioTranscriptionBcp47LanguageCode.value }}"
+
+                            kind="subtitles"
+                    >
+                {% endfor %}
+            </video>
+            `
+        );
+
+
+        {# Blur overlay #}
+        $outer.insertAdjacentHTML(
+            'beforeend',
+
+            `
             <div
                 id="fyyn-video-${videoShortId}-player-embed-central-play-button-wrapper"
 
@@ -91,44 +143,53 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `
-    );
-
-    const $centralPlayButtonWrapper = document.querySelector(`#fyyn-video-${videoShortId}-player-embed-central-play-button-wrapper`);
-
-    function togglePlay() {
-        if ($video.paused || $video.ended) {
-            $video.play();
-            $video.setAttribute('controls', '');
-            $centralPlayButtonWrapper.remove();
-        } else {
-            $video.pause();
-        }
-    }
-
-    $centralPlayButtonWrapper.addEventListener('click', togglePlay);
-
-
-    {% if TwigHelperService.embeddableVideoPlayerPresentationService.embedMustBeBranded(video) %}
-        $centralPlayButtonWrapper.insertAdjacentHTML(
-            'beforeend',
-            `
-                <div
-                    style="
-                        color: white;
-                        font-family: Arial, Verdana, sans-serif;
-                        font-size: 8pt;
-                        padding-top: 6px;
-                        padding-bottom: 6px;
-                        padding-left: 12px;
-                        padding-right: 12px;
-                        margin-top: 6px;
-                        background-color: #00354c;
-                        border-radius: 0.375rem;
-                        "
-                >
-                    powered by Fyyn.io
-                </div>
-            `
         );
-    {% endif %}
-});
+
+
+        const $video = document.querySelector(`.fyyn-video-${videoShortId}-player-embed-video`);
+
+
+        {# Play button #}
+        waitForElement(`#fyyn-video-${videoShortId}-player-embed-central-play-button-wrapper`)
+            .then(($centralPlayButtonWrapper) => {
+                const togglePlay = () => {
+                    if ($video.paused || $video.ended) {
+                        $video.play();
+                        $video.setAttribute('controls', '');
+                        $centralPlayButtonWrapper.remove();
+                    } else {
+                        $video.pause();
+                    }
+                }
+
+                $centralPlayButtonWrapper.addEventListener('click', togglePlay);
+
+
+                {% if TwigHelperService.embeddableVideoPlayerPresentationService.embedMustBeBranded(video) %}
+                    $centralPlayButtonWrapper.insertAdjacentHTML(
+                        'beforeend',
+                        `
+                        <div
+                            style="
+                                color: white;
+                                font-family: Arial, Verdana, sans-serif;
+                                font-size: 8pt;
+                                padding-top: 6px;
+                                padding-bottom: 6px;
+                                padding-left: 12px;
+                                padding-right: 12px;
+                                margin-top: 6px;
+                                background-color: #00354c;
+                                border-radius: 0.375rem;
+                                "
+                        >
+                            powered by Fyyn.io
+                        </div>
+                        `
+                    );
+                {% endif %}
+            });
+
+    });
+
+})();

@@ -10,6 +10,7 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDo
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -21,54 +22,14 @@ class RecordingSessionsController
 {
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-sessions/{recordingSessionId}/edit-extension-recording',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmesitzungen/{recordingSessionId}/aufnahme-in-browser-erweiterung-bearbeiten',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-sessions/{recordingSessionId}/finished',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmesitzungen/{recordingSessionId}/abgeschlossen',
         ],
-        name        : 'videobasedmarketing.recordings.presentation.recording_session.extension_edit',
+        name        : 'videobasedmarketing.recordings.presentation.recording_session.finished',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function extensionRecordingSessionEditAction(
-        string $recordingSessionId
-    ): Response
-    {
-        $r = $this->verifyAndGetUserAndEntity(
-            RecordingSession::class,
-            $recordingSessionId,
-            AccessAttribute::Use
-        );
-
-        /** @var RecordingSession $recordingSession */
-        $recordingSession = $r->getEntity();
-
-        if ($r->getUser()->isRegistered()) {
-            throw new AccessDeniedHttpException(
-                'The logged in user must be unregistered.'
-            );
-        }
-
-        if (!$recordingSession->isFinished()) {
-            throw $this->createNotFoundException(
-                "Recording session '{$recordingSession->getId()}' is not finished."
-            );
-        }
-
-        return $this->render(
-            '@videobasedmarketing.recordings/videos_overview.html.twig',
-            ['showEditModalForVideoId' => $recordingSession->getVideo()->getId()]
-        );
-    }
-
-    #[Route(
-        path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-sessions/{recordingSessionId}/extension-recording-finished',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmesitzungen/{recordingSessionId}/aufnahme-in-browser-erweiterung-abgeschlossen',
-        ],
-        name        : 'videobasedmarketing.recordings.presentation.recording_session.extension_finished',
-        requirements: ['_locale' => '%app.routing.locale_requirement%'],
-        methods     : [Request::METHOD_GET]
-    )]
-    public function extensionRecordingSessionFinishedAction(
+    public function recordingSessionFinishedAction(
         string                         $recordingSessionId,
         EntityManagerInterface         $entityManager,
         RecordingSessionDomainService  $recordingSessionDomainService,
@@ -76,7 +37,7 @@ class RecordingSessionsController
         CapabilitiesService            $capabilitiesService
     ): Response
     {
-        /** @var ?User $user */
+        /** @var null|User $user */
         $user = $this->getUser();
 
         if (is_null($user)) {
@@ -129,5 +90,51 @@ class RecordingSessionsController
                 $routeParameters
             );
         }
+    }
+
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/rs/{recordingSessionShortId}',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/rs/{recordingSessionShortId}',
+        ],
+        name        : 'videobasedmarketing.recordings.presentation.recording_session.share',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function recordingSessionShareAction(
+        string                         $recordingSessionShortId,
+        EntityManagerInterface         $entityManager,
+        RecordingSessionDomainService  $recordingSessionDomainService
+    ): Response
+    {
+        /** @var EntityRepository $r */
+        $r = $entityManager->getRepository(RecordingSession::class);
+
+        /** @var null|RecordingSession $recordingSession */
+        $recordingSession = $r->findOneBy(['shortId' => $recordingSessionShortId]);
+
+        if (is_null($recordingSession)) {
+            throw $this->createNotFoundException("No recording session with short id '$recordingSessionShortId' found.");
+        }
+
+        if (   !is_null($recordingSession->getVideo())
+            && !is_null($recordingSession->getVideo()->getShortId())
+        ) {
+            return $this->redirectToRoute(
+                'videobasedmarketing.recordings.presentation.video.share_link',
+                ['videoShortId' => $recordingSession->getVideo()->getShortId()]
+            );
+        }
+
+        $video = $recordingSessionDomainService
+            ->handleRecordingSessionFinished(
+                $recordingSession
+            );
+
+        return $this->redirectToRoute(
+            'videobasedmarketing.recordings.presentation.video.share_link',
+            ['videoShortId' => $video->getShortId()]
+        );
     }
 }

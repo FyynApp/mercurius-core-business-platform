@@ -1693,6 +1693,9 @@ class RecordingsInfrastructureService
         return $process->isSuccessful();
     }
 
+    /**
+     * @throws Exception
+     */
     public function checkAndHandleVideoAssetGenerationForUser(
         User $user,
         bool $basicAssetsForAllVideosAreRequiredImmediately = false,

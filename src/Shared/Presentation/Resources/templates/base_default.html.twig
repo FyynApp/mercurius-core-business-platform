@@ -8,7 +8,7 @@
 
         {% block metatags %}{% endblock %}
 
-        <title>Fyyn — {% block title %}Welcome!{% endblock %}</title>
+        <title>Fyyn — {% block title %}Succeed with video.{% endblock %}</title>
 
         {{ include('@shared/includes/cookiebot_script.html.twig') }}
 
@@ -24,67 +24,100 @@
     </head>
     <body class="bg-white h-full w-full p-0 m-0">
 
-        <div class="flex flex-col w-full">
+        <div class="flex flex-col w-full relative">
+
+            {% if not TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
+                <script>
+
+                    function waitForElement(selector) {
+                        return new Promise(resolve => {
+                            if (document.querySelector(selector)) {
+                                return resolve(document.querySelector(selector));
+                            }
+
+                            const observer = new MutationObserver(mutations => {
+                                if (document.querySelector(selector)) {
+                                    resolve(document.querySelector(selector));
+                                    observer.disconnect();
+                                }
+                            });
+
+                            observer.observe(document.body, {
+                                childList: true,
+                                subtree: true
+                            });
+                        });
+                    }
+
+                    waitForElement('#header').then(($header) => {
+
+                        let y = (window.scrollY || window.pageYOffset);
+                        const opacity = (100 / 100 * y) / 100;
+                        $header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+                        if (y > 1) {
+                            $header.classList.add('shadow-xl');
+                        } else {
+                            $header.classList.remove('shadow-xl');
+                        }
+
+                        document.addEventListener('scroll', () => {
+                            let y = (window.scrollY || window.pageYOffset);
+                            const opacity = (100 / 100 * y) / 100;
+                            $header.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+                            if (y > 1) {
+                                $header.classList.add('shadow-xl');
+                            } else {
+                                $header.classList.remove('shadow-xl');
+                            }
+                        });
+                    });
+                </script>
+            {% endif %}
+
             <header
+                    id="header"
                     class="flex flex-col items-center
                     mx-auto w-full
-                    bg-gradient-to-l from-mercurius-blue-900 to-mercurius-green-400
-                    shadow-md
-                    border-1 border-t-0 border-l-0 border-r-0 border-black
+                    {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
+                        bg-white
+                        border-1 border-t-0 border-l-0 border-r-0 border-neutral-200
+                        py-4
+                    {% else %}
+                        py-6
+                        z-50 sticky absolute top-0 left-0
+                    {% endif %}
                     "
             >
                 <div
                         class="w-full w-full h-14 flex flex-row items-center
-                        {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
-                        justify-end
-                        {% else %}
                         justify-between
-                        {% endif %}
                         "
                 >
                     <a
                             href="{{ path('shared.presentation.contentpages.homepage') }}"
-                            class="mx-4 pl-0.5 sm:mx-12 flex flex-row justify-start items-center gap-3 z-30
+                            class="flex flex-row justify-start items-center gap-3 z-30 ml-0
                             {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
-                                absolute sm:left-0 -left-6
+                                sm:ml-4
                             {% else %}
-                                sm:ml-0 -ml-3
+                                sm:ml-9
                             {% endif %}
                             "
-                    >
-                        <div
-                                class="absolute z-10
-                                w-52 h-20
-                                bg-gradient-to-bl
-                                from-mercurius-blue-800
-                                to-mercurius-blue-900
-                                border-1 border-black
-                                rounded-bl-lg rounded-br-lg overflow-clip
-                                shadow-md
-                                -mb-6 -mt-6
-                                "
-                        >
-                            <img
-                                    class="opacity-5 w-52 contrast-200 brightness-50"
-                                    src="{{ asset('assets/images/shared/logos/fyyn-logo-background-cloth-640x426.png') }}"
-                            >
-                        </div>
 
-                        <div class="flex flex-row justify-start items-center gap-3 ml-5 mt-2">
+                    >
+                        <div class="flex flex-row justify-start items-center gap-3 ml-4 mt-2 mb-2">
                             <div class="z-20 flex-shrink-0">
                                 <img
                                         src="{{ asset('assets/images/shared/logos/fyyn-logo-head-only-240x241.png') }}"
-                                        class="h-10"
+                                        class="h-8"
                                 >
                             </div>
-                            <div class="flex flex-col gap-0 items-start z-20">
+                            <div class="flex flex-row gap-4 items-center justify-start z-20 pb-1">
                                 <div
-                                        class="font-black text-white text-2xl whitespace-nowrap drop-shadow-md"
-                                        style="font-family: 'IBM Plex serif', 'Times New Roman', serif;"
+                                        class="logo-font text-mercurius-blue-900 text-4xl whitespace-nowrap"
                                 >
-                                    Fyyn.io
+                                    Fyyn
                                 </div>
-                                <div class="text-xs font-light text-mercurius-green-400 -mt-1.5 whitespace-nowrap">
+                                <div class="hidden sm:block z-20 pt-2 font-light text-mercurius-blue-900">
                                     Succeed with video.
                                 </div>
                             </div>
@@ -99,6 +132,7 @@
                                     hover:bg-mercurius-green-300 hover:text-black
                                     h-9 text-mercurius-green-900
                                     text-xs sm:text-sm font-light whitespace-nowrap
+                                    border-1 border-mercurius-green-600
                                     flex flex-row justify-center items-center"
                             >
                                 {{ 'topnav.sign_up'|trans }}
@@ -112,6 +146,7 @@
                                     hover:bg-mercurius-green-300 hover:text-black
                                     h-9 text-mercurius-green-900
                                     text-xs sm:text-sm font-light whitespace-nowrap
+                                    border-1 border-mercurius-green-600
                                     flex flex-row justify-center items-center"
                             >
                                 {{ 'topnav.sign_in'|trans }}
@@ -120,7 +155,7 @@
 
                         {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
                             <div class="hidden sm:flex flex-row gap-3 justify-end items-center -mr-16 pr-1">
-                                <div class="text-white text-sm font-light">
+                                <div class="text-mercurius-blue-900 text-sm font-light">
                                     {{ app.user.email }}
                                 </div>
                                 <div>
@@ -148,7 +183,7 @@
                             >
                                 <button
                                         {{ stimulus_action('shared-navMobileMenuSwitch', 'click') }}
-                                        class="text-white sm:collapse visible -mr-1"
+                                        class="text-mercurius-blue-900 sm:collapse visible -mr-1"
                                 >
                                     {# Heroicon: bars-3 #}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 mt-2">
@@ -183,9 +218,9 @@
                                             <a
                                                     href="{{ path(sidenavEntry.routeName) }}"
                                                     {% if TwigHelperService.navigationEntryIsActive(app.current_route, sidenavEntry) %}
-                                                        class="w-full rounded-md h-14 bg-mercurius-green-400 text-black font-bold flex flex-row justify-center items-center"
+                                                        class="w-full h-14 text-black font-bold flex flex-row justify-center items-center"
                                                     {% else %}
-                                                        class="w-full rounded-md h-14 bg-neutral-300 text-neutral-900 hover:text-black hover:bg-mercurius-green-400 font-light text-center  flex flex-row justify-center items-center"
+                                                        class="w-full rounded-md h-14 text-neutral-500 hover:text-black font-light text-center flex flex-row justify-center items-center"
                                                     {% endif %}
                                             >
                                                 {{ (sidenavEntry.displayNameTransId)|trans }}
@@ -209,11 +244,11 @@
                 <tr>
                     {% if TwigHelperService.accountDomainService.userIsSignedIn(app.user) %}
                         <td
-                                class="w-36 align-top p-0 m-0
+                                class="align-top p-0 m-0
                                 hidden sm:table-cell
                                 bg-gradient-to-b from-neutral-100 to-white
-                                border-1 border-t-0 border-l-0 border-b-0 border-neutral-300
-                                pl-4 pt-14
+                                border-1 border-t-0 border-l-0 border-b-0 border-neutral-200
+                                pl-4 pr-6 pt-7
                                 "
                         >
 
@@ -227,12 +262,25 @@
                                     <a
                                             href="{{ path(sidenavEntry.routeName) }}"
                                             {% if TwigHelperService.navigationEntryIsActive(app.current_route, sidenavEntry) %}
-                                                class="sidenav-button-active"
+                                                class="p-4
+                                                h-9 text-black -mr-0 w-40
+                                                text-xs sm:text-sm font-bold whitespace-nowrap
+                                                flex flex-row justify-start items-center gap-2"
                                             {% else %}
-                                                class="sidenav-button-inactive"
+                                                class="p-4
+                                                hover:text-black hover:underline
+                                                h-9 w-full text-neutral-500
+                                                text-xs sm:text-sm font-light whitespace-nowrap
+                                                flex flex-row justify-start items-center gap-2"
                                             {% endif %}
                                     >
-                                        {{ (sidenavEntry.displayNameTransId)|trans }}
+                                        <div>
+                                            {{ sidenavEntry.iconSvg|raw }}
+                                        </div>
+
+                                        <div>
+                                            {{ (sidenavEntry.displayNameTransId)|trans }}
+                                        </div>
                                     </a>
 
                                 {% endfor %}
@@ -241,7 +289,7 @@
                     {% endif %}
 
                     <td class="w-full p-0 m-0 align-top">
-                        <main class="mb-auto min-h-screen {% block mainWrapperClasses %}max-w-8xl{% endblock %}">
+                        <main class="mx-auto mb-auto min-h-screen {% block mainWrapperClasses %}max-w-8xl{% endblock %}">
 
                             {% for label, messages in app.flashes %}
                                 {% for message in messages %}

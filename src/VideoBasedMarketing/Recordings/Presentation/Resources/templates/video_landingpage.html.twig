@@ -25,46 +25,6 @@
     <meta property="fb:app_id" content="1875993359407944">
 {% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('assets/vendor-static/Video.js/7.20.3/video-js.min.css') }}">
-
-    {{ encore_entry_link_tags('videoplayer') }}
-
-    <style>
-        .video-js-logo-image {
-            width: 100px;
-            height: 40px;
-            background: url({{ asset('assets/images/videoplayer/fyyn-logo-player.jpg') }}) center center no-repeat;
-            background-size: 100px;
-        }
-
-        .video-js, .vjs-poster {
-            background-color: transparent;
-            height: fit-content;
-            min-height: 700px;
-        }
-
-        .video-js.vjs-16-9:not(.vjs-audio-only-mode) {
-            padding-top: 15.25%;
-            height: fit-content;
-            min-height: 700px;
-        }
-
-        @media only screen and (max-width: 1280px) {
-            .video-js, .vjs-poster {
-                min-height: 350px;
-            }
-
-            .video-js.vjs-16-9:not(.vjs-audio-only-mode) {
-                min-height: 350px;
-            }
-        }
-    </style>
-{% endblock %}
-
-{% block javascripts %}
-    <script src="{{ asset('assets/vendor-static/Video.js/7.20.3/video.min.js') }}"></script>
-{% endblock %}
 
 {% block body %}
 
@@ -130,299 +90,277 @@
         </div>
     {% endif %}
 
-    <nav
-            class="bg-neutral-100 border-1 border-black-400 border-t-0 border-l-0 border-r-0 max-w-full"
-    >
-        <div class="mx-auto p-4 max-w-full">
-            <div class="flex items-start md:items-center justify-between max-w-full">
-
-                {% if
-                    TwigHelperService.capabilitiesService.canPresentOwnLogoOnLandingpage(video.user)
-                    and
-                    TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(video.user) is not null
-                %}
-                    <div class="flex justify-center items-center w-full max-w-full">
-                        <img
-                                class="max-w-full max-h-36"
-                                src="{{ asset(TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(video.user)) }}"
-                                alt="logo"
-                        >
-                    </div>
-
-                {% else %}
-                    <div class="flex flex-shrink-0 justify-start items-start max-w-full">
-                        <a href="{{ path('shared.presentation.contentpages.homepage') }}">
-                            <img class="h-14" src="{{ asset('assets/images/shared/logos/fyyn-logo-head-only-240x241.png') }}" alt="Fyyn.io">
-                        </a>
-                    </div>
-                {% endif %}
-
-                {% if not TwigHelperService.capabilitiesService.canPresentAdFreeLandingpage(video.user) %}
-                    <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
-                        <a
-                                data-test-id="videoShowWithVideoOnlyPresentationpageTemplateGetForFreeTopNavCta"
-                                href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
-                                class="cta-with-icon-primary w-full md:w-fit text-left"
-                        >
-                            {{ 'video_landingpage.get_extenstion_for_free_cta'|trans }}
-                        </a>
-
-                        <a
-                                href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
-                                class="cta-with-icon-primary w-full md:w-fit text-left"
-                        >
-                            {{ 'video_landingpage.sign_in_cta'|trans }}
-                        </a>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
 
     <div
             class="
-                hide-when-modal-open
-                bg-gradient-to-r
-                    from-black
-                    via-neutral-600
-                    to-black
-                flex flex-row justify-center
-                w-full max-h-screen
+            bg-gradient-to-tr
+            from-mercurius-green-500
+            to-mercurius-blue-500
             "
     >
-        <div class="w-full max-h-screen">
-            <video
-                    id="video-js-player"
-                    class="video-js rounded-md vjs-default-skin vjs-16-9"
-                    controls
-                    preload="auto"
-                    poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
-                    data-setup=''
 
-            >
-                {% if (video.assetFullWebm) %}
-                    <source
-                            class="w-full"
-                            src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
-                                video,
-                                constant('\\App\\VideoBasedMarketing\\Recordings\\Infrastructure\\Enum\\AssetMimeType::VideoWebm')
-                            ) }}"
-                            type="video/webm"
-                    />
-                {% endif %}
+        <nav
+                class="max-w-full"
+        >
+            <div class="mx-auto p-4 max-w-full">
+                <div class="flex items-start md:items-center justify-between max-w-full">
 
-                {% if (video.assetFullMp4) %}
-                    <source
-                            class="w-full"
-                            src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
-                                video,
-                                constant('\\App\\VideoBasedMarketing\\Recordings\\Infrastructure\\Enum\\AssetMimeType::VideoMp4')
-                            ) }}"
-                            type="video/mp4"
-                    />
-                {% endif %}
+                    {% if
+                        TwigHelperService.capabilitiesService.canPresentOwnLogoOnLandingpage(video.user)
+                        and
+                        TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(video.user) is not null
+                    %}
+                        <div class="flex justify-center items-center w-full max-w-full">
+                            <img
+                                    class="max-w-full max-h-36"
+                                    src="{{ asset(TwigHelperService.settingsInfrastructureService.customLogoAssetUrl(video.user)) }}"
+                                    alt="logo"
+                            >
+                        </div>
 
-                <p
-                        class="vjs-no-js"
-                >
-                    To view this video please enable JavaScript, and consider upgrading to a
-                    web browser that supports HTML5 video.
-                </p>
-            </video>
+                    {% else %}
+                        <div class="flex flex-shrink-0 justify-start items-start max-w-full">
+                            <a href="{{ path('shared.presentation.contentpages.homepage') }}">
+                                <img class="h-14" src="{{ asset('assets/images/shared/logos/fyyn-logo-head-only-240x241.png') }}" alt="Fyyn.io">
+                            </a>
+                        </div>
+                    {% endif %}
 
-            {% if videoPlayerSession is not null %}
-                <script>
-                    let latestCurrentTime = 0;
-                    videojs('#video-js-player').on('timeupdate', function() {
-                        const currentTime = this.currentTime();
-                        if (   currentTime - latestCurrentTime > 0.6
-                            || currentTime < latestCurrentTime
-                        ) {
-                            latestCurrentTime = currentTime;
+                    {% if not TwigHelperService.capabilitiesService.canPresentAdFreeLandingpage(video.user) %}
+                        <div class="ml-4 flex flex-col md:flex-row gap-2 items-end md:ml-6">
+                            <a
+                                    data-test-id="videoShowWithVideoOnlyPresentationpageTemplateGetForFreeTopNavCta"
+                                    href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh"
+                                    class="cta-with-icon-primary w-full md:w-fit text-left"
+                            >
+                                {{ 'video_landingpage.get_extenstion_for_free_cta'|trans }}
+                            </a>
 
-                            const req = new XMLHttpRequest();
-                            req.open(
-                                'POST',
-                                '{{ path(
-                                    'videobasedmarketing.recordings.track_video_player_session_event',
-                                    { videoPlayerSessionId: videoPlayerSession.id }
-                                ) }}'
-                                + '?playerCurrentTime=' + encodeURIComponent(currentTime)
-                            );
-                            req.send();
-                        }
-                    });
-                </script>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="text-center pb-32 pt-10 border-t-2 border-neutral-900 bg-gradient-to-t from-neutral-300 to-mercurius-blue-50">
-
-        <div class="text-3xl text-black font-bold px-4 md:px-8">
-            {{ video.title }}
-        </div>
-
-        {% if video.mainCtaIsUsable %}
-            <div class="mt-8 px-4 md:px-8">
-                {% if video.mainCtaText is not empty %}
-                    <div class="text-xl text-black font-normal">
-                        {{ video.mainCtaText }}
-                    </div>
-                {% endif %}
-
-                <div class="mx-auto w-full px-8 flex flex-row justify-center mt-4">
-                    <a
-                            href="{{ video.mainCtaUrl }}"
-                            target="_blank"
-                            class="
-                                w-fit block text-center text-xl font-bold text-mercurius-green-900 bg-mercurius-green-500 drop-shadow-md p-8 rounded-md
-                                hover:bg-mercurius-green-600 hover:text-black
-                            "
-                    >
-                        {{ video.mainCtaLabel }}
-                    </a>
+                            <a
+                                    href="{{ path('videobasedmarketing.account.presentation.sign_in') }}"
+                                    class="cta-with-icon-primary w-full md:w-fit text-left"
+                            >
+                                {{ 'video_landingpage.sign_in_cta'|trans }}
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-        {% endif %}
+        </nav>
 
-        {% if video.calendlyIsUsable %}
-            <div class="mt-16 px-4 md:px-8">
-                {% if video.calendlyText is not empty %}
-                    <div class="text-xl text-black font-normal">
-                        {{ video.calendlyText }}
-                    </div>
-                {% endif %}
+        <div
+                class="
+                hide-when-modal-open
+                flex flex-row justify-center
+                w-full max-h-screen
+                sm:p-16
+                pb-16
+            "
+        >
+            <div class="w-full max-w-5xl max-h-screen flex flex-col gap-16 justify-center items-center">
+
+                <div class="shadow-2xl rounded-md">
+                    {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(video)|raw }}
+                </div>
+
+                <div class="text-3xl text-black font-bold px-4 px-8 drop-shadow-md text-center">
+                    {{ video.title }}
+                </div>
+
             </div>
+        </div>
 
-            <!-- Calendly Inline-Widget Start -->
-            <div
-                    class="calendly-inline-widget w-full mt-4 md:-mt-8"
-                    data-url="{{ video.calendlyUrl|trim }}"
-                    style="height: 900px;"
-            ></div>
-            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-            <!-- Calendly Inline-Widget End -->
+        <div class="text-center pb-32 pt-10 bg-gradient-to-t from-mercurius-green-50 to-mercurius-blue-50">
 
-        {% endif %}
-    </div>
+            {% if app.user is not null
+                and TwigHelperService.audioTranscriptionDomainService.suggestedSummary(video, app.user.uiLanguageCode) is not null
+            %}
+                <div class="text-lg text-neutral-800 px-4 mt-4 md:px-8 mx-auto w-full max-w-lg text-justify">
+                    {{ TwigHelperService.audioTranscriptionDomainService.suggestedSummary(video, app.user.uiLanguageCode).summaryContent }}
+                </div>
+            {% endif %}
+
+            {% if video.mainCtaIsUsable %}
+                <div class="mt-8 px-4 md:px-8">
+                    {% if video.mainCtaText is not empty %}
+                        <div class="text-xl text-black font-normal">
+                            {{ video.mainCtaText }}
+                        </div>
+                    {% endif %}
+
+                    <div class="mx-auto w-full px-8 flex flex-row justify-center mt-4">
+                        <a
+                                href="{{ video.mainCtaUrl }}"
+                                target="_blank"
+                                class="
+                                w-full block
+                                max-w-lg
+                                min-w-fit
+                                text-center text-xl font-bold text-white
+                                bg-gradient-to-r
+                                    from-mercurius-green-500
+                                    hover:from-mercurius-green-400
+                                    to-mercurius-blue-500
+                                    hover:to-mercurius-blue-400
+                                drop-shadow-md
+                                p-8 rounded-md
+                                hover:bg-mercurius-green-600 hover:text-black
+                            "
+                        >
+                            {{ video.mainCtaLabel }}
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if video.calendlyIsUsable %}
+                <div class="mt-16 px-4 md:px-8">
+                    {% if video.calendlyText is not empty %}
+                        <div class="text-xl text-black font-normal">
+                            {{ video.calendlyText }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Calendly Inline-Widget Start -->
+                <div
+                        class="calendly-inline-widget w-full mt-4 md:-mt-8"
+                        data-url="{{ video.calendlyUrl|trim }}"
+                        style="height: 900px;"
+                ></div>
+                <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+                <!-- Calendly Inline-Widget End -->
+
+            {% endif %}
+        </div>
 
 
-    <div
-            class="
+        <div
+                class="
                 flex flex-row justify-start
                 sm:justify-center
                 sm:mt-0 pt-16 sm:pt-4 pl-4 pr-4 pb-16
-                bg-neutral-300
+                bg-gradient-to-b from-mercurius-green-50 to-mercurius-blue-50
                 text-neutral-400 font-light
 
             "
-    >
-        <div
-                class="
+        >
+            <div
+                    class="
                     flex flex-col sm:flex-row justify-start sm:justify-between items-center
                     gap-4 w-full max-w-6xl
                 "
-        >
-            <div>
-                {% if video.user.profilePhoto %}
-                    <img
-                            class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-500"
-                            src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(video.user) }}"
-                            alt=""
-                    >
+            >
+                <div>
+                    {% if video.user.profilePhoto %}
+                        <img
+                                class="h-8 w-8 rounded-full ring-2 ring-mercurius-blue-500"
+                                src="{{ TwigHelperService.accountAssetsService.getUrlForUserProfilePhoto(video.user) }}"
+                                alt=""
+                        >
+                    {% endif %}
+                </div>
+                <div class="text-sm">
+                    {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+                    {{ dateAndTimeMacros.full(video.createdAt) }}
+                </div>
+
+                {% if TwigHelperService.videoDomainService.videoIsAvailableForDownload(video) %}
+                    <div class="flex-grow">
+                        <a href="{{
+                        TwigHelperService.contentDeliveryService.createForcedDownloadLink(
+                            TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
+                                video
+                            )
+                        )
+                        }}"
+                        >
+                            <div class="flex flex-row justify-start sm:justify-end items-center gap-2 text-sm">
+                                {{ 'video_landingpage.download_video_file_cta'|trans }}
+
+                                {# Heroicon: arrow-down-tray solid #}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                    <path fill-rule="evenodd" d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
                 {% endif %}
             </div>
-            <div class="text-sm">
-                {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
-                {{ dateAndTimeMacros.full(video.createdAt) }}
-            </div>
-
-            {% if TwigHelperService.videoDomainService.videoIsAvailableForDownload(video) %}
-                <div class="flex-grow">
-                    <a href="{{
-                    TwigHelperService.contentDeliveryService.createForcedDownloadLink(
-                        TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(
-                            video
-                        )
-                    )
-                    }}"
-                    >
-                        <div class="flex flex-row justify-start sm:justify-end items-center gap-2 text-sm">
-                            {{ 'video_landingpage.download_video_file_cta'|trans }}
-
-                            {# Heroicon: arrow-down-tray solid #}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                                <path fill-rule="evenodd" d="M12 2.25a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zm-9 13.5a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                    </a>
-                </div>
-            {% endif %}
         </div>
-    </div>
 
 
-    {% if not TwigHelperService.capabilitiesService.canPresentAdFreeLandingpage(video.user) %}
-        <div class="w-full bg-mercurius-blue-500 p-16 pb-32">
-            <div class="flex flex-col md:flex-row items-start justify-center w-full gap-8">
+        {% if not TwigHelperService.capabilitiesService.canPresentAdFreeLandingpage(video.user) %}
+            <div
+                    class="
+                    w-full
+                    bg-gradient-to-bl
+                        from-mercurius-green-500
+                        to-mercurius-blue-500
+                    p-16 pb-32
+                    "
+            >
+                <div class="flex flex-col md:flex-row items-start justify-center w-full gap-8">
 
-                <div class="text-left">
-                    <h3 class="font-medium text-3xl break-normal ml-2 text-white">
-                        {{ 'video_landingpage.footer_copy_1'|trans }}
-                    </h3>
-                    <h4 class="mt-6 font-light text-xl break-normal ml-2 text-white">
-                        {{ 'video_landingpage.footer_copy_2'|trans }}
-                    </h4>
-                    <a href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh">
-                        <button
-                                class="
+                    <div class="text-left">
+                        <h3 class="font-medium text-3xl break-normal ml-2 text-white">
+                            {{ 'video_landingpage.footer_copy_1'|trans }}
+                        </h3>
+                        <h4 class="mt-6 font-light text-xl break-normal ml-2 text-white">
+                            {{ 'video_landingpage.footer_copy_2'|trans }}
+                        </h4>
+                        <a href="https://chrome.google.com/webstore/detail/fyynio/nhnedpphfpflcmhopnhfhhfhecchponh">
+                            <button
+                                    class="
                                     mt-4 text-2xl border-2 border-white-500 text-white
                                     block px-3 py-2 rounded-md ml-2
                                     bg-mercurius-blue-700 hover:bg-mercurius-blue-400
                                 "
-                        >
-                            {{ 'video_landingpage.get_extenstion_for_free_cta'|trans }}
-                        </button>
-                    </a>
-                </div>
+                            >
+                                {{ 'video_landingpage.get_extenstion_for_free_cta'|trans }}
+                            </button>
+                        </a>
+                    </div>
 
-                <div class="grid grid-cols-4 justify-center items-center gap-4 w-100">
-                    <img
-                            src="{{ asset('assets/images/website/videoteaser-240-138-1.jpg') }}"
-                            class="rounded-md w-full"
-                    >
-                    <img
-                            src="{{ asset('assets/images/website/videoteaser-240-180-1.jpg') }}"
-                            class="rounded-md w-full"
-                    >
-                    <img
-                            src="{{ asset('assets/images/website/videoteaser-240-138-2.jpg') }}"
-                            class="rounded-md w-full"
-                    >
-                    <img
-                            src="{{ asset('assets/images/website/videoteaser-240-138-4.jpg') }}"
-                            class="rounded-md w-full"
-                    >
-                    <img
-                            src="{{ asset('assets/images/website/videoteaser-240-240-1.jpg') }}"
-                            class="rounded-md w-full"
-                    >
-                    <img
-                            src="{{ asset('assets/images/website/videoteaser-240-138-3.jpg') }}"
-                            class="rounded-md w-full"
-                    >
-                    <img
-                            src="{{ asset('assets/images/website/videoteaser-240-180-2.jpg') }}"
-                            class="rounded-md w-full"
-                    >
-                    <img
-                            src="{{ asset('assets/images/website/videoteaser-240-240-2.jpg') }}"
-                            class="rounded-md w-full"
-                    >
+                    <div class="grid grid-cols-4 justify-center items-center gap-4 w-100">
+                        <img
+                                src="{{ asset('assets/images/website/videoteaser-240-138-1.jpg') }}"
+                                class="rounded-md w-full"
+                        >
+                        <img
+                                src="{{ asset('assets/images/website/videoteaser-240-180-1.jpg') }}"
+                                class="rounded-md w-full"
+                        >
+                        <img
+                                src="{{ asset('assets/images/website/videoteaser-240-138-2.jpg') }}"
+                                class="rounded-md w-full"
+                        >
+                        <img
+                                src="{{ asset('assets/images/website/videoteaser-240-138-4.jpg') }}"
+                                class="rounded-md w-full"
+                        >
+                        <img
+                                src="{{ asset('assets/images/website/videoteaser-240-240-1.jpg') }}"
+                                class="rounded-md w-full"
+                        >
+                        <img
+                                src="{{ asset('assets/images/website/videoteaser-240-138-3.jpg') }}"
+                                class="rounded-md w-full"
+                        >
+                        <img
+                                src="{{ asset('assets/images/website/videoteaser-240-180-2.jpg') }}"
+                                class="rounded-md w-full"
+                        >
+                        <img
+                                src="{{ asset('assets/images/website/videoteaser-240-240-2.jpg') }}"
+                                class="rounded-md w-full"
+                        >
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
+
+    </div>
+
 
 {% endblock %}
