@@ -22,8 +22,8 @@ class RecordingSessionsController
 {
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-sessions/{recordingSessionId}/extension-recording-finished',
-            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmesitzungen/{recordingSessionId}/aufnahme-in-browser-erweiterung-abgeschlossen',
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-sessions/{recordingSessionId}/finished',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahmesitzungen/{recordingSessionId}/abgeschlossen',
         ],
         name        : 'videobasedmarketing.recordings.presentation.recording_session.finished',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
