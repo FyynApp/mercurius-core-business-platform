@@ -65,6 +65,7 @@ class Video
         return $this->id;
     }
 
+
     #[ORM\Column(
         type: Types::STRING,
         length: 12,

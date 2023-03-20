@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Recordings\Api\Extension\V1\Controller;
+namespace App\VideoBasedMarketing\Recordings\Api\NativeBrowserRecorder\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
@@ -24,8 +24,8 @@ class RecordingSessionController
     extends AbstractController
 {
     #[Route(
-        path        : '%app.routing.route_prefix.api%/extension/v1/recordings/recording-sessions/',
-        name        : 'videobasedmarketing.recordings.api.extension.v1.create_recording_session',
+        path        : '%app.routing.route_prefix.api%/native-browser-recorder/v1/recordings/recording-sessions/',
+        name        : 'videobasedmarketing.recordings.api.native_browser_recorder.v1.create_recording_session',
         methods     : [Request::METHOD_POST]
     )]
     public function createRecordingSessionAction(
@@ -52,7 +52,7 @@ class RecordingSessionController
                 'recordingSessionId' => $recordingSession->getId(),
 
                 'postUrl' => $router->generate(
-                    'videobasedmarketing.recordings.api.extension.v1.recording_session.handle_video_chunk',
+                    'videobasedmarketing.recordings.api.native_browser_recorder.v1.recording_session.handle_video_chunk',
                     ['recordingSessionId' => $recordingSession->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
@@ -63,16 +63,15 @@ class RecordingSessionController
                 'audioBitsPerSecond' => 64000,
 
                 'recordingSessionRemoveUrl' => $router->generate(
-                    'videobasedmarketing.recordings.api.extension.v1.remove_recording_session',
+                    'videobasedmarketing.recordings.api.native_browser_recorder.v1.remove_recording_session',
                     ['recordingSessionId' => $recordingSession->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
 
-                'recordingSessionEditTargetUrl' => $router->generate(
-                    'videobasedmarketing.recordings.presentation.recording_session.finished',
+                'shareUrl' => $router->generate(
+                    'videobasedmarketing.recordings.presentation.recording_session.share',
                     [
-                        'recordingSessionId' => $recordingSession->getId(),
-                        'userWantsToEdit' => true
+                        'recordingSessionShortId' => $recordingSession->getShortId()
                     ],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
@@ -84,7 +83,7 @@ class RecordingSessionController
                 ),
 
                 'recordingSessionChunkReportUrl' => $router->generate(
-                    'videobasedmarketing.recordings.api.extension.v1.store_chunk_report',
+                    'videobasedmarketing.recordings.api.native_browser_recorder.v1.store_chunk_report',
                     ['recordingSessionId' => $recordingSession->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
@@ -98,8 +97,8 @@ class RecordingSessionController
     }
 
     #[Route(
-        path        : '%app.routing.route_prefix.api%/extension/v1/recordings/recording-sessions/{recordingSessionId}/video-chunks/',
-        name        : 'videobasedmarketing.recordings.api.extension.v1.recording_session.handle_video_chunk',
+        path        : '%app.routing.route_prefix.api%/native-browser-recorder/v1/recordings/recording-sessions/{recordingSessionId}/video-chunks/',
+        name        : 'videobasedmarketing.recordings.api.native_browser_recorder.v1.recording_session.handle_video_chunk',
         methods     : [Request::METHOD_POST]
     )]
     public function handleRecordingSessionVideoChunkAction(
@@ -210,8 +209,8 @@ class RecordingSessionController
     }
 
     #[Route(
-        path        : '%app.routing.route_prefix.api%/extension/v1/recordings/recording-sessions/{recordingSessionId}',
-        name        : 'videobasedmarketing.recordings.api.extension.v1.remove_recording_session',
+        path        : '%app.routing.route_prefix.api%/native-browser-recorder/v1/recordings/recording-sessions/{recordingSessionId}',
+        name        : 'videobasedmarketing.recordings.api.native_browser_recorder.v1.remove_recording_session',
         methods     : [Request::METHOD_DELETE]
     )]
     public function removeRecordingSessionAction(
@@ -231,8 +230,8 @@ class RecordingSessionController
     }
 
     #[Route(
-        path        : '%app.routing.route_prefix.api%/extension/v1/recordings/recording-sessions/{recordingSessionId}/chunk-report',
-        name        : 'videobasedmarketing.recordings.api.extension.v1.store_chunk_report',
+        path        : '%app.routing.route_prefix.api%/native-browser-recorder/v1/recordings/recording-sessions/{recordingSessionId}/chunk-report',
+        name        : 'videobasedmarketing.recordings.api.native_browser_recorder.v1.store_chunk_report',
         methods     : [Request::METHOD_PUT]
     )]
     public function storeChunkReportAction(

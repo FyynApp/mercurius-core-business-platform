@@ -1,6 +1,6 @@
 <?php
 
-namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Controller;
+namespace App\VideoBasedMarketing\Account\Api\NativeBrowserRecorder\V1\Controller;
 
 use App\Shared\Domain\Service\Iso639_1CodeService;
 use App\Shared\Infrastructure\Controller\AbstractController;
@@ -21,8 +21,8 @@ class SessionController
      * @throws Exception
      */
     #[Route(
-        path        : '%app.routing.route_prefix.api%/extension/v1/account/session-info',
-        name        : 'videobasedmarketing.account.api.extension.v1.session_info',
+        path        : '%app.routing.route_prefix.api%/native-browser-recorder/v1/account/session-info',
+        name        : 'videobasedmarketing.account.api.native_browser_recorder.v1.session_info',
         methods     : [Request::METHOD_GET]
     )]
     public function getSessionInfoAction(
@@ -40,7 +40,7 @@ class SessionController
             return $requestParametersBasedUserAuthService
                 ->createRedirectResponse(
                     $sessionInfo->getUser(),
-                    'videobasedmarketing.account.api.extension.v1.session_info'
+                    'videobasedmarketing.account.api.native_browser_recorder.v1.session_info'
                 );
         }
 
