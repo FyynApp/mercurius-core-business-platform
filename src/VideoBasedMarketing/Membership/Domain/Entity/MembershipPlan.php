@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Membership\Domain\Entity;
 
 
-use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
+use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use ValueError;
 
@@ -18,7 +18,7 @@ readonly class MembershipPlan
 
     private array $capabilities;
 
-    /** @param array|Capability[] $capabilities */
+    /** @param array|\App\VideoBasedMarketing\Membership\Domain\Enum\Capability[] $capabilities */
     public function __construct(
         MembershipPlanName $name,
         bool               $mustBeBought,
@@ -30,7 +30,7 @@ readonly class MembershipPlan
         $this->mustBeBought = $mustBeBought;
         $this->pricePerMonth = $pricePerMonth;
 
-        /** @var Capability $capability */
+        /** @var \App\VideoBasedMarketing\Membership\Domain\Enum\Capability $capability */
         foreach ($capabilities as $key => $capability) {
             if (get_class($capability) !== Capability::class) {
                 throw new ValueError('$capabilities['. $key .'] has class ' . get_class($capability) . '.');
@@ -66,7 +66,7 @@ readonly class MembershipPlan
     }
 
     /**
-     * @return Capability[]
+     * @return \App\VideoBasedMarketing\Membership\Domain\Enum\Capability[]
      */
     public function getCapabilities(): array
     {

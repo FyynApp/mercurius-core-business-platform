@@ -5,6 +5,7 @@
 {# @var viewPercentagesPerSecond float[] #}
 {# @var numberOfVideoPlayerSessions int #}
 {# @var numberOfStartedVideoPlayerSessions int #}
+{# @var sessionAnalyticsInfos \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSessionAnalyticsInfo[] #}
 
 {% trans_default_domain 'videobasedmarketing.recordings' %}
 {% block title %}{{ 'video_analytics.title'|trans }}{% endblock %}
@@ -30,7 +31,6 @@
                     id="video-overlay"
                     class="relative h-full w-full max-w-2xl"
                     style="width: 100%"
-                    onmousemove="onMouseOver(event)"
             >
                 <div class="w-full flex flex-col gap-4 justify-start bg-mercurius-green-100 text-mercurius-green-900 rounded-md p-4 border-1 border-mercurius-green-900 mb-8">
                     <div class="font-bold">
@@ -112,15 +112,8 @@
                     {{ 'video_analytics.note3'|trans }}
                 </div>
 
-                <video
-                        id="video"
-                        class="z-40 rounded-md"
-                        style="width: 100%;"
-                        src="{{ TwigHelperService.recordingsInfrastructureService.videoForAnalyticsWidgetAssetUrl(video) }}"
-                >
-                </video>
 
-                <div class="absolute mt-12 left-0 right-0 h-40 z-50">
+                <div class="mt-12 h-40 z-50 mb-2">
                     <div
                             class="flex flex-row gap-0 justify-start items-end h-full"
                             style="width: 100%"
@@ -156,10 +149,77 @@
                         {% endfor %}
                     </div>
                 </div>
-            </div>
 
-            <div class="flex flex-col gap-2">
-                <div id="seconds-info">{{ video.seconds|round }} {{ 'seconds_word'|trans }}</div>
+                <div class="flex flex-row gap-2 text-neutral-700 mb-2">
+                    <div>
+                        {{ 'video_analytics.seconds_label'|trans }}
+                    </div>
+                    <div id="seconds-info" class="font-semibold">
+                        {{ video.seconds|round }} {{ 'seconds_word'|trans }}
+                    </div>
+                </div>
+
+                <video
+                        id="video"
+                        class="z-40 rounded-md"
+                        style="width: 100%;"
+                        src="{{ TwigHelperService.recordingsInfrastructureService.videoForAnalyticsWidgetAssetUrl(video) }}"
+                        onmousemove="onMouseOver(event)"
+                >
+                </video>
+
+                {% if sessionAnalyticsInfos|length > 0 %}
+                    <div class="w-full flex flex-col gap-4 justify-start bg-mercurius-green-100 text-mercurius-green-900 rounded-md p-4 border-1 border-mercurius-green-900 mb-8 mt-16">
+                        {% if sessionAnalyticsInfos|length is same as 1 %}
+                            {{ 'video_analytics.note_watch_sessions_one'|trans }}
+                        {% endif %}
+
+                        {% if sessionAnalyticsInfos|length > 1 and sessionAnalyticsInfos|length < 100 %}
+                            {{ 'video_analytics.note_watch_sessions_more_than_one'|trans({ 'numSessions': sessionAnalyticsInfos|length }) }}
+                        {% endif %}
+
+                        {% if sessionAnalyticsInfos|length > 100 %}
+                            {{ 'video_analytics.note_watch_sessions_more_than_limit'|trans }}
+                        {% endif %}
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+
+                        {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+                        {% for sessionAnalyticsInfo in sessionAnalyticsInfos %}
+
+                            {# @var sessionAnalyticsInfo \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoPlayerSessionAnalyticsInfo #}
+
+                            <div class="flex flex-col gap-0.5 mb-4">
+                                <div class="text-xs text-neutral-700">
+                                    {{ dateAndTimeMacros.shortDateAndTime(sessionAnalyticsInfo.videoPlayerSession.createdAt) }}
+                                </div>
+
+                                <div class="flex flex-row gap-0">
+                                    {% for didWatch in sessionAnalyticsInfo.secondsToDidWatch %}
+                                        <div
+                                                class="
+                                                {% if didWatch %}
+                                                    bg-mercurius-blue-900
+                                                    border-t-2
+                                                    border-t-mercurius-green-400
+                                                {% else %}
+                                                    bg-neutral-100
+                                                {% endif %}
+                                            "
+
+                                                style="width: {{ 100 / viewPercentagesPerSecond|length }}%;"
+                                        >
+                                            &nbsp;
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
             </div>
 
             <script>

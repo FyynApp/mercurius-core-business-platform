@@ -47,6 +47,14 @@ class VideoPlayerSessionController
             (float)$playerCurrentTime
         );
 
-        return new Response(null, Response::HTTP_CREATED);
+        return new Response(
+            null,
+            Response::HTTP_CREATED,
+            [
+                'Access-Control-Allow-Origin' => '*',
+                'Access-Control-Allow-Methods' => 'POST',
+                'Access-Control-Allow-Headers' => 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type'
+            ]
+        );
     }
 }

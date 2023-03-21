@@ -49,7 +49,10 @@ class VideoPlayerSessionController
                     ->getNumberOfVideoPlayerSessions($video),
 
                 'numberOfStartedVideoPlayerSessions' => $videoPlayerSessionDomainService
-                    ->getNumberOfStartedVideoPlayerSessions($video)
+                    ->getNumberOfStartedVideoPlayerSessions($video),
+
+                'sessionAnalyticsInfos' => $videoPlayerSessionDomainService
+                    ->getVideoPlayerSessionAnalyticsInfos($video)
             ]
         );
     }

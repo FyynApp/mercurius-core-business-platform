@@ -9,22 +9,12 @@
 @include default.all;
 @include variable.all;
 
+@font-face {
+    font-family: 'Titan One';
+    src: local(''),
+    url('../../public/assets/fonts/titan-one/TitanOne-Regular.woff2') format('woff2');
+}
+
 body {
     background-color: lightgray;
-}
-
-/* tiro-gurmukhi-regular - latin-ext_latin */
-@font-face {
-    font-family: 'Tiro Gurmukhi';
-    font-style: normal;
-    font-weight: 400;
-    src: local(''),
-    url('../../public/assets/fonts/tiro-gurmukhi-v6-latin-ext_latin/tiro-gurmukhi-v6-latin-ext_latin-regular.woff2') format('woff2'),
-    url('../../public/assets/fonts/tiro-gurmukhi-v6-latin-ext_latin/tiro-gurmukhi-v6-latin-ext_latin-regular.woff') format('woff');
-}
-
-@font-face {
-    font-family: 'IBM Plex serif';
-    src: local(''),
-    url('../../public/assets/fonts/ibm-plex-serif/IBMPlexSerif-Bold.woff') format('woff');
 }

@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Controller;
 
 use App\Shared\Domain\Service\Iso639_1CodeService;
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\VideoBasedMarketing\Account\Api\Extension\V1\Service\SessionService;
+use App\VideoBasedMarketing\Account\Api\Shared\Service\SessionService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use Exception;

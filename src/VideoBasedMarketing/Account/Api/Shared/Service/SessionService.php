@@ -1,8 +1,8 @@
 <?php
 
-namespace App\VideoBasedMarketing\Account\Api\Extension\V1\Service;
+namespace App\VideoBasedMarketing\Account\Api\Shared\Service;
 
-use App\VideoBasedMarketing\Account\Api\Extension\V1\Entity\SessionInfo;
+use App\VideoBasedMarketing\Account\Api\Shared\Entity\SessionInfo;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;

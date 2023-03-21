@@ -8,6 +8,12 @@ seconds: >-
   }
 seconds_word: 'seconds'
 video_successfully_deleted: 'Video “{title}” has been removed.'
+video_share_widget:
+  headline: 'Share video'
+  direct_link: 'Direct link'
+  twitter_note: 'Watch my new video!'
+  copy_cta: 'copy'
+  copied: 'copied!'
 video_manage_widget:
   processing:
     note: 'Processing...'
@@ -19,6 +25,8 @@ video_manage_widget:
     cta_edit: 'Edit video'
     cta_send_video_mailing: 'Send video email'
     cta_delete: 'Delete video'
+    cta_show_embed: 'Show embed code'
+    cta_show_audio_transcription_modal: 'Audio transcription'
   edit_modal:
     cta_share: 'Share'
     cta_preview: 'Preview'
@@ -34,6 +42,18 @@ video_manage_widget:
     headline: 'Share video'
     direct_link: 'Link'
     twitter_note: "Watch my new video!"
+  embed_modal:
+    headline: 'Embed this video on any webpage'
+    explanation1: 'Simply copy the HTML code snippet below and paste it into your own webpage.'
+    explanation2: ''
+    copy_cta: 'Click here to copy this code'
+    copied: 'Copied!'
+  audio_transcription_modal:
+    headline: 'Generate audio transcriptions'
+    choose_language: 'Please choose the language that is spoken in this video:'
+    cta_language:
+      de_DE: 'German'
+      en_US: 'English'
   delete_modal:
     title: 'Delete video'
     really: 'Do you really want to delete this video?'
@@ -110,6 +130,10 @@ video_analytics:
   play_rate_formula: '{playRate}% play rate'
   plays_formula: '{plays} plays'
   player_loads: '{playerLoads} player loads'
+  seconds_label: 'Timestamp:'
+  note_watch_sessions_one: 'The following graph visualizes the watched seconds for the one and only watch session so far.'
+  note_watch_sessions_more_than_one: 'The following graphs visualize the watched seconds for all {numSessions} watch sessions so far.'
+  note_watch_sessions_more_than_limit: 'The following graphs visualize the watched seconds for the most recent 100 watch sessions.'
 native_browser_recorder:
   back_to_videos_overview_cta: 'Back to videos'
   title: 'Record webcam or desktop'

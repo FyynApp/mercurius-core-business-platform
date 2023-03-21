@@ -61,6 +61,7 @@ readonly class LimitAvailableRoutesForUnregisteredUsersKernelRequestSubscriber
         $allowedRouteNames = [
             'shared.infrastructure.content_delivery.serve_external_asset',
             'shared.presentation.contentpages.cookie_settings',
+            'shared.presentation.contentpages.features',
             'shared.presentation.styleguide',
             'shared.presentation.contentpages.homepage_native_recorder',
             'shared.presentation.contentpages.homepage',
@@ -74,15 +75,17 @@ readonly class LimitAvailableRoutesForUnregisteredUsersKernelRequestSubscriber
             'videobasedmarketing.organization.',
 
             'videobasedmarketing.recordings.api.extension.',
+            'videobasedmarketing.recordings.api.native_browser_recorder.',
             'videobasedmarketing.recordings.api.video_upload.',
+
             'videobasedmarketing.recordings.presentation.videos.',
             'videobasedmarketing.recordings.presentation.video_folders.',
             'videobasedmarketing.recordings.presentation.upload_video',
             'videobasedmarketing.recordings.presentation.video.deletion',
-            'videobasedmarketing.recordings.presentation.recording_session.recording_preview.asset_redirect',
-            'videobasedmarketing.recordings.presentation.recording_session.extension',
+            'videobasedmarketing.recordings.presentation.recording_session.',
             'videobasedmarketing.recordings.presentation.video.share_link',
             'videobasedmarketing.recordings.presentation.show_native_browser_recorder',
+            'videobasedmarketing.recordings.presentation.embeddable_video_player.',
 
             'videobasedmarketing.recording_requests.',
 

@@ -20,20 +20,44 @@
     {% else %}
         <script
                 defer="defer"
-                src="{{ asset('assets/native-browser-recorder/main.3931ecd8.js') }}"
+                src="{{ asset('assets/native-browser-recorder/main.9a8cb793.js') }}"
         ></script>
     {% endif %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(event) {
+            const $videoElements = document.querySelectorAll('.lazy-loading-video-element');
+            const options = { rootMargin: '400px' };
+            const $intersectedElements = [];
+
+            const videoElementObserver = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        if (!$intersectedElements.includes(entry.target.getAttribute('id'))) {
+                            entry.target.setAttribute('src', entry.target.getAttribute('data-src'));
+                            entry.target.play();
+                            $intersectedElements.push(entry.target.getAttribute('id'));
+                        }
+                    }
+                });
+            }, options);
+
+            $videoElements.forEach(function($videoElement) {
+                videoElementObserver.observe($videoElement);
+            });
+        });
+    </script>
+
 {% endblock %}
 
 
-{% block title %}{{ 'sidenav.homepage'|trans }}{% endblock %}
 {% block contentTitle %}{{ 'sidenav.homepage'|trans }}{% endblock %}
 
 {% block body %}
 
     {% set outerClasses = 'mx-auto max-w-8xl flex flex-col lg:flex-row justify-center items-start gap-32 py-16 px-8 md:px-32' %}
 
-    <div class="bg-gradient-to-tr from-mercurius-green-500 to-mercurius-blue-500">
+    <div class="bg-gradient-to-tr from-mercurius-green-500 to-mercurius-blue-500 pullup-for-transparent-nav">
 
         <div class="{{ outerClasses }}">
             <div class="lg:mb-16 lg:w-6/12">
@@ -49,78 +73,203 @@
                     <span class="text-mercurius-blue-900 font-bold">right from your browser.</span>
 
                 </h1>
-
-                <div class="mt-8">
-                    <script src="https://fast.wistia.com/embed/medias/uu356tyt2v.jsonp" async></script>
-                    <script src="https://fast.wistia.com/assets/external/E-v1.js" async></script>
-                    <div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
-                        <div class="wistia_responsive_wrapper"
-                             style="height:100%;left:0;position:absolute;top:0;width:100%;">
-                            <div class="wistia_embed wistia_async_uu356tyt2v videoFoam=true"
-                                 style="height:100%;position:relative;width:100%">
-                                <div class="wistia_swatch"
-                                     style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;">
-                                    <img src="https://fast.wistia.com/embed/medias/uu356tyt2v/swatch"
-                                         style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt=""
-                                         aria-hidden="true" onload="this.parentNode.style.opacity=1;"/></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
-            <div class="lg:w-6/12">
+            <div class="w-full lg:w-6/12">
+                <div class="mb-8">
 
-
-                <div class="flex flex-col gap-8 items-start">
-
-                    <div class="flex flex-row justify-start items-center gap-8">
-
-                        <div class="flex-shrink-0 w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
-                            <span class="drop-shadow-sm">Step 1</span>
-                        </div>
-
-                        <div class="font-semibold text-mercurius-blue-900">
-                            Record a video of your webcam, your computer screen, or both.
-                        </div>
-
-                    </div>
-
-
-                    <div class="flex flex-row justify-start items-center gap-8">
-
-                        <div class="flex-shrink-0 w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
-                            <span class="drop-shadow-sm">Step 2</span>
-                        </div>
-
-                        <div class="font-semibold text-mercurius-blue-900">
-                            Your video is embedded on a landing page
-                            with your own logo and on your own domain.
-                        </div>
-
-                    </div>
-
-
-                    <div class="flex flex-row justify-start items-center gap-8">
-
-                        <div class="flex-shrink-0 w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
-                            <span class="drop-shadow-sm">Step 3</span>
-                        </div>
-
-                        <div class="font-semibold text-mercurius-blue-900">
-                            Share your video landingpage with customers and business partners.
-                        </div>
-
-                    </div>
+                    <!-- Fyyn.io Video Player Embed - Start -->
+                    <link rel="stylesheet" href="https://app.fyyn.io/embed/video-player/cW7GCwbPnB9/style.css">
+                    <script src="https://app.fyyn.io/embed/video-player/cW7GCwbPnB9/data.jsonp" async></script>
+                    <script src="https://app.fyyn.io/embed/video-player/cW7GCwbPnB9/script.js"></script>
+                    <div class="fyyn-video-cW7GCwbPnB9-player-embed-outer"></div>
+                    <!-- Fyyn.io Video Player Embed - End -->
 
                 </div>
-
 
             </div>
 
         </div>
+
+        <div class="{{ outerClasses }}">
+            <div class="flex flex-col xl:flex-row gap-8 items-start">
+
+                <div class="flex flex-row justify-start items-center gap-8">
+
+                    <div class="flex-shrink-0 w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
+                        <span class="drop-shadow-sm">Create</span>
+                    </div>
+
+                    <div class="font-semibold text-mercurius-blue-900">
+                        Record a video of your webcam, your computer screen, or both.
+                    </div>
+
+                </div>
+
+
+                <div class="flex flex-row justify-start items-center gap-8">
+
+                    <div class="flex-shrink-0 w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
+                        <span class="drop-shadow-sm">Style</span>
+                    </div>
+
+                    <div class="font-semibold text-mercurius-blue-900">
+                        Your video is embedded on a landing page
+                        with your own logo and on your own domain.
+                    </div>
+
+                </div>
+
+
+                <div class="flex flex-row justify-start items-center gap-8">
+
+                    <div class="flex-shrink-0 w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
+                        <span class="drop-shadow-sm">Share</span>
+                    </div>
+
+                    <div class="font-semibold text-mercurius-blue-900">
+                        Share your video landingpage with customers and business partners.
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
     </div>
+
+
+    <div id="why-use-fyyn" class="bg-gradient-to-br from-mercurius-green-500 to-mercurius-blue-500 pt-16">
+
+        <div class="{{ outerClasses }}">
+
+            <div class="flex flex-col gap-8 justify-center items-center max-w-3xl">
+
+                <div class="text-6xl text-white font-extrabold drop-shadow-md text-mercurius-blue-900 text-center">
+                    Why use <span class="font-normal logo-font">Fyyn</span>?
+                </div>
+
+
+                <div class="text-xl font-normal text-mercurius-blue-900 flex flex-col justify-center items-center gap-12 text-center">
+
+                    <div>
+                        While
+                        <span class="logo-font font-normal">Fyyn</span>
+                        can be used to <span class="text-white">succeed with video</span> in many different ways,
+                        here is one use case that our customers love:
+                    </div>
+
+                    <div class="text-3xl font-black">
+                        <span class="whitespace-nowrap">🚀 Turbo-charged</span> product development.
+                    </div>
+
+                    <div>
+                        In this use case,
+                        <span class="logo-font font-normal">Fyyn</span>
+                        is used to create and share short video clips
+                        <span class="text-white whitespace-nowrap">blazingly fast</span>.
+                    </div>
+
+                    <div class="text-3xl font-black">
+                        So what?
+                    </div>
+
+                    <div>
+                        At first, this doesn‘t sound exactly revolutionary,
+                        but when you are creating digital products remotely
+                        in a team, being able to
+                        <span class="font-bold">quickly provide feedback</span> and iterate
+                        towards the best solution in a visual and asynchronous
+                        way is nothing short of a <span class="font-bold">game-changer!</span>
+                    </div>
+
+                    <div class="text-3xl font-black">
+                        How does it work?
+                    </div>
+
+                    <div>
+                        Imagine you are <span class="font-bold">test-driving a digital product</span> that you and your team
+                        are currently creating — this could be a web page, a mobile app, or a presentation.
+                    </div>
+
+                    <div>
+                        You have <span class="font-bold">found a bug</span> or identified an area that needs to be changed.
+                    </div>
+
+                    <div>
+                        Here‘s what you do with
+                        <span class="logo-font font-normal">Fyyn</span>:
+                    </div>
+
+                    <div class="max-w-xl flex flex-col gap-4 text-left">
+                        <div class="flex flex-row justify-start items-center gap-8">
+                            <div class="flex-shrink-0 w-20 h-20 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-md font-bold flex flex-col justify-center items-center drop-shadow-md">
+                                <span class="drop-shadow-sm">Step 1</span>
+                            </div>
+
+                            <div class="text-mercurius-blue-900">
+                                Start <span class="font-bold">recording your screen with a single click</span>
+                                right from your browser, and show-case the bug or
+                                describe your change request.
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row justify-start items-center gap-8">
+                            <div class="flex-shrink-0 w-20 h-20 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-md font-bold flex flex-col justify-center items-center drop-shadow-md">
+                                <span class="drop-shadow-sm">Step 2</span>
+                            </div>
+
+                            <div class="text-mercurius-blue-900">
+                                <span class="font-bold">Share the video URL</span> wherever you like:
+                                Slack, Teams, iMessage, WhatsApp, doesn‘t matter.
+                            </div>
+                        </div>
+
+                        <div class="flex flex-row justify-start items-center gap-8">
+                            <div class="flex-shrink-0 w-20 h-20 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-md font-bold flex flex-col justify-center items-center drop-shadow-md">
+                                <span class="drop-shadow-sm">Step 3</span>
+                            </div>
+
+                            <div class="font-bold text-mercurius-blue-900">
+                                There is no step 3!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        No need to wait for an upload!
+                    </div>
+
+                    <div>
+                        No need to think about video file sizes!
+                    </div>
+
+                    <div class="font-bold">
+                        Creating and sharing a 20 seconds video
+                        literally takes 25 seconds!
+                    </div>
+
+                    <div>
+                        When using
+                        <span class="logo-font font-normal">Fyyn</span>,
+                        this way of working together quickly
+                        becomes second nature.
+                    </div>
+
+                    <div>
+                        Instead of writing long-winded
+                        messages where you try to explain
+                        the issue, you <span class="font-bold">simply show show and tell</span>.
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
 
     <div class="bg-gradient-to-b from-neutral-100 to-mercurius-blue-100">
 
@@ -248,6 +397,9 @@
 
     </div>
 
+
+
+
     <div class="bg-gradient-to-bl from-mercurius-green-500 to-mercurius-blue-500">
 
         <div class="{{ outerClasses }}">
@@ -273,24 +425,17 @@
 
                     <div class="lg:w-6/12">
                         <div class="max-w-sm">
-
                             <video
-                                    class="rounded-lg shadow-lg"
+                                    id="video-tile-custom-domain"
+                                    class="w-full rounded-lg shadow-lg lazy-loading-video-element"
                                     autoplay
                                     loop
                                     muted
                                     playsinline
                                     preload="metadata"
-                            >
-                                <source
-                                        src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-custom-domain-720x720.mp4"
-                                        type="video/mp4"
-                                >
-                                <source
-                                        src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-custom-domain-720x720.webm"
-                                        type="video/webm"
-                                >
-                            </video>
+                                    data-src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-custom-domain-720x720.mp4"
+                                    type="video/mp4"
+                            ></video>
                         </div>
                     </div>
                 </div>
@@ -302,22 +447,16 @@
                     <div class="lg:w-6/12">
                         <div class="max-w-sm">
                             <video
-                                    class="rounded-lg shadow-lg"
+                                    id="video-tile-folder"
+                                    class="w-full rounded-lg shadow-lg lazy-loading-video-element"
                                     autoplay
                                     loop
                                     muted
                                     playsinline
                                     preload="metadata"
-                            >
-                                <source
-                                        src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-folder-720x720.mp4"
-                                        type="video/mp4"
-                                >
-                                <source
-                                        src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-folder-720x720.webm"
-                                        type="video/webm"
-                                >
-                            </video>
+                                    data-src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-folder-720x720.mp4"
+                                    type="video/mp4"
+                            ></video>
                         </div>
                     </div>
 
@@ -330,6 +469,37 @@
                         </div>
                     </div>
 
+                </div>
+
+
+
+                <div class="flex flex-col lg:flex-row gap-16 justify-center items-center">
+
+                    <div class="flex flex-col gap-2 justify-center items-center lg:w-6/12 text-center">
+                        <div class="text-2xl font-bold text-mercurius-blue-900">
+                            Landing pages with benefits.
+                        </div>
+                        <div class="text-lg font-light text-white max-w-md">
+                            Every video has an easily shareable landing page that can include goodies like
+                            a Calendly embed.
+                        </div>
+                    </div>
+
+                    <div class="lg:w-6/12">
+                        <div class="max-w-sm">
+                            <video
+                                    id="video-tile-landingpage-calendar"
+                                    class="w-full rounded-lg shadow-lg lazy-loading-video-element"
+                                    autoplay
+                                    loop
+                                    muted
+                                    playsinline
+                                    preload="metadata"
+                                    data-src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/video-tiles/video-tile-landingpage-calendar-720x720.mp4"
+                                    type="video/mp4"
+                            ></video>
+                        </div>
+                    </div>
                 </div>
 
             </div>

@@ -3,12 +3,13 @@
 namespace App\VideoBasedMarketing\Membership\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
+use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -48,6 +49,30 @@ readonly class MembershipService
         }
 
         return $this->getMembershipPlanByName(MembershipPlanName::Basic);
+    }
+
+    public function subscriptionOfOrganizationOwnedEntityHasCapability(
+        OrganizationOwnedEntityInterface $organizationOwnedEntity,
+        Capability                       $capability
+    ): bool
+    {
+        $orgOwningUser = $organizationOwnedEntity
+            ->getOrganization()
+            ->getOwningUser()
+        ;
+
+        foreach ($orgOwningUser->getSubscriptions() as $subscription) {
+            if ($subscription->getStatus() === SubscriptionStatus::Active) {
+                if ($this
+                    ->getMembershipPlanByName($subscription->getMembershipPlanName())
+                    ->hasCapability($capability)
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public function isPlanBookableForUser(
@@ -120,12 +145,12 @@ readonly class MembershipService
     {
         return match ($name) {
             MembershipPlanName::Basic =>
-                new MembershipPlan(
-                    $name,
-                    false,
-                    0.0,
-                    []
-                ),
+            new MembershipPlan(
+                $name,
+                false,
+                0.0,
+                []
+            ),
 
             MembershipPlanName::Independent =>
             new MembershipPlan(
@@ -136,24 +161,25 @@ readonly class MembershipService
             ),
 
             MembershipPlanName::Plus =>
-                new MembershipPlan(
-                    $name,
-                    true,
-                    9.99,
-                    []
-                ),
+            new MembershipPlan(
+                $name,
+                true,
+                9.99,
+                []
+            ),
 
             MembershipPlanName::Pro =>
-                new MembershipPlan(
-                    $name,
-                    true,
-                    47.99,
-                    [
-                        Capability::CustomDomain,
-                        Capability::CustomLogoOnLandingpage,
-                        Capability::AdFreeLandingpages,
-                    ]
-                ),
+            new MembershipPlan(
+                $name,
+                true,
+                47.99,
+                [
+                    Capability::CustomDomain,
+                    Capability::CustomLogoOnLandingpage,
+                    Capability::AdFreeLandingpages,
+                    Capability::BrandingFreeEmbeddableVideoPlayer,
+                ]
+            ),
         };
     }
 

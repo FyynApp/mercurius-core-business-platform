@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
+use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
@@ -22,7 +23,8 @@ readonly class RecordingSessionDomainService
         private MessageBusInterface             $messageBus,
         private VideoDomainService              $videoDomainService,
         private RecordingsInfrastructureService $recordingsInfrastructureService,
-        private EventDispatcherInterface        $eventDispatcher
+        private EventDispatcherInterface        $eventDispatcher,
+        private ShortIdService                  $shortIdService
     )
     {
     }
@@ -75,6 +77,7 @@ readonly class RecordingSessionDomainService
     {
         $recordingSession = new RecordingSession($user);
         $this->entityManager->persist($recordingSession);
+        $this->shortIdService->encodeObject($recordingSession);
         $this->entityManager->flush($recordingSession);
 
         $this->messageBus->dispatch(
