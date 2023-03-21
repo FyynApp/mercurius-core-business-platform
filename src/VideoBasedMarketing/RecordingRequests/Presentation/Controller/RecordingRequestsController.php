@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\RecordingRequests\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
+use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
@@ -15,7 +16,9 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RecordingRequestsController
     extends AbstractController
@@ -41,39 +44,6 @@ class RecordingRequestsController
                 'recordingRequests' => $recordingRequestsDomainService
                     ->getAvailableRecordingRequestsForCurrentlyActiveOrganization($user)
             ]
-        );
-    }
-
-    #[Route(
-        path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recording-requests/create-form',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahme-anfragen/erstellen-formular',
-        ],
-        name        : 'videobasedmarketing.recording_requests.create_recording_request_form',
-        requirements: ['_locale' => '%app.routing.locale_requirement%'],
-        methods     : [Request::METHOD_GET]
-    )]
-    public function createRecordingRequestFormAction(
-        Request                        $request,
-        RecordingRequestsDomainService $recordingRequestsDomainService
-    ): Response
-    {
-        $requestVideoId = $request->get('requestVideoId');
-
-        $requestVideo = null;
-        if (!is_null($requestVideoId)) {
-            $r = $this->verifyAndGetOrganizationAndEntity(
-                Video::class,
-                $requestVideoId,
-                AccessAttribute::Use
-            );
-            /** @var Video $requestVideo */
-            $requestVideo = $r->getEntity();
-        }
-
-        return $this->render(
-            '@videobasedmarketing.recording_requests/create_recording_request_form.html.twig',
-            ['requestVideo' => $requestVideo]
         );
     }
 
@@ -114,6 +84,57 @@ class RecordingRequestsController
                 $requestText,
                 $requestVideo
             );
+
+        return $this->redirectToRoute(
+            'videobasedmarketing.recording_requests.recording_request_share',
+            [
+                'recordingRequestShortId' => $recordingRequest->getShortId()
+            ]
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recording-requests/{recordingRequestId}',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahme-anfragen/{recordingRequestId}',
+        ],
+        name        : 'videobasedmarketing.recording_requests.update_recording_request',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function updateRecordingRequestAction(
+        string                 $recordingRequestId,
+        Request                $request,
+        TranslatorInterface    $translator,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        if (!$this->isCsrfTokenValid('update-recording-request', $request->get('_csrf_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
+
+        $r = $this->verifyAndGetUserAndEntity(
+            RecordingRequest::class,
+            $recordingRequestId,
+            AccessAttribute::Edit
+        );
+        /** @var RecordingRequest $recordingRequest */
+        $recordingRequest = $r->getEntity();
+
+        $recordingRequest->setTitle($request->get('title'));
+        $recordingRequest->setRequestText($request->get('requestText'));
+
+        $entityManager->persist($recordingRequest);
+        $entityManager->flush();
+
+        $this->addFlash(
+            FlashMessageLabel::Success->value,
+            $translator->trans(
+                'recording_request_owner_info.flash_message_saved_success',
+                [],
+                'videobasedmarketing.recording_requests'
+            )
+        );
 
         return $this->redirectToRoute(
             'videobasedmarketing.recording_requests.recording_request_share',

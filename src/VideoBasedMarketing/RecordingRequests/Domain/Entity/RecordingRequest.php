@@ -147,7 +147,7 @@ class RecordingRequest
 
     public function setTitle(string $title): void
     {
-        $this->title = $title;
+        $this->title = mb_substr($title, 0, 256);
     }
 
     public function getTitle(): ?string
@@ -180,6 +180,13 @@ class RecordingRequest
     public function getRequestText(): string
     {
         return $this->requestText;
+    }
+
+    public function setRequestText(
+        string $requestText
+    ): void
+    {
+        $this->requestText = mb_substr($requestText, 0, 4096);
     }
 
 

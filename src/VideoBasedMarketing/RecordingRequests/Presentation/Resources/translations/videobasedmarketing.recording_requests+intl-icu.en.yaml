@@ -12,6 +12,7 @@ recording_request_owner_info:
   cta_save: 'Save changes'
   responses: 'Received responses'
   no_answered_responses_yet: 'No responses yet.'
+  flash_message_saved_success: 'Changes have been saved.'
 
 response_instructions:
   greeting: 'Your video recording'
