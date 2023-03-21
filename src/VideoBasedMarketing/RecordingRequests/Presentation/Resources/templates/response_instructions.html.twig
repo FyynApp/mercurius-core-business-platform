@@ -60,48 +60,11 @@
 
                 <ol class="mt-8">
                     <li>
-                        <p>
-                            {{ 'response_instructions.step1'|trans }}
-                        </p>
-                        <a
-                                class="
-                                    flex flex-row justify-start items-center
-                                    text-mercurius-blue-600 hover:text-mercurius-blue-900 block
-                                    w-fit
-                                "
-                                href="{{ asset(
-                                    'assets/browser-extension-chrome/mercurius-browser-extension-chrome.'
-                                    ~ app.environment
-                                    ~ '.latest.zip'
-                                ) }}"
-                        >
-                            <div
-                                    class="
-                                        flex flex-row justify-start
-                                        mt-4 p-4
-                                        bg-mercurius-blue-50 hover:bg-mercurius-blue-100
-                                        rounded-md w-fit
-                                    "
-                            >
-                                <div class="break-words w-24 text-sm">
-                                    {{ 'response_instructions.extension_download_name'|trans }}
-                                </div>
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7">
-                                        <path d="M12 1.5a.75.75 0 01.75.75V7.5h-1.5V2.25A.75.75 0 0112 1.5zM11.25 7.5v5.69l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V7.5h3.75a3 3 0 013 3v9a3 3 0 01-3 3h-9a3 3 0 01-3-3v-9a3 3 0 013-3h3.75z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </a>
+                        {{ 'response_instructions.step1'|trans }}
                     </li>
 
                     <li class="mt-8">
                         {{ 'response_instructions.step2'|trans }}
-                        <span
-                                class="font-mono bg-neutral-100 p-1 rounded-sm"
-                        >
-                            chrome://extensions/
-                        </span>
                     </li>
 
                     <li class="mt-8">

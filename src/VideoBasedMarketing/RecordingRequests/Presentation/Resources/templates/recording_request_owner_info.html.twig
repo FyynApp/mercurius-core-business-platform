@@ -19,46 +19,107 @@
 
         {% block contentBoxContent %}
 
-            <p class="mb-8">
-                <label
-                        for="share_url"
+            <div class="mb-16">
+                <h2 class="font-bold text-lg mb-4 w-full border-b-2 border-neutral-200">
+                    {{ 'recording_request_owner_info.overview'|trans }}
+                </h2>
+
+                <form
+                        class="flex flex-col gap-2 justify-start items-start w-full"
                 >
-                    {{ 'recording_request_owner_info.share_url_label'|trans }}
-                </label>
-                <input
-                        class="ml-2 border-0 bg-mercurius-blue-50 rounded-md p-2 font-bold"
-                        id="share_url"
-                        type="text"
-                        disabled
-                        size="26"
-                        value="{{
-                        url(
-                            'videobasedmarketing.recording_requests.recording_request_share',
-                            { 'recordingRequestShortId': recordingRequest.shortId }
-                        )
-                        }}"
-                >
-            </p>
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full">
+                        <div class="w-32">
+                            <label for="title">
+                                {{ 'recording_request_owner_info.label_title'|trans }}
+                            </label>
+                        </div>
+                        <div class="flex-grow">
+                            <input
+                                    id="title"
+                                    name="title"
+                                    class="text-input w-full max-w-xl"
+                                    type="text"
+                            >
+                        </div>
+                    </div>
 
-            {% if TwigHelperService.recordingRequestsDomainService.getNumberOfAnsweredResponses(recordingRequest) is same as 0 %}
-                <div>
-                    {{ 'recording_request_owner_info.no_answered_responses_yet'|trans }}
-                </div>
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-start gap-2 w-full">
+                        <div class="w-32">
+                            <label for="requestText">
+                                {{ 'recording_request_owner_info.label_request_text'|trans }}
+                            </label>
+                        </div>
+                        <div class="flex-grow">
+                            <textarea
+                                    id="requestText"
+                                    name="requestText"
+                                    class="text-input h-full w-full max-w-xl"
+                                    type="text"
+                                    rows="16"
+                            ></textarea>
+                        </div>
+                    </div>
 
-            {% else %}
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full mb-16">
+                        <div class="w-32 h-0">
+                        </div>
+                        <div class="flex-grow">
+                            <button
+                                    type="submit"
+                                    class="cta-with-icon-primary"
+                            >
+                                {{ 'recording_request_owner_info.cta_save'|trans }}
+                            </button>
+                        </div>
+                    </div>
 
-                <h2 class="font-bold text-lg mb-4">
+                    <div class="flex flex-col lg:flex-row lg:justify-start lg:items-center gap-2 w-full">
+                        <div class="w-32">
+                            <label
+                                    for="requestText"
+                            >
+                                {{ 'recording_request_owner_info.share_url_label'|trans }}
+                            </label>
+                        </div>
+                        <div class="flex-grow">
+                            <div
+                                    class="text-xs border-1 border-mercurius-green-600 rounded-md p-2 font-bold w-fit cursor-text font-mono max-w-full overflow-ellipsis bg-mercurius-green-50 text-mercurius-green-900"
+                            >
+                                {{
+                                    url(
+                                        'videobasedmarketing.recording_requests.recording_request_share',
+                                        { 'recordingRequestShortId': recordingRequest.shortId }
+                                    )
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+
+            <div>
+                <h2 class="font-bold text-lg mb-4 w-full border-b-2 border-neutral-200">
                     {{ 'recording_request_owner_info.responses'|trans }}
                 </h2>
 
-                <div class="grid-outer">
-                    {% for response in TwigHelperService.recordingRequestsDomainService.answeredResponses(recordingRequest) %}
-                        {# @var response \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse #}
 
-                        {% for video in response.videos %}
-                            {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+                {% if TwigHelperService.recordingRequestsDomainService.getNumberOfAnsweredResponses(recordingRequest) is same as 0 %}
+                    <div>
+                        {{ 'recording_request_owner_info.no_answered_responses_yet'|trans }}
+                    </div>
 
-                            <div class="
+                {% else %}
+
+                    <div class="grid-outer">
+                        {% for response in TwigHelperService.recordingRequestsDomainService.answeredResponses(recordingRequest) %}
+                            {# @var response \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse #}
+
+                            {% for video in response.videos %}
+                                {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+
+                                <div class="
                                     flex
                                     flex-col lg:flex-row
                                     justify-center lg:justify-start
@@ -66,23 +127,24 @@
                                     gap-16
                                     w-48
                                  "
-                            >
-                                <video
-                                        class="mx-auto rounded-md w-full"
-                                        controls
-                                        poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
                                 >
-                                    <source
-                                            src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
+                                    <video
+                                            class="mx-auto rounded-md w-full"
+                                            controls
+                                            poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
                                     >
-                                </video>
-                            </div>
+                                        <source
+                                                src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
+                                        >
+                                    </video>
+                                </div>
+
+                            {% endfor %}
 
                         {% endfor %}
-
-                    {% endfor %}
-                </div>
-            {% endif %}
+                    </div>
+                {% endif %}
+            </div>
 
         {% endblock %}
 

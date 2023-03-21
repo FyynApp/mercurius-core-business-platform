@@ -12,6 +12,7 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDo
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,14 +29,17 @@ class RecordingRequestsController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function recordingRequestsOverviewAction(): Response
+    public function recordingRequestsOverviewAction(
+        RecordingRequestsDomainService $recordingRequestsDomainService
+    ): Response
     {
         $user = $this->getUser(true);
 
         return $this->render(
             '@videobasedmarketing.recording_requests/recording_requests_overview.html.twig',
             [
-                'recordingRequests' => $user->getRecordingRequests()
+                'recordingRequests' => $recordingRequestsDomainService
+                    ->getAvailableRecordingRequestsForCurrentlyActiveOrganization($user)
             ]
         );
     }
@@ -120,7 +124,10 @@ class RecordingRequestsController
     }
 
     #[Route(
-        path        : '/rr/{recordingRequestShortId}',
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/rr/{recordingRequestShortId}',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.en%/rr/{recordingRequestShortId}',
+        ],
         name        : 'videobasedmarketing.recording_requests.recording_request_share',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
@@ -130,7 +137,7 @@ class RecordingRequestsController
         EntityManagerInterface $entityManager
     ): Response
     {
-        /** @var EntityRepository $r */
+        /** @var ObjectRepository<RecordingRequest> $r */
         $r = $entityManager->getRepository(RecordingRequest::class);
 
         /** @var null|RecordingRequest $recordingRequest */
@@ -141,7 +148,9 @@ class RecordingRequestsController
         }
 
         $user = $this->getUser();
-        if (!is_null($user) && $user->getId() === $recordingRequest->getUser()->getId()) {
+        if (   !is_null($user)
+            && $user->getCurrentlyActiveOrganization()->getId() === $recordingRequest->getOrganization()->getId()
+        ) {
             return $this->render(
                 '@videobasedmarketing.recording_requests/recording_request_owner_info.html.twig',
                 ['recordingRequest' => $recordingRequest]

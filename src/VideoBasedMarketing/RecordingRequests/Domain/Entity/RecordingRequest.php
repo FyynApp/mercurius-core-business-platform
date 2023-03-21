@@ -138,6 +138,24 @@ class RecordingRequest
     }
 
 
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 256,
+        nullable: true
+    )]
+    private ?string $title = null;
+
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+
     #[ORM\ManyToOne(
         targetEntity: Video::class,
         cascade: ['persist']

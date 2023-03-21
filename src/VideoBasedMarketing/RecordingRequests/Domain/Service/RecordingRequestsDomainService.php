@@ -8,25 +8,36 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Enum\RecordingRequestResponseStatus;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Exception;
 
-class RecordingRequestsDomainService
+readonly class RecordingRequestsDomainService
 {
-    private EntityManagerInterface $entityManager;
-
-    private ShortIdService $shortIdService;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ShortIdService         $shortIdService
+        private EntityManagerInterface $entityManager,
+        private ShortIdService         $shortIdService
     )
     {
-        $this->entityManager = $entityManager;
-        $this->shortIdService = $shortIdService;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAvailableRecordingRequestsForCurrentlyActiveOrganization(
+        User $user
+    ): array
+    {
+        /** @var ObjectRepository<RecordingRequest> $repo */
+        $repo = $this->entityManager->getRepository(RecordingRequest::class);
+
+        return $repo->findBy(
+            [
+                'organization' => $user->getCurrentlyActiveOrganization()->getId()
+            ],
+            ['createdAt' => Criteria::DESC]
+        );
     }
 
     public function needToCreateResponse(
