@@ -6,6 +6,7 @@ use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
@@ -75,7 +76,7 @@ class RecordingRequestsController
             $requestVideo = $r->getEntity();
         }
 
-        $title = $request->get('title');
+        $title = (string)$request->get('title');
 
         $recordingRequest = $recordingRequestsDomainService
             ->createRequest(
@@ -259,13 +260,10 @@ class RecordingRequestsController
     )]
     public function askToHandleResponsesAction(
         string                         $videoId,
-        Request                        $request,
-        RecordingRequestsDomainService $recordingRequestsDomainService
+        RecordingRequestsDomainService $recordingRequestsDomainService,
+        CapabilitiesService            $capabilitiesService
     ): Response
     {
-        $followUpRouteName = $request->get('followUpRouteName');
-        $followUpRouteParameters = $request->get('followUpRouteParameters');
-
         $result = $this->verifyAndGetUserAndEntity(
             Video::class,
             $videoId,
@@ -278,19 +276,18 @@ class RecordingRequestsController
             );
 
         if (sizeof($responsesThatNeedToBeAnswered) === 0) {
-            return $this->redirectToRoute(
-                $followUpRouteName,
-                json_decode($followUpRouteParameters, true)
-            );
+            if ($capabilitiesService->mustBeForcedToClaimUnregisteredUser($this->getUser())) {
+                return $this->redirectToRoute('videobasedmarketing.account.presentation.claim_unregistered_user.landingpage');
+            } else {
+                return $this->redirectToRoute('videobasedmarketing.recordings.presentation.videos.overview');
+            }
         }
 
         return $this->render(
             '@videobasedmarketing.recording_requests/ask_to_handle_responses.html.twig',
             [
                 'video' => $result->getEntity(),
-                'responses' => $responsesThatNeedToBeAnswered,
-                'followUpRouteName' => $followUpRouteName,
-                'followUpRouteParameters' => $followUpRouteParameters
+                'responses' => $responsesThatNeedToBeAnswered
             ]
         );
     }
@@ -307,7 +304,6 @@ class RecordingRequestsController
     public function answerResponseWithVideoAction(
         string                         $videoId,
         string                         $recordingRequestResponseId,
-        Request                        $request,
         RecordingRequestsDomainService $recordingRequestsDomainService
     ): Response
     {
@@ -335,8 +331,22 @@ class RecordingRequestsController
         );
 
         return $this->redirectToRoute(
-            $request->get('followUpRouteName'),
-            json_decode($request->get('followUpRouteParameters'), true)
+            'videobasedmarketing.recording_requests.thank_you',
+            ['recordingRequestResponseId' => $recordingRequestResponse->getId()]
         );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-requests/responses/{recordingRequestResponseId}/thank-you',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahme-anfragen/antworten/{recordingRequestResponseId}/danke',
+        ],
+        name        : 'videobasedmarketing.recording_requests.thank_you',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function thankYouAction(): Response
+    {
+        return $this->render('@videobasedmarketing.recording_requests/thank_you.html.twig');
     }
 }

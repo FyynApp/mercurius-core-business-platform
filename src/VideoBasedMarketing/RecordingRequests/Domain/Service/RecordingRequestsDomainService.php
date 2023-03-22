@@ -193,6 +193,8 @@ readonly class RecordingRequestsDomainService
             }
         }
 
+        rsort($answeredResponses);
+
         return $answeredResponses;
     }
 
@@ -218,6 +220,23 @@ readonly class RecordingRequestsDomainService
         Video                    $video
     ): void
     {
+        $video->setUser(
+            $recordingRequestResponse->getRecordingRequest()->getUser()
+        );
+
+        $video->getRecordingSession()->setUser(
+            $recordingRequestResponse->getRecordingRequest()->getUser()
+        );
+
+        $video->setOrganization(
+            $recordingRequestResponse->getRecordingRequest()->getOrganization()
+        );
+
+        $video->getRecordingSession()->setOrganization(
+            $recordingRequestResponse->getRecordingRequest()->getOrganization()
+        );
+
+
         $recordingRequestResponse->addVideo($video);
         $recordingRequestResponse->setStatus(RecordingRequestResponseStatus::ANSWERED);
 
@@ -225,6 +244,7 @@ readonly class RecordingRequestsDomainService
 
         $this->entityManager->persist($recordingRequestResponse);
         $this->entityManager->persist($video);
+        $this->entityManager->persist($video->getRecordingSession());
         $this->entityManager->flush();
     }
 }

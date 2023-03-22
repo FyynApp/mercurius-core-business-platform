@@ -46,29 +46,31 @@
                 <ol class="mt-8 flex flex-col gap-16">
                     {% if recordingRequest.requestText|trim|length > 0 or recordingRequest.requestVideo is not null %}
                         <li>
-                            <div class="text-xl font-semibold">
+                            <div class="text-xl font-semibold mb-4">
                                 {{ 'response_instructions.step1'|trans }}
                             </div>
 
                             {% if recordingRequest.requestText|trim|length > 0 and recordingRequest.requestVideo is not null %}
-                                <div class="font-semibold mb-4">
+                                <div class="mb-5">
                                     {{ 'response_instructions.request_text_and_video_intro'|trans }}
                                 </div>
-                                <div class="mb-4 italic text-neutral-700">
+                                <div class="mb-4 italic text-neutral-700 shadow-inner p-4 rounded-md bg-neutral-100">
+                                    <div class="font-semibold mb-4">{{ recordingRequest.title }}</div>
                                     {{ recordingRequest.requestText|nl2br }}
                                 </div>
                                 <div>
                                     {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(recordingRequest.requestVideo)|raw }}
                                 </div>
                             {% elseif recordingRequest.requestText|trim|length > 0 and recordingRequest.requestVideo is null %}
-                                <div class="font-semibold mb-4">
+                                <div class="mb-5">
                                     {{ 'response_instructions.request_text_intro'|trans }}
                                 </div>
-                                <div class="mb-4 italic text-neutral-700">
+                                <div class="mb-4 italic text-neutral-700 shadow-inner p-4 rounded-md bg-neutral-100">
+                                    <div class="font-semibold mb-4">{{ recordingRequest.title }}</div>
                                     {{ recordingRequest.requestText|nl2br }}
                                 </div>
                             {% elseif recordingRequest.requestText|trim|length is same as 0 and recordingRequest.requestVideo is not null %}
-                                <div class="font-semibold mb-4">
+                                <div class="mb-5">
                                     {{ 'response_instructions.request_video_intro'|trans }}
                                 </div>
                                 <div>

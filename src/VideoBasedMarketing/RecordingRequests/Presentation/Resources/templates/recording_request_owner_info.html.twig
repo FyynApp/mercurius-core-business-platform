@@ -19,7 +19,7 @@
 
         {% block contentBoxContent %}
 
-            <div class="mb-16">
+            <div>
                 <h2 class="font-bold text-lg mb-4 w-full border-b-2 border-neutral-200">
                     {{ 'recording_request_owner_info.overview'|trans }}
                 </h2>
@@ -71,6 +71,19 @@
 
                     <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full">
                         <div class="w-32">
+                            &nbsp;
+                        </div>
+                        <div class="flex-grow font-extralight italic">
+                            {% if recordingRequest.requestVideo is null %}
+                                {{ 'recording_request_owner_info.note_label_and_text'|trans }}
+                            {% else %}
+                                {{ 'recording_request_owner_info.note_label_and_text_and_video'|trans }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full">
+                        <div class="w-32">
                             <label for="title" class="font-semibold">
                                 {{ 'recording_request_owner_info.label_title'|trans }}
                             </label>
@@ -116,25 +129,23 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col md:flex-row md:justify-start md:items-start gap-2 w-full">
-                        <div class="w-32 font-semibold">
-                            {{ 'recording_request_owner_info.label_request_video'|trans }}
-                        </div>
-                        <div class="flex-grow max-w-xl">
-                            {% if recordingRequest.requestVideo is null %}
-                                {{ 'recording_request_owner_info.no_request_video'|trans }}
-                            {% else %}
+                    {% if recordingRequest.requestVideo is not null %}
+                        <div class="flex flex-col md:flex-row md:justify-start md:items-start gap-2 w-full">
+                            <div class="w-32 font-semibold">
+                                {{ 'recording_request_owner_info.label_request_video'|trans }}
+                            </div>
+                            <div class="flex-grow max-w-xl">
                                 {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(recordingRequest.requestVideo)|raw }}
-                            {% endif %}
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 </form>
             </div>
 
 
 
-            <div>
-                <h2 class="font-bold text-lg mb-4 w-full border-b-2 border-neutral-200">
+            <div class="mt-32">
+                <h2 class="font-bold text-lg mb-8 w-full border-b-2 border-neutral-200">
                     {{ 'recording_request_owner_info.responses'|trans }}
                 </h2>
 
@@ -153,25 +164,13 @@
                             {% for video in response.videos %}
                                 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
-                                <div class="
-                                    flex
-                                    flex-col lg:flex-row
-                                    justify-center lg:justify-start
-                                    items-center lg:items-start
-                                    gap-16
-                                    w-48
-                                 "
-                                >
-                                    <video
-                                            class="mx-auto rounded-md w-full"
-                                            controls
-                                            poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
-                                    >
-                                        <source
-                                                src="{{ TwigHelperService.recordingsInfrastructureService.videoFullAssetUrl(video) }}"
-                                        >
-                                    </video>
-                                </div>
+                                {{ component('videobasedmarketing_recordings_video_manage_widget', {
+                                    video: video,
+                                    showEditModal: false,
+                                    doneCtaMustRedirectToOverview: false,
+
+                                    'data-live-id': 'video-id-' ~ video.id
+                                }) }}
 
                             {% endfor %}
 

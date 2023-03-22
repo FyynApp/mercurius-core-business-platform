@@ -57,6 +57,7 @@
 
     waitForElement(`.fyyn-video-${videoShortId}-player-embed-outer`).then(($outer) => {
 
+        const autoplay = $outer.getAttribute('data-param-autoplay') === 'true';
 
         {# Video tag #}
         $outer.insertAdjacentHTML(
@@ -67,6 +68,7 @@
                     style="width: 100%;"
                     class="fyyn-video-${videoShortId}-player-embed-video"
                     preload="metadata"
+                    ${autoplay ? 'autoplay playsinline controls muted' : ''}
                     poster="{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(video) }}"
             >
                 <source
@@ -92,80 +94,79 @@
             `
         );
 
-
-        {# Blur overlay #}
-        $outer.insertAdjacentHTML(
-            'beforeend',
-
-            `
-            <div
-                id="fyyn-video-${videoShortId}-player-embed-central-play-button-wrapper"
-
-                style="
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    backdrop-filter: blur(4px);
-                    border-radius: 0.375rem;
-                    "
-            >
-                <div
-                    id="fyyn-video-${videoShortId}-player-embed-central-play-button"
-
-                    class="
-                        fyyn-video-${videoShortId}-player-embed-gradient
-                        fyyn-video-${videoShortId}-player-embed-rounded-full
-                        fyyn-video-${videoShortId}-player-embed-opacity-90
-                        fyyn-video-${videoShortId}-player-embed-hover-opacity-100
-                        fyyn-video-${videoShortId}-player-embed-cursor-pointer
-                        "
-
-                    style="
-                        width: 100px;
-                        height: 100px;
-                        color: white;
-                        border: 1px solid white;
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: center;
-                        align-items: center;
-                        "
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="" style="padding-left: 8px; width: 70%; opacity: 80%;">
-                        <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-            </div>
-        `
-        );
-
-
         const $video = document.querySelector(`.fyyn-video-${videoShortId}-player-embed-video`);
 
 
-        {# Play button #}
-        waitForElement(`#fyyn-video-${videoShortId}-player-embed-central-play-button-wrapper`)
-            .then(($centralPlayButtonWrapper) => {
-                const togglePlay = () => {
-                    if ($video.paused || $video.ended) {
-                        $video.play();
-                        $video.setAttribute('controls', '');
-                        $centralPlayButtonWrapper.remove();
-                    } else {
-                        $video.pause();
+        {# Blur overlay #}
+        if (!autoplay) {
+            $outer.insertAdjacentHTML(
+                'beforeend',
+
+                `
+                <div
+                    id="fyyn-video-${videoShortId}-player-embed-central-play-button-wrapper"
+
+                    style="
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        backdrop-filter: blur(4px);
+                        border-radius: 0.375rem;
+                        "
+                >
+                    <div
+                        id="fyyn-video-${videoShortId}-player-embed-central-play-button"
+
+                        class="
+                            fyyn-video-${videoShortId}-player-embed-gradient
+                            fyyn-video-${videoShortId}-player-embed-rounded-full
+                            fyyn-video-${videoShortId}-player-embed-opacity-90
+                            fyyn-video-${videoShortId}-player-embed-hover-opacity-100
+                            fyyn-video-${videoShortId}-player-embed-cursor-pointer
+                            "
+
+                        style="
+                            width: 100px;
+                            height: 100px;
+                            color: white;
+                            border: 1px solid white;
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                            "
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="" style="padding-left: 8px; width: 70%; opacity: 80%;">
+                            <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+                `
+            );
+
+            {# Play button #}
+            waitForElement(`#fyyn-video-${videoShortId}-player-embed-central-play-button-wrapper`)
+                .then(($centralPlayButtonWrapper) => {
+                    const togglePlay = () => {
+                        if ($video.paused || $video.ended) {
+                            $video.play();
+                            $video.setAttribute('controls', '');
+                            $centralPlayButtonWrapper.remove();
+                        } else {
+                            $video.pause();
+                        }
                     }
-                }
 
-                $centralPlayButtonWrapper.addEventListener('click', togglePlay);
+                    $centralPlayButtonWrapper.addEventListener('click', togglePlay);
 
 
-                {% if TwigHelperService.embeddableVideoPlayerPresentationService.embedMustBeBranded(video) %}
+                    {% if TwigHelperService.embeddableVideoPlayerPresentationService.embedMustBeBranded(video) %}
                     $centralPlayButtonWrapper.insertAdjacentHTML(
                         'beforeend',
                         `
@@ -187,8 +188,13 @@
                         </div>
                         `
                     );
-                {% endif %}
-            });
+                    {% endif %}
+                });
+        }
+
+        if (autoplay) {
+            $video.play();
+        }
 
     });
 

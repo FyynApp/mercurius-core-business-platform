@@ -78,11 +78,7 @@ class RecordingSessionsController
         ) {
             return $this->redirectToRoute(
                 'videobasedmarketing.recording_requests.ask_to_handle_responses',
-                [
-                    'videoId' => $video->getId(),
-                    'followUpRouteName' => $routeName,
-                    'followUpRouteParameters' => json_encode($routeParameters)
-                ]
+                ['videoId' => $video->getId()]
             );
         } else {
             return $this->redirectToRoute(
