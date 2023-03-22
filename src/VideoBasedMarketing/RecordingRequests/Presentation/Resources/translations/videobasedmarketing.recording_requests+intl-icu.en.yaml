@@ -23,9 +23,13 @@ response_instructions:
   start_cta: 'Start process'
   text1: 'User {userIdentifier} requested a video recording.'
   text2: 'Simply follow the below steps to create and submit your video recording.'
-  step1: ''
-  step2: ''
-  step3: ''
+  step1: 'Step 1'
+  request_text_intro: 'Please read the following statement by the person who requests the video recording:'
+  request_video_intro: 'Please watch the following video by the person who requests the video recording:'
+  request_text_and_video_intro: 'Please read the following statement and watch the video by the person who requests the video recording:'
+  step2: 'Step 2'
+  step2_intro: 'Whenever you are ready, click one of the options below to start recording your camera or your screen:'
+  step3: 'Step 3'
 
 ask_to_handle_responses:
   greeting: 'Your video recording'

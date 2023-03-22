@@ -4,35 +4,16 @@
 
 {% trans_default_domain 'videobasedmarketing.recording_requests' %}
 
+{% block javascripts %}
+    <script defer="defer" src="{{ asset('assets/native-browser-recorder/main.9a8cb793.js') }}"></script>
+{% endblock %}
+
+
 {% block body %}
 
     <div class="bg-white h-full w-full p-8">
 
-        <div class="flex flex-row justify-end">
-            <a
-                    href="{{ path('shared.presentation.contentpages.homepage') }}"
-                    target="_blank"
-                    class="
-                        flex flex-row gap-1.5 justify-end items-end
-                        p-2 pr-4 pl-4 rounded-md
-                        w-fit
-                        font-extralight
-                        bg-gradient-to-l
-                        from-mercurius-green-500
-                        to-mercurius-blue-500
-                        text-white
-                    "
-            >
-                <div>powered by</div>
-                <img
-                        class="h-5"
-                        src="{{ asset('assets/images/shared/logos/fyyn-logo-head-only-240x241.png') }}"
-                        alt="Fyyn.io"
-                >
-                <div class="logo-font text-mercurius-blue-900">Fyyn</div>
-            </a>
-        </div>
-
+        {% include '@videobasedmarketing.recording_requests/_logo.html.twig' %}
 
         <div class="flex flex-col w-full md:max-w-2xl mx-auto mt-16">
 
@@ -62,17 +43,65 @@
                     {{ 'response_instructions.text2'|trans }}
                 </p>
 
-                <ol class="mt-8">
-                    <li>
-                        {{ 'response_instructions.step1'|trans }}
-                    </li>
+                <ol class="mt-8 flex flex-col gap-16">
+                    {% if recordingRequest.requestText|trim|length > 0 or recordingRequest.requestVideo is not null %}
+                        <li>
+                            <div class="text-xl font-semibold">
+                                {{ 'response_instructions.step1'|trans }}
+                            </div>
+
+                            {% if recordingRequest.requestText|trim|length > 0 and recordingRequest.requestVideo is not null %}
+                                <div class="font-semibold mb-4">
+                                    {{ 'response_instructions.request_text_and_video_intro'|trans }}
+                                </div>
+                                <div class="mb-4 italic text-neutral-700">
+                                    {{ recordingRequest.requestText|nl2br }}
+                                </div>
+                                <div>
+                                    {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(recordingRequest.requestVideo)|raw }}
+                                </div>
+                            {% elseif recordingRequest.requestText|trim|length > 0 and recordingRequest.requestVideo is null %}
+                                <div class="font-semibold mb-4">
+                                    {{ 'response_instructions.request_text_intro'|trans }}
+                                </div>
+                                <div class="mb-4 italic text-neutral-700">
+                                    {{ recordingRequest.requestText|nl2br }}
+                                </div>
+                            {% elseif recordingRequest.requestText|trim|length is same as 0 and recordingRequest.requestVideo is not null %}
+                                <div class="font-semibold mb-4">
+                                    {{ 'response_instructions.request_video_intro'|trans }}
+                                </div>
+                                <div>
+                                    {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(recordingRequest.requestVideo)|raw }}
+                                </div> %}
+                            {% endif %}
+                        </li>
+                    {% endif %}
 
                     <li class="mt-8">
-                        {{ 'response_instructions.step2'|trans }}
-                    </li>
-
-                    <li class="mt-8">
-                        {{ 'response_instructions.step3'|trans }}
+                        <div class="text-xl font-semibold mb-4">
+                            {% if recordingRequest.requestText|trim|length > 0 or recordingRequest.requestVideo is not null %}
+                                {{ 'response_instructions.step2'|trans }}
+                            {% else %}
+                                {{ 'response_instructions.step1'|trans }}
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            {{ 'response_instructions.step2_intro'|trans }}
+                        </div>
+                        <div>
+                            <mercurius-web-recorder
+                                    init-id="v1stGXR8Z5jdHi6B"
+                                    brand-color="#009EE2"
+                                    brand-dark-color="#0185BD"
+                                    primary-color="#84CC16"
+                                    primary-dark-color="#65A30D"
+                                    accent-color="#fd5f00"
+                                    container-width="100%"
+                                    container-height="320px"
+                            >
+                            </mercurius-web-recorder>
+                        </div>
                     </li>
                 </ol>
 
