@@ -34,23 +34,38 @@
                 >
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('update-recording-request') }}">
 
-                    <div class="flex flex-col lg:flex-row lg:justify-start lg:items-center gap-2 w-full">
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full mb-16">
                         <div class="w-32">
                             <label for="requestText" class="font-semibold">
                                 {{ 'recording_request_owner_info.share_url_label'|trans }}
                             </label>
                         </div>
-                        <div class="flex-grow">
-                            <div
-                                    class="text-xs border-1 border-mercurius-green-600 rounded-md p-2 font-bold w-fit cursor-text font-mono max-w-full overflow-ellipsis bg-mercurius-green-50 text-mercurius-green-900"
+                        <div
+                                class="flex-grow flex flex-row gap-2 justify-between items-center max-w-xl"
+                                data-controller="clipboard"
+                                data-clipboard-success-content='{{ 'recording_request_owner_info.copy_success'|trans }}'
+                        >
+                            <input
+                                    type="text"
+                                    data-clipboard-target="source"
+                                    disabled
+                                    value="{{ url(
+                                        'videobasedmarketing.recording_requests.recording_request_share',
+                                        { 'recordingRequestShortId': recordingRequest.shortId }
+                                    ) }}"
+                                    class="text-sm border-1 border-mercurius-green-600 rounded-md p-2 font-bold cursor-text font-mono bg-mercurius-green-50 text-mercurius-green-900 h-10 flex-grow"
                             >
-                                {{
-                                url(
-                                    'videobasedmarketing.recording_requests.recording_request_share',
-                                    { 'recordingRequestShortId': recordingRequest.shortId }
-                                )
-                                }}
-                            </div>
+                            <button
+                                    type="button"
+                                    class="
+                                            bg-mercurius-blue-900 text-mercurius-blue-200 p-2
+                                            rounded-md
+                                        "
+                                    data-clipboard-target="button"
+                                    data-action="clipboard#copy"
+                            >
+                                {{ 'recording_request_owner_info.copy_cta'|trans }}
+                            </button>
                         </div>
                     </div>
 

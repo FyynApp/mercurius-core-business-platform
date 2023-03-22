@@ -15,6 +15,8 @@ recording_request_owner_info:
   responses: 'Received responses'
   no_answered_responses_yet: 'No responses yet.'
   flash_message_saved_success: 'Changes have been saved.'
+  copy_cta: 'Copy'
+  copy_success: 'Copied!'
 
 response_instructions:
   greeting: 'Your video recording'
