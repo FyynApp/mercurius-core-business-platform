@@ -86,9 +86,9 @@ class RecordingRequestsController
             );
 
         return $this->redirectToRoute(
-            'videobasedmarketing.recording_requests.recording_request_share',
+            'videobasedmarketing.recording_requests.recording_request.show',
             [
-                'recordingRequestShortId' => $recordingRequest->getShortId()
+                'recordingRequestId' => $recordingRequest->getId()
             ]
         );
     }
@@ -137,10 +137,35 @@ class RecordingRequestsController
         );
 
         return $this->redirectToRoute(
-            'videobasedmarketing.recording_requests.recording_request_share',
+            'videobasedmarketing.recording_requests.recording_request.show',
             [
-                'recordingRequestShortId' => $recordingRequest->getShortId()
+                'recordingRequestId' => $recordingRequest->getId()
             ]
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recording-requests/{recordingRequestId}',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahme-anfragen/{recordingRequestId}',
+        ],
+        name        : 'videobasedmarketing.recording_requests.recording_request.show',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function recordingRequestShowAction(
+        string $recordingRequestId
+    ): Response
+    {
+        $result = $this->verifyAndGetUserAndEntity(
+            RecordingRequest::class,
+            $recordingRequestId,
+            AccessAttribute::Use
+        );
+
+        return $this->render(
+            '@videobasedmarketing.recording_requests/recording_request_show.html.twig',
+            ['recordingRequest' => $result->getEntity()]
         );
     }
 
@@ -166,16 +191,6 @@ class RecordingRequestsController
 
         if (is_null($recordingRequest)) {
             throw $this->createNotFoundException("No recording request with short id '$recordingRequestShortId' found.");
-        }
-
-        $user = $this->getUser();
-        if (   !is_null($user)
-            && $user->getCurrentlyActiveOrganization()->getId() === $recordingRequest->getOrganization()->getId()
-        ) {
-            return $this->render(
-                '@videobasedmarketing.recording_requests/recording_request_owner_info.html.twig',
-                ['recordingRequest' => $recordingRequest]
-            );
         }
 
         return $this->redirectToRoute(
