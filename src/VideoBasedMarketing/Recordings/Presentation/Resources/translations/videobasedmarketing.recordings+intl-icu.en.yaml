@@ -24,6 +24,7 @@ video_manage_widget:
     cta_show_analytics: 'Show engagement'
     cta_edit: 'Edit video'
     cta_send_video_mailing: 'Send video email'
+    cta_create_recording_request: 'Create video request'
     cta_delete: 'Delete video'
     cta_show_embed: 'Show embed code'
     cta_show_audio_transcription_modal: 'Audio transcription'

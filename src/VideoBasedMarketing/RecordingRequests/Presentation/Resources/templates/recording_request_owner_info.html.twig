@@ -30,13 +30,33 @@
                             'videobasedmarketing.recording_requests.update_recording_request',
                             { recordingRequestId: recordingRequest.id }
                         ) }}"
-                        class="flex flex-col gap-2 justify-start items-start w-full"
+                        class="flex flex-col gap-8 md:gap-2 justify-start items-start w-full"
                 >
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('update-recording-request') }}">
 
+                    <div class="flex flex-col lg:flex-row lg:justify-start lg:items-center gap-2 w-full">
+                        <div class="w-32">
+                            <label for="requestText" class="font-semibold">
+                                {{ 'recording_request_owner_info.share_url_label'|trans }}
+                            </label>
+                        </div>
+                        <div class="flex-grow">
+                            <div
+                                    class="text-xs border-1 border-mercurius-green-600 rounded-md p-2 font-bold w-fit cursor-text font-mono max-w-full overflow-ellipsis bg-mercurius-green-50 text-mercurius-green-900"
+                            >
+                                {{
+                                url(
+                                    'videobasedmarketing.recording_requests.recording_request_share',
+                                    { 'recordingRequestShortId': recordingRequest.shortId }
+                                )
+                                }}
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full">
                         <div class="w-32">
-                            <label for="title">
+                            <label for="title" class="font-semibold">
                                 {{ 'recording_request_owner_info.label_title'|trans }}
                             </label>
                         </div>
@@ -53,7 +73,7 @@
 
                     <div class="flex flex-col md:flex-row md:justify-start md:items-start gap-2 w-full">
                         <div class="w-32">
-                            <label for="requestText">
+                            <label for="requestText" class="font-semibold">
                                 {{ 'recording_request_owner_info.label_request_text'|trans }}
                             </label>
                         </div>
@@ -81,25 +101,16 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col lg:flex-row lg:justify-start lg:items-center gap-2 w-full">
-                        <div class="w-32">
-                            <label
-                                    for="requestText"
-                            >
-                                {{ 'recording_request_owner_info.share_url_label'|trans }}
-                            </label>
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-start gap-2 w-full">
+                        <div class="w-32 font-semibold">
+                            {{ 'recording_request_owner_info.label_request_video'|trans }}
                         </div>
-                        <div class="flex-grow">
-                            <div
-                                    class="text-xs border-1 border-mercurius-green-600 rounded-md p-2 font-bold w-fit cursor-text font-mono max-w-full overflow-ellipsis bg-mercurius-green-50 text-mercurius-green-900"
-                            >
-                                {{
-                                    url(
-                                        'videobasedmarketing.recording_requests.recording_request_share',
-                                        { 'recordingRequestShortId': recordingRequest.shortId }
-                                    )
-                                }}
-                            </div>
+                        <div class="flex-grow max-w-xl">
+                            {% if recordingRequest.requestVideo is null %}
+                                {{ 'recording_request_owner_info.no_request_video'|trans }}
+                            {% else %}
+                                {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(recordingRequest.requestVideo)|raw }}
+                            {% endif %}
                         </div>
                     </div>
                 </form>

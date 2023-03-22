@@ -32,12 +32,12 @@ class RecordingRequest
      */
     public function __construct(
         User   $user,
-        string $requestText,
+        string $title,
         ?Video $requestVideo = null
     )
     {
         $this->user = $user;
-        $this->requestText = $requestText;
+        $this->setTitle($title);
         $this->requestVideo = $requestVideo;
         $this->organization = $user->getCurrentlyActiveOrganization();
         $this->recordingRequestResponses = new ArrayCollection();
@@ -143,7 +143,7 @@ class RecordingRequest
         length: 256,
         nullable: true
     )]
-    private ?string $title = null;
+    private ?string $title;
 
     public function setTitle(string $title): void
     {
@@ -175,7 +175,7 @@ class RecordingRequest
 
 
     #[ORM\Column(type: Types::TEXT)]
-    private string $requestText;
+    private string $requestText = '';
 
     public function getRequestText(): string
     {

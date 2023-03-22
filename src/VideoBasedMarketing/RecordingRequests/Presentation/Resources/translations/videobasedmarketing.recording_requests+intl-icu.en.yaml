@@ -9,6 +9,8 @@ recording_request_owner_info:
   share_url_label: 'Share URL:'
   label_title: 'Title:'
   label_request_text: 'Request text:'
+  label_request_video: 'Request video:'
+  no_request_video: 'This video request does not have a request video.'
   cta_save: 'Save changes'
   responses: 'Received responses'
   no_answered_responses_yet: 'No responses yet.'

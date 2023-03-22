@@ -12,7 +12,6 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResp
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,12 +75,12 @@ class RecordingRequestsController
             $requestVideo = $r->getEntity();
         }
 
-        $requestText = mb_substr($request->get('requestText'), 0, 4096);
+        $title = $request->get('title');
 
         $recordingRequest = $recordingRequestsDomainService
             ->createRequest(
                 $user,
-                $requestText,
+                $title,
                 $requestVideo
             );
 

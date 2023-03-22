@@ -61,13 +61,13 @@ readonly class RecordingRequestsDomainService
      */
     public function createRequest(
         User   $user,
-        string $requestText,
+        string $title,
         ?Video $requestVideo = null
     ): RecordingRequest
     {
         $recordingRequest = new RecordingRequest(
             $user,
-            $requestText,
+            $title,
             $requestVideo
         );
         $this->entityManager->persist($recordingRequest);
