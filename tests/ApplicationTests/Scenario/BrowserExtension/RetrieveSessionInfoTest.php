@@ -24,7 +24,7 @@ class RetrieveSessionInfoTest
 
         $client->request(
             'GET',
-            '/de/benutzerkonto/einloggen'
+            '/de/benutzerkonto/einloggen?__stl=de'
         );
 
         BrowserExtensionHelper::getSessionInfo($client);

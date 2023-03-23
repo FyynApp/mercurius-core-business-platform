@@ -70,6 +70,7 @@ readonly class LimitAvailableRoutesForUnregisteredUsersKernelRequestSubscriber
 
             'videobasedmarketing.account.presentation.',
             'videobasedmarketing.account.api.extension.',
+            'videobasedmarketing.account.api.native_browser_recorder.',
             'videobasedmarketing.account.infrastructure.thirdpartyauth.',
 
             'videobasedmarketing.organization.',

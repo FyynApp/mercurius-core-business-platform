@@ -78,7 +78,10 @@ class RecordingSessionsController
         ) {
             return $this->redirectToRoute(
                 'videobasedmarketing.recording_requests.ask_to_handle_responses',
-                ['videoId' => $video->getId()]
+                [
+                    'videoId' => $video->getId(),
+                    '_locale' => $user->getUiLanguageCode()->value
+                ]
             );
         } else {
             return $this->redirectToRoute(
