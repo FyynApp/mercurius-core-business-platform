@@ -164,6 +164,7 @@ class RecordingRequestResponse
     )]
     private array|Collection $videos;
 
+    /** @return Video[]|Collection */
     public function getVideos(): array|Collection
     {
         return $this->videos;

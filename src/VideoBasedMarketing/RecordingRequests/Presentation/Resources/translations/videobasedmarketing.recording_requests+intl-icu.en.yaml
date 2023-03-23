@@ -2,6 +2,12 @@ overview:
   title: 'Video Requests'
   cta_add: 'Create new request'
   request_title: 'Request created on'
+  responses: >-
+    {num, plural,
+      =0    {No responses yet}
+      one   {1 response}
+      other {# responses}
+    }
 
 recording_request_owner_info:
   title: 'Request created on'

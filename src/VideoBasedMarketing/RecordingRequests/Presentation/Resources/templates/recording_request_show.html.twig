@@ -161,7 +161,7 @@
                         {% for response in TwigHelperService.recordingRequestsDomainService.answeredResponses(recordingRequest) %}
                             {# @var response \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse #}
 
-                            {% for video in response.videos %}
+                            {% for video in response.videos|filter(v => v.isDeleted is same as false) %}
                                 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
                                 {{ component('videobasedmarketing_recordings_video_manage_widget', {

@@ -186,10 +186,14 @@ readonly class RecordingRequestsDomainService
         $answeredResponses = [];
 
         foreach ($recordingRequest->getRecordingRequestResponses() as $recordingRequestResponse) {
-            if (    $recordingRequestResponse->getStatus()
-                === RecordingRequestResponseStatus::ANSWERED
+            if (   $recordingRequestResponse->getStatus() === RecordingRequestResponseStatus::ANSWERED
             ) {
-                $answeredResponses[] = $recordingRequestResponse;
+                foreach ($recordingRequestResponse->getVideos() as $video) {
+                    if (!$video->isDeleted()) {
+                        $answeredResponses[] = $recordingRequestResponse;
+                        break;
+                    }
+                }
             }
         }
 

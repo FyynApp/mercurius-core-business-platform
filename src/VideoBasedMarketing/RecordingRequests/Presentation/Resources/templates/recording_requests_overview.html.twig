@@ -63,19 +63,25 @@
                 {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
                 {% for recordingRequest in recordingRequests %}
                     <a
-                            class="flex flex-col justify-center items-center rounded-md p-0 bg-neutral-100 hover:bg-mercurius-blue-200"
+                            class="flex flex-col justify-between items-start rounded-md p-0 bg-neutral-100 hover:bg-mercurius-blue-200 p-4"
                             href="{{ path(
                                 'videobasedmarketing.recording_requests.recording_request.show',
                                 { 'recordingRequestId': recordingRequest.Id }
                             ) }}"
                     >
-                        <div
-                                class="flex flex-col p-8"
-                        >
-                            <div>
+                        <div class="h-14 font-semibold">
+                            {{ recordingRequest.title }}
+                        </div>
+                        <div>
+                            {{ 'overview.responses'|trans({
+                                num: TwigHelperService.recordingRequestsDomainService.numberOfAnsweredResponses(recordingRequest)
+                            }) }}
+                        </div>
+                        <div>
+                            <div class="text-xs text-neutral-500">
                                 {{ 'overview.request_title'|trans }}
                             </div>
-                            <div class="font-semibold">
+                            <div class="text-xs text-neutral-500">
                                 {{ dateAndTimeMacros.full(recordingRequest.createdAt) }}
                             </div>
                         </div>
