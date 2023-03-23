@@ -36,7 +36,9 @@ response_instructions:
   request_text_and_video_intro: 'Bitte lesen Sie die folgenden Anmerkungen der Person, die Sie um eine Video-Aufnahme bittet, und schauen Sie sich auch das dazugehörige Video an:'
   step2: 'Schritt 2'
   step2_intro: 'Sobald Sie bereit sind, wählen Sie eine der Optionen, um eine Kamera- oder Bildschirmaufnahme anzufertigen:'
+  step2_intro_mobile: 'Sobald Sie bereit sind, können Sie auf „Aufnahme starten“ tippen, um Ihre Video-Antwort aufzunehmen:'
   step3: 'Schritt 3'
+  mobile_start_cta: 'Aufnahme starten'
 
 handle_uploaded_response_video:
   greeting: 'Ihre Video-Aufnahme'
