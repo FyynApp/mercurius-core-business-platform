@@ -12,6 +12,7 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -304,6 +305,53 @@ class RecordingRequestsController
                 'video' => $result->getEntity(),
                 'responses' => $responsesThatNeedToBeAnswered
             ]
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-requests/{recordingRequestId}/handle-uploaded-video',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahme-anfragen/{recordingRequestId}/hochgeladene-aufnahme-behandeln',
+        ],
+        name        : 'videobasedmarketing.recording_requests.handle_uploaded_response_video',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function answerResponseWithUploadedVideoAction(
+        string                 $recordingRequestId,
+        EntityManagerInterface $entityManager,
+        VideoDomainService     $videoDomainService
+    ): Response
+    {
+        $user = $this->getUser(true);
+
+        $video = $videoDomainService->getNewestUploadedVideoForUser($user);
+
+        $recordingRequest = $entityManager->find(RecordingRequest::class, $recordingRequestId);
+
+        if (is_null($recordingRequest)) {
+            throw $this->createNotFoundException(
+                "Recording request with id '$recordingRequestId' not found."
+            );
+        }
+
+        if (!is_null($video)) {
+            if (!$videoDomainService->videoIsCurrentlyBeingProcessed($video)) {
+                return $this->redirectToRoute(
+                    'videobasedmarketing.recording_requests.ask_to_handle_responses',
+                    ['videoId' => $video->getId()]
+                );
+            }
+        }
+
+        return $this->render(
+            '@videobasedmarketing.recording_requests/handle_uploaded_response_video.html.twig',
+            [],
+            new Response(
+                null,
+                Response::HTTP_OK,
+                ['Refresh' => '5']
+            )
         );
     }
 

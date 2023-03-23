@@ -76,6 +76,44 @@ readonly class VideoDomainService
         return $videos;
     }
 
+
+    /**
+     * @throws Exception
+     */
+    public function getNewestUploadedVideoForUser(
+        User $user
+    ): ?Video
+    {
+        $sql = "
+            SELECT v.id AS id
+
+            FROM {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(User::class)->getTableName()} u
+            ON u.id = v.users_id
+            
+            WHERE
+                u.id = :uid
+                AND recordings_video_uploads_id IS NOT NULL
+                
+            ORDER BY created_at DESC
+            LIMIT 1
+            ;
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([':uid' => $user->getId()]);
+
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            return $this->entityManager->find(
+                Video::class,
+                $row['id']
+            );
+        }
+
+        return null;
+    }
+
     /** @throws Exception */
     public function createVideoEntityForFinishedRecordingSession(
         RecordingSession $recordingSession

@@ -38,6 +38,10 @@ response_instructions:
   step2_intro: 'Sobald Sie bereit sind, wählen Sie eine der Optionen, um eine Kamera- oder Bildschirmaufnahme anzufertigen:'
   step3: 'Schritt 3'
 
+handle_uploaded_response_video:
+  greeting: 'Ihre Video-Aufnahme'
+  please_wait: 'Bitte warten Sie, während Ihre Aufnahme verarbeitet wird...'
+
 ask_to_handle_responses:
   greeting: 'Ihre Video-Aufnahme'
   text1:

@@ -1,11 +1,34 @@
 {% extends '@shared/base_minimal.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var recordingRequest \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest #}
 
 {% trans_default_domain 'videobasedmarketing.recording_requests' %}
 
 {% block javascripts %}
-    <script defer="defer" src="{{ asset('assets/native-browser-recorder/main.9a8cb793.js') }}"></script>
+    {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
+        {{ encore_entry_script_tags(
+            'recordings/uppyVideoUpload',
+            null,
+            '_default',
+            {
+                'data-lang': app.request.locale,
+                'data-max-file-size': TwigHelperService.videoDomainService.maxVideoUploadFilesize(recordingRequest.user),
+                'data-show-inline': 'true',
+                'data-dashboard-target': '#uppyVideoUploadDashboardTarget',
+                'data-status-bar-target': '#uppyVideoUploadStatusBarTarget',
+                'data-after-done-location': path(
+                    'videobasedmarketing.recording_requests.handle_uploaded_response_video',
+                    { recordingRequestId: recordingRequest.id }
+                )
+            }
+        ) }}
+    {% else %}
+        <script
+                defer="defer"
+                src="{{ asset('assets/native-browser-recorder/main.9a8cb793.js') }}"
+        ></script>
+    {% endif %}
 {% endblock %}
 
 
@@ -92,17 +115,58 @@
                             {{ 'response_instructions.step2_intro'|trans }}
                         </div>
                         <div>
-                            <mercurius-web-recorder
-                                    init-id="v1stGXR8Z5jdHi6B"
-                                    brand-color="#009EE2"
-                                    brand-dark-color="#0185BD"
-                                    primary-color="#84CC16"
-                                    primary-dark-color="#65A30D"
-                                    accent-color="#fd5f00"
-                                    container-width="100%"
-                                    container-height="320px"
-                            >
-                            </mercurius-web-recorder>
+
+                            {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
+                                <div
+                                        class="hidden"
+                                        id="uppyVideoUploadDashboardTarget"
+                                >
+                                </div>
+
+                                <div class="mt-8 rounded-md drop-shadow-2xl w-full max-w-lg flex flex-row justify-center">
+                                    <script>
+                                        function triggerUppy() {
+                                            const className = 'uppy-Dashboard-browse';
+                                            const $el = document.getElementsByClassName(className)[0];
+                                            if ($el === undefined) {
+                                                throw new Error(`Could not find Uppy dashboard element with class "${className}".`);
+                                            } else {
+                                                $el.click();
+                                            }
+                                        }
+                                    </script>
+                                    <button
+                                            onclick="triggerUppy()"
+                                            class="
+                                                cta-with-icon-primary
+                                                bg-gradient-to-l from-mercurius-green-500 to-mercurius-blue-500
+                                                text-2xl
+                                            "
+                                            data-test-id="mobileCreateVideoCta"
+                                    >
+                                        Tap to start!
+                                    </button>
+                                </div>
+
+                                <div
+                                        id="uppyVideoUploadStatusBarTarget"
+                                        class="flex flex-row gap-2"
+                                >
+                                </div>
+
+                            {% else %}
+                                <mercurius-web-recorder
+                                        init-id="v1stGXR8Z5jdHi6B"
+                                        brand-color="#009EE2"
+                                        brand-dark-color="#0185BD"
+                                        primary-color="#84CC16"
+                                        primary-dark-color="#65A30D"
+                                        accent-color="#fd5f00"
+                                        container-width="100%"
+                                        container-height="320px"
+                                >
+                                </mercurius-web-recorder>
+                            {% endif %}
                         </div>
                     </li>
                 </ol>

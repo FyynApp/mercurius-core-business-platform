@@ -22,40 +22,6 @@ class EmbeddableVideoPlayerController
     extends AbstractController
 {
     #[Route(
-        path        : 'embed/video-player/{videoShortId}/embed.html.txt',
-        name        : 'videobasedmarketing.recordings.presentation.embeddable_video_player.embed_code',
-        methods     : [Request::METHOD_GET]
-    )]
-    public function embedCodeAction(
-        string                          $videoShortId,
-        RouterInterface                 $router,
-        RecordingsInfrastructureService $recordingsInfrastructureService,
-        EntityManagerInterface          $entityManager
-    ): Response
-    {
-        /** @var ObjectRepository<Video> $r */
-        $r = $entityManager->getRepository(Video::class);
-
-        /** @var null|Video $video */
-        $video = $r->findOneBy(['shortId' => $videoShortId]);
-
-        if (is_null($video)) {
-            throw $this->createNotFoundException("No video with short id '$videoShortId' found.");
-        }
-
-        return $this->render(
-            '@videobasedmarketing.recordings/embeddable_video_player/embed.html.twig',
-            ['video' => $video],
-            new Response(
-                null,
-                Response::HTTP_OK,
-                ['Content-Type' => 'text/plain']
-            )
-        );
-    }
-
-
-    #[Route(
         path        : 'embed/video-player/{videoShortId}/data.jsonp',
         name        : 'videobasedmarketing.recordings.presentation.embeddable_video_player.data',
         methods     : [Request::METHOD_GET]
