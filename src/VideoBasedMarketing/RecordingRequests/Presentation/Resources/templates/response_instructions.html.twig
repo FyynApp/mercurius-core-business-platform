@@ -112,7 +112,11 @@
                             {% endif %}
                         </div>
                         <div class="mb-4">
-                            {{ 'response_instructions.step2_intro'|trans }}
+                            {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
+                                {{ 'response_instructions.step2_intro_mobile'|trans }}
+                            {% else %}
+                                {{ 'response_instructions.step2_intro'|trans }}
+                            {% endif %}
                         </div>
                         <div>
 
@@ -123,7 +127,7 @@
                                 >
                                 </div>
 
-                                <div class="mt-8 rounded-md drop-shadow-2xl w-full max-w-lg flex flex-row justify-center">
+                                <div class="mt-8 rounded-md w-full max-w-lg flex flex-row justify-center">
                                     <script>
                                         function triggerUppy() {
                                             const className = 'uppy-Dashboard-browse';
@@ -139,12 +143,12 @@
                                             onclick="triggerUppy()"
                                             class="
                                                 cta-with-icon-primary
-                                                bg-gradient-to-l from-mercurius-green-500 to-mercurius-blue-500
+                                                mercurius-green-500
                                                 text-2xl
                                             "
                                             data-test-id="mobileCreateVideoCta"
                                     >
-                                        Tap to start!
+                                        {{ 'response_instructions.mobile_start_cta'|trans }}
                                     </button>
                                 </div>
 

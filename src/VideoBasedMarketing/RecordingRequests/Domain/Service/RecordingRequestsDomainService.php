@@ -228,15 +228,17 @@ readonly class RecordingRequestsDomainService
             $recordingRequestResponse->getRecordingRequest()->getUser()
         );
 
-        $video->getRecordingSession()->setUser(
-            $recordingRequestResponse->getRecordingRequest()->getUser()
-        );
+        if (!is_null($video->getRecordingSession())) {
+            $video->getRecordingSession()->setUser(
+                $recordingRequestResponse->getRecordingRequest()->getUser()
+            );
+            $video->getRecordingSession()->setOrganization(
+                $recordingRequestResponse->getRecordingRequest()->getOrganization()
+            );
+            $this->entityManager->persist($video->getRecordingSession());
+        }
 
         $video->setOrganization(
-            $recordingRequestResponse->getRecordingRequest()->getOrganization()
-        );
-
-        $video->getRecordingSession()->setOrganization(
             $recordingRequestResponse->getRecordingRequest()->getOrganization()
         );
 
@@ -248,7 +250,6 @@ readonly class RecordingRequestsDomainService
 
         $this->entityManager->persist($recordingRequestResponse);
         $this->entityManager->persist($video);
-        $this->entityManager->persist($video->getRecordingSession());
         $this->entityManager->flush();
     }
 }

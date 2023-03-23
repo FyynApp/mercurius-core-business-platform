@@ -36,7 +36,9 @@ response_instructions:
   request_text_and_video_intro: 'Please read the following statement and watch the video by the person who requests the video recording:'
   step2: 'Step 2'
   step2_intro: 'Whenever you are ready, click one of the options below to start recording your camera or your screen:'
+  step2_intro_mobile: 'Whenever you are ready, hit „Tap to start“ to begin recording your video response:'
   step3: 'Step 3'
+  mobile_start_cta: 'Tap to start'
 
 handle_uploaded_response_video:
   greeting: 'Your video recording'
