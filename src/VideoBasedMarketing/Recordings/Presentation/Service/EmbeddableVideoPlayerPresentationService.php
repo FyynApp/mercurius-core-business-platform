@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Service;
 
+use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
@@ -12,7 +13,8 @@ readonly class EmbeddableVideoPlayerPresentationService
 {
     public function __construct(
         private Environment       $twigEnvironment,
-        private MembershipService $membershipService
+        private MembershipService $membershipService,
+        private ShortIdService    $shortIdService
     )
     {}
 
@@ -24,6 +26,10 @@ readonly class EmbeddableVideoPlayerPresentationService
         bool  $autoplay = false
     ): string
     {
+        if (is_null($video->getShortId())) {
+            $this->shortIdService->encodeObject($video);
+        }
+
         return $this->twigEnvironment->render(
             '@videobasedmarketing.recordings/embeddable_video_player/embed.html.twig',
             [

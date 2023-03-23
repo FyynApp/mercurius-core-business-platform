@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Recordings\Infrastructure\Service;
 use App\Shared\Infrastructure\Message\ClearTusCacheCommandMessage;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
+use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
@@ -30,43 +31,22 @@ use TusPhp\Tus\Server;
 use ValueError;
 
 
-class RecordingsInfrastructureService
+readonly class RecordingsInfrastructureService
 {
     private const VIDEO_ASSETS_SUBFOLDER_NAME = 'video-assets';
     private const UPLOADED_VIDEO_ASSETS_SUBFOLDER_NAME = 'recordings-uploaded-video-assets';
 
-    private EntityManagerInterface $entityManager;
-
-    private FilesystemService $filesystemService;
-
-    private LoggerInterface $logger;
-
-    private RouterInterface $router;
-
-    private CapabilitiesService $capabilitiesService;
-
-    private MessageBusInterface $messageBus;
-
-    private Server $tusServer;
-
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        FilesystemService      $filesystemService,
-        LoggerInterface        $logger,
-        RouterInterface        $router,
-        CapabilitiesService    $capabilitiesService,
-        MessageBusInterface    $messageBus,
-        Server                 $tusServer
+        private EntityManagerInterface $entityManager,
+        private FilesystemService      $filesystemService,
+        private LoggerInterface        $logger,
+        private RouterInterface        $router,
+        private CapabilitiesService    $capabilitiesService,
+        private MessageBusInterface    $messageBus,
+        private Server                 $tusServer,
+        private ShortIdService         $shortIdService
     )
     {
-        $this->entityManager = $entityManager;
-        $this->filesystemService = $filesystemService;
-        $this->logger = $logger;
-        $this->router = $router;
-        $this->capabilitiesService = $capabilitiesService;
-        $this->messageBus = $messageBus;
-        $this->tusServer = $tusServer;
     }
 
 
@@ -1864,6 +1844,8 @@ class RecordingsInfrastructureService
         $this->entityManager->persist($videoUpload);
         $this->entityManager->persist($video);
         $this->entityManager->flush();
+
+        $this->shortIdService->encodeObject($video);
 
         $fs = new Filesystem();
 

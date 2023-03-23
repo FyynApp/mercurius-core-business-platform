@@ -38,6 +38,10 @@ response_instructions:
   step2_intro: 'Whenever you are ready, click one of the options below to start recording your camera or your screen:'
   step3: 'Step 3'
 
+handle_uploaded_response_video:
+  greeting: 'Your video recording'
+  please_wait: 'Please wait while we process your video...'
+
 ask_to_handle_responses:
   greeting: 'Your video recording'
   text1:

@@ -1,0 +1,30 @@
+{% extends '@shared/base_minimal.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.recording_requests' %}
+
+{% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+{% block body %}
+
+    <div class="bg-white h-full w-full p-8">
+
+        {% include '@videobasedmarketing.recording_requests/_logo.html.twig' %}
+
+
+        <div class="flex flex-col w-full md:max-w-2xl mx-auto mt-16">
+
+            <h1 class="text-3xl mb-8">
+                {{ 'handle_uploaded_response_video.greeting'|trans }}
+            </h1>
+
+            <div class="animate-pulse">
+                {{ 'handle_uploaded_response_video.please_wait'|trans }}
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
