@@ -39,4 +39,23 @@ class AccountHelper
 
         return $crawler;
     }
+
+    public static function signOut(
+        KernelBrowser $client
+    ): Crawler
+    {
+        $isFollowingRedirects = $client->isFollowingRedirects();
+
+        $client->followRedirects();
+        $crawler = $client->request(
+            'GET',
+            '/'
+        );
+        $form = $crawler->filter('[data-test-id="signOutForm"]')->form();
+        $crawler = $client->submit($form);
+
+        $client->followRedirects($isFollowingRedirects);
+
+        return $crawler;
+    }
 }

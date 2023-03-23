@@ -3,7 +3,6 @@
 namespace App\Tests\ApplicationTests\Scenario\Organization;
 
 
-use App\Tests\ApplicationTests\Helper\AccountHelper;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredExtensionOnlyUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
