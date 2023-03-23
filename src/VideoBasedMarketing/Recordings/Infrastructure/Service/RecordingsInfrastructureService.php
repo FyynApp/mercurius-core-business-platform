@@ -1004,6 +1004,15 @@ readonly class RecordingsInfrastructureService
             $sourceHeight = $this->probeForVideoAssetHeight(
                 $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
             );
+
+            // iOS stores a 320x480 video as 480x320 and "rotation of -90.00 degrees"
+            if ($this->videoDimensionsAreSideways(
+                $this->getContentStoragePathForVideoUpload($video->getVideoUpload()))
+            ) {
+                $tmp = $sourceWidth;
+                $sourceWidth = $sourceHeight;
+                $sourceHeight = $tmp;
+            }
         }
 
         // The libx264 encoder cannot work with uneven resolutions,
@@ -1422,6 +1431,42 @@ readonly class RecordingsInfrastructureService
                 );
             return null;
         }
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    private function videoDimensionsAreSideways(string $filepath): bool
+    {
+        $process = new Process(
+            [
+                'ffprobe',
+
+                '-loglevel',
+                'error',
+
+                '-select_streams',
+                'v:0',
+
+                '-show_entries',
+                'side_data=rotation',
+
+                '-of',
+                'default=nw=1:nk=1',
+
+                $filepath
+            ]
+        );
+        $process->run();
+
+        $output = trim($process->getOutput());
+
+        return $output === '-90'
+            || $output === '90'
+            || $output === '-270'
+            || $output === '270'
+            ;
     }
 
 
