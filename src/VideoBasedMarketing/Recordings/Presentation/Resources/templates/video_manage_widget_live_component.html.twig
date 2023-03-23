@@ -897,7 +897,13 @@
                 >
                     {{ 'video_manage_widget.delete_modal.really'|trans }}
 
-                    <form method="post" action="{{ path('videobasedmarketing.recordings.presentation.video.deletion', { videoId: this.video.id }) }}">
+                    <form
+                            method="post"
+                            action="{{ path(
+                                'videobasedmarketing.recordings.presentation.video.deletion',
+                                { videoId: this.video.id }
+                            ) }}"
+                    >
                         <button class="cta-with-icon-danger"
                         >
                             {# Heroicon: check-circle solid #}
