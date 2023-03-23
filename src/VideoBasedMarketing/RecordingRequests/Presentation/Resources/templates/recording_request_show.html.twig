@@ -35,7 +35,7 @@
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('update-recording-request') }}">
 
                     <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full mb-16">
-                        <div class="w-32">
+                        <div class="w-48">
                             <label for="requestText" class="font-semibold">
                                 {{ 'recording_request_owner_info.share_url_label'|trans }}
                             </label>
@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full">
-                        <div class="w-32">
+                        <div class="w-48 shrink-0">
                             &nbsp;
                         </div>
                         <div class="flex-grow font-extralight italic">
@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full">
-                        <div class="w-32">
+                        <div class="w-48">
                             <label for="title" class="font-semibold">
                                 {{ 'recording_request_owner_info.label_title'|trans }}
                             </label>
@@ -100,7 +100,7 @@
                     </div>
 
                     <div class="flex flex-col md:flex-row md:justify-start md:items-start gap-2 w-full">
-                        <div class="w-32">
+                        <div class="w-48">
                             <label for="requestText" class="font-semibold">
                                 {{ 'recording_request_owner_info.label_request_text'|trans }}
                             </label>
@@ -117,7 +117,8 @@
                     </div>
 
                     <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full mb-16">
-                        <div class="w-32 h-0">
+                        <div class="w-48 shrink-0">
+                            &nbsp;
                         </div>
                         <div class="flex-grow">
                             <button
@@ -131,7 +132,7 @@
 
                     {% if recordingRequest.requestVideo is not null %}
                         <div class="flex flex-col md:flex-row md:justify-start md:items-start gap-2 w-full">
-                            <div class="w-32 font-semibold">
+                            <div class="w-48 font-semibold">
                                 {{ 'recording_request_owner_info.label_request_video'|trans }}
                             </div>
                             <div class="flex-grow max-w-xl">

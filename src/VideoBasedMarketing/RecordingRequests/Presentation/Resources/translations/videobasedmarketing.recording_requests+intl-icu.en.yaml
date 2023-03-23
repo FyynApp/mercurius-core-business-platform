@@ -12,13 +12,12 @@ overview:
 recording_request_owner_info:
   title: 'Request created on'
   overview: 'Overview'
-  share_url_label: 'Share URL:'
+  share_url_label: 'Response URL:'
   note_label_and_text: 'The headline and text are presented to responding users.'
   note_label_and_text_and_video: 'The headline, text, and video are presented to responding users.'
   label_title: 'Headline:'
   label_request_text: 'Text:'
   label_request_video: 'Video:'
-  no_request_video: 'This video request does not have a request video.'
   cta_save: 'Save changes'
   responses: 'Received responses'
   no_answered_responses_yet: 'No responses yet.'
@@ -43,10 +42,8 @@ ask_to_handle_responses:
   greeting: 'Your video recording'
   text1:
     singular: 'Would you like to submit this recording to answer the video request „{title}“ from {userIdentifier}?'
-    plural: 'Would you like to submit this recording to answer one of the following video requests?'
   cta_attach: 'Respond to this request'
   cta_retry: 'Start over'
-  success_message: 'Your video response has been sent successfully!'
 
 thank_you:
   text: 'Thank you for submitting your video request response!'
