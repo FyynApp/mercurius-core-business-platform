@@ -1,27 +1,49 @@
 overview:
   title: 'Video-Anfragen'
   cta_add: 'Neue Anfrage erstellen'
-  request_title: 'Anfrage vom'
+  request_title: 'Anfrage erstellt am'
+  responses: >-
+    {num, plural,
+      =0    {Noch keine Antworten}
+      one   {1 Antwort}
+      other {# Antworten}
+    }
 
 recording_request_owner_info:
   title: 'Anfrage vom'
-  share_url_label: 'URL für Teilnahme:'
-  no_answered_responses_yet: 'Bisher keine Antworten eingegangen.'
+  overview: 'Übersicht'
+  share_url_label: 'URL für Antworten:'
+  note_label_and_text: 'Überschrift und Beschreibung werden den Antwortenden präsentiert.'
+  note_label_and_text_and_video: 'Überschrift, Beschreibung, und Video werden den Antwortenden präsentiert.'
+  label_title: 'Überschrift:'
+  label_request_text: 'Beschreibung:'
+  label_request_video: 'Video:'
+  cta_save: 'Änderungen übernehmen'
   responses: 'Eingegangene Antworten'
+  no_answered_responses_yet: 'Für diese Anfrage sind noch keine Antworten eingegangen.'
+  flash_message_saved_success: 'Die Änderungen wurden übernommen.'
+  copy_cta: 'Kopieren'
+  copy_success: 'Kopiert!'
 
 response_instructions:
-  greeting: 'Deine Bildschirmaufnahme'
+  greeting: 'Ihre Video-Aufnahme'
   start_cta: 'Vorgang starten'
-  text1: 'Der Benutzer {userIdentifier} benötigt eine Bildschirmaufnahme von dir.'
-  text2: 'Befolge einfach die untenstehenden Schritte, um eine Aufnahme zu erstellen und zu übermitteln.'
-  step1: 'Schritt 1: Lade die Browser-Erweiterung für Google Chrome herunter:'
-  step2: 'Schritt 2: Installiere die Erweiterung unter'
-  step3: 'Schritt 3: Führe mithilfe der Erweiterung eine Aufnahme durch und folge den weiteren Anweisungen.'
-  extension_download_name: 'Chrome-Extension.zip'
+  text1: 'Der Benutzer {userIdentifier} bittet Sie um eine Video-Aufnahme.'
+  text2: 'Folgen Sie einfach den untenstehenden Schritten, um eine Video-Aufnahme zu erstellen und einzureichen.'
+  step1: 'Schritt 1'
+  request_text_intro: 'Bitte lesen Sie die folgenden Anmerkungen der Person, die Sie um eine Video-Aufnahme bittet:'
+  request_video_intro: 'Bitte schauen Sie sich das folgende Video der Person an, die Sie um eine Video-Aufnahme bittet:'
+  request_text_and_video_intro: 'Bitte lesen Sie die folgenden Anmerkungen der Person, die Sie um eine Video-Aufnahme bittet, und schauen Sie sich auch das dazugehörige Video an:'
+  step2: 'Schritt 2'
+  step2_intro: 'Sobald Sie bereit sind, wählen Sie eine der Optionen, um eine Kamera- oder Bildschirmaufnahme anzufertigen:'
+  step3: 'Schritt 3'
 
 ask_to_handle_responses:
-  greeting: 'Deine Bildschirmaufnahme'
+  greeting: 'Ihre Video-Aufnahme'
   text1:
-    singular: 'Möchtest du diese Aufnahme nutzen, um die Anfrage von {userIdentifier} zu beantworten?'
-    plural: 'Möchtest du diese Aufnahme nutzen, um eine der folgenden Anfragen zu beantworten?'
-  cta_attach: 'Anfrage mit Aufnahme beantworten'
+    singular: 'Möchten Sie diese Aufnahme als Antwort auf die Video-Anfrage „{title}“ von {userIdentifier} übermitteln?'
+  cta_attach: 'Übermitteln'
+  cta_retry: 'Aufnahme wiederholen'
+
+thank_you:
+  text: 'Wir danken Ihnen für die Übermittlung Ihrer Aufnahme!'

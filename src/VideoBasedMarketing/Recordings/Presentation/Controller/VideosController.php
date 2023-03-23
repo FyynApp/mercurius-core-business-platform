@@ -148,7 +148,8 @@ class VideosController
     public function deleteVideoAction(
         string              $videoId,
         TranslatorInterface $translator,
-        VideoDomainService  $videoDomainService
+        VideoDomainService  $videoDomainService,
+        Request             $request
     ): Response
     {
         $r = $this->verifyAndGetUserAndEntity(
@@ -170,6 +171,15 @@ class VideosController
                 'videobasedmarketing.recordings'
             )
         );
+
+        $referer = $request->headers->get('referer');
+
+        if (!is_null($referer)) {
+            return $this
+                ->redirect(
+                    $request->headers->get('referer')
+                );
+        }
 
         return $this
             ->redirectToRoute(

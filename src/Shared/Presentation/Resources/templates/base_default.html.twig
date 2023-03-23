@@ -338,10 +338,16 @@
 
                                 <ul class="flex flex-wrap gap-4 items-center mt-3">
                                     <li>
-                                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en'})) }}" class="hover:underline">{{ 'footernav.english'|trans }}</a>
+                                        <a
+                                                href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'en', '__stl': 'en'})) }}"
+                                                class="hover:underline"
+                                        >{{ 'footernav.english'|trans }}</a>
                                     </li>
                                     <li>
-                                        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de'})) }}" class="hover:underline">{{ 'footernav.german'|trans }}</a>
+                                        <a
+                                                href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({ _locale: 'de', '__stl': 'de'})) }}"
+                                                class="hover:underline"
+                                        >{{ 'footernav.german'|trans }}</a>
                                     </li>
                                 </ul>
 
@@ -386,6 +392,7 @@
                                             <form
                                                     action="{{ path('videobasedmarketing.account.infrastructure.sign_out') }}"
                                                     method="post"
+                                                    data-test-id="signOutForm"
                                             >
                                                 <button
                                                         type="submit"

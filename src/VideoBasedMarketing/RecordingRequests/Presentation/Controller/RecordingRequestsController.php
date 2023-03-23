@@ -3,18 +3,22 @@
 namespace App\VideoBasedMarketing\RecordingRequests\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
+use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RecordingRequestsController
     extends AbstractController
@@ -28,14 +32,17 @@ class RecordingRequestsController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function recordingRequestsOverviewAction(): Response
+    public function recordingRequestsOverviewAction(
+        RecordingRequestsDomainService $recordingRequestsDomainService
+    ): Response
     {
         $user = $this->getUser(true);
 
         return $this->render(
             '@videobasedmarketing.recording_requests/recording_requests_overview.html.twig',
             [
-                'recordingRequests' => $user->getRecordingRequests()
+                'recordingRequests' => $recordingRequestsDomainService
+                    ->getAvailableRecordingRequestsForCurrentlyActiveOrganization($user)
             ]
         );
     }
@@ -50,23 +57,123 @@ class RecordingRequestsController
         methods     : [Request::METHOD_POST]
     )]
     public function createRecordingRequestAction(
+        Request                        $request,
         RecordingRequestsDomainService $recordingRequestsDomainService
     ): Response
     {
         $user = $this->getUser(true);
 
-        $recordingRequest = $recordingRequestsDomainService->createRequest($user);
+        $requestVideoId = $request->get('requestVideoId');
+
+        $requestVideo = null;
+        if (!is_null($requestVideoId)) {
+            $r = $this->verifyAndGetUserAndEntity(
+                Video::class,
+                $requestVideoId,
+                AccessAttribute::Use
+            );
+            /** @var Video $requestVideo */
+            $requestVideo = $r->getEntity();
+        }
+
+        $title = (string)$request->get('title');
+
+        $recordingRequest = $recordingRequestsDomainService
+            ->createRequest(
+                $user,
+                $title,
+                $requestVideo
+            );
 
         return $this->redirectToRoute(
-            'videobasedmarketing.recording_requests.recording_request_share',
+            'videobasedmarketing.recording_requests.recording_request.show',
             [
-                'recordingRequestShortId' => $recordingRequest->getShortId()
+                'recordingRequestId' => $recordingRequest->getId()
             ]
         );
     }
 
     #[Route(
-        path        : '/rr/{recordingRequestShortId}',
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recording-requests/{recordingRequestId}',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahme-anfragen/{recordingRequestId}',
+        ],
+        name        : 'videobasedmarketing.recording_requests.update_recording_request',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function updateRecordingRequestAction(
+        string                 $recordingRequestId,
+        Request                $request,
+        TranslatorInterface    $translator,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        if (!$this->isCsrfTokenValid('update-recording-request', $request->get('_csrf_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
+
+        $r = $this->verifyAndGetUserAndEntity(
+            RecordingRequest::class,
+            $recordingRequestId,
+            AccessAttribute::Edit
+        );
+        /** @var RecordingRequest $recordingRequest */
+        $recordingRequest = $r->getEntity();
+
+        $recordingRequest->setTitle($request->get('title'));
+        $recordingRequest->setRequestText($request->get('requestText'));
+
+        $entityManager->persist($recordingRequest);
+        $entityManager->flush();
+
+        $this->addFlash(
+            FlashMessageLabel::Success->value,
+            $translator->trans(
+                'recording_request_owner_info.flash_message_saved_success',
+                [],
+                'videobasedmarketing.recording_requests'
+            )
+        );
+
+        return $this->redirectToRoute(
+            'videobasedmarketing.recording_requests.recording_request.show',
+            [
+                'recordingRequestId' => $recordingRequest->getId()
+            ]
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recording-requests/{recordingRequestId}',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahme-anfragen/{recordingRequestId}',
+        ],
+        name        : 'videobasedmarketing.recording_requests.recording_request.show',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function recordingRequestShowAction(
+        string $recordingRequestId
+    ): Response
+    {
+        $result = $this->verifyAndGetUserAndEntity(
+            RecordingRequest::class,
+            $recordingRequestId,
+            AccessAttribute::Use
+        );
+
+        return $this->render(
+            '@videobasedmarketing.recording_requests/recording_request_show.html.twig',
+            ['recordingRequest' => $result->getEntity()]
+        );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/rr/{recordingRequestShortId}',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.en%/rr/{recordingRequestShortId}',
+        ],
         name        : 'videobasedmarketing.recording_requests.recording_request_share',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
@@ -76,7 +183,7 @@ class RecordingRequestsController
         EntityManagerInterface $entityManager
     ): Response
     {
-        /** @var EntityRepository $r */
+        /** @var ObjectRepository<RecordingRequest> $r */
         $r = $entityManager->getRepository(RecordingRequest::class);
 
         /** @var null|RecordingRequest $recordingRequest */
@@ -84,14 +191,6 @@ class RecordingRequestsController
 
         if (is_null($recordingRequest)) {
             throw $this->createNotFoundException("No recording request with short id '$recordingRequestShortId' found.");
-        }
-
-        $user = $this->getUser();
-        if (!is_null($user) && $user->getId() === $recordingRequest->getUser()->getId()) {
-            return $this->render(
-                '@videobasedmarketing.recording_requests/recording_request_owner_info.html.twig',
-                ['recordingRequest' => $recordingRequest]
-            );
         }
 
         return $this->redirectToRoute(
@@ -176,13 +275,10 @@ class RecordingRequestsController
     )]
     public function askToHandleResponsesAction(
         string                         $videoId,
-        Request                        $request,
-        RecordingRequestsDomainService $recordingRequestsDomainService
+        RecordingRequestsDomainService $recordingRequestsDomainService,
+        CapabilitiesService            $capabilitiesService
     ): Response
     {
-        $followUpRouteName = $request->get('followUpRouteName');
-        $followUpRouteParameters = $request->get('followUpRouteParameters');
-
         $result = $this->verifyAndGetUserAndEntity(
             Video::class,
             $videoId,
@@ -195,19 +291,18 @@ class RecordingRequestsController
             );
 
         if (sizeof($responsesThatNeedToBeAnswered) === 0) {
-            return $this->redirectToRoute(
-                $followUpRouteName,
-                json_decode($followUpRouteParameters, true)
-            );
+            if ($capabilitiesService->mustBeForcedToClaimUnregisteredUser($this->getUser())) {
+                return $this->redirectToRoute('videobasedmarketing.account.presentation.claim_unregistered_user.landingpage');
+            } else {
+                return $this->redirectToRoute('videobasedmarketing.recordings.presentation.videos.overview');
+            }
         }
 
         return $this->render(
             '@videobasedmarketing.recording_requests/ask_to_handle_responses.html.twig',
             [
                 'video' => $result->getEntity(),
-                'responses' => $responsesThatNeedToBeAnswered,
-                'followUpRouteName' => $followUpRouteName,
-                'followUpRouteParameters' => $followUpRouteParameters
+                'responses' => $responsesThatNeedToBeAnswered
             ]
         );
     }
@@ -224,7 +319,6 @@ class RecordingRequestsController
     public function answerResponseWithVideoAction(
         string                         $videoId,
         string                         $recordingRequestResponseId,
-        Request                        $request,
         RecordingRequestsDomainService $recordingRequestsDomainService
     ): Response
     {
@@ -252,8 +346,22 @@ class RecordingRequestsController
         );
 
         return $this->redirectToRoute(
-            $request->get('followUpRouteName'),
-            json_decode($request->get('followUpRouteParameters'), true)
+            'videobasedmarketing.recording_requests.thank_you',
+            ['recordingRequestResponseId' => $recordingRequestResponse->getId()]
         );
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/recording-requests/responses/{recordingRequestResponseId}/thank-you',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/aufnahme-anfragen/antworten/{recordingRequestResponseId}/danke',
+        ],
+        name        : 'videobasedmarketing.recording_requests.thank_you',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function thankYouAction(): Response
+    {
+        return $this->render('@videobasedmarketing.recording_requests/thank_you.html.twig');
     }
 }

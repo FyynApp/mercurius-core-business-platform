@@ -94,6 +94,31 @@
                         {{ component('videobasedmarketing_recordings_video_duration', { 'video': this.video }) }}
                     </div>
                 </div>
+
+                {% if this.video.recordingRequestResponse is not null %}
+                    <div class="absolute top-0 right-0 p-4">
+                        <a
+                                href="{{ path(
+                                    'videobasedmarketing.recording_requests.recording_request.show',
+                                    { recordingRequestId: this.video.recordingRequestResponse.recordingRequest.id }
+                                ) }}"
+                                title="{{ 'video_manage_widget.is_recording_request_response'|trans }}"
+                                class="flex flex-row gap-1 justify-start items-center p-1 pl-2 pr-2 rounded-md bg-black bg-opacity-75 text-neutral-200 text-xs font-light"
+                        >
+
+                            {# Heroicon: video-camera solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3 h-3">
+                                <path d="M4.5 4.5a3 3 0 00-3 3v9a3 3 0 003 3h8.25a3 3 0 003-3v-9a3 3 0 00-3-3H4.5zM19.94 18.75l-2.69-2.69V7.94l2.69-2.69c.944-.945 2.56-.276 2.56 1.06v11.38c0 1.336-1.616 2.005-2.56 1.06z" />
+                            </svg>
+
+                            {# Heroicon: user-circle solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3 h-3">
+                                <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
+                            </svg>
+
+                        </a>
+                    </div>
+                {% endif %}
             </div>
 
             {% if TwigHelperService.capabilitiesService.canSeeVideoOnlyPresentationpageTemplateTitle(app.user) %}
@@ -374,6 +399,40 @@
                                     >
                                         <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
                                         <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                                    </svg>
+                                </span>
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+
+
+            {% if TwigHelperService.capabilitiesService.canCreateRecordingRequests(app.user) %}
+                <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
+                    <form
+                            action="{{ path(
+                                'videobasedmarketing.recording_requests.create_recording_request',
+                                { requestVideoId: this.video.id, title: this.video.title }
+                            ) }}"
+                            method="post"
+                    >
+                        <button
+                                class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                        >
+                            <span class="flex flex-row justify-between items-center gap-2">
+                                <span>
+                                    {{ 'video_manage_widget.overview_box.cta_create_recording_request'|trans }}
+                                </span>
+                                <span>
+                                    {# Heroicon: envelope solid #}
+                                    <svg
+                                            class="h-4 w-4 text-mercurius-blue-900"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 24 24"
+                                    >
+                                        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm11.378-3.917c-.89-.777-2.366-.777-3.255 0a.75.75 0 01-.988-1.129c1.454-1.272 3.776-1.272 5.23 0 1.513 1.324 1.513 3.518 0 4.842a3.75 3.75 0 01-.837.552c-.676.328-1.028.774-1.028 1.152v.75a.75.75 0 01-1.5 0v-.75c0-1.279 1.06-2.107 1.875-2.502.182-.088.351-.199.503-.331.83-.727.83-1.857 0-2.584zM12 18a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" />
                                     </svg>
                                 </span>
                             </span>
@@ -863,7 +922,13 @@
                 >
                     {{ 'video_manage_widget.delete_modal.really'|trans }}
 
-                    <form method="post" action="{{ path('videobasedmarketing.recordings.presentation.video.deletion', { videoId: this.video.id }) }}">
+                    <form
+                            method="post"
+                            action="{{ path(
+                                'videobasedmarketing.recordings.presentation.video.deletion',
+                                { videoId: this.video.id }
+                            ) }}"
+                    >
                         <button class="cta-with-icon-danger"
                         >
                             {# Heroicon: check-circle solid #}

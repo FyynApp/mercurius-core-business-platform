@@ -56,6 +56,7 @@ video_manage_widget:
     placeholder:
       text: 'Text'
       url: 'Calendly-Share-URL'
+  is_recording_request_response: 'Antwort auf Video-Anfrage'
 upload_video:
   title: 'Video hochladen'
 videos_overview:

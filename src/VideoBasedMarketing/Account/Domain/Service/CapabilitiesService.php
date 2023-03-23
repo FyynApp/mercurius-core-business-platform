@@ -174,6 +174,17 @@ readonly class CapabilitiesService
         );
     }
 
+    public function canShowRecordingRequests(User $user): bool
+    {
+        return true;
+    }
+
+    public function canCreateRecordingRequests(User $user): bool
+    {
+        return true;
+    }
+
+
     private function hasCapability(
         ?User      $user,
         Capability $capability

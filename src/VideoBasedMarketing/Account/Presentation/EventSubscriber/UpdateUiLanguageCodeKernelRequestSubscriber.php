@@ -49,6 +49,24 @@ class UpdateUiLanguageCodeKernelRequestSubscriber
             return;
         }
 
+        $switchToLanguageValue = $event->getRequest()->get('__stl');
+
+        $switchToLanguageCode = null;
+        if (!is_null($switchToLanguageValue)) {
+            $switchToLanguageCode = Iso639_1Code::tryFrom($switchToLanguageValue);
+        }
+
+        if (!is_null($switchToLanguageCode)) {
+            $user->setUiLanguageCode($switchToLanguageCode);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            return;
+        }
+
+        if (!is_null($user->getUiLanguageCode())) {
+            return;
+        }
+
         if ($event->getRequestType() === HttpKernelInterface::SUB_REQUEST) {
             return;
         }
@@ -62,9 +80,7 @@ class UpdateUiLanguageCodeKernelRequestSubscriber
             $languageCode = Iso639_1Code::tryFrom($pathInfoSegments[1]);
         }
 
-        if (   is_null($languageCode)
-            && is_null($user->getUiLanguageCode())
-        ) {
+        if (is_null($languageCode)) {
             $languageCode = Iso639_1CodeService::getCodeFromRequest($event->getRequest());
         }
 

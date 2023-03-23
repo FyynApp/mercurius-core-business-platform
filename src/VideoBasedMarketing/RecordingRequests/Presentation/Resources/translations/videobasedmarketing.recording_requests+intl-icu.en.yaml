@@ -1,2 +1,49 @@
+overview:
+  title: 'Video Requests'
+  cta_add: 'Create new request'
+  request_title: 'Request created on'
+  responses: >-
+    {num, plural,
+      =0    {No responses yet}
+      one   {1 response}
+      other {# responses}
+    }
+
+recording_request_owner_info:
+  title: 'Request created on'
+  overview: 'Overview'
+  share_url_label: 'Response URL:'
+  note_label_and_text: 'The headline and text are presented to responding users.'
+  note_label_and_text_and_video: 'The headline, text, and video are presented to responding users.'
+  label_title: 'Headline:'
+  label_request_text: 'Text:'
+  label_request_video: 'Video:'
+  cta_save: 'Save changes'
+  responses: 'Received responses'
+  no_answered_responses_yet: 'No responses yet.'
+  flash_message_saved_success: 'Changes have been saved.'
+  copy_cta: 'Copy'
+  copy_success: 'Copied!'
+
 response_instructions:
-  greeting: 'Welcome'
+  greeting: 'Your video recording'
+  start_cta: 'Start process'
+  text1: 'User {userIdentifier} requested a video recording.'
+  text2: 'Simply follow the below steps to create and submit your video recording.'
+  step1: 'Step 1'
+  request_text_intro: 'Please read the following statement by the person who requests the video recording:'
+  request_video_intro: 'Please watch the following video by the person who requests the video recording:'
+  request_text_and_video_intro: 'Please read the following statement and watch the video by the person who requests the video recording:'
+  step2: 'Step 2'
+  step2_intro: 'Whenever you are ready, click one of the options below to start recording your camera or your screen:'
+  step3: 'Step 3'
+
+ask_to_handle_responses:
+  greeting: 'Your video recording'
+  text1:
+    singular: 'Would you like to submit this recording to answer the video request „{title}“ from {userIdentifier}?'
+  cta_attach: 'Respond to this request'
+  cta_retry: 'Start over'
+
+thank_you:
+  text: 'Thank you for submitting your video request response!'

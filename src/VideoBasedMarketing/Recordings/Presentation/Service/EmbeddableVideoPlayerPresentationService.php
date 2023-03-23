@@ -20,12 +20,16 @@ readonly class EmbeddableVideoPlayerPresentationService
      * @throws Exception
      */
     public function getVideoEmbedCode(
-        Video $video
+        Video $video,
+        bool  $autoplay = false
     ): string
     {
         return $this->twigEnvironment->render(
             '@videobasedmarketing.recordings/embeddable_video_player/embed.html.twig',
-            ['video' => $video]
+            [
+                'video' => $video,
+                'autoplay' => $autoplay
+            ]
         );
     }
 

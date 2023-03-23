@@ -263,18 +263,6 @@ class Video
         ?RecordingRequestResponse $recordingRequestResponse
     ): void
     {
-        if ($recordingRequestResponse
-                ->getUser()
-                ->getId()
-            !==
-            $this
-                ->getUser()
-                ->getId()
-        ) {
-            throw new InvalidArgumentException(
-                "Trying to set recording request response '{$recordingRequestResponse->getId()}' which belongs to user '{$recordingRequestResponse->getUser()->getId()}', while the video belongs to user '{$this->getUser()->getId()}'."
-            );
-        }
         $this->recordingRequestResponse = $recordingRequestResponse;
     }
 

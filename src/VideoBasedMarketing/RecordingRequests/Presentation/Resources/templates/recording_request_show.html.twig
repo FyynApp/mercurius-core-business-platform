@@ -1,0 +1,189 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+        {# @var recordingRequest \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest #}
+
+        {% trans_default_domain 'videobasedmarketing.recording_requests' %}
+
+        {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+        {% block contentBoxTitle %}
+            {{ 'recording_request_owner_info.title'|trans }}
+            {{ dateAndTimeMacros.full(recordingRequest.createdAt) }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <div>
+                <h2 class="font-bold text-lg mb-4 w-full border-b-2 border-neutral-200">
+                    {{ 'recording_request_owner_info.overview'|trans }}
+                </h2>
+
+                <form
+                        method="post"
+                        action="{{ path(
+                            'videobasedmarketing.recording_requests.update_recording_request',
+                            { recordingRequestId: recordingRequest.id }
+                        ) }}"
+                        class="flex flex-col gap-8 md:gap-2 justify-start items-start w-full"
+                >
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('update-recording-request') }}">
+
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full mb-16">
+                        <div class="w-48">
+                            <label for="requestText" class="font-semibold">
+                                {{ 'recording_request_owner_info.share_url_label'|trans }}
+                            </label>
+                        </div>
+                        <div
+                                class="flex-grow flex flex-row gap-2 justify-between items-center max-w-xl"
+                                data-controller="clipboard"
+                                data-clipboard-success-content='{{ 'recording_request_owner_info.copy_success'|trans }}'
+                        >
+                            <input
+                                    data-test-id="recordingRequestShareUrl"
+                                    type="text"
+                                    data-clipboard-target="source"
+                                    disabled
+                                    value="{{ url(
+                                        'videobasedmarketing.recording_requests.recording_request_share',
+                                        { 'recordingRequestShortId': recordingRequest.shortId }
+                                    ) }}"
+                                    class="text-sm border-1 border-mercurius-green-600 rounded-md p-2 font-bold cursor-text font-mono bg-mercurius-green-50 text-mercurius-green-900 h-10 flex-grow"
+                            >
+                            <button
+                                    type="button"
+                                    class="
+                                            bg-mercurius-blue-900 text-mercurius-blue-200 p-2
+                                            rounded-md
+                                        "
+                                    data-clipboard-target="button"
+                                    data-action="clipboard#copy"
+                            >
+                                {{ 'recording_request_owner_info.copy_cta'|trans }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full">
+                        <div class="w-48 shrink-0">
+                            &nbsp;
+                        </div>
+                        <div class="flex-grow font-extralight italic">
+                            {% if recordingRequest.requestVideo is null %}
+                                {{ 'recording_request_owner_info.note_label_and_text'|trans }}
+                            {% else %}
+                                {{ 'recording_request_owner_info.note_label_and_text_and_video'|trans }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full">
+                        <div class="w-48">
+                            <label for="title" class="font-semibold">
+                                {{ 'recording_request_owner_info.label_title'|trans }}
+                            </label>
+                        </div>
+                        <div class="flex-grow">
+                            <input
+                                    data-test-id="recordingRequestTitle"
+                                    id="title"
+                                    name="title"
+                                    class="text-input w-full max-w-xl"
+                                    type="text"
+                                    value="{{ recordingRequest.title }}"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-start gap-2 w-full">
+                        <div class="w-48">
+                            <label for="requestText" class="font-semibold">
+                                {{ 'recording_request_owner_info.label_request_text'|trans }}
+                            </label>
+                        </div>
+                        <div class="flex-grow">
+                            <textarea
+                                    id="requestText"
+                                    name="requestText"
+                                    class="text-input h-full w-full max-w-xl"
+                                    type="text"
+                                    rows="16"
+                            >{{ recordingRequest.requestText }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:justify-start md:items-center gap-2 w-full mb-16">
+                        <div class="w-48 shrink-0">
+                            &nbsp;
+                        </div>
+                        <div class="flex-grow">
+                            <button
+                                    type="submit"
+                                    class="cta-with-icon-primary"
+                            >
+                                {{ 'recording_request_owner_info.cta_save'|trans }}
+                            </button>
+                        </div>
+                    </div>
+
+                    {% if recordingRequest.requestVideo is not null %}
+                        <div class="flex flex-col md:flex-row md:justify-start md:items-start gap-2 w-full">
+                            <div class="w-48 font-semibold">
+                                {{ 'recording_request_owner_info.label_request_video'|trans }}
+                            </div>
+                            <div class="flex-grow max-w-xl">
+                                {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(recordingRequest.requestVideo)|raw }}
+                            </div>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+
+
+
+            <div class="mt-32">
+                <h2 class="font-bold text-lg mb-8 w-full border-b-2 border-neutral-200">
+                    {{ 'recording_request_owner_info.responses'|trans }}
+                </h2>
+
+
+                {% if TwigHelperService.recordingRequestsDomainService.getNumberOfAnsweredResponses(recordingRequest) is same as 0 %}
+                    <div>
+                        {{ 'recording_request_owner_info.no_answered_responses_yet'|trans }}
+                    </div>
+
+                {% else %}
+
+                    <div class="grid-outer">
+                        {% for response in TwigHelperService.recordingRequestsDomainService.answeredResponses(recordingRequest) %}
+                            {# @var response \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse #}
+
+                            {% for video in response.videos|filter(v => v.isDeleted is same as false) %}
+                                {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
+
+                                {{ component('videobasedmarketing_recordings_video_manage_widget', {
+                                    video: video,
+                                    showEditModal: false,
+                                    doneCtaMustRedirectToOverview: false,
+
+                                    'data-live-id': 'video-id-' ~ video.id
+                                }) }}
+
+                            {% endfor %}
+
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

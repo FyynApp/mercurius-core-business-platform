@@ -71,14 +71,18 @@ class RecordingSessionController
                 'shareUrl' => $router->generate(
                     'videobasedmarketing.recordings.presentation.recording_session.share',
                     [
-                        'recordingSessionShortId' => $recordingSession->getShortId()
+                        'recordingSessionShortId' => $recordingSession->getShortId(),
+                        '_locale' => $user->getUiLanguageCode()->value
                     ],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
 
                 'recordingSessionFinishedTargetUrl' => $router->generate(
                     'videobasedmarketing.recordings.presentation.recording_session.finished',
-                    ['recordingSessionId' => $recordingSession->getId()],
+                    [
+                        'recordingSessionId' => $recordingSession->getId(),
+                        '_locale' => $user->getUiLanguageCode()->value
+                    ],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
 

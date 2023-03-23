@@ -1,0 +1,23 @@
+{% extends '@shared/base_minimal.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.recording_requests' %}
+
+
+{% block body %}
+
+    <div class="bg-white h-full w-full p-8">
+
+        {% include '@videobasedmarketing.recording_requests/_logo.html.twig' %}
+
+        <div class="flex flex-col w-full md:max-w-2xl mx-auto mt-16">
+
+            <h1 class="text-2xl">
+                {{ 'thank_you.text'|trans }}
+            </h1>
+        </div>
+
+    </div>
+
+{% endblock %}

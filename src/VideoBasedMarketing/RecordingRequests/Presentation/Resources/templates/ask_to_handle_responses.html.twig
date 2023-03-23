@@ -4,8 +4,6 @@
 
 {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 {# @var responses \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse[] #}
-{# @var followUpRouteName string #}
-{# @var followUpRouteParameters string #}
 
 {% trans_default_domain 'videobasedmarketing.recording_requests' %}
 
@@ -15,61 +13,28 @@
 
     <div class="bg-white h-full w-full p-8">
 
-        <div class="flex flex-row justify-end">
-            <a
-                    href="{{ path('shared.presentation.contentpages.homepage') }}"
-                    target="_blank"
-                    class="
-                        flex flex-row gap-2 justify-end items-end
-                        p-2 pr-4 pl-4 rounded-md opacity-20
-                        w-fit
-                        hover:opacity-100
-                        bg-neutral-500 text-neutral-300 font-light
-                    "
-            >
-                <span>powered by Fyyn.io</span>
-                <img
-                        class="h-6"
-                        src="{{ asset('assets/images/shared/logos/fyyn-logo-head-only-240x241.png') }}"
-                        alt="Fyyn.io"
-                >
-            </a>
-        </div>
+        {% include '@videobasedmarketing.recording_requests/_logo.html.twig' %}
 
 
         <div class="flex flex-col w-full md:max-w-2xl mx-auto mt-16">
 
-            <h1 class="text-3xl">
+            <h1 class="text-3xl mb-8">
                 {{ 'ask_to_handle_responses.greeting'|trans }}
             </h1>
 
-            <div>
-                {% import '@videobasedmarketing.recordings/macros/video_preview.html.twig' as videoPreviewMacros %}
-                <div class="
-                        flex
-                        flex-col lg:flex-row
-                        justify-center lg:justify-start
-                        items-center lg:items-start
-                        gap-16
-                        mt-8 mb-16
-                        max-w-4xl
-                     "
-                >
-                    <div class="
-                            w-full shadow-xl shadow-neutral-400
-                            h-fit
-                         "
-                    >
-                        {{ videoPreviewMacros.interactive(video) }}
-                    </div>
-                </div>
+            <div class="w-full">
+                {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(video, true)|raw }}
             </div>
 
-            {% if responses|length is same as 1 %}
+            {% for response in responses %}
+
+                {# @var response \App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse #}
+
                 <p class="text-xl mt-8 font-extralight">
                     {{
                         'ask_to_handle_responses.text1.singular'|trans({
-                            '{userIdentifier}': responses.0.recordingRequest.user.userIdentifier
+                            '{title}': response.recordingRequest.title,
+                            '{userIdentifier}': response.recordingRequest.user.userIdentifier
                         })
                     }}
                 </p>
@@ -79,33 +44,40 @@
                     action="{{ path(
                         'videobasedmarketing.recording_requests.answer_response_with_video',
                         {
-                            'recordingRequestResponseId': responses.0.id,
+                            'recordingRequestResponseId': response.id,
                             'videoId': video.id
                         }
                     ) }}"
+                    class="flex flex-row gap-2 justify-between items-center w-full"
                 >
-                    <input type="hidden" name="followUpRouteName" value="{{ followUpRouteName }}">
-                    <input type="hidden" name="followUpRouteParameters" value="{{ followUpRouteParameters }}">
                     <button
                             class="cta-with-icon-success mt-8"
                             type="submit"
                     >
+                        {# Heroicon: clipboard-document-check solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                             <path fill-rule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z" clip-rule="evenodd" />
                             <path fill-rule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375zm9.586 4.594a.75.75 0 00-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 00-1.06 1.06l1.5 1.5a.75.75 0 001.116-.062l3-3.75z" clip-rule="evenodd" />
                         </svg>
                         {{ 'ask_to_handle_responses.cta_attach'|trans }}
                     </button>
+
+                    <a
+                            href="{{ path(
+                                'videobasedmarketing.recording_requests.show_response_instructions',
+                                { recordingRequestId: response.recordingRequest.id }
+                            ) }}"
+                            class="cta-with-icon-neutral mt-8"
+                    >
+                        {# Heroicon: arrow-path solid #}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path fill-rule="evenodd" d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.67a.75.75 0 101.45.388zm15.408 3.352a.75.75 0 00-.919.53 7.5 7.5 0 01-12.548 3.364l-1.902-1.903h3.183a.75.75 0 000-1.5H2.984a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.059-4.035.75.75 0 00-.53-.918z" clip-rule="evenodd" />
+                        </svg>
+                        {{ 'ask_to_handle_responses.cta_retry'|trans }}
+                    </a>
                 </form>
 
-            {% else %}
-
-                {% for response in responses %}
-                    {{ response.recordingRequest.user.userIdentifier }}
-                    {{ dateAndTimeMacros.full(response.createdAt) }}
-                {% endfor %}
-
-            {% endif %}
+            {% endfor %}
         </div>
 
     </div>

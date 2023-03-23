@@ -8,25 +8,36 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequest;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Enum\RecordingRequestResponseStatus;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Exception;
 
-class RecordingRequestsDomainService
+readonly class RecordingRequestsDomainService
 {
-    private EntityManagerInterface $entityManager;
-
-    private ShortIdService $shortIdService;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ShortIdService         $shortIdService
+        private EntityManagerInterface $entityManager,
+        private ShortIdService         $shortIdService
     )
     {
-        $this->entityManager = $entityManager;
-        $this->shortIdService = $shortIdService;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAvailableRecordingRequestsForCurrentlyActiveOrganization(
+        User $user
+    ): array
+    {
+        /** @var ObjectRepository<RecordingRequest> $repo */
+        $repo = $this->entityManager->getRepository(RecordingRequest::class);
+
+        return $repo->findBy(
+            [
+                'organization' => $user->getCurrentlyActiveOrganization()->getId()
+            ],
+            ['createdAt' => Criteria::DESC]
+        );
     }
 
     public function needToCreateResponse(
@@ -49,10 +60,16 @@ class RecordingRequestsDomainService
      * @throws Exception
      */
     public function createRequest(
-        User $user
+        User   $user,
+        string $title,
+        ?Video $requestVideo = null
     ): RecordingRequest
     {
-        $recordingRequest = new RecordingRequest($user);
+        $recordingRequest = new RecordingRequest(
+            $user,
+            $title,
+            $requestVideo
+        );
         $this->entityManager->persist($recordingRequest);
         $this->shortIdService->encodeObject($recordingRequest);
 
@@ -169,12 +186,18 @@ class RecordingRequestsDomainService
         $answeredResponses = [];
 
         foreach ($recordingRequest->getRecordingRequestResponses() as $recordingRequestResponse) {
-            if (    $recordingRequestResponse->getStatus()
-                === RecordingRequestResponseStatus::ANSWERED
+            if (   $recordingRequestResponse->getStatus() === RecordingRequestResponseStatus::ANSWERED
             ) {
-                $answeredResponses[] = $recordingRequestResponse;
+                foreach ($recordingRequestResponse->getVideos() as $video) {
+                    if (!$video->isDeleted()) {
+                        $answeredResponses[] = $recordingRequestResponse;
+                        break;
+                    }
+                }
             }
         }
+
+        rsort($answeredResponses);
 
         return $answeredResponses;
     }
@@ -201,6 +224,23 @@ class RecordingRequestsDomainService
         Video                    $video
     ): void
     {
+        $video->setUser(
+            $recordingRequestResponse->getRecordingRequest()->getUser()
+        );
+
+        $video->getRecordingSession()->setUser(
+            $recordingRequestResponse->getRecordingRequest()->getUser()
+        );
+
+        $video->setOrganization(
+            $recordingRequestResponse->getRecordingRequest()->getOrganization()
+        );
+
+        $video->getRecordingSession()->setOrganization(
+            $recordingRequestResponse->getRecordingRequest()->getOrganization()
+        );
+
+
         $recordingRequestResponse->addVideo($video);
         $recordingRequestResponse->setStatus(RecordingRequestResponseStatus::ANSWERED);
 
@@ -208,6 +248,7 @@ class RecordingRequestsDomainService
 
         $this->entityManager->persist($recordingRequestResponse);
         $this->entityManager->persist($video);
+        $this->entityManager->persist($video->getRecordingSession());
         $this->entityManager->flush();
     }
 }

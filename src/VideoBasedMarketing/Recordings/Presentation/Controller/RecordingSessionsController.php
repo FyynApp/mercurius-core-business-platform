@@ -80,8 +80,7 @@ class RecordingSessionsController
                 'videobasedmarketing.recording_requests.ask_to_handle_responses',
                 [
                     'videoId' => $video->getId(),
-                    'followUpRouteName' => $routeName,
-                    'followUpRouteParameters' => json_encode($routeParameters)
+                    '_locale' => $user->getUiLanguageCode()->value
                 ]
             );
         } else {
