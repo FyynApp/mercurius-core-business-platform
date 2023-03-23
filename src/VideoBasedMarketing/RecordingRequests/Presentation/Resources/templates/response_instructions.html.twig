@@ -6,7 +6,7 @@
 {% trans_default_domain 'videobasedmarketing.recording_requests' %}
 
 {% block javascripts %}
-    {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
+    {% if is_mobile() or is_tablet() or app.request.get('forceMobileView') is not empty %}
         {{ encore_entry_script_tags(
             'recordings/uppyVideoUpload',
             null,
@@ -112,7 +112,7 @@
                             {% endif %}
                         </div>
                         <div class="mb-4">
-                            {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
+                            {% if is_mobile() or is_tablet() or app.request.get('forceMobileView') is not empty %}
                                 {{ 'response_instructions.step2_intro_mobile'|trans }}
                             {% else %}
                                 {{ 'response_instructions.step2_intro'|trans }}
@@ -120,7 +120,7 @@
                         </div>
                         <div>
 
-                            {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
+                            {% if is_mobile() or is_tablet() or app.request.get('forceMobileView') is not empty %}
                                 <div
                                         class="hidden"
                                         id="uppyVideoUploadDashboardTarget"

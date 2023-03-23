@@ -3,7 +3,7 @@
 {% block mainWrapperClasses %}{% endblock %}
 
 {% block javascripts %}
-    {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
+    {% if is_mobile() or is_tablet() or app.request.get('forceMobileView') is not empty %}
         {{ encore_entry_script_tags(
             'recordings/uppyVideoUpload',
             null,
@@ -281,7 +281,7 @@
                 </div>
 
 
-                {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
+                {% if is_mobile() or is_tablet() or app.request.get('forceMobileView') is not empty %}
                     <div
                             class="hidden"
                             id="uppyVideoUploadDashboardTarget"
@@ -304,7 +304,7 @@
                 {% endif %}
 
 
-                {% if is_mobile() or app.request.get('forceMobileView') is not empty %}
+                {% if is_mobile() or is_tablet() or app.request.get('forceMobileView') is not empty %}
 
                     <div class="mt-8 rounded-md drop-shadow-2xl w-full max-w-lg flex flex-row justify-center">
                         <script>
