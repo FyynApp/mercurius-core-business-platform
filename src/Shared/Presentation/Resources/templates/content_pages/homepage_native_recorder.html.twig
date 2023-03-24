@@ -90,56 +90,67 @@
             </div>
 
         </div>
+    </div>
+
+
+    <div id="why-use-fyyn" class="bg-gradient-to-tl from-white to-neutral-100 pt-0 drop-shadow-2xl">
 
         <div class="{{ outerClasses }}">
-            <div class="flex flex-col xl:flex-row gap-8 items-start">
 
-                <div class="flex flex-row justify-start items-center gap-8">
+            <div class="flex flex-col gap-2 justify-center items-start w-full max-w-8xl">
 
-                    <div class="flex-shrink-0 w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
-                        <span class="drop-shadow-sm">Create</span>
-                    </div>
+                <div class="text-6xl font-extrabold drop-shadow-md text-mercurius-blue-900 mb-8">
+                    Why use Fyyn?
+                </div>
 
-                    <div class="font-semibold text-mercurius-blue-900">
-                        Record a video of your webcam, your computer screen, or both.
-                    </div>
+                <div class="text-3xl text-mercurius-blue-900 mb-8">
+                    <span class="font-extralight tracking-tighter">Reason One:</span>
+                    <span class="font-extrabold">Sending a video becomes<br>as simple as sending a screenshot.</span>
+                </div>
+
+                <div class="text-xl font-extralight text-black mb-8">
+                    With Fyyn, it takes only 25 seconds to get a 20-second video into the hands of your team.
+                </div>
+
+                <div class="text-xl text-black mb-12 flex flex-col xl:flex-row xl:items-center gap-6">
+
+                    {% set elements = {
+                        0: 'Start a video recording wherever you are browsing. 🎥',
+                        1: 'No uploads, never wait for a file sync. 🚀',
+                        2: 'Every video is an immediately shareable url. 🤩'
+                    }
+                    %}
+
+                    {% for element in elements %}
+                        <div class="flex flex-row items-center gap-2">
+                            <div class="text-mercurius-blue-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+                                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                                </svg>
+
+                            </div>
+                            <div>
+                                {{ element }}
+                            </div>
+                        </div>
+                    {% endfor %}
 
                 </div>
 
-
-                <div class="flex flex-row justify-start items-center gap-8">
-
-                    <div class="flex-shrink-0 w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
-                        <span class="drop-shadow-sm">Style</span>
-                    </div>
-
-                    <div class="font-semibold text-mercurius-blue-900">
-                        Your video is embedded on a landing page
-                        with your own logo and on your own domain.
-                    </div>
-
-                </div>
-
-
-                <div class="flex flex-row justify-start items-center gap-8">
-
-                    <div class="flex-shrink-0 w-24 h-24 rounded-full bg-mercurius-blue-100 text-mercurius-blue-600 text-2xl font-bold flex flex-col justify-center items-center drop-shadow-md">
-                        <span class="drop-shadow-sm">Share</span>
-                    </div>
-
-                    <div class="font-semibold text-mercurius-blue-900">
-                        Share your video landingpage with customers and business partners.
-                    </div>
-
+                <div class="text-3xl font-extrabold text-mercurius-blue-900">
+                    The result?
+                    <span class="font-extralight tracking-tighter">🚀 Turbo-charged product development!</span>
                 </div>
 
             </div>
+
         </div>
 
     </div>
 
 
-    <div id="why-use-fyyn" class="bg-gradient-to-br from-mercurius-green-500 to-mercurius-blue-500 pt-16">
+
+    <div id="why-use-fyyn2" class="bg-gradient-to-br from-mercurius-green-500 to-mercurius-blue-500 pt-16">
 
         <div class="{{ outerClasses }}">
 
