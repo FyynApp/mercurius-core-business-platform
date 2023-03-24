@@ -130,6 +130,20 @@ class ContentpagesController
 
     #[Route(
         path        : [
+            'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/features/turbo-charged-product-development',
+            'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/funktionen/turbo-charged-product-development',
+        ],
+        name        : 'shared.presentation.contentpages.features.turbo_charged_product_development',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function featuresTurboChargedProductDevelopmentAction(): Response
+    {
+        return $this->render('@shared/content_pages/feature.turbo-charged-product-development.en.html.twig');
+    }
+
+    #[Route(
+        path        : [
             'en' => '%app.routing.route_prefix.with_locale.unprotected.en%/pricing',
             'de' => '%app.routing.route_prefix.with_locale.unprotected.de%/preise',
         ],
