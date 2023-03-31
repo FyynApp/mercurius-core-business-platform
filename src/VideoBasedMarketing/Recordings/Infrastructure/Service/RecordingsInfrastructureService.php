@@ -579,6 +579,7 @@ readonly class RecordingsInfrastructureService
                     )
                 ]
             );
+            $process->setTimeout(60 * 30);
             $process->run();
 
             clearstatcache();
@@ -801,6 +802,7 @@ readonly class RecordingsInfrastructureService
                 )
             ]
         );
+        $process->setTimeout(60 * 30);
         $process->run();
 
         if ($process->isSuccessful()) {
@@ -862,6 +864,7 @@ readonly class RecordingsInfrastructureService
                 )
             ]
         );
+        $process->setTimeout(60 * 30);
         $process->run();
 
         if ($process->isSuccessful()) {
@@ -1078,7 +1081,7 @@ readonly class RecordingsInfrastructureService
             ]
         );
         $process->setIdleTimeout(null);
-        $process->setTimeout(60 * 30);
+        $process->setTimeout(60 * 60);
         $process->run();
 
         if ($process->isSuccessful()) {
@@ -1198,7 +1201,7 @@ readonly class RecordingsInfrastructureService
                 ]
             );
             $process->setIdleTimeout(null);
-            $process->setTimeout(60 * 30);
+            $process->setTimeout(60 * 60);
             $process->run();
 
             if ($process->isSuccessful()) {
@@ -1458,6 +1461,7 @@ readonly class RecordingsInfrastructureService
                 $filepath
             ]
         );
+        $process->setTimeout(60 * 10);
         $process->run();
 
         $output = trim($process->getOutput());
