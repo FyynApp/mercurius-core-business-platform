@@ -10,6 +10,9 @@ overview:
     basic:
       title: 'Basis-Paket'
       description: 'Mit diesem Paket kannst du maximal 3 Videos mit einer Länge von bis zu einer Minute aufzeichnen.'
+    independent:
+      title: 'Independent-Paket'
+      description: 'Mit diesem Paket kannst du maximal 20 Videos mit einer Länge von bis zu 10 Minuten aufzeichnen.'
     plus:
       title: 'Plus-Paket'
       description: 'Mit diesem Paket kannst du maximal 20 Videos mit einer Länge von bis zu 10 Minuten aufzeichnen.'

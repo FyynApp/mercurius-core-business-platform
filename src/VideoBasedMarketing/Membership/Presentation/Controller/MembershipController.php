@@ -53,7 +53,7 @@ class MembershipController
         methods     : [Request::METHOD_GET]
     )]
     public function subscriptionCheckoutStartAction(
-        string                                                                $planName,
+        string            $planName,
         MembershipService $membershipService,
     ): Response {
         $user = $this->getUser();

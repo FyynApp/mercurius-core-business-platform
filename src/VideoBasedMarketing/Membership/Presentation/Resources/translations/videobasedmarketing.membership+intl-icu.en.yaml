@@ -2,6 +2,9 @@ plan:
   basic:
     title: 'Base'
     description: ''
+  independent:
+    title: 'Independent'
+    description: ''
   plus:
     title: 'Plus'
     description: ''
