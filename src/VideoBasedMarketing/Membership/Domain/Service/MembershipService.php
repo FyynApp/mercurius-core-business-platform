@@ -157,7 +157,12 @@ readonly class MembershipService
                 $name,
                 true,
                 27.00,
-                []
+                [
+                    Capability::CustomDomain,
+                    Capability::CustomLogoOnLandingpage,
+                    Capability::AdFreeLandingpages,
+                    Capability::BrandingFreeEmbeddableVideoPlayer,
+                ]
             ),
 
             MembershipPlanName::Plus =>
