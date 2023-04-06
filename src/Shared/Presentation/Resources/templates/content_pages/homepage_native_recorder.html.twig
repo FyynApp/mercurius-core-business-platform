@@ -48,6 +48,82 @@
         });
     </script>
 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(event) {
+            const $video = document.getElementById('ai-multilanguage-demo-video');
+
+            let currentTime = 0;
+
+            function switchTo(lang) {
+                currentTime = $video.currentTime;
+                $video.src = 'https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/ai-multilanguage-video-demo/' + lang + '.mp4';
+                $video.currentTime = currentTime;
+                $video.play();
+            }
+
+            function setActive($element) {
+                $element.classList.remove('cta-with-icon-neutral');
+                $element.classList.add('cta-with-icon-primary');
+            }
+
+            function setInactive($element) {
+                $element.classList.remove('cta-with-icon-primary')
+                $element.classList.add('cta-with-icon-neutral')
+            }
+
+            const $deButton = document.getElementById('ai-multilanguage-demo-video-button-de');
+            const $enButton = document.getElementById('ai-multilanguage-demo-video-button-en');
+            const $frButton = document.getElementById('ai-multilanguage-demo-video-button-fr');
+            const $itButton = document.getElementById('ai-multilanguage-demo-video-button-it');
+            const $esButton = document.getElementById('ai-multilanguage-demo-video-button-es');
+
+            $deButton.addEventListener('click', function() {
+                setActive($deButton);
+                setInactive($enButton);
+                setInactive($frButton);
+                setInactive($itButton);
+                setInactive($esButton);
+                switchTo('de');
+            });
+
+            $enButton.addEventListener('click', function() {
+                setInactive($deButton);
+                setActive($enButton);
+                setInactive($frButton);
+                setInactive($itButton);
+                setInactive($esButton);
+                switchTo('en');
+            });
+
+            $frButton.addEventListener('click', function() {
+                setInactive($deButton);
+                setInactive($enButton);
+                setActive($frButton);
+                setInactive($itButton);
+                setInactive($esButton);
+                switchTo('fr');
+            });
+
+            $itButton.addEventListener('click', function() {
+                setInactive($deButton);
+                setInactive($enButton);
+                setInactive($frButton);
+                setActive($itButton);
+                setInactive($esButton);
+                switchTo('it');
+            });
+
+            $esButton.addEventListener('click', function() {
+                setInactive($deButton);
+                setInactive($enButton);
+                setInactive($frButton);
+                setInactive($itButton);
+                setActive($esButton);
+                switchTo('es');
+            });
+        });
+    </script>
 {% endblock %}
 
 
@@ -67,10 +143,11 @@
                     {{ 'contentpages.homepage_native_recorder.block_1.copy_3'|trans }}
                 </div>
 
-                <h1 class="text-xl text-white font-normal mt-8">
+                <h1 class="text-xl text-white font-normal mt-8 max-w-lg">
 
                     Fyyn.io allows you to create screen and webcam recordings
-                    <span class="text-mercurius-blue-900 font-bold">right from your browser.</span>
+                    <span class="text-mercurius-blue-900 font-bold">right from your browser,</span>
+                    and gives you the tools you need to <span class="text-mercurius-blue-900 font-bold">make them outperform. 🚀</span>
 
                 </h1>
             </div>
@@ -95,16 +172,125 @@
 
     <div id="why-use-fyyn" class="bg-gradient-to-tl from-white to-neutral-100 pt-0 drop-shadow-2xl">
 
+        <div class="{{ outerClasses }} text-6xl font-extrabold drop-shadow-md text-mercurius-blue-900 mb-0">
+            Why use Fyyn?
+        </div>
+
+
         <div class="{{ outerClasses }} pb-32">
 
             <div class="flex flex-col gap-2 justify-center items-start w-full max-w-8xl">
 
-                <div class="text-6xl font-extrabold drop-shadow-md text-mercurius-blue-900 mb-8">
-                    Why use Fyyn?
+                <div class="flex flex-col xl:flex-row justify-between items-start gap-32 mb-16">
+
+                    <div class="xl:w-7/12">
+                        <div class="text-3xl text-black mb-8 max-w-lg">
+                            <span class="font-extralight tracking-tighter">Reason One:</span>
+                            <span class="font-extrabold">What if you could magically make your videos multi-language?</span>
+                        </div>
+
+                        <div class="text-xl font-extralight text-mercurius-blue-900 mb-8">
+                            Imagine you could grow your potential audience tenfold with
+                            the click of a single button - by creating a video
+                            with audio in multiple languages, all from the same
+                            single-language audio of the original video.
+                        </div>
+
+                        <div class="text-xl font-semibold text-mercurius-blue-900 mb-8">
+                            With 🇩🇪 our AI-powered 🇺🇸 multi-language 🇫🇷 converter, this 🇮🇹 is no longer 🇪🇸 a dream!
+                        </div>
+
+                    </div>
+
+
+                    <div class="xl:w-5/12 flex flex-col gap-6 justify-center items-center">
+                        <div class="w-full">
+                            <video
+                                    id="ai-multilanguage-demo-video"
+                                    class="w-full lazy-loading-video-element rounded-lg shadow-lg"
+                                    autoplay
+                                    loop
+                                    playsinline
+                                    controls
+                                    preload="metadata"
+                                    data-src="https://eu2.contabostorage.com/48d92e9f1ba4422995a85784436944ea:public-assets.fyyn.io/ai-multilanguage-video-demo/de.mp4"
+                                    type="video/mp4"
+                            >
+                            </video>
+                        </div>
+                        <div class="w-full max-w-lg flex flex-row gap-4 justify-between items-center">
+                            <button
+                                    id="ai-multilanguage-demo-video-button-de"
+                                    class="cta-with-icon-primary"
+                            >
+                                DE
+                            </button>
+
+                            <button
+                                    id="ai-multilanguage-demo-video-button-en"
+                                    class="cta-with-icon-neutral"
+                            >
+                                EN
+                            </button>
+
+                            <button
+                                    id="ai-multilanguage-demo-video-button-fr"
+                                    class="cta-with-icon-neutral"
+                            >
+                                FR
+                            </button>
+
+                            <button
+                                    id="ai-multilanguage-demo-video-button-it"
+                                    class="cta-with-icon-neutral"
+                            >
+                                IT
+                            </button>
+
+                            <button
+                                    id="ai-multilanguage-demo-video-button-es"
+                                    class="cta-with-icon-neutral"
+                            >
+                                ES
+                            </button>
+
+                        </div>
+                    </div>
                 </div>
 
+
+                <div class="w-full ml-8 mb-16 text-3xl font-extrabold text-mercurius-blue-900 flex flex-row gap-8 justify-evenly xl:items-end">
+
+                    <img
+                            class="h-20 lg:w-60 opacity-50 pb-3"
+                            src="{{ asset('assets/images/shared/curved-arrow-480x464.png') }}"
+                    >
+
+                    <div class="text-center pt-8">
+                        The result?
+                        <span class="font-extralight tracking-tighter">Videos 🌎 with 🌍 no 🌏 limits!</span>
+                    </div>
+
+                    <img
+                            class="h-20 lg:w-60 hidden lg:block invisible pb-3"
+                            style="transform: scaleX(-1);"
+                            src="{{ asset('assets/images/shared/curved-arrow-480x464.png') }}"
+                    >
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+        <div class="{{ outerClasses }} pb-32">
+
+            <div class="flex flex-col gap-2 justify-center items-start w-full max-w-8xl">
+
                 <div class="text-3xl text-black mb-8 max-w-lg">
-                    <span class="font-extralight tracking-tighter">Reason One:</span>
+                    <span class="font-extralight tracking-tighter">Reason Two:</span>
                     <span class="font-extrabold">Sending a video becomes as simple as sending a screenshot.</span>
                 </div>
 
@@ -222,7 +408,7 @@
 
                     <div class="xl:w-7/12">
                         <div class="text-3xl text-black mb-8 max-w-lg">
-                            <span class="font-extralight tracking-tighter">Reason Two:</span>
+                            <span class="font-extralight tracking-tighter">Reason Three:</span>
                             <span class="font-extrabold">What if your videos just kept getting better?</span>
                         </div>
 
