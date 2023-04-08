@@ -148,4 +148,17 @@ class RecordingsController
             );
         }
     }
+
+    #[Route(
+        path        : '/recordings/dedicated-camera',
+        name        : 'videobasedmarketing.recordings.presentation.dedicated_camera',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function showNativeBrowserRecorderDedicatedCameraAction(): Response
+    {
+        return $this->render(
+            '@videobasedmarketing.recordings/native_browser_recorder_dedicated_camera.html.twig'
+        );
+    }
 }

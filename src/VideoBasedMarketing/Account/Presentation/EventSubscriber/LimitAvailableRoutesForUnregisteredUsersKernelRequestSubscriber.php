@@ -79,6 +79,7 @@ readonly class LimitAvailableRoutesForUnregisteredUsersKernelRequestSubscriber
             'videobasedmarketing.recordings.api.native_browser_recorder.',
             'videobasedmarketing.recordings.api.video_upload.',
 
+            'videobasedmarketing.recordings.presentation.dedicated_camera',
             'videobasedmarketing.recordings.presentation.videos.',
             'videobasedmarketing.recordings.presentation.video_folders.',
             'videobasedmarketing.recordings.presentation.upload_video',
