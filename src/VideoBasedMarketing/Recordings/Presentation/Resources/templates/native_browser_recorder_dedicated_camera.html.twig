@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html class="bg-black w-full h-full p-0 m-0" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Fyyn — Camera</title>
+
+
+        {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_link_tags('tailwind') }}
+
+        {% block stylesheets %}{% endblock %}
+
+
+        {{ encore_entry_script_tags('app') }}
+
+        {% block javascripts %}
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const $video = document.getElementById('video');
+
+                    const constraints = {
+                        audio: false,
+                        video: {
+                            width: { min: 640, ideal: 1280, max: 1920 },
+                            height: { min: 360, ideal: 720, max: 1080 },
+                        },
+                    };
+
+                    navigator.mediaDevices
+                        .getUserMedia(constraints)
+                        .then((stream) => {
+                            $video.srcObject = stream;
+                            $video.play();
+                        })
+                        .catch((err) => {
+                            console.error(err);
+                        });
+                });
+            </script>
+        {% endblock %}
+    </head>
+    <body class="bg-black h-full w-full p-0 m-0 overflow-hidden flex flex-col items-center justify-center">
+        <video
+                id="video"
+                class="w-full object-cover"
+                playsinline
+                controls
+        ></video>
+    </body>
+</html>

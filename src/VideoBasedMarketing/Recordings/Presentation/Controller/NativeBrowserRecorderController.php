@@ -26,4 +26,20 @@ class NativeBrowserRecorderController
             '@videobasedmarketing.recordings/native_browser_recorder.html.twig'
         );
     }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/native-browser-recorder/dedicated-camera',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aufnahmen/native-browser-recorder/dedizierte-kamera',
+        ],
+        name        : 'videobasedmarketing.recordings.presentation.show_native_browser_recorder_dedicated_camera',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function showNativeBrowserRecorderDedicatedCameraAction(): Response
+    {
+        return $this->render(
+            '@videobasedmarketing.recordings/native_browser_recorder_dedicated_camera.html.twig'
+        );
+    }
 }

@@ -12,6 +12,18 @@
 
     <script defer="defer" src="{{ asset('assets/native-browser-recorder/main.9a8cb793.js') }}"></script>
 
+    <script>
+        function openDedicatedCameraPopup() {
+            const params = 'scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=640,height=360,left=0,top=0';
+
+            window.open(
+                '{{ path('videobasedmarketing.recordings.presentation.show_native_browser_recorder_dedicated_camera') }}',
+                'Camera',
+                params
+            );
+        }
+    </script>
+
 {% endblock %}
 
 {% block body %}
@@ -29,6 +41,12 @@
             <div class="mb-9">
                 {{ 'native_browser_recorder.intro_note'|trans }}
             </div>
+
+            <button
+                    onclick="openDedicatedCameraPopup();"
+            >
+                Cam
+            </button>
 
             <div class="bg-neutral-100 rounded-md shadow-inner w-full max-w-4xl">
                 <mercurius-web-recorder
