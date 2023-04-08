@@ -15,7 +15,10 @@ class HomepageTest
         $client = static::createClient();
         $client->followRedirects();
         $client->request('GET', '/en/');
-        $this->assertSelectorTextContains('h1', 'Fyyn.io allows you to create screen and webcam recordings right from your browser.');
+        $this->assertSelectorTextContains(
+            'h1',
+            'Fyyn.io allows you to create screen and webcam recordings right from your browser, and gives you the tools you need to make them outperform. 🚀'
+        );
     }
 
     public function testThatRequestingTheHomepageWithGermanLanguageUrlWorks()
@@ -24,7 +27,10 @@ class HomepageTest
         $client->followRedirects();
         $client->request('GET', '/de/');
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Fyyn.io allows you to create screen and webcam recordings right from your browser.');
+        $this->assertSelectorTextContains(
+            'h1',
+            'Fyyn.io allows you to create screen and webcam recordings right from your browser, and gives you the tools you need to make them outperform. 🚀'
+        );
     }
 
     public function testVisitingWhileLoggedIn()
