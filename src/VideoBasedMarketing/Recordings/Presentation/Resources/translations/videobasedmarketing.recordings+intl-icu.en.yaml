@@ -144,6 +144,10 @@ native_browser_recorder:
     title: 'Note:'
     text1: 'During recording, the screen or camera preview may appear clipped.'
     text2: 'However, all content will be recorded and is available in the final video.'
+  dedicated_camera:
+    note1: 'Do you want to record your screen while also showing your camera?'
+    cta: 'Click here to open a dedicated camera window'
+    note2: 'As long as this camera window is visible on your recorded screen, it will be part of your final video.'
 video_folders:
   save_edited_name_cta: 'Save'
   delete:

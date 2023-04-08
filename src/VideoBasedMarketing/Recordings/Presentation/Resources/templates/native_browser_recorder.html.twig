@@ -37,37 +37,48 @@
         {% endblock %}
 
         {% block contentBoxContent %}
+            <div class="flex flex-col justify-start items-center">
 
-            <div class="mb-9">
-                {{ 'native_browser_recorder.intro_note'|trans }}
+                <div class="mb-9 font-semibold">
+                    {{ 'native_browser_recorder.intro_note'|trans }}
+                </div>
+
+                <div class="bg-neutral-100 rounded-md shadow-inner w-full max-w-4xl">
+                    <mercurius-web-recorder
+                            init-id="v1stGXR8Z5jdHi6B"
+                            brand-color="#009EE2"
+                            brand-dark-color="#0185BD"
+                            primary-color="#84CC16"
+                            primary-dark-color="#65A30D"
+                            accent-color="#fd5f00"
+                            container-width="100%"
+                            container-height="320px"
+                    >
+                    </mercurius-web-recorder>
+                </div>
+
+                <div class="mt-9 flex flex-col gap-4 justify-center items-center">
+                    {{ 'native_browser_recorder.dedicated_camera.note1'|trans }}
+                    <button
+                            class="cta-with-icon-primary"
+                            onclick="openDedicatedCameraPopup();"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                            <path d="M4.5 4.5a3 3 0 00-3 3v9a3 3 0 003 3h8.25a3 3 0 003-3v-9a3 3 0 00-3-3H4.5zM19.94 18.75l-2.69-2.69V7.94l2.69-2.69c.944-.945 2.56-.276 2.56 1.06v11.38c0 1.336-1.616 2.005-2.56 1.06z" />
+                        </svg>
+
+                        {{ 'native_browser_recorder.dedicated_camera.cta'|trans }}
+                    </button>
+                    {{ 'native_browser_recorder.dedicated_camera.note2'|trans }}
+                </div>
+
+                <div class="mt-9 bg-mercurius-blue-50 p-4 px-6 rounded-md text-mercurius-blue-700 text-center">
+                    <span class="font-bold">{{ 'native_browser_recorder.screen_clip_note.title'|trans }}</span>
+                    {{ 'native_browser_recorder.screen_clip_note.text1'|trans }}
+                    {{ 'native_browser_recorder.screen_clip_note.text2'|trans }}
+                </div>
+
             </div>
-
-            <button
-                    onclick="openDedicatedCameraPopup();"
-            >
-                Cam
-            </button>
-
-            <div class="bg-neutral-100 rounded-md shadow-inner w-full max-w-4xl">
-                <mercurius-web-recorder
-                        init-id="v1stGXR8Z5jdHi6B"
-                        brand-color="#009EE2"
-                        brand-dark-color="#0185BD"
-                        primary-color="#84CC16"
-                        primary-dark-color="#65A30D"
-                        accent-color="#fd5f00"
-                        container-width="100%"
-                        container-height="320px"
-                >
-                </mercurius-web-recorder>
-            </div>
-
-            <div class="mt-9 bg-mercurius-blue-50 p-4 px-6 rounded-md text-mercurius-blue-700 text-center">
-                <span class="font-bold">{{ 'native_browser_recorder.screen_clip_note.title'|trans }}</span>
-                {{ 'native_browser_recorder.screen_clip_note.text1'|trans }}
-                {{ 'native_browser_recorder.screen_clip_note.text2'|trans }}
-            </div>
-
         {% endblock %}
 
     {% endembed %}
