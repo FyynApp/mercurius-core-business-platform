@@ -10,7 +10,7 @@ import NavProfileDropdown
 import VideoPreview
     from '../src/VideoBasedMarketing/Recordings/Presentation/Resources/stimulus-controllers/videoPreview-controller';
 
-import VideoFolderVideoCount
+import VideoFolderDragAndDrop
     from '../src/VideoBasedMarketing/Recordings/Presentation/Resources/stimulus-controllers/videoFolderDragAndDrop-controller';
 
 // Registers Stimulus controllers from controllers.json and in the controllers/ directory
@@ -44,5 +44,5 @@ app.register(
 
 app.register(
     'videoBasedMarketing-recordings-videoFolderDragAndDrop',
-    VideoFolderVideoCount
+    VideoFolderDragAndDrop
 );
