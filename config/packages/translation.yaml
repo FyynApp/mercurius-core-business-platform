@@ -14,6 +14,7 @@ framework:
             - '%kernel.project_dir%/src/VideoBasedMarketing/Mailings/Presentation/Resources/translations'
             - '%kernel.project_dir%/src/VideoBasedMarketing/Settings/Presentation/Resources/translations'
             - '%kernel.project_dir%/src/VideoBasedMarketing/AudioTranscription/Presentation/Resources/translations'
+            - '%kernel.project_dir%/src/VideoBasedMarketing/VideoEditor/Presentation/Resources/translations'
         fallbacks:
             - !php/enum App\Shared\Domain\Enum\Iso639_1Code::En->value
             - !php/enum App\Shared\Domain\Enum\Iso639_1Code::De->value

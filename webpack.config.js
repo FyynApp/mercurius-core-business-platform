@@ -28,6 +28,7 @@ Encore
     .addStyleEntry('tailwind', './assets/styles/tailwind.css')
     .addStyleEntry('videoplayer', './assets/styles/videoplayer.css')
     .addStyleEntry('uppy', './assets/styles/uppy.scss')
+    .addStyleEntry('vis-timeline', './assets/styles/vis-timeline.scss')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
