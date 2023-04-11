@@ -17,6 +17,8 @@ security:
             lazy: true
             provider: app_user_provider
 
+            entry_point: App\VideoBasedMarketing\Account\Infrastructure\Security\LoginBasedUserAuthenticator
+
             form_login:
                 login_path: videobasedmarketing.account.presentation.sign_in
                 check_path: videobasedmarketing.account.presentation.sign_in
