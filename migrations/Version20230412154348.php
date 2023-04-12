@@ -44,7 +44,6 @@ final class Version20230412154348 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE process_log_entries DROP FOREIGN KEY FK_1B404843D98B1C16');
         $this->addSql('ALTER TABLE process_log_entries DROP FOREIGN KEY FK_1B4048434ADB3485');
         $this->addSql('ALTER TABLE process_log_entries DROP FOREIGN KEY FK_1B404843763C10B2');
