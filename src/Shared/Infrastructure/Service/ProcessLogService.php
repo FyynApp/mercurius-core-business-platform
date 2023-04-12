@@ -10,20 +10,19 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 
 readonly class ProcessLogService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private LoggerInterface        $logger
     )
     {
     }
 
-    /**
-     * @throws Exception
-     */
     public function createEntry(
         ProcessLogEntryType $processLogEntryType,
         ?User               $user = null,
@@ -31,46 +30,59 @@ readonly class ProcessLogService
         ?RecordingSession   $recordingSession = null,
         ?VideoUpload        $videoUpload = null,
         ?Video              $video = null,
-    ): ProcessLogEntry
+    ): ?ProcessLogEntry
     {
-        $entry = new ProcessLogEntry(
-            $processLogEntryType,
-            $user,
-            $organization,
-            $recordingSession,
-            $videoUpload,
-            $video
-        );
+        try {
+            $entry = new ProcessLogEntry(
+                $processLogEntryType,
+                $user,
+                $organization,
+                $recordingSession,
+                $videoUpload,
+                $video
+            );
 
-        $this->entityManager->persist($entry);
-        $this->entityManager->flush();
+            $this->entityManager->persist($entry);
+            $this->entityManager->flush();
 
-        return $entry;
+            return $entry;
+        } catch (Throwable $throwable) {
+            $this->logger->error($throwable->getMessage());
+            return null;
+        }
     }
 
-    /**
-     * @throws Exception
-     */
     public function markEntryAsFinishedSuccessfully(
-        ProcessLogEntry $entry
+        ?ProcessLogEntry $entry
     ): void
     {
-        $entry->setFinishedAt(DateAndTimeService::getDateTime());
-        $this->entityManager->persist($entry);
-        $this->entityManager->flush();
+        if (is_null($entry)) {
+            return;
+        }
+        try {
+            $entry->setFinishedAt(DateAndTimeService::getDateTime());
+            $this->entityManager->persist($entry);
+            $this->entityManager->flush();
+        } catch (Throwable $throwable) {
+            $this->logger->error($throwable->getMessage());
+        }
     }
 
-    /**
-     * @throws Exception
-     */
     public function markEntryAsFinishedWithError(
-        ProcessLogEntry $entry,
+        ?ProcessLogEntry $entry,
         string          $latestErrorMessage
     ): void
     {
-        $entry->setFinishedAt(DateAndTimeService::getDateTime());
-        $entry->setLatestErrorMessage($latestErrorMessage);
-        $this->entityManager->persist($entry);
-        $this->entityManager->flush();
+        if (is_null($entry)) {
+            return;
+        }
+        try {
+            $entry->setFinishedAt(DateAndTimeService::getDateTime());
+            $entry->setLatestErrorMessage($latestErrorMessage);
+            $this->entityManager->persist($entry);
+            $this->entityManager->flush();
+        } catch (Throwable $throwable) {
+            $this->logger->error($throwable->getMessage());
+        }
     }
 }

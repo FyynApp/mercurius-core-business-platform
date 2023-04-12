@@ -28,6 +28,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Throwable;
 use TusPhp\Events\UploadComplete;
 use TusPhp\Tus\Server;
 use ValueError;
@@ -497,74 +498,75 @@ readonly class RecordingsInfrastructureService
     }
 
 
-    /** @throws Exception */
+    /** @throws Throwable */
     public function generateMissingVideoAssets(Video $video): void
     {
         $logEntry = $this->processLogService->createEntry(
-            ProcessLogEntryType::MissingVideoAssetsGeneration,
+            ProcessLogEntryType::GenerateMissingVideoAssets,
             null,
             null,
             null,
             null,
             $video
         );
-        if (   is_null($video->getRecordingSession())
-            && is_null($video->getVideoUpload())
-        ) {
+
+        try {
+            if (   is_null($video->getRecordingSession())
+                && is_null($video->getVideoUpload())
+            ) {
+                throw new Exception(
+                    "Need video '{$video->getId()}' to be linked to either recording session or video upload."
+                );
+            }
+
+            if (   !is_null($video->getRecordingSession())
+                && !is_null($video->getVideoUpload())
+            ) {
+                throw new Exception(
+                    "Need video '{$video->getId()}' to be linked to only one of recording session or video upload."
+                );
+            }
+
+            if (!is_null($video->getVideoUpload())) {
+                $this->tusServer->getCache()->setPrefix($video->getUser()->getId());
+                $this->tusServer->getCache()->delete($video->getVideoUpload()->getTusToken());
+            }
+
+            $this->createFilesystemStructureForVideoAssets($video);
+
+            if (!$video->hasAssetPosterStillWebp()) {
+                $this->generateVideoAssetPosterStillWebp($video);
+            }
+
+            if (!$video->hasAssetPosterAnimatedWebp()) {
+                $this->generateVideoAssetPosterAnimatedWebp($video);
+            }
+
+            if (!$video->hasAssetFullMp4()) {
+                $this->generateVideoAssetFullMp4($video);
+            }
+
+            if (!$video->hasAssetPosterAnimatedGif()) {
+                $this->generateVideoAssetPosterAnimatedGif($video);
+            }
+
+            if (!$video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
+                $this->generateVideoAssetPosterStillWithPlayOverlayForEmailPng($video);
+            }
+
+            if (!$video->hasAssetForAnalyticsWidgetMp4()) {
+                $this->generateVideoAssetForAnalyticsWidgetMp4($video);
+            }
+
+            if (!$video->hasAssetFullWebm()) {
+                $this->generateVideoAssetFullWebm($video);
+            }
+        } catch (Throwable $throwable) {
             $this->processLogService->markEntryAsFinishedWithError(
                 $logEntry,
-                "Need video '{$video->getId()}' to be linked to either recording session or video upload."
+                $throwable->getMessage()
             );
-            throw new Exception(
-                "Need video '{$video->getId()}' to be linked to either recording session or video upload."
-            );
-        }
-
-        if (   !is_null($video->getRecordingSession())
-            && !is_null($video->getVideoUpload())
-        ) {
-            $this->processLogService->markEntryAsFinishedWithError(
-                $logEntry,
-                "Need video '{$video->getId()}' to be linked to only one of recording session or video upload."
-            );
-            throw new Exception(
-                "Need video '{$video->getId()}' to be linked to only one of recording session or video upload."
-            );
-        }
-
-        if (!is_null($video->getVideoUpload())) {
-            $this->tusServer->getCache()->setPrefix($video->getUser()->getId());
-            $this->tusServer->getCache()->delete($video->getVideoUpload()->getTusToken());
-        }
-
-        $this->createFilesystemStructureForVideoAssets($video);
-
-        if (!$video->hasAssetPosterStillWebp()) {
-            $this->generateVideoAssetPosterStillWebp($video);
-        }
-
-        if (!$video->hasAssetPosterAnimatedWebp()) {
-            $this->generateVideoAssetPosterAnimatedWebp($video);
-        }
-
-        if (!$video->hasAssetFullMp4()) {
-            $this->generateVideoAssetFullMp4($video);
-        }
-
-        if (!$video->hasAssetPosterAnimatedGif()) {
-            $this->generateVideoAssetPosterAnimatedGif($video);
-        }
-
-        if (!$video->hasAssetPosterStillWithPlayOverlayForEmailPng()) {
-            $this->generateVideoAssetPosterStillWithPlayOverlayForEmailPng($video);
-        }
-
-        if (!$video->hasAssetForAnalyticsWidgetMp4()) {
-            $this->generateVideoAssetForAnalyticsWidgetMp4($video);
-        }
-
-        if (!$video->hasAssetFullWebm()) {
-            $this->generateVideoAssetFullWebm($video);
+            throw $throwable;
         }
 
         $this->processLogService->markEntryAsFinishedSuccessfully(
@@ -574,90 +576,117 @@ readonly class RecordingsInfrastructureService
 
     public function generateVideoAssetPosterStillWebp(Video $video): void
     {
-        $this->createFilesystemStructureForVideoAssets($video);
+        $logEntry = $this->processLogService->createEntry(
+            ProcessLogEntryType::GenerateVideoAssetPosterStillWebp,
+            null,
+            null,
+            null,
+            null,
+            $video
+        );
 
-        if (!is_null($video->getRecordingSession())) {
-            $sourcePath = $this->getVideoChunkContentStorageFilePath(
-                $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
-            );
-        } else {
-            $sourcePath = $this
-                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
-        }
+        try {
+            $this->createFilesystemStructureForVideoAssets($video);
 
-        for ($i = 50; $i > 0; $i--) {
-            $process = new Process(
-                [
-                    'ffmpeg',
+            if (!is_null($video->getRecordingSession())) {
+                $sourcePath = $this->getVideoChunkContentStorageFilePath(
+                    $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
+                );
+            } else {
+                $sourcePath = $this
+                    ->getContentStoragePathForVideoUpload($video->getVideoUpload());
+            }
 
-                    '-i',
-                    $sourcePath,
+            for ($i = 50; $i > 0; $i--) {
+                $process = new Process(
+                    [
+                        'ffmpeg',
 
-                    '-vf',
-                    "select=eq(n\,$i)",
+                        '-i',
+                        $sourcePath,
 
-                    '-q:v',
-                    '70',
+                        '-vf',
+                        "select=eq(n\,$i)",
 
-                    '-y',
+                        '-q:v',
+                        '70',
+
+                        '-y',
+                        $this->getVideoPosterStillAssetFilePath(
+                            $video,
+                            AssetMimeType::ImageWebp
+                        )
+                    ]
+                );
+                $process->setTimeout(60 * 30);
+                $process->run();
+
+                clearstatcache();
+
+                if (!file_exists(
                     $this->getVideoPosterStillAssetFilePath(
                         $video,
-                        AssetMimeType::ImageWebp
-                    )
-                ]
-            );
-            $process->setTimeout(60 * 30);
-            $process->run();
+                        AssetMimeType::ImageWebp))
+                ) {
+                    if (!is_null($video->getRecordingSession())) {
+                        $this
+                            ->logger
+                            ->info(
+                                "Failed to generate video asset 'poster still webp' for video {$video->getId()} from recording session {$video->getRecordingSession()->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                            );
+                    }
 
-            clearstatcache();
+                    if (!is_null($video->getVideoUpload())) {
+                        $this
+                            ->logger
+                            ->info(
+                                "Failed to generate video asset 'poster still webp' for video {$video->getId()} from video upload {$video->getVideoUpload()->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                            );
+                    }
+                    continue;
+                }
 
-            if (!file_exists(
-                $this->getVideoPosterStillAssetFilePath(
+                $filesize = filesize($this->getVideoPosterStillAssetFilePath(
                     $video,
-                    AssetMimeType::ImageWebp))
-            ) {
-                if (!is_null($video->getRecordingSession())) {
-                    $this
-                        ->logger
-                        ->info(
-                            "Failed to generate video asset 'poster still webp' for video {$video->getId()} from recording session {$video->getRecordingSession()->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
-                        );
-                }
+                    AssetMimeType::ImageWebp
+                ));
 
-                if (!is_null($video->getVideoUpload())) {
-                    $this
-                        ->logger
-                        ->info(
-                            "Failed to generate video asset 'poster still webp' for video {$video->getId()} from video upload {$video->getVideoUpload()->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
-                        );
+                if ($filesize > 0) {
+                    $video->setHasAssetPosterStillWebp(true);
+
+                    $video->setAssetPosterStillWebpWidth(
+                        $this->probeForVideoAssetWidth(
+                            $this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)
+                        )
+                    );
+
+                    $video->setAssetPosterStillWebpHeight(
+                        $this->probeForVideoAssetHeight(
+                            $this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)
+                        )
+                    );
+
+                    $this->entityManager->persist($video);
+                    $this->entityManager->flush();
+
+                    $this->processLogService->markEntryAsFinishedSuccessfully(
+                        $logEntry
+                    );
+
+                    return;
                 }
-                continue;
             }
 
-            $filesize = filesize($this->getVideoPosterStillAssetFilePath(
-                $video,
-                AssetMimeType::ImageWebp
-            ));
+            $this->processLogService->markEntryAsFinishedWithError(
+                $logEntry,
+                (string)$process->getErrorOutput()
+            );
 
-            if ($filesize > 0) {
-                $video->setHasAssetPosterStillWebp(true);
-
-                $video->setAssetPosterStillWebpWidth(
-                    $this->probeForVideoAssetWidth(
-                        $this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)
-                    )
-                );
-
-                $video->setAssetPosterStillWebpHeight(
-                    $this->probeForVideoAssetHeight(
-                        $this->getVideoPosterStillAssetFilePath($video, AssetMimeType::ImageWebp)
-                    )
-                );
-
-                $this->entityManager->persist($video);
-                $this->entityManager->flush();
-                break;
-            }
+        } catch (Throwable $throwable) {
+            $this->processLogService->markEntryAsFinishedWithError(
+                $logEntry,
+                $throwable->getMessage()
+            );
         }
     }
 

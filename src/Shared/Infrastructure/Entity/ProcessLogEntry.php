@@ -68,6 +68,18 @@ class ProcessLogEntry
                 $this->organization = $video->getOrganization();
             }
         }
+
+        if (is_null($videoUpload)) {
+            if (!is_null($video)) {
+                $this->videoUpload = $video->getVideoUpload();
+            }
+        }
+
+        if (is_null($recordingSession)) {
+            if (!is_null($video)) {
+                $this->recordingSession = $video->getRecordingSession();
+            }
+        }
     }
 
     
