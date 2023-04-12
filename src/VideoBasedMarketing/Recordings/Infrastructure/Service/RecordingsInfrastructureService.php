@@ -2,9 +2,11 @@
 
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\Service;
 
+use App\Shared\Infrastructure\Enum\ProcessLogEntryType;
 use App\Shared\Infrastructure\Message\ClearTusCacheCommandMessage;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
+use App\Shared\Infrastructure\Service\ProcessLogService;
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
@@ -44,7 +46,8 @@ readonly class RecordingsInfrastructureService
         private CapabilitiesService    $capabilitiesService,
         private MessageBusInterface    $messageBus,
         private Server                 $tusServer,
-        private ShortIdService         $shortIdService
+        private ShortIdService         $shortIdService,
+        private ProcessLogService      $processLogService
     )
     {
     }
@@ -497,16 +500,36 @@ readonly class RecordingsInfrastructureService
     /** @throws Exception */
     public function generateMissingVideoAssets(Video $video): void
     {
+        $logEntry = $this->processLogService->createEntry(
+            ProcessLogEntryType::MissingVideoAssetsGeneration,
+            null,
+            null,
+            null,
+            null,
+            $video
+        );
         if (   is_null($video->getRecordingSession())
             && is_null($video->getVideoUpload())
         ) {
-            throw new Exception("Need video '{$video->getId()}' to be linked to either recording session or video upload.");
+            $this->processLogService->markEntryAsFinishedWithError(
+                $logEntry,
+                "Need video '{$video->getId()}' to be linked to either recording session or video upload."
+            );
+            throw new Exception(
+                "Need video '{$video->getId()}' to be linked to either recording session or video upload."
+            );
         }
 
         if (   !is_null($video->getRecordingSession())
             && !is_null($video->getVideoUpload())
         ) {
-            throw new Exception("Need video '{$video->getId()}' to be linked to only one of recording session or video upload.");
+            $this->processLogService->markEntryAsFinishedWithError(
+                $logEntry,
+                "Need video '{$video->getId()}' to be linked to only one of recording session or video upload."
+            );
+            throw new Exception(
+                "Need video '{$video->getId()}' to be linked to only one of recording session or video upload."
+            );
         }
 
         if (!is_null($video->getVideoUpload())) {
@@ -543,6 +566,10 @@ readonly class RecordingsInfrastructureService
         if (!$video->hasAssetFullWebm()) {
             $this->generateVideoAssetFullWebm($video);
         }
+
+        $this->processLogService->markEntryAsFinishedSuccessfully(
+            $logEntry
+        );
     }
 
     public function generateVideoAssetPosterStillWebp(Video $video): void

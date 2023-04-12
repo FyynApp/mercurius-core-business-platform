@@ -8,6 +8,11 @@ doctrine:
         auto_mapping: true
         mappings:
 
+            App\Shared\Infrastructure\Entity:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Shared/Infrastructure/Entity'
+                prefix: 'App\Shared\Infrastructure\Entity'
+
             App\VideoBasedMarketing\Account\Domain\Entity:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/VideoBasedMarketing/Account/Domain/Entity'
