@@ -812,66 +812,93 @@ readonly class RecordingsInfrastructureService
 
     public function generateVideoAssetPosterAnimatedWebp(Video $video): void
     {
-        $this->createFilesystemStructureForVideoAssets($video);
-
-        if (!is_null($video->getRecordingSession())) {
-            $sourcePath = $this->getVideoChunkContentStorageFilePath(
-                $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
-            );
-        } else {
-            $sourcePath = $this
-                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
-        }
-
-        $process = new Process(
-            [
-                'ffmpeg',
-
-                # seek input to position '1 second'
-                '-ss',
-                '1',
-
-                # read 3 seconds from source
-                '-t',
-                '3',
-
-                '-i',
-                $sourcePath,
-
-                '-vf',
-                'scale=520:-1',
-
-                # framerate
-                '-r',
-                '7',
-
-                '-q:v',
-                '80',
-
-                '-loop',
-                '0',
-
-                '-y',
-                $this->getVideoPosterAnimatedAssetFilePath(
-                    $video,
-                    AssetMimeType::ImageWebp
-                )
-            ]
+        $logEntry = $this->processLogService->createEntry(
+            ProcessLogEntryType::GenerateVideoAssetPosterAnimatedWebp,
+            null,
+            null,
+            null,
+            null,
+            $video
         );
-        $process->setTimeout(60 * 30);
-        $process->run();
 
-        if ($process->isSuccessful()) {
-            $video->setHasAssetPosterAnimatedWebp(true);
+        try {
+            $this->createFilesystemStructureForVideoAssets($video);
 
-            // See https://trac.ffmpeg.org/ticket/4907
-            // ffmpeg/ffprobe can encode animated WebP files, but cannot decode them,
-            // which is why we simply use the width and height of the still image WebP asset
-            $video->setAssetPosterAnimatedWebpWidth($video->getAssetPosterStillWebpWidth());
-            $video->setAssetPosterAnimatedWebpHeight($video->getAssetPosterStillWebpHeight());
+            if (!is_null($video->getRecordingSession())) {
+                $sourcePath = $this->getVideoChunkContentStorageFilePath(
+                    $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
+                );
+            } else {
+                $sourcePath = $this
+                    ->getContentStoragePathForVideoUpload($video->getVideoUpload());
+            }
 
-            $this->entityManager->persist($video);
-            $this->entityManager->flush();
+            $process = new Process(
+                [
+                    'ffmpeg',
+
+                    # seek input to position '1 second'
+                    '-ss',
+                    '1',
+
+                    # read 3 seconds from source
+                    '-t',
+                    '3',
+
+                    '-i',
+                    $sourcePath,
+
+                    '-vf',
+                    'scale=520:-1',
+
+                    # framerate
+                    '-r',
+                    '7',
+
+                    '-q:v',
+                    '80',
+
+                    '-loop',
+                    '0',
+
+                    '-y',
+                    $this->getVideoPosterAnimatedAssetFilePath(
+                        $video,
+                        AssetMimeType::ImageWebp
+                    )
+                ]
+            );
+            $process->setTimeout(60 * 30);
+            $process->run();
+
+            if ($process->isSuccessful()) {
+                $video->setHasAssetPosterAnimatedWebp(true);
+
+                // See https://trac.ffmpeg.org/ticket/4907
+                // ffmpeg/ffprobe can encode animated WebP files, but cannot decode them,
+                // which is why we simply use the width and height of the still image WebP asset
+                $video->setAssetPosterAnimatedWebpWidth($video->getAssetPosterStillWebpWidth());
+                $video->setAssetPosterAnimatedWebpHeight($video->getAssetPosterStillWebpHeight());
+
+                $this->entityManager->persist($video);
+                $this->entityManager->flush();
+
+                $this->processLogService->markEntryAsFinishedSuccessfully(
+                    $logEntry
+                );
+
+                return;
+            } else {
+                $this->processLogService->markEntryAsFinishedWithError(
+                    $logEntry,
+                    $process->getErrorOutput()
+                );
+            }
+        } catch (Throwable $throwable) {
+            $this->processLogService->markEntryAsFinishedWithError(
+                $logEntry,
+                $throwable->getMessage()
+            );
         }
     }
 
@@ -1011,164 +1038,195 @@ readonly class RecordingsInfrastructureService
         Video $video
     ): void
     {
-        if (   $video->hasAssetOriginal()
-            && $video->getAssetOriginalMimeType() === AssetMimeType::VideoMp4
-        ) {
-            $fs = new Filesystem();
-            $fs->copy(
-                $this->getVideoAssetOriginalFilePath($video),
-                $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
-            );
-
-            $video->setHasAssetFullMp4(true);
-
-            $video->setAssetFullMp4Width(
-                $video->getAssetOriginalWidth()
-            );
-            $video->setAssetFullMp4Height(
-                $video->getAssetOriginalHeight()
-            );
-            $video->setAssetFullMp4Seconds(
-                $video->getAssetOriginalSeconds()
-            );
-            $video->setAssetFullMp4Fps(
-                $video->getAssetOriginalFps()
-            );
-
-            $this->entityManager->persist($video);
-            $this->entityManager->flush();
-
-            return;
-        }
-
-        if (!is_null($video->getRecordingSession())) {
-            if (!$video->hasAssetOriginal()) {
-                $this->generateVideoAssetOriginal($video);
-            }
-
-            $sourceWidth = $video->getAssetOriginalWidth();
-            $sourceHeight = $video->getAssetOriginalHeight();
-
-            $sourcePath = $this->getVideoAssetOriginalFilePath(
-                $video
-            );
-
-        } else {
-            $sourcePath = $this->getContentStoragePathForVideoUpload($video->getVideoUpload());
-
-            $sourceWidth = $this->probeForVideoAssetWidth(
-                $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
-            );
-
-            $sourceHeight = $this->probeForVideoAssetHeight(
-                $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
-            );
-
-            // iOS stores a 320x480 video as 480x320 and "rotation of -90.00 degrees"
-            if ($this->videoDimensionsAreSideways(
-                $this->getContentStoragePathForVideoUpload($video->getVideoUpload()))
-            ) {
-                $tmp = $sourceWidth;
-                $sourceWidth = $sourceHeight;
-                $sourceHeight = $tmp;
-            }
-        }
-
-        // The libx264 encoder cannot work with uneven resolutions,
-        // we therefore try to feed it even resolutions
-
-        if (!is_null($sourceWidth) && $sourceWidth % 2 !== 0) {
-            $sourceWidth += 1;
-        }
-
-        if (!is_null($sourceHeight) && $sourceHeight % 2 !== 0) {
-            $sourceHeight += 1;
-        }
-
-        if (is_null($sourceWidth) && is_null($sourceHeight)) {
-            $scaleParam = ''; // in this case, if the input video has an uneven resolution in
-                              // one or two of it's dimensions, encoding will fail.
-                              // Encoding without a scaleParam is therefore a best-effort approach
-        } else {
-            $scaleParam = ',scale=';
-            if (is_null($sourceWidth)) {
-                $scaleParam .= 'iw:';
-            } else {
-                $scaleParam .= "$sourceWidth:";
-            }
-
-            if (is_null($sourceHeight)) {
-                $scaleParam .= 'ih';
-            } else {
-                $scaleParam .= "$sourceHeight";
-            }
-        }
-
-        $process = new Process(
-            [
-                'ffmpeg',
-
-                '-i',
-                $sourcePath,
-
-                '-c:v',
-                'libx264',
-
-                '-profile:v',
-                'main',
-
-                '-level',
-                '4.2',
-
-                '-vf',
-                "format=yuv420p,fps=60$scaleParam",
-
-                '-c:a',
-                'aac',
-
-                '-movflags',
-                '+faststart',
-
-                '-y',
-                $this->getVideoFullAssetFilePath(
-                    $video,
-                    AssetMimeType::VideoMp4
-                )
-            ]
+        $logEntry = $this->processLogService->createEntry(
+            ProcessLogEntryType::GenerateVideoAssetFullMp4,
+            null,
+            null,
+            null,
+            null,
+            $video
         );
-        $process->setIdleTimeout(null);
-        $process->setTimeout(60 * 60);
-        $process->run();
 
-        if ($process->isSuccessful()) {
-            $video->setHasAssetFullMp4(true);
+        try {
 
-            $video->setAssetFullMp4Fps(
-                $this->probeForVideoAssetFps(
+            if (   $video->hasAssetOriginal()
+                && $video->getAssetOriginalMimeType() === AssetMimeType::VideoMp4
+            ) {
+                $fs = new Filesystem();
+                $fs->copy(
+                    $this->getVideoAssetOriginalFilePath($video),
                     $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
-                )
-            );
+                );
 
-            $video->setAssetFullMp4Seconds(
-                $this->probeForVideoAssetSeconds(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
-                )
-            );
+                $video->setHasAssetFullMp4(true);
 
-            $video->setAssetFullMp4Width(
-                $this->probeForVideoAssetWidth(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
-                )
-            );
+                $video->setAssetFullMp4Width(
+                    $video->getAssetOriginalWidth()
+                );
+                $video->setAssetFullMp4Height(
+                    $video->getAssetOriginalHeight()
+                );
+                $video->setAssetFullMp4Seconds(
+                    $video->getAssetOriginalSeconds()
+                );
+                $video->setAssetFullMp4Fps(
+                    $video->getAssetOriginalFps()
+                );
 
-            $video->setAssetFullMp4Height(
-                $this->probeForVideoAssetHeight(
-                    $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
-                )
-            );
+                $this->entityManager->persist($video);
+                $this->entityManager->flush();
 
-            $this->entityManager->persist($video);
-            $this->entityManager->flush();
+                $this->processLogService->markEntryAsFinishedSuccessfully(
+                    $logEntry
+                );
+
+                return;
+            }
+
+            if (!is_null($video->getRecordingSession())) {
+                if (!$video->hasAssetOriginal()) {
+                    $this->generateVideoAssetOriginal($video);
+                }
+
+                $sourceWidth = $video->getAssetOriginalWidth();
+                $sourceHeight = $video->getAssetOriginalHeight();
+
+                $sourcePath = $this->getVideoAssetOriginalFilePath(
+                    $video
+                );
+
+            } else {
+                $sourcePath = $this->getContentStoragePathForVideoUpload($video->getVideoUpload());
+
+                $sourceWidth = $this->probeForVideoAssetWidth(
+                    $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
+                );
+
+                $sourceHeight = $this->probeForVideoAssetHeight(
+                    $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
+                );
+
+                // iOS stores a 320x480 video as 480x320 and "rotation of -90.00 degrees"
+                if ($this->videoDimensionsAreSideways(
+                    $this->getContentStoragePathForVideoUpload($video->getVideoUpload()))
+                ) {
+                    $tmp = $sourceWidth;
+                    $sourceWidth = $sourceHeight;
+                    $sourceHeight = $tmp;
+                }
+            }
+
+            // The libx264 encoder cannot work with uneven resolutions,
+            // we therefore try to feed it even resolutions
+
+            if (!is_null($sourceWidth) && $sourceWidth % 2 !== 0) {
+                $sourceWidth += 1;
+            }
+
+            if (!is_null($sourceHeight) && $sourceHeight % 2 !== 0) {
+                $sourceHeight += 1;
+            }
+
+            if (is_null($sourceWidth) && is_null($sourceHeight)) {
+                $scaleParam = ''; // in this case, if the input video has an uneven resolution in
+                // one or two of it's dimensions, encoding will fail.
+                // Encoding without a scaleParam is therefore a best-effort approach
+            } else {
+                $scaleParam = ',scale=';
+                if (is_null($sourceWidth)) {
+                    $scaleParam .= 'iw:';
+                } else {
+                    $scaleParam .= "$sourceWidth:";
+                }
+
+                if (is_null($sourceHeight)) {
+                    $scaleParam .= 'ih';
+                } else {
+                    $scaleParam .= "$sourceHeight";
+                }
+            }
+
+            $process = new Process(
+                [
+                    'ffmpeg',
+
+                    '-i',
+                    $sourcePath,
+
+                    '-c:v',
+                    'libx264',
+
+                    '-profile:v',
+                    'main',
+
+                    '-level',
+                    '4.2',
+
+                    '-vf',
+                    "format=yuv420p,fps=60$scaleParam",
+
+                    '-c:a',
+                    'aac',
+
+                    '-movflags',
+                    '+faststart',
+
+                    '-y',
+                    $this->getVideoFullAssetFilePath(
+                        $video,
+                        AssetMimeType::VideoMp4
+                    )
+                ]
+            );
+            $process->setIdleTimeout(null);
+            $process->setTimeout(60 * 60);
+            $process->run();
+
+            if ($process->isSuccessful()) {
+                $video->setHasAssetFullMp4(true);
+
+                $video->setAssetFullMp4Fps(
+                    $this->probeForVideoAssetFps(
+                        $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+                    )
+                );
+
+                $video->setAssetFullMp4Seconds(
+                    $this->probeForVideoAssetSeconds(
+                        $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+                    )
+                );
+
+                $video->setAssetFullMp4Width(
+                    $this->probeForVideoAssetWidth(
+                        $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+                    )
+                );
+
+                $video->setAssetFullMp4Height(
+                    $this->probeForVideoAssetHeight(
+                        $this->getVideoFullAssetFilePath($video, AssetMimeType::VideoMp4)
+                    )
+                );
+
+                $this->entityManager->persist($video);
+                $this->entityManager->flush();
+
+                $this->processLogService->markEntryAsFinishedSuccessfully(
+                    $logEntry
+                );
+            } else {
+                $this->processLogService->markEntryAsFinishedWithError(
+                    $logEntry,
+                    $process->getErrorOutput()
+                );
+            }
+
+        } catch (Throwable $throwable) {
+            $this->processLogService->markEntryAsFinishedWithError(
+                $logEntry,
+                $throwable->getMessage()
+            );
         }
     }
 
