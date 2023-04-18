@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -84,5 +85,35 @@ readonly class ProcessLogService
         } catch (Throwable $throwable) {
             $this->logger->error($throwable->getMessage());
         }
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    public function hasFinishedWithError(
+        ProcessLogEntryType                                  $processLogEntryType,
+        User|Organization|RecordingSession|VideoUpload|Video $entity
+    ): bool
+    {
+        $sql = "
+            SELECT COUNT(*) AS cnt
+            FROM {$this->entityManager->getClassMetadata(ProcessLogEntry::class)->getTableName()} ple
+            WHERE
+                ple.finished_at IS NOT NULL
+            AND ple.latest_error_message IS NOT NULL
+            ;
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $resultSet = $stmt->executeQuery([
+            ':qwildcard' => "\"*$qForFulltext*\"",
+            ':qliterally' => '"' . $qForFulltext . '"',
+            ':qlike' => "%$q%",
+            ':organizationId' => $organization->getId()
+        ]);
+
+        $videoFinderResults = [];
+        foreach ($resultSet->fetchAllAssociative() as $row) {
     }
 }
