@@ -3,8 +3,6 @@
 namespace App\Shared\Infrastructure\Command\Devhelper;
 
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
-use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
-use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CheckHappyScribeTranscriptionCommandMessage;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\GenerateSuggestedSummaryCommandMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
