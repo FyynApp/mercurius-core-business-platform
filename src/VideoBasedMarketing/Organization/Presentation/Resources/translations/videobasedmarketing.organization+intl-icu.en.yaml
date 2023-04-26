@@ -26,6 +26,7 @@ organization:
     title_joined: 'Your currently active organization'
     owned_org_note: 'This organization is owned by you'
     joined_org_note: 'This organization is owned by {ownerNameOrEmail}'
+    create_new_org_cta: 'Create new organization'
     pending_invitations:
       title: 'Pending invitations'
       no_pending: 'This organization does not have any pending invitations.'

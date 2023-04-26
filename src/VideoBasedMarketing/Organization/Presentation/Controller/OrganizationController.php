@@ -19,8 +19,39 @@ class OrganizationController
 {
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/organization/overview',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/organisation/übersicht',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/organizations/',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/organisationen/',
+        ],
+        name        : 'videobasedmarketing.organization.handle_create',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function handleCreateAction(
+        Request                   $request,
+        OrganizationDomainService $organizationDomainService
+    ): Response
+    {
+        if (!$this->isCsrfTokenValid('create-new-organization', $request->get('_csrf_token'))) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
+
+        /** @var null|User $user */
+        $user = $this->getUser();
+
+        $org = $organizationDomainService->createOrganization($user);
+
+        $organizationDomainService->switchOrganization(
+            $user,
+            $org
+        );
+
+        return $this->redirectToRoute('videobasedmarketing.organization.overview');
+    }
+
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/current-organization/overview',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aktuelle-organisation/übersicht',
         ],
         name        : 'videobasedmarketing.organization.overview',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -44,8 +75,8 @@ class OrganizationController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/organization/name',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/organisation/name',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/current-organization/name',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aktuelle-organisation/name',
         ],
         name        : 'videobasedmarketing.organization.handle_name_edited',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -79,8 +110,8 @@ class OrganizationController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/organization/switch',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/organisation/wechseln',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/current-organization/switch',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/aktuelle-organisation/wechseln',
         ],
         name        : 'videobasedmarketing.organization.switch',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -111,8 +142,8 @@ class OrganizationController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/organization/{organizationId}/switch-to',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/organisation/{organizationId}/wechseln-zu',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/organizations/{organizationId}/switch-to',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/organisations/{organizationId}/wechseln-zu',
         ],
         name        : 'videobasedmarketing.organization.handle_switch',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
