@@ -23,7 +23,7 @@ class InvitationTest
 
         $crawler = $client->request(
             'GET',
-            '/en/my/organization/overview'
+            '/en/my/current-organization/overview'
         );
 
         $form = $crawler->selectButton('Send invitation')->form();
@@ -80,7 +80,7 @@ class InvitationTest
 
         $crawler = $client->request(
             'GET',
-            '/en/my/organization/switch'
+            '/en/my/current-organization/switch'
         );
 
         $this->assertSame(
