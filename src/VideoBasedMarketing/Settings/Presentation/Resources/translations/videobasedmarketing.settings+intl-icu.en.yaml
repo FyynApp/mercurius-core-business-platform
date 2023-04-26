@@ -28,7 +28,7 @@ custom_domain:
   setup_info:
     title: 'How to set up your domain'
     content:
-      1: 'To make your custom domain show your Fyyn.io landingpages, you need to ensure that one of the DNS settings of your domain point at our servers.'
+      1: 'To make your custom domain show your Fyyn.io landingpages, you need to ensure that one of the DNS settings of your domain points at our servers.'
       2: 'This can be achieved by creating a CNAME record to'
       3: '.'
       4: 'Consult the DNS management console of your hosting provider to create this record.'
