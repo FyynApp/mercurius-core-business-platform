@@ -31,10 +31,6 @@ class VideosFinderLiveComponent
     #[LiveProp]
     public ?VideoFolder $videoFolder = null;
 
-    /** @var VideoFinderResult[] */
-    #[LiveProp]
-    public array $results = [];
-
     #[LiveProp(writable: true)]
     public string $q = '';
 
@@ -84,16 +80,19 @@ class VideosFinderLiveComponent
         $this->videosListViewMode = $user->getVideosListViewMode();
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
     #[LiveAction]
-    public function search(): void
+    public function getFinderResults(): array
     {
         /** @var User $user */
         $user = $this->getUser();
 
-        $this->results = $this->getResultset($user)->getResults();
+        return $this->getResultset($user)->getResults();
+    }
+
+    #[LiveAction]
+    public function search(): void
+    {
+        return;
     }
 
     /**

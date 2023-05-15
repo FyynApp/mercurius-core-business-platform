@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        {% if this.results|length is same as 0 %}
+        {% if this.finderResults|length is same as 0 %}
 
             {% if this.q|trim|length > 0 %}
                 <h2 class="font-bold text-xl mb-2">
@@ -124,7 +124,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for result in this.results %}
+                            {% for result in this.finderResults %}
                                 {# @var result \App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFinderResult #}
 
                                 <tr
@@ -199,7 +199,7 @@
                         </div>
                     {% endif %}
 
-                    {% for result in this.results %}
+                    {% for result in this.finderResults %}
                         {# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 
                         <div
