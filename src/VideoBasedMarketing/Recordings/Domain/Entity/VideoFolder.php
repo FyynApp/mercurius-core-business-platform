@@ -35,6 +35,8 @@ class VideoFolder
         $this->organization = $user->getCurrentlyActiveOrganization();
         $this->name = mb_substr(trim($name), 0, 265);
         $this->createdAt = DateAndTimeService::getDateTime();
+        $this->isVisibleForNonAdministrators = true;
+        $this->isDefaultForAdministratorRecordings = false;
     }
 
 
@@ -145,5 +147,37 @@ class VideoFolder
     ): void
     {
         $this->parentVideoFolder = $parentVideoFolder;
+    }
+
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $isDefaultForAdministratorRecordings;
+
+    public function setIsDefaultForAdministratorRecordings(
+        bool $isDefaultForAdministratorRecordings
+    ): void
+    {
+        $this->isDefaultForAdministratorRecordings = $isDefaultForAdministratorRecordings;
+    }
+
+    public function getIsDefaultForAdministratorRecordings(): bool
+    {
+        return $this->isDefaultForAdministratorRecordings;
+    }
+
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $isVisibleForNonAdministrators;
+
+    public function setIsVisibleForNonAdministrators(
+        bool $isVisibleForNonAdministrators
+    ): void
+    {
+        $this->isVisibleForNonAdministrators = $isVisibleForNonAdministrators;
+    }
+
+    public function getIsVisibleForNonAdministrators(): bool
+    {
+        return $this->isVisibleForNonAdministrators;
     }
 }

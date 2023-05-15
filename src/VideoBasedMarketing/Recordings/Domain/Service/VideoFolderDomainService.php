@@ -179,4 +179,43 @@ readonly class VideoFolderDomainService
         $this->entityManager->remove($videoFolder);
         $this->entityManager->flush();
     }
+
+    public function setIsVisibleForNonAdministrators(
+        VideoFolder $videoFolder,
+        bool        $isVisible
+    ): void
+    {
+        $videoFolder->setIsVisibleForNonAdministrators($isVisible);
+        $this->entityManager->persist($videoFolder);
+        $this->entityManager->flush();
+    }
+
+    public function setIsDefaultForAdministratorRecordings(
+        VideoFolder $videoFolder
+    ): void
+    {
+        /** @var ObjectRepository<Video> $repo */
+        $repo = $this->entityManager->getRepository(VideoFolder::class);
+
+        /** @var VideoFolder[] $folders */
+        $folders = $repo->findBy(
+            [
+                'organization' => $videoFolder->getOrganization()->getId()
+            ],
+            ['name' => Criteria::ASC]
+        );
+
+        foreach ($folders as $folder) {
+            if ($folder->getIsDefaultForAdministratorRecordings() === true) {
+                $folder->setIsDefaultForAdministratorRecordings(false);
+                $this->entityManager->persist($folder);
+                $this->entityManager->flush();
+                break;
+            }
+        }
+
+        $videoFolder->setIsDefaultForAdministratorRecordings(true);
+        $this->entityManager->persist($videoFolder);
+        $this->entityManager->flush();
+    }
 }
