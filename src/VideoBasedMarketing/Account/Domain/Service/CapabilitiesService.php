@@ -185,6 +185,24 @@ readonly class CapabilitiesService
     }
 
 
+    public function canEditFolderVisibilityForNonAdministrators(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::EDIT_FOLDER_VISIBILITY_FOR_NON_ADMINISTRATORS
+        );
+    }
+
+
+    public function canDefineDefaultFolderForAdministratorRecordings(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::DEFINE_DEFAULT_FOLDER_FOR_ADMINISTRATOR_RECORDINGS
+        );
+    }
+
+
     private function hasCapability(
         ?User      $user,
         Capability $capability

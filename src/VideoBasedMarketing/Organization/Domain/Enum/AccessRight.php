@@ -11,4 +11,6 @@ enum AccessRight: string
     case MOVE_ORGANIZATION_MEMBERS_INTO_GROUPS = 'move_organization_members_into_groups';
     case EDIT_CUSTOM_LOGO_SETTINGS   = 'edit_custom_logo_settings';
     case EDIT_CUSTOM_DOMAIN_SETTINGS = 'edit_custom_domain_settings';
+    case EDIT_FOLDER_VISIBILITY_FOR_NON_ADMINISTRATORS = 'edit_folder_visibility_for_non_administrators';
+    case DEFINE_DEFAULT_FOLDER_FOR_ADMINISTRATOR_RECORDINGS = 'define_default_folder_for_administrator_recordings';
 }
