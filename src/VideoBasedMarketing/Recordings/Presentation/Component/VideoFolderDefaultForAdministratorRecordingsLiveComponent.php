@@ -17,10 +17,10 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 
 #[AsLiveComponent(
-    'videobasedmarketing_recordings_video_folder_visibility_for_non_administrators_live_component',
-    '@videobasedmarketing.recordings/video_folder_visibility_for_non_administrators_live_component.html.twig'
+    'videobasedmarketing_recordings_video_folder_default_for_administrator_recordings_live_component',
+    '@videobasedmarketing.recordings/video_folder_default_for_administrator_recordings_live_component.html.twig'
 )]
-class VideoFolderVisibilityForNonAdministratorsLiveComponent
+class VideoFolderDefaultForAdministratorRecordingsLiveComponent
     extends AbstractController
 {
     use DefaultActionTrait;
@@ -62,15 +62,14 @@ class VideoFolderVisibilityForNonAdministratorsLiveComponent
     }
 
     #[LiveAction]
-    public function switch(): void
+    public function setAsDefault(): void
     {
         /** @var User $user */
         $user = $this->getUser();
 
-        if ($this->capabilitiesService->canEditFolderVisibilityForNonAdministrators($user)) {
-            $this->videoFolderDomainService->setIsVisibleForNonAdministrators(
-                $this->videoFolder,
-                !$this->videoFolder->getIsVisibleForNonAdministrators()
+        if ($this->capabilitiesService->canDefineDefaultFolderForAdministratorRecordings($user)) {
+            $this->videoFolderDomainService->setIsDefaultForAdministratorRecordings(
+                $this->videoFolder
             );
         }
     }

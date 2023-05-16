@@ -13,7 +13,7 @@
                 data-action="live#action"
                 data-action-name="switch"
         >
-            {% if videoFolder.isVisibleForNonAdministrators %}
+            {% if this.videoFolder.isVisibleForNonAdministrators %}
                 <div class="text-lime-600">
                     {{ 'video_folders.visibility_for_non_administrators.is_true'|trans }}
                 </div>

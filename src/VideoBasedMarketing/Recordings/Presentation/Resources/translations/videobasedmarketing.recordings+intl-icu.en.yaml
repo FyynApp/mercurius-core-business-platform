@@ -159,6 +159,9 @@ video_folders:
   visibility_for_non_administrators:
     is_true: 'Visibility: all'
     is_false: 'Visibility: Admins only'
+  default_for_non_administrator_recordings:
+    is_true: 'Default folder for admin recordings'
+    is_false: 'Make default folder for admin recordings'
 admin:
   videos_overview:
     title: 'Newest Videos'
