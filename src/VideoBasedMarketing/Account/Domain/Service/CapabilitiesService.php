@@ -194,6 +194,11 @@ readonly class CapabilitiesService
     }
 
 
+    public function canSeeFoldersNotVisibleForNonAdministrators(User $user): bool
+    {
+        return $this->canEditFolderVisibilityForNonAdministrators($user);
+    }
+
     public function canDefineDefaultFolderForAdministratorRecordings(User $user): bool
     {
         return $this->organizationDomainService->userHasAccessRight(

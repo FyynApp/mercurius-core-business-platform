@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
@@ -17,6 +18,7 @@ readonly class VideoFolderDomainService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private CapabilitiesService    $capabilitiesService
     )
     {
     }
@@ -65,13 +67,26 @@ readonly class VideoFolderDomainService
             }
         }
 
-        return $repo->findBy(
+        /** @var VideoFolder[] $videoFolders */
+        $videoFolders = $repo->findBy(
             [
                 'organization' => $user->getCurrentlyActiveOrganization()->getId(),
                 'parentVideoFolder' => $parentVideoFolder
             ],
             ['name' => Criteria::ASC]
         );
+
+        if ($this->capabilitiesService->canSeeFoldersNotVisibleForNonAdministrators($user)) {
+            return $videoFolders;
+        } else {
+            $results = [];
+            foreach ($videoFolders as $videoFolder) {
+                if ($videoFolder->getIsVisibleForNonAdministrators()) {
+                    $results[] = $videoFolder;
+                }
+            }
+            return $results;
+        }
     }
 
     /**
