@@ -83,7 +83,7 @@ readonly class VideoSearchDomainService
     }
 
     public function filterVideoFinderResultset(
-        User $searchingUser,
+        User                 $searchingUser,
         VideoFinderResultset $videoFinderResultset
     ): VideoFinderResultset
     {
