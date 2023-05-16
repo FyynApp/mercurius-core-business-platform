@@ -180,4 +180,17 @@ class VideoFolder
     {
         return $this->isVisibleForNonAdministrators;
     }
+
+    public function isFolderOrParentVisibleForNonAdministrators(): bool
+    {
+        if (!$this->getIsVisibleForNonAdministrators()) {
+            return false;
+        }
+
+        if (is_null($this->getParentVideoFolder())) {
+            return true;
+        }
+
+        return $this->getParentVideoFolder()->isFolderOrParentVisibleForNonAdministrators();
+    }
 }

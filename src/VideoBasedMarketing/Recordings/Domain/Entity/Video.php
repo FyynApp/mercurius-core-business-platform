@@ -961,4 +961,14 @@ class Video
 
         return $seconds;
     }
+
+
+    public function isFolderOrParentVisibleForNonAdministrators(): bool
+    {
+        if (is_null($this->getVideoFolder())) {
+            return true;
+        }
+
+        return $this->getVideoFolder()->isFolderOrParentVisibleForNonAdministrators();
+    }
 }

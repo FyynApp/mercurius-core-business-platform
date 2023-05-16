@@ -2,27 +2,32 @@
 
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFinderResult;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFinderResultset;
-use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 
 readonly class VideoSearchDomainService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private CapabilitiesService    $capabilitiesService
     )
     {
     }
 
     /**
+     * @throws DBALException
      * @throws Exception
-     * @throws \Exception
      */
     public function findVideosByTitle(
+        User         $searchingUser,
         string       $q,
         Organization $organization
     ): VideoFinderResultset
@@ -71,6 +76,27 @@ readonly class VideoSearchDomainService
             );
         }
 
-        return new VideoFinderResultset($videoFinderResults);
+        return $this->filterVideoFinderResultset(
+            $searchingUser,
+            new VideoFinderResultset($videoFinderResults)
+        );
+    }
+
+    public function filterVideoFinderResultset(
+        User $searchingUser,
+        VideoFinderResultset $videoFinderResultset
+    ): VideoFinderResultset
+    {
+        if ($this->capabilitiesService->canSeeFoldersNotVisibleForNonAdministrators($searchingUser)) {
+            return $videoFinderResultset;
+        }
+
+        $results = [];
+        foreach ($videoFinderResultset->getResults() as $result) {
+            if ($result->video->isFolderOrParentVisibleForNonAdministrators()) {
+                $results[] = $result;
+            }
+        }
+        return new VideoFinderResultset($results);
     }
 }
