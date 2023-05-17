@@ -87,8 +87,8 @@ class VideoMailingEditorLiveComponent
         $form = $this->createForm(VideoMailingType::class, $this->videoMailing);
         $this->formView = $form->createView();
         $this->formValues = $this->extractFormValues(
+            $this->instantiateForm()->createView(),
             $this->instantiateForm()
-                ->createView()
         );
     }
 
