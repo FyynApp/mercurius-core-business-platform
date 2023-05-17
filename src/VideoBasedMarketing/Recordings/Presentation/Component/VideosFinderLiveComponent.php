@@ -75,8 +75,6 @@ class VideosFinderLiveComponent
         /** @var User $user */
         $user = $this->getUser();
 
-        $this->results = $this->getResultset($user)->getResults();
-
         $this->videosListViewMode = $user->getVideosListViewMode();
     }
 
@@ -117,6 +115,7 @@ class VideosFinderLiveComponent
             return new VideoFinderResultset($results);
         } else {
             return $this->videoSearchDomainService->findVideosByTitle(
+                $user,
                 $this->q,
                 $user->getCurrentlyActiveOrganization()
             );

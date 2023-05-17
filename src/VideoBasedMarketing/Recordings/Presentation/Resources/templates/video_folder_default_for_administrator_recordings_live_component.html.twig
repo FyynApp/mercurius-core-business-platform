@@ -1,0 +1,29 @@
+{# @var this \App\VideoBasedMarketing\Recordings\Presentation\Component\VideoFolderDefaultForAdministratorRecordingsLiveComponent #}
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.recordings' %}
+
+<div
+        {{ attributes }}
+>
+
+    {% if TwigHelperService.capabilitiesService.canDefineDefaultFolderForAdministratorRecordings(app.user) %}
+        {% if this.videoFolder.isDefaultForAdministratorRecordings %}
+            <div
+                    class="text-xs text-lime-600 font-medium rounded-md bg-neutral-200 w-fit px-2 py-0.5 opacity-50 hover:opacity-100 mt-1"
+            >
+                {{ 'video_folders.default_for_non_administrator_recordings.is_true'|trans }}
+            </div>
+        {% else %}
+            <button
+                    class="text-xs font-medium rounded-md bg-neutral-200 w-fit px-2 py-0.5 opacity-50 hover:opacity-100"
+                    data-action="live#action"
+                    data-action-name="setAsDefault"
+            >
+                {{ 'video_folders.default_for_non_administrator_recordings.is_false'|trans }}
+            </button>
+        {% endif %}
+
+    {% endif %}
+
+</div>

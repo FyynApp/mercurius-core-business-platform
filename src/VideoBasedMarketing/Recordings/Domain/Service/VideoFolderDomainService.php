@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
@@ -17,6 +18,7 @@ readonly class VideoFolderDomainService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private CapabilitiesService    $capabilitiesService
     )
     {
     }
@@ -50,7 +52,7 @@ readonly class VideoFolderDomainService
      * @throws Exception
      */
     public function getAvailableVideoFoldersForCurrentlyActiveOrganization(
-        User $user,
+        User         $user,
         ?VideoFolder $parentVideoFolder
     ): array
     {
@@ -65,13 +67,26 @@ readonly class VideoFolderDomainService
             }
         }
 
-        return $repo->findBy(
+        /** @var VideoFolder[] $videoFolders */
+        $videoFolders = $repo->findBy(
             [
                 'organization' => $user->getCurrentlyActiveOrganization()->getId(),
                 'parentVideoFolder' => $parentVideoFolder
             ],
             ['name' => Criteria::ASC]
         );
+
+        if ($this->capabilitiesService->canSeeFoldersNotVisibleForNonAdministrators($user)) {
+            return $videoFolders;
+        } else {
+            $results = [];
+            foreach ($videoFolders as $videoFolder) {
+                if ($videoFolder->getIsVisibleForNonAdministrators()) {
+                    $results[] = $videoFolder;
+                }
+            }
+            return $results;
+        }
     }
 
     /**
@@ -178,5 +193,64 @@ readonly class VideoFolderDomainService
 
         $this->entityManager->remove($videoFolder);
         $this->entityManager->flush();
+    }
+
+    public function setIsVisibleForNonAdministrators(
+        VideoFolder $videoFolder,
+        bool        $isVisible
+    ): void
+    {
+        $videoFolder->setIsVisibleForNonAdministrators($isVisible);
+        $this->entityManager->persist($videoFolder);
+        $this->entityManager->flush();
+    }
+
+    public function setIsDefaultForAdministratorRecordings(
+        VideoFolder $videoFolder
+    ): void
+    {
+        /** @var ObjectRepository<Video> $repo */
+        $repo = $this->entityManager->getRepository(VideoFolder::class);
+
+        /** @var VideoFolder[] $folders */
+        $folders = $repo->findBy(
+            [
+                'organization' => $videoFolder->getOrganization()->getId()
+            ],
+            ['name' => Criteria::ASC]
+        );
+
+        foreach ($folders as $folder) {
+            if ($folder->getIsDefaultForAdministratorRecordings() === true) {
+                $folder->setIsDefaultForAdministratorRecordings(false);
+                $this->entityManager->persist($folder);
+                $this->entityManager->flush();
+                break;
+            }
+        }
+
+        $videoFolder->setIsDefaultForAdministratorRecordings(true);
+        $this->entityManager->persist($videoFolder);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getDefaultFolderForNewRecordings(
+        User $user
+    ): ?VideoFolder
+    {
+        if (!$this->capabilitiesService->canStoreNewRecordingsInDefaultFolderForAdministratorRecordings($user)) {
+            return null;
+        }
+
+        foreach ($this->getAvailableVideoFoldersForCurrentlyActiveOrganization($user, null) as $videoFolder) {
+            if ($videoFolder->getIsDefaultForAdministratorRecordings() === true) {
+                return $videoFolder;
+            }
+        }
+
+        return null;
     }
 }

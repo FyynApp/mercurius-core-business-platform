@@ -24,7 +24,8 @@ readonly class VideoDomainService
         private EntityManagerInterface    $entityManager,
         private PresentationpagesService  $presentationpagesService,
         private ShortIdService            $shortIdService,
-        private MembershipService         $membershipService
+        private MembershipService         $membershipService,
+        private VideoFolderDomainService  $videoFolderDomainService
     )
     {
     }
@@ -133,6 +134,12 @@ readonly class VideoDomainService
                 $recordingSession->getUser()->getUiTimezone()
             )
                 ->format('Y-m-d H:i:s')
+        );
+
+        $video->setVideoFolder(
+            $this
+                ->videoFolderDomainService
+                ->getDefaultFolderForNewRecordings($recordingSession->getUser())
         );
 
         $video->getUser()->addVideo($video);

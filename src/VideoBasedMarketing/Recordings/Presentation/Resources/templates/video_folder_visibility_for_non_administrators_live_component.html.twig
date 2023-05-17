@@ -1,0 +1,29 @@
+{# @var this \App\VideoBasedMarketing\Recordings\Presentation\Component\VideoFolderVisibilityForNonAdministratorsLiveComponent #}
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.recordings' %}
+
+<div
+        {{ attributes }}
+>
+
+    {% if TwigHelperService.capabilitiesService.canEditFolderVisibilityForNonAdministrators(app.user) %}
+        <button
+                class="text-xs font-medium rounded-md bg-neutral-200 w-fit px-2 py-0.5 opacity-50 hover:opacity-100"
+                data-action="live#action"
+                data-action-name="switch"
+                data-test-id="video-folder-{{ this.videoFolder.id }}-visibility-for-non-administrators-cta"
+        >
+            {% if this.videoFolder.isVisibleForNonAdministrators %}
+                <div class="text-lime-600">
+                    {{ 'video_folders.visibility_for_non_administrators.is_true'|trans }}
+                </div>
+            {% else %}
+                <div class="text-red-600">
+                    {{ 'video_folders.visibility_for_non_administrators.is_false'|trans }}
+                </div>
+            {% endif %}
+        </button>
+    {% endif %}
+
+</div>

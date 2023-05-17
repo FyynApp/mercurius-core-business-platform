@@ -18,6 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class VideoFoldersController
     extends AbstractController
 {
+    public const VIDEO_FOLDER_ID_REQUEST_PARAM_NAME = 'videoFolderId';
+
     #[Route(
         path        : [
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/recordings/video-folders/',
@@ -44,7 +46,7 @@ class VideoFoldersController
             return $this
                 ->redirectToRoute(
                     'videobasedmarketing.recordings.presentation.videos.overview',
-                    ['videoFolderId' => $parentVideoFolderId]
+                    [self::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME => $parentVideoFolderId]
                 );
         }
 
@@ -79,7 +81,7 @@ class VideoFoldersController
         return $this
             ->redirectToRoute(
                 'videobasedmarketing.recordings.presentation.videos.overview',
-                ['videoFolderId' => $parentVideoFolderId]
+                [self::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME => $parentVideoFolderId]
             );
     }
 
@@ -110,7 +112,7 @@ class VideoFoldersController
             throw new BadRequestHttpException('Invalid CSRF token.');
         }
 
-        $videoFolderId = $request->get('videoFolderId');
+        $videoFolderId = $request->get(self::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME);
         if (trim($videoFolderId) === '') {
             $videoFolderId = null;
         }
@@ -175,7 +177,7 @@ class VideoFoldersController
         } else {
             return $this->redirectToRoute(
                 'videobasedmarketing.recordings.presentation.videos.overview',
-                ['videoFolderId' => $parentVideoFolder->getId()]
+                [self::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME => $parentVideoFolder->getId()]
             );
         }
     }

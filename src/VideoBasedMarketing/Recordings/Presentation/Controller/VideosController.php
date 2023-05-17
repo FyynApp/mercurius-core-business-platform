@@ -37,7 +37,7 @@ class VideosController
         VideoFolderDomainService $videoFolderDomainService
     ): Response
     {
-        $videoFolderId = $request->get('videoFolderId');
+        $videoFolderId = $request->get(VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME);
 
         $videoFolder = null;
 

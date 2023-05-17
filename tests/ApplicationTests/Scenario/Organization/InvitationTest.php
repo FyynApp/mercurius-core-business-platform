@@ -75,6 +75,9 @@ class InvitationTest
         /** @var Email $email */
         $email = $this->getMailerMessage();
 
+        $this->assertSame('foo.bar@example.com', $email->getTo()[0]->getAddress());
+        $this->assertSame('Create account', $email->getSubject());
+
         $client->followRedirect();
         $client->followRedirect();
 

@@ -69,6 +69,7 @@ class RecordingSessionsController
             $routeName = 'videobasedmarketing.account.presentation.claim_unregistered_user.landingpage';
         } else {
             $routeName = 'videobasedmarketing.recordings.presentation.videos.overview';
+            $routeParameters[VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME] = $video->getVideoFolder()?->getId();
         }
 
         if ($recordingRequestsDomainService

@@ -6,6 +6,7 @@ use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
+use App\VideoBasedMarketing\Recordings\Presentation\Controller\VideoFoldersController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,7 +55,11 @@ class VideosListViewModeController
             'videobasedmarketing.recordings.presentation.videos.overview',
             [
                 'q' => trim($request->get('q', '')),
-                'videoFolderId' => trim($request->get('videoFolderId')) === '' ? null : $request->get('videoFolderId')
+                'videoFolderId' => trim(
+                    $request->get(VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME)
+                ) === ''
+                    ? null
+                    : $request->get(VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME)
             ]
         );
     }

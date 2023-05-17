@@ -156,6 +156,12 @@ video_folders:
     really_delete_cta_no: 'No'
     really_delete_note1: 'All subfolders within folder {folderName} will be deleted, too.'
     really_delete_note2: 'Videos contained in folder {folderName} and its subfolders will NOT be deleted - instead, they will be moved up into the current folder.'
+  visibility_for_non_administrators:
+    is_true: 'Visibility: all'
+    is_false: 'Visibility: Admins only'
+  default_for_non_administrator_recordings:
+    is_true: 'Default folder for admin recordings'
+    is_false: 'Make default folder for admin recordings'
 admin:
   videos_overview:
     title: 'Newest Videos'

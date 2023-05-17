@@ -13,9 +13,9 @@ use Symfony\Component\Panther\PantherTestCase;
 
 class VideoFoldersTest extends PantherTestCase
 {
-    public function test(): void
+    public function testDragAndDrop(): void
     {
-        $this->markTestSkipped('Not yet working, see https://bugs.chromium.org/p/chromedriver/issues/detail?id=841');
+        $this->markTestSkipped('Not yet working, see https://bugs.chromium.org/p/chromedriver/issues/detail?id=841 and https://bugs.chromium.org/p/chromedriver/issues/detail?id=2695');
 
         $client = static::createPantherClient(['browser' => self::FIREFOX]);
         $container = static::getContainer();

@@ -8,8 +8,8 @@ use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\AccessService;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
-use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use Exception;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -22,17 +22,13 @@ class GeneralVoter
 
     private AccessService $accessService;
 
-    private OrganizationDomainService $organizationDomainService;
-
     public function __construct(
         CapabilitiesService       $capabilitiesService,
-        AccessService             $accessService,
-        OrganizationDomainService $organizationDomainService
+        AccessService             $accessService
     )
     {
         $this->capabilitiesService = $capabilitiesService;
         $this->accessService       = $accessService;
-        $this->organizationDomainService = $organizationDomainService;
     }
 
     protected function supports(
@@ -79,6 +75,13 @@ class GeneralVoter
 
         if (   $subject instanceof Video
             && $subject->isDeleted()
+        ) {
+            return false;
+        }
+
+        if (   $subject instanceof VideoFolder
+            && !$subject->getIsVisibleForNonAdministrators()
+            && !$this->capabilitiesService->canSeeFoldersNotVisibleForNonAdministrators($user)
         ) {
             return false;
         }

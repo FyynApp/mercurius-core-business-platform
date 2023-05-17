@@ -151,9 +151,21 @@
                     <div class="sticky top-0 z-30 bg-white border-1 border-l-0 border-r-0 border-t-0 border-neutral-200 pb-6 pt-6">
                         <div class="">
                             {% if videoFolder is not null %}
+
+                                {{ component(
+                                    'videobasedmarketing_recordings_video_folder_visibility_for_non_administrators_live_component',
+                                    { 'videoFolder': videoFolder }
+                                ) }}
+
+                                {{ component(
+                                    'videobasedmarketing_recordings_video_folder_default_for_administrator_recordings_live_component',
+                                    { 'videoFolder': videoFolder }
+                                ) }}
+
                                 <div class="font-bold text-lg mb-2">
                                     {{ videoFolder.name }}
                                 </div>
+
 
                                 <div
                                         id="video-folder-{{ videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }}"
@@ -173,7 +185,7 @@
                                             class="flex flex-row justify-start items-center gap-2 hover:underline"
                                             href="{{ path(
                                                 'videobasedmarketing.recordings.presentation.videos.overview',
-                                                { videoFolderId: videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }
+                                                { (constant('\\App\\VideoBasedMarketing\\Recordings\\Presentation\\Controller\\VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME')): videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }
                                             ) }}"
                                     >
                                         {# Heroicon: arrow-long-up #}
