@@ -2,6 +2,7 @@
 
 namespace App\Tests\ApplicationTests\Scenario\Recordings;
 
+use App\Tests\ApplicationTests\Helper\OrganizationHelper;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredExtensionOnlyUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
@@ -83,5 +84,35 @@ class VideoFoldersTest
             "[data-test-id=\"video-folder-{$videoFolder->getId()}-visibility-for-non-administrators-cta\"]",
             'Visibility: Admins only'
         );
+
+
+        /** @var null|VideoFolder $videoFolder */
+        $videoFolder = $videoFoldersRepository->findOneBy(['name' => 'Testfolder']);
+        $videoFolder->setIsVisibleForNonAdministrators(true);
+        $entityManager->persist($videoFolder);
+        $entityManager->flush();
+
+        $crawler = OrganizationHelper::inviteEmailToOrganization(
+            $client,
+            $this,
+            'foo@bar.de'
+        );
+
+        $client->request(
+            Request::METHOD_GET,
+            '/en/my/recordings/videos/'
+        );
+
+        $this->assertSelectorExists('[data-test-id="video-folder-0"]');
+
+
+        /** @var null|VideoFolder $videoFolder */
+        $videoFolder = $videoFoldersRepository->findOneBy(['name' => 'Testfolder']);
+        $videoFolder->setIsVisibleForNonAdministrators(false);
+        $entityManager->persist($videoFolder);
+        $entityManager->flush();
+
+        $client->reload();
+        $this->assertSelectorNotExists('[data-test-id="video-folder-0"]');
     }
 }
