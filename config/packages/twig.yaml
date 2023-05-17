@@ -2,8 +2,6 @@ twig:
     default_path: '%kernel.project_dir%/templates'
 
     paths:
-        '%kernel.project_dir%/public/generated-content/': 'generated_content'
-
         'src/Shared/Presentation/Resources/templates': 'shared'
 
         'src/VideoBasedMarketing/Account/Presentation/Resources/templates':            'videobasedmarketing.account'
