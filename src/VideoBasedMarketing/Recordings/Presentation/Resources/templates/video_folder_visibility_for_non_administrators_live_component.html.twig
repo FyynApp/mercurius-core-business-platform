@@ -12,6 +12,7 @@
                 class="text-xs font-medium rounded-md bg-neutral-200 w-fit px-2 py-0.5 opacity-50 hover:opacity-100"
                 data-action="live#action"
                 data-action-name="switch"
+                data-test-id="video-folder-{{ this.videoFolder.id }}-visibility-for-non-administrators-cta"
         >
             {% if this.videoFolder.isVisibleForNonAdministrators %}
                 <div class="text-lime-600">
