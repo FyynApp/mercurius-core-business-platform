@@ -1584,16 +1584,16 @@
         },
         {
             "name": "friendsofphp/proxy-manager-lts",
-            "version": "v1.0.14",
+            "version": "v1.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/proxy-manager-lts.git",
-                "reference": "a527c9d9d5348e012bd24482d83a5cd643bcbc9e"
+                "reference": "3ca65b8edb8d96b46fedc9bb4911396516347129"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/proxy-manager-lts/zipball/a527c9d9d5348e012bd24482d83a5cd643bcbc9e",
-                "reference": "a527c9d9d5348e012bd24482d83a5cd643bcbc9e",
+                "url": "https://api.github.com/repos/FriendsOfPHP/proxy-manager-lts/zipball/3ca65b8edb8d96b46fedc9bb4911396516347129",
+                "reference": "3ca65b8edb8d96b46fedc9bb4911396516347129",
                 "shasum": ""
             },
             "require": {
@@ -1650,7 +1650,7 @@
             ],
             "support": {
                 "issues": "https://github.com/FriendsOfPHP/proxy-manager-lts/issues",
-                "source": "https://github.com/FriendsOfPHP/proxy-manager-lts/tree/v1.0.14"
+                "source": "https://github.com/FriendsOfPHP/proxy-manager-lts/tree/v1.0.15"
             },
             "funding": [
                 {
@@ -1662,20 +1662,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-30T10:40:19+00:00"
+            "time": "2023-05-16T13:18:04+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.6.0",
+            "version": "7.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "733dd89533dd371a0987172727df15f500dab0ef"
+                "reference": "8444a2bacf1960bc6a2b62ed86b8e72e11eebe51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/733dd89533dd371a0987172727df15f500dab0ef",
-                "reference": "733dd89533dd371a0987172727df15f500dab0ef",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/8444a2bacf1960bc6a2b62ed86b8e72e11eebe51",
+                "reference": "8444a2bacf1960bc6a2b62ed86b8e72e11eebe51",
                 "shasum": ""
             },
             "require": {
@@ -1771,7 +1771,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.6.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.6.1"
             },
             "funding": [
                 {
@@ -1787,7 +1787,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-14T11:23:39+00:00"
+            "time": "2023-05-15T20:43:01+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -8469,16 +8469,16 @@
         },
         {
             "name": "symfony/ux-live-component",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-live-component.git",
-                "reference": "e9d5b601603e3505c32dbcfe1e988a9d501a25f9"
+                "reference": "a184466f5b9e9e20c5d6c843e83a70b49b687726"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/e9d5b601603e3505c32dbcfe1e988a9d501a25f9",
-                "reference": "e9d5b601603e3505c32dbcfe1e988a9d501a25f9",
+                "url": "https://api.github.com/repos/symfony/ux-live-component/zipball/a184466f5b9e9e20c5d6c843e83a70b49b687726",
+                "reference": "a184466f5b9e9e20c5d6c843e83a70b49b687726",
                 "shasum": ""
             },
             "require": {
@@ -8537,7 +8537,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-live-component/tree/v2.8.0"
+                "source": "https://github.com/symfony/ux-live-component/tree/v2.8.1"
             },
             "funding": [
                 {
@@ -8553,20 +8553,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-01T16:58:06+00:00"
+            "time": "2023-05-16T10:25:24+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-twig-component.git",
-                "reference": "d5ef7776b27827e159879b88db54fcd0c4470bc0"
+                "reference": "a74606acf12e6d622d95a9fcdbc012184261cca6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/d5ef7776b27827e159879b88db54fcd0c4470bc0",
-                "reference": "d5ef7776b27827e159879b88db54fcd0c4470bc0",
+                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/a74606acf12e6d622d95a9fcdbc012184261cca6",
+                "reference": "a74606acf12e6d622d95a9fcdbc012184261cca6",
                 "shasum": ""
             },
             "require": {
@@ -8616,7 +8616,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-twig-component/tree/v2.8.0"
+                "source": "https://github.com/symfony/ux-twig-component/tree/v2.8.1"
             },
             "funding": [
                 {
@@ -8632,7 +8632,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-01T13:49:03+00:00"
+            "time": "2023-05-12T18:13:04+00:00"
         },
         {
             "name": "symfony/validator",
