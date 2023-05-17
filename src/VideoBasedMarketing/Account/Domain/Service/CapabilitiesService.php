@@ -207,6 +207,14 @@ readonly class CapabilitiesService
         );
     }
 
+    public function canStoreNewRecordingsInDefaultFolderForAdministratorRecordings(User $user): bool
+    {
+        return $this->organizationDomainService->userHasAccessRight(
+            $user,
+            AccessRight::CAN_STORE_NEW_RECORDINGS_IN_DEFAULT_FOLDER_FOR_ADMINISTRATOR_RECORDINGS
+        );
+    }
+
 
     private function hasCapability(
         ?User      $user,

@@ -108,7 +108,7 @@
 
                         href="{{ path(
                             'videobasedmarketing.recordings.presentation.videos.overview',
-                            { videoFolderId: this.videoFolder.id }
+                            { (constant('\\App\\VideoBasedMarketing\\Recordings\\Presentation\\Controller\\VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME')): this.videoFolder.id }
                         ) }}"
 
                         draggable="false"

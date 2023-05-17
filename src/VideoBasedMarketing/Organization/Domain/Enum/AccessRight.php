@@ -13,4 +13,5 @@ enum AccessRight: string
     case EDIT_CUSTOM_DOMAIN_SETTINGS = 'edit_custom_domain_settings';
     case EDIT_FOLDER_VISIBILITY_FOR_NON_ADMINISTRATORS = 'edit_folder_visibility_for_non_administrators';
     case DEFINE_DEFAULT_FOLDER_FOR_ADMINISTRATOR_RECORDINGS = 'define_default_folder_for_administrator_recordings';
+    case CAN_STORE_NEW_RECORDINGS_IN_DEFAULT_FOLDER_FOR_ADMINISTRATOR_RECORDINGS = 'can_store_new_recordings_in_default_folder_for_administrator_recordings';
 }

@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Presentation\Controller\VideoFoldersController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -75,7 +76,7 @@ class AudioTranscriptionProcessingController
             ->redirectToRoute(
                 'videobasedmarketing.recordings.presentation.videos.overview',
                 [
-                    'videoFolderId' => $video->getVideoFolder()?->getId()
+                    VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME => $video->getVideoFolder()?->getId()
                 ]
             );
     }

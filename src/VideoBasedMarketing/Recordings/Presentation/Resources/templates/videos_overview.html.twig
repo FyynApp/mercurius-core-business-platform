@@ -185,7 +185,7 @@
                                             class="flex flex-row justify-start items-center gap-2 hover:underline"
                                             href="{{ path(
                                                 'videobasedmarketing.recordings.presentation.videos.overview',
-                                                { videoFolderId: videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }
+                                                { (constant('\\App\\VideoBasedMarketing\\Recordings\\Presentation\\Controller\\VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME')): videoFolder.parentVideoFolder is null ? null : videoFolder.parentVideoFolder.id }
                                             ) }}"
                                     >
                                         {# Heroicon: arrow-long-up #}

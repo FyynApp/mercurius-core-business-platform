@@ -52,7 +52,7 @@ readonly class VideoFolderDomainService
      * @throws Exception
      */
     public function getAvailableVideoFoldersForCurrentlyActiveOrganization(
-        User $user,
+        User         $user,
         ?VideoFolder $parentVideoFolder
     ): array
     {
@@ -232,5 +232,25 @@ readonly class VideoFolderDomainService
         $videoFolder->setIsDefaultForAdministratorRecordings(true);
         $this->entityManager->persist($videoFolder);
         $this->entityManager->flush();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getDefaultFolderForNewRecordings(
+        User $user
+    ): ?VideoFolder
+    {
+        if (!$this->capabilitiesService->canStoreNewRecordingsInDefaultFolderForAdministratorRecordings($user)) {
+            return null;
+        }
+
+        foreach ($this->getAvailableVideoFoldersForCurrentlyActiveOrganization($user, null) as $videoFolder) {
+            if ($videoFolder->getIsDefaultForAdministratorRecordings() === true) {
+                return $videoFolder;
+            }
+        }
+
+        return null;
     }
 }
