@@ -93,7 +93,7 @@ readonly class CheckHappyScribeExportCommandMessageHandler
 
                     $happyScribeExport
                         ->getHappyScribeTranscription()
-                        ->getAudioTranscriptionBcp47LanguageCode(),
+                        ->getBcp47LanguageCode(),
 
                     $content
                 );
@@ -128,7 +128,7 @@ readonly class CheckHappyScribeExportCommandMessageHandler
 
                                 $audioTranscriptionWord = new AudioTranscriptionWord(
                                     $happyScribeExport->getHappyScribeTranscription()->getAudioTranscription(),
-                                    $happyScribeExport->getHappyScribeTranscription()->getAudioTranscriptionBcp47LanguageCode(),
+                                    $happyScribeExport->getHappyScribeTranscription()->getBcp47LanguageCode(),
                                     $speakerEntry['speaker'],
                                     $speakerEntry['speaker_number'],
                                     $wordEntry['text'],

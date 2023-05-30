@@ -7,7 +7,7 @@ use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionSuggestedSummary;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
+use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CreateHappyScribeTranscriptionCommandMessage;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\DBAL\Exception;
@@ -28,12 +28,12 @@ readonly class AudioTranscriptionDomainService
      */
     public function startProcessingVideo(
         Video                               $video,
-        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
+        Bcp47LanguageCode $bcp47LanguageCode
     ): void
     {
         $audioTranscription = new AudioTranscription(
             $video,
-            $audioTranscriptionBcp47LanguageCode
+            $bcp47LanguageCode
         );
 
         $this->entityManager->persist($audioTranscription);
@@ -114,10 +114,10 @@ readonly class AudioTranscriptionDomainService
                 AudioTranscriptionWebVtt::class,
                 $row['id']
             );
-            if (!in_array($vtt->getAudioTranscriptionBcp47LanguageCode(), $seenLanguages)) {
+            if (!in_array($vtt->getBcp47LanguageCode(), $seenLanguages)) {
                 $webVtts[] = $vtt;
             }
-            $seenLanguages[] = $vtt->getAudioTranscriptionBcp47LanguageCode();
+            $seenLanguages[] = $vtt->getBcp47LanguageCode();
         }
 
         return $webVtts;
@@ -129,16 +129,16 @@ readonly class AudioTranscriptionDomainService
     public function getSuggestedSummary(
         Video                                $video,
         ?Iso639_1Code                        $iso639_1Code,
-        ?AudioTranscriptionBcp47LanguageCode $languageCode = null
+        ?Bcp47LanguageCode $languageCode = null
     ): ?AudioTranscriptionSuggestedSummary
     {
         if (is_null($languageCode)) {
             if ($iso639_1Code === Iso639_1Code::De) {
-                $languageCode = AudioTranscriptionBcp47LanguageCode::DeDe;
+                $languageCode = Bcp47LanguageCode::DeDe;
             } elseif ($iso639_1Code === Iso639_1Code::En) {
-                $languageCode = AudioTranscriptionBcp47LanguageCode::EnUs;
+                $languageCode = Bcp47LanguageCode::EnUs;
             } else {
-                $languageCode = AudioTranscriptionBcp47LanguageCode::EnUs;
+                $languageCode = Bcp47LanguageCode::EnUs;
             }
         }
 
@@ -154,7 +154,7 @@ readonly class AudioTranscriptionDomainService
                 
                 WHERE
                         v.id = :vid
-                    AND s.audio_transcription_bcp47_language_code = :slanguagecode
+                    AND s.bcp47_language_code = :slanguagecode
                 ;
             ";
 

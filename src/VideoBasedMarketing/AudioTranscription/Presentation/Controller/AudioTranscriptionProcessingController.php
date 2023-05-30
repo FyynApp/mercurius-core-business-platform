@@ -6,7 +6,7 @@ namespace App\VideoBasedMarketing\AudioTranscription\Presentation\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
+use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Presentation\Controller\VideoFoldersController;
@@ -35,7 +35,7 @@ class AudioTranscriptionProcessingController
     ): Response
     {
         if (!$this->isCsrfTokenValid(
-            "start-audio-transcription-{$request->get('videoId')}-{$request->get('audioTranscriptionBcp47LanguageCode')}",
+            "start-audio-transcription-{$request->get('videoId')}-{$request->get('bcp47LanguageCode')}",
             $request->get('_csrf_token')
         )) {
             throw new BadRequestHttpException('Invalid CSRF token.');
@@ -58,8 +58,8 @@ class AudioTranscriptionProcessingController
 
         $audioTranscriptionDomainService->startProcessingVideo(
             $video,
-            AudioTranscriptionBcp47LanguageCode::from(
-                $request->get('audioTranscriptionBcp47LanguageCode')
+            Bcp47LanguageCode::from(
+                $request->get('bcp47LanguageCode')
             )
         );
 

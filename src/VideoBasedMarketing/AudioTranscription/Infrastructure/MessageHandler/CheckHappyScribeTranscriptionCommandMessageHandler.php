@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\MessageHandler;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
+use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportFormat;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranscriptionState;
@@ -115,7 +115,7 @@ readonly class CheckHappyScribeTranscriptionCommandMessageHandler
             );
             */
 
-            if (    $happyScribeTranscription->getAudioTranscriptionBcp47LanguageCode()
+            if (    $happyScribeTranscription->getBcp47LanguageCode()
                 === $happyScribeTranscription->getAudioTranscription()->getOriginalLanguageBcp47LanguageCode()
             ) {
                 $happyScribeTranslationTask = $this
@@ -125,11 +125,11 @@ readonly class CheckHappyScribeTranscriptionCommandMessageHandler
                         $happyScribeTranscription
                             ->getAudioTranscription()
                             ->getOriginalLanguageBcp47LanguageCode()
-                        === AudioTranscriptionBcp47LanguageCode::DeDe
+                        === Bcp47LanguageCode::DeDe
 
-                            ? AudioTranscriptionBcp47LanguageCode::EnUs
+                            ? Bcp47LanguageCode::EnUs
 
-                            : AudioTranscriptionBcp47LanguageCode::DeDe
+                            : Bcp47LanguageCode::DeDe
                     );
 
                 $this->entityManager->persist($happyScribeTranslationTask);

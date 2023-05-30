@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\Service;
 
 
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
+use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeExport;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranslationTask;
@@ -269,16 +269,16 @@ readonly class HappyScribeApiService
      * @throws Exception
      */
     public function createTranslationTask(
-        HappyScribeTranscription $happyScribeTranscription,
-        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
+        HappyScribeTranscription            $happyScribeTranscription,
+        Bcp47LanguageCode $bcp47LanguageCode
     ): HappyScribeTranslationTask
     {
-        if ($audioTranscriptionBcp47LanguageCode === AudioTranscriptionBcp47LanguageCode::DeDe) {
+        if ($bcp47LanguageCode === Bcp47LanguageCode::DeDe) {
             $targetLanguage = 'de';
-        } elseif ($audioTranscriptionBcp47LanguageCode === AudioTranscriptionBcp47LanguageCode::EnUs) {
+        } elseif ($bcp47LanguageCode === Bcp47LanguageCode::EnUs) {
             $targetLanguage = 'en';
         } else {
-            throw new Exception("Unexpected language code '$audioTranscriptionBcp47LanguageCode->value'.");
+            throw new Exception("Unexpected language code '$bcp47LanguageCode->value'.");
         }
 
         $body = <<<EOT
@@ -322,7 +322,7 @@ readonly class HappyScribeApiService
                 $happyScribeTranscription,
                 $content['id'],
                 HappyScribeTranslationTaskState::from($content['state']),
-                $audioTranscriptionBcp47LanguageCode
+                $bcp47LanguageCode
             );
         } catch (Throwable $throwable) {
             $this->logger->debug("Got throwable: {$throwable->getMessage()}");

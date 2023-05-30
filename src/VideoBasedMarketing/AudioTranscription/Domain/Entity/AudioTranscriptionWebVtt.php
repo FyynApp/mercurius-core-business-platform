@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\AudioTranscription\Domain\Entity;
 
-use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
+use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 #[ORM\Entity]
 #[ORM\Table(name: 'audio_transcription_web_vtts')]
 #[ORM\Index(
-    fields: ['audioTranscription', 'audioTranscriptionBcp47LanguageCode'],
+    fields: ['audioTranscription', 'bcp47LanguageCode'],
     name: 'main_idx'
 )]
 #[ORM\Index(
@@ -26,13 +26,13 @@ class AudioTranscriptionWebVtt
      * @throws Exception
      */
     public function __construct(
-        AudioTranscription                  $audioTranscription,
-        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode,
-        string                              $vttContent
+        AudioTranscription $audioTranscription,
+        Bcp47LanguageCode  $bcp47LanguageCode,
+        string             $vttContent
     )
     {
         $this->audioTranscription = $audioTranscription;
-        $this->audioTranscriptionBcp47LanguageCode = $audioTranscriptionBcp47LanguageCode;
+        $this->bcp47LanguageCode = $bcp47LanguageCode;
         $this->vttContent = $vttContent;
     }
 
@@ -74,26 +74,26 @@ class AudioTranscriptionWebVtt
         type: Types::STRING,
         length: 16,
         nullable: false,
-        enumType: AudioTranscriptionBcp47LanguageCode::class
+        enumType: Bcp47LanguageCode::class
     )]
-    private AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode;
+    private Bcp47LanguageCode $bcp47LanguageCode;
 
-    public function getAudioTranscriptionBcp47LanguageCode(): AudioTranscriptionBcp47LanguageCode
+    public function getBcp47LanguageCode(): Bcp47LanguageCode
     {
-        return $this->audioTranscriptionBcp47LanguageCode;
+        return $this->bcp47LanguageCode;
     }
 
-    public function setAudioTranscriptionBcp47LanguageCode(
-        AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
+    public function setBcp47LanguageCode(
+        Bcp47LanguageCode $bcp47LanguageCode
     ): void
     {
-        $this->audioTranscriptionBcp47LanguageCode = $audioTranscriptionBcp47LanguageCode;
+        $this->bcp47LanguageCode = $bcp47LanguageCode;
     }
 
 
     public function isOriginalLanguage(): bool
     {
-        return $this->audioTranscriptionBcp47LanguageCode
+        return $this->bcp47LanguageCode
             === $this->audioTranscription->getOriginalLanguageBcp47LanguageCode();
     }
 

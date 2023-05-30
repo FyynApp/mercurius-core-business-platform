@@ -45,7 +45,7 @@ readonly class GenerateSuggestedSummaryCommandMessageHandler
 
             $summary = new AudioTranscriptionSuggestedSummary(
                 $webVtt->getAudioTranscription(),
-                $webVtt->getAudioTranscriptionBcp47LanguageCode(),
+                $webVtt->getBcp47LanguageCode(),
                 $summaryContent
             );
 

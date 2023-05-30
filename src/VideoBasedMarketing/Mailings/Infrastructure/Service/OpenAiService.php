@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Mailings\Infrastructure\Service;
 
 use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
+use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Service\WebVttParserService;
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use Exception;
@@ -88,14 +88,14 @@ EOT;
 
         $openAi = new OpenAi($openAiApiKey);
 
-        if ($webVtt->getAudioTranscriptionBcp47LanguageCode() === AudioTranscriptionBcp47LanguageCode::DeDe) {
+        if ($webVtt->getBcp47LanguageCode() === Bcp47LanguageCode::DeDe) {
             $prompt = <<<EOT
 Bitte fasse den folgenden Text zusammen, und antworte ohne Einleitung oder Kommentare, nur mit der Zusammenfassung selbst:
 
 {$this->webVttParserService->getText($webVtt)}
 EOT;
         } elseif (
-            $webVtt->getAudioTranscriptionBcp47LanguageCode() === AudioTranscriptionBcp47LanguageCode::EnUs
+            $webVtt->getBcp47LanguageCode() === Bcp47LanguageCode::EnUs
         ) {
             $prompt = <<<EOT
 Please create a summary of the following text, and in your response, do not add an introduction or any other comments, only respond with the summary itself:
@@ -104,7 +104,7 @@ Please create a summary of the following text, and in your response, do not add 
 EOT;
         } else {
             throw new ValueError(
-                "Cannot handle language code '{$webVtt->getAudioTranscriptionBcp47LanguageCode()->value}'."
+                "Cannot handle language code '{$webVtt->getBcp47LanguageCode()->value}'."
             );
         }
 

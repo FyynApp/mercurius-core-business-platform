@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
+use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
@@ -28,7 +28,7 @@ class AudioTranscription
      */
     public function __construct(
         Video                               $video,
-        AudioTranscriptionBcp47LanguageCode $originalLanguageBcp47LanguageCode
+        Bcp47LanguageCode $originalLanguageBcp47LanguageCode
     )
     {
         $this->video = $video;
@@ -86,11 +86,11 @@ class AudioTranscription
         type: Types::STRING,
         length: 16,
         nullable: false,
-        enumType: AudioTranscriptionBcp47LanguageCode::class
+        enumType: Bcp47LanguageCode::class
     )]
-    private AudioTranscriptionBcp47LanguageCode $originalLanguageBcp47LanguageCode;
+    private Bcp47LanguageCode $originalLanguageBcp47LanguageCode;
 
-    public function getOriginalLanguageBcp47LanguageCode(): AudioTranscriptionBcp47LanguageCode
+    public function getOriginalLanguageBcp47LanguageCode(): Bcp47LanguageCode
     {
         return $this->originalLanguageBcp47LanguageCode;
     }

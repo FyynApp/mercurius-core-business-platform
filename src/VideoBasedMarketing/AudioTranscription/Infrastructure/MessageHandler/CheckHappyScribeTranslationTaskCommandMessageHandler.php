@@ -77,7 +77,7 @@ readonly class CheckHappyScribeTranslationTaskCommandMessageHandler
 
                 $happyScribeTranslationTask->getTranslatedTranscriptionId(),
                 HappyScribeTranscriptionState::Initial,
-                $happyScribeTranslationTask->getAudioTranscriptionBcp47LanguageCode()
+                $happyScribeTranslationTask->getBcp47LanguageCode()
             );
 
             $this->entityManager->persist($happyScribeTranscription);

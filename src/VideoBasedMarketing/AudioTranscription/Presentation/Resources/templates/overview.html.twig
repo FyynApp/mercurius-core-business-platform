@@ -44,7 +44,7 @@
                         <div class="flex flex-col gap-2">
                             <div class=" flex flex-row gap-2 justify-start items-baseline">
                                 <div class="font-semibold">
-                                    {{ ('overview.language.' ~ webVtt.audioTranscriptionBcp47LanguageCode.value)|trans }}
+                                    {{ ('overview.language.' ~ webVtt.bcp47LanguageCode.value)|trans }}
                                 </div>
                             </div>
 
@@ -68,18 +68,18 @@
                                     <div>
                                         {{ 'overview.show_webvtt_file'|trans }}
                                         -
-                                        {{ webVtt.audioTranscriptionBcp47LanguageCode.value }}.vtt
+                                        {{ webVtt.bcp47LanguageCode.value }}.vtt
                                     </div>
                                 </a>
                             </div>
 
-                            {% if TwigHelperService.audioTranscriptionDomainService.suggestedSummary(audioTranscription.video, null, webVtt.audioTranscriptionBcp47LanguageCode) is not null %}
+                            {% if TwigHelperService.audioTranscriptionDomainService.suggestedSummary(audioTranscription.video, null, webVtt.bcp47LanguageCode) is not null %}
                                 <div>
                                     <div>
                                         {{ 'overview.suggested_summary'|trans }}
                                     </div>
                                     <div class="text-neutral-700 font-light">
-                                        {{ TwigHelperService.audioTranscriptionDomainService.suggestedSummary(audioTranscription.video, null, webVtt.audioTranscriptionBcp47LanguageCode).summaryContent }}
+                                        {{ TwigHelperService.audioTranscriptionDomainService.suggestedSummary(audioTranscription.video, null, webVtt.bcp47LanguageCode).summaryContent }}
                                     </div>
                                 </div>
                             {% endif %}

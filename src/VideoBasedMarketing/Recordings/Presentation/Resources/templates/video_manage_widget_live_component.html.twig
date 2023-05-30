@@ -818,8 +818,8 @@
 
                         <input
                                 type="hidden"
-                                name="audioTranscriptionBcp47LanguageCode"
-                                value="{{ constant('App\\VideoBasedMarketing\\AudioTranscription\\Domain\\Enum\\AudioTranscriptionBcp47LanguageCode::EnUs').value }}"
+                                name="bcp47LanguageCode"
+                                value="{{ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::EnUs').value }}"
                         >
 
                         <input
@@ -829,7 +829,7 @@
                                     'start-audio-transcription-'
                                     ~ this.video.id
                                     ~ '-'
-                                    ~ constant('App\\VideoBasedMarketing\\AudioTranscription\\Domain\\Enum\\AudioTranscriptionBcp47LanguageCode::EnUs').value
+                                    ~ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::EnUs').value
                                 ) }}"
                         >
 
@@ -853,8 +853,8 @@
 
                         <input
                                 type="hidden"
-                                name="audioTranscriptionBcp47LanguageCode"
-                                value="{{ constant('App\\VideoBasedMarketing\\AudioTranscription\\Domain\\Enum\\AudioTranscriptionBcp47LanguageCode::DeDe').value }}"
+                                name="bcp47LanguageCode"
+                                value="{{ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::DeDe').value }}"
                         >
 
                         <input
@@ -864,7 +864,7 @@
                                     'start-audio-transcription-'
                                     ~ this.video.id
                                     ~ '-'
-                                    ~ constant('App\\VideoBasedMarketing\\AudioTranscription\\Domain\\Enum\\AudioTranscriptionBcp47LanguageCode::DeDe').value
+                                    ~ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::DeDe').value
                                 ) }}"
                         >
 
