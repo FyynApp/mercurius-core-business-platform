@@ -165,6 +165,9 @@ class User
         return $this->joinedOrganizations;
     }
 
+    /**
+     * @throws Exception
+     */
     public function addJoinedOrganization(
         Organization $organization
     ): void
