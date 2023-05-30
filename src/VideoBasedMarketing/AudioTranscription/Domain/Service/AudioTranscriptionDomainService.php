@@ -8,9 +8,6 @@ use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionSuggestedSummary;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
-use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionProcessingState;
-use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
-use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranscriptionState;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CreateHappyScribeTranscriptionCommandMessage;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\DBAL\Exception;
@@ -26,6 +23,9 @@ readonly class AudioTranscriptionDomainService
     {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function startProcessingVideo(
         Video                               $video,
         AudioTranscriptionBcp47LanguageCode $audioTranscriptionBcp47LanguageCode
@@ -174,6 +174,9 @@ readonly class AudioTranscriptionDomainService
         return null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function stillRunning(
         AudioTranscription $audioTranscription
     ): bool
