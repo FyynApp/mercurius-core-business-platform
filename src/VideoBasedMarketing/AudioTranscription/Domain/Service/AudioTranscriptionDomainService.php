@@ -27,7 +27,7 @@ readonly class AudioTranscriptionDomainService
      * @throws \Exception
      */
     public function startProcessingVideo(
-        Video                               $video,
+        Video             $video,
         Bcp47LanguageCode $bcp47LanguageCode
     ): void
     {
