@@ -297,12 +297,12 @@
         ]
     },
     "symfony/ux-live-component": {
-        "version": "2.3",
+        "version": "2.9",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "2.0",
-            "ref": "7e4ab27f9b1dd2b5f4aca3be765ab4f697dd3217"
+            "version": "2.6",
+            "ref": "73e69baf18f47740d6f58688c5464b10cdacae06"
         },
         "files": [
             "config/routes/ux_live_component.yaml"
