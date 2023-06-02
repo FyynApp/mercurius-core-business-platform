@@ -70,7 +70,7 @@ class LingoSyncProcessTask
         cascade: ['persist'],
     )]
     #[ORM\JoinColumn(
-        name: 'lingoSyncProcesss_id',
+        name: 'lingosync_processes_id',
         referencedColumnName: 'id',
         nullable: false,
         onDelete: 'CASCADE'
@@ -98,6 +98,6 @@ class LingoSyncProcessTask
 
     public function getOrganization(): Organization
     {
-        return $this->l->getOrganization();
+        return $this->lingoSyncProcess->getOrganization();
     }
 }
