@@ -106,7 +106,7 @@ class LingoSyncProcessTask
 
     #[ORM\Column(
         type: Types::STRING,
-        length: 16,
+        length: 48,
         nullable: false,
         enumType: LingoSyncProcessTaskType::class
     )]
@@ -134,5 +134,41 @@ class LingoSyncProcessTask
     public function setTaskStatus(LingoSyncProcessTaskStatus $taskStatus): void
     {
         $this->taskStatus = $taskStatus;
+    }
+
+
+    #[ORM\Column(
+        type: Types::INTEGER,
+        nullable: false,
+        options: ['unsigned' => true]
+    )]
+    private int $expectedNumberOfSteps = 0;
+
+    public function getExpectedNumberOfSteps(): int
+    {
+        return $this->expectedNumberOfSteps;
+    }
+
+    public function setExpectedNumberOfSteps(int $expectedNumberOfSteps): void
+    {
+        $this->expectedNumberOfSteps = $expectedNumberOfSteps;
+    }
+
+
+    #[ORM\Column(
+        type: Types::INTEGER,
+        nullable: false,
+        options: ['unsigned' => true]
+    )]
+    private int $finishedNumberOfSteps = 0;
+
+    public function getFinishedNumberOfSteps(): int
+    {
+        return $this->finishedNumberOfSteps;
+    }
+
+    public function setFinishedNumberOfSteps(int $finishedNumberOfSteps): void
+    {
+        $this->finishedNumberOfSteps = $finishedNumberOfSteps;
     }
 }
