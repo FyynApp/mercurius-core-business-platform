@@ -6,6 +6,8 @@ use App\Shared\Infrastructure\Entity\SupportsShortIdInterface;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
+use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcessTask;
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
@@ -41,13 +43,17 @@ class Video
     /**
      * @throws Exception
      */
-    public function __construct(User $user)
+    public function __construct(
+        User $user,
+        ?LingoSyncProcessTask $createdByLingoSyncProcessTask = null
+    )
     {
         $this->user = $user;
         $this->setOrganization($user->getCurrentlyActiveOrganization());
         $this->presentationpages = new ArrayCollection();
         $this->videoMailings = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTime();
+        $this->createdByLingoSyncProcessTask = $createdByLingoSyncProcessTask;
     }
 
 
@@ -926,6 +932,29 @@ class Video
             }
         }
         $this->videoFolder = $videoFolder;
+    }
+
+
+    #[ORM\OneToOne(
+        targetEntity: LingoSyncProcessTask::class,
+        cascade: ['persist'],
+    )]
+    #[ORM\JoinColumn(
+        name: 'created_by_lingosync_process_tasks_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private readonly ?LingoSyncProcessTask $createdByLingoSyncProcessTask;
+
+    public function getCreatedByLingoSyncProcessTask(): ?LingoSyncProcessTask
+    {
+        return $this->createdByLingoSyncProcessTask;
+    }
+
+    public function wasCreatedByLingoSyncProcessTask(): bool
+    {
+        return !is_null($this->createdByLingoSyncProcessTask);
     }
 
 
