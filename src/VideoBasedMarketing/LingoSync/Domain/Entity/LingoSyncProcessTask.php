@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Entity;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
+use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskStatus;
 use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskType;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
@@ -28,11 +29,12 @@ class LingoSyncProcessTask
      */
     public function __construct(
         LingoSyncProcess         $lingoSyncProcess,
-        LingoSyncProcessTaskType $lingoSyncProcessTaskType,
+        LingoSyncProcessTaskType $taskType,
         ?Bcp47LanguageCode       $targetLanguageBcp47LanguageCode
     )
     {
         $this->lingoSyncProcess = $lingoSyncProcess;
+        $this->taskType = $taskType;
         $this->targetLanguageBcp47LanguageCode = $targetLanguageBcp47LanguageCode;
         $this->createdAt = DateAndTimeService::getDateTime();
     }
@@ -75,7 +77,7 @@ class LingoSyncProcessTask
         nullable: false,
         onDelete: 'CASCADE'
     )]
-    private LingoSyncProcess $lingoSyncProcess;
+    private readonly LingoSyncProcess $lingoSyncProcess;
 
     public function getLingoSyncProcess(): LingoSyncProcess
     {
@@ -89,7 +91,7 @@ class LingoSyncProcessTask
         nullable: true,
         enumType: Bcp47LanguageCode::class
     )]
-    private ?Bcp47LanguageCode $targetLanguageBcp47LanguageCode;
+    private readonly ?Bcp47LanguageCode $targetLanguageBcp47LanguageCode;
 
     public function getTargetLanguageBcp47LanguageCode(): Bcp47LanguageCode
     {
@@ -99,5 +101,38 @@ class LingoSyncProcessTask
     public function getOrganization(): Organization
     {
         return $this->lingoSyncProcess->getOrganization();
+    }
+
+
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 16,
+        nullable: false,
+        enumType: LingoSyncProcessTaskType::class
+    )]
+    private readonly LingoSyncProcessTaskType $taskType;
+
+    public function getTargetLanguageLingoSyncProcessTaskType(): LingoSyncProcessTaskType
+    {
+        return $this->taskType;
+    }
+
+    
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 16,
+        nullable: false,
+        enumType: LingoSyncProcessTaskStatus::class
+    )]
+    private LingoSyncProcessTaskStatus $taskStatus = LingoSyncProcessTaskStatus::Initiated;
+
+    public function getTargetLanguageLingoSyncProcessTaskStatus(): LingoSyncProcessTaskStatus
+    {
+        return $this->taskStatus;
+    }
+
+    public function setTaskStatus(LingoSyncProcessTaskStatus $taskStatus): void
+    {
+        $this->taskStatus = $taskStatus;
     }
 }
