@@ -112,7 +112,7 @@ class LingoSyncProcessTask
     )]
     private readonly LingoSyncProcessTaskType $taskType;
 
-    public function getTargetLanguageLingoSyncProcessTaskType(): LingoSyncProcessTaskType
+    public function getType(): LingoSyncProcessTaskType
     {
         return $this->taskType;
     }
@@ -126,12 +126,12 @@ class LingoSyncProcessTask
     )]
     private LingoSyncProcessTaskStatus $taskStatus = LingoSyncProcessTaskStatus::Initiated;
 
-    public function getTargetLanguageLingoSyncProcessTaskStatus(): LingoSyncProcessTaskStatus
+    public function getStatus(): LingoSyncProcessTaskStatus
     {
         return $this->taskStatus;
     }
 
-    public function setTaskStatus(LingoSyncProcessTaskStatus $taskStatus): void
+    public function setStatus(LingoSyncProcessTaskStatus $taskStatus): void
     {
         $this->taskStatus = $taskStatus;
     }

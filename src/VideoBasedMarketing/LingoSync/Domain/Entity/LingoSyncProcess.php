@@ -4,10 +4,13 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Entity;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
+use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskStatus;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -34,6 +37,7 @@ class LingoSyncProcess
         $this->video = $video;
         $this->originalLanguageBcp47LanguageCode = $originalLanguageBcp47LanguageCode;
         $this->createdAt = DateAndTimeService::getDateTime();
+        $this->tasks = new ArrayCollection();
     }
 
 
@@ -99,4 +103,24 @@ class LingoSyncProcess
     {
         return $this->video->getOrganization();
     }
+
+    public function isFinished(): bool
+    {
+        /** @var LingoSyncProcessTask $task */
+        foreach ($this->tasks as $task) {
+            if ($task->getStatus() !== LingoSyncProcessTaskStatus::Finished) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** @var LingoSyncProcessTask[] */
+    #[ORM\OneToMany(
+        mappedBy: 'lingoSyncProcess',
+        targetEntity: LingoSyncProcessTask::class,
+        cascade: ['persist'],
+        orphanRemoval: true
+    )]
+    private array|Collection $tasks;
 }
