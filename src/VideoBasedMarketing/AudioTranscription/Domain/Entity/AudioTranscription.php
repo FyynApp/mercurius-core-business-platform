@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\AudioTranscription\Domain\Entity;
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
+use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
@@ -28,11 +29,13 @@ class AudioTranscription
      */
     public function __construct(
         Video             $video,
-        Bcp47LanguageCode $originalLanguageBcp47LanguageCode
+        Bcp47LanguageCode $originalLanguageBcp47LanguageCode,
+        ?LingoSyncProcess $lingoSyncProcess = null
     )
     {
         $this->video = $video;
         $this->originalLanguageBcp47LanguageCode = $originalLanguageBcp47LanguageCode;
+        $this->lingoSyncProcess = $lingoSyncProcess;
         $this->createdAt = DateAndTimeService::getDateTime();
     }
 
@@ -98,5 +101,24 @@ class AudioTranscription
     public function getOrganization(): Organization
     {
         return $this->video->getOrganization();
+    }
+
+
+    #[ORM\OneToOne(
+        inversedBy: 'video',
+        targetEntity: LingoSyncProcess::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'lingosync_processes_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'SET NULL'
+    )]
+    private ?LingoSyncProcess $lingoSyncProcess;
+
+    public function getLingoSyncProcess(): ?LingoSyncProcess
+    {
+        return $this->lingoSyncProcess;
     }
 }

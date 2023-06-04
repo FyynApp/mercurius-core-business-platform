@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Entity;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskStatus;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
@@ -127,5 +128,19 @@ class LingoSyncProcess
     public function addTask(LingoSyncProcessTask $task): void
     {
         $this->tasks[] = $task;
+    }
+
+
+    #[ORM\OneToOne(mappedBy: 'lingoSyncProcess', targetEntity: AudioTranscription::class, cascade: ['persist'])]
+    private ?AudioTranscription $audioTranscription = null;
+
+    public function getAudioTranscription(): ?AudioTranscription
+    {
+        return $this->audioTranscription;
+    }
+
+    public function setAudioTranscription(?AudioTranscription $audioTranscription): void
+    {
+        $this->audioTranscription = $audioTranscription;
     }
 }

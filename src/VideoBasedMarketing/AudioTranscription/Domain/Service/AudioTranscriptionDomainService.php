@@ -9,6 +9,7 @@ use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionS
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CreateHappyScribeTranscriptionCommandMessage;
+use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,12 +29,14 @@ readonly class AudioTranscriptionDomainService
      */
     public function startProcessingVideo(
         Video             $video,
-        Bcp47LanguageCode $originalLanguage
-    ): void
+        Bcp47LanguageCode $originalLanguage,
+        ?LingoSyncProcess $lingoSyncProcess = null
+    ): AudioTranscription
     {
         $audioTranscription = new AudioTranscription(
             $video,
-            $originalLanguage
+            $originalLanguage,
+            $lingoSyncProcess
         );
 
         $this->entityManager->persist($audioTranscription);
@@ -44,6 +47,8 @@ readonly class AudioTranscriptionDomainService
                 $audioTranscription
             )
         );
+
+        return $audioTranscription;
     }
 
 

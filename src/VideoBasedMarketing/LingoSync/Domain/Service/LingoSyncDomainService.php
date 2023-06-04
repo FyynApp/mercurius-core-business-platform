@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Service;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Utility\ArrayUtility;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcessTask;
 use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskType;
@@ -16,7 +17,8 @@ use ValueError;
 readonly class LingoSyncDomainService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface          $entityManager,
+        private AudioTranscriptionDomainService $audioTranscriptionDomainService
     ) {}
 
     /**
@@ -42,7 +44,7 @@ readonly class LingoSyncDomainService
 
         $generateOriginalLanguageTranscriptionTask = new LingoSyncProcessTask(
             $lingoSyncProcess,
-            LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription,
+            LingoSyncProcessTaskType::GenerateAudioTranscription,
             null
         );
 
@@ -91,10 +93,21 @@ readonly class LingoSyncDomainService
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function handleTask(LingoSyncProcessTask $task): void
     {
-        if ($task->getType() === LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription) {
+        if ($task->getType() === LingoSyncProcessTaskType::GenerateAudioTranscription) {
+            $audioTranscription = $this->audioTranscriptionDomainService->startProcessingVideo(
+                $task->getLingoSyncProcess()->getVideo(),
+                $task->getLingoSyncProcess()->getOriginalLanguage(),
+                $task->getLingoSyncProcess()
+            );
 
+            $task->getLingoSyncProcess()->setAudioTranscription($audioTranscription);
+            $this->entityManager->persist($task->getLingoSyncProcess());
+            $this->entityManager->flush();
         }
     }
 }
