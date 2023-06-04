@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\Service;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Utility\WebVttParser;
 
+
 readonly class WebVttParserService
 {
     public function getText(

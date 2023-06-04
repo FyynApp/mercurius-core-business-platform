@@ -28,12 +28,12 @@ readonly class AudioTranscriptionDomainService
      */
     public function startProcessingVideo(
         Video             $video,
-        Bcp47LanguageCode $bcp47LanguageCode
+        Bcp47LanguageCode $originalLanguage
     ): void
     {
         $audioTranscription = new AudioTranscription(
             $video,
-            $bcp47LanguageCode
+            $originalLanguage
         );
 
         $this->entityManager->persist($audioTranscription);
@@ -127,8 +127,8 @@ readonly class AudioTranscriptionDomainService
      * @throws Exception
      */
     public function getSuggestedSummary(
-        Video                                $video,
-        ?Iso639_1Code                        $iso639_1Code,
+        Video              $video,
+        ?Iso639_1Code      $iso639_1Code,
         ?Bcp47LanguageCode $languageCode = null
     ): ?AudioTranscriptionSuggestedSummary
     {

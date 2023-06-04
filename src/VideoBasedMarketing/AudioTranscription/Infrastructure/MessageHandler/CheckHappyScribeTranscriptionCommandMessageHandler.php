@@ -118,31 +118,30 @@ readonly class CheckHappyScribeTranscriptionCommandMessageHandler
             if (    $happyScribeTranscription->getBcp47LanguageCode()
                 === $happyScribeTranscription->getAudioTranscription()->getOriginalLanguageBcp47LanguageCode()
             ) {
-                $happyScribeTranslationTask = $this
-                    ->happyScribeApiService
-                    ->createTranslationTask(
-                        $happyScribeTranscription,
-                        $happyScribeTranscription
-                            ->getAudioTranscription()
-                            ->getOriginalLanguageBcp47LanguageCode()
-                        === Bcp47LanguageCode::DeDe
+                foreach (Bcp47LanguageCode::cases() as $languageCode) {
+                    if ($languageCode === $happyScribeTranscription->getBcp47LanguageCode()) {
+                        continue;
+                    }
 
-                            ? Bcp47LanguageCode::EnUs
+                    $happyScribeTranslationTask = $this
+                        ->happyScribeApiService
+                        ->createTranslationTask(
+                            $happyScribeTranscription,
+                            $languageCode
+                        );
 
-                            : Bcp47LanguageCode::DeDe
+                    $this->entityManager->persist($happyScribeTranslationTask);
+                    $this->entityManager->flush();
+
+                    $this->messageBus->dispatch(
+                        new CheckHappyScribeTranslationTaskCommandMessage(
+                            $happyScribeTranslationTask
+                        ),
+                        [DelayStamp::delayUntil(
+                            DateAndTimeService::getDateTime('+30 seconds')
+                        )]
                     );
-
-                $this->entityManager->persist($happyScribeTranslationTask);
-                $this->entityManager->flush();
-
-                $this->messageBus->dispatch(
-                    new CheckHappyScribeTranslationTaskCommandMessage(
-                        $happyScribeTranslationTask
-                    ),
-                    [DelayStamp::delayUntil(
-                        DateAndTimeService::getDateTime('+30 seconds')
-                    )]
-                );
+                }
             }
         }
     }

@@ -2,7 +2,6 @@
 
 namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\Service;
 
-
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeExport;
@@ -19,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
+
 
 readonly class HappyScribeApiService
 {
@@ -266,11 +266,11 @@ readonly class HappyScribeApiService
 
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function createTranslationTask(
-        HappyScribeTranscription            $happyScribeTranscription,
-        Bcp47LanguageCode $bcp47LanguageCode
+        HappyScribeTranscription $happyScribeTranscription,
+        Bcp47LanguageCode        $bcp47LanguageCode
     ): HappyScribeTranslationTask
     {
         if ($bcp47LanguageCode === Bcp47LanguageCode::DeDe) {

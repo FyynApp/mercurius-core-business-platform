@@ -25,10 +25,10 @@ class HappyScribeTranscription
      * @throws Exception
      */
     public function __construct(
-        AudioTranscription                  $audioTranscription,
-        string                              $happyScribeTranscriptionId,
-        HappyScribeTranscriptionState       $happyScribeTranscriptionState,
-        Bcp47LanguageCode $bcp47LanguageCode
+        AudioTranscription            $audioTranscription,
+        string                        $happyScribeTranscriptionId,
+        HappyScribeTranscriptionState $happyScribeTranscriptionState,
+        Bcp47LanguageCode             $bcp47LanguageCode
     )
     {
         $this->audioTranscription = $audioTranscription;

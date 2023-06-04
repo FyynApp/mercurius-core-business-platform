@@ -31,11 +31,11 @@ class LingoSyncProcess
      */
     public function __construct(
         Video             $video,
-        Bcp47LanguageCode $originalLanguageBcp47LanguageCode
+        Bcp47LanguageCode $originalLanguage
     )
     {
         $this->video = $video;
-        $this->originalLanguageBcp47LanguageCode = $originalLanguageBcp47LanguageCode;
+        $this->originalLanguageBcp47LanguageCode = $originalLanguage;
         $this->createdAt = DateAndTimeService::getDateTime();
         $this->tasks = new ArrayCollection();
     }
@@ -94,7 +94,7 @@ class LingoSyncProcess
     )]
     private Bcp47LanguageCode $originalLanguageBcp47LanguageCode;
 
-    public function getOriginalLanguageBcp47LanguageCode(): Bcp47LanguageCode
+    public function getOriginalLanguage(): Bcp47LanguageCode
     {
         return $this->originalLanguageBcp47LanguageCode;
     }
@@ -123,4 +123,9 @@ class LingoSyncProcess
         orphanRemoval: true
     )]
     private array|Collection $tasks;
+
+    public function addTask(LingoSyncProcessTask $task): void
+    {
+        $this->tasks[] = $task;
+    }
 }

@@ -171,4 +171,39 @@ class LingoSyncProcessTask
     {
         $this->finishedNumberOfSteps = $finishedNumberOfSteps;
     }
+
+
+    #[ORM\Column(
+        type: Types::INTEGER,
+        nullable: false,
+        options: ['unsigned' => true]
+    )]
+    private int $numberOfTimesHandled = 0;
+
+    public function getNumberOfTimesHandled(): int
+    {
+        return $this->numberOfTimesHandled;
+    }
+
+    public function setNumberOfTimesHandled(int $numberOfTimesHandled): void
+    {
+        $this->numberOfTimesHandled = $numberOfTimesHandled;
+    }
+
+
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        nullable: true
+    )]
+    private DateTime $lastHandledAt;
+
+    public function getLastHandledAt(): DateTime
+    {
+        return $this->lastHandledAt;
+    }
+
+    public function setLastHandledAt(DateTime $lastHandledAt): void
+    {
+        $this->lastHandledAt = $lastHandledAt;
+    }
 }

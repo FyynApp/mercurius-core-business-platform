@@ -27,7 +27,7 @@ class HappyScribeExport
         HappyScribeTranscription $happyScribeTranscription,
         string                   $happyScribeExportId,
         HappyScribeExportState   $happyScribeExportState,
-        HappyScribeExportFormat $happyScribeExportFormat
+        HappyScribeExportFormat  $happyScribeExportFormat
     )
     {
         $this->happyScribeTranscription = $happyScribeTranscription;

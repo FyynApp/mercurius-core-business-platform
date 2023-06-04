@@ -24,10 +24,10 @@ class HappyScribeTranslationTask
      * @throws Exception
      */
     public function __construct(
-        HappyScribeTranscription            $happyScribeTranscription,
-        string                              $happyScribeTranslationTaskId,
-        HappyScribeTranslationTaskState     $happyScribeTranslationTaskState,
-        Bcp47LanguageCode $bcp47LanguageCode
+        HappyScribeTranscription        $happyScribeTranscription,
+        string                          $happyScribeTranslationTaskId,
+        HappyScribeTranslationTaskState $happyScribeTranslationTaskState,
+        Bcp47LanguageCode               $bcp47LanguageCode
     )
     {
         $this->happyScribeTranscription = $happyScribeTranscription;

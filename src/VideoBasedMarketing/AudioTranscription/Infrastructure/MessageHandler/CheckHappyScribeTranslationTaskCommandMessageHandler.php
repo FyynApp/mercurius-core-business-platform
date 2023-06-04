@@ -70,6 +70,8 @@ readonly class CheckHappyScribeTranslationTaskCommandMessageHandler
             );
         } else {
 
+            // A finished translation results in a new transcription that can be exported and downloaded.
+
             $happyScribeTranscription = new HappyScribeTranscription(
                 $happyScribeTranslationTask
                     ->getHappyScribeTranscription()

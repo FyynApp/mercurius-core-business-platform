@@ -27,7 +27,7 @@ class AudioTranscription
      * @throws Exception
      */
     public function __construct(
-        Video                               $video,
+        Video             $video,
         Bcp47LanguageCode $originalLanguageBcp47LanguageCode
     )
     {
