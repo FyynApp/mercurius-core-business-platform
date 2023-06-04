@@ -5,7 +5,7 @@ namespace App\Shared\Utility;
 
 class ArrayUtility
 {
-    public static function allValuesAreClass(array $array, string $enumClass): bool
+    public static function allValuesAreOfClass(array $array, string $enumClass): bool
     {
         foreach ($array as $value) {
             if (!is_a($value, $enumClass)) {

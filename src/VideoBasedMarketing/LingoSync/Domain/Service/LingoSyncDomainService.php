@@ -25,15 +25,21 @@ readonly class LingoSyncDomainService
      * @throws Exception
      * @param Bcp47LanguageCode[] $targetLanguages
      */
-    public function createLingoSyncProcess(
+    public function startLingoSyncProcess(
         Video             $video,
         Bcp47LanguageCode $originalLanguage,
         array             $targetLanguages
     ): LingoSyncProcess
     {
-        if (!ArrayUtility::allValuesAreClass($targetLanguages, Bcp47LanguageCode::class)) {
+        if (!ArrayUtility::allValuesAreOfClass($targetLanguages, Bcp47LanguageCode::class)) {
             throw new ValueError(
                 'Expected an array of Bcp47LanguageCode objects, but got ' . json_encode($targetLanguages) . '.'
+            );
+        }
+
+        if (sizeof($targetLanguages) === 0) {
+            throw new ValueError(
+                'Need at least one target language.'
             );
         }
 
@@ -42,14 +48,14 @@ readonly class LingoSyncDomainService
             $originalLanguage
         );
 
-        $generateOriginalLanguageTranscriptionTask = new LingoSyncProcessTask(
+        $generateAudioTranscriptionTask = new LingoSyncProcessTask(
             $lingoSyncProcess,
             LingoSyncProcessTaskType::GenerateAudioTranscription,
             null
         );
 
         $lingoSyncProcess->addTask(
-            $generateOriginalLanguageTranscriptionTask
+            $generateAudioTranscriptionTask
         );
 
         foreach ($targetLanguages as $targetLanguage) {
@@ -88,6 +94,8 @@ readonly class LingoSyncDomainService
 
         $this->entityManager->persist($lingoSyncProcess);
         $this->entityManager->flush();
+
+        $this->handleTask($generateAudioTranscriptionTask);
 
         return $lingoSyncProcess;
     }
