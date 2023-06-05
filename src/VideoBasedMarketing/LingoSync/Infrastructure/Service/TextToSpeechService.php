@@ -58,8 +58,6 @@ readonly class TextToSpeechService
         float  $speakingRate
     ): void
     {
-        // ffmpeg -i test.mp3 -filter:a "atempo=2.0" test.fast.mp3
-
         $process = new Process(
             [
                 'ffmpeg',
