@@ -87,7 +87,7 @@ class CreateAudioFileFromText
             $audioFilePath
         );
 
-        $output->writeln('');
+        $output->writeln('Done.');
 
         return 0;
     }
