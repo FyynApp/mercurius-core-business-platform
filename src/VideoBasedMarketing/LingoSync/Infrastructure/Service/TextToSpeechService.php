@@ -203,4 +203,16 @@ readonly class TextToSpeechService
         }
     }
 
+
+    public function createAudiosForWebVtt(string $webVtt): void
+    {
+        // Texte holen
+        // Durations holen
+        // Iterieren über Texte
+            // Audiofile erstellen
+            // Audiofile trimmen
+            // Länge messen
+            // Wenn zu lang, dann speedup - wiederholen bis es passt
+            // Audiofile speichern
+    }
 }
