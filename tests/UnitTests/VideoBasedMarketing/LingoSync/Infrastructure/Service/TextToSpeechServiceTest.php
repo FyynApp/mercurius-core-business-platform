@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class TextToSpeechServiceTest
     extends TestCase
 {
-    private string $webVtt = <<<'EOT'
+    private string $webVttNormal = <<<'EOT'
 WEBVTT
 
 1
@@ -20,6 +20,10 @@ Hi, in this video I'll show you how to
 00:00:02.550 --> 00:00:06.900
 make video recordings of yourself and
 your screen in very simple steps.
+
+3
+00:01:10.440 --> 00:01:10.995
+Hello, World.
 EOT;
 
     public function testTimestampToMilliseconds(): void
@@ -50,28 +54,29 @@ EOT;
         );
     }
 
-    public function testGetWebVttInitialSilenceDuration(): void
+    public function testGetWebVttStarts(): void
     {
-        $result = TextToSpeechService::getWebVttInitialSilenceDuration($this->webVtt);
+        $result = TextToSpeechService::getWebVttStarts($this->webVttNormal);
 
-        $this->assertEquals(200, $result);
+        $this->assertEquals([200, 2550, 70440], $result);
     }
 
     public function testGetWebVttDurations(): void
     {
-        $result = TextToSpeechService::getWebVttDurations($this->webVtt);
+        $result = TextToSpeechService::getWebVttDurations($this->webVttNormal);
 
-        $this->assertEquals([2320, 4350], $result);
+        $this->assertEquals([2320, 4350, 555], $result);
     }
 
     public function testGetWebVttTexts(): void
     {
-        $result = TextToSpeechService::getWebVttTexts($this->webVtt);
+        $result = TextToSpeechService::getWebVttTexts($this->webVttNormal);
 
         $this->assertEquals(
             [
                 "Hi, in this video I'll show you how to",
-                'make video recordings of yourself and your screen in very simple steps.'
+                'make video recordings of yourself and your screen in very simple steps.',
+                'Hello, World.'
             ],
             $result
         );

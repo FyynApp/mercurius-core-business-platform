@@ -44,6 +44,14 @@ readonly class TextToSpeechService
         return self::timestampToMilliseconds($output);
     }
 
+    public function trimAudioFile(
+        string $sourceAudioFilePath,
+        string $targetAudioFilePath
+    ): void
+    {
+        // ffmpeg -i var/lingosync-test/0.mp3 -af "silenceremove=start_periods=1:start_duration=1:start_threshold=-60dB:detection=peak,areverse,silenceremove=start_periods=1:start_duration=1:start_threshold=-60dB:detection=peak,areverse" var/lingosync-test/0.trimmed.mp3
+    }
+
     public function speedupAudioFile(
         string $sourceAudioFilePath,
         string $targetAudioFilePath,
@@ -77,16 +85,30 @@ readonly class TextToSpeechService
         return (int)(((int)$h * 3600 + (int)$m * 60 + (float)$s) * 1000);
     }
 
-    public static function getWebVttInitialSilenceDuration(string $webVtt): int
+    public static function getWebVttStarts(string $webVtt): array
     {
-        // This regular expression matches a WebVTT timestamp
-        preg_match("/\d{2}:\d{2}:\d{2}\.\d{3}/", $webVtt, $matches);
+        // Split the text into separate cues
+        $cues = explode("\n\n", $webVtt);
+        $starts = [];
 
-        // The first match is the first timestamp
-        $firstTimestamp = $matches[0];
+        // Discard the "WEBVTT" header
+        array_shift($cues);
 
-        // Convert the first timestamp into milliseconds
-        return self::timestampToMilliseconds($firstTimestamp);
+        foreach ($cues as $cue) {
+            // Split each cue into separate lines
+            $lines = explode("\n", $cue);
+
+            // Extract the time range line
+            $timeRange = $lines[1];
+
+            // Extract the start time
+            $start = explode(" --> ", $timeRange)[0];
+
+            // Convert the start time to milliseconds and add to the array
+            $starts[] = self::timestampToMilliseconds($start);
+        }
+
+        return $starts;
     }
 
     public static function getWebVttDurations(string $webVtt): array
@@ -135,4 +157,52 @@ readonly class TextToSpeechService
 
         return $texts;
     }
+
+    public static function concatenateAudioFiles(string $webVtt, string $sourceFilesFolderPath, string $targetFilePath): void
+    {
+        $starts = self::getWebVttStarts($webVtt);
+        $durations = self::getWebVttDurations($webVtt);
+
+        $files = [];
+        $filter = '';
+        $previousEnd = 0;
+        $audioIndex = 0;
+
+        foreach ($starts as $index => $start) {
+            $silenceDuration = max(0, $start - $previousEnd) / 1000; // Duration in seconds
+
+            echo "\nSilence duration before $start: {$silenceDuration} - previousEnd is $previousEnd\n";
+
+            if ($silenceDuration > 0) {
+                // Generate a silence audio file of the needed duration
+                $silenceFile = sys_get_temp_dir() . '/' . uniqid('silence_', true) . '.mp3';
+                exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$silenceDuration} {$silenceFile}");
+
+                $files[] = $silenceFile;
+                $filter .= "[{$audioIndex}:a]";
+                $audioIndex++;
+            }
+
+            $files[] = "{$sourceFilesFolderPath}/{$index}.mp3";
+            $filter .= "[{$audioIndex}:a]";
+            $audioIndex++;
+
+            $previousEnd = $start + $durations[$index];
+        }
+
+        $cmd = "ffmpeg -y -i " . implode(' -i ', $files) . " -filter_complex '{$filter}concat=n={$audioIndex}:v=0:a=1[out]' -map '[out]' {$targetFilePath}";
+
+        echo $cmd;
+
+        // Execute the command
+        exec($cmd);
+
+        // Delete the temporary silence audio files
+        foreach ($files as $file) {
+            if (strpos($file, 'silence_') !== false) {
+                unlink($file);
+            }
+        }
+    }
+
 }
