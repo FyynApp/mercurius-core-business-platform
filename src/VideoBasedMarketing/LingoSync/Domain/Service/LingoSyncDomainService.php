@@ -31,6 +31,10 @@ readonly class LingoSyncDomainService
         array             $targetLanguages
     ): LingoSyncProcess
     {
+        // @TODO: This here triggers an Audio Transcription process,
+        // which in turn will fire an AudioTranscriptionCompletedEvent.
+        // We need to listen to that event and then start the LingoSyncProcess proper.
+
         if (!ArrayUtility::allValuesAreOfClass($targetLanguages, Bcp47LanguageCode::class)) {
             throw new ValueError(
                 'Expected an array of Bcp47LanguageCode objects, but got ' . json_encode($targetLanguages) . '.'
