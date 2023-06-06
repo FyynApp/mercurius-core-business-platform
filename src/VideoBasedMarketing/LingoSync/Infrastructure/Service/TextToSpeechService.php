@@ -19,7 +19,7 @@ readonly class TextToSpeechService
     {
     }
 
-    public static function compactizeWebvtt(string $webvtt): string {
+    public static function compactizeWebVtt(string $webvtt): string {
         // Split the input into cues
         $cues = explode("\n\n", trim($webvtt));
 
@@ -94,12 +94,26 @@ readonly class TextToSpeechService
         );
     }
 
+    public static function audioFileIsUsable(
+        string $audioFilePath
+    ): bool
+    {
+        $command = 'ffmpeg -i ' . $audioFilePath . ' -f null - 2>&1 | grep "Input #0"';
+        $output = shell_exec($command);
+
+        if (is_null($output)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static function getAudioFileDurationInMilliseconds(
         string $audioFilePath
     ): ?int
     {
         $output = shell_exec(
-            'ffmpeg -i ' . $audioFilePath . ' 2>&1 | grep Duration | cut -d " " -f 4 | sed s/,//'
+            'ffmpeg -i ' . $audioFilePath . ' -f null - 2>&1 | grep Duration | cut -d " " -f 4 | sed s/,//'
         );
 
         return self::timestampToMilliseconds($output);
@@ -159,6 +173,24 @@ readonly class TextToSpeechService
         return (int)(((int)$h * 3600 + (int)$m * 60 + (float)$s) * 1000);
     }
 
+    public static function millisecondsToTimestamp(int $milliseconds): string {
+        $seconds = floor($milliseconds / 1000);
+        $minutes = floor($seconds / 60);
+        $hours = floor($minutes / 60);
+
+        // remaining seconds after minutes are subtracted
+        $seconds = $seconds % 60;
+
+        // remaining minutes after hours are subtracted
+        $minutes = $minutes % 60;
+
+        // remaining milliseconds after seconds are subtracted
+        $remainingMilliseconds = $milliseconds % 1000;
+
+        // format the result
+        return sprintf('%02d:%02d:%02d.%03d', $hours, $minutes, $seconds, $remainingMilliseconds);
+    }
+
     public static function getWebVttStartsAsMilliseconds(string $webVtt): array
     {
         // Split the text into separate cues
@@ -185,7 +217,7 @@ readonly class TextToSpeechService
         return $starts;
     }
 
-    public static function getWebVttDurationsInMilliseconds(string $webVtt): array
+    public static function getWebVttDurationsAsMilliseconds(string $webVtt): array
     {
         // Split the string into cues
         $cues = preg_split('/\s*\n\s*\n\s*/', trim($webVtt));
@@ -240,31 +272,55 @@ readonly class TextToSpeechService
     public static function concatenateAudioFiles(string $webVtt, string $sourceFilesFolderPath, string $targetFilePath): void
     {
         $starts = self::getWebVttStartsAsMilliseconds($webVtt);
-        $durations = self::getWebVttDurationsInMilliseconds($webVtt);
+        $durations = self::getWebVttDurationsAsMilliseconds($webVtt);
+        $texts = self::getWebVttTexts($webVtt);
 
         $files = [];
         $filter = '';
         $previousEnd = 0;
         $audioIndex = 0;
 
+        $milliseconds = 0;
+
         foreach ($starts as $index => $start) {
             $silenceDuration = max(0, $start - $previousEnd) / 1000; // Duration in seconds
 
             if ($silenceDuration > 0) {
                 // Generate a silence audio file of the needed duration
-                $silenceFilePath = sys_get_temp_dir() . '/' . uniqid('silence_', true) . '.mp3';
+                $silenceFilePath = "/{$sourceFilesFolderPath}/silence_{$index}.mp3";
+
+                // silenceDuration tends to be a bit too short...
+                $silenceDuration *= 1.25;
+
                 exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$silenceDuration} {$silenceFilePath}");
+
+
+                echo "[" . self::millisecondsToTimestamp($milliseconds) . "] [" . self::millisecondsToTimestamp($start) . "] Adding {$silenceDuration} seconds of silence before " . self::millisecondsToTimestamp($start) . " via file {$silenceFilePath}\n";
+                $milliseconds += $silenceDuration * 1000;
 
                 $files[] = $silenceFilePath;
                 $filter .= "[{$audioIndex}:a]";
                 $audioIndex++;
             }
 
-            $files[] = "{$sourceFilesFolderPath}/{$index}.mp3";
             $filter .= "[{$audioIndex}:a]";
             $audioIndex++;
 
-            $previousEnd = $start + self::getAudioFileDurationInMilliseconds("{$sourceFilesFolderPath}/{$index}.mp3");
+            if (self::audioFileIsUsable("{$sourceFilesFolderPath}/{$index}.mp3")) {
+                echo "[" . self::millisecondsToTimestamp($milliseconds) . "] [" . self::millisecondsToTimestamp($start) . "] Adding {$sourceFilesFolderPath}/{$index}.mp3 with text '{$texts[$index]}' at " . self::millisecondsToTimestamp($start) . "\n";
+                $milliseconds += self::getAudioFileDurationInMilliseconds("{$sourceFilesFolderPath}/{$index}.mp3");
+                $files[] = "{$sourceFilesFolderPath}/{$index}.mp3";
+                $previousEnd = $start + self::getAudioFileDurationInMilliseconds("{$sourceFilesFolderPath}/{$index}.mp3");
+            } else {
+                $silenceDuration = $durations[$index] / 1000;
+                $silenceFilePath = "/{$sourceFilesFolderPath}/silence_{$index}_fix_for_unusable_audio.mp3";
+                exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$silenceDuration} {$silenceFilePath}");
+
+                echo "[" . self::millisecondsToTimestamp($milliseconds) . "] [" . self::millisecondsToTimestamp($start) . "] Adding {$silenceDuration} seconds of silence at " . self::millisecondsToTimestamp($start) . " because file {$sourceFilesFolderPath}/{$index}.mp3 for text '{$texts[$index]}' is unusable\n";
+                $milliseconds += $silenceDuration * 1000;
+                $files[] = $silenceFilePath;
+                $previousEnd = $start + $durations[$index];
+            }
         }
 
         $cmd = "ffmpeg -y -i " . implode(' -i ', $files) . " -filter_complex '{$filter}concat=n={$audioIndex}:v=0:a=1[out]' -map '[out]' {$targetFilePath}";
@@ -275,7 +331,7 @@ readonly class TextToSpeechService
         // Delete the temporary silence audio files
         foreach ($files as $file) {
             if (str_contains($file, 'silence_')) {
-                unlink($file);
+                //unlink($file);
             }
         }
     }
@@ -284,6 +340,7 @@ readonly class TextToSpeechService
     /**
      * @throws ValidationException
      * @throws ApiException
+     * @throws \Exception
      */
     public function createAudioFilesForWebVttCues(
         string            $webVtt,
@@ -292,7 +349,8 @@ readonly class TextToSpeechService
     ): string
     {
         $texts = self::getWebVttTexts($webVtt);
-        $durations = self::getWebVttDurationsInMilliseconds($webVtt);
+        $starts = self::getWebVttStartsAsMilliseconds($webVtt);
+        $durations = self::getWebVttDurationsAsMilliseconds($webVtt);
 
         $finalAudioFilesFolderPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($webVtt), true);
         $fs = new Filesystem();
@@ -317,10 +375,14 @@ readonly class TextToSpeechService
 
             $finalAudioFilePath = self::createAudioFileMatchingDuration(
                 $trimmedAudioFilePath,
-                $durations[$index]
+                $durations[$index],
+                $starts[$index],
+                $index,
+                $text
             );
 
-            $fs->rename($finalAudioFilePath, $finalAudioFilesFolderPath . DIRECTORY_SEPARATOR . $index . '.mp3');
+            echo "Copying {$finalAudioFilePath} to {$finalAudioFilesFolderPath}/{$index}.mp3\n";
+            $fs->copy($finalAudioFilePath, $finalAudioFilesFolderPath . DIRECTORY_SEPARATOR . $index . '.mp3');
         }
 
         return $finalAudioFilesFolderPath;
@@ -352,7 +414,10 @@ readonly class TextToSpeechService
 
     private static function createAudioFileMatchingDuration(
         string $audioFilePath,
-        int    $durationInMilliseconds,
+        int    $allowedDurationInMilliseconds,
+        int    $startInMilliseconds,
+        int    $index,
+        string $text
     ): string
     {
         $maxTries = 10;
@@ -361,11 +426,26 @@ readonly class TextToSpeechService
         $resultingAudioFilePath = $audioFilePath;
 
         while ($currentTry < $maxTries) {
+
+            echo "Try $currentTry with a tempo of $currentATempo for text '$text' with index $index starting at $startInMilliseconds, with an allowed duration of $allowedDurationInMilliseconds\n";
+
             $currentTry++;
 
-            if (self::getAudioFileDurationInMilliseconds($resultingAudioFilePath) <= $durationInMilliseconds) {
+            if (!self::audioFileIsUsable($resultingAudioFilePath)) {
+                echo "Audio file unusable\n";
+                return $audioFilePath;
+            }
+
+            $durationInMilliseconds = self::getAudioFileDurationInMilliseconds($resultingAudioFilePath);
+
+            echo "Duration is $durationInMilliseconds\n";
+
+            if ($durationInMilliseconds <= $allowedDurationInMilliseconds) {
+                echo "Duration matches, returning $resultingAudioFilePath\n";
                 return $resultingAudioFilePath;
             }
+
+            echo "Duration is too long\n";
 
             $resultingAudioFilePath = self::generateTemporaryAudioFilePath($audioFilePath);
             self::speedupAudioFile(

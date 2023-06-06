@@ -54,6 +54,29 @@ EOT;
         );
     }
 
+    public function testMillisecondsToTimestamp(): void
+    {
+        $this->assertEquals(
+            '00:00:01.320',
+            TextToSpeechService::millisecondsToTimestamp(1320)
+        );
+
+        $this->assertEquals(
+            '00:00:02.500',
+            TextToSpeechService::millisecondsToTimestamp(2500)
+        );
+
+        $this->assertEquals(
+            '00:00:02.990',
+            TextToSpeechService::millisecondsToTimestamp(2990)
+        );
+
+        $this->assertEquals(
+            '00:01:02.999',
+            TextToSpeechService::millisecondsToTimestamp(62999)
+        );
+    }
+
     public function testGetWebVttStarts(): void
     {
         $result = TextToSpeechService::getWebVttStartsAsMilliseconds($this->webVttNormal);
@@ -63,7 +86,7 @@ EOT;
 
     public function testGetWebVttDurations(): void
     {
-        $result = TextToSpeechService::getWebVttDurationsInMilliseconds($this->webVttNormal);
+        $result = TextToSpeechService::getWebVttDurationsAsMilliseconds($this->webVttNormal);
 
         $this->assertEquals([2320, 4350, 555], $result);
     }
@@ -142,7 +165,7 @@ To make video recordings directly in your browser, you only need a small extensi
 00:00:18.240 --> 00:00:29.480
 In this video, I'm going to show you how to set up this extension so that you can start recording video of yourself right away and easily share it with friends, colleagues and clients.";
 
-        $actualResult = TextToSpeechService::compactizeWebvtt($webVtt);
+        $actualResult = TextToSpeechService::compactizeWebVtt($webVtt);
 
         $this->assertEquals($expectedResult, $actualResult);
     }

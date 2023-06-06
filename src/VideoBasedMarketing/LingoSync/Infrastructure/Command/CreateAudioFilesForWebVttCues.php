@@ -68,7 +68,7 @@ class CreateAudioFilesForWebVttCues
         $gender = Gender::from($input->getArgument('gender'));
 
         $folderPath = $this->textToSpeechService->createAudioFilesForWebVttCues(
-            $this->textToSpeechService::compactizeWebvtt(
+            $this->textToSpeechService::compactizeWebVtt(
                 file_get_contents($webVttFilePath)
             ),
             $languageCode,

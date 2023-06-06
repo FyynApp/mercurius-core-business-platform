@@ -2,6 +2,8 @@
 
 namespace App\VideoBasedMarketing\LingoSync\Infrastructure\Command;
 
+use App\Shared\Domain\Enum\Bcp47LanguageCode;
+use App\Shared\Domain\Enum\Gender;
 use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\TextToSpeechService;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -12,11 +14,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 
 #[AsCommand(
-    name: 'app:videobasedmarketing:lingosync:concatenate-audio-files',
+    name: 'app:videobasedmarketing:lingosync:compactize-webvtt',
     description: '',
-    aliases: ['concatenate-audio-files']
+    aliases: ['compactize-webvtt']
 )]
-class ConcatenateAudioFiles
+class CompactizeWebVtt
     extends Command
 {
     private readonly TextToSpeechService $textToSpeechService;
@@ -36,16 +38,6 @@ class ConcatenateAudioFiles
             InputArgument::REQUIRED
         );
 
-        $this->addArgument(
-            'sourceAudioFilesFolderPath',
-            InputArgument::REQUIRED
-        );
-
-        $this->addArgument(
-            'targetAudioFilePath',
-            InputArgument::REQUIRED
-        );
-
         parent::configure();
     }
 
@@ -58,18 +50,11 @@ class ConcatenateAudioFiles
     ): int
     {
         $webVttFilePath = $input->getArgument('webVttFilePath');
-        $sourceAudioFilesFolderPath = $input->getArgument('sourceAudioFilesFolderPath');
-        $targetAudioFilePath = $input->getArgument('targetAudioFilePath');
-
-        $this->textToSpeechService->concatenateAudioFiles(
+        $output->writeln(
             $this->textToSpeechService::compactizeWebVtt(
                 file_get_contents($webVttFilePath)
-            ),
-            $sourceAudioFilesFolderPath,
-            $targetAudioFilePath
+            )
         );
-
-        $output->writeln('Done.');
 
         return 0;
     }

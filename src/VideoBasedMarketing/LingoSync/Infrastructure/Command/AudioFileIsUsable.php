@@ -12,11 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 
 #[AsCommand(
-    name: 'app:videobasedmarketing:lingosync:concatenate-audio-files',
+    name: 'app:videobasedmarketing:lingosync:audio-file-is-usable',
     description: '',
-    aliases: ['concatenate-audio-files']
+    aliases: ['audio-file-is-usable']
 )]
-class ConcatenateAudioFiles
+class AudioFileIsUsable
     extends Command
 {
     private readonly TextToSpeechService $textToSpeechService;
@@ -32,17 +32,7 @@ class ConcatenateAudioFiles
     public function configure(): void
     {
         $this->addArgument(
-            'webVttFilePath',
-            InputArgument::REQUIRED
-        );
-
-        $this->addArgument(
-            'sourceAudioFilesFolderPath',
-            InputArgument::REQUIRED
-        );
-
-        $this->addArgument(
-            'targetAudioFilePath',
+            'sourceAudioFilePath',
             InputArgument::REQUIRED
         );
 
@@ -57,19 +47,13 @@ class ConcatenateAudioFiles
         OutputInterface $output
     ): int
     {
-        $webVttFilePath = $input->getArgument('webVttFilePath');
-        $sourceAudioFilesFolderPath = $input->getArgument('sourceAudioFilesFolderPath');
-        $targetAudioFilePath = $input->getArgument('targetAudioFilePath');
+        $sourceAudioFilePath = $input->getArgument('sourceAudioFilePath');
 
-        $this->textToSpeechService->concatenateAudioFiles(
-            $this->textToSpeechService::compactizeWebVtt(
-                file_get_contents($webVttFilePath)
-            ),
-            $sourceAudioFilesFolderPath,
-            $targetAudioFilePath
+        $isUsable = $this->textToSpeechService::audioFileIsUsable(
+            $sourceAudioFilePath
         );
 
-        $output->writeln('Done.');
+        $output->writeln('Done. Result: ' . ($isUsable ? 'true' : 'false') . '.');
 
         return 0;
     }
