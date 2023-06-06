@@ -116,6 +116,7 @@
         "dama/doctrine-test-bundle": "^7.2.1",
         "dbrekelmans/bdi": "^1.0.4",
         "doctrine/doctrine-fixtures-bundle": "^3.4.4",
+        "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.6.8",
         "symfony/browser-kit": "6.3.*",
         "symfony/css-selector": "6.3.*",
