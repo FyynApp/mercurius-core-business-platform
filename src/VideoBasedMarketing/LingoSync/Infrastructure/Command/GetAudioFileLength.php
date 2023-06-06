@@ -52,7 +52,7 @@ class GetAudioFileLength
     {
         $audioFilePath = $input->getArgument('audioFilePath');
 
-        $length = $this->textToSpeechService->getAudioFileLength(
+        $length = $this->textToSpeechService->getAudioFileDurationInMilliseconds(
             $audioFilePath
         );
 

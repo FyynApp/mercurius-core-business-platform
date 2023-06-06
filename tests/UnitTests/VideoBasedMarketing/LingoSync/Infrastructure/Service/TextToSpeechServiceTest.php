@@ -63,7 +63,7 @@ EOT;
 
     public function testGetWebVttDurations(): void
     {
-        $result = TextToSpeechService::getWebVttDurations($this->webVttNormal);
+        $result = TextToSpeechService::getWebVttDurationsInMilliseconds($this->webVttNormal);
 
         $this->assertEquals([2320, 4350, 555], $result);
     }

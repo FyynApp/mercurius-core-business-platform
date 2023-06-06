@@ -12,11 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 
 #[AsCommand(
-    name: 'app:videobasedmarketing:lingosync:speedup-audio-file',
+    name: 'app:videobasedmarketing:lingosync:trim-audio-file',
     description: '',
-    aliases: ['speedup-audio-file']
+    aliases: ['trim-audio-file']
 )]
-class SpeedupAudioFile
+class TrimAudioFile
     extends Command
 {
     private readonly TextToSpeechService $textToSpeechService;
@@ -41,11 +41,6 @@ class SpeedupAudioFile
             InputArgument::REQUIRED
         );
 
-        $this->addArgument(
-            'speakingRate',
-            InputArgument::REQUIRED
-        );
-
         parent::configure();
     }
 
@@ -59,12 +54,10 @@ class SpeedupAudioFile
     {
         $sourceAudioFilePath = $input->getArgument('sourceAudioFilePath');
         $targetAudioFilePath = $input->getArgument('targetAudioFilePath');
-        $speakingRate = (float)$input->getArgument('speakingRate');
 
-        $this->textToSpeechService::speedupAudioFile(
+        $this->textToSpeechService::trimAudioFile(
             $sourceAudioFilePath,
-            $targetAudioFilePath,
-            $speakingRate
+            $targetAudioFilePath
         );
 
         $output->writeln('Done.');

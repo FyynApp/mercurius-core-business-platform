@@ -6,6 +6,9 @@ namespace App\VideoBasedMarketing\LingoSync\Infrastructure\Service;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
 use App\VideoBasedMarketing\LingoSync\Infrastructure\ApiClient\GoogleCloudTextToSpeechApiClient;
+use Google\ApiCore\ApiException;
+use Google\ApiCore\ValidationException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 readonly class TextToSpeechService
@@ -16,6 +19,10 @@ readonly class TextToSpeechService
     {
     }
 
+    /**
+     * @throws ApiException
+     * @throws ValidationException
+     */
     public function createAudioFileFromText(
         string            $text,
         Bcp47LanguageCode $languageCode,
@@ -33,9 +40,9 @@ readonly class TextToSpeechService
         );
     }
 
-    public function getAudioFileLength(
+    public static function getAudioFileDurationInMilliseconds(
         string $audioFilePath
-    ): ?float
+    ): ?int
     {
         $output = shell_exec(
             'ffmpeg -i ' . $audioFilePath . ' 2>&1 | grep Duration | cut -d " " -f 4 | sed s/,//'
@@ -44,15 +51,30 @@ readonly class TextToSpeechService
         return self::timestampToMilliseconds($output);
     }
 
-    public function trimAudioFile(
+    public static function trimAudioFile(
         string $sourceAudioFilePath,
         string $targetAudioFilePath
     ): void
     {
-        // ffmpeg -i var/lingosync-test/0.mp3 -af "silenceremove=start_periods=1:start_duration=1:start_threshold=-60dB:detection=peak,areverse,silenceremove=start_periods=1:start_duration=1:start_threshold=-60dB:detection=peak,areverse" var/lingosync-test/0.trimmed.mp3
+        $process = new Process(
+            [
+                'ffmpeg',
+
+                '-i',
+                $sourceAudioFilePath,
+
+                '-af',
+                'silenceremove=start_periods=1:start_duration=1:start_threshold=0,areverse,silenceremove=start_periods=1:start_duration=1:start_threshold=-60dB,areverse',
+
+                '-y',
+                $targetAudioFilePath
+            ]
+        );
+        $process->setTimeout(60 * 2);
+        $process->run();
     }
 
-    public function speedupAudioFile(
+    public static function speedupAudioFile(
         string $sourceAudioFilePath,
         string $targetAudioFilePath,
         float  $speakingRate
@@ -109,7 +131,7 @@ readonly class TextToSpeechService
         return $starts;
     }
 
-    public static function getWebVttDurations(string $webVtt): array
+    public static function getWebVttDurationsInMilliseconds(string $webVtt): array
     {
         // Split the string into cues
         $cues = preg_split('/\s*\n\s*\n\s*/', trim($webVtt));
@@ -123,6 +145,11 @@ readonly class TextToSpeechService
         foreach ($cues as $cue) {
             // Extract the timestamp line
             if (preg_match('/(\d{2}:\d{2}:\d{2}\.\d{3}) --> (\d{2}:\d{2}:\d{2}\.\d{3})/', $cue, $matches)) {
+
+                if (is_null($matches[1]) || is_null($matches[2])) {
+                    continue;
+                }
+
                 // Calculate and store the duration
                 $start = self::timestampToMilliseconds($matches[1]);
                 $end = self::timestampToMilliseconds($matches[2]);
@@ -159,7 +186,7 @@ readonly class TextToSpeechService
     public static function concatenateAudioFiles(string $webVtt, string $sourceFilesFolderPath, string $targetFilePath): void
     {
         $starts = self::getWebVttStarts($webVtt);
-        $durations = self::getWebVttDurations($webVtt);
+        $durations = self::getWebVttDurationsInMilliseconds($webVtt);
 
         $files = [];
         $filter = '';
@@ -169,14 +196,12 @@ readonly class TextToSpeechService
         foreach ($starts as $index => $start) {
             $silenceDuration = max(0, $start - $previousEnd) / 1000; // Duration in seconds
 
-            echo "\nSilence duration before $start: {$silenceDuration} - previousEnd is $previousEnd\n";
-
             if ($silenceDuration > 0) {
                 // Generate a silence audio file of the needed duration
-                $silenceFile = sys_get_temp_dir() . '/' . uniqid('silence_', true) . '.mp3';
-                exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$silenceDuration} {$silenceFile}");
+                $silenceFilePath = sys_get_temp_dir() . '/' . uniqid('silence_', true) . '.mp3';
+                exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$silenceDuration} {$silenceFilePath}");
 
-                $files[] = $silenceFile;
+                $files[] = $silenceFilePath;
                 $filter .= "[{$audioIndex}:a]";
                 $audioIndex++;
             }
@@ -185,34 +210,126 @@ readonly class TextToSpeechService
             $filter .= "[{$audioIndex}:a]";
             $audioIndex++;
 
-            $previousEnd = $start + $durations[$index];
+            $previousEnd = $start + self::getAudioFileDurationInMilliseconds("{$sourceFilesFolderPath}/{$index}.mp3");
         }
 
         $cmd = "ffmpeg -y -i " . implode(' -i ', $files) . " -filter_complex '{$filter}concat=n={$audioIndex}:v=0:a=1[out]' -map '[out]' {$targetFilePath}";
-
-        echo $cmd;
 
         // Execute the command
         exec($cmd);
 
         // Delete the temporary silence audio files
         foreach ($files as $file) {
-            if (strpos($file, 'silence_') !== false) {
+            if (str_contains($file, 'silence_')) {
                 unlink($file);
             }
         }
     }
 
 
-    public function createAudiosForWebVtt(string $webVtt): void
+    /**
+     * @throws ValidationException
+     * @throws ApiException
+     */
+    public function createAudioFilesForWebVttCues(
+        string            $webVtt,
+        Bcp47LanguageCode $languageCode,
+        Gender            $gender
+    ): string
     {
-        // Texte holen
-        // Durations holen
-        // Iterieren über Texte
-            // Audiofile erstellen
-            // Audiofile trimmen
-            // Länge messen
-            // Wenn zu lang, dann speedup - wiederholen bis es passt
-            // Audiofile speichern
+        $texts = self::getWebVttTexts($webVtt);
+        $durations = self::getWebVttDurationsInMilliseconds($webVtt);
+
+        $finalAudioFilesFolderPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($webVtt), true);
+        $fs = new Filesystem();
+        $fs->mkdir($finalAudioFilesFolderPath);
+
+        foreach ($texts as $index => $text) {
+            $originalAudioFilePath = self::generateTemporaryAudioFilePath($text);
+            $this->createAudioFileFromText(
+                $text,
+                $languageCode,
+                $gender,
+                1.0,
+                $originalAudioFilePath
+            );
+
+            $trimmedAudioFilePath = self::generateTemporaryAudioFilePath("trimmed_$text");
+
+            self::trimAudioFile(
+                $originalAudioFilePath,
+                $trimmedAudioFilePath
+            );
+
+            $finalAudioFilePath = self::createAudioFileMatchingDuration(
+                $trimmedAudioFilePath,
+                $durations[$index]
+            );
+
+            $fs->rename($finalAudioFilePath, $finalAudioFilesFolderPath . DIRECTORY_SEPARATOR . $index . '.mp3');
+        }
+
+        return $finalAudioFilesFolderPath;
+    }
+
+    public function generateAudioFileForWebVtt(
+        string            $webVtt,
+        Bcp47LanguageCode $languageCode,
+        Gender            $gender
+    ): string
+    {
+        $audioFilesFolderPath = $this->createAudioFilesForWebVttCues(
+            $webVtt,
+            $languageCode,
+            $gender
+        );
+
+        $targetFilePath = $audioFilesFolderPath . DIRECTORY_SEPARATOR . 'final.mp3';
+
+        self::concatenateAudioFiles(
+            $webVtt,
+            $audioFilesFolderPath,
+            $targetFilePath
+        );
+
+        return $targetFilePath;
+    }
+
+
+    private static function createAudioFileMatchingDuration(
+        string $audioFilePath,
+        int    $durationInMilliseconds,
+    ): string
+    {
+        $maxTries = 10;
+        $currentTry = 0;
+        $currentATempo = 1.1;
+        $resultingAudioFilePath = $audioFilePath;
+
+        while ($currentTry < $maxTries) {
+            $currentTry++;
+
+            if (self::getAudioFileDurationInMilliseconds($resultingAudioFilePath) <= $durationInMilliseconds) {
+                return $resultingAudioFilePath;
+            }
+
+            $resultingAudioFilePath = self::generateTemporaryAudioFilePath($audioFilePath);
+            self::speedupAudioFile(
+                $audioFilePath,
+                $resultingAudioFilePath,
+                $currentATempo
+            );
+
+            $currentATempo += 0.1;
+        }
+
+        return $resultingAudioFilePath;
+    }
+
+    private static function generateTemporaryAudioFilePath(
+        string $uniqIdPrefix = ''
+    ): string
+    {
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($uniqIdPrefix), true) . '.mp3';
     }
 }
