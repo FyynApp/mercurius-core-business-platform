@@ -19,42 +19,60 @@ readonly class TextToSpeechService
     {
     }
 
-    public static function compactizeWebvtt(string $webVtt): string
-    {
-        $cues = explode("\n\n", trim($webVtt));
-        $compactCues = [];
-        $currentSentence = '';
-        $startTimestamp = '';
-        $endTimestamp = '';
-        $cueIndex = 0;
+    public static function compactizeWebvtt(string $webvtt): string {
+        // Split the input into cues
+        $cues = explode("\n\n", trim($webvtt));
 
+        // Initialize variables
+        $transformedCues = [];
+        $startTimestampForUpcomingTransformedCue = '';
+        $textForUpcomingTransformedCue = '';
+
+        // Iterate over the cues
         foreach ($cues as $cue) {
+            // Split the cue into lines
             $lines = explode("\n", $cue);
-            if (count($lines) < 3) {
+
+            if ($lines[0] === 'WEBVTT') {
                 continue;
             }
 
-            $timestamps = explode(' --> ', $lines[1]);
-            if ($currentSentence == '') {
-                $startTimestamp = $timestamps[0];
-            }
-            $endTimestamp = $timestamps[1];
+            print_r($lines);
 
+            // Extract the timestampLine and text
+            $timestampLine = $lines[1];
             $text = implode(' ', array_slice($lines, 2));
-            $currentSentence .= ' ' . $text;
 
-            if (mb_substr(trim($text), -1) == '.') {
-                $compactCues[] = ++$cueIndex . "\n" . $startTimestamp . ' --> ' . $endTimestamp . "\n" . trim($currentSentence);
-                $currentSentence = '';
+            // Update the start timestampLine if necessary
+            if ($startTimestampForUpcomingTransformedCue === '') {
+                $startTimestampForUpcomingTransformedCue = explode(' --> ', $timestampLine)[0];
+            }
+
+            // Update the end timestampLine and text
+            $endTimestampForUpcomingTransformedCue = explode(' --> ', $timestampLine)[1];
+            $textForUpcomingTransformedCue .= $text . ' ';
+
+            // If the text ends with a sentence terminator, add a transformed cue
+            if (preg_match('/[.!?]$/', $text)) {
+                $transformedCues[] = [
+                    'startTimestamp' => $startTimestampForUpcomingTransformedCue,
+                    'endTimestamp' => $endTimestampForUpcomingTransformedCue,
+                    'text' => trim($textForUpcomingTransformedCue)
+                ];
+
+                // Reset the variables
+                $startTimestampForUpcomingTransformedCue = '';
+                $textForUpcomingTransformedCue = '';
             }
         }
 
-        // Handle remaining sentence
-        if ($currentSentence != '') {
-            $compactCues[] = ++$cueIndex . "\n" . $startTimestamp . ' --> ' . $endTimestamp . "\n" . trim($currentSentence);
+        // Build the output
+        $output = "WEBVTT\n\n";
+        foreach ($transformedCues as $index => $cue) {
+            $output .= ($index + 1) . "\n" . $cue['startTimestamp'] . ' --> ' . $cue['endTimestamp'] . "\n" . $cue['text'] . "\n\n";
         }
 
-        return "WEBVTT\n\n" . implode("\n\n", $compactCues);
+        return $output;
     }
 
     /**
@@ -143,7 +161,7 @@ readonly class TextToSpeechService
         return (int)(((int)$h * 3600 + (int)$m * 60 + (float)$s) * 1000);
     }
 
-    public static function getWebVttStarts(string $webVtt): array
+    public static function getWebVttStartsAsMilliseconds(string $webVtt): array
     {
         // Split the text into separate cues
         $cues = explode("\n\n", $webVtt);
@@ -223,7 +241,7 @@ readonly class TextToSpeechService
 
     public static function concatenateAudioFiles(string $webVtt, string $sourceFilesFolderPath, string $targetFilePath): void
     {
-        $starts = self::getWebVttStarts($webVtt);
+        $starts = self::getWebVttStartsAsMilliseconds($webVtt);
         $durations = self::getWebVttDurationsInMilliseconds($webVtt);
 
         $files = [];

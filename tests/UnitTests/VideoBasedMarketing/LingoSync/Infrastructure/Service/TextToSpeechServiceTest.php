@@ -56,7 +56,7 @@ EOT;
 
     public function testGetWebVttStarts(): void
     {
-        $result = TextToSpeechService::getWebVttStarts($this->webVttNormal);
+        $result = TextToSpeechService::getWebVttStartsAsMilliseconds($this->webVttNormal);
 
         $this->assertEquals([200, 2550, 70440], $result);
     }
@@ -93,7 +93,7 @@ Hi, in this video I'll show you how to
 2
 00:00:02.550 --> 00:00:06.900
 make video recordings of yourself and
-your screen in very simple steps
+your screen in very simple steps.
 
 3
 00:00:06.930 --> 00:00:09.520
@@ -115,6 +115,8 @@ Hi, in this video I'll show you how to make video recordings of yourself and you
 And the best thing is, you don't even need to install any software or have any technical background.";
 
         $actualResult = TextToSpeechService::compactizeWebvtt($webVtt);
+
+        #echo $actualResult;
 
         $this->assertEquals($expectedResult, $actualResult);
     }
