@@ -19,6 +19,44 @@ readonly class TextToSpeechService
     {
     }
 
+    public static function compactizeWebvtt(string $webVtt): string
+    {
+        $cues = explode("\n\n", trim($webVtt));
+        $compactCues = [];
+        $currentSentence = '';
+        $startTimestamp = '';
+        $endTimestamp = '';
+        $cueIndex = 0;
+
+        foreach ($cues as $cue) {
+            $lines = explode("\n", $cue);
+            if (count($lines) < 3) {
+                continue;
+            }
+
+            $timestamps = explode(' --> ', $lines[1]);
+            if ($currentSentence == '') {
+                $startTimestamp = $timestamps[0];
+            }
+            $endTimestamp = $timestamps[1];
+
+            $text = implode(' ', array_slice($lines, 2));
+            $currentSentence .= ' ' . $text;
+
+            if (mb_substr(trim($text), -1) == '.') {
+                $compactCues[] = ++$cueIndex . "\n" . $startTimestamp . ' --> ' . $endTimestamp . "\n" . trim($currentSentence);
+                $currentSentence = '';
+            }
+        }
+
+        // Handle remaining sentence
+        if ($currentSentence != '') {
+            $compactCues[] = ++$cueIndex . "\n" . $startTimestamp . ' --> ' . $endTimestamp . "\n" . trim($currentSentence);
+        }
+
+        return "WEBVTT\n\n" . implode("\n\n", $compactCues);
+    }
+
     /**
      * @throws ApiException
      * @throws ValidationException

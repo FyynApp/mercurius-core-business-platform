@@ -81,4 +81,41 @@ EOT;
             $result
         );
     }
+
+    public function testCompactizeWebvtt()
+    {
+        $webVtt = "WEBVTT
+
+1
+00:00:00.200 --> 00:00:02.520
+Hi, in this video I'll show you how to
+
+2
+00:00:02.550 --> 00:00:06.900
+make video recordings of yourself and
+your screen in very simple steps
+
+3
+00:00:06.930 --> 00:00:09.520
+And the best thing is, you don't even need
+
+4
+00:00:09.550 --> 00:00:13.060
+to install any software or
+have any technical background.";
+
+        $expectedResult = "WEBVTT
+
+1
+00:00:00.200 --> 00:00:06.900
+Hi, in this video I'll show you how to make video recordings of yourself and your screen in very simple steps.
+
+2
+00:00:06.930 --> 00:00:13.060
+And the best thing is, you don't even need to install any software or have any technical background.";
+
+        $actualResult = TextToSpeechService::compactizeWebvtt($webVtt);
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
 }
