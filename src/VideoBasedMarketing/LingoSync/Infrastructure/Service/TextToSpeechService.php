@@ -118,7 +118,7 @@ readonly class TextToSpeechService
                 $sourceAudioFilePath,
 
                 '-af',
-                'silenceremove=start_periods=1:start_duration=1:start_threshold=0,areverse,silenceremove=start_periods=1:start_duration=1:start_threshold=-60dB,areverse',
+                'silenceremove=start_periods=1:start_duration=1:start_threshold=0,areverse,silenceremove=start_periods=1:start_duration=1:start_threshold=0,areverse',
 
                 '-y',
                 $targetAudioFilePath

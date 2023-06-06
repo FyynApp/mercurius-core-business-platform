@@ -62,7 +62,9 @@ class ConcatenateAudioFiles
         $targetAudioFilePath = $input->getArgument('targetAudioFilePath');
 
         $this->textToSpeechService->concatenateAudioFiles(
-            file_get_contents($webVttFilePath),
+            $this->textToSpeechService::compactizeWebvtt(
+                file_get_contents($webVttFilePath)
+            ),
             $sourceAudioFilesFolderPath,
             $targetAudioFilePath
         );
