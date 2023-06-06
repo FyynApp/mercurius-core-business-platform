@@ -37,8 +37,6 @@ readonly class TextToSpeechService
                 continue;
             }
 
-            print_r($lines);
-
             // Extract the timestampLine and text
             $timestampLine = $lines[1];
             $text = implode(' ', array_slice($lines, 2));
@@ -72,7 +70,7 @@ readonly class TextToSpeechService
             $output .= ($index + 1) . "\n" . $cue['startTimestamp'] . ' --> ' . $cue['endTimestamp'] . "\n" . $cue['text'] . "\n\n";
         }
 
-        return $output;
+        return trim($output);
     }
 
     /**
