@@ -5,6 +5,9 @@ SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )
 set -e
 
 pushd "$SCRIPT_FOLDER/.."
+
+  vendor/bin/phpstan analyse src tests --level 1
+
   rm -rf var/cache/test
   /usr/bin/env php bin/console --env=test doctrine:database:create --if-not-exists --no-interaction
   /usr/bin/env php bin/console --env=test doctrine:migrations:migrate --no-interaction

@@ -36,6 +36,7 @@ class CreateDemoEntities
     {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
+        $this->accountDomainService = $accountDomainService;
         parent::__construct();
     }
 

@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\RawMessage;
+use Symfony\Component\Mime\Message;
 
 
 class MailService
@@ -29,8 +29,8 @@ class MailService
      * @throws TransportExceptionInterface
      */
     public function send(
-        RawMessage $email,
-        bool       $autoresponserProtection = true
+        Message $email,
+        bool    $autoresponserProtection = true
     ): void
     {
         if ($autoresponserProtection) {
