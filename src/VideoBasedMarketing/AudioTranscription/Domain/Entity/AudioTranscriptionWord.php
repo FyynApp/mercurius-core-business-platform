@@ -126,7 +126,7 @@ class AudioTranscriptionWord
         type: Types::INTEGER,
         nullable: true
     )]
-    private string $speakerNumber;
+    private ?int $speakerNumber;
 
     public function getSpeakerNumber(): ?int
     {
@@ -164,9 +164,9 @@ class AudioTranscriptionWord
         type: Types::FLOAT,
         nullable: false
     )]
-    private string $dataStart;
+    private float $dataStart;
 
-    public function getDataStart(): string
+    public function getDataStart(): float
     {
         return $this->dataStart;
     }
@@ -176,9 +176,9 @@ class AudioTranscriptionWord
         type: Types::FLOAT,
         nullable: false
     )]
-    private string $dataEnd;
+    private float $dataEnd;
 
-    public function getDataEnd(): string
+    public function getDataEnd(): float
     {
         return $this->dataEnd;
     }
@@ -188,9 +188,9 @@ class AudioTranscriptionWord
         type: Types::FLOAT,
         nullable: false
     )]
-    private string $confidence;
+    private float $confidence;
 
-    public function getConfidence(): string
+    public function getConfidence(): float
     {
         return $this->confidence;
     }

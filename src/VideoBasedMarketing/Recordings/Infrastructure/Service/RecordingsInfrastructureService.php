@@ -545,6 +545,9 @@ readonly class RecordingsInfrastructureService
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function generateVideoAssetPosterStillWebp(Video $video): void
     {
         $this->createFilesystemStructureForVideoAssets($video);

@@ -10,14 +10,14 @@ class AccountHelper
 {
     public static function signIn(
         PantherClient $client,
-        User $user
+        User          $user
     ): void
     {
         $client->get('/en/account/sign-in');
         $crawler = $client->refreshCrawler();
 
         $form = $crawler->selectButton('Sign in')->form();
-        $form['_username'] = $user->getEmail();
+        $form['_username'] = (string)$user->getEmail();
         $form['_password'] = 'test123';
 
         $client->submit($form);
