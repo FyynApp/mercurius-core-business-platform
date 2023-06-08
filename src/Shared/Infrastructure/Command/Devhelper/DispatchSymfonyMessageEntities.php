@@ -3,7 +3,7 @@
 namespace App\Shared\Infrastructure\Command\Devhelper;
 
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
-use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\GenerateSuggestedSummaryCommandMessage;
+use App\VideoBasedMarketing\AudioTranscription\Infrastructure\SymfonyMessage\GenerateSuggestedSummaryCommandSymfonyMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -47,7 +47,7 @@ class DispatchSymfonyMessageEntities
             );
 
         $this->messageBus->dispatch(
-            new GenerateSuggestedSummaryCommandMessage(
+            new GenerateSuggestedSummaryCommandSymfonyMessage(
                 $entity
             )
         );

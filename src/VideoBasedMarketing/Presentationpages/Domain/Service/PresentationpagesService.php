@@ -12,7 +12,7 @@ use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageCatego
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElementVariant;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageType;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\TextColor;
-use App\VideoBasedMarketing\Presentationpages\Infrastructure\Message\GeneratePresentationpageScreenshotCommandMessage;
+use App\VideoBasedMarketing\Presentationpages\Infrastructure\SymfonyMessage\GeneratePresentationpageScreenshotCommandSymfonyMessage;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -223,7 +223,7 @@ class PresentationpagesService
             $originalPresentationpage->setScreenshotCaptureOutstanding(true);
             $this->entityManager->persist($originalPresentationpage);
             $this->messageBus->dispatch(
-                new GeneratePresentationpageScreenshotCommandMessage($originalPresentationpage)
+                new GeneratePresentationpageScreenshotCommandSymfonyMessage($originalPresentationpage)
             );
 
             $this->entityManager->flush();

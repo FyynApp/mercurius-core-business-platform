@@ -6,7 +6,7 @@ use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
 use App\Tests\ApplicationTests\Helper\RecordingSessionHelper;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredExtensionOnlyUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
+use App\VideoBasedMarketing\Recordings\Infrastructure\SymfonyMessage\GenerateMissingVideoAssetsCommandSymfonyMessage;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -82,11 +82,11 @@ class RegisteredUserWorkflowTest
         $transport = $this->getContainer()->get('messenger.transport.async');
         $this->assertCount(1, $transport->getSent());
 
-        /** @var GenerateMissingVideoAssetsCommandMessage $message */
+        /** @var GenerateMissingVideoAssetsCommandSymfonyMessage $message */
         $message = $transport->getSent()[0]->getMessage();
 
         $this->assertSame(
-            GenerateMissingVideoAssetsCommandMessage::class,
+            GenerateMissingVideoAssetsCommandSymfonyMessage::class,
             $message::class
         );
 

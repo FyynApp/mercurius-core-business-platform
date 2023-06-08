@@ -16,13 +16,13 @@ framework:
             failed: 'doctrine://default?queue_name=failed'
 
         routing:
-            App\Shared\Infrastructure\Message\SyncMessageInterface: sync
-            App\Shared\Infrastructure\Message\AsyncMessageInterface: async
+            App\Shared\Infrastructure\SymfonyMessage\SyncSymfonyMessageInterface: sync
+            App\Shared\Infrastructure\SymfonyMessage\AsyncSymfonyMessageInterface: async
 
         buses:
             messenger.bus.default:
                 middleware:
-                    - 'App\Shared\Infrastructure\Message\EventLoggerMiddleware'
+                    - 'App\Shared\Infrastructure\SymfonyMessage\EventLoggerMiddleware'
 
 when@test:
     framework:

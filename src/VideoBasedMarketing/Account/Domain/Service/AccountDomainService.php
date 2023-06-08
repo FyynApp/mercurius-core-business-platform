@@ -5,11 +5,11 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Domain\Enum\VideosListViewMode;
-use App\VideoBasedMarketing\Account\Domain\Event\UnregisteredUserClaimedRegisteredUserEvent;
-use App\VideoBasedMarketing\Account\Domain\Event\UserCreatedEvent;
+use App\VideoBasedMarketing\Account\Domain\SymfonyEvent\UnregisteredUserClaimedRegisteredUserSymfonyEvent;
+use App\VideoBasedMarketing\Account\Domain\SymfonyEvent\UserCreatedSymfonyEvent;
 use App\VideoBasedMarketing\Account\Infrastructure\Enum\ActiveCampaignContactTag;
-use App\VideoBasedMarketing\Account\Infrastructure\Event\UserVerifiedEvent;
-use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
+use App\VideoBasedMarketing\Account\Infrastructure\SymfonyEvent\UserVerifiedSymfonyEvent;
+use App\VideoBasedMarketing\Account\Infrastructure\SymfonyMessage\SyncUserToActiveCampaignCommandSymfonyMessage;
 use App\VideoBasedMarketing\Account\Presentation\Service\AccountPresentationService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
@@ -85,7 +85,7 @@ readonly class AccountDomainService
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
-            new UserCreatedEvent($user)
+            new UserCreatedSymfonyEvent($user)
         );
 
         if ($isVerified) {
@@ -129,7 +129,7 @@ readonly class AccountDomainService
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
-            new UserCreatedEvent($user)
+            new UserCreatedSymfonyEvent($user)
         );
 
         return $user;
@@ -181,7 +181,7 @@ readonly class AccountDomainService
         }
 
         $this->messageBus->dispatch(
-            new SyncUserToActiveCampaignCommandMessage(
+            new SyncUserToActiveCampaignCommandSymfonyMessage(
                 $claimingUser,
                 $contactTags
             )
@@ -242,7 +242,7 @@ readonly class AccountDomainService
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
-            new UnregisteredUserClaimedRegisteredUserEvent(
+            new UnregisteredUserClaimedRegisteredUserSymfonyEvent(
                 $claimingUser,
                 $claimedUser
             )
@@ -300,7 +300,7 @@ readonly class AccountDomainService
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(
-            new UserVerifiedEvent($user)
+            new UserVerifiedSymfonyEvent($user)
         );
 
         return true;

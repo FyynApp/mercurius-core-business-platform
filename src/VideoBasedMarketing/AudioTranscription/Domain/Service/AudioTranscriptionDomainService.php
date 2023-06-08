@@ -8,7 +8,7 @@ use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionSuggestedSummary;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Enum\AudioTranscriptionBcp47LanguageCode;
-use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Message\CreateHappyScribeTranscriptionCommandMessage;
+use App\VideoBasedMarketing\AudioTranscription\Infrastructure\SymfonyMessage\CreateHappyScribeTranscriptionCommandSymfonyMessage;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +40,7 @@ readonly class AudioTranscriptionDomainService
         $this->entityManager->flush();
 
         $this->messageBus->dispatch(
-            new CreateHappyScribeTranscriptionCommandMessage(
+            new CreateHappyScribeTranscriptionCommandSymfonyMessage(
                 $audioTranscription
             )
         );
