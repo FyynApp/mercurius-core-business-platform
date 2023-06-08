@@ -67,7 +67,7 @@ class UnregisteredUserWorkflowTest
         );
 
         // Verifies that at this point, no asset generation async message has been dispatched
-        /* @var InMemoryTransport $transport */
+        /** @var InMemoryTransport $transport */
         $transport = $this->getContainer()->get('messenger.transport.async');
         $this->assertCount(0, $transport->getSent());
 
@@ -94,7 +94,7 @@ class UnregisteredUserWorkflowTest
         $client->submit($form);
 
 
-        /* @var InMemoryTransport $transport */
+        /** @var InMemoryTransport $transport */
         $transport = $this->getContainer()->get('messenger.transport.async');
         $this->assertCount(1, $transport->getSent());
 
@@ -135,7 +135,7 @@ class UnregisteredUserWorkflowTest
         );
 
         // Verifies that at this point, the asset generation async message has been dispatched
-        /* @var InMemoryTransport $transport */
+        /** @var InMemoryTransport $transport */
         $transport = $this->getContainer()->get('messenger.transport.async');
         $this->assertCount(1, $transport->getSent());
 
@@ -228,7 +228,7 @@ class UnregisteredUserWorkflowTest
         $client->followRedirect();
 
         // Verifies that at this point, the asset generation async message has been dispatched
-        /* @var InMemoryTransport $transport */
+        /** @var InMemoryTransport $transport */
         $transport = $this->getContainer()->get('messenger.transport.async');
         $this->assertCount(1, $transport->getSent());
 

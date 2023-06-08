@@ -40,7 +40,7 @@ readonly class SettingsDomainService
             $customLogoSetting = new CustomLogoSetting($organization);
 
             $this->entityManager->persist($customLogoSetting);
-            $this->entityManager->flush($customLogoSetting);
+            $this->entityManager->flush();
 
             $this->entityManager->refresh($organization);
         }
@@ -87,7 +87,7 @@ readonly class SettingsDomainService
             $customDomainSetting = new CustomDomainSetting($organization);
 
             $this->entityManager->persist($customDomainSetting);
-            $this->entityManager->flush($customDomainSetting);
+            $this->entityManager->flush();
 
             $this->entityManager->refresh($organization);
         }

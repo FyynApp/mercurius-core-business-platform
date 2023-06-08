@@ -292,7 +292,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetPosterStillWebpWidth = null;
+    private ?int $assetPosterStillWebpWidth = null;
 
     public function getAssetPosterStillWebpWidth(): ?int
     {
@@ -310,7 +310,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetPosterStillWebpHeight = null;
+    private ?int $assetPosterStillWebpHeight = null;
 
     public function getAssetPosterStillWebpHeight(): ?int
     {
@@ -342,7 +342,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetPosterAnimatedWebpWidth = null;
+    private ?int $assetPosterAnimatedWebpWidth = null;
 
     public function getAssetPosterAnimatedWebpWidth(): ?int
     {
@@ -360,7 +360,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetPosterAnimatedWebpHeight = null;
+    private ?int $assetPosterAnimatedWebpHeight = null;
 
     public function getAssetPosterAnimatedWebpHeight(): ?int
     {
@@ -442,7 +442,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetOriginalWidth = null;
+    private ?int $assetOriginalWidth = null;
 
     public function getAssetOriginalWidth(): ?int
     {
@@ -460,7 +460,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetOriginalHeight = null;
+    private ?int $assetOriginalHeight = null;
 
     public function getAssetOriginalHeight(): ?int
     {
@@ -549,7 +549,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetFullWebmWidth = null;
+    private ?int $assetFullWebmWidth = null;
 
     public function getAssetFullWebmWidth(): ?int
     {
@@ -567,7 +567,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetFullWebmHeight = null;
+    private ?int $assetFullWebmHeight = null;
 
     public function getAssetFullWebmHeight(): ?int
     {
@@ -635,7 +635,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetFullMp4Width = null;
+    private ?int $assetFullMp4Width = null;
 
     public function getAssetFullMp4Width(): ?int
     {
@@ -653,7 +653,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetFullMp4Height = null;
+    private ?int $assetFullMp4Height = null;
 
     public function getAssetFullMp4Height(): ?int
     {
@@ -703,7 +703,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetPosterStillWithPlayOverlayForEmailPngWidth = null;
+    private ?int $assetPosterStillWithPlayOverlayForEmailPngWidth = null;
 
     public function getAssetPosterStillWithPlayOverlayForEmailPngWidth(): ?int
     {
@@ -721,7 +721,7 @@ class Video
         nullable: true,
         options: ['unsigned' => true]
     )]
-    private ?float $assetPosterStillWithPlayOverlayForEmailPngHeight = null;
+    private ?int $assetPosterStillWithPlayOverlayForEmailPngHeight = null;
 
     public function getAssetPosterStillWithPlayOverlayForEmailPngHeight(): ?int
     {

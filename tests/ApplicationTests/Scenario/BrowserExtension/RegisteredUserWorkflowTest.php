@@ -7,6 +7,7 @@ use App\Tests\ApplicationTests\Helper\RecordingSessionHelper;
 use App\VideoBasedMarketing\Account\Infrastructure\DataFixture\RegisteredExtensionOnlyUserFixture;
 use App\VideoBasedMarketing\Account\Infrastructure\Repository\UserRepository;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
@@ -17,6 +18,9 @@ class RegisteredUserWorkflowTest
 {
     use MailerAssertionsTrait;
 
+    /**
+     * @throws Exception
+     */
     public function testRecordingWorks(): void
     {
         $client = static::createClient();
@@ -74,7 +78,7 @@ class RegisteredUserWorkflowTest
 
 
         // Because this is a registered user, we expect async asset generation to have started
-        /* @var InMemoryTransport $transport */
+        /** @var InMemoryTransport $transport */
         $transport = $this->getContainer()->get('messenger.transport.async');
         $this->assertCount(1, $transport->getSent());
 

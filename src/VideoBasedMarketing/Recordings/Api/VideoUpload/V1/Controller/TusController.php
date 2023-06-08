@@ -63,7 +63,7 @@ class TusController
         $server->event()->addListener(
             UploadComplete::NAME,
             function (UploadComplete $event)
-                use ($logger, $recordingsInfrastructureService, $user, $token, $server)
+                use ($recordingsInfrastructureService, $user, $token)
             {
                 $fileMeta = $event->getFile()->details();
 

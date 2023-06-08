@@ -81,7 +81,7 @@ readonly class RecordingSessionDomainService
         $recordingSession = new RecordingSession($user);
         $this->entityManager->persist($recordingSession);
         $this->shortIdService->encodeObject($recordingSession);
-        $this->entityManager->flush($recordingSession);
+        $this->entityManager->flush();
 
         $this->messageBus->dispatch(
             new RecordingSessionCreatedEventMessage(

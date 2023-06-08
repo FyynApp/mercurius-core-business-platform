@@ -59,7 +59,7 @@ class TusController
         $server->event()->addListener(
             UploadComplete::NAME,
             function (UploadComplete $event)
-            use ($logger, $settingsInfrastructureService, $user, $token, $server)
+            use ($settingsInfrastructureService, $user, $token)
             {
                 $settingsInfrastructureService
                     ->handleCompletedLogoUpload(

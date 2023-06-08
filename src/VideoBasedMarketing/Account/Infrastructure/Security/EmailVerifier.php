@@ -3,9 +3,9 @@
 namespace App\VideoBasedMarketing\Account\Infrastructure\Security;
 
 use App\Shared\Presentation\Service\MailService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
 
@@ -29,7 +29,7 @@ class EmailVerifier
      */
     public function sendEmailAskingForVerification(
         string         $verifyEmailRouteName,
-        UserInterface  $user,
+        User           $user,
         TemplatedEmail $email
     ): void
     {
