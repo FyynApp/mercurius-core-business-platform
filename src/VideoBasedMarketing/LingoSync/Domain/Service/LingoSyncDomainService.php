@@ -7,6 +7,7 @@ use App\Shared\Utility\ArrayUtility;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcessTask;
+use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskStatus;
 use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskType;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
@@ -111,15 +112,20 @@ readonly class LingoSyncDomainService
     public function handleTask(LingoSyncProcessTask $task): void
     {
         if ($task->getType() === LingoSyncProcessTaskType::GenerateAudioTranscription) {
-            $audioTranscription = $this->audioTranscriptionDomainService->startProcessingVideo(
-                $task->getLingoSyncProcess()->getVideo(),
-                $task->getLingoSyncProcess()->getOriginalLanguage(),
-                $task->getLingoSyncProcess()
-            );
 
-            $task->getLingoSyncProcess()->setAudioTranscription($audioTranscription);
-            $this->entityManager->persist($task->getLingoSyncProcess());
-            $this->entityManager->flush();
+            if ($task->getStatus() === LingoSyncProcessTaskStatus::Initiated) {
+                $audioTranscription = $this->audioTranscriptionDomainService->startProcessingVideo(
+                    $task->getLingoSyncProcess()->getVideo(),
+                    $task->getLingoSyncProcess()->getOriginalLanguage(),
+                    $task->getLingoSyncProcess()
+                );
+
+                $task->getLingoSyncProcess()->setAudioTranscription($audioTranscription);
+                $task->setStatus(LingoSyncProcessTaskStatus::Running);
+
+                $this->entityManager->persist($task->getLingoSyncProcess());
+                $this->entityManager->flush();
+            }
         }
     }
 }
