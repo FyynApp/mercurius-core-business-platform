@@ -1,5 +1,11 @@
 parameters:
-	level: 2
-	paths:
-		- src
-		- tests
+    level: 2
+    paths:
+        - src
+        - tests
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon
