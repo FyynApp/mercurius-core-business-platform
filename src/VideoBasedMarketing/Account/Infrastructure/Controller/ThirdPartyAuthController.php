@@ -28,9 +28,8 @@ class ThirdPartyAuthController
         return $clientRegistry
             ->getClient('linkedin')
             ->redirect(
-                [
-                    'r_liteprofile', 'r_emailaddress'
-                ]
+                ['r_liteprofile', 'r_emailaddress'],
+                []
             );
     }
 

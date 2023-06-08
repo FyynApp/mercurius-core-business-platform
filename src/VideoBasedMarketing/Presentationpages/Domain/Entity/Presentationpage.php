@@ -15,6 +15,7 @@ use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageElemen
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\PresentationpageType;
 use App\VideoBasedMarketing\Presentationpages\Domain\Enum\TextColor;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use ArrayIterator;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -391,6 +392,7 @@ class Presentationpage
      */
     public function getPresentationpageElements(): array|Collection
     {
+        /** @var ArrayIterator $iterator */
         $iterator = $this->presentationpageElements->getIterator();
         $iterator->uasort(
             function (

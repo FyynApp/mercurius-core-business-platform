@@ -18,14 +18,12 @@ class WebVttParser
     private int $line;
     private string $content;
 
-    private array $cues;
-
     public function parse(string $content): array
     {
         $this->pos = 0;
         $this->line = 1;
         $this->content = $content;
-        $this->cues = [];
+        $cues = [];
 
         // NULL -> REPLACEMENT
         $this->content = str_replace("\u{0000}", "\u{FFFD}", $this->content);
@@ -47,16 +45,16 @@ class WebVttParser
 
         while (!$this->is_end_reached()) {
             if ($block = $this->read_block()) {
-                $this->cues[] = $block;
+                $cues[] = $block;
             }
         }
 
         return [
-            'cues' => $this->cues,
+            'cues' => $cues,
         ];
     }
 
-    private function next($length = 1, $offset = 0)
+    private function next(int $length = 1, int $offset = 0): string
     {
         return substr($this->content, $this->pos + $offset, $length);
     }
@@ -65,10 +63,8 @@ class WebVttParser
      * Reads and returns current line.
      *
      * Advances $pos and $line.
-     *
-     * @return string
      */
-    private function read_line()
+    private function read_line(): string
     {
         $line = '';
 
@@ -90,10 +86,9 @@ class WebVttParser
      * Reads and returns current block.
      *
      * Advances $pos and $line.
-     *
-     * @return string
+     * @throws Exception
      */
-    private function read_block()
+    private function read_block(): ?array
     {
         $block_line_no = 0;
         $start = 0;
@@ -161,16 +156,12 @@ class WebVttParser
      * Want to do it properly?
      *
      * @see  https://w3c.github.io/webvtt/#webvtt-cue-text-parsing-rules
-     *
-     * @param string $text
-     *
-     * @return [string, string]
      */
-    private function extract_voice_from_text($text)
+    private function extract_voice_from_text(string $text): array
     {
         $voice = '';
 
-        if (substr($text, 0, 2) !== '<v') {
+        if (!str_starts_with($text, '<v')) {
             return [$voice, $text];
         }
 
@@ -189,17 +180,16 @@ class WebVttParser
      *
      * A comment startes with "NOTE", followed by a space or newline.
      *
-     * @param  string
-     * @param mixed $line
-     *
-     * @return bool
      */
-    private static function is_first_comment_line($line)
+    private static function is_first_comment_line(string $line): bool
     {
         return strlen($line) === 4 && $line === 'NOTE' || substr($line, 0, 5) === 'NOTE'.self::SPACE;
     }
 
-    private function read_timestamp()
+    /**
+     * @throws Exception
+     */
+    private function read_timestamp(): float
     {
         $most_significant_units = 'minutes';
 
@@ -241,7 +231,10 @@ class WebVttParser
         return $value1 * 60 * 60 + $value2 * 60 + $value3 + $value4 / 1000;
     }
 
-    private function read_integer()
+    /**
+     * @throws Exception
+     */
+    private function read_integer(): array
     {
         if (!self::is_ascii_digit($this->next())) {
             $this->exit_expected('integer', 'Error when parsing Timestamp');
@@ -259,6 +252,9 @@ class WebVttParser
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     private function read_n_digit_integer($n)
     {
         $int = $this->read_integer();
@@ -270,7 +266,7 @@ class WebVttParser
         return $int['int'];
     }
 
-    private function skip_note()
+    private function skip_note(): void
     {
         if ($this->next() === self::LF) {
             ++$this->pos;
@@ -282,7 +278,7 @@ class WebVttParser
         $this->skip_newline();
     }
 
-    private function skip_whitespace()
+    private function skip_whitespace(): void
     {
         $whitespace = [
             self::TAB,
@@ -296,14 +292,17 @@ class WebVttParser
         }
     }
 
-    private function skip_newline()
+    private function skip_newline(): void
     {
         while ($this->next() === self::LF && !$this->is_end_reached()) {
             ++$this->pos;
         }
     }
 
-    private function skip_arrow()
+    /**
+     * @throws Exception
+     */
+    private function skip_arrow(): void
     {
         if ($this->next(3) == '-->') {
             $this->pos += 3;
@@ -312,7 +311,10 @@ class WebVttParser
         }
     }
 
-    private function skip_full_stop()
+    /**
+     * @throws Exception
+     */
+    private function skip_full_stop(): void
     {
         if ($this->next() !== '.' || $this->is_end_reached()) {
             $this->exit_expected('FULL STOP (.)', 'Error when parsing Timestamp');
@@ -320,7 +322,10 @@ class WebVttParser
         ++$this->pos;
     }
 
-    private function skip_colon()
+    /**
+     * @throws Exception
+     */
+    private function skip_colon(): void
     {
         if ($this->next() !== ':' || $this->is_end_reached()) {
             $this->exit_expected('COLON (:)', 'Error when parsing Timestamp');
@@ -328,7 +333,7 @@ class WebVttParser
         ++$this->pos;
     }
 
-    private function skip_bom()
+    private function skip_bom(): void
     {
         $bom = chr(239).chr(187).chr(191);
 
@@ -337,7 +342,10 @@ class WebVttParser
         }
     }
 
-    private function skip_signature()
+    /**
+     * @throws Exception
+     */
+    private function skip_signature(): void
     {
         if ($this->next(6) == 'WEBVTT') {
             $this->pos += 6;
@@ -346,7 +354,7 @@ class WebVttParser
         }
     }
 
-    private function skip_signature_trails()
+    private function skip_signature_trails(): void
     {
         if (in_array($this->next(), [self::SPACE, self::TAB])) {
             ++$this->pos;
@@ -356,7 +364,10 @@ class WebVttParser
         }
     }
 
-    private function skip_line_terminator()
+    /**
+     * @throws Exception
+     */
+    private function skip_line_terminator(): void
     {
         if ($this->next() === self::LF) {
             ++$this->pos;
@@ -366,17 +377,17 @@ class WebVttParser
         }
     }
 
-    private function is_end_reached()
+    private function is_end_reached(): bool
     {
         return $this->pos + 1 >= strlen($this->content);
     }
 
-    private function is_line_end_reached()
+    private function is_line_end_reached(): bool
     {
         return $this->next() === self::LF;
     }
 
-    private static function is_ascii_digit($digit)
+    private static function is_ascii_digit($digit): bool
     {
         return preg_match('/^[0-9]$/', $digit) === 1;
     }
