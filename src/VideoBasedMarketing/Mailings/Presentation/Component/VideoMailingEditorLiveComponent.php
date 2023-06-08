@@ -3,7 +3,7 @@
 namespace App\VideoBasedMarketing\Mailings\Presentation\Component;
 
 use App\VideoBasedMarketing\Mailings\Domain\Entity\VideoMailing;
-use App\VideoBasedMarketing\Mailings\Infrastructure\Message\ImproveVideoMailingBodyAboveVideoCommandMessage;
+use App\VideoBasedMarketing\Mailings\Infrastructure\SymfonyMessage\ImproveVideoMailingBodyAboveVideoCommandSymfonyMessage;
 use App\VideoBasedMarketing\Mailings\Presentation\Form\Type\VideoMailingType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,7 +53,7 @@ class VideoMailingEditorLiveComponent
         $this
             ->messageBus
             ->dispatch(
-                new ImproveVideoMailingBodyAboveVideoCommandMessage(
+                new ImproveVideoMailingBodyAboveVideoCommandSymfonyMessage(
                     $this->videoMailing
                 )
             );

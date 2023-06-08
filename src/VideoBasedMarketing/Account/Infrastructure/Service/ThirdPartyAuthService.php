@@ -7,7 +7,7 @@ use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\HandleReceivedLinkedInResourceOwnerResult;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ThirdPartyAuthLinkedinResourceOwner;
-use App\VideoBasedMarketing\Account\Infrastructure\Event\UserAuthenticatedViaThirdPartyEvent;
+use App\VideoBasedMarketing\Account\Infrastructure\SymfonyEvent\UserAuthenticatedViaThirdPartySymfonyEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use League\OAuth2\Client\Provider\LinkedInResourceOwner;
@@ -142,7 +142,7 @@ class ThirdPartyAuthService
         }
 
         $this->eventDispatcher->dispatch(
-            new UserAuthenticatedViaThirdPartyEvent($resourceOwner->getUser())
+            new UserAuthenticatedViaThirdPartySymfonyEvent($resourceOwner->getUser())
         );
 
         return new HandleReceivedLinkedInResourceOwnerResult(

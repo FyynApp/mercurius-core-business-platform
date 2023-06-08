@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Infrastructure\Service;
 
-use App\Shared\Infrastructure\Message\ClearTusCacheCommandMessage;
+use App\Shared\Infrastructure\SymfonyMessage\ClearTusCacheCommandSymfonyMessage;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\Shared\Infrastructure\Service\ShortIdService;
@@ -14,7 +14,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
+use App\VideoBasedMarketing\Recordings\Infrastructure\SymfonyMessage\GenerateMissingVideoAssetsCommandSymfonyMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
@@ -1816,7 +1816,7 @@ readonly class RecordingsInfrastructureService
         ) {
             if ($this->capabilitiesService->canHaveAllVideoAssetsGenerated($video->getUser())) {
                 $this->messageBus->dispatch(
-                    new GenerateMissingVideoAssetsCommandMessage($video)
+                    new GenerateMissingVideoAssetsCommandSymfonyMessage($video)
                 );
             }
         }
@@ -1922,11 +1922,11 @@ readonly class RecordingsInfrastructureService
         $this->generateVideoAssetPosterAnimatedWebp($video);
 
         $this->messageBus->dispatch(
-            new ClearTusCacheCommandMessage($user, $token)
+            new ClearTusCacheCommandSymfonyMessage($user, $token)
         );
 
         $this->messageBus->dispatch(
-            new GenerateMissingVideoAssetsCommandMessage($video)
+            new GenerateMissingVideoAssetsCommandSymfonyMessage($video)
         );
     }
 

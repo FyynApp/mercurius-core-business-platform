@@ -2,7 +2,7 @@
 
 namespace App\VideoBasedMarketing\Settings\Infrastructure\Service;
 
-use App\Shared\Infrastructure\Message\ClearTusCacheCommandMessage;
+use App\Shared\Infrastructure\SymfonyMessage\ClearTusCacheCommandSymfonyMessage;
 use App\Shared\Infrastructure\Service\FilesystemService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
@@ -113,7 +113,7 @@ readonly class SettingsInfrastructureService
         );
 
         $this->messageBus->dispatch(
-            new ClearTusCacheCommandMessage($user, $token)
+            new ClearTusCacheCommandSymfonyMessage($user, $token)
         );
     }
 

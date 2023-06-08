@@ -8,12 +8,10 @@ use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
-use App\VideoBasedMarketing\Recordings\Domain\Event\RecordingSessionWillBeRemovedEvent;
-use App\VideoBasedMarketing\Recordings\Domain\Message\RecordingSessionCreatedEventMessage;
+use App\VideoBasedMarketing\Recordings\Domain\SymfonyEvent\RecordingSessionWillBeRemovedSymfonyEvent;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use ValueError;
 
@@ -22,7 +20,6 @@ readonly class RecordingSessionDomainService
 {
     public function __construct(
         private EntityManagerInterface          $entityManager,
-        private MessageBusInterface             $messageBus,
         private VideoDomainService              $videoDomainService,
         private RecordingsInfrastructureService $recordingsInfrastructureService,
         private EventDispatcherInterface        $eventDispatcher,
@@ -83,12 +80,6 @@ readonly class RecordingSessionDomainService
         $this->shortIdService->encodeObject($recordingSession);
         $this->entityManager->flush();
 
-        $this->messageBus->dispatch(
-            new RecordingSessionCreatedEventMessage(
-                $recordingSession
-            )
-        );
-
         return $recordingSession;
     }
 
@@ -101,8 +92,8 @@ readonly class RecordingSessionDomainService
         }
 
         $this->eventDispatcher->dispatch(
-            new RecordingSessionWillBeRemovedEvent($recordingSession),
-            RecordingSessionWillBeRemovedEvent::class
+            new RecordingSessionWillBeRemovedSymfonyEvent($recordingSession),
+            RecordingSessionWillBeRemovedSymfonyEvent::class
         );
 
         $this->entityManager->remove($recordingSession);

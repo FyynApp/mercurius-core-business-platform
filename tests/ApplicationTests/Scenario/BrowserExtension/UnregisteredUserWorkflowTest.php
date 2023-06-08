@@ -4,8 +4,8 @@ namespace App\Tests\ApplicationTests\Scenario\BrowserExtension;
 
 use App\Tests\ApplicationTests\Helper\BrowserExtensionHelper;
 use App\Tests\ApplicationTests\Helper\RecordingSessionHelper;
-use App\VideoBasedMarketing\Account\Infrastructure\Message\SyncUserToActiveCampaignCommandMessage;
-use App\VideoBasedMarketing\Recordings\Infrastructure\Message\GenerateMissingVideoAssetsCommandMessage;
+use App\VideoBasedMarketing\Account\Infrastructure\SymfonyMessage\SyncUserToActiveCampaignCommandSymfonyMessage;
+use App\VideoBasedMarketing\Recordings\Infrastructure\SymfonyMessage\GenerateMissingVideoAssetsCommandSymfonyMessage;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
@@ -98,11 +98,11 @@ class UnregisteredUserWorkflowTest
         $transport = $this->getContainer()->get('messenger.transport.async');
         $this->assertCount(1, $transport->getSent());
 
-        /** @var SyncUserToActiveCampaignCommandMessage $message */
+        /** @var SyncUserToActiveCampaignCommandSymfonyMessage $message */
         $message = $transport->getSent()[0]->getMessage();
 
         $this->assertSame(
-            SyncUserToActiveCampaignCommandMessage::class,
+            SyncUserToActiveCampaignCommandSymfonyMessage::class,
             $message::class
         );
 
@@ -139,11 +139,11 @@ class UnregisteredUserWorkflowTest
         $transport = $this->getContainer()->get('messenger.transport.async');
         $this->assertCount(1, $transport->getSent());
 
-        /** @var GenerateMissingVideoAssetsCommandMessage $message */
+        /** @var GenerateMissingVideoAssetsCommandSymfonyMessage $message */
         $message = $transport->getSent()[0]->getMessage();
 
         $this->assertSame(
-            GenerateMissingVideoAssetsCommandMessage::class,
+            GenerateMissingVideoAssetsCommandSymfonyMessage::class,
             $message::class
         );
 
@@ -232,11 +232,11 @@ class UnregisteredUserWorkflowTest
         $transport = $this->getContainer()->get('messenger.transport.async');
         $this->assertCount(1, $transport->getSent());
 
-        /** @var GenerateMissingVideoAssetsCommandMessage $message */
+        /** @var GenerateMissingVideoAssetsCommandSymfonyMessage $message */
         $message = $transport->getSent()[0]->getMessage();
 
         $this->assertSame(
-            GenerateMissingVideoAssetsCommandMessage::class,
+            GenerateMissingVideoAssetsCommandSymfonyMessage::class,
             $message::class
         );
 

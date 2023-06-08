@@ -10,7 +10,7 @@ use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainDnsSetupStatus;
 use App\VideoBasedMarketing\Settings\Domain\Enum\CustomDomainHttpSetupStatus;
 use App\VideoBasedMarketing\Settings\Domain\Enum\SetCustomDomainNameResult;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
-use App\VideoBasedMarketing\Settings\Infrastructure\Message\CheckCustomDomainNameSetupCommandMessage;
+use App\VideoBasedMarketing\Settings\Infrastructure\SymfonyMessage\CheckCustomDomainNameSetupCommandSymfonyMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -175,7 +175,7 @@ readonly class SettingsDomainService
         $this->entityManager->flush();
 
         $this->messageBus->dispatch(
-            new CheckCustomDomainNameSetupCommandMessage(
+            new CheckCustomDomainNameSetupCommandSymfonyMessage(
                 $this->getCustomDomainSetting($user)
             )
         );
