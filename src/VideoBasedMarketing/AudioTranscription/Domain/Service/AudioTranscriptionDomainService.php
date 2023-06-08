@@ -2,7 +2,6 @@
 
 namespace App\VideoBasedMarketing\AudioTranscription\Domain\Service;
 
-
 use App\Shared\Domain\Enum\Iso639_1Code;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionSuggestedSummary;
@@ -14,6 +13,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+
 
 readonly class AudioTranscriptionDomainService
 {
