@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\LingoSync\Infrastructure\Command;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
-use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\TextToSpeechService;
+use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\LingoSyncInfrastructureService;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -21,10 +21,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateAudioFilesForWebVttCues
     extends Command
 {
-    private readonly TextToSpeechService $textToSpeechService;
+    private readonly LingoSyncInfrastructureService $textToSpeechService;
 
     public function __construct(
-        TextToSpeechService $textToSpeechService
+        LingoSyncInfrastructureService $textToSpeechService
     )
     {
         $this->textToSpeechService = $textToSpeechService;

@@ -3,7 +3,7 @@
 namespace App\Tests\UnitTests\VideoBasedMarketing\LingoSync\Infrastructure\Service;
 
 
-use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\TextToSpeechService;
+use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\LingoSyncInfrastructureService;
 use PHPUnit\Framework\TestCase;
 
 class TextToSpeechServiceTest
@@ -30,27 +30,27 @@ EOT;
     {
         $this->assertEquals(
             1320,
-            TextToSpeechService::timestampToMilliseconds('00:00:01.32')
+            LingoSyncInfrastructureService::timestampToMilliseconds('00:00:01.32')
         );
 
         $this->assertEquals(
             2500,
-            TextToSpeechService::timestampToMilliseconds('00:00:02.50')
+            LingoSyncInfrastructureService::timestampToMilliseconds('00:00:02.50')
         );
 
         $this->assertEquals(
             2990,
-            TextToSpeechService::timestampToMilliseconds('00:00:02.99')
+            LingoSyncInfrastructureService::timestampToMilliseconds('00:00:02.99')
         );
 
         $this->assertEquals(
             2999,
-            TextToSpeechService::timestampToMilliseconds('00:00:02.999')
+            LingoSyncInfrastructureService::timestampToMilliseconds('00:00:02.999')
         );
 
         $this->assertEquals(
             62999,
-            TextToSpeechService::timestampToMilliseconds('00:01:02.999')
+            LingoSyncInfrastructureService::timestampToMilliseconds('00:01:02.999')
         );
     }
 
@@ -58,42 +58,42 @@ EOT;
     {
         $this->assertEquals(
             '00:00:01.320',
-            TextToSpeechService::millisecondsToTimestamp(1320)
+            LingoSyncInfrastructureService::millisecondsToTimestamp(1320)
         );
 
         $this->assertEquals(
             '00:00:02.500',
-            TextToSpeechService::millisecondsToTimestamp(2500)
+            LingoSyncInfrastructureService::millisecondsToTimestamp(2500)
         );
 
         $this->assertEquals(
             '00:00:02.990',
-            TextToSpeechService::millisecondsToTimestamp(2990)
+            LingoSyncInfrastructureService::millisecondsToTimestamp(2990)
         );
 
         $this->assertEquals(
             '00:01:02.999',
-            TextToSpeechService::millisecondsToTimestamp(62999)
+            LingoSyncInfrastructureService::millisecondsToTimestamp(62999)
         );
     }
 
     public function testGetWebVttStarts(): void
     {
-        $result = TextToSpeechService::getWebVttStartsAsMilliseconds($this->webVttNormal);
+        $result = LingoSyncInfrastructureService::getWebVttStartsAsMilliseconds($this->webVttNormal);
 
         $this->assertEquals([200, 2550, 70440], $result);
     }
 
     public function testGetWebVttDurations(): void
     {
-        $result = TextToSpeechService::getWebVttDurationsAsMilliseconds($this->webVttNormal);
+        $result = LingoSyncInfrastructureService::getWebVttDurationsAsMilliseconds($this->webVttNormal);
 
         $this->assertEquals([2320, 4350, 555], $result);
     }
 
     public function testGetWebVttTexts(): void
     {
-        $result = TextToSpeechService::getWebVttTexts($this->webVttNormal);
+        $result = LingoSyncInfrastructureService::getWebVttTexts($this->webVttNormal);
 
         $this->assertEquals(
             [
@@ -165,7 +165,7 @@ To make video recordings directly in your browser, you only need a small extensi
 00:00:18.240 --> 00:00:29.480
 In this video, I'm going to show you how to set up this extension so that you can start recording video of yourself right away and easily share it with friends, colleagues and clients.";
 
-        $actualResult = TextToSpeechService::compactizeWebVtt($webVtt);
+        $actualResult = LingoSyncInfrastructureService::compactizeWebVtt($webVtt);
 
         $this->assertEquals($expectedResult, $actualResult);
     }

@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\LingoSync\Domain\Entity;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
+use App\Shared\Domain\Enum\Gender;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskStatus;
@@ -32,11 +33,13 @@ class LingoSyncProcess
      */
     public function __construct(
         Video             $video,
-        Bcp47LanguageCode $originalLanguage
+        Bcp47LanguageCode $originalLanguage,
+        Gender            $originalGender
     )
     {
         $this->video = $video;
         $this->originalLanguageBcp47LanguageCode = $originalLanguage;
+        $this->originalGender = $originalGender;
         $this->createdAt = DateAndTimeService::getDateTime();
         $this->tasks = new ArrayCollection();
     }
@@ -100,6 +103,21 @@ class LingoSyncProcess
         return $this->originalLanguageBcp47LanguageCode;
     }
 
+
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 16,
+        nullable: false,
+        enumType: Gender::class
+    )]
+    private Gender $originalGender;
+
+    public function getOriginalGender(): Gender
+    {
+        return $this->originalGender;
+    }
+
+
     public function getOrganization(): Organization
     {
         return $this->video->getOrganization();
@@ -128,6 +146,12 @@ class LingoSyncProcess
     public function addTask(LingoSyncProcessTask $task): void
     {
         $this->tasks[] = $task;
+    }
+
+    /** @return LingoSyncProcessTask[]|array|Collection */
+    public function getTasks(): array|Collection
+    {
+        return $this->tasks;
     }
 
 

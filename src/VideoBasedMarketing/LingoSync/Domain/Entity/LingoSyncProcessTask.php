@@ -93,7 +93,7 @@ class LingoSyncProcessTask
     )]
     private readonly ?Bcp47LanguageCode $targetLanguageBcp47LanguageCode;
 
-    public function getTargetLanguageBcp47LanguageCode(): Bcp47LanguageCode
+    public function getTargetLanguage(): Bcp47LanguageCode
     {
         return $this->targetLanguageBcp47LanguageCode;
     }

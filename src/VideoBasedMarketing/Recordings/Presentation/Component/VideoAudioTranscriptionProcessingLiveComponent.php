@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Component;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -33,6 +34,9 @@ class VideoAudioTranscriptionProcessingLiveComponent
     #[LiveProp]
     public AudioTranscription $audioTranscription;
 
+    /**
+     * @throws Exception
+     */
     public function stillRunning(): bool
     {
         $this->denyAccessUnlessGranted(

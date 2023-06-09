@@ -2,16 +2,17 @@
 
 namespace App\VideoBasedMarketing\LingoSync\Infrastructure\Service;
 
-
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
 use App\VideoBasedMarketing\LingoSync\Infrastructure\ApiClient\GoogleCloudTextToSpeechApiClient;
+use Exception;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ValidationException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
-readonly class TextToSpeechService
+
+readonly class LingoSyncInfrastructureService
 {
     public function __construct(
         private GoogleCloudTextToSpeechApiClient $googleCloudTextToSpeechApiClient
@@ -269,8 +270,16 @@ readonly class TextToSpeechService
         return $texts;
     }
 
-    public static function concatenateAudioFiles(string $webVtt, string $sourceFilesFolderPath, string $targetFilePath): void
+    public static function concatenateAudioFiles(
+        string  $webVtt,
+        string  $sourceFilesFolderPath,
+        ?string $targetFilePath = null
+    ): string
     {
+        if (is_null($targetFilePath)) {
+            $targetFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($webVtt), true);
+        }
+
         $starts = self::getWebVttStartsAsMilliseconds($webVtt);
         $durations = self::getWebVttDurationsAsMilliseconds($webVtt);
         $texts = self::getWebVttTexts($webVtt);
@@ -331,16 +340,18 @@ readonly class TextToSpeechService
         // Delete the temporary silence audio files
         foreach ($files as $file) {
             if (str_contains($file, 'silence_')) {
-                //unlink($file);
+                unlink($file);
             }
         }
+
+        return $targetFilePath;
     }
 
 
     /**
      * @throws ValidationException
      * @throws ApiException
-     * @throws \Exception
+     * @throws Exception
      */
     public function createAudioFilesForWebVttCues(
         string            $webVtt,

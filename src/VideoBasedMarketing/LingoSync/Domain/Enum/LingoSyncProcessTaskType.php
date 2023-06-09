@@ -7,7 +7,7 @@ enum LingoSyncProcessTaskType: string
 {
     case GenerateAudioTranscription = 'generateOriginalLanguageTranscription';
     case WaitForTranslation = 'waitForTranslation';
-    case CreateAudioSnippet = 'createAudioSnippet';
+    case CreateAudioSnippets = 'createAudioSnippets';
     case ConcatenateAudioSnippets = 'concatenateAudioSnippets';
     case GenerateTranslatedVideo = 'generateTranslatedVideo';
 }
