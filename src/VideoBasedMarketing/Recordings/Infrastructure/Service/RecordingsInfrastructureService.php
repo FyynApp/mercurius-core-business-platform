@@ -11,6 +11,7 @@ use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
+use App\VideoBasedMarketing\Recordings\Domain\Enum\VideoSourceType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\RecordingSessionVideoChunk;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
@@ -1647,11 +1648,16 @@ readonly class RecordingsInfrastructureService
         );
     }
 
+    /** @throws ValueError */
     public function getVideoFullAssetFilePath(
         Video         $video,
         AssetMimeType $mimeType
     ): string
     {
+        if (is_null($video->getId())) {
+            throw new ValueError('Video must have an ID to get its full asset file path.');
+        }
+
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
             [
                 self::VIDEO_ASSETS_SUBFOLDER_NAME,
@@ -1956,6 +1962,56 @@ readonly class RecordingsInfrastructureService
                 $videoUpload->getVideo()->getUser()->getId(),
                 "{$videoUpload->getId()}_{$videoUpload->getFileName()}"
             ]
+        );
+    }
+
+
+    private function getAssetMimeTypeForFilePathExtension(
+        string $filePath
+    ): ?AssetMimeType
+    {
+        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+        foreach (AssetMimeType::cases() as $assetMimeType) {
+            if (self::mimeTypeToFileSuffix($assetMimeType) === $extension) {
+                return $assetMimeType;
+            }
+        }
+
+        return null;
+    }
+
+
+    public function setUpFullAssetForInternallyCreatedVideo(
+        Video $video
+    ): void
+    {
+        if ($video->getSourceType() !== VideoSourceType::InternallyCreated) {
+            throw new ValueError(
+                "Video '{$video->getId()}' does not have an internally created source file path."
+            );
+        }
+
+        $assetMimeType = $this->getAssetMimeTypeForFilePathExtension(
+            $video->getInternallyCreatedSourceFilePath()
+        );
+
+        if (is_null($assetMimeType)) {
+            throw new ValueError(
+                "Could not determine asset mime type for internally created source file path '{$video->getInternallyCreatedSourceFilePath()}' of video '{$video->getId()}'."
+            );
+        }
+
+        $this->createFilesystemStructureForVideoAssets($video);
+
+        $fs = new Filesystem();
+
+        $fs->rename(
+            $video->getInternallyCreatedSourceFilePath(),
+            $this->getVideoFullAssetFilePath(
+                $video,
+                $assetMimeType
+            )
         );
     }
 }

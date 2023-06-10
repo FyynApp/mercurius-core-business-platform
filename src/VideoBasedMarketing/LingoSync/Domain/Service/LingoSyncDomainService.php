@@ -15,6 +15,8 @@ use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskType;
 use App\VideoBasedMarketing\LingoSync\Domain\SymfonyMessage\HandleTaskCommandSymfonyMessage;
 use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\LingoSyncInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
+use App\VideoBasedMarketing\Recordings\Infrastructure\SymfonyMessage\GenerateMissingVideoAssetsCommandSymfonyMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Google\ApiCore\ApiException;
@@ -29,7 +31,8 @@ readonly class LingoSyncDomainService
         private EntityManagerInterface          $entityManager,
         private AudioTranscriptionDomainService $audioTranscriptionDomainService,
         private MessageBusInterface             $messageBus,
-        private LingoSyncInfrastructureService  $lingoSyncInfrastructureService
+        private LingoSyncInfrastructureService  $lingoSyncInfrastructureService,
+        private RecordingsInfrastructureService $recordingsInfrastructureService
     )
     {
     }
@@ -236,6 +239,24 @@ readonly class LingoSyncDomainService
                 $this->entityManager->flush();
 
                 #echo "\ntranslatedVideoPath is: $translatedVideoPath\n";
+
+                $video = new Video($createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getUser());
+                $video->setInternallyCreatedSourceFilePath($translatedVideoPath);
+
+                $video->setCreatedByLingoSyncProcessTask(
+                    $generateTranslatedVideoTask
+                );
+
+                $this->entityManager->persist($video);
+                $this->entityManager->flush();
+
+                $this
+                    ->recordingsInfrastructureService
+                    ->setUpFullAssetForInternallyCreatedVideo($video);
+
+                $this->messageBus->dispatch(
+                    new GenerateMissingVideoAssetsCommandSymfonyMessage($video)
+                );
 
                 break;
             }

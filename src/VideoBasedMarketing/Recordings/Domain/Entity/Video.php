@@ -13,6 +13,7 @@ use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Presentationpages\Domain\Entity\Presentationpage;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResponse;
+use App\VideoBasedMarketing\Recordings\Domain\Enum\VideoSourceType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Entity\VideoUpload;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use DateTime;
@@ -44,8 +45,7 @@ class Video
      * @throws Exception
      */
     public function __construct(
-        User $user,
-        ?LingoSyncProcessTask $createdByLingoSyncProcessTask = null
+        User $user
     )
     {
         $this->user = $user;
@@ -53,7 +53,6 @@ class Video
         $this->presentationpages = new ArrayCollection();
         $this->videoMailings = new ArrayCollection();
         $this->createdAt = DateAndTimeService::getDateTime();
-        $this->createdByLingoSyncProcessTask = $createdByLingoSyncProcessTask;
     }
 
 
@@ -945,11 +944,18 @@ class Video
         nullable: true,
         onDelete: 'SET NULL'
     )]
-    private readonly ?LingoSyncProcessTask $createdByLingoSyncProcessTask;
+    private ?LingoSyncProcessTask $createdByLingoSyncProcessTask = null;
 
     public function getCreatedByLingoSyncProcessTask(): ?LingoSyncProcessTask
     {
         return $this->createdByLingoSyncProcessTask;
+    }
+
+    public function setCreatedByLingoSyncProcessTask(
+        LingoSyncProcessTask $createdByLingoSyncProcessTask
+    ): void
+    {
+        $this->createdByLingoSyncProcessTask = $createdByLingoSyncProcessTask;
     }
 
     public function wasCreatedByLingoSyncProcessTask(): bool
@@ -957,6 +963,40 @@ class Video
         return !is_null($this->createdByLingoSyncProcessTask);
     }
 
+
+    #[ORM\Column(
+        type: Types::STRING,
+        length: 1024,
+        unique: true,
+        nullable: true
+    )]
+    private ?string $internallyCreatedSourceFilePath = null;
+
+    public function setInternallyCreatedSourceFilePath(
+        string $internallyCreatedSourceFilePath
+    ): void
+    {
+        $this->internallyCreatedSourceFilePath = $internallyCreatedSourceFilePath;
+    }
+
+    public function getInternallyCreatedSourceFilePath(): ?string
+    {
+        return $this->internallyCreatedSourceFilePath;
+    }
+
+
+    public function getSourceType(): VideoSourceType
+    {
+        if (!is_null($this->getInternallyCreatedSourceFilePath())) {
+            return VideoSourceType::InternallyCreated;
+        } elseif (!is_null($this->recordingSession)) {
+            return VideoSourceType::Recording;
+        } elseif (!is_null($this->videoUpload)) {
+            return VideoSourceType::Upload;
+        } else {
+            return VideoSourceType::Undefined;
+        }
+    }
 
     public function isFullAssetAvailable(): bool
     {

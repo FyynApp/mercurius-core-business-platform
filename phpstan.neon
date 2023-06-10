@@ -3,8 +3,6 @@ parameters:
     paths:
         - src
         - tests
-    symfony:
-        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
 
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
