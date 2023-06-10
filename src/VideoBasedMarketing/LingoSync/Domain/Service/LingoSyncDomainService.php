@@ -207,7 +207,7 @@ readonly class LingoSyncDomainService
                 $this->entityManager->persist($concatenateAudioSnippetsTask);
                 $this->entityManager->flush();
 
-                echo "\nconcatenatedAudioFilePath is: $concatenatedAudioFilePath\n";
+                #echo "\nconcatenatedAudioFilePath is: $concatenatedAudioFilePath\n";
 
 
                 $generateTranslatedVideoTask = $this->findProcessTask(
@@ -231,7 +231,11 @@ readonly class LingoSyncDomainService
                     $concatenatedAudioFilePath
                 );
 
-                echo "\ntranslatedVideoPath is: $translatedVideoPath\n";
+                $generateTranslatedVideoTask->setStatus(LingoSyncProcessTaskStatus::Finished);
+                $this->entityManager->persist($generateTranslatedVideoTask);
+                $this->entityManager->flush();
+
+                #echo "\ntranslatedVideoPath is: $translatedVideoPath\n";
 
                 break;
             }

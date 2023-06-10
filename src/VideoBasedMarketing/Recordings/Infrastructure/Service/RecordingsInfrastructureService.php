@@ -1913,13 +1913,7 @@ readonly class RecordingsInfrastructureService
                     $videoUpload->getFileName()
                 ]
             ),
-            $this->filesystemService->getContentStoragePath(
-                [
-                    self::UPLOADED_VIDEO_ASSETS_SUBFOLDER_NAME,
-                    $user->getId(),
-                    "{$videoUpload->getId()}_{$videoUpload->getFileName()}"
-                ]
-            )
+            $this->getContentStoragePathForVideoUpload($videoUpload)
         );
 
         $this->generateVideoAssetPosterStillWebp($video);
@@ -1952,7 +1946,7 @@ readonly class RecordingsInfrastructureService
         $server->setUploadDir($path);
     }
 
-    private function getContentStoragePathForVideoUpload(
+    public function getContentStoragePathForVideoUpload(
         VideoUpload $videoUpload
     ): string
     {
