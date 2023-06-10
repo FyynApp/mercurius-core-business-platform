@@ -637,6 +637,9 @@ readonly class RecordingsInfrastructureService
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function generateVideoAssetPosterStillWithPlayOverlayForEmailPng(Video $video): void
     {
         $this->createFilesystemStructureForVideoAssets($video);
@@ -1643,7 +1646,7 @@ readonly class RecordingsInfrastructureService
         );
     }
 
-    private function getVideoFullAssetFilePath(
+    public function getVideoFullAssetFilePath(
         Video         $video,
         AssetMimeType $mimeType
     ): string

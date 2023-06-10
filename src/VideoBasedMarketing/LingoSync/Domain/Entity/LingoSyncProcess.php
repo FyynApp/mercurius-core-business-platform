@@ -155,7 +155,11 @@ class LingoSyncProcess
     }
 
 
-    #[ORM\OneToOne(mappedBy: 'lingoSyncProcess', targetEntity: AudioTranscription::class, cascade: ['persist'])]
+    #[ORM\OneToOne(
+        mappedBy: 'lingoSyncProcess',
+        targetEntity: AudioTranscription::class,
+        cascade: ['persist']
+    )]
     private ?AudioTranscription $audioTranscription = null;
 
     public function getAudioTranscription(): ?AudioTranscription
@@ -163,7 +167,9 @@ class LingoSyncProcess
         return $this->audioTranscription;
     }
 
-    public function setAudioTranscription(?AudioTranscription $audioTranscription): void
+    public function setAudioTranscription(
+        ?AudioTranscription $audioTranscription
+    ): void
     {
         $this->audioTranscription = $audioTranscription;
     }

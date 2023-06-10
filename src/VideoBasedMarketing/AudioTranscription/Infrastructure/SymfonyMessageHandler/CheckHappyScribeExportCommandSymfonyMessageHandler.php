@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\SymfonyMessa
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWord;
+use App\VideoBasedMarketing\AudioTranscription\Domain\SymfonyEvent\WebVttBecameAvailableSymfonyEvent;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeExport;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportFormat;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportState;
@@ -18,15 +19,17 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[AsMessageHandler]
 readonly class CheckHappyScribeExportCommandSymfonyMessageHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private HappyScribeApiService  $happyScribeApiService,
-        private MessageBusInterface    $messageBus,
-        private LoggerInterface        $logger
+        private EntityManagerInterface   $entityManager,
+        private HappyScribeApiService    $happyScribeApiService,
+        private MessageBusInterface      $messageBus,
+        private LoggerInterface          $logger,
+        private EventDispatcherInterface $eventDispatcher
     )
     {
     }
@@ -100,6 +103,10 @@ readonly class CheckHappyScribeExportCommandSymfonyMessageHandler
 
                 $this->entityManager->persist($vtt);
                 $this->entityManager->flush();
+
+                $this->eventDispatcher->dispatch(
+                    new WebVttBecameAvailableSymfonyEvent($vtt)
+                );
 
                 $this->messageBus->dispatch(
                     new GenerateSuggestedSummaryCommandSymfonyMessage(

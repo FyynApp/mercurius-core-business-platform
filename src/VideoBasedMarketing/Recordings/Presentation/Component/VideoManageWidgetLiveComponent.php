@@ -96,9 +96,9 @@ class VideoManageWidgetLiveComponent
      */
     public function mount(
         Video $video,
-        bool $showEditModal,
-        bool $doneCtaMustRedirectToOverview = false
-    )
+        bool  $showEditModal,
+        bool  $doneCtaMustRedirectToOverview = false
+    ): void
     {
         $this->denyAccessUnlessGranted(AccessAttribute::View->value, $video);
 

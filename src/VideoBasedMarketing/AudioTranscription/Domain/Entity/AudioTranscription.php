@@ -105,7 +105,7 @@ class AudioTranscription
 
 
     #[ORM\OneToOne(
-        inversedBy: 'video',
+        inversedBy: 'audioTranscription',
         targetEntity: LingoSyncProcess::class,
         cascade: ['persist']
     )]

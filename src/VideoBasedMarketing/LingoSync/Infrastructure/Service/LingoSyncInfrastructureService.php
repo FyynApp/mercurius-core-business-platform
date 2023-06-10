@@ -5,6 +5,9 @@ namespace App\VideoBasedMarketing\LingoSync\Infrastructure\Service;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
 use App\VideoBasedMarketing\LingoSync\Infrastructure\ApiClient\GoogleCloudTextToSpeechApiClient;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
+use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Exception;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ValidationException;
@@ -15,7 +18,8 @@ use Symfony\Component\Process\Process;
 readonly class LingoSyncInfrastructureService
 {
     public function __construct(
-        private GoogleCloudTextToSpeechApiClient $googleCloudTextToSpeechApiClient
+        private GoogleCloudTextToSpeechApiClient $googleCloudTextToSpeechApiClient,
+        private RecordingsInfrastructureService  $recordingsInfrastructureService
     )
     {
     }
@@ -476,5 +480,46 @@ readonly class LingoSyncInfrastructureService
     ): string
     {
         return sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($uniqIdPrefix), true) . '.mp3';
+    }
+
+    public function createVideoFileFromVideoAndAudioFile(
+        Video  $video,
+        string $audioFilePath
+    ): string
+    {
+        $targetFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($video->getId()), true);
+
+        $process = new Process(
+            [
+                'ffmpeg',
+
+                '-i',
+                $this
+                    ->recordingsInfrastructureService
+                    ->getVideoFullAssetFilePath(
+                        $video,
+                        AssetMimeType::VideoMp4
+                    ),
+
+                '-i',
+                $audioFilePath,
+
+                '-c:v',
+                'copy',
+
+                '-map',
+                '0:v:0',
+
+                '-map',
+                '1:a:0',
+
+                '-y',
+                $targetFilePath
+            ]
+        );
+        $process->setTimeout(60 * 2);
+        $process->run();
+
+        return $targetFilePath;
     }
 }

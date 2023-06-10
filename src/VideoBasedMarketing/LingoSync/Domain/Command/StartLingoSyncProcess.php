@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\LingoSync\Domain\Command;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
+use App\Shared\Domain\Enum\Gender;
 use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,7 +36,7 @@ class StartLingoSyncProcess
         parent::__construct();
     }
 
-    public function configure()
+    public function configure(): void
     {
 
         $this->addArgument(
@@ -48,6 +49,20 @@ class StartLingoSyncProcess
             InputArgument::REQUIRED,
             "BCP47 language code of the video's original audio language, e.g. "
             . Bcp47LanguageCode::DeDe->value . ' or ' . Bcp47LanguageCode::EnUs->value
+        );
+
+        $this->addArgument(
+            'targetLanguage',
+            InputArgument::REQUIRED,
+            "BCP47 language code of the target audio language, e.g. "
+            . Bcp47LanguageCode::DeDe->value . ' or ' . Bcp47LanguageCode::EnUs->value
+        );
+
+        $this->addArgument(
+            'originalGender',
+            InputArgument::REQUIRED,
+            "Gender, use "
+            . Gender::Male->value . ' or ' . Gender::Female->value
         );
 
         parent::configure();
@@ -63,21 +78,33 @@ class StartLingoSyncProcess
     {
         $videoId = $input->getArgument('videoId');
         $originalLanguage = Bcp47LanguageCode::from($input->getArgument('originalLanguage'));
+        $targetLanguage = Bcp47LanguageCode::from($input->getArgument('targetLanguage'));
+        $originalGender = Gender::from($input->getArgument('originalGender'));
 
         $video = $this->entityManager->find(Video::class, $videoId);
 
         if (is_null($video)) {
             $output->writeln("Could not find video with id '$videoId'.");
-            return 1;
+            return Command::FAILURE;
         }
 
-        $lingoSyncProcess = $this->lingoSyncDomainService->startLingoSyncProcess(
-            $video,
-            $originalLanguage,
-            []
-        );
+        if ($originalLanguage === $targetLanguage) {
+            $output->writeln('Languages must be different.');
+            return Command::INVALID;
+        }
 
-        $output->writeln("LingoSync process id: {$lingoSyncProcess->getId()}");
+        $lingoSyncProcess = $this
+            ->lingoSyncDomainService
+            ->startLingoSyncProcess(
+                $video,
+                $originalLanguage,
+                $originalGender,
+                [$targetLanguage]
+            );
+
+        $output->writeln("Started.");
+        $output->writeln("LingoSyncProcess id: {$lingoSyncProcess->getId()}. ");
+        $output->writeln("AudioTranscription id: {$lingoSyncProcess->getAudioTranscription()->getId()}. ");
 
         return 0;
     }
