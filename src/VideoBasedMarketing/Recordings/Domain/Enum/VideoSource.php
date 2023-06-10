@@ -6,5 +6,5 @@ enum VideoSource: string
 {
     case Recording = 'recording';
     case Upload = 'upload';
-    case Internal = 'internal';
+    case InternallyCreated = 'internallyCreated';
 }
