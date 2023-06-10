@@ -281,7 +281,13 @@ readonly class LingoSyncInfrastructureService
     ): string
     {
         if (is_null($targetFilePath)) {
-            $targetFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($webVtt), true);
+            $targetFilePath = sys_get_temp_dir()
+                . DIRECTORY_SEPARATOR
+                . uniqid(md5($webVtt), true)
+                . '.'
+                . RecordingsInfrastructureService::mimeTypeToFileSuffix(
+                    AssetMimeType::AudioMpeg
+                );
         }
 
         $starts = self::getWebVttStartsAsMilliseconds($webVtt);
@@ -482,12 +488,36 @@ readonly class LingoSyncInfrastructureService
         return sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($uniqIdPrefix), true) . '.mp3';
     }
 
+    /**
+     * @throws Exception
+     */
     public function createVideoFileFromVideoAndAudioFile(
         Video  $video,
         string $audioFilePath
     ): string
     {
-        $targetFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($video->getId()), true);
+        if ($video->hasAssetFullMp4()) {
+            $videoMimeType = AssetMimeType::VideoMp4;
+        } elseif ($video->hasAssetFullWebm()) {
+            $videoMimeType = AssetMimeType::VideoWebm;
+        } else {
+            throw new Exception(
+                'Need video with either '
+                . AssetMimeType::VideoMp4->value
+                . ' or '
+                . AssetMimeType::VideoWebm->value
+                . ' asset'
+            );
+        }
+
+        $targetFilePath = sys_get_temp_dir()
+            . DIRECTORY_SEPARATOR
+            . uniqid(md5($video->getId()), true)
+            . '.'
+            . RecordingsInfrastructureService::mimeTypeToFileSuffix(
+                $videoMimeType
+            )
+        ;
 
         $process = new Process(
             [
@@ -498,7 +528,7 @@ readonly class LingoSyncInfrastructureService
                     ->recordingsInfrastructureService
                     ->getVideoFullAssetFilePath(
                         $video,
-                        AssetMimeType::VideoMp4
+                        $videoMimeType
                     ),
 
                 '-i',

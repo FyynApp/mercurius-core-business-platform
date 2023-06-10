@@ -9,4 +9,5 @@ enum AssetMimeType: string
     case VideoWebm = 'video/webm';
     case VideoMp4 = 'video/mp4';
     case ImagePng = 'image/png';
+    case AudioMpeg = 'audio/mpeg';
 }

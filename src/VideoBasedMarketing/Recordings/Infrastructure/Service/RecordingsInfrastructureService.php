@@ -482,7 +482,7 @@ readonly class RecordingsInfrastructureService
     
 
     /** @throws InvalidArgumentException */
-    public function mimeTypeToFileSuffix(AssetMimeType $mimeType): string
+    public static function mimeTypeToFileSuffix(AssetMimeType $mimeType): string
     {
         return match ($mimeType) {
             AssetMimeType::ImageWebp => 'webp',
@@ -490,6 +490,7 @@ readonly class RecordingsInfrastructureService
             AssetMimeType::VideoWebm => 'webm',
             AssetMimeType::VideoMp4 => 'mp4',
             AssetMimeType::ImagePng => 'png',
+            AssetMimeType::AudioMpeg => 'mp3',
         };
     }
 
