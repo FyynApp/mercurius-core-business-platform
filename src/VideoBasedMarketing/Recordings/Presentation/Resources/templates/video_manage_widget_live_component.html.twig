@@ -518,7 +518,7 @@
 
             <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
 
-                {% if not TwigHelperService.lingoSyncDomainService.videoHasLingoSyncProcess(this.video) %}
+                {% if not TwigHelperService.lingoSyncDomainService.videoHasRunningProcess(this.video) %}
                     <button
                             class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                             data-action="live#action"
@@ -546,8 +546,8 @@
                 {% else %}
                     <a
                             href="{{ path(
-                                'videobasedmarketing.lingo_sync.presentation.overview',
-                                { 'lingoSyncId': TwigHelperService.lingoSyncDomainService.getProcessForVideo(this.video).id }
+                                'videobasedmarketing.lingo_sync.presentation.processing.status',
+                                { 'video': this.video.id }
                             ) }}"
                     >
                         <div class="p-2 pl-4 pr-4 w-full h-full text-left text-sm">
@@ -558,7 +558,7 @@
 
                                 {{ component(
                                     'videobasedmarketing_recordings_video_lingo_sync_processing',
-                                    { 'lingoSync': TwigHelperService.lingoSyncDomainService.getProcessForVideo(this.video) }
+                                    { 'video': this.video) }
                                 ) }}
 
                             </div>

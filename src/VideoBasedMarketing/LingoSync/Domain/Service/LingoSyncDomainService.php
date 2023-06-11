@@ -4,7 +4,6 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Service;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
-use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Utility\ArrayUtility;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
@@ -37,14 +36,19 @@ readonly class LingoSyncDomainService
     {
     }
 
-    public function videoHasLingoSyncProcess(Video $video): bool
+    public function videoHasRunningProcess(Video $video): bool
     {
         return false;
     }
 
-    public function getProcessForVideo(Video $video): ?LingoSyncProcess
+    public function getProcessesForVideo(Video $video): array
     {
-        return null;
+        return [];
+    }
+
+    public function processForVideoIsRunning(Video $video): bool
+    {
+        return false;
     }
 
     public function getSupportedOriginalLanguages(): array

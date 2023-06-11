@@ -14,6 +14,7 @@ twig:
         'src/VideoBasedMarketing/Mailings/Presentation/Resources/templates':           'videobasedmarketing.mailings'
         'src/VideoBasedMarketing/Settings/Presentation/Resources/templates':           'videobasedmarketing.settings'
         'src/VideoBasedMarketing/AudioTranscription/Presentation/Resources/templates': 'videobasedmarketing.audio_transcription'
+        'src/VideoBasedMarketing/LingoSync/Presentation/Resources/templates':          'videobasedmarketing.lingo_sync'
 
     globals:
         TwigHelperService: '@App\Shared\Presentation\Service\TwigHelperService'
