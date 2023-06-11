@@ -55,6 +55,19 @@ video_manage_widget:
     cta_language:
       de_DE: 'German'
       en_US: 'English'
+  lingo_sync_modal:
+    headline: 'Generate a translated video with LingoSync'
+    choose_original_language: 'Please choose the language that is spoken in the original video:'
+    choose_original_gender: 'Please choose the gender of the speaker in the original video:'
+    choose_target_language: 'Please choose the target language:'
+    language:
+      de-DE: 'German'
+      en-US: 'English'
+      es-ES: 'Spanish'
+    gender:
+      male: 'male'
+      female: 'female'
+    cta_submit: 'Start processing'
   delete_modal:
     title: 'Delete video'
     really: 'Do you really want to delete this video?'

@@ -12,6 +12,7 @@ use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
+use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
@@ -69,6 +70,8 @@ class TwigHelperService
 
     private AudioTranscriptionDomainService $audioTranscriptionDomainService;
 
+    private LingoSyncDomainService $lingoSyncDomainService;
+
     public function __construct(
         ContentDeliveryService                   $contentDeliveryService,
         AccountDomainService                     $accountDomainService,
@@ -89,7 +92,8 @@ class TwigHelperService
         SettingsDomainService                    $settingsDomainService,
         SettingsInfrastructureService            $settingsInfrastructureService,
         OrganizationDomainService                $organizationDomainService,
-        AudioTranscriptionDomainService          $audioTranscriptionDomainService
+        AudioTranscriptionDomainService          $audioTranscriptionDomainService,
+        LingoSyncDomainService                   $lingoSyncDomainService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
@@ -112,6 +116,7 @@ class TwigHelperService
         $this->settingsInfrastructureService = $settingsInfrastructureService;
         $this->organizationDomainService = $organizationDomainService;
         $this->audioTranscriptionDomainService = $audioTranscriptionDomainService;
+        $this->lingoSyncDomainService = $lingoSyncDomainService;
     }
 
     public function getSymfonyEnv(): string
@@ -222,6 +227,11 @@ class TwigHelperService
     public function getAudioTranscriptionDomainService(): AudioTranscriptionDomainService
     {
         return $this->audioTranscriptionDomainService;
+    }
+
+    public function getLingoSyncDomainService(): LingoSyncDomainService
+    {
+        return $this->lingoSyncDomainService;
     }
 
     public function routeStartsWith(

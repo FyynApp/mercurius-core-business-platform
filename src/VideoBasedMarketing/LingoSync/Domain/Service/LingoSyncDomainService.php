@@ -37,6 +37,31 @@ readonly class LingoSyncDomainService
     {
     }
 
+    public function videoHasLingoSyncProcess(Video $video): bool
+    {
+        return false;
+    }
+
+    public function getProcessForVideo(Video $video): ?LingoSyncProcess
+    {
+        return null;
+    }
+
+    public function getSupportedOriginalLanguages(): array
+    {
+        return Bcp47LanguageCode::cases();
+    }
+
+    public function getSupportedTargetLanguages(): array
+    {
+        return Bcp47LanguageCode::cases();
+    }
+
+    public function getSupportedOriginalGenders(): array
+    {
+        return Gender::cases();
+    }
+
     /**
      * @throws Exception
      * @param Bcp47LanguageCode[] $targetLanguages
