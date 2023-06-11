@@ -28,6 +28,7 @@ video_manage_widget:
     cta_delete: 'Delete video'
     cta_show_embed: 'Show embed code'
     cta_show_audio_transcription_modal: 'Audio transcription'
+    cta_show_lingo_sync_modal: 'LingoSync'
   edit_modal:
     cta_share: 'Share'
     cta_preview: 'Preview'

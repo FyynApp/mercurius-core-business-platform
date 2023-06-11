@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\LingoSync\Presentation\Controller;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
+use App\Shared\Domain\Enum\Gender;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
@@ -56,11 +57,19 @@ class LingoSyncProcessingController
             );
         }
 
-        $lingoSyncDomainService->startProcessingVideo(
+        $lingoSyncDomainService->startLingoSyncProcess(
             $video,
             Bcp47LanguageCode::from(
-                $request->get('bcp47LanguageCode')
-            )
+                $request->get('originalLanguage')
+            ),
+            Gender::from(
+                $request->get('originalGender')
+            ),
+            [
+                Bcp47LanguageCode::from(
+                    $request->get('targetLanguage')
+                )
+            ]
         );
 
         $this->addFlash(
