@@ -170,7 +170,6 @@ readonly class LingoSyncDomainService
             if ($webVtt->getBcp47LanguageCode() === $createAudioSnippetsTask->getTargetLanguage()) {
 
                 $createAudioSnippetsTask->setStatus(LingoSyncProcessTaskStatus::Running);
-                $createAudioSnippetsTask->setLastHandledAt(DateAndTimeService::getDateTime());
                 $this->entityManager->persist($createAudioSnippetsTask);
                 $this->entityManager->flush();
 
@@ -203,7 +202,7 @@ readonly class LingoSyncDomainService
 
                 $concatenatedAudioFilePath = $this->lingoSyncInfrastructureService->concatenateAudioFiles(
                     $this->lingoSyncInfrastructureService::compactizeWebVtt($webVtt->getVttContent()),
-                    $audioFilesFolderPath,
+                    $audioFilesFolderPath
                 );
 
                 $concatenateAudioSnippetsTask->setStatus(LingoSyncProcessTaskStatus::Finished);
@@ -289,7 +288,6 @@ readonly class LingoSyncDomainService
         }
 
         $waitForTranslationTask->setStatus(LingoSyncProcessTaskStatus::Finished);
-        $waitForTranslationTask->setLastHandledAt(DateAndTimeService::getDateTime());
 
         $this->entityManager->persist($waitForTranslationTask);
         $this->entityManager->flush();

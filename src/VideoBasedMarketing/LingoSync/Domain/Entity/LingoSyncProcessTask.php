@@ -131,9 +131,14 @@ class LingoSyncProcessTask
         return $this->taskStatus;
     }
 
+    /**
+     * @throws Exception
+     */
     public function setStatus(LingoSyncProcessTaskStatus $taskStatus): void
     {
         $this->taskStatus = $taskStatus;
+        $this->lastHandledAt = DateAndTimeService::getDateTime();
+        $this->numberOfTimesHandled++;
     }
 
 
@@ -185,11 +190,6 @@ class LingoSyncProcessTask
         return $this->numberOfTimesHandled;
     }
 
-    public function setNumberOfTimesHandled(int $numberOfTimesHandled): void
-    {
-        $this->numberOfTimesHandled = $numberOfTimesHandled;
-    }
-
 
     #[ORM\Column(
         type: Types::DATETIME_MUTABLE,
@@ -200,10 +200,5 @@ class LingoSyncProcessTask
     public function getLastHandledAt(): DateTime
     {
         return $this->lastHandledAt;
-    }
-
-    public function setLastHandledAt(DateTime $lastHandledAt): void
-    {
-        $this->lastHandledAt = $lastHandledAt;
     }
 }
