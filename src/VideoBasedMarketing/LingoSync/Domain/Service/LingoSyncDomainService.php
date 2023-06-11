@@ -68,7 +68,7 @@ readonly class LingoSyncDomainService
 
         $generateAudioTranscriptionTask = new LingoSyncProcessTask(
             $lingoSyncProcess,
-            LingoSyncProcessTaskType::GenerateAudioTranscription,
+            LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription,
             null
         );
 
@@ -126,7 +126,7 @@ readonly class LingoSyncDomainService
         LingoSyncProcessTask $task
     ): void
     {
-        if ($task->getType() === LingoSyncProcessTaskType::GenerateAudioTranscription) {
+        if ($task->getType() === LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription) {
             if ($task->getStatus() === LingoSyncProcessTaskStatus::Initiated) {
                 $audioTranscription = $this->audioTranscriptionDomainService->startProcessingVideo(
                     $task->getLingoSyncProcess()->getVideo(),
@@ -138,6 +138,7 @@ readonly class LingoSyncDomainService
                 $task->setStatus(LingoSyncProcessTaskStatus::Running);
 
                 $this->entityManager->persist($task->getLingoSyncProcess());
+                $this->entityManager->persist($task);
                 $this->entityManager->flush();
             }
         }
@@ -270,12 +271,22 @@ readonly class LingoSyncDomainService
     ): void
     {
         $audioTranscription = $webVtt->getAudioTranscription();
-
         $lingoSyncProcess = $audioTranscription->getLingoSyncProcess();
 
-        if ($lingoSyncProcess === null) {
+        if (is_null($lingoSyncProcess)) {
             return;
         }
+
+        $generateOriginalLanguageTranscriptionTask = $this->findProcessTask(
+            $lingoSyncProcess,
+            LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription,
+            null,
+        );
+        $generateOriginalLanguageTranscriptionTask->setStatus(
+            LingoSyncProcessTaskStatus::Finished
+        );
+        $this->entityManager->persist($generateOriginalLanguageTranscriptionTask);
+        $this->entityManager->flush();
 
         $waitForTranslationTask = $this->findProcessTask(
             $lingoSyncProcess,
@@ -288,7 +299,6 @@ readonly class LingoSyncDomainService
         }
 
         $waitForTranslationTask->setStatus(LingoSyncProcessTaskStatus::Finished);
-
         $this->entityManager->persist($waitForTranslationTask);
         $this->entityManager->flush();
 
@@ -318,7 +328,7 @@ readonly class LingoSyncDomainService
     private function findProcessTask(
         LingoSyncProcess         $lingoSyncProcess,
         LingoSyncProcessTaskType $type,
-        Bcp47LanguageCode        $targetLanguage
+        ?Bcp47LanguageCode       $targetLanguage
     ): ?LingoSyncProcessTask
     {
         $tasks = $lingoSyncProcess->getTasks();

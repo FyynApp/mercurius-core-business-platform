@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\SymfonyEventSubscriber;
 
 use App\VideoBasedMarketing\AudioTranscription\Domain\SymfonyEvent\WebVttBecameAvailableSymfonyEvent;
 use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncDomainService;
+use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
@@ -25,6 +26,9 @@ readonly class WebVttBecameAvailableSymfonyEventSubscriber
         ];
     }
 
+    /**
+     * @throws Exception
+     */
     public function handle(
         WebVttBecameAvailableSymfonyEvent $event
     ): void
