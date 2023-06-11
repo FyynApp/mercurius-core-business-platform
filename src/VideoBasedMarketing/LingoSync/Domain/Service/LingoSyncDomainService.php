@@ -277,16 +277,19 @@ readonly class LingoSyncDomainService
             return;
         }
 
-        $generateOriginalLanguageTranscriptionTask = $this->findProcessTask(
-            $lingoSyncProcess,
-            LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription,
-            null,
-        );
-        $generateOriginalLanguageTranscriptionTask->setStatus(
-            LingoSyncProcessTaskStatus::Finished
-        );
-        $this->entityManager->persist($generateOriginalLanguageTranscriptionTask);
-        $this->entityManager->flush();
+        if ($webVtt->getBcp47LanguageCode() === $lingoSyncProcess->getOriginalLanguage()) {
+            $generateOriginalLanguageTranscriptionTask = $this->findProcessTask(
+                $lingoSyncProcess,
+                LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription,
+                null,
+            );
+            $generateOriginalLanguageTranscriptionTask->setStatus(
+                LingoSyncProcessTaskStatus::Finished
+            );
+            $this->entityManager->persist($generateOriginalLanguageTranscriptionTask);
+            $this->entityManager->flush();
+            return;
+        }
 
         $waitForTranslationTask = $this->findProcessTask(
             $lingoSyncProcess,
