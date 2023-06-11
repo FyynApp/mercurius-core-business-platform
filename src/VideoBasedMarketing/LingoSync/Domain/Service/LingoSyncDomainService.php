@@ -252,7 +252,7 @@ readonly class LingoSyncDomainService
 
                 $this
                     ->recordingsInfrastructureService
-                    ->setUpFullAssetForInternallyCreatedVideo($video);
+                    ->setUpAssetOriginalForInternallyCreatedVideo($video);
 
                 $this->messageBus->dispatch(
                     new GenerateMissingVideoAssetsCommandSymfonyMessage($video)

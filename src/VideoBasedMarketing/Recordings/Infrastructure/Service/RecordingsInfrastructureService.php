@@ -886,7 +886,7 @@ readonly class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    private function generateVideoAssetOriginal(Video $video): void
+    private function generateAssetOriginalForRecordingSession(Video $video): void
     {
         if (!is_null($video->getVideoUpload())) {
             return;
@@ -995,7 +995,7 @@ readonly class RecordingsInfrastructureService
 
         if (!is_null($video->getRecordingSession())) {
             if (!$video->hasAssetOriginal()) {
-                $this->generateVideoAssetOriginal($video);
+                $this->generateAssetOriginalForRecordingSession($video);
             }
 
             $sourceWidth = $video->getAssetOriginalWidth();
@@ -1254,7 +1254,7 @@ readonly class RecordingsInfrastructureService
     {
         if (!is_null($video->getRecordingSession())) {
             if (!$video->hasAssetOriginal()) {
-                $this->generateVideoAssetOriginal($video);
+                $this->generateAssetOriginalForRecordingSession($video);
             }
 
             $sourceWidth = $video->getAssetOriginalWidth();
@@ -1682,7 +1682,7 @@ readonly class RecordingsInfrastructureService
     }
 
     private function getVideoAssetOriginalFilePath(
-        Video         $video
+        Video $video
     ): string
     {
         return $this->filesystemService->getPublicWebfolderGeneratedContentPath(
@@ -1779,7 +1779,7 @@ readonly class RecordingsInfrastructureService
         if (!is_null($video->getRecordingSession())) {
            if ($video->getRecordingSession()->isFinished()) {
                if (!$video->hasAssetOriginal()) {
-                   $this->generateVideoAssetOriginal($video);
+                   $this->generateAssetOriginalForRecordingSession($video);
 
                    if (   !$video->hasAssetFullMp4()
                        && $video->getAssetOriginalMimeType() === AssetMimeType::VideoMp4)
@@ -1982,25 +1982,28 @@ readonly class RecordingsInfrastructureService
     }
 
 
-    public function setUpFullAssetForInternallyCreatedVideo(
+    /**
+     * @throws Exception
+     */
+    public function setUpAssetOriginalForInternallyCreatedVideo(
         Video $video
     ): void
     {
         if ($video->getSourceType() !== VideoSourceType::InternallyCreated) {
-            throw new ValueError(
-                "Video '{$video->getId()}' does not have an internally created source file path."
-            );
+            throw new ValueError("Video '{$video->getId()}' is not internally created.");
         }
 
-        $assetMimeType = $this->getAssetMimeTypeForFilePathExtension(
+        $sourceFileMimeType = $this->getAssetMimeTypeForFilePathExtension(
             $video->getInternallyCreatedSourceFilePath()
         );
 
-        if (is_null($assetMimeType)) {
+        if (is_null($sourceFileMimeType)) {
             throw new ValueError(
                 "Could not determine asset mime type for internally created source file path '{$video->getInternallyCreatedSourceFilePath()}' of video '{$video->getId()}'."
             );
         }
+
+        $video->setAssetOriginalMimeType($sourceFileMimeType);
 
         $this->createFilesystemStructureForVideoAssets($video);
 
@@ -2008,10 +2011,38 @@ readonly class RecordingsInfrastructureService
 
         $fs->rename(
             $video->getInternallyCreatedSourceFilePath(),
-            $this->getVideoFullAssetFilePath(
-                $video,
-                $assetMimeType
+            $this->getVideoAssetOriginalFilePath(
+                $video
             )
         );
+
+        $video->setHasAssetOriginal(true);
+
+        $video->setAssetOriginalFps(
+            $this->probeForVideoAssetFps(
+                $this->getVideoAssetOriginalFilePath($video)
+            )
+        );
+
+        $video->setAssetOriginalSeconds(
+            $this->probeForVideoAssetSeconds(
+                $this->getVideoAssetOriginalFilePath($video)
+            )
+        );
+
+        $video->setAssetOriginalWidth(
+            $this->probeForVideoAssetWidth(
+                $this->getVideoAssetOriginalFilePath($video)
+            )
+        );
+
+        $video->setAssetOriginalHeight(
+            $this->probeForVideoAssetHeight(
+                $this->getVideoAssetOriginalFilePath($video)
+            )
+        );
+
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
     }
 }
