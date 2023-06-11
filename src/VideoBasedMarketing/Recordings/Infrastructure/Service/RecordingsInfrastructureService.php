@@ -487,10 +487,10 @@ readonly class RecordingsInfrastructureService
     {
         return match ($mimeType) {
             AssetMimeType::ImageWebp => 'webp',
-            AssetMimeType::ImageGif => 'gif',
+            AssetMimeType::ImageGif  => 'gif',
             AssetMimeType::VideoWebm => 'webm',
-            AssetMimeType::VideoMp4 => 'mp4',
-            AssetMimeType::ImagePng => 'png',
+            AssetMimeType::VideoMp4  => 'mp4',
+            AssetMimeType::ImagePng  => 'png',
             AssetMimeType::AudioMpeg => 'mp3',
         };
     }
@@ -499,19 +499,13 @@ readonly class RecordingsInfrastructureService
     /** @throws Exception */
     public function generateMissingVideoAssets(Video $video): void
     {
-        if (   is_null($video->getRecordingSession())
-            && is_null($video->getVideoUpload())
-        ) {
-            throw new Exception("Need video '{$video->getId()}' to be linked to either recording session or video upload.");
+        if ($video->getSourceType() === VideoSourceType::Undefined) {
+            throw new Exception(
+                "Source of video '{$video->getId()}' is undefined."
+            );
         }
 
-        if (   !is_null($video->getRecordingSession())
-            && !is_null($video->getVideoUpload())
-        ) {
-            throw new Exception("Need video '{$video->getId()}' to be linked to only one of recording session or video upload.");
-        }
-
-        if (!is_null($video->getVideoUpload())) {
+        if ($video->getSourceType() === VideoSourceType::Upload) {
             $this->tusServer->getCache()->setPrefix($video->getUser()->getId());
             $this->tusServer->getCache()->delete($video->getVideoUpload()->getTusToken());
         }
@@ -554,14 +548,19 @@ readonly class RecordingsInfrastructureService
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
-        if (!is_null($video->getRecordingSession())) {
-            $sourcePath = $this->getVideoChunkContentStorageFilePath(
+        $sourcePath = match ($video->getSourceType()) {
+            VideoSourceType::RecordingSession => $this->getVideoChunkContentStorageFilePath(
                 $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
-            );
-        } else {
-            $sourcePath = $this
-                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
-        }
+            ),
+
+            VideoSourceType::Upload => $this
+                ->getContentStoragePathForVideoUpload($video->getVideoUpload()),
+
+            VideoSourceType::InternallyCreated => $this
+                ->getVideoAssetOriginalFilePath($video),
+
+            VideoSourceType::Undefined => throw new Exception()
+        };
 
         for ($i = 50; $i > 0; $i--) {
             $process = new Process(
@@ -594,7 +593,7 @@ readonly class RecordingsInfrastructureService
                     $video,
                     AssetMimeType::ImageWebp))
             ) {
-                if (!is_null($video->getRecordingSession())) {
+                if ($video->getSourceType() === VideoSourceType::RecordingSession) {
                     $this
                         ->logger
                         ->info(
@@ -762,18 +761,26 @@ readonly class RecordingsInfrastructureService
         $this->entityManager->flush();
     }
 
+    /**
+     * @throws Exception
+     */
     public function generateVideoAssetPosterAnimatedWebp(Video $video): void
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
-        if (!is_null($video->getRecordingSession())) {
-            $sourcePath = $this->getVideoChunkContentStorageFilePath(
+        $sourcePath = match ($video->getSourceType()) {
+            VideoSourceType::RecordingSession => $this->getVideoChunkContentStorageFilePath(
                 $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
-            );
-        } else {
-            $sourcePath = $this
-                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
-        }
+            ),
+
+            VideoSourceType::Upload => $this
+                ->getContentStoragePathForVideoUpload($video->getVideoUpload()),
+
+            VideoSourceType::InternallyCreated => $this
+                ->getVideoAssetOriginalFilePath($video),
+
+            VideoSourceType::Undefined => throw new Exception()
+        };
 
         $process = new Process(
             [
@@ -827,18 +834,26 @@ readonly class RecordingsInfrastructureService
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function generateVideoAssetPosterAnimatedGif(Video $video): void
     {
         $this->createFilesystemStructureForVideoAssets($video);
 
-        if (!is_null($video->getRecordingSession())) {
-            $sourcePath = $this->getVideoChunkContentStorageFilePath(
+        $sourcePath = match ($video->getSourceType()) {
+            VideoSourceType::RecordingSession => $this->getVideoChunkContentStorageFilePath(
                 $video->getRecordingSession()->getRecordingSessionVideoChunks()->first()
-            );
-        } else {
-            $sourcePath = $this
-                ->getContentStoragePathForVideoUpload($video->getVideoUpload());
-        }
+            ),
+
+            VideoSourceType::Upload => $this
+                ->getContentStoragePathForVideoUpload($video->getVideoUpload()),
+
+            VideoSourceType::InternallyCreated => $this
+                ->getVideoAssetOriginalFilePath($video),
+
+            VideoSourceType::Undefined => throw new Exception()
+        };
 
         $process = new Process(
             [
@@ -993,7 +1008,7 @@ readonly class RecordingsInfrastructureService
             return;
         }
 
-        if (!is_null($video->getRecordingSession())) {
+        if ($video->getSourceType() === VideoSourceType::RecordingSession) {
             if (!$video->hasAssetOriginal()) {
                 $this->generateAssetOriginalForRecordingSession($video);
             }
@@ -1005,7 +1020,7 @@ readonly class RecordingsInfrastructureService
                 $video
             );
 
-        } else {
+        } elseif ($video->getSourceType() === VideoSourceType::Upload) {
             $sourcePath = $this->getContentStoragePathForVideoUpload($video->getVideoUpload());
 
             $sourceWidth = $this->probeForVideoAssetWidth(
@@ -1024,6 +1039,10 @@ readonly class RecordingsInfrastructureService
                 $sourceWidth = $sourceHeight;
                 $sourceHeight = $tmp;
             }
+        } else {
+            throw new Exception(
+                'Expected source type ' . VideoSourceType::RecordingSession->value . ' or ' . VideoSourceType::Upload->value . ' but got ' . $video->getSourceType()->value . " for video '{$video->getId()}'"
+            );
         }
 
         // The libx264 encoder cannot work with uneven resolutions,
@@ -1252,7 +1271,7 @@ readonly class RecordingsInfrastructureService
         Video $video
     ): void
     {
-        if (!is_null($video->getRecordingSession())) {
+        if ($video->getSourceType() === VideoSourceType::RecordingSession) {
             if (!$video->hasAssetOriginal()) {
                 $this->generateAssetOriginalForRecordingSession($video);
             }
@@ -1260,11 +1279,9 @@ readonly class RecordingsInfrastructureService
             $sourceWidth = $video->getAssetOriginalWidth();
             $sourceHeight = $video->getAssetOriginalHeight();
 
-            $sourcePath = $this->getVideoAssetOriginalFilePath(
-                $video
-            );
+            $sourcePath = $this->getVideoAssetOriginalFilePath($video);
 
-        } else {
+        } elseif ($video->getSourceType() === VideoSourceType::Upload) {
             $sourcePath = $this->getContentStoragePathForVideoUpload($video->getVideoUpload());
 
             $sourceWidth = $this->probeForVideoAssetWidth(
@@ -1274,6 +1291,15 @@ readonly class RecordingsInfrastructureService
             $sourceHeight = $this->probeForVideoAssetHeight(
                 $this->getContentStoragePathForVideoUpload($video->getVideoUpload())
             );
+        } elseif ($video->getSourceType() === VideoSourceType::InternallyCreated) {
+            if (!$video->hasAssetOriginal()) {
+                $this->createAssetOriginalForInternallyCreatedVideo($video);
+            }
+            $sourceWidth = $video->getAssetOriginalWidth();
+            $sourceHeight = $video->getAssetOriginalHeight();
+            $sourcePath = $this->getVideoAssetOriginalFilePath($video);
+        } else {
+            throw new Exception("Source type '{$video->getSourceType()->value}' of video '{$video->getId()}' is not supported.");
         }
 
         $sourceHeight = (int)floor($sourceHeight / ($sourceWidth / 320));
@@ -1776,7 +1802,7 @@ readonly class RecordingsInfrastructureService
 
         $forceGenerateMissingAssetsCommand = false;
 
-        if (!is_null($video->getRecordingSession())) {
+        if ($video->getSourceType() === VideoSourceType::RecordingSession) {
            if ($video->getRecordingSession()->isFinished()) {
                if (!$video->hasAssetOriginal()) {
                    $this->generateAssetOriginalForRecordingSession($video);
@@ -1985,7 +2011,7 @@ readonly class RecordingsInfrastructureService
     /**
      * @throws Exception
      */
-    public function setUpAssetOriginalForInternallyCreatedVideo(
+    public function createAssetOriginalForInternallyCreatedVideo(
         Video $video
     ): void
     {

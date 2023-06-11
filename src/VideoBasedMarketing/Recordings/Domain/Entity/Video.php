@@ -990,7 +990,7 @@ class Video
         if (!is_null($this->getInternallyCreatedSourceFilePath())) {
             return VideoSourceType::InternallyCreated;
         } elseif (!is_null($this->recordingSession)) {
-            return VideoSourceType::Recording;
+            return VideoSourceType::RecordingSession;
         } elseif (!is_null($this->videoUpload)) {
             return VideoSourceType::Upload;
         } else {
