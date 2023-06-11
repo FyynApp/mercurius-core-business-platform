@@ -242,6 +242,10 @@ readonly class LingoSyncDomainService
 
                 $video = new Video($createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getUser());
                 $video->setInternallyCreatedSourceFilePath($translatedVideoPath);
+                $video->setTitle(
+                    $createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getTitle()
+                    . "({$generateTranslatedVideoTask->getTargetLanguage()->value})"
+                );
 
                 $video->setCreatedByLingoSyncProcessTask(
                     $generateTranslatedVideoTask
