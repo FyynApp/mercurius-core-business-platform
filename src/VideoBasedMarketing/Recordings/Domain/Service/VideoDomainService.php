@@ -11,6 +11,7 @@ use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesSe
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\VideoFolder;
+use App\VideoBasedMarketing\Recordings\Domain\Enum\VideoSourceType;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -195,7 +196,7 @@ readonly class VideoDomainService
         Video $video
     ): bool
     {
-        if (!is_null($video->getVideoUpload())) {
+        if ($video->getSourceType() === VideoSourceType::Upload) {
             if (   !$video->hasAssetPosterStillWebp()
                 || !$video->hasAssetPosterAnimatedWebp()
                 || !$video->hasAssetFullMp4()

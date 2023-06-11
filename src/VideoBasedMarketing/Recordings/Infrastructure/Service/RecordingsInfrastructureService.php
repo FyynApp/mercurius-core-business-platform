@@ -601,13 +601,22 @@ readonly class RecordingsInfrastructureService
                         );
                 }
 
-                if (!is_null($video->getVideoUpload())) {
+                if ($video->getSourceType() === VideoSourceType::Upload) {
                     $this
                         ->logger
                         ->info(
                             "Failed to generate video asset 'poster still webp' for video {$video->getId()} from video upload {$video->getVideoUpload()->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
                         );
                 }
+
+                if ($video->getSourceType() === VideoSourceType::InternallyCreated) {
+                    $this
+                        ->logger
+                        ->info(
+                            "Failed to generate video asset 'poster still webp' for internally created video {$video->getId()} using commandline \"{$process->getCommandLine()}\". Command error output was '{$process->getErrorOutput()}'."
+                        );
+                }
+
                 continue;
             }
 
@@ -903,10 +912,6 @@ readonly class RecordingsInfrastructureService
      */
     private function generateAssetOriginalForRecordingSession(Video $video): void
     {
-        if (!is_null($video->getVideoUpload())) {
-            return;
-        }
-
         if (is_null($video->getRecordingSession())) {
             throw new ValueError("Video '{$video->getId()}' entity without a recording session entity.");
         }
