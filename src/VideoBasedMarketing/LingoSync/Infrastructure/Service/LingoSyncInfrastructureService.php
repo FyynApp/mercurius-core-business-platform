@@ -24,6 +24,64 @@ readonly class LingoSyncInfrastructureService
     {
     }
 
+    public static function cleanupPseudoSentences(
+        string $webvtt,
+        array  $abbreviations
+    ): string
+    {
+        // Split the input into cues
+        $cues = explode("\n\n", trim($webvtt));
+
+        // Remove the "WEBVTT" header
+        array_shift($cues);
+
+        // Initialize the cleaned up cues
+        $cleanedUpCues = [];
+
+        // Iterate over the cues
+        for ($i = 0; $i < count($cues); $i++) {
+            // Split the cue into lines
+            $lines = explode("\n", $cues[$i]);
+
+            // Extract the timestamp and text
+            $timestamp = $lines[1];
+            $text = implode(' ', array_slice($lines, 2));
+
+            // Check if the last word of the text matches the first part of any abbreviation
+            foreach ($abbreviations as $abbreviation) {
+                $parts = explode('.', $abbreviation);
+                if (str_ends_with(trim($text), ' ' . $parts[0] . '.') && isset($cues[$i + 1]) && str_starts_with(explode("\n", $cues[$i + 1])[2], $parts[1] . '.')) {
+                    // Concatenate the next cue to the current one and remove the next cue
+                    $nextCueLines = explode("\n", $cues[$i + 1]);
+                    $nextCueText = implode(' ', array_slice($nextCueLines, 2));
+                    $nextCueTimestamp = $nextCueLines[1];
+                    $text .= ' ' . $nextCueText;
+                    $timestamp = explode(' --> ', $timestamp)[0] . ' --> ' . explode(' --> ', $nextCueTimestamp)[1];
+                    array_splice($cues, $i + 1, 1);
+                    break;
+                }
+            }
+
+            // Update the cue
+            $lines[1] = $timestamp;
+            $lines[2] = $text;
+
+            // Remove the cue number
+            array_splice($lines, 0, 1);
+
+            // Add the cue to the cleaned up cues
+            $cleanedUpCues[] = implode("\n", $lines);
+        }
+
+        // Build the output
+        $output = "WEBVTT\n\n";
+        foreach ($cleanedUpCues as $index => $cue) {
+            $output .= ($index + 1) . "\n" . $cue . "\n\n";
+        }
+
+        return $output;
+    }
+
     public static function compactizeWebVtt(string $webvtt): string
     {
         // Split the input into cues

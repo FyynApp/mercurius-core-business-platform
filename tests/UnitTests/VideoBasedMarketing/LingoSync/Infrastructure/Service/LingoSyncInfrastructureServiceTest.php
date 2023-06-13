@@ -169,4 +169,49 @@ In this video, I'm going to show you how to set up this extension so that you ca
 
         $this->assertEquals($expectedResult, $actualResult);
     }
+
+    public function testCleanupPseudoSentences(): void
+    {
+        $originalWebVTT = "WEBVTT
+1
+00:04:30.160 --> 00:04:37.140
+Meiner Meinung nach war dies also höchstwahrscheinlich keine Operation unter falscher Flagge, zumindest nicht in dem Sinne, dass Putin dahinter steckt.
+
+2
+00:04:37.160 --> 00:04:40.420
+Natürlich könnte es sich um eine andere Gruppe von Russen handeln, z.
+
+3
+00:04:40.440 --> 00:04:52.140
+B. um russische Nationalisten, die für den Krieg sind, aber ich glaube nicht, dass es sich um eine Operation unter falscher Flagge handelte, bei der der Kreml einen Angriff auf sich selbst inszeniert hat, denn die Merkmale sind einfach nicht vorhanden.
+
+4
+00:04:52.160 --> 00:04:53.820
+Okay, das war nur ein kurzes Video.        
+";
+
+
+        $expectedWebVTT = "WEBVTT
+1
+00:04:30.160 --> 00:04:37.140
+Meiner Meinung nach war dies also höchstwahrscheinlich keine Operation unter falscher Flagge, zumindest nicht in dem Sinne, dass Putin dahinter steckt.
+
+2
+00:04:37.160 --> 00:04:52.140
+Natürlich könnte es sich um eine andere Gruppe von Russen handeln, z. B. um russische Nationalisten, die für den Krieg sind, aber ich glaube nicht, dass es sich um eine Operation unter falscher Flagge handelte, bei der der Kreml einen Angriff auf sich selbst inszeniert hat, denn die Merkmale sind einfach nicht vorhanden.
+
+3
+00:04:52.160 --> 00:04:53.820
+Okay, das war nur ein kurzes Video.
+";
+
+        $cleanedUpWebVTT = LingoSyncInfrastructureService::cleanupPseudoSentences(
+            $originalWebVTT,
+            ['z.B.', 'u.a.']
+        );
+
+        echo $cleanedUpWebVTT;
+
+        #$this->assertSame($expectedWebVTT, $cleanedUpWebVTT);
+    }
 }
