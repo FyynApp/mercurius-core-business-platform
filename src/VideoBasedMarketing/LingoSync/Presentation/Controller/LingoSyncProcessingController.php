@@ -61,7 +61,7 @@ class LingoSyncProcessingController
             );
         }
 
-        $lingoSyncDomainService->startLingoSyncProcess(
+        $lingoSyncDomainService->startProcess(
             $video,
             Bcp47LanguageCode::from(
                 $request->get('originalLanguage')

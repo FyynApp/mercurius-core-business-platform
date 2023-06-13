@@ -95,7 +95,7 @@ class StartLingoSyncProcess
 
         $lingoSyncProcess = $this
             ->lingoSyncDomainService
-            ->startLingoSyncProcess(
+            ->startProcess(
                 $video,
                 $originalLanguage,
                 $originalGender,

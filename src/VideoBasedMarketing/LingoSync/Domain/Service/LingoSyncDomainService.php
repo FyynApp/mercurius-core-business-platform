@@ -79,7 +79,7 @@ readonly class LingoSyncDomainService
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function lingoSyncProcessCanBeStarted(
+    public function processCanBeStarted(
         Video $video
     ): bool
     {
@@ -98,14 +98,14 @@ readonly class LingoSyncDomainService
      * @param Bcp47LanguageCode[] $targetLanguages
      * @throws Exception
      */
-    public function startLingoSyncProcess(
+    public function startProcess(
         Video             $video,
         Bcp47LanguageCode $originalLanguage,
         Gender            $originalGender,
         array             $targetLanguages
     ): LingoSyncProcess
     {
-        if (!$this->lingoSyncProcessCanBeStarted($video)) {
+        if (!$this->processCanBeStarted($video)) {
             throw new Exception(
                 "LingoSync process for video '{$video->getId()}' cannot be started."
             );
@@ -129,14 +129,14 @@ readonly class LingoSyncDomainService
             $originalGender
         );
 
-        $generateAudioTranscriptionTask = new LingoSyncProcessTask(
+        $generateOriginalLanguageTranscriptionTask = new LingoSyncProcessTask(
             $lingoSyncProcess,
             LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription,
             null
         );
 
         $lingoSyncProcess->addTask(
-            $generateAudioTranscriptionTask
+            $generateOriginalLanguageTranscriptionTask
         );
 
         foreach ($targetLanguages as $targetLanguage) {
@@ -176,7 +176,7 @@ readonly class LingoSyncDomainService
         $this->entityManager->persist($lingoSyncProcess);
         $this->entityManager->flush();
 
-        $this->handleTask($generateAudioTranscriptionTask);
+        $this->handleTask($generateOriginalLanguageTranscriptionTask);
 
         return $lingoSyncProcess;
     }
@@ -191,6 +191,60 @@ readonly class LingoSyncDomainService
     {
         if ($task->getType() === LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription) {
             if ($task->getStatus() === LingoSyncProcessTaskStatus::Initiated) {
+
+                if (!is_null($task->getLingoSyncProcess()->getAudioTranscription())) {
+                    throw new Exception(
+                        "LingoSyncProcess '{$task->getLingoSyncProcess()->getId()}' already has audio transcription '{$task->getLingoSyncProcess()->getAudioTranscription()->getId()}'."
+                    );
+                }
+
+                $existingWebVtts = $this->audioTranscriptionDomainService->getWebVtts(
+                    $task->getLingoSyncProcess()->getVideo()
+                );
+
+                $alreadyHasWebVttForEachTargetLanguage = true;
+                foreach ($task->getLingoSyncProcess()->getTasks() as $thisTask) {
+                    if (   $thisTask->getType() === LingoSyncProcessTaskType::WaitForTranslation
+                        && $thisTask->getStatus() === LingoSyncProcessTaskStatus::Initiated
+                    ) {
+                        $alreadyHasWebVttForThisTargetLanguage = false;
+                        foreach ($existingWebVtts as $existingWebVtt) {
+                            if ($existingWebVtt->getBcp47LanguageCode() === $thisTask->getTargetLanguage()) {
+                                $alreadyHasWebVttForThisTargetLanguage = true;
+                                break;
+                            }
+                        }
+
+                        if (!$alreadyHasWebVttForThisTargetLanguage) {
+                            $alreadyHasWebVttForEachTargetLanguage = false;
+                            break;
+                        }
+                    }
+                }
+
+                if ($alreadyHasWebVttForEachTargetLanguage) {
+                    $task->setStatus(LingoSyncProcessTaskStatus::Finished);
+                    $this->entityManager->persist($task->getLingoSyncProcess());
+                    $this->entityManager->persist($task);
+                    $this->entityManager->flush();
+
+                    foreach ($task->getLingoSyncProcess()->getTasks() as $thisTask) {
+                        if ($thisTask->getType() === LingoSyncProcessTaskType::WaitForTranslation) {
+                            $thisTask->setStatus(LingoSyncProcessTaskStatus::Running);
+                            $this->entityManager->persist($thisTask);
+                            $this->entityManager->flush();
+                            foreach ($existingWebVtts as $existingWebVtt) {
+                                if ($existingWebVtt->getBcp47LanguageCode() === $thisTask->getTargetLanguage()) {
+                                    $this->handleWebVttBecameAvailable($existingWebVtt);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    return;
+                }
+
                 $audioTranscription = $this->audioTranscriptionDomainService->startProcessingVideo(
                     $task->getLingoSyncProcess()->getVideo(),
                     $task->getLingoSyncProcess()->getOriginalLanguage(),
