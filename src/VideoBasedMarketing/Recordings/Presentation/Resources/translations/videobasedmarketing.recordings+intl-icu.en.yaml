@@ -58,6 +58,7 @@ video_manage_widget:
     cta_language:
       de_DE: 'German'
       en_US: 'English'
+      es_ES: 'Spanish'
   lingo_sync_modal:
     headline: 'Generate a translated video with LingoSync'
     choose_original_language: 'Please choose the language that is spoken in the original video:'

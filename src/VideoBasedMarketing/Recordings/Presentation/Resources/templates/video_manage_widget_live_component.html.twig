@@ -965,6 +965,41 @@
                             {{ 'video_manage_widget.audio_transcription_modal.cta_language.de_DE'|trans }}
                         </button>
                     </form>
+
+                    <form
+                            action="{{ path('videobasedmarketing.audio_transcription.presentation.processing.start') }}"
+                            method="post"
+                    >
+                        <input
+                                type="hidden"
+                                name="videoId"
+                                value="{{ this.video.id }}"
+                        >
+
+                        <input
+                                type="hidden"
+                                name="bcp47LanguageCode"
+                                value="{{ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::EsEs').value }}"
+                        >
+
+                        <input
+                                type="hidden"
+                                name="_csrf_token"
+                                value="{{ csrf_token(
+                                    'start-audio-transcription-'
+                                    ~ this.video.id
+                                    ~ '-'
+                                    ~ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::DeDe').value
+                                ) }}"
+                        >
+
+                        <button
+                                type="submit"
+                                class="cta-with-icon-primary"
+                        >
+                            {{ 'video_manage_widget.audio_transcription_modal.cta_language.es_ES'|trans }}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
