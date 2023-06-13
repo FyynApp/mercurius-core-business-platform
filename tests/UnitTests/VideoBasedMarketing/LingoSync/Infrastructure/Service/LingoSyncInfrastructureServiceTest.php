@@ -120,11 +120,11 @@ your screen in very simple steps!
 
 3
 00:00:06.930 --> 00:00:09.520
-And the best thing is, you don't even need
+And the best thing is, you don't even need e.
 
 4
 00:00:09.550 --> 00:00:13.060
-to install any software or
+g. to install any software or
 have any technical background.
 
 5
@@ -155,7 +155,7 @@ Hi, in this video I'll show you how to make video recordings of yourself and you
 
 2
 00:00:06.930 --> 00:00:13.060
-And the best thing is, you don't even need to install any software or have any technical background.
+And the best thing is, you don't even need e.g. to install any software or have any technical background.
 
 3
 00:00:13.090 --> 00:00:18.220

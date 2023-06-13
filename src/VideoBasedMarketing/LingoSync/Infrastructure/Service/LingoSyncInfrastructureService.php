@@ -134,6 +134,18 @@ readonly class LingoSyncInfrastructureService
             $output .= ($index + 1) . "\n" . $cue['startTimestamp'] . ' --> ' . $cue['endTimestamp'] . "\n" . $cue['text'] . "\n\n";
         }
 
+        $output = trim($output);
+
+        $output = self::cleanupPseudoSentences(
+            $output,
+            [
+                'z.b.',
+                'u.a..',
+                'e.g.',
+                'e.a.',
+            ]
+        );
+
         return trim($output);
     }
 
