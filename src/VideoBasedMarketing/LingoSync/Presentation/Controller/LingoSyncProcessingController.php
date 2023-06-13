@@ -96,8 +96,8 @@ class LingoSyncProcessingController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/videos/{}/lingo-sync-processings/',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/videos/{}/lingo-sync-verarbeitungen/',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/videos/{videoId}/lingo-sync-processings/',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/videos/{videoId}/lingo-sync-verarbeitungen/',
         ],
         name        : 'videobasedmarketing.lingo_sync.presentation.processing.status',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],

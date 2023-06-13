@@ -21,6 +21,7 @@ use Doctrine\Persistence\ObjectRepository;
 use Exception;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ValidationException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use ValueError;
 
@@ -32,7 +33,8 @@ readonly class LingoSyncDomainService
         private AudioTranscriptionDomainService $audioTranscriptionDomainService,
         private MessageBusInterface             $messageBus,
         private LingoSyncInfrastructureService  $lingoSyncInfrastructureService,
-        private RecordingsInfrastructureService $recordingsInfrastructureService
+        private RecordingsInfrastructureService $recordingsInfrastructureService,
+        private LoggerInterface                 $logger
     )
     {
     }
@@ -235,6 +237,13 @@ readonly class LingoSyncDomainService
                             $this->entityManager->flush();
                             foreach ($existingWebVtts as $existingWebVtt) {
                                 if ($existingWebVtt->getBcp47LanguageCode() === $thisTask->getTargetLanguage()) {
+                                    if (is_null($task->getLingoSyncProcess()->getAudioTranscription())) {
+                                        $existingWebVtt
+                                            ->getAudioTranscription()
+                                            ->setLingoSyncProcess($task->getLingoSyncProcess());
+                                        $this->entityManager->persist($task->getLingoSyncProcess());
+                                        $this->entityManager->flush();
+                                    }
                                     $this->handleWebVttBecameAvailable($existingWebVtt);
                                     break;
                                 }
@@ -245,13 +254,12 @@ readonly class LingoSyncDomainService
                     return;
                 }
 
-                $audioTranscription = $this->audioTranscriptionDomainService->startProcessingVideo(
+                $this->audioTranscriptionDomainService->startProcessingVideo(
                     $task->getLingoSyncProcess()->getVideo(),
                     $task->getLingoSyncProcess()->getOriginalLanguage(),
                     $task->getLingoSyncProcess()
                 );
 
-                $task->getLingoSyncProcess()->setAudioTranscription($audioTranscription);
                 $task->setStatus(LingoSyncProcessTaskStatus::Running);
 
                 $this->entityManager->persist($task->getLingoSyncProcess());
@@ -361,7 +369,7 @@ readonly class LingoSyncDomainService
                 $video->setInternallyCreatedSourceFilePath($translatedVideoPath);
                 $video->setTitle(
                     $createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getTitle()
-                    . "({$generateTranslatedVideoTask->getTargetLanguage()->value})"
+                    . " — LingoSync — {$generateTranslatedVideoTask->getTargetLanguage()->value}"
                 );
 
                 $video->setCreatedByLingoSyncProcessTask(
@@ -391,10 +399,18 @@ readonly class LingoSyncDomainService
         AudioTranscriptionWebVtt $webVtt
     ): void
     {
+        $this->logger->debug(
+            "Web VTT '{$webVtt->getId()}' with language code '{$webVtt->getBcp47LanguageCode()->value}' from Audio Transcription '{$webVtt->getAudioTranscription()->getId()}' became available."
+        );
+
+        $this->entityManager->refresh($webVtt);
         $audioTranscription = $webVtt->getAudioTranscription();
         $lingoSyncProcess = $audioTranscription->getLingoSyncProcess();
 
         if (is_null($lingoSyncProcess)) {
+            $this->logger->debug(
+                "Audio Transcription '{$webVtt->getAudioTranscription()->getId()}' does not have a LingoSync Process, aborting."
+            );
             return;
         }
 

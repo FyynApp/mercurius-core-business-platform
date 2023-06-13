@@ -36,6 +36,11 @@ class AudioTranscription
         $this->video = $video;
         $this->originalLanguageBcp47LanguageCode = $originalLanguageBcp47LanguageCode;
         $this->lingoSyncProcess = $lingoSyncProcess;
+
+        if (!is_null($lingoSyncProcess)) {
+            $lingoSyncProcess->setAudioTranscription($this);
+        }
+
         $this->createdAt = DateAndTimeService::getDateTime();
     }
 
@@ -120,5 +125,13 @@ class AudioTranscription
     public function getLingoSyncProcess(): ?LingoSyncProcess
     {
         return $this->lingoSyncProcess;
+    }
+
+    public function setLingoSyncProcess(
+        LingoSyncProcess $lingoSyncProcess
+    ): void
+    {
+        $this->lingoSyncProcess = $lingoSyncProcess;
+        $this->lingoSyncProcess->setAudioTranscription($this);
     }
 }
