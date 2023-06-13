@@ -371,6 +371,9 @@ readonly class LingoSyncDomainService
                     $createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getTitle()
                     . " — LingoSync — {$generateTranslatedVideoTask->getTargetLanguage()->value}"
                 );
+                $video->setVideoFolder(
+                    $createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getVideoFolder()
+                );
 
                 $video->setCreatedByLingoSyncProcessTask(
                     $generateTranslatedVideoTask
@@ -456,7 +459,7 @@ readonly class LingoSyncDomainService
 
         if ($createAudioSnippetsTask->getStatus() !== LingoSyncProcessTaskStatus::Initiated) {
             throw new Exception(
-                "Expected CreateAudioSnippets task '{$createAudioSnippetsTask->getId()}' to be in status 'Initiated', but it is in status '{$createAudioSnippetsTask->getStatus()->value}'."
+                "Expected CreateAudioSnippets task '{$createAudioSnippetsTask->getId()}' to be in status '" . LingoSyncProcessTaskStatus::Initiated->value . "', but it is in status '{$createAudioSnippetsTask->getStatus()->value}'."
             );
         }
 

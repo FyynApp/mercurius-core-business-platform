@@ -24,7 +24,8 @@ readonly class LingoSyncInfrastructureService
     {
     }
 
-    public static function compactizeWebVtt(string $webvtt): string {
+    public static function compactizeWebVtt(string $webvtt): string
+    {
         // Split the input into cues
         $cues = explode("\n\n", trim($webvtt));
 
@@ -38,7 +39,7 @@ readonly class LingoSyncInfrastructureService
             // Split the cue into lines
             $lines = explode("\n", $cue);
 
-            if ($lines[0] === 'WEBVTT') {
+            if (sizeof($lines) < 3 || $lines[0] === 'WEBVTT') {
                 continue;
             }
 

@@ -6,7 +6,7 @@ namespace App\Tests\UnitTests\VideoBasedMarketing\LingoSync\Infrastructure\Servi
 use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\LingoSyncInfrastructureService;
 use PHPUnit\Framework\TestCase;
 
-class TextToSpeechServiceTest
+class LingoSyncInfrastructureServiceTest
     extends TestCase
 {
     private string $webVttNormal = <<<'EOT'
@@ -105,7 +105,7 @@ EOT;
         );
     }
 
-    public function testCompactizeWebvtt()
+    public function testCompactizeWebvttOne()
     {
         $webVtt = "WEBVTT
 
