@@ -292,6 +292,15 @@ readonly class LingoSyncDomainService
             $createAudioSnippetsTask->getLingoSyncProcess()->getAudioTranscription()->getVideo()
         );
 
+        $originalLanguageWebVttContent = null;
+        foreach ($webVtts as $webVtt) {
+            if ($webVtt->getBcp47LanguageCode() === $createAudioSnippetsTask->getLingoSyncProcess()->getOriginalLanguage()) {
+                $originalLanguageWebVttContent = $this
+                    ->lingoSyncInfrastructureService
+                    ::compactizeWebVtt($webVtt->getVttContent());
+            }
+        }
+
         foreach ($webVtts as $webVtt) {
             if ($webVtt->getBcp47LanguageCode() === $createAudioSnippetsTask->getTargetLanguage()) {
 
@@ -299,8 +308,19 @@ readonly class LingoSyncDomainService
                 $this->entityManager->persist($createAudioSnippetsTask);
                 $this->entityManager->flush();
 
+                $webVttContent = $this
+                    ->lingoSyncInfrastructureService
+                    ::compactizeWebVtt($webVtt->getVttContent());
+
+                if (!is_null($originalLanguageWebVttContent)) {
+                    $webVttContent = $this->lingoSyncInfrastructureService::mapWebVttTimestamps(
+                        $originalLanguageWebVttContent,
+                        $webVttContent
+                    );
+                }
+
                 $audioFilesFolderPath = $this->lingoSyncInfrastructureService->createAudioFilesForWebVttCues(
-                    $this->lingoSyncInfrastructureService::compactizeWebVtt($webVtt->getVttContent()),
+                    $webVttContent,
                     $createAudioSnippetsTask->getTargetLanguage(),
                     $createAudioSnippetsTask->getLingoSyncProcess()->getOriginalGender(),
                 );
@@ -327,7 +347,7 @@ readonly class LingoSyncDomainService
                 $this->entityManager->flush();
 
                 $concatenatedAudioFilePath = $this->lingoSyncInfrastructureService->concatenateAudioFiles(
-                    $this->lingoSyncInfrastructureService::compactizeWebVtt($webVtt->getVttContent()),
+                    $webVttContent,
                     $audioFilesFolderPath
                 );
 

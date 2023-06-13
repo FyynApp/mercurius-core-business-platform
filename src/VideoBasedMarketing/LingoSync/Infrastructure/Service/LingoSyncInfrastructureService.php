@@ -149,6 +149,45 @@ readonly class LingoSyncInfrastructureService
         return trim($output);
     }
 
+    public static function mapWebVttTimestamps(
+        string $webvttWithCorrectTimestamps,
+        string $webvttWithCorrectTexts
+    ): string
+    {
+        // Split the inputs into cues
+        $cues1 = explode("\n\n", trim($webvttWithCorrectTimestamps));
+        $cues2 = explode("\n\n", trim($webvttWithCorrectTexts));
+
+        // Remove the "WEBVTT" headers
+        array_shift($cues1);
+        array_shift($cues2);
+
+        // Initialize the mapped cues
+        $mappedCues = [];
+
+        // Iterate over the cues
+        for ($i = 0; $i < count($cues1); $i++) {
+            // Split the cues into lines
+            $lines1 = explode("\n", $cues1[$i]);
+            $lines2 = explode("\n", $cues2[$i]);
+
+            // Extract the timestamp from the first cue and the text from the second cue
+            $timestamp = $lines1[1];
+            $text = implode(' ', array_slice($lines2, 2));
+
+            // Create the mapped cue
+            $mappedCue = ($i + 1) . "\n" . $timestamp . "\n" . $text;
+
+            // Add the mapped cue to the mapped cues
+            $mappedCues[] = $mappedCue;
+        }
+
+        // Build the output
+        $output = "WEBVTT\n\n" . implode("\n\n", $mappedCues);
+
+        return trim($output);
+    }
+
     /**
      * @throws ApiException
      * @throws ValidationException
@@ -480,6 +519,10 @@ readonly class LingoSyncInfrastructureService
         return $finalAudioFilesFolderPath;
     }
 
+    /**
+     * @throws ValidationException
+     * @throws ApiException
+     */
     public function generateAudioFileForWebVtt(
         string            $webVtt,
         Bcp47LanguageCode $languageCode,

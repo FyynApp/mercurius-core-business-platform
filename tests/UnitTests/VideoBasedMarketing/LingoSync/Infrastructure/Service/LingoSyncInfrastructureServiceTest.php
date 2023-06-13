@@ -302,4 +302,57 @@ Okay, das war nur ein kurzes Video.";
 
         $this->assertSame($expectedWebVTT, $cleanedUpWebVTT);
     }
+
+    public function testMapWebVttTimestamps(): void
+    {
+        $webVTT1 = "WEBVTT
+
+1
+00:04:30.160 --> 00:04:37.140
+This is the first sentence.
+
+2
+00:05:33.260 --> 00:06:37.140
+This is the seconds sentence.
+
+3
+00:09:33.260 --> 00:11:37.140
+This is the third sentence.
+";
+
+
+        $webVTT2 = "WEBVTT
+
+1
+00:04:39.160 --> 00:05:09.140
+Das ist der erste Satz.
+
+2
+00:05:45.260 --> 00:07:37.140
+Das ist der zweite Satz.
+
+3
+00:08:33.260 --> 00:10:31.140
+Das ist der dritte Satz.
+";
+
+
+        $expectedWebVTT = "WEBVTT
+
+1
+00:04:30.160 --> 00:04:37.140
+Das ist der erste Satz.
+
+2
+00:05:33.260 --> 00:06:37.140
+Das ist der zweite Satz.
+
+3
+00:09:33.260 --> 00:11:37.140
+Das ist der dritte Satz.";
+
+        $actualWebVTT = LingoSyncInfrastructureService::mapWebVttTimestamps($webVTT1, $webVTT2);
+
+        $this->assertSame($expectedWebVTT, $actualWebVTT);
+    }
 }
