@@ -55,7 +55,7 @@ readonly class LingoSyncInfrastructureService
                     $nextCueLines = explode("\n", $cues[$i + 1]);
                     $nextCueText = implode(' ', array_slice($nextCueLines, 2));
                     $nextCueTimestamp = $nextCueLines[1];
-                    $text .= ' ' . $nextCueText;
+                    $text .= $nextCueText;
                     $timestamp = explode(' --> ', $timestamp)[0] . ' --> ' . explode(' --> ', $nextCueTimestamp)[1];
                     array_splice($cues, $i + 1, 1);
                     break;
@@ -79,7 +79,7 @@ readonly class LingoSyncInfrastructureService
             $output .= ($index + 1) . "\n" . $cue . "\n\n";
         }
 
-        return $output;
+        return trim($output);
     }
 
     public static function compactizeWebVtt(string $webvtt): string
