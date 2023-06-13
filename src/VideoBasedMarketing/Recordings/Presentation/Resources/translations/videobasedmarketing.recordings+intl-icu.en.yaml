@@ -29,6 +29,8 @@ video_manage_widget:
     cta_show_embed: 'Show embed code'
     cta_show_audio_transcription_modal: 'Audio transcription'
     cta_show_lingo_sync_modal: 'LingoSync'
+    cta_lingo_sync_cannot_be_started: 'LingoSync'
+    lingo_sync_cannot_be_started_info: 'Not available while Audio Transcription is running.'
   edit_modal:
     cta_share: 'Share'
     cta_preview: 'Preview'

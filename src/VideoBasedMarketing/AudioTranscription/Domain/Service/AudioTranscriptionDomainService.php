@@ -12,6 +12,7 @@ use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 
@@ -187,5 +188,29 @@ readonly class AudioTranscriptionDomainService
     ): bool
     {
         return sizeof($this->getWebVtts($audioTranscription->getVideo())) === 0;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function videoHasRunningTranscription(
+        Video $video
+    ): bool
+    {
+        /** @var ObjectRepository<AudioTranscription> $repo */
+        $repo = $this->entityManager->getRepository(AudioTranscription::class);
+
+        /** @var AudioTranscription[] $audioTranscriptions */
+        $audioTranscriptions = $repo->findBy([
+            'video' => $video->getId()
+        ]);
+
+        foreach ($audioTranscriptions as $audioTranscription) {
+            if ($this->stillRunning($audioTranscription)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

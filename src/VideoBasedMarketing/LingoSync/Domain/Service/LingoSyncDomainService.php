@@ -17,6 +17,7 @@ use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\SymfonyMessage\GenerateMissingVideoAssetsCommandSymfonyMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Exception;
 use Google\ApiCore\ApiException;
 use Google\ApiCore\ValidationException;
@@ -38,17 +39,26 @@ readonly class LingoSyncDomainService
 
     public function videoHasRunningProcess(Video $video): bool
     {
+        foreach ($this->getProcessesForVideo($video) as $lingoSyncProcess) {
+            if (!$lingoSyncProcess->isFinished()) {
+                return true;
+            }
+        }
+
         return false;
     }
 
+    /**
+     * @return LingoSyncProcess[]
+     */
     public function getProcessesForVideo(Video $video): array
     {
-        return [];
-    }
+        /** @var ObjectRepository<LingoSyncProcess> $repo */
+        $repo = $this->entityManager->getRepository(LingoSyncProcess::class);
 
-    public function processForVideoIsRunning(Video $video): bool
-    {
-        return false;
+        return $repo->findBy([
+            'video' => $video->getId()
+        ]);
     }
 
     public function getSupportedOriginalLanguages(): array
@@ -67,8 +77,26 @@ readonly class LingoSyncDomainService
     }
 
     /**
-     * @throws Exception
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function lingoSyncProcessCanBeStarted(
+        Video $video
+    ): bool
+    {
+        if ($this->videoHasRunningProcess($video)) {
+            return false;
+        }
+        
+        if ($this->audioTranscriptionDomainService->videoHasRunningTranscription($video)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * @param Bcp47LanguageCode[] $targetLanguages
+     * @throws Exception
      */
     public function startLingoSyncProcess(
         Video             $video,
@@ -77,6 +105,12 @@ readonly class LingoSyncDomainService
         array             $targetLanguages
     ): LingoSyncProcess
     {
+        if (!$this->lingoSyncProcessCanBeStarted($video)) {
+            throw new Exception(
+                "LingoSync process for video '{$video->getId()}' cannot be started."
+            );
+        }
+
         if (!ArrayUtility::allValuesAreOfClass($targetLanguages, Bcp47LanguageCode::class)) {
             throw new ValueError(
                 'Expected an array of Bcp47LanguageCode objects, but got ' . json_encode($targetLanguages) . '.'
