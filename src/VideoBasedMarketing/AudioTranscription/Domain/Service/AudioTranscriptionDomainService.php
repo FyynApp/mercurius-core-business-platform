@@ -111,7 +111,8 @@ readonly class AudioTranscriptionDomainService
             ";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+        $stmt->bindValue(':vid', $video->getId());
+        $resultSet = $stmt->executeQuery();
 
         $seenLanguages = [];
         $webVtts = [];
