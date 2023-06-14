@@ -273,13 +273,11 @@ readonly class HappyScribeApiService
         Bcp47LanguageCode        $bcp47LanguageCode
     ): HappyScribeTranslationTask
     {
-        if ($bcp47LanguageCode === Bcp47LanguageCode::DeDe) {
-            $targetLanguage = 'de';
-        } elseif ($bcp47LanguageCode === Bcp47LanguageCode::EnUs) {
-            $targetLanguage = 'en';
-        } else {
-            throw new Exception("Unexpected language code '$bcp47LanguageCode->value'.");
-        }
+        $targetLanguage = match ($bcp47LanguageCode) {
+            Bcp47LanguageCode::DeDe => 'de',
+            Bcp47LanguageCode::EnUs => 'en',
+            Bcp47LanguageCode::EsEs => 'es'
+        };
 
         $body = <<<EOT
             {
