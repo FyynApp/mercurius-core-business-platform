@@ -170,7 +170,7 @@ In this video, I'm going to show you how to set up this extension so that you ca
         $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function testCleanupPseudoSentencesOne(): void
+    public function testCleanupPseudoSentencesInWebVttOne(): void
     {
         $originalWebVTT = "WEBVTT
 
@@ -205,15 +205,15 @@ Natürlich könnte es sich um eine andere Gruppe von Russen handeln, z.B. um rus
 00:04:52.160 --> 00:04:53.820
 Okay, das war nur ein kurzes Video.";
 
-        $cleanedUpWebVTT = LingoSyncInfrastructureService::cleanupPseudoSentences(
+        $cleanedUpWebVTT = LingoSyncInfrastructureService::cleanupPseudoSentencesInWebVtt(
             $originalWebVTT,
-            ['z.B.', 'u.a.']
+            ['z.b.', 'u.a.']
         );
 
         $this->assertSame($expectedWebVTT, $cleanedUpWebVTT);
     }
 
-    public function testCleanupPseudoSentencesTwo(): void
+    public function testCleanupPseudoSentencesInWebVttTwo(): void
     {
         $originalWebVTT = "WEBVTT
 
@@ -252,15 +252,15 @@ wie zum Beispiel um russische Nationalisten, die für den Krieg sind, aber ich g
 00:04:55.260 --> 00:04:56.920
 Okay, das war nur ein kurzes Video.";
 
-        $cleanedUpWebVTT = LingoSyncInfrastructureService::cleanupPseudoSentences(
+        $cleanedUpWebVTT = LingoSyncInfrastructureService::cleanupPseudoSentencesInWebVtt(
             $originalWebVTT,
-            ['z.B.', 'u.a.']
+            ['z.b.', 'u.a.']
         );
 
         $this->assertSame($expectedWebVTT, $cleanedUpWebVTT);
     }
 
-    public function testCleanupPseudoSentencesThree(): void
+    public function testCleanupPseudoSentencesInWebVttThree(): void
     {
         $originalWebVTT = "WEBVTT
 
@@ -295,9 +295,9 @@ Natürlich könnte es sich um eine andere Gruppe von Russen handeln, u.a. um rus
 00:04:52.160 --> 00:04:53.820
 Okay, das war nur ein kurzes Video.";
 
-        $cleanedUpWebVTT = LingoSyncInfrastructureService::cleanupPseudoSentences(
+        $cleanedUpWebVTT = LingoSyncInfrastructureService::cleanupPseudoSentencesInWebVtt(
             $originalWebVTT,
-            ['z.B.', 'u.a.']
+            ['z.b.', 'u.a.']
         );
 
         $this->assertSame($expectedWebVTT, $cleanedUpWebVTT);

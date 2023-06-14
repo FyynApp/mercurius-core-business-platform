@@ -24,7 +24,7 @@ readonly class LingoSyncInfrastructureService
     {
     }
 
-    public static function cleanupPseudoSentences(
+    public static function cleanupPseudoSentencesInWebVtt(
         string $webvtt,
         array  $abbreviations
     ): string
@@ -50,7 +50,10 @@ readonly class LingoSyncInfrastructureService
             // Check if the last word of the text matches the first part of any abbreviation
             foreach ($abbreviations as $abbreviation) {
                 $parts = explode('.', $abbreviation);
-                if (str_ends_with(trim($text), ' ' . $parts[0] . '.') && isset($cues[$i + 1]) && str_starts_with(explode("\n", $cues[$i + 1])[2], $parts[1] . '.')) {
+                if (   str_ends_with(mb_strtolower(trim($text)), ' ' . mb_strtolower($parts[0]) . '.')
+                    && isset($cues[$i + 1])
+                    && str_starts_with(mb_strtolower(explode("\n", $cues[$i + 1])[2]), mb_strtolower($parts[1]) . '.')
+                ) {
                     // Concatenate the next cue to the current one and remove the next cue
                     $nextCueLines = explode("\n", $cues[$i + 1]);
                     $nextCueText = implode(' ', array_slice($nextCueLines, 2));
@@ -136,7 +139,7 @@ readonly class LingoSyncInfrastructureService
 
         $output = trim($output);
 
-        $output = self::cleanupPseudoSentences(
+        $output = self::cleanupPseudoSentencesInWebVtt(
             $output,
             [
                 'z.b.',
@@ -419,7 +422,7 @@ readonly class LingoSyncInfrastructureService
                 $silenceFilePath = "/{$sourceFilesFolderPath}/silence_{$index}.mp3";
 
                 // silenceDuration tends to be a bit too short...
-                $silenceDuration *= 1.1;
+                $silenceDuration *= 1.25;
 
                 exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$silenceDuration} {$silenceFilePath}");
 
