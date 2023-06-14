@@ -109,7 +109,8 @@ readonly class VideoPlayerSessionDomainService
             ";
 
             $stmt = $this->entityManager->getConnection()->prepare($sql);
-            $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+            $stmt->bindValue(':vid', $video->getId());
+            $resultSet = $stmt->executeQuery();
 
             foreach ($resultSet->fetchAllAssociative() as $row) {
                 $result[$second] = 100 / $numberOfStartedVideoPlayerSessions * $row['cnt'];
@@ -141,7 +142,8 @@ readonly class VideoPlayerSessionDomainService
             ";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+        $stmt->bindValue(':vid', $video->getId());
+        $resultSet = $stmt->executeQuery();
 
         foreach ($resultSet->fetchAllAssociative() as $sessionRow) {
             $session = $this->entityManager->find(VideoPlayerSession::class, $sessionRow['id']);
@@ -159,7 +161,8 @@ readonly class VideoPlayerSessionDomainService
             ";
 
             $stmt = $this->entityManager->getConnection()->prepare($sql);
-            $resultSet = $stmt->executeQuery([':sid' => $session->getId()]);
+            $stmt->bindValue(':sid', $session->getId());
+            $resultSet = $stmt->executeQuery();
 
             $watchedSeconds = [];
             foreach ($resultSet->fetchAllAssociative() as $eventRow) {
@@ -202,7 +205,8 @@ readonly class VideoPlayerSessionDomainService
                 ;
             ";
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+        $stmt->bindValue(':vid', $video->getId());
+        $resultSet = $stmt->executeQuery();
 
         $numberOfVideoPlayerSessions = 0;
         foreach ($resultSet->fetchAllAssociative() as $row) {
@@ -233,7 +237,8 @@ readonly class VideoPlayerSessionDomainService
                 ;
             ";
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+        $stmt->bindValue(':vid', $video->getId());
+        $resultSet = $stmt->executeQuery();
 
         $numberOfStartedVideoPlayerSessions = 0;
         foreach ($resultSet->fetchAllAssociative() as $row) {

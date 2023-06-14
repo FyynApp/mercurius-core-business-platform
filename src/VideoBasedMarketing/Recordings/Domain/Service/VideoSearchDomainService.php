@@ -62,12 +62,11 @@ readonly class VideoSearchDomainService
         ";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([
-            ':qwildcard' => "\"*$qForFulltext*\"",
-            ':qliterally' => '"' . $qForFulltext . '"',
-            ':qlike' => "%$q%",
-            ':organizationId' => $organization->getId()
-        ]);
+        $stmt->bindValue(':qwildcard', "\"*$qForFulltext*\"");
+        $stmt->bindValue(':qliterally', '"' . $qForFulltext . '"');
+        $stmt->bindValue(':qlike', "%$q%");
+        $stmt->bindValue(':organizationId', $organization->getId());
+        $resultSet = $stmt->executeQuery();
 
         $videoFinderResults = [];
         foreach ($resultSet->fetchAllAssociative() as $row) {

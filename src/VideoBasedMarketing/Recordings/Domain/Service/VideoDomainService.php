@@ -104,7 +104,8 @@ readonly class VideoDomainService
         ";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([':uid' => $user->getId()]);
+        $stmt->bindValue(':uid', $user->getId());
+        $resultSet = $stmt->executeQuery();
 
         foreach ($resultSet->fetchAllAssociative() as $row) {
             return $this->entityManager->find(

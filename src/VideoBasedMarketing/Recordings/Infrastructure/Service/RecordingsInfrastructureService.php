@@ -235,7 +235,8 @@ readonly class RecordingsInfrastructureService
 
         $stmt = $this->entityManager->getConnection()
                                     ->prepare($sql);
-        $resultSet = $stmt->executeQuery([':rsid' => $recordingSession->getId()]);
+        $stmt->bindValue(':rsid', $recordingSession->getId());
+        $resultSet = $stmt->executeQuery();
 
         foreach ($resultSet->fetchAllAssociative() as $row) {
             $chunk = $this->entityManager->find(RecordingSessionVideoChunk::class, $row['id']);
@@ -1746,9 +1747,8 @@ readonly class RecordingsInfrastructureService
             ->getConnection()
             ->prepare($sql);
 
-        $resultSet = $stmt->executeQuery([
-            ':rsid' => $recordingSession->getId()
-        ]);
+        $stmt->bindValue(':rsid', $recordingSession->getId());
+        $resultSet = $stmt->executeQuery();
 
         $filenames = [];
         foreach ($resultSet->fetchAllAssociative() as $row) {

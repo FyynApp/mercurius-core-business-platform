@@ -74,7 +74,8 @@ readonly class AudioTranscriptionDomainService
         ";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([':vid' => $video->getId()]);
+        $stmt->bindValue(':vid', $video->getId());
+        $resultSet = $stmt->executeQuery();
 
         foreach ($resultSet->fetchAllAssociative() as $row) {
             return $this->entityManager->find(
@@ -166,10 +167,9 @@ readonly class AudioTranscriptionDomainService
             ";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $resultSet = $stmt->executeQuery([
-            ':vid' => $video->getId(),
-            ':slanguagecode' => $languageCode->value
-        ]);
+        $stmt->bindValue(':vid', $video->getId());
+        $stmt->bindValue(':slanguagecode', $languageCode->value);
+        $resultSet = $stmt->executeQuery();
 
         foreach ($resultSet->fetchAllAssociative() as $row) {
             return $this->entityManager->find(
