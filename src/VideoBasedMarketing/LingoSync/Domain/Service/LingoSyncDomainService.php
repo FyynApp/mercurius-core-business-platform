@@ -211,6 +211,12 @@ readonly class LingoSyncDomainService
         LingoSyncProcessTask $generateOriginalLanguageTranscriptionTask
     ): void
     {
+        if ($generateOriginalLanguageTranscriptionTask->getType() !== LingoSyncProcessTaskType::GenerateOriginalLanguageTranscription) {
+            throw new ValueError(
+                "Expected a GenerateOriginalLanguageTranscription task, but got '{$generateOriginalLanguageTranscriptionTask->getType()->value}'."
+            );
+        }
+
         if ($generateOriginalLanguageTranscriptionTask->getStatus() !== LingoSyncProcessTaskStatus::Initiated) {
             throw new Exception(
                 "Expected a CreateAudioSnippets task with status '" . LingoSyncProcessTaskStatus::Initiated->value . "', but got '{$generateOriginalLanguageTranscriptionTask->getStatus()->value}'."
@@ -253,10 +259,25 @@ readonly class LingoSyncDomainService
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private function handleTaskGenerateTargetLanguageTranscription(
         LingoSyncProcessTask $generateTargetLanguageTranscriptionTask
     ): void
     {
+        if ($generateTargetLanguageTranscriptionTask->getType() !== LingoSyncProcessTaskType::GenerateTargetLanguageTranscription) {
+            throw new ValueError(
+                "Expected a GenerateTargetLanguageTranscription task, but got '{$generateTargetLanguageTranscriptionTask->getType()->value}'."
+            );
+        }
+
+        if ($generateTargetLanguageTranscriptionTask->getStatus() !== LingoSyncProcessTaskStatus::Initiated) {
+            throw new Exception(
+                "Expected a CreateAudioSnippets task with status '" . LingoSyncProcessTaskStatus::Initiated->value . "', but got '{$generateTargetLanguageTranscriptionTask->getStatus()->value}'."
+            );
+        }
+
 
     }
 
@@ -269,15 +290,15 @@ readonly class LingoSyncDomainService
         LingoSyncProcessTask $createAudioSnippetsTask
     ): void
     {
-        if ($createAudioSnippetsTask->getStatus() !== LingoSyncProcessTaskStatus::Initiated) {
-            throw new Exception(
-                "Expected a CreateAudioSnippets task with status '" . LingoSyncProcessTaskStatus::Initiated->value . "', but got '{$createAudioSnippetsTask->getStatus()->value}'."
-            );
-        }
-
         if ($createAudioSnippetsTask->getType() !== LingoSyncProcessTaskType::GenerateAudioSnippets) {
             throw new ValueError(
                 "Expected a CreateAudioSnippets task, but got '{$createAudioSnippetsTask->getType()->value}'."
+            );
+        }
+
+        if ($createAudioSnippetsTask->getStatus() !== LingoSyncProcessTaskStatus::Initiated) {
+            throw new Exception(
+                "Expected a CreateAudioSnippets task with status '" . LingoSyncProcessTaskStatus::Initiated->value . "', but got '{$createAudioSnippetsTask->getStatus()->value}'."
             );
         }
 

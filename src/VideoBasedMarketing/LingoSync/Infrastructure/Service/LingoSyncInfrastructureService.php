@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\LingoSync\Infrastructure\Service;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
 use App\VideoBasedMarketing\LingoSync\Infrastructure\ApiClient\GoogleCloudTextToSpeechApiClient;
+use App\VideoBasedMarketing\Mailings\Infrastructure\Service\OpenAiService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
@@ -19,7 +20,8 @@ readonly class LingoSyncInfrastructureService
 {
     public function __construct(
         private GoogleCloudTextToSpeechApiClient $googleCloudTextToSpeechApiClient,
-        private RecordingsInfrastructureService  $recordingsInfrastructureService
+        private RecordingsInfrastructureService  $recordingsInfrastructureService,
+        private OpenAiService                    $openAiService
     )
     {
     }
@@ -189,6 +191,36 @@ readonly class LingoSyncInfrastructureService
         $output = "WEBVTT\n\n" . implode("\n\n", $mappedCues);
 
         return trim($output);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function translateWebVtt(
+        string            $originalLanguageWebVtt,
+        Bcp47LanguageCode $originalLanguage,
+        Bcp47LanguageCode $targetLanguage
+    ): string
+    {
+        $prompt = "Below, starting with the keyword 'WEBVTT' on a line of its own, is a WebVTT file content with text in BCP47 language $originalLanguage->value.";
+        $prompt .= "\n";
+        $prompt .= "Please translate its text into BCP47 language $targetLanguage->value.";
+        $prompt .= "\n";
+        $prompt .= 'You MUST keep the timestamps intact.';
+        $prompt .= "\n";
+        $prompt .= 'You MUST NOT invent additional WebVTT blocks.';
+        $prompt .= "\n";
+        $prompt .= 'You MUST NOT remove any WebVTT blocks.';
+        $prompt .= "\n";
+        $prompt .= 'You MUST NOT add any additional text or comments. Only return the translated WebVTT content.';
+
+        $prompt .= $originalLanguageWebVtt;
+
+        $translatedWebVtt = $this->openAiService->complete(
+            $prompt
+        );
+
+        return $translatedWebVtt;
     }
 
     /**

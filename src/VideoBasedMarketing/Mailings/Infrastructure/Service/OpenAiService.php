@@ -22,6 +22,32 @@ readonly class OpenAiService
     /**
      * @throws Exception
      */
+    public function complete(
+        string $prompt
+    ): string
+    {
+        $openAiApiKey = $_ENV['OPENAI_API_KEY'];
+
+        $openAi = new OpenAi($openAiApiKey);
+
+        $completion = $openAi->completion([
+            'model' => 'text-davinci-003',
+            'prompt' => $prompt,
+            'temperature' => 0.5,
+            'max_tokens' => 1796,
+            'top_p' => 1.0,
+            'frequency_penalty' => 0.0,
+            'presence_penalty' => 0.0,
+        ]);
+
+        $completionArray = json_decode($completion, true);
+
+        return $completionArray['choices'][0]['text'] ?? throw new Exception("Improvement failed: $completion");
+    }
+
+    /**
+     * @throws Exception
+     */
     public function improveTextForVideoMailing(
         VideoMailing $videoMailing,
         string $promptNotes = '',
