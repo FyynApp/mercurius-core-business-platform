@@ -17,16 +17,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Exception;
 use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 
 readonly class VideoDomainService
 {
     public function __construct(
-        private EntityManagerInterface    $entityManager,
-        private PresentationpagesService  $presentationpagesService,
-        private ShortIdService            $shortIdService,
-        private MembershipService         $membershipService,
-        private VideoFolderDomainService  $videoFolderDomainService
+        private EntityManagerInterface   $entityManager,
+        private PresentationpagesService $presentationpagesService,
+        private ShortIdService           $shortIdService,
+        private MembershipService        $membershipService,
+        private VideoFolderDomainService $videoFolderDomainService,
+        private ContainerBagInterface    $containerBag,
     )
     {
     }
@@ -244,7 +246,8 @@ readonly class VideoDomainService
         User $user
     ): int
     {
-        if (   $user->isAdmin()
+        if (   $this->containerBag->get('kernel.environment') === 'preprod'
+            || $user->isAdmin()
             || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Independent
             || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Pro
         ) {
