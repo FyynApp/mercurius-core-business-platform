@@ -2569,16 +2569,16 @@
         },
         {
             "name": "orhanerday/open-ai",
-            "version": "4.7.2",
+            "version": "4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orhanerday/open-ai.git",
-                "reference": "990d811759d53dbfdb42b2271155088fa2ca20b1"
+                "reference": "896665e293689d68de4b1e9813a2e0b00a06f5ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orhanerday/open-ai/zipball/990d811759d53dbfdb42b2271155088fa2ca20b1",
-                "reference": "990d811759d53dbfdb42b2271155088fa2ca20b1",
+                "url": "https://api.github.com/repos/orhanerday/open-ai/zipball/896665e293689d68de4b1e9813a2e0b00a06f5ef",
+                "reference": "896665e293689d68de4b1e9813a2e0b00a06f5ef",
                 "shasum": ""
             },
             "require": {
@@ -2616,7 +2616,7 @@
             ],
             "support": {
                 "issues": "https://github.com/orhanerday/open-ai/issues",
-                "source": "https://github.com/orhanerday/open-ai/tree/4.7.2"
+                "source": "https://github.com/orhanerday/open-ai/tree/4.8"
             },
             "funding": [
                 {
@@ -2624,7 +2624,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-15T07:52:19+00:00"
+            "time": "2023-06-11T09:25:47+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -2893,16 +2893,16 @@
         },
         {
             "name": "predis/predis",
-            "version": "v2.1.2",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/predis/predis.git",
-                "reference": "a77a43913a74f9331f637bb12867eb8e274814e5"
+                "reference": "33b70b971a32b0d28b4f748b0547593dce316e0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/predis/predis/zipball/a77a43913a74f9331f637bb12867eb8e274814e5",
-                "reference": "a77a43913a74f9331f637bb12867eb8e274814e5",
+                "url": "https://api.github.com/repos/predis/predis/zipball/33b70b971a32b0d28b4f748b0547593dce316e0d",
+                "reference": "33b70b971a32b0d28b4f748b0547593dce316e0d",
                 "shasum": ""
             },
             "require": {
@@ -2912,6 +2912,9 @@
                 "friendsofphp/php-cs-fixer": "^3.3",
                 "phpstan/phpstan": "^1.9",
                 "phpunit/phpunit": "^8.0 || ~9.4.4"
+            },
+            "suggest": {
+                "ext-relay": "Faster connection with in-memory caching (>=0.6.2)"
             },
             "type": "library",
             "autoload": {
@@ -2939,7 +2942,7 @@
             ],
             "support": {
                 "issues": "https://github.com/predis/predis/issues",
-                "source": "https://github.com/predis/predis/tree/v2.1.2"
+                "source": "https://github.com/predis/predis/tree/v2.2.0"
             },
             "funding": [
                 {
@@ -2947,7 +2950,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-02T18:32:04+00:00"
+            "time": "2023-06-14T10:37:31+00:00"
         },
         {
             "name": "psr/cache",
@@ -3642,16 +3645,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v10.14.0",
+            "version": "v10.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "c88a80fa7f361c2d30d6c81fb71f2bb30be1001f"
+                "reference": "d0e48cc85e1aa54cbff3644d1979a4a4c3fdd7bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/c88a80fa7f361c2d30d6c81fb71f2bb30be1001f",
-                "reference": "c88a80fa7f361c2d30d6c81fb71f2bb30be1001f",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/d0e48cc85e1aa54cbff3644d1979a4a4c3fdd7bf",
+                "reference": "d0e48cc85e1aa54cbff3644d1979a4a4c3fdd7bf",
                 "shasum": ""
             },
             "require": {
@@ -3697,9 +3700,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v10.14.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v10.15.0"
             },
-            "time": "2023-05-25T18:09:32+00:00"
+            "time": "2023-06-08T21:47:46+00:00"
         },
         {
             "name": "symfony/asset",
@@ -9475,16 +9478,16 @@
         },
         {
             "name": "twig/extra-bundle",
-            "version": "v3.6.0",
+            "version": "v3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/twig-extra-bundle.git",
-                "reference": "4a9674e775f49a9df5e26da66546e8f3364afe67"
+                "reference": "802cc2dd46ec88285d6c7fa85c26ab7f2cd5bc49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/4a9674e775f49a9df5e26da66546e8f3364afe67",
-                "reference": "4a9674e775f49a9df5e26da66546e8f3364afe67",
+                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/802cc2dd46ec88285d6c7fa85c26ab7f2cd5bc49",
+                "reference": "802cc2dd46ec88285d6c7fa85c26ab7f2cd5bc49",
                 "shasum": ""
             },
             "require": {
@@ -9533,7 +9536,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.6.0"
+                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.6.1"
             },
             "funding": [
                 {
@@ -9545,7 +9548,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-14T11:03:02+00:00"
+            "time": "2023-05-06T11:11:46+00:00"
         },
         {
             "name": "twig/intl-extra",
@@ -9613,16 +9616,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.6.0",
+            "version": "v3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "106c170d08e8415d78be2d16c3d057d0d108262b"
+                "reference": "7e7d5839d4bec168dfeef0ac66d5c5a2edbabffd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/106c170d08e8415d78be2d16c3d057d0d108262b",
-                "reference": "106c170d08e8415d78be2d16c3d057d0d108262b",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7e7d5839d4bec168dfeef0ac66d5c5a2edbabffd",
+                "reference": "7e7d5839d4bec168dfeef0ac66d5c5a2edbabffd",
                 "shasum": ""
             },
             "require": {
@@ -9668,7 +9671,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.6.0"
+                "source": "https://github.com/twigphp/Twig/tree/v3.6.1"
             },
             "funding": [
                 {
@@ -9680,7 +9683,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-03T19:06:57+00:00"
+            "time": "2023-06-08T12:52:13+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -10384,16 +10387,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.18",
+            "version": "1.10.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "52b6416c579663eebdd2f1d97df21971daf3b43f"
+                "reference": "af5a296ff02610c1bfb4ddfac9fd4a08657b9046"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/52b6416c579663eebdd2f1d97df21971daf3b43f",
-                "reference": "52b6416c579663eebdd2f1d97df21971daf3b43f",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/af5a296ff02610c1bfb4ddfac9fd4a08657b9046",
+                "reference": "af5a296ff02610c1bfb4ddfac9fd4a08657b9046",
                 "shasum": ""
             },
             "require": {
@@ -10442,7 +10445,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-07T22:00:43+00:00"
+            "time": "2023-06-14T15:26:58+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
@@ -10835,16 +10838,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.8",
+            "version": "9.6.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "17d621b3aff84d0c8b62539e269e87d8d5baa76e"
+                "reference": "a9aceaf20a682aeacf28d582654a1670d8826778"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/17d621b3aff84d0c8b62539e269e87d8d5baa76e",
-                "reference": "17d621b3aff84d0c8b62539e269e87d8d5baa76e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a9aceaf20a682aeacf28d582654a1670d8826778",
+                "reference": "a9aceaf20a682aeacf28d582654a1670d8826778",
                 "shasum": ""
             },
             "require": {
@@ -10918,7 +10921,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.8"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.9"
             },
             "funding": [
                 {
@@ -10934,7 +10937,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-11T05:14:45+00:00"
+            "time": "2023-06-11T06:13:56+00:00"
         },
         {
             "name": "sebastian/cli-parser",
