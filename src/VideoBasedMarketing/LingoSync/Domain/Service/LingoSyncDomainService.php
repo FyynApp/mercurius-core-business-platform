@@ -223,6 +223,19 @@ readonly class LingoSyncDomainService
             );
         }
 
+        $existingWebVtts = $this->audioTranscriptionDomainService->getWebVtts(
+            $generateOriginalLanguageTranscriptionTask->getLingoSyncProcess()->getVideo()
+        );
+
+        foreach ($existingWebVtts as $existingWebVtt) {
+            if ($existingWebVtt->getBcp47LanguageCode() === $generateOriginalLanguageTranscriptionTask->getLingoSyncProcess()->getOriginalLanguage()) {
+                $generateOriginalLanguageTranscriptionTask->getLingoSyncProcess()->setAudioTranscription($existingWebVtt->getAudioTranscription());
+                $this->entityManager->persist($generateOriginalLanguageTranscriptionTask->getLingoSyncProcess());
+                $this->entityManager->persist($existingWebVtt->getAudioTranscription());
+                $this->entityManager->flush();
+            }
+        }
+
         if (is_null($generateOriginalLanguageTranscriptionTask->getLingoSyncProcess()->getAudioTranscription())) {
             // When the original language WebVTT becomes available through the Audio Transcription process,
             // a WebVttBecameAvailableSymfonyEvent will be dispatched, which will trigger the

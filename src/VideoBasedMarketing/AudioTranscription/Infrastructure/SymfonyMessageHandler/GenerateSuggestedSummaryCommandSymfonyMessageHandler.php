@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\SymfonyMessageHandler;
 
+use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionSuggestedSummary;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\SymfonyMessage\GenerateSuggestedSummaryCommandSymfonyMessage;
@@ -37,6 +38,13 @@ readonly class GenerateSuggestedSummaryCommandSymfonyMessageHandler
                 throw new UnrecoverableMessageHandlingException(
                     "Could not find audioTranscriptionWebVtt with id '{$message->getWebVttId()}'."
                 );
+            }
+
+            if (!in_array(
+                $webVtt->getBcp47LanguageCode(),
+                [Bcp47LanguageCode::DeDe, Bcp47LanguageCode::EnUs]
+            )) {
+                return;
             }
 
             $summaryContent = $this

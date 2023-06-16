@@ -132,6 +132,5 @@ class AudioTranscription
     ): void
     {
         $this->lingoSyncProcess = $lingoSyncProcess;
-        $this->lingoSyncProcess->setAudioTranscription($this);
     }
 }
