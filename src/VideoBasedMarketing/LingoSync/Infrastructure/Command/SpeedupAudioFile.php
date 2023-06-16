@@ -19,13 +19,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SpeedupAudioFile
     extends Command
 {
-    private readonly LingoSyncInfrastructureService $textToSpeechService;
+    private readonly LingoSyncInfrastructureService $lingoSyncInfrastructureService;
 
     public function __construct(
         LingoSyncInfrastructureService $lingoSyncInfrastructureService
     )
     {
-        $this->textToSpeechService = $lingoSyncInfrastructureService;
+        $this->lingoSyncInfrastructureService = $lingoSyncInfrastructureService;
         parent::__construct();
     }
 
@@ -61,7 +61,7 @@ class SpeedupAudioFile
         $targetAudioFilePath = $input->getArgument('targetAudioFilePath');
         $speakingRate = (float)$input->getArgument('speakingRate');
 
-        $this->textToSpeechService::speedupAudioFile(
+        $this->lingoSyncInfrastructureService::speedupAudioFile(
             $sourceAudioFilePath,
             $targetAudioFilePath,
             $speakingRate

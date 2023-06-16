@@ -19,13 +19,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TrimAudioFile
     extends Command
 {
-    private readonly LingoSyncInfrastructureService $textToSpeechService;
+    private readonly LingoSyncInfrastructureService $lingoSyncInfrastructureService;
 
     public function __construct(
         LingoSyncInfrastructureService $lingoSyncInfrastructureService
     )
     {
-        $this->textToSpeechService = $lingoSyncInfrastructureService;
+        $this->lingoSyncInfrastructureService = $lingoSyncInfrastructureService;
         parent::__construct();
     }
 
@@ -55,7 +55,7 @@ class TrimAudioFile
         $sourceAudioFilePath = $input->getArgument('sourceAudioFilePath');
         $targetAudioFilePath = $input->getArgument('targetAudioFilePath');
 
-        $this->textToSpeechService::trimAudioFile(
+        $this->lingoSyncInfrastructureService::trimAudioFile(
             $sourceAudioFilePath,
             $targetAudioFilePath
         );

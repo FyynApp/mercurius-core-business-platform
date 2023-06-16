@@ -19,13 +19,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MapWebVttTimestamps
     extends Command
 {
-    private readonly LingoSyncInfrastructureService $textToSpeechService;
+    private readonly LingoSyncInfrastructureService $lingoSyncInfrastructureService;
 
     public function __construct(
         LingoSyncInfrastructureService $lingoSyncInfrastructureService
     )
     {
-        $this->textToSpeechService = $lingoSyncInfrastructureService;
+        $this->lingoSyncInfrastructureService = $lingoSyncInfrastructureService;
         parent::__construct();
     }
 
@@ -56,7 +56,7 @@ class MapWebVttTimestamps
         $webvttWithCorrectTextsFilePath = $input->getArgument('webvttWithCorrectTextsFilePath');
 
         $output->writeln(
-            $this->textToSpeechService::mapWebVttTimestamps(
+            $this->lingoSyncInfrastructureService::mapWebVttTimestamps(
                 file_get_contents($webvttWithCorrectTimestampsFilePath),
                 file_get_contents($webvttWithCorrectTextsFilePath)
             )
