@@ -21,13 +21,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateAudioFilesForWebVttCues
     extends Command
 {
-    private readonly LingoSyncInfrastructureService $textToSpeechService;
+    private readonly LingoSyncInfrastructureService $lingoSyncInfrastructureService;
 
     public function __construct(
-        LingoSyncInfrastructureService $textToSpeechService
+        LingoSyncInfrastructureService $lingoSyncInfrastructureService
     )
     {
-        $this->textToSpeechService = $textToSpeechService;
+        $this->lingoSyncInfrastructureService = $lingoSyncInfrastructureService;
         parent::__construct();
     }
 
@@ -67,8 +67,8 @@ class CreateAudioFilesForWebVttCues
         $languageCode = Bcp47LanguageCode::from($input->getArgument('languageCode'));
         $gender = Gender::from($input->getArgument('gender'));
 
-        $folderPath = $this->textToSpeechService->createAudioFilesForWebVttCues(
-            $this->textToSpeechService::compactizeWebVtt(
+        $folderPath = $this->lingoSyncInfrastructureService->createAudioFilesForWebVttCues(
+            $this->lingoSyncInfrastructureService::compactizeWebVtt(
                 file_get_contents($webVttFilePath)
             ),
             $languageCode,

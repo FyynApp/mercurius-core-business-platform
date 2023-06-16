@@ -22,13 +22,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class GetAudioFileLength
     extends Command
 {
-    private readonly LingoSyncInfrastructureService $textToSpeechService;
+    private readonly LingoSyncInfrastructureService $lingoSyncInfrastructureService;
 
     public function __construct(
-        LingoSyncInfrastructureService $textToSpeechService
+        LingoSyncInfrastructureService $lingoSyncInfrastructureService
     )
     {
-        $this->textToSpeechService = $textToSpeechService;
+        $this->lingoSyncInfrastructureService = $lingoSyncInfrastructureService;
         parent::__construct();
     }
 
@@ -52,7 +52,7 @@ class GetAudioFileLength
     {
         $audioFilePath = $input->getArgument('audioFilePath');
 
-        $length = $this->textToSpeechService->getAudioFileDurationInMilliseconds(
+        $length = $this->lingoSyncInfrastructureService->getAudioFileDurationInMilliseconds(
             $audioFilePath
         );
 

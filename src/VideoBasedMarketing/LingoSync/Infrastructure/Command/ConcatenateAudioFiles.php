@@ -19,13 +19,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConcatenateAudioFiles
     extends Command
 {
-    private readonly LingoSyncInfrastructureService $textToSpeechService;
+    private readonly LingoSyncInfrastructureService $lingoSyncInfrastructureService;
 
     public function __construct(
-        LingoSyncInfrastructureService $textToSpeechService
+        LingoSyncInfrastructureService $lingoSyncInfrastructureService
     )
     {
-        $this->textToSpeechService = $textToSpeechService;
+        $this->lingoSyncInfrastructureService = $lingoSyncInfrastructureService;
         parent::__construct();
     }
 
@@ -61,8 +61,8 @@ class ConcatenateAudioFiles
         $sourceAudioFilesFolderPath = $input->getArgument('sourceAudioFilesFolderPath');
         $targetAudioFilePath = $input->getArgument('targetAudioFilePath');
 
-        $this->textToSpeechService->concatenateAudioFiles(
-            $this->textToSpeechService::compactizeWebVtt(
+        $this->lingoSyncInfrastructureService->concatenateAudioFiles(
+            $this->lingoSyncInfrastructureService::compactizeWebVtt(
                 file_get_contents($webVttFilePath)
             ),
             $sourceAudioFilesFolderPath,

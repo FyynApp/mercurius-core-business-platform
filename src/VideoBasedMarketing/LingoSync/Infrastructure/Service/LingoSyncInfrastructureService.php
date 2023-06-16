@@ -202,25 +202,61 @@ readonly class LingoSyncInfrastructureService
         Bcp47LanguageCode $targetLanguage
     ): string
     {
-        $prompt = "Below, starting with the keyword 'WEBVTT' on a line of its own, is a WebVTT file content with text in BCP47 language $originalLanguage->value.";
-        $prompt .= "\n";
-        $prompt .= "Please translate its text into BCP47 language $targetLanguage->value.";
-        $prompt .= "\n";
-        $prompt .= 'You MUST keep the timestamps intact.';
-        $prompt .= "\n";
-        $prompt .= 'You MUST NOT invent additional WebVTT blocks.';
-        $prompt .= "\n";
-        $prompt .= 'You MUST NOT remove any WebVTT blocks.';
-        $prompt .= "\n";
-        $prompt .= 'You MUST NOT add any additional text or comments. Only return the translated WebVTT content.';
+        $cues = explode("\n\n", trim($originalLanguageWebVtt));
 
-        $prompt .= $originalLanguageWebVtt;
+        $originalCuesBlocks = [];
+        $translatedCuesBlocks = [];
+        foreach ($cues as $index => $cue) {
+            if (str_starts_with('WEBVTT', trim($cue))) {
+                continue;
+            }
 
-        $translatedWebVtt = $this->openAiService->complete(
-            $prompt
-        );
+            $originalCuesBlocks[] = $cue;
 
-        return $translatedWebVtt;
+            if (sizeof($originalCuesBlocks) < 10) {
+                if ($index < sizeof($cues) - 1) {
+                    continue;
+                }
+            }
+
+            $prompt = "Below, starting with the keyword 'WEBVTT' on a line of its own, is a part of the content of a WebVTT file, with cue text lines in BCP47 language $originalLanguage->value.";
+            $prompt .= "\n";
+            $prompt .= "Please translate its cue text lines into BCP47 language $targetLanguage->value.";
+            $prompt .= "\n";
+            $prompt .= 'You MUST keep the cue index numbers intact.';
+            $prompt .= "\n";
+            $prompt .= 'You MUST keep the cue timestamps intact.';
+            $prompt .= "\n";
+            $prompt .= 'You MUST NOT invent additional WebVTT blocks.';
+            $prompt .= "\n";
+            $prompt .= 'You MUST NOT remove any WebVTT blocks.';
+            $prompt .= "\n";
+            $prompt .= 'You MUST NOT add any additional text or comments. Only return the translated WebVTT content, WITHOUT the keyword "WEBVTT" at the beginning.';
+            $prompt .= "\n";
+            $prompt .= 'WEBVTT';
+            $prompt .= "\n";
+
+            $prompt .= implode("\n\n", $originalCuesBlocks);
+
+            $translatedWebVtt = $this->openAiService->complete(
+                $prompt
+            );
+
+            $lines = explode("\n", $translatedWebVtt);
+            $cleanedLines = [];
+
+            foreach ($lines as $line) {
+                if (str_starts_with($line, 'WEBVTT')) {
+                    continue;
+                }
+                $cleanedLines[] = $line;
+            }
+
+            $translatedCuesBlocks[] = implode("\n", $cleanedLines);
+            $originalCuesBlocks = [];
+        }
+
+        return "WEBVTT\n\n" . trim(implode('', $translatedCuesBlocks));
     }
 
     /**

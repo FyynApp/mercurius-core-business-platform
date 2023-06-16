@@ -22,10 +22,10 @@ class MapWebVttTimestamps
     private readonly LingoSyncInfrastructureService $textToSpeechService;
 
     public function __construct(
-        LingoSyncInfrastructureService $textToSpeechService
+        LingoSyncInfrastructureService $lingoSyncInfrastructureService
     )
     {
-        $this->textToSpeechService = $textToSpeechService;
+        $this->textToSpeechService = $lingoSyncInfrastructureService;
         parent::__construct();
     }
 

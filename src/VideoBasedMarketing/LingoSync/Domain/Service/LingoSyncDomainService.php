@@ -278,7 +278,30 @@ readonly class LingoSyncDomainService
             );
         }
 
+        $existingWebVtts = $this->audioTranscriptionDomainService->getWebVtts(
+            $generateTargetLanguageTranscriptionTask->getLingoSyncProcess()->getVideo()
+        );
 
+        foreach ($existingWebVtts as $existingWebVtt) {
+            if ($existingWebVtt->getBcp47LanguageCode() === $generateTargetLanguageTranscriptionTask->getLingoSyncProcess()->getOriginalLanguage()) {
+
+                $translatedWebVtt = $this->lingoSyncInfrastructureService->translateWebVtt(
+                    $this->lingoSyncInfrastructureService::compactizeWebVtt(
+                        $existingWebVtt->getVttContent()
+                    ),
+                    $generateTargetLanguageTranscriptionTask->getLingoSyncProcess()->getOriginalLanguage(),
+                    $generateTargetLanguageTranscriptionTask->getTargetLanguage()
+                );
+
+                $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Finished);
+
+                $this->entityManager->persist($generateTargetLanguageTranscriptionTask->getLingoSyncProcess());
+                $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
+                $this->entityManager->flush();
+
+                return;
+            }
+        }
     }
 
     /**

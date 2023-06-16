@@ -21,13 +21,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CompactizeWebVtt
     extends Command
 {
-    private readonly LingoSyncInfrastructureService $textToSpeechService;
+    private readonly LingoSyncInfrastructureService $lingoSyncInfrastructureService;
 
     public function __construct(
-        LingoSyncInfrastructureService $textToSpeechService
+        LingoSyncInfrastructureService $lingoSyncInfrastructureService
     )
     {
-        $this->textToSpeechService = $textToSpeechService;
+        $this->lingoSyncInfrastructureService = $lingoSyncInfrastructureService;
         parent::__construct();
     }
 
@@ -51,7 +51,7 @@ class CompactizeWebVtt
     {
         $webVttFilePath = $input->getArgument('webVttFilePath');
         $output->writeln(
-            $this->textToSpeechService::compactizeWebVtt(
+            $this->lingoSyncInfrastructureService::compactizeWebVtt(
                 file_get_contents($webVttFilePath)
             )
         );

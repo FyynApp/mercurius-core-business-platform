@@ -19,13 +19,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class AudioFileIsUsable
     extends Command
 {
-    private readonly LingoSyncInfrastructureService $textToSpeechService;
+    private readonly LingoSyncInfrastructureService $lingoSyncInfrastructureService;
 
     public function __construct(
-        LingoSyncInfrastructureService $textToSpeechService
+        LingoSyncInfrastructureService $lingoSyncInfrastructureService
     )
     {
-        $this->textToSpeechService = $textToSpeechService;
+        $this->lingoSyncInfrastructureService = $lingoSyncInfrastructureService;
         parent::__construct();
     }
 
@@ -49,7 +49,7 @@ class AudioFileIsUsable
     {
         $sourceAudioFilePath = $input->getArgument('sourceAudioFilePath');
 
-        $isUsable = $this->textToSpeechService::audioFileIsUsable(
+        $isUsable = $this->lingoSyncInfrastructureService::audioFileIsUsable(
             $sourceAudioFilePath
         );
 
