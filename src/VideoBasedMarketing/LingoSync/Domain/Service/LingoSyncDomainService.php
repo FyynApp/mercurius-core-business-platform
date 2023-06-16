@@ -224,6 +224,9 @@ readonly class LingoSyncDomainService
         }
 
         if (is_null($generateOriginalLanguageTranscriptionTask->getLingoSyncProcess()->getAudioTranscription())) {
+            // When the original language WebVTT becomes available through the Audio Transcription process,
+            // a WebVttBecameAvailableSymfonyEvent will be dispatched, which will trigger the
+            // handleWebVttBecameAvailable method below.
             $this->audioTranscriptionDomainService->startProcessingVideo(
                 $generateOriginalLanguageTranscriptionTask->getLingoSyncProcess()->getVideo(),
                 $generateOriginalLanguageTranscriptionTask->getLingoSyncProcess()->getOriginalLanguage(),
@@ -248,6 +251,8 @@ readonly class LingoSyncDomainService
                     $this->entityManager->persist($generateOriginalLanguageTranscriptionTask->getLingoSyncProcess());
                     $this->entityManager->persist($generateOriginalLanguageTranscriptionTask);
                     $this->entityManager->flush();
+
+                    $this->handleWebVttBecameAvailable($existingWebVtt);
 
                     return;
                 }
@@ -308,7 +313,7 @@ readonly class LingoSyncDomainService
 
                 if (is_null($generateAudioSnippetsTask)) {
                     throw new Exception(
-                        "Expected a GenerateAudioSnippets task for language '{$generateTargetLanguageTranscriptionTask->getTargetLanguage()->value}', but none was found."
+                        "Expected a GenerateAudioSnippets task for target language '{$generateTargetLanguageTranscriptionTask->getTargetLanguage()->value}', but none was found."
                     );
                 }
 
@@ -488,7 +493,7 @@ readonly class LingoSyncDomainService
 
         if (is_null($lingoSyncProcess)) {
             $this->logger->debug(
-                "Audio Transcription '{$webVtt->getAudioTranscription()->getId()}' does not have a LingoSync Process, aborting."
+                "Audio Transcription '{$webVtt->getAudioTranscription()->getId()}' does not have a LingoSync Process."
             );
             return;
         }
