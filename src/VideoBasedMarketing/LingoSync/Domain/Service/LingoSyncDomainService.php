@@ -330,7 +330,7 @@ readonly class LingoSyncDomainService
 
     /**
      * @throws ValidationException
-     * @throws ApiException|\Doctrine\DBAL\Exception
+     * @throws ApiException
      * @throws Exception
      */
     private function handleTaskGenerateAudioSnippets(
@@ -349,131 +349,126 @@ readonly class LingoSyncDomainService
             );
         }
 
-        $webVtts = $this->audioTranscriptionDomainService->getWebVtts(
-            $createAudioSnippetsTask->getLingoSyncProcess()->getAudioTranscription()->getVideo()
+        $generateTargetLanguageTranscriptionTask = $this->findProcessTask(
+            $createAudioSnippetsTask->getLingoSyncProcess(),
+            LingoSyncProcessTaskType::GenerateTargetLanguageTranscription,
+            $createAudioSnippetsTask->getTargetLanguage()
         );
 
-        $originalLanguageWebVttContent = null;
-        foreach ($webVtts as $webVtt) {
-            if ($webVtt->getBcp47LanguageCode() === $createAudioSnippetsTask->getLingoSyncProcess()->getOriginalLanguage()) {
-                $originalLanguageWebVttContent = $this
-                    ->lingoSyncInfrastructureService
-                    ::compactizeWebVtt($webVtt->getVttContent());
-            }
+        if (is_null($generateTargetLanguageTranscriptionTask)) {
+            throw new ValueError(
+                "Could not find a GenerateTargetLanguageTranscription task for LingoSyncProcess '{$createAudioSnippetsTask->getLingoSyncProcess()->getId()}' and language '{$createAudioSnippetsTask->getTargetLanguage()->value}'."
+            );
         }
 
-        foreach ($webVtts as $webVtt) {
-            if ($webVtt->getBcp47LanguageCode() === $createAudioSnippetsTask->getTargetLanguage()) {
-
-                $createAudioSnippetsTask->setStatus(LingoSyncProcessTaskStatus::Running);
-                $this->entityManager->persist($createAudioSnippetsTask);
-                $this->entityManager->flush();
-
-                $webVttContent = $this
-                    ->lingoSyncInfrastructureService
-                    ::compactizeWebVtt($webVtt->getVttContent());
-
-                if (!is_null($originalLanguageWebVttContent)) {
-                    $webVttContent = $this->lingoSyncInfrastructureService::mapWebVttTimestamps(
-                        $originalLanguageWebVttContent,
-                        $webVttContent
-                    );
-                }
-
-                $audioSnippetFilesFolderPath = $this->lingoSyncInfrastructureService->createAudioFilesForWebVttCues(
-                    $webVttContent,
-                    $createAudioSnippetsTask->getTargetLanguage(),
-                    $createAudioSnippetsTask->getLingoSyncProcess()->getOriginalGender(),
-                );
-
-                $createAudioSnippetsTask->setStatus(LingoSyncProcessTaskStatus::Finished);
-                $this->entityManager->persist($createAudioSnippetsTask);
-                $this->entityManager->flush();
-
-
-                $concatenateAudioSnippetsTask = $this->findProcessTask(
-                    $createAudioSnippetsTask->getLingoSyncProcess(),
-                    LingoSyncProcessTaskType::GenerateConcatenatedAudio,
-                    $createAudioSnippetsTask->getTargetLanguage()
-                );
-
-                if (is_null($concatenateAudioSnippetsTask)) {
-                    throw new ValueError(
-                        "Could not find a ConcatenateAudioSnippets task for LingoSyncProcess '{$createAudioSnippetsTask->getLingoSyncProcess()->getId()}' and language '{$createAudioSnippetsTask->getTargetLanguage()->value}'."
-                    );
-                }
-
-                $concatenateAudioSnippetsTask->setStatus(LingoSyncProcessTaskStatus::Running);
-                $this->entityManager->persist($concatenateAudioSnippetsTask);
-                $this->entityManager->flush();
-
-                $concatenatedAudioFilePath = $this->lingoSyncInfrastructureService->concatenateAudioFiles(
-                    $webVttContent,
-                    $audioSnippetFilesFolderPath
-                );
-
-                $concatenateAudioSnippetsTask->setStatus(LingoSyncProcessTaskStatus::Finished);
-                $this->entityManager->persist($concatenateAudioSnippetsTask);
-                $this->entityManager->flush();
-
-                #echo "\nconcatenatedAudioFilePath is: $concatenatedAudioFilePath\n";
-
-
-                $generateTranslatedVideoTask = $this->findProcessTask(
-                    $createAudioSnippetsTask->getLingoSyncProcess(),
-                    LingoSyncProcessTaskType::GenerateTranslatedVideo,
-                    $createAudioSnippetsTask->getTargetLanguage()
-                );
-
-                if (is_null($generateTranslatedVideoTask)) {
-                    throw new ValueError(
-                        "Could not find a GenerateTranslatedVideo task for LingoSyncProcess '{$createAudioSnippetsTask->getLingoSyncProcess()->getId()}' and language '{$createAudioSnippetsTask->getTargetLanguage()->value}'."
-                    );
-                }
-
-                $generateTranslatedVideoTask->setStatus(LingoSyncProcessTaskStatus::Running);
-                $this->entityManager->persist($generateTranslatedVideoTask);
-                $this->entityManager->flush();
-
-                $translatedVideoPath = $this->lingoSyncInfrastructureService->createVideoFileFromVideoAndAudioFile(
-                    $generateTranslatedVideoTask->getLingoSyncProcess()->getVideo(),
-                    $concatenatedAudioFilePath
-                );
-
-                $generateTranslatedVideoTask->setStatus(LingoSyncProcessTaskStatus::Finished);
-                $this->entityManager->persist($generateTranslatedVideoTask);
-                $this->entityManager->flush();
-
-                #echo "\ntranslatedVideoPath is: $translatedVideoPath\n";
-
-                $video = new Video($createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getUser());
-                $video->setInternallyCreatedSourceFilePath($translatedVideoPath);
-                $video->setTitle(
-                    $createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getTitle()
-                    . " — LingoSync — {$generateTranslatedVideoTask->getTargetLanguage()->value}"
-                );
-                $video->setVideoFolder(
-                    $createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getVideoFolder()
-                );
-
-                $video->setCreatedByLingoSyncProcessTask(
-                    $generateTranslatedVideoTask
-                );
-
-                $this->entityManager->persist($video);
-                $this->entityManager->flush();
-
-                $this
-                    ->recordingsInfrastructureService
-                    ->createAssetOriginalForInternallyCreatedVideo($video);
-
-                $this->messageBus->dispatch(
-                    new GenerateMissingVideoAssetsCommandSymfonyMessage($video)
-                );
-
-                break;
-            }
+        if ($generateTargetLanguageTranscriptionTask->getStatus() !== LingoSyncProcessTaskStatus::Finished) {
+            throw new ValueError(
+                "Expected a GenerateTargetLanguageTranscription task with status '" . LingoSyncProcessTaskStatus::Finished->value . "', but got '{$generateTargetLanguageTranscriptionTask->getStatus()->value}'."
+            );
         }
+
+        if (is_null($generateTargetLanguageTranscriptionTask->getResult())) {
+            throw new ValueError(
+                "Expected a GenerateTargetLanguageTranscription task with a result, but got null."
+            );
+        }
+
+        $createAudioSnippetsTask->setStatus(LingoSyncProcessTaskStatus::Running);
+        $this->entityManager->persist($createAudioSnippetsTask);
+        $this->entityManager->flush();
+
+        $webVttContent = $generateTargetLanguageTranscriptionTask->getResult();
+
+        $audioSnippetFilesFolderPath = $this->lingoSyncInfrastructureService->createAudioFilesForWebVttCues(
+            $webVttContent,
+            $createAudioSnippetsTask->getTargetLanguage(),
+            $createAudioSnippetsTask->getLingoSyncProcess()->getOriginalGender(),
+        );
+
+        $createAudioSnippetsTask->setStatus(LingoSyncProcessTaskStatus::Finished);
+        $this->entityManager->persist($createAudioSnippetsTask);
+        $this->entityManager->flush();
+
+
+        $generateConcatenatedAudioTask = $this->findProcessTask(
+            $createAudioSnippetsTask->getLingoSyncProcess(),
+            LingoSyncProcessTaskType::GenerateConcatenatedAudio,
+            $createAudioSnippetsTask->getTargetLanguage()
+        );
+
+        if (is_null($generateConcatenatedAudioTask)) {
+            throw new ValueError(
+                "Could not find a GenerateConcatenatedAudio task for LingoSyncProcess '{$createAudioSnippetsTask->getLingoSyncProcess()->getId()}' and language '{$createAudioSnippetsTask->getTargetLanguage()->value}'."
+            );
+        }
+
+        $generateConcatenatedAudioTask->setStatus(LingoSyncProcessTaskStatus::Running);
+        $this->entityManager->persist($generateConcatenatedAudioTask);
+        $this->entityManager->flush();
+
+        $concatenatedAudioFilePath = $this->lingoSyncInfrastructureService->concatenateAudioFiles(
+            $webVttContent,
+            $audioSnippetFilesFolderPath
+        );
+
+        $generateConcatenatedAudioTask->setStatus(LingoSyncProcessTaskStatus::Finished);
+        $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
+        $this->entityManager->flush();
+
+        #echo "\nconcatenatedAudioFilePath is: $concatenatedAudioFilePath\n";
+
+
+        $generateTranslatedVideoTask = $this->findProcessTask(
+            $createAudioSnippetsTask->getLingoSyncProcess(),
+            LingoSyncProcessTaskType::GenerateTranslatedVideo,
+            $createAudioSnippetsTask->getTargetLanguage()
+        );
+
+        if (is_null($generateTranslatedVideoTask)) {
+            throw new ValueError(
+                "Could not find a GenerateTranslatedVideo task for LingoSyncProcess '{$createAudioSnippetsTask->getLingoSyncProcess()->getId()}' and language '{$createAudioSnippetsTask->getTargetLanguage()->value}'."
+            );
+        }
+
+        $generateTranslatedVideoTask->setStatus(LingoSyncProcessTaskStatus::Running);
+        $this->entityManager->persist($generateTranslatedVideoTask);
+        $this->entityManager->flush();
+
+        $translatedVideoPath = $this->lingoSyncInfrastructureService->createVideoFileFromVideoAndAudioFile(
+            $generateTranslatedVideoTask->getLingoSyncProcess()->getVideo(),
+            $concatenatedAudioFilePath
+        );
+
+        $generateTranslatedVideoTask->setStatus(LingoSyncProcessTaskStatus::Finished);
+        $this->entityManager->persist($generateTranslatedVideoTask);
+        $this->entityManager->flush();
+
+        #echo "\ntranslatedVideoPath is: $translatedVideoPath\n";
+
+        $video = new Video($createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getUser());
+        $video->setInternallyCreatedSourceFilePath($translatedVideoPath);
+        $video->setTitle(
+            $createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getTitle()
+            . " — LingoSync — {$generateTranslatedVideoTask->getTargetLanguage()->value}"
+        );
+        $video->setVideoFolder(
+            $createAudioSnippetsTask->getLingoSyncProcess()->getVideo()->getVideoFolder()
+        );
+
+        $video->setCreatedByLingoSyncProcessTask(
+            $generateTranslatedVideoTask
+        );
+
+        $this->entityManager->persist($video);
+        $this->entityManager->flush();
+
+        $this
+            ->recordingsInfrastructureService
+            ->createAssetOriginalForInternallyCreatedVideo($video);
+
+        $this->messageBus->dispatch(
+            new GenerateMissingVideoAssetsCommandSymfonyMessage($video)
+        );
     }
 
     /**
