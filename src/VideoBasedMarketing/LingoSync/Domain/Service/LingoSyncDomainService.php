@@ -527,15 +527,17 @@ readonly class LingoSyncDomainService
         $this->entityManager->flush();
 
 
-        $generateTargetLanguageTranscriptionTask = $this->findProcessTask(
-            $lingoSyncProcess,
-            LingoSyncProcessTaskType::GenerateTargetLanguageTranscription,
-            $webVtt->getBcp47LanguageCode()
-        );
+        $tasks = $lingoSyncProcess->getTasks();
 
-        $this->messageBus->dispatch(new HandleTaskCommandSymfonyMessage(
-            $generateTargetLanguageTranscriptionTask
-        ));
+        foreach ($tasks as $task) {
+            if (   $task->getType() === LingoSyncProcessTaskType::GenerateTargetLanguageTranscription
+                && $task->getStatus() === LingoSyncProcessTaskStatus::Initiated
+            ) {
+                $this->messageBus->dispatch(new HandleTaskCommandSymfonyMessage(
+                    $task
+                ));
+            }
+        }
     }
 
 

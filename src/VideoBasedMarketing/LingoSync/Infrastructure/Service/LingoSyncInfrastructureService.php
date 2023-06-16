@@ -490,7 +490,7 @@ readonly class LingoSyncInfrastructureService
                 $silenceFilePath = "/{$sourceFilesFolderPath}/silence_{$index}.mp3";
 
                 // silenceDuration tends to be a bit too short...
-                $silenceDuration *= 1.20;
+                $silenceDuration *= 1.10;
 
                 exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$silenceDuration} {$silenceFilePath}");
 
