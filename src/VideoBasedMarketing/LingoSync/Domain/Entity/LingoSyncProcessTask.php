@@ -179,6 +179,24 @@ class LingoSyncProcessTask
 
 
     #[ORM\Column(
+        type: Types::STRING,
+        length: 65536,
+        nullable: true
+    )]
+    private ?string $result = null;
+
+    public function getResult(): ?string
+    {
+        return $this->result;
+    }
+
+    public function setResult(string $result): void
+    {
+        $this->result = $result;
+    }
+
+
+    #[ORM\Column(
         type: Types::INTEGER,
         nullable: false,
         options: ['unsigned' => true]

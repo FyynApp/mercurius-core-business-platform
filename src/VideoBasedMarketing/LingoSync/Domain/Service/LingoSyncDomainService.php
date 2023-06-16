@@ -293,15 +293,39 @@ readonly class LingoSyncDomainService
                     $generateTargetLanguageTranscriptionTask->getTargetLanguage()
                 );
 
+                $generateTargetLanguageTranscriptionTask->setResult($translatedWebVtt);
                 $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Finished);
 
                 $this->entityManager->persist($generateTargetLanguageTranscriptionTask->getLingoSyncProcess());
                 $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
                 $this->entityManager->flush();
 
+                $generateAudioSnippetsTask = $this->findProcessTask(
+                    $generateTargetLanguageTranscriptionTask->getLingoSyncProcess(),
+                    LingoSyncProcessTaskType::GenerateAudioSnippets,
+                    $generateTargetLanguageTranscriptionTask->getTargetLanguage()
+                );
+
+                if (is_null($generateAudioSnippetsTask)) {
+                    throw new Exception(
+                        "Expected a GenerateAudioSnippets task for language '{$generateTargetLanguageTranscriptionTask->getTargetLanguage()->value}', but none was found."
+                    );
+                }
+
+                $this->messageBus->dispatch(new HandleTaskCommandSymfonyMessage(
+                    $generateAudioSnippetsTask
+                ));
+
                 return;
             }
         }
+
+        $generateTargetLanguageTranscriptionTask->setResult('Could not find original language transcription.');
+        $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Errored);
+
+        $this->entityManager->persist($generateTargetLanguageTranscriptionTask->getLingoSyncProcess());
+        $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
+        $this->entityManager->flush();
     }
 
     /**

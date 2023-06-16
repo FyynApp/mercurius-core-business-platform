@@ -256,7 +256,7 @@ readonly class LingoSyncInfrastructureService
             $originalCuesBlocks = [];
         }
 
-        return "WEBVTT\n\n" . trim(implode('', $translatedCuesBlocks));
+        return "WEBVTT\n\n" . trim(implode('', $translatedCuesBlocks)) . "\n";
     }
 
     /**
