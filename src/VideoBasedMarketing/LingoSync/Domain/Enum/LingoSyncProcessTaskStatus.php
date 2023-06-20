@@ -9,4 +9,5 @@ enum LingoSyncProcessTaskStatus: string
     case Running = 'running';
     case Finished = 'finished';
     case Errored = 'errored';
+    case Stopped = 'stopped';
 }

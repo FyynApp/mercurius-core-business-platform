@@ -71,7 +71,8 @@ video_manage_widget:
     gender:
       male: 'male'
       female: 'female'
-    cta_submit: 'Start processing'
+    cta_submit: 'Start LingoSync process'
+    cta_show_status: 'Show process status'
   delete_modal:
     title: 'Delete video'
     really: 'Do you really want to delete this video?'

@@ -5,6 +5,8 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Entity;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskStatus;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
@@ -26,7 +28,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
     name: 'created_at_idx'
 )]
 class LingoSyncProcess
-    implements OrganizationOwnedEntityInterface
+    implements OrganizationOwnedEntityInterface, UserOwnedEntityInterface
 {
     /**
      * @throws Exception
@@ -127,11 +129,35 @@ class LingoSyncProcess
     {
         /** @var LingoSyncProcessTask $task */
         foreach ($this->tasks as $task) {
-            if ($task->getStatus() !== LingoSyncProcessTaskStatus::Finished) {
+            if (   $task->getStatus() === LingoSyncProcessTaskStatus::Initiated
+                || $task->getStatus() === LingoSyncProcessTaskStatus::Running
+            ) {
                 return false;
             }
         }
         return true;
+    }
+
+    public function wasStopped(): bool
+    {
+        /** @var LingoSyncProcessTask $task */
+        foreach ($this->tasks as $task) {
+            if ($task->getStatus() === LingoSyncProcessTaskStatus::Stopped) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasErrored(): bool
+    {
+        /** @var LingoSyncProcessTask $task */
+        foreach ($this->tasks as $task) {
+            if ($task->getStatus() === LingoSyncProcessTaskStatus::Errored) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** @var LingoSyncProcessTask[] */
@@ -173,5 +199,27 @@ class LingoSyncProcess
     {
         $this->audioTranscription = $audioTranscription;
         $audioTranscription->setLingoSyncProcess($this);
+    }
+
+
+    /** @return Bcp47LanguageCode[] */
+    public function getTargetLanguages(): array
+    {
+        $targetLanguages = [];
+
+        foreach ($this->tasks as $task) {
+            if (   !is_null($task->getTargetLanguage())
+                && !in_array($task->getTargetLanguage(), $targetLanguages)
+            ) {
+                $targetLanguages[] = $task->getTargetLanguage();
+            }
+        }
+
+        return $targetLanguages;
+    }
+
+    public function getUser(): User
+    {
+        return $this->video->getUser();
     }
 }

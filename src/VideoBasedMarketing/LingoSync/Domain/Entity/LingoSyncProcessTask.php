@@ -213,10 +213,16 @@ class LingoSyncProcessTask
         type: Types::DATETIME_MUTABLE,
         nullable: true
     )]
-    private DateTime $lastHandledAt;
+    private ?DateTime $lastHandledAt = null;
 
-    public function getLastHandledAt(): DateTime
+    public function getLastHandledAt(): ?DateTime
     {
         return $this->lastHandledAt;
+    }
+
+
+    public function hasErrored(): bool
+    {
+        return $this->getStatus() === LingoSyncProcessTaskStatus::Errored;
     }
 }

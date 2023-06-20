@@ -16,6 +16,7 @@ use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\LingoSyncInfrastruc
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\SymfonyMessage\GenerateMissingVideoAssetsCommandSymfonyMessage;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Exception;
@@ -39,10 +40,13 @@ readonly class LingoSyncDomainService
     {
     }
 
-    public function videoHasRunningProcess(Video $video): bool
+    public function videoHasRunningProcesses(Video $video): bool
     {
         foreach ($this->getProcessesForVideo($video) as $lingoSyncProcess) {
-            if (!$lingoSyncProcess->isFinished()) {
+            if (   !$lingoSyncProcess->isFinished()
+                && !$lingoSyncProcess->wasStopped()
+                && !$lingoSyncProcess->hasErrored()
+            ) {
                 return true;
             }
         }
@@ -58,9 +62,10 @@ readonly class LingoSyncDomainService
         /** @var ObjectRepository<LingoSyncProcess> $repo */
         $repo = $this->entityManager->getRepository(LingoSyncProcess::class);
 
-        return $repo->findBy([
-            'video' => $video->getId()
-        ]);
+        return $repo->findBy(
+            ['video' => $video->getId()],
+            ['createdAt' => Criteria::DESC]
+        );
     }
 
     public function getSupportedOriginalLanguages(): array
@@ -85,7 +90,7 @@ readonly class LingoSyncDomainService
         Video $video
     ): bool
     {
-        if ($this->videoHasRunningProcess($video)) {
+        if ($this->videoHasRunningProcesses($video)) {
             return false;
         }
         
@@ -183,6 +188,28 @@ readonly class LingoSyncDomainService
         return $lingoSyncProcess;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function restartProcess(
+        LingoSyncProcess $lingoSyncProcess
+    ): LingoSyncProcess
+    {
+        foreach ($lingoSyncProcess->getTasks() as $task) {
+            if ($task->getStatus() !== LingoSyncProcessTaskStatus::Finished) {
+                $task->setStatus(LingoSyncProcessTaskStatus::Stopped);
+                $this->entityManager->persist($task);
+                $this->entityManager->flush();
+            }
+        }
+
+        return $this->startProcess(
+            $lingoSyncProcess->getVideo(),
+            $lingoSyncProcess->getOriginalLanguage(),
+            $lingoSyncProcess->getOriginalGender(),
+            $lingoSyncProcess->getTargetLanguages()
+        );
+    }
 
     /**
      * @throws Exception
@@ -292,7 +319,7 @@ readonly class LingoSyncDomainService
 
         if ($generateTargetLanguageTranscriptionTask->getStatus() !== LingoSyncProcessTaskStatus::Initiated) {
             throw new Exception(
-                "Expected a CreateAudioSnippets task with status '" . LingoSyncProcessTaskStatus::Initiated->value . "', but got '{$generateTargetLanguageTranscriptionTask->getStatus()->value}'."
+                "Expected a GenerateTargetLanguageTranscription task with status '" . LingoSyncProcessTaskStatus::Initiated->value . "', but got '{$generateTargetLanguageTranscriptionTask->getStatus()->value}'."
             );
         }
 

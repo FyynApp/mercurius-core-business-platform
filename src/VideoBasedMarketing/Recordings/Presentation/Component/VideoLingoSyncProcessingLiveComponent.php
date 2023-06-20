@@ -48,7 +48,7 @@ class VideoLingoSyncProcessingLiveComponent
             $this->video
         );
 
-        return $this->lingoSyncDomainService->videoHasRunningProcess(
+        return $this->lingoSyncDomainService->videoHasRunningProcesses(
             $this->video
         );
     }

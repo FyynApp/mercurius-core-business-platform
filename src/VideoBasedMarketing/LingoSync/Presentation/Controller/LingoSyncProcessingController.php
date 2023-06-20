@@ -7,6 +7,7 @@ use App\Shared\Domain\Enum\Gender;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
+use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
 use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Presentation\Controller\VideoFoldersController;
@@ -26,21 +27,21 @@ class LingoSyncProcessingController
      */
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/lingo-sync-processings/',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync-verarbeitungen/',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/lingo-sync-processes/',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync-prozesse/',
         ],
-        name        : 'videobasedmarketing.lingo_sync.presentation.processing.start',
+        name        : 'videobasedmarketing.lingo_sync.presentation.process.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_POST]
     )]
-    public function startProcessingAction(
+    public function startProcessAction(
         Request                $request,
         LingoSyncDomainService $lingoSyncDomainService,
         TranslatorInterface    $translator
     ): Response
     {
         if (!$this->isCsrfTokenValid(
-            "start-lingo-sync-processing-{$request->get('videoId')}",
+            "start-lingo-sync-process-{$request->get('videoId')}",
             $request->get('_csrf_token')
         )) {
             throw new BadRequestHttpException('Invalid CSRF token.');
@@ -55,7 +56,7 @@ class LingoSyncProcessingController
         /** @var Video $video */
         $video = $r->getEntity();
 
-        if ($lingoSyncDomainService->videoHasRunningProcess($video)) {
+        if ($lingoSyncDomainService->videoHasRunningProcesses($video)) {
             throw new BadRequestHttpException(
                 "Video '{$video->getId()}' has running lingo sync processes."
             );
@@ -94,6 +95,61 @@ class LingoSyncProcessingController
             );
     }
 
+    /**
+     * @throws Exception
+     */
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/lingo-sync-processes/{lingoSyncProcessId}/restart',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync-prozesse/{lingoSyncProcessId}/neu-starten',
+        ],
+        name        : 'videobasedmarketing.lingo_sync.presentation.process.restart',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_POST]
+    )]
+    public function restartProcessAction(
+        string                 $lingoSyncProcessId,
+        Request                $request,
+        LingoSyncDomainService $lingoSyncDomainService,
+        TranslatorInterface    $translator
+    ): Response
+    {
+        if (!$this->isCsrfTokenValid(
+            "restart-lingo-sync-process-{$lingoSyncProcessId}",
+            $request->get('_csrf_token')
+        )) {
+            throw new BadRequestHttpException('Invalid CSRF token.');
+        }
+
+        $r = $this->verifyAndGetUserAndEntity(
+            LingoSyncProcess::class,
+            $lingoSyncProcessId,
+            AccessAttribute::Use
+        );
+
+        /** @var LingoSyncProcess $lingoSyncProcess */
+        $lingoSyncProcess = $r->getEntity();
+
+        $lingoSyncDomainService->restartProcess($lingoSyncProcess);
+
+        $this->addFlash(
+            FlashMessageLabel::Success->value,
+            $translator->trans(
+                'processing_restarted',
+                [],
+                'videobasedmarketing.lingo_sync'
+            )
+        );
+
+        return $this
+            ->redirectToRoute(
+                'videobasedmarketing.lingo_sync.presentation.processing.status',
+                [
+                    'videoId' => $lingoSyncProcess->getVideo()->getId()
+                ]
+            );
+    }
+
     #[Route(
         path        : [
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/videos/{videoId}/lingo-sync-processings/',
@@ -116,8 +172,6 @@ class LingoSyncProcessingController
 
         /** @var Video $video */
         $video = $r->getEntity();
-
-
 
         return $this->render(
             '@videobasedmarketing.lingo_sync/status.html.twig',

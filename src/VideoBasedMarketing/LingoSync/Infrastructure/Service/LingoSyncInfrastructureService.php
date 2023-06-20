@@ -240,9 +240,13 @@ readonly class LingoSyncInfrastructureService
             $prompt .= "\n";
             $prompt .= 'You MUST keep the cue timestamps intact.';
             $prompt .= "\n";
-            $prompt .= 'You MUST NOT invent additional WebVTT blocks.';
+            $prompt .= 'You MUST NOT invent additional WebVTT cue blocks.';
             $prompt .= "\n";
-            $prompt .= 'You MUST NOT remove any WebVTT blocks.';
+            $prompt .= 'You MUST NOT remove any WebVTT cue blocks.';
+            $prompt .= "\n";
+            $prompt .= 'If the original WebVTT file content has 1 cue block, the result must have 1 cue block, too.';
+            $prompt .= "\n";
+            $prompt .= 'If the original WebVTT file content has 100 cue blocks, the result must have 100 cue blocks, too.';
             $prompt .= "\n";
             $prompt .= 'You MUST NOT add any additional text or comments. Only return the translated WebVTT content, WITHOUT the keyword "WEBVTT" at the beginning.';
             $prompt .= "\n";

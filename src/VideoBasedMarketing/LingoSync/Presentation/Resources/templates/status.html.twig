@@ -1,1 +1,148 @@
-This page is not yet available.
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var lingoSyncProcesses \App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess[] #}
+
+{% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+{% block title %}{{ 'title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'status_page.title'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+        {% block contentBoxTitle %}
+            {% block title %}{{ 'title'|trans }}{% endblock %}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'status_page.title'|trans }} — {{ lingoSyncProcesses.0.video.title }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <div
+                    class="flex flex-col gap-8"
+            >
+                {% if lingoSyncProcesses|length is same as 0 %}
+
+                    <div class="text-center">
+                        {{ 'status_page.no_processes'|trans }}
+                    </div>
+
+                {% else %}
+
+                    {% for lingoSyncProcess in lingoSyncProcesses %}
+                        {# @var lingoSyncProcess \App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess #}
+
+                        {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+                        <div class="flex flex-col gap-1.5">
+                            <div>
+                                <span class="font-extrabold">{{ dateAndTimeMacros.full(lingoSyncProcess.createdAt) }}</span>
+                                ・
+                                {{ 'status_page.from_language'|trans }}
+                                {{ lingoSyncProcess.originalLanguage.value }}
+                                {{ 'status_page.with_gender'|trans }}
+                                {{ lingoSyncProcess.originalGender.value }}
+                                ・
+                                <form
+                                        class="inline-block"
+                                        action="{{ path(
+                                            'videobasedmarketing.lingo_sync.presentation.process.restart',
+                                            { 'lingoSyncProcessId': lingoSyncProcess.id }
+                                        ) }}"
+                                        method="post"
+                                >
+                                    <input
+                                            type="hidden"
+                                            name="_csrf_token"
+                                            value="{{ csrf_token('restart-lingo-sync-process-' ~ lingoSyncProcess.id) }}"
+                                    >
+                                    <button
+                                            type="submit"
+                                            class="cta-with-icon-inline-primary"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                        </svg>
+
+                                        {{ 'status_page.cta_restart'|trans }}
+                                    </button>
+                                </form>
+                            </div>
+
+
+                            <div>
+                                {% if lingoSyncProcess.wasStopped %}
+                                    <span class="text-orange-600 font-semibold">
+                                        {{ 'status_page.stopped_yes'|trans }}
+                                    </span>
+                                {% elseif lingoSyncProcess.finished %}
+                                    <span class="text-mercurius-green-600 font-semibold">
+                                        {{ 'status_page.finished_yes'|trans }}
+                                    </span>
+                                {% else %}
+                                    {{ 'status_page.finished_no'|trans }}
+                                {% endif %}
+                            </div>
+
+                            <div>
+                                {% if lingoSyncProcess.errored %}
+                                    <span class="text-red-700 font-semibold">
+                                        {{ 'status_page.errored_yes'|trans }}
+                                    </span>
+                                {% else %}
+                                    {{ 'status_page.errored_no'|trans }}
+                                {% endif %}
+                            </div>
+
+
+                            <div class="font-bold">
+                                {{ 'status_page.tasks'|trans }}
+                            </div>
+                            <div class="flex flex-col gap-1.5 ml-4">
+                                {% for task in lingoSyncProcess.tasks %}
+                                    {# @var task \App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcessTask #}
+
+                                    <div class="flex flex-col gap-0">
+                                        <div>
+                                            {% if task.targetLanguage is not null %}
+                                                <span class="text-neutral-600">[{{ task.targetLanguage.value }}]</span>
+                                            {% endif %}
+                                            <span class="font-semibold">{{ ('status_page.task_type.' ~ task.type.value)|trans }}</span>
+                                        </div>
+
+                                        {% if task.lastHandledAt is not null %}
+                                            <div class="text-neutral-600 text-sm">
+                                                {{ 'status_page.task_last_handled_at'|trans }}
+                                                {{ dateAndTimeMacros.full(lingoSyncProcess.createdAt) }}
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="font-mono text-neutral-800">
+                                            {{ ('status_page.task_status.' ~ task.status.value)|trans }}
+
+                                            {% if task.errored %}
+                                                <span class="text-red-700">
+                                                    {{ task.result }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                {% endif %}
+            </div>
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

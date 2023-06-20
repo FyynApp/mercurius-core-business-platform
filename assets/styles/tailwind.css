@@ -89,7 +89,7 @@
     }
 
     .cta-with-icon-inline-primary {
-        @apply flex flex-row gap-1 hover:underline text-mercurius-blue-900 inline-block;
+        @apply flex flex-row gap-1 hover:underline text-mercurius-blue-900 justify-start items-baseline;
     }
 
     .cta-with-icon-inline-danger {
