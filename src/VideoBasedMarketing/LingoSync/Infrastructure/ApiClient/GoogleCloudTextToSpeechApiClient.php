@@ -38,7 +38,7 @@ readonly class GoogleCloudTextToSpeechApiClient
         $voice->setName($this->getVoiceName($languageCode, $gender));
 
         $audioConfig = new AudioConfig();
-        $audioConfig->setAudioEncoding(AudioEncoding::MP3);
+        $audioConfig->setAudioEncoding(AudioEncoding::LINEAR16);
         $audioConfig->setSpeakingRate($speakingRate);
 
         $resp = $textToSpeechClient->synthesizeSpeech($input, $voice, $audioConfig);

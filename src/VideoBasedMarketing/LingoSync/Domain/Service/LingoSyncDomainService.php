@@ -296,6 +296,10 @@ readonly class LingoSyncDomainService
             );
         }
 
+        $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Running);
+        $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
+        $this->entityManager->flush();
+
         $existingWebVtts = $this->audioTranscriptionDomainService->getWebVtts(
             $generateTargetLanguageTranscriptionTask->getLingoSyncProcess()->getVideo()
         );

@@ -484,7 +484,9 @@ readonly class RecordingsInfrastructureService
     
 
     /** @throws InvalidArgumentException */
-    public static function mimeTypeToFileSuffix(AssetMimeType $mimeType): string
+    public static function mimeTypeToFileSuffix(
+        AssetMimeType $mimeType
+    ): string
     {
         return match ($mimeType) {
             AssetMimeType::ImageWebp => 'webp',
@@ -493,6 +495,10 @@ readonly class RecordingsInfrastructureService
             AssetMimeType::VideoMp4  => 'mp4',
             AssetMimeType::ImagePng  => 'png',
             AssetMimeType::AudioMpeg => 'mp3',
+            AssetMimeType::AudioXwav => 'wav',
+            default                  => throw new ValueError(
+                "Asset mime type '{$mimeType->value}' is not supported."
+            )
         };
     }
 

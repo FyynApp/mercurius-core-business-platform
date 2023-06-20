@@ -355,4 +355,127 @@ Das ist der dritte Satz.";
 
         $this->assertSame($expectedWebVTT, $actualWebVTT);
     }
+
+    public function testInsertMissingLinebreaksToWebVttOne(): void
+    {
+        $InvalidWebVtt = "WEBVTT
+
+1
+00:01:46.410 --> 00:01:51.340
+Zeile eins.
+
+2
+00:01:51.370 --> 00:01:53.420
+Zeile zwei.
+
+3
+00:01:53.450 --> 00:01:54.820
+Zeile drei.
+4
+00:01:54.850 --> 00:02:01.700
+Zeile vier.
+
+5
+00:02:01.730 --> 00:02:12.660
+Zeile fünf.
+
+6
+00:02:12.690 --> 00:02:22.500
+Zeile sechs.        
+";
+
+        $expectedWebVtt = "WEBVTT
+
+1
+00:01:46.410 --> 00:01:51.340
+Zeile eins.
+
+2
+00:01:51.370 --> 00:01:53.420
+Zeile zwei.
+
+3
+00:01:53.450 --> 00:01:54.820
+Zeile drei.
+
+4
+00:01:54.850 --> 00:02:01.700
+Zeile vier.
+
+5
+00:02:01.730 --> 00:02:12.660
+Zeile fünf.
+
+6
+00:02:12.690 --> 00:02:22.500
+Zeile sechs.        
+";
+
+        $this->assertSame(
+            $expectedWebVtt,
+            LingoSyncInfrastructureService::insertMissingLinebreaksToWebVtt($InvalidWebVtt)
+        );
+    }
+
+    public function testInsertMissingLinebreaksToWebVttTwo(): void
+    {
+        $InvalidWebVtt = "WEBVTT
+
+1
+00:01:46.410 --> 00:01:51.340
+Zeile eins.
+
+2
+00:01:51.370 --> 00:01:53.420
+Zeile zwei.
+
+3
+00:01:53.450 --> 00:01:54.820
+Zeile drei.
+
+4
+00:01:54.850 --> 00:02:01.700
+Zeile vier.
+
+5
+00:02:01.730 --> 00:02:12.660
+Zeile fünf.
+
+6
+00:02:12.690 --> 00:02:22.500
+Zeile sechs.        
+";
+
+        $expectedWebVtt = "WEBVTT
+
+1
+00:01:46.410 --> 00:01:51.340
+Zeile eins.
+
+2
+00:01:51.370 --> 00:01:53.420
+Zeile zwei.
+
+3
+00:01:53.450 --> 00:01:54.820
+Zeile drei.
+
+4
+00:01:54.850 --> 00:02:01.700
+Zeile vier.
+
+5
+00:02:01.730 --> 00:02:12.660
+Zeile fünf.
+
+6
+00:02:12.690 --> 00:02:22.500
+Zeile sechs.        
+";
+
+        $this->assertSame(
+            $expectedWebVtt,
+            LingoSyncInfrastructureService::insertMissingLinebreaksToWebVtt($InvalidWebVtt)
+        );
+    }
 }

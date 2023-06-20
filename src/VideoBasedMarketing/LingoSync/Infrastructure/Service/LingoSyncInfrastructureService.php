@@ -87,6 +87,19 @@ readonly class LingoSyncInfrastructureService
         return trim($output);
     }
 
+    public static function insertMissingLinebreaksToWebVtt($content): string
+    {
+        // Der reguläre Ausdruck erkennt Zeilen, die ausschließlich aus Zahlen bestehen,
+        // gefolgt von einer Zeile, die einen Zeitstempel enthält.
+        $pattern = '/(.+)(\n)(\d+\n\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3})/';
+
+        // Ersetze Treffer mit einer Leerzeile, der Zahl und dem Zeitstempel.
+        $replacement = "$1$2$2$3";
+
+        // Führe den Ersatz aus und gebe das resultierende String zurück.
+        return preg_replace($pattern, $replacement, $content);
+    }
+
     public static function compactizeWebVtt(string $webvtt): string
     {
         // Split the input into cues
@@ -256,7 +269,11 @@ readonly class LingoSyncInfrastructureService
             $originalCuesBlocks = [];
         }
 
-        return "WEBVTT\n\n" . trim(implode('', $translatedCuesBlocks)) . "\n";
+        return self::insertMissingLinebreaksToWebVtt(
+            "WEBVTT\n\n" .
+            trim(implode('', $translatedCuesBlocks))
+            . "\n"
+        );
     }
 
     /**
@@ -318,7 +335,7 @@ readonly class LingoSyncInfrastructureService
                 $sourceAudioFilePath,
 
                 '-af',
-                'silenceremove=start_periods=1:start_duration=1:start_threshold=0,areverse,silenceremove=start_periods=1:start_duration=1:start_threshold=0,areverse',
+                'silenceremove=start_periods=1:start_duration=0:start_threshold=-70dB:detection=peak,areverse,silenceremove=start_periods=1:start_duration=0:start_threshold=-70dB:detection=peak,areverse',
 
                 '-y',
                 $targetAudioFilePath
@@ -483,17 +500,16 @@ readonly class LingoSyncInfrastructureService
         $milliseconds = 0;
 
         foreach ($starts as $index => $start) {
-            $silenceDuration = max(0, $start - $previousEnd) / 1000; // Duration in seconds
+            $silenceDuration = (float)(max(0, $start - $previousEnd) / 1000); // Duration in seconds
 
             if ($silenceDuration > 0) {
                 // Generate a silence audio file of the needed duration
-                $silenceFilePath = "/{$sourceFilesFolderPath}/silence_{$index}.mp3";
+                $silenceFilePath = "/{$sourceFilesFolderPath}/silence_{$index}." . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav);
 
                 // silenceDuration tends to be a bit too short...
-                $silenceDuration *= 1.10;
+                #$silenceDuration *= 1.10;
 
-                exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$silenceDuration} {$silenceFilePath}");
-
+                self::createSilenceAudioFile($silenceDuration, $silenceFilePath);
 
                 echo "[" . self::millisecondsToTimestamp($milliseconds) . "] [" . self::millisecondsToTimestamp($start) . "] Adding {$silenceDuration} seconds of silence before " . self::millisecondsToTimestamp($start) . " via file {$silenceFilePath}\n";
                 $milliseconds += $silenceDuration * 1000;
@@ -506,17 +522,17 @@ readonly class LingoSyncInfrastructureService
             $filter .= "[{$audioIndex}:a]";
             $audioIndex++;
 
-            if (self::audioFileIsUsable("{$sourceFilesFolderPath}/{$index}.mp3")) {
-                echo "[" . self::millisecondsToTimestamp($milliseconds) . "] [" . self::millisecondsToTimestamp($start) . "] Adding {$sourceFilesFolderPath}/{$index}.mp3 with text '{$texts[$index]}' at " . self::millisecondsToTimestamp($start) . "\n";
-                $milliseconds += self::getAudioFileDurationInMilliseconds("{$sourceFilesFolderPath}/{$index}.mp3");
-                $files[] = "{$sourceFilesFolderPath}/{$index}.mp3";
-                $previousEnd = $start + self::getAudioFileDurationInMilliseconds("{$sourceFilesFolderPath}/{$index}.mp3");
+            if (self::audioFileIsUsable("{$sourceFilesFolderPath}/{$index}." . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav))) {
+                echo "[" . self::millisecondsToTimestamp($milliseconds) . "] [" . self::millisecondsToTimestamp($start) . "] Adding {$sourceFilesFolderPath}/{$index}." . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav) . " with text '{$texts[$index]}' at " . self::millisecondsToTimestamp($start) . "\n";
+                $milliseconds += self::getAudioFileDurationInMilliseconds("{$sourceFilesFolderPath}/{$index}." . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav));
+                $files[] = "{$sourceFilesFolderPath}/{$index}." . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav);
+                $previousEnd = $start + self::getAudioFileDurationInMilliseconds("{$sourceFilesFolderPath}/{$index}." . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav));
             } else {
-                $silenceDuration = $durations[$index] / 1000;
-                $silenceFilePath = "/{$sourceFilesFolderPath}/silence_{$index}_fix_for_unusable_audio.mp3";
-                exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$silenceDuration} {$silenceFilePath}");
+                $silenceDuration = (float)($durations[$index] / 1000);
+                $silenceFilePath = "/{$sourceFilesFolderPath}/silence_{$index}_fix_for_unusable_audio." . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav);
+                self::createSilenceAudioFile((float)$silenceDuration, $silenceFilePath);
 
-                echo "[" . self::millisecondsToTimestamp($milliseconds) . "] [" . self::millisecondsToTimestamp($start) . "] Adding {$silenceDuration} seconds of silence at " . self::millisecondsToTimestamp($start) . " because file {$sourceFilesFolderPath}/{$index}.mp3 for text '{$texts[$index]}' is unusable\n";
+                echo "[" . self::millisecondsToTimestamp($milliseconds) . "] [" . self::millisecondsToTimestamp($start) . "] Adding {$silenceDuration} seconds of silence at " . self::millisecondsToTimestamp($start) . " because file {$sourceFilesFolderPath}/{$index}." . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav) . " for text '{$texts[$index]}' is unusable\n";
                 $milliseconds += $silenceDuration * 1000;
                 $files[] = $silenceFilePath;
                 $previousEnd = $start + $durations[$index];
@@ -538,6 +554,13 @@ readonly class LingoSyncInfrastructureService
         return $targetFilePath;
     }
 
+    public static function createSilenceAudioFile(
+        float  $durationInSeconds,
+        string $targetFilePath
+    ): void
+    {
+        exec("ffmpeg -y -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -t {$durationInSeconds} {$targetFilePath}");
+    }
 
     /**
      * @throws ValidationException
@@ -583,8 +606,8 @@ readonly class LingoSyncInfrastructureService
                 $text
             );
 
-            echo "Copying {$finalAudioFilePath} to {$finalAudioFilesFolderPath}/{$index}.mp3\n";
-            $fs->copy($finalAudioFilePath, $finalAudioFilesFolderPath . DIRECTORY_SEPARATOR . $index . '.mp3');
+            echo "Copying {$finalAudioFilePath} to {$finalAudioFilesFolderPath}/{$index}." . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav) . "\n";
+            $fs->copy($finalAudioFilePath, $finalAudioFilesFolderPath . DIRECTORY_SEPARATOR . $index . '.' . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav));
         }
 
         return $finalAudioFilesFolderPath;
@@ -606,7 +629,7 @@ readonly class LingoSyncInfrastructureService
             $gender
         );
 
-        $targetFilePath = $audioFilesFolderPath . DIRECTORY_SEPARATOR . 'final.mp3';
+        $targetFilePath = $audioFilesFolderPath . DIRECTORY_SEPARATOR . 'final.' . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav);
 
         self::concatenateAudioFiles(
             $webVtt,
@@ -626,9 +649,9 @@ readonly class LingoSyncInfrastructureService
         string $text
     ): string
     {
-        $maxTries = 10;
+        $maxTries = 30;
         $currentTry = 0;
-        $currentATempo = 1.1;
+        $currentATempo = 1.0;
         $resultingAudioFilePath = $audioFilePath;
 
         while ($currentTry < $maxTries) {
@@ -660,7 +683,7 @@ readonly class LingoSyncInfrastructureService
                 $currentATempo
             );
 
-            $currentATempo += 0.1;
+            $currentATempo += 0.025;
         }
 
         return $resultingAudioFilePath;
@@ -670,7 +693,11 @@ readonly class LingoSyncInfrastructureService
         string $uniqIdPrefix = ''
     ): string
     {
-        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid(md5($uniqIdPrefix), true) . '.mp3';
+        return sys_get_temp_dir()
+            . DIRECTORY_SEPARATOR
+            . uniqid(md5($uniqIdPrefix), true)
+            . '.'
+            . RecordingsInfrastructureService::mimeTypeToFileSuffix(AssetMimeType::AudioXwav);
     }
 
     /**
