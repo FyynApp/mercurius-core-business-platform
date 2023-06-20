@@ -24,6 +24,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\ValidationException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 use ValueError;
 
 
@@ -334,10 +335,21 @@ readonly class LingoSyncDomainService
         foreach ($existingWebVtts as $existingWebVtt) {
             if ($existingWebVtt->getBcp47LanguageCode() === $generateTargetLanguageTranscriptionTask->getLingoSyncProcess()->getOriginalLanguage()) {
 
-                $translatedWebVtt = $this->lingoSyncInfrastructureService->translateWebVtt(
-                    $this->lingoSyncInfrastructureService::compactizeWebVtt(
+                try {
+                    $compactizedWebVttContent = $this->lingoSyncInfrastructureService::compactizeWebVtt(
                         $existingWebVtt->getVttContent()
-                    ),
+                    );
+                } catch (Throwable $t) {
+                    $this->logger->error("Failed to compactize content of WebVTT '{$existingWebVtt->getId()}': '{$t->getMessage()}', at {$t->getFile()} line {$t->getLine()}.");
+                    $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Errored);
+                    $generateTargetLanguageTranscriptionTask->setResult("Could not compactize WebVTT '{$existingWebVtt->getId()}'.");
+                    $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
+                    $this->entityManager->flush();
+                    return;
+                }
+
+                $translatedWebVtt = $this->lingoSyncInfrastructureService->translateWebVtt(
+                    $compactizedWebVttContent,
                     $generateTargetLanguageTranscriptionTask->getLingoSyncProcess()->getOriginalLanguage(),
                     $generateTargetLanguageTranscriptionTask->getTargetLanguage()
                 );

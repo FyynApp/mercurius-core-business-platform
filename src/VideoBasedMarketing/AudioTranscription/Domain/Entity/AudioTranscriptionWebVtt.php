@@ -114,13 +114,13 @@ class AudioTranscriptionWebVtt
 
     public function getVttContent(): string
     {
-        return $this->vttContent;
+        return preg_replace('/\r\n?/', "\n", $this->vttContent);
     }
 
     public function setVttContent(
         string $vttContent
     ): void
     {
-        $this->vttContent = $vttContent;
+        $this->vttContent = preg_replace('/\r\n?/', "\n", $vttContent);
     }
 }

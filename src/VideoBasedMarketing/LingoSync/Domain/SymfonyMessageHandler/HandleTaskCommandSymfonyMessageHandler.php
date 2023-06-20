@@ -8,6 +8,7 @@ use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncDomainService;
 use App\VideoBasedMarketing\LingoSync\Domain\SymfonyMessage\HandleTaskCommandSymfonyMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Throwable;
@@ -18,7 +19,8 @@ readonly class HandleTaskCommandSymfonyMessageHandler
 {
     public function __construct(
         private LingoSyncDomainService $lingoSyncDomainService,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private LoggerInterface        $logger
     )
     {
     }
@@ -48,6 +50,19 @@ readonly class HandleTaskCommandSymfonyMessageHandler
             $task->setResult($t->getMessage());
             $this->entityManager->persist($task);
             $this->entityManager->flush();
+
+            $this->logger->error(
+                "Task with id '{$task->getId()}' failed. Message: '{$t->getMessage()}'."
+            );
+
+            $this->logger->error(
+                "Task with id '{$task->getId()}' failed. File: '{$t->getFile()}', line: {$t->getLine()}."
+            );
+
+            $this->logger->error(
+                "Task with id '{$task->getId()}' failed. Trace: '{$t->getTraceAsString()}'."
+            );
+
             throw new UnrecoverableMessageHandlingException(
                 "Task with id '{$task->getId()}' failed: '{$t->getMessage()}'."
             );

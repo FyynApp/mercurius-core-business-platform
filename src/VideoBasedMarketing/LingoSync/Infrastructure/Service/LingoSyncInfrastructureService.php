@@ -14,6 +14,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\ValidationException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
+use ValueError;
 
 
 readonly class LingoSyncInfrastructureService
@@ -115,19 +116,22 @@ readonly class LingoSyncInfrastructureService
             // Split the cue into lines
             $lines = explode("\n", $cue);
 
-            if (sizeof($lines) < 3 || $lines[0] === 'WEBVTT') {
+            if (sizeof($lines) < 3 || trim($lines[0]) === 'WEBVTT') {
                 continue;
             }
 
             // Extract the timestampLine and text
-            $timestampLine = $lines[1];
-            $text = implode(' ', array_slice($lines, 2));
+            $timestampLine = trim($lines[1]);
+            $text = trim(implode(' ', array_slice($lines, 2)));
 
             // Update the start timestampLine if necessary
             if ($startTimestampForUpcomingTransformedCue === '') {
                 $startTimestampForUpcomingTransformedCue = explode(' --> ', $timestampLine)[0];
             }
 
+            if (!array_key_exists(1, explode(' --> ', $timestampLine))) {
+                throw new ValueError("Invalid timestampLine: '$timestampLine', previous line was '{$lines[0]}', text was '$text'.");
+            }
             // Update the end timestampLine and text
             $endTimestampForUpcomingTransformedCue = explode(' --> ', $timestampLine)[1];
             $textForUpcomingTransformedCue .= $text . ' ';
@@ -653,7 +657,7 @@ readonly class LingoSyncInfrastructureService
         string $text
     ): string
     {
-        $maxTries = 30;
+        $maxTries = 100;
         $currentTry = 0;
         $currentATempo = 1.0;
         $resultingAudioFilePath = $audioFilePath;

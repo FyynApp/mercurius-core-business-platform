@@ -80,7 +80,7 @@ class LingoSyncProcessingController
         $this->addFlash(
             FlashMessageLabel::Success->value,
             $translator->trans(
-                'processing_started',
+                'process_started',
                 ['title' => $video->getTitle()],
                 'videobasedmarketing.lingo_sync'
             )
@@ -135,7 +135,7 @@ class LingoSyncProcessingController
         $this->addFlash(
             FlashMessageLabel::Success->value,
             $translator->trans(
-                'processing_restarted',
+                'process_restarted',
                 [],
                 'videobasedmarketing.lingo_sync'
             )
