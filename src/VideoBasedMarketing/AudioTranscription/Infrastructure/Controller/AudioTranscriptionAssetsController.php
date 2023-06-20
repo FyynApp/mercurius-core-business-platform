@@ -18,7 +18,7 @@ class AudioTranscriptionAssetsController
         name   : 'videobasedmarketing.audio_transcription.infrastructure.web_vtt',
         methods: [Request::METHOD_GET]
     )]
-    public function startProcessingAction(
+    public function showWebVtt(
         string                 $webVttId,
         EntityManagerInterface $entityManager
 

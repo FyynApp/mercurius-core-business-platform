@@ -1,0 +1,59 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var webVtt \App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt #}
+
+{% trans_default_domain 'videobasedmarketing.audio_transcription' %}
+{% block title %}{{ 'overview.title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'overview.title'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.audio_transcription' %}
+
+        {% block contentBoxTitle %}
+            {{ 'overview.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'overview.subtitle'|trans({ '{videoTitle}': webVtt.audioTranscription.video.title }) }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <div class="max-w-lg mb-9">
+                {{ TwigHelperService.embeddableVideoPlayerPresentationService.videoEmbedCode(webVtt.audioTranscription.video)|raw }}
+            </div>
+
+            <div class="flex flex-col gap-8 max-w-lg">
+                <form
+                        method="post"
+                        action="{{ path(
+                            'videobasedmarketing.audio_transcription.presentation.web_vtt.save',
+                            { 'webVttId': webVtt.id }
+                        ) }}"
+                >
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('edit-web-vtt-' ~ webVtt.id) }}">
+                    <label for="web_vtt_content">
+                        <textarea
+                                name="web_vtt_content"
+                                class="w-full h-full font-mono"
+                                rows="50"
+                        >{{ webVtt.vttContent }}</textarea>
+                    </label>
+
+                    <button
+                            type="submit"
+                            class="cta-with-icon-primary"
+                    >
+                        {{ 'edit_web_vtt.cta_save'|trans }}
+                    </button>
+                </form>
+            </div>
+
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

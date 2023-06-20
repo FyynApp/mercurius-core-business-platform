@@ -48,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-4">
+                            <div class="mb-4 flex flex-row gap-2">
                                 <a
                                         class="cta-with-icon-primary"
                                         target="_blank"
@@ -67,9 +67,17 @@
 
                                     <div>
                                         {{ 'overview.show_webvtt_file'|trans }}
-                                        -
-                                        {{ webVtt.bcp47LanguageCode.value }}.vtt
                                     </div>
+                                </a>
+
+                                <a
+                                        class="cta-with-icon-primary"
+                                        href="{{ path(
+                                            'videobasedmarketing.audio_transcription.presentation.web_vtt.editor',
+                                            { webVttId: webVtt.id }
+                                        ) }}"
+                                >
+                                    {{ 'edit_web_vtt.cta_edit'|trans }}
                                 </a>
                             </div>
 

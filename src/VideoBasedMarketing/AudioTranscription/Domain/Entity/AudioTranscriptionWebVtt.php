@@ -3,6 +3,8 @@
 namespace App\VideoBasedMarketing\AudioTranscription\Domain\Entity;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -21,6 +23,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
     flags: ['fulltext']
 )]
 class AudioTranscriptionWebVtt
+    implements OrganizationOwnedEntityInterface
 {
     /**
      * @throws Exception
@@ -34,6 +37,11 @@ class AudioTranscriptionWebVtt
         $this->audioTranscription = $audioTranscription;
         $this->bcp47LanguageCode = $bcp47LanguageCode;
         $this->vttContent = $vttContent;
+    }
+
+    public function getOrganization(): Organization
+    {
+        return $this->audioTranscription->getOrganization();
     }
 
 
@@ -107,5 +115,12 @@ class AudioTranscriptionWebVtt
     public function getVttContent(): string
     {
         return $this->vttContent;
+    }
+
+    public function setVttContent(
+        string $vttContent
+    ): void
+    {
+        $this->vttContent = $vttContent;
     }
 }
