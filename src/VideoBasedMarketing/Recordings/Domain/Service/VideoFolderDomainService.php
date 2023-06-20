@@ -148,11 +148,18 @@ readonly class VideoFolderDomainService
 
         $count = sizeof(
             $videoRepo
-                ->findBy(['videoFolder' => $videoFolder->getId()]));
+                ->findBy([
+                    'videoFolder'  => $videoFolder->getId(),
+                    'organization' => $organization->getId(),
+                    'isDeleted'    => false
+                ]));
 
         /** @var VideoFolder[] $childFolders */
         $childFolders = $videoFolderRepo
-            ->findBy(['parentVideoFolder' => $videoFolder->getId()]);
+            ->findBy([
+                'organization' => $organization->getId(),
+                'parentVideoFolder' => $videoFolder->getId()
+            ]);
 
         foreach ($childFolders as $childFolder) {
             $count += $this->getNumberOfVideosInFolder($childFolder, $organization);

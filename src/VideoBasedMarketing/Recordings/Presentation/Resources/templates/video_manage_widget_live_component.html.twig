@@ -60,34 +60,39 @@
 
         {% else %}
             <div class="relative -mb-1.5">
-                <div
-                        class="p-0 m-0"
+                <a
+                        target="_blank"
+                        href="{{ TwigHelperService.recordingsPresentationService.videoShareLinkUrl(this.video) }}"
+                >
+                    <div
+                            class="p-0 m-0"
 
-                        {{ stimulus_controller('videoBasedMarketing-recordings-videoPreview') }}
+                            {{ stimulus_controller('videoBasedMarketing-recordings-videoPreview') }}
 
-                        data-action="
+                            data-action="
                             focus->videoBasedMarketing-recordings-videoPreview#showAnimated
                             click->videoBasedMarketing-recordings-videoPreview#showAnimated
                             mouseover->videoBasedMarketing-recordings-videoPreview#showAnimated
                             mouseout->videoBasedMarketing-recordings-videoPreview#showStill
                             blur->videoBasedMarketing-recordings-videoPreview#showStill
                         "
-                >
-                    <div
-                            {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'stillImage') }}
-                            class="bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
-                            data-test-class="videoManageWidgetPosterStill"
-                            style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(this.video) }}');"
                     >
-                    </div>
+                        <div
+                                {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'stillImage') }}
+                                class="bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
+                                data-test-class="videoManageWidgetPosterStill"
+                                style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterStillAssetUrl(this.video) }}');"
+                        >
+                        </div>
 
-                    <div
-                            {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'animatedImage') }}
-                            class="hidden bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
-                            data-test-class="videoManageWidgetPosterAnimated"
-                            style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(this.video) }}');"
-                    ></div>
-                </div>
+                        <div
+                                {{ stimulus_target('videoBasedMarketing-recordings-videoPreview', 'animatedImage') }}
+                                class="hidden bg-cover bg-center h-80 md:h-60 xl:h-40 w-full rounded-tl-md rounded-tr-md"
+                                data-test-class="videoManageWidgetPosterAnimated"
+                                style="background-image: url('{{ TwigHelperService.recordingsInfrastructureService.videoPosterAnimatedAssetUrl(this.video) }}');"
+                        ></div>
+                    </div>
+                </a>
 
                 <div class="absolute bottom-0 right-0 p-4">
                     <div class="p-1 pl-2 pr-2 rounded-md bg-black bg-opacity-75 text-neutral-200 text-xs font-light">
