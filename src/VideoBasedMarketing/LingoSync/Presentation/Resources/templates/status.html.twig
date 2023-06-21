@@ -1,6 +1,7 @@
 {% extends '@shared/base_default.html.twig' %}
 
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var video \App\VideoBasedMarketing\Recordings\Domain\Entity\Video #}
 {# @var lingoSyncProcesses \App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess[] #}
 
 {% trans_default_domain 'videobasedmarketing.lingo_sync' %}
@@ -20,10 +21,8 @@
 
         {% block contentBoxSubtitle %}
             {{ 'status_page.title'|trans }}
-            {% if lingoSyncProcesses|length is not same as 0 %}
-                —
-                {{ lingoSyncProcesses.0.video.title }}
-            {% endif %}
+            —
+            {{ video.title }}
         {% endblock %}
 
         {% block contentBoxContent %}

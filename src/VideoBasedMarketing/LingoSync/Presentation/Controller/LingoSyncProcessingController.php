@@ -143,7 +143,7 @@ class LingoSyncProcessingController
 
         return $this
             ->redirectToRoute(
-                'videobasedmarketing.lingo_sync.presentation.processing.status',
+                'videobasedmarketing.lingo_sync.presentation.processes.status',
                 [
                     'videoId' => $lingoSyncProcess->getVideo()->getId()
                 ]
@@ -152,10 +152,10 @@ class LingoSyncProcessingController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/videos/{videoId}/lingo-sync-processings/',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/videos/{videoId}/lingo-sync-processes/',
             'de' => '%app.routing.route_prefix.with_locale.protected.de%/videos/{videoId}/lingo-sync-verarbeitungen/',
         ],
-        name        : 'videobasedmarketing.lingo_sync.presentation.processing.status',
+        name        : 'videobasedmarketing.lingo_sync.presentation.processes.status',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
@@ -176,6 +176,7 @@ class LingoSyncProcessingController
         return $this->render(
             '@videobasedmarketing.lingo_sync/status.html.twig',
             [
+                'video'              => $video,
                 'lingoSyncProcesses' => $lingoSyncDomainService->getProcessesForVideo($video),
             ]
         );
