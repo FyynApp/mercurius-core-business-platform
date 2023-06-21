@@ -19,7 +19,11 @@
         {% endblock %}
 
         {% block contentBoxSubtitle %}
-            {{ 'status_page.title'|trans }} — {{ lingoSyncProcesses.0.video.title }}
+            {{ 'status_page.title'|trans }}
+            {% if lingoSyncProcesses|length is not same as 0 %}
+                —
+                {{ lingoSyncProcesses.0.video.title }}
+            {% endif %}
         {% endblock %}
 
         {% block contentBoxContent %}
