@@ -12,6 +12,10 @@ plan:
     title: 'Ultimate'
     description: ''
 
+payment_cycle:
+  monthly: 'Monthly payment'
+  yearly: 'Yearly payment'
+
 overview:
   title: 'Your membership'
   subtitle: 'Manage your subscription here'
@@ -37,6 +41,7 @@ upgrade_offer:
   required_plan_costs_yearly: '${pricePerYear} per year'
   upgrade_cta_monthly: 'Upgrade now (monthly payment)'
   upgrade_cta_yearly: 'Upgrade now (yearly payment)'
+  or: 'or'
 
 capabilities:
   CustomLogoOnLandingpage:
