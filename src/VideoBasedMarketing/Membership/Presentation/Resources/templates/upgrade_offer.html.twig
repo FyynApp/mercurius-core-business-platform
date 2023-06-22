@@ -53,7 +53,7 @@
 
 
 
-                    <div class="mt-16 flex flex-col items-center">
+                    <div class="mt-16 flex flex-col items-center gap-4">
                         <a
                                 class="
                                     cta-with-icon-primary shadow-md shadow-neutral-300 text-2xl font-semibold
@@ -64,11 +64,44 @@
                                 href="{{
                                     path(
                                         'videobasedmarketing.membership.presentation.subscription.checkout.start',
-                                        { 'planName': membershipPlan.name.value }
+                                        {
+                                            'planName': membershipPlan.name.value,
+                                            'paymentCycle': constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\PaymentCycle::MONTHLY').value
+                                        }
                                     )
                                 }}"
                         >
-                            {{ 'upgrade_offer.upgrade_cta'|trans }}
+                            {{ 'upgrade_offer.upgrade_cta_monthly'|trans }}
+
+                            <img
+                                    class="h-6"
+                                    src="{{ asset('assets/images/videobasedmarketing/membership/Powered-by-Stripe-white.svg') }}"
+                            >
+
+                            {# Heroicon: cursor-arrow-rays solid #}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-pulse">
+                                <path fill-rule="evenodd" d="M12 1.5a.75.75 0 01.75.75V4.5a.75.75 0 01-1.5 0V2.25A.75.75 0 0112 1.5zM5.636 4.136a.75.75 0 011.06 0l1.592 1.591a.75.75 0 01-1.061 1.06l-1.591-1.59a.75.75 0 010-1.061zm12.728 0a.75.75 0 010 1.06l-1.591 1.592a.75.75 0 01-1.06-1.061l1.59-1.591a.75.75 0 011.061 0zm-6.816 4.496a.75.75 0 01.82.311l5.228 7.917a.75.75 0 01-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 01-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 01-1.247-.606l.569-9.47a.75.75 0 01.554-.68zM3 10.5a.75.75 0 01.75-.75H6a.75.75 0 010 1.5H3.75A.75.75 0 013 10.5zm14.25 0a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18a.75.75 0 01-.75-.75zm-8.962 3.712a.75.75 0 010 1.061l-1.591 1.591a.75.75 0 11-1.061-1.06l1.591-1.592a.75.75 0 011.06 0z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+
+                        <a
+                                class="
+                                    cta-with-icon-primary shadow-md shadow-neutral-300 text-2xl font-semibold
+                                    flex-row items-center gap-4 p-6
+                                    bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500
+                                    hover:from-mercurius-blue-600 hover:to-mercurius-green-600
+                                "
+                                href="{{
+                                path(
+                                    'videobasedmarketing.membership.presentation.subscription.checkout.start',
+                                    {
+                                        'planName': membershipPlan.name.value,
+                                        'paymentCycle': constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\PaymentCycle::YEARLY').value
+                                    }
+                                )
+                                }}"
+                        >
+                            {{ 'upgrade_offer.upgrade_cta_yearly'|trans }}
 
                             <img
                                     class="h-6"
@@ -119,7 +152,11 @@
                         </a>
 
                         <div class="font-extralight text-xs text-neutral-500 mb-6">
-                            {{ 'upgrade_offer.required_plan_costs'|trans({ '{pricePerMonth}': membershipPlan.pricePerMonth }) }}
+                            {{ 'upgrade_offer.required_plan_costs_monthly'|trans({ '{pricePerMonth}': membershipPlan.pricePerMonth }) }}
+                        </div>
+
+                        <div class="font-extralight text-xs text-neutral-500 mb-6">
+                            {{ 'upgrade_offer.required_plan_costs_yearly'|trans({ '{pricePerYear}': membershipPlan.pricePerYear }) }}
                         </div>
 
 
@@ -157,7 +194,9 @@
                             {% if currentMembershipPlan.mustBeBought is same as false %}
                                 {{ 'upgrade_offer.current_plan_free'|trans }}
                             {% else %}
-                                {{ 'upgrade_offer.current_plan_costs'|trans({ '{pricePerMonth}': currentMembershipPlan.pricePerMonth }) }}
+                                {{ 'upgrade_offer.current_plan_costs_monthly'|trans({ '{pricePerMonth}': currentMembershipPlan.pricePerMonth }) }}
+                                —
+                                {{ 'upgrade_offer.current_plan_costs_yearly'|trans({ '{pricePerYear}': currentMembershipPlan.pricePerYear }) }}
                             {% endif %}
                         </div>
 

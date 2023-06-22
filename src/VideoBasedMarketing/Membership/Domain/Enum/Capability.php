@@ -8,4 +8,5 @@ enum Capability: string
     case CustomDomain = 'CustomDomain';
     case AdFreeLandingpages = 'AdFreeLandingpages';
     case BrandingFreeEmbeddableVideoPlayer = 'BrandingFreeEmbeddableVideoPlayer';
+    case VideoTranslation = 'VideoTranslation';
 }

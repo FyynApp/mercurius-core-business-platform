@@ -7,10 +7,12 @@ use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
+use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentCycle;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Membership\Infrastructure\Service\PaymentProcessorStripeService;
 use Doctrine\ORM\EntityManagerInterface;
+use Stripe\Exception\ApiErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -21,10 +23,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class PaymentProcessorStripeCheckoutController
 extends AbstractController
 {
+    /**
+     * @throws ApiErrorException
+     */
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout-with-stripe/{planName}/start',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kauf-über-stripe/{planName}/start',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout-with-stripe/{planName}/{paymentCycle}/start',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/abonnement/kauf-über-stripe/{planName}/{paymentCycle}/start',
         ],
         name        : 'videobasedmarketing.membership.infrastructure.subscription.checkout_with_payment_processor_stripe.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -32,6 +37,7 @@ extends AbstractController
     )]
     public function subscriptionCheckoutStartAction(
         string                        $planName,
+        PaymentCycle                  $paymentCycle,
         MembershipService             $membershipService,
         PaymentProcessorStripeService $stripeService
     ): Response {
@@ -46,7 +52,8 @@ extends AbstractController
 
         return $this->redirect($stripeService->getSubscriptionCheckoutUrl(
             $user,
-            $plan
+            $plan,
+            $paymentCycle
         ));
     }
 

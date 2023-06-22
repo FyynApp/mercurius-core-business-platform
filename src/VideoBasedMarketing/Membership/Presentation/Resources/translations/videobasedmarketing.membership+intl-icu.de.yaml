@@ -13,12 +13,12 @@ overview:
     independent:
       title: 'Independent-Paket'
       description: 'Mit diesem Paket kannst du maximal 20 Videos mit einer Länge von bis zu 10 Minuten aufzeichnen.'
-    plus:
-      title: 'Plus-Paket'
-      description: 'Mit diesem Paket kannst du maximal 20 Videos mit einer Länge von bis zu 10 Minuten aufzeichnen.'
-    pro:
-      title: 'Pro-Paket'
+    professional:
+      title: 'Professional-Paket'
       description: 'Mit diesem Paket kannst du maximal 500 Videos mit einer Länge von bis zu 20 Minuten aufzeichnen.'
+    ultimate:
+      title: 'Ultimate-Paket'
+      description: 'Mit diesem Paket kannst du maximal 1000 Videos mit einer Länge von bis zu 60 Minuten aufzeichnen.'
 
 upgrade_offer:
   error_no_plan_found: 'Leider können wir Ihnen derzeit kein passendes Paket anbieten.'

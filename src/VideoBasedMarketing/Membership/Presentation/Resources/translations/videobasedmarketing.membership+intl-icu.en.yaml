@@ -5,11 +5,11 @@ plan:
   independent:
     title: 'Independent'
     description: ''
-  plus:
-    title: 'Plus'
+  professional:
+    title: 'Professional'
     description: ''
-  pro:
-    title: 'Pro'
+  ultimate:
+    title: 'Ultimate'
     description: ''
 
 overview:
@@ -30,10 +30,13 @@ upgrade_offer:
   required_upgrade: 'To unlock these features, this upgrade is required'
   current_plan: 'Current plan'
   current_plan_free: 'Free of charge'
-  current_plan_costs: '${pricePerMonth} per month'
+  current_plan_costs_monthly: '${pricePerMonth} per month'
+  current_plan_costs_yearly: '${pricePerYear} per year'
   required_plan: 'Required plan'
-  required_plan_costs: '${pricePerMonth} per month'
-  upgrade_cta: 'Upgrade now'
+  required_plan_costs_monthly: '${pricePerMonth} per month'
+  required_plan_costs_yearly: '${pricePerYear} per year'
+  upgrade_cta_monthly: 'Upgrade now (monthly payment)'
+  upgrade_cta_yearly: 'Upgrade now (yearly payment)'
 
 capabilities:
   CustomLogoOnLandingpage:
@@ -47,6 +50,9 @@ capabilities:
     description: ''
   BrandingFreeEmbeddableVideoPlayer:
     title: 'Branding-free Video Player widget'
+    description: ''
+  VideoTranslation:
+    title: 'LingoSync: One-Click Video Translation'
     description: ''
 
 subscription_checkout:

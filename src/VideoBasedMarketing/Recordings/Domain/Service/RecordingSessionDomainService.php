@@ -106,7 +106,7 @@ readonly class RecordingSessionDomainService
     {
         if (   $user->isAdmin()
             || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Independent
-            || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Pro
+            || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Professional
         ) {
             return 3600;
         } else {

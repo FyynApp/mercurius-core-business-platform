@@ -6,6 +6,7 @@ use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Membership\Domain\Entity\MembershipPlan;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
+use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentCycle;
 use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,7 +44,8 @@ class PaymentProcessorStripeService
      */
     public function getSubscriptionCheckoutUrl(
         User           $user,
-        MembershipPlan $membershipPlan
+        MembershipPlan $membershipPlan,
+        PaymentCycle   $paymentCycle
     ): string
     {
         $subscription = new Subscription(
@@ -65,13 +67,27 @@ class PaymentProcessorStripeService
                 ],
 
                 'line_items' => [[
-                    'price' => match ($membershipPlan->getName()) {
-                        MembershipPlanName::Independent => $_ENV['STRIPE_API_ID_PRODUCT_INDEPENDENT_PLAN'],
-                        MembershipPlanName::Plus => $_ENV['STRIPE_API_ID_PRODUCT_PLUS_PLAN'],
-                        MembershipPlanName::Pro => $_ENV['STRIPE_API_ID_PRODUCT_PRO_PLAN'],
+                    'price' => match ($paymentCycle) {
+                        PaymentCycle::Monthly => match ($membershipPlan->getName()) {
+                            MembershipPlanName::Independent => $_ENV['STRIPE_PRICE_ID_INDEPENDENT_MONTHLY'],
+                            MembershipPlanName::Professional => $_ENV['STRIPE_PRICE_ID_PROFESSIONAL_MONTHLY'],
+                            MembershipPlanName::Ultimate => $_ENV['STRIPE_PRICE_ID_ULTIMATE_MONTHLY'],
 
-                        MembershipPlanName::Basic
-                            => throw new InvalidArgumentException("Cannot subscribe to plan '{$membershipPlan->getName()->value}'.")
+                            MembershipPlanName::Basic
+                            => throw new InvalidArgumentException("Cannot subscribe to plan '{$membershipPlan->getName()->value}'."),
+
+                            default => throw new InvalidArgumentException("Cannot handle plan '{$membershipPlan->getName()->value}'.")
+                        },
+                        PaymentCycle::Yearly => match ($membershipPlan->getName()) {
+                            MembershipPlanName::Independent => $_ENV['STRIPE_PRICE_ID_INDEPENDENT_YEARLY'],
+                            MembershipPlanName::Professional => $_ENV['STRIPE_PRICE_ID_PROFESSIONAL_YEARLY'],
+                            MembershipPlanName::Ultimate => $_ENV['STRIPE_PRICE_ID_ULTIMATE_YEARLY'],
+
+                            MembershipPlanName::Basic
+                            => throw new InvalidArgumentException("Cannot subscribe to plan '{$membershipPlan->getName()->value}'."),
+
+                            default => throw new InvalidArgumentException("Cannot handle plan '{$membershipPlan->getName()->value}'.")
+                        },
                     },
                     'quantity' => 1,
                 ]],
