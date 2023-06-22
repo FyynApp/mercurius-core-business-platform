@@ -10,7 +10,17 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <div class="mt-16">
+    <div class="flex flex-col gap-2 mx-auto w-56 mt-16">
+        <div class="font-light text-neutral-500">
+            <span class="font-semibold">NEW:</span> Fyyn.io now features LingoSync — Translate your videos into multiple languages with a simple click!
+        </div>
+        <img
+                class="w-56"
+                src="{{ asset('assets/images/videobasedmarketing/lingosync/lingosync-logo.svg') }}"
+        >
+    </div>
+
+    <div class="mt-4">
         <div class="min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8">
             <div class="max-w-md w-full space-y-8">
                 {{ form_start(signUpForm) }}
