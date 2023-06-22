@@ -249,7 +249,7 @@ readonly class VideoDomainService
         if (   $this->containerBag->get('kernel.environment') === 'preprod'
             || $user->isAdmin()
             || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Independent
-            || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Pro
+            || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Professional
         ) {
             return 2684354560; // 2.5 GiB
         }

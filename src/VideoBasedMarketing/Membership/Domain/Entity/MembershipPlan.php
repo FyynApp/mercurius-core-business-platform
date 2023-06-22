@@ -16,21 +16,25 @@ readonly class MembershipPlan
 
     private float $pricePerMonth;
 
+    private float $pricePerYear;
+
     private array $capabilities;
 
-    /** @param array|\App\VideoBasedMarketing\Membership\Domain\Enum\Capability[] $capabilities */
+    /** @param array|Capability[] $capabilities */
     public function __construct(
         MembershipPlanName $name,
         bool               $mustBeBought,
         float              $pricePerMonth,
+        float              $pricePerYear,
         array              $capabilities
     )
     {
         $this->name = $name;
         $this->mustBeBought = $mustBeBought;
         $this->pricePerMonth = $pricePerMonth;
+        $this->pricePerYear = $pricePerYear;
 
-        /** @var \App\VideoBasedMarketing\Membership\Domain\Enum\Capability $capability */
+        /** @var Capability $capability */
         foreach ($capabilities as $key => $capability) {
             if (get_class($capability) !== Capability::class) {
                 throw new ValueError('$capabilities['. $key .'] has class ' . get_class($capability) . '.');
@@ -60,13 +64,18 @@ readonly class MembershipPlan
         return $this->pricePerMonth;
     }
 
+    public function getPricePerYear(): float
+    {
+        return $this->pricePerYear;
+    }
+
     public function hasCapability(Capability $capability): bool
     {
         return in_array($capability, $this->capabilities);
     }
 
     /**
-     * @return \App\VideoBasedMarketing\Membership\Domain\Enum\Capability[]
+     * @return Capability[]
      */
     public function getCapabilities(): array
     {

@@ -7,6 +7,7 @@ use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
+use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentCycle;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,8 +46,8 @@ class MembershipController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout/{planName}/start',
-            'de' => '%app.routing.route_prefix.with_locale.protected.en%/mitgliedschaft/abonnement/kauf/{planName}/start',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/checkout/{planName}/{paymentCycle}/start',
+            'de' => '%app.routing.route_prefix.with_locale.protected.en%/mitgliedschaft/abonnement/kauf/{planName}/{paymentCycle}/start',
         ],
         name        : 'videobasedmarketing.membership.presentation.subscription.checkout.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -54,6 +55,7 @@ class MembershipController
     )]
     public function subscriptionCheckoutStartAction(
         string            $planName,
+        PaymentCycle      $paymentCycle,
         MembershipService $membershipService,
     ): Response {
         $user = $this->getUser();
@@ -63,7 +65,10 @@ class MembershipController
         if ($paymentProcessor === PaymentProcessor::Stripe) {
             return $this->redirectToRoute(
                 'videobasedmarketing.membership.infrastructure.subscription.checkout_with_payment_processor_stripe.start',
-                ['planName' => $planName]
+                [
+                    'planName' => $planName,
+                    'paymentCycle' => $paymentCycle->value,
+                ]
             );
         } else {
             throw new NotImplementedException("Cannot handle payment processor $paymentProcessor->value.");

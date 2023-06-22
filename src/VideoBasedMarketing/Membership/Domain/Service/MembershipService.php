@@ -149,6 +149,7 @@ readonly class MembershipService
                 $name,
                 false,
                 0.0,
+                0.0,
                 []
             ),
 
@@ -156,33 +157,44 @@ readonly class MembershipService
             new MembershipPlan(
                 $name,
                 true,
-                27.00,
+                40.0,
+                324.0,
                 [
                     Capability::CustomDomain,
                     Capability::CustomLogoOnLandingpage,
                     Capability::AdFreeLandingpages,
                     Capability::BrandingFreeEmbeddableVideoPlayer,
+                    Capability::VideoTranslation,
                 ]
             ),
 
-            MembershipPlanName::Plus =>
+            MembershipPlanName::Professional =>
             new MembershipPlan(
                 $name,
                 true,
-                9.99,
-                []
-            ),
-
-            MembershipPlanName::Pro =>
-            new MembershipPlan(
-                $name,
-                true,
-                47.99,
+                70.0,
+                564.0,
                 [
                     Capability::CustomDomain,
                     Capability::CustomLogoOnLandingpage,
                     Capability::AdFreeLandingpages,
                     Capability::BrandingFreeEmbeddableVideoPlayer,
+                    Capability::VideoTranslation,
+                ]
+            ),
+
+            MembershipPlanName::Ultimate =>
+            new MembershipPlan(
+                $name,
+                true,
+                190.0,
+                1524.0,
+                [
+                    Capability::CustomDomain,
+                    Capability::CustomLogoOnLandingpage,
+                    Capability::AdFreeLandingpages,
+                    Capability::BrandingFreeEmbeddableVideoPlayer,
+                    Capability::VideoTranslation,
                 ]
             ),
         };
