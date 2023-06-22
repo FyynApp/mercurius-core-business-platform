@@ -56,6 +56,7 @@
                     <div class="mt-16 flex flex-col items-center gap-4">
                         <a
                                 class="
+                                    w-full
                                     cta-with-icon-primary shadow-md shadow-neutral-300 text-2xl font-semibold
                                     flex-row items-center gap-4 p-6
                                     bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500
@@ -66,7 +67,7 @@
                                         'videobasedmarketing.membership.presentation.subscription.checkout.start',
                                         {
                                             'planName': membershipPlan.name.value,
-                                            'paymentCycle': constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\PaymentCycle::MONTHLY').value
+                                            'paymentCycle': constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\PaymentCycle::Monthly').value
                                         }
                                     )
                                 }}"
@@ -86,6 +87,7 @@
 
                         <a
                                 class="
+                                    w-full
                                     cta-with-icon-primary shadow-md shadow-neutral-300 text-2xl font-semibold
                                     flex-row items-center gap-4 p-6
                                     bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500
@@ -96,7 +98,7 @@
                                     'videobasedmarketing.membership.presentation.subscription.checkout.start',
                                     {
                                         'planName': membershipPlan.name.value,
-                                        'paymentCycle': constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\PaymentCycle::YEARLY').value
+                                        'paymentCycle': constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\PaymentCycle::Yearly').value
                                     }
                                 )
                                 }}"
@@ -136,7 +138,10 @@
                                 href="{{
                                     path(
                                         'videobasedmarketing.membership.presentation.subscription.checkout.start',
-                                        { 'planName': membershipPlan.name.value }
+                                        {
+                                            'planName': membershipPlan.name.value,
+                                            'paymentCycle': constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\PaymentCycle::Monthly').value
+                                        }
                                     )
                                 }}"
 
@@ -149,11 +154,45 @@
                                 "
                         >
                             {{ ('plan.' ~ membershipPlan.name.value ~ '.title')|trans }}
+                            <div class="font-light text-sm">
+                                ({{ 'payment_cycle.monthly'|trans }})
+                            </div>
                         </a>
 
                         <div class="font-extralight text-xs text-neutral-500 mb-6">
                             {{ 'upgrade_offer.required_plan_costs_monthly'|trans({ '{pricePerMonth}': membershipPlan.pricePerMonth }) }}
                         </div>
+
+
+                        <div class="text-neutral-500 font-extralight mb-8">
+                            — or —
+                        </div>
+
+
+                        <a
+                                href="{{
+                                path(
+                                    'videobasedmarketing.membership.presentation.subscription.checkout.start',
+                                    {
+                                        'planName': membershipPlan.name.value,
+                                        'paymentCycle': constant('\\App\\VideoBasedMarketing\\Membership\\Domain\\Enum\\PaymentCycle::Yearly').value
+                                    }
+                                )
+                                }}"
+
+                                class="
+                                    w-48 text-center
+                                    font-extrabold text-2xl mb-1
+                                    bg-gradient-to-br from-mercurius-blue-200 to-mercurius-green-200
+                                    p-4 rounded-md
+                                    shadow-sm shadow-neutral-100
+                                "
+                        >
+                            {{ ('plan.' ~ membershipPlan.name.value ~ '.title')|trans }}
+                            <div class="font-light text-sm">
+                                ({{ 'payment_cycle.yearly'|trans }})
+                            </div>
+                        </a>
 
                         <div class="font-extralight text-xs text-neutral-500 mb-6">
                             {{ 'upgrade_offer.required_plan_costs_yearly'|trans({ '{pricePerYear}': membershipPlan.pricePerYear }) }}
