@@ -7,6 +7,8 @@ overview:
   language:
     'de-DE': 'German'
     'en-US': 'English'
+    'es-ES': 'Spanish'
+    'fr-FR': 'French'
   show_webvtt_file: 'Show WebVTT file'
   suggested_summary: 'Audio summary suggested by our AI:'
 edit_web_vtt:

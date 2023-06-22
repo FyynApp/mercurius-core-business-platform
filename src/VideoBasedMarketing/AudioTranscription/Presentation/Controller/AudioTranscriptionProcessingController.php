@@ -10,6 +10,7 @@ use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Presentation\Controller\VideoFoldersController;
+use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -19,6 +20,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AudioTranscriptionProcessingController
     extends AbstractController
 {
+    /**
+     * @throws Exception
+     * @throws \Exception
+     */
     #[Route(
         path        : [
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/audio-transcriptions/',

@@ -59,6 +59,7 @@ video_manage_widget:
       de_DE: 'German'
       en_US: 'English'
       es_ES: 'Spanish'
+      fr_FR: 'French'
   lingo_sync_modal:
     headline: 'Generate a translated video with LingoSync'
     choose_original_language: 'Please choose the language that is spoken in the original video:'
@@ -68,6 +69,7 @@ video_manage_widget:
       de-DE: 'German'
       en-US: 'English'
       es-ES: 'Spanish'
+      fr-FR: 'French'
     gender:
       male: 'male'
       female: 'female'

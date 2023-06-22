@@ -276,7 +276,8 @@ readonly class HappyScribeApiService
         $targetLanguage = match ($bcp47LanguageCode) {
             Bcp47LanguageCode::DeDe => 'de',
             Bcp47LanguageCode::EnUs => 'en',
-            Bcp47LanguageCode::EsEs => 'es'
+            Bcp47LanguageCode::EsEs => 'es',
+            Bcp47LanguageCode::FrFr => 'fr'
         };
 
         $body = <<<EOT

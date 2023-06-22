@@ -83,6 +83,11 @@ readonly class GoogleCloudTextToSpeechApiClient
                 Gender::Male => 'es-ES-Standard-B',
                 Gender::Female => 'es-ES-Standard-A',
             },
+
+            Bcp47LanguageCode::FrFr => match ($gender) {
+                Gender::Male => 'fr-FR-Standard-B',
+                Gender::Female => 'fr-FR-Standard-A',
+            },
         };
     }
 }
