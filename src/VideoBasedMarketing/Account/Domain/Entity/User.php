@@ -3,6 +3,7 @@
 namespace App\VideoBasedMarketing\Account\Domain\Entity;
 
 use App\Shared\Domain\Enum\Iso639_1Code;
+use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Enum\Role;
 use App\VideoBasedMarketing\Account\Domain\Enum\VideosListViewMode;
 use App\VideoBasedMarketing\Account\Infrastructure\Entity\ActiveCampaignContact;
@@ -17,6 +18,7 @@ use App\VideoBasedMarketing\RecordingRequests\Domain\Entity\RecordingRequestResp
 use App\VideoBasedMarketing\Recordings\Api\Recorder\V1\Entity\RecordingSettingsBag;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -38,8 +40,12 @@ use ValueError;
 class User
     implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    /**
+     * @throws Exception
+     */
     public function __construct()
     {
+        $this->createdAt = DateAndTimeService::getDateTime();
         $this->presentationpages = new ArrayCollection();
         $this->recordingSessions = new ArrayCollection();
         $this->recordingSettingsBags = new ArrayCollection();
@@ -65,6 +71,18 @@ class User
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        nullable: true
+    )]
+    private ?DateTime $createdAt;
+
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
     }
 
 
