@@ -10,7 +10,7 @@
             '_default',
             {
                 'data-lang': app.request.locale,
-                'data-max-file-size': TwigHelperService.videoDomainService.maxVideoUploadFilesize(app.user),
+                'data-max-file-size': TwigHelperService.capabilitiesService.maxVideoUploadFilesizeInBytes(app.user),
                 'data-show-inline': 'true',
                 'data-dashboard-target': '#uppyVideoUploadDashboardTarget',
                 'data-status-bar-target': '#uppyVideoUploadStatusBarTarget',

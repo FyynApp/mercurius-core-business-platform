@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Api\VideoUpload\V1\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Service\VideoDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use Psr\Log\LoggerInterface;
@@ -40,9 +41,8 @@ class TusController
     public function videoUploadTusAction(
         ?string                         $token,
         Server                          $server,
-        LoggerInterface                 $logger,
         RecordingsInfrastructureService $recordingsInfrastructureService,
-        VideoDomainService              $videoDomainService
+        CapabilitiesService             $capabilitiesService
     ): Response
     {
         /** @var null|User $user */
@@ -55,7 +55,7 @@ class TusController
         $server->setApiPath('/api/recordings/video-upload/v1/tus');
         $server->getCache()->setPrefix($user->getId());
         $server->setMaxUploadSize(
-            $videoDomainService->getMaxVideoUploadFilesize($user)
+            $capabilitiesService->getMaxVideoUploadFilesizeInBytes($user)
         );
 
         $recordingsInfrastructureService->prepareVideoUpload($user, $server);

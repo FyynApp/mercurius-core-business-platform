@@ -256,6 +256,21 @@ readonly class CapabilitiesService
         return $plan->getMaxRecordingTimeInSeconds();
     }
 
+    public function getMaxVideoUploadFilesizeInBytes(
+        User $user
+    ): int
+    {
+        if ($user->isAdmin()) {
+            return 2684354560; // 2.5 GiB
+        }
+
+        $plan = $this
+            ->membershipService
+            ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user);
+
+        return $plan->getMaxVideoUploadFilesizeInBytes();
+    }
+
     private function hasCapability(
         ?User      $user,
         Capability $capability

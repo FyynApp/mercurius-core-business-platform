@@ -24,6 +24,8 @@ readonly class MembershipPlan
 
     private int $maxRecordingTimeInSeconds;
 
+    private int $maxVideoUploadFilesizeInBytes;
+
 
     /** @param array|Capability[] $capabilities */
     public function __construct(
@@ -33,7 +35,8 @@ readonly class MembershipPlan
         float              $pricePerYear,
         array              $capabilities,
         float              $numberOfTranslatableVideoSecondsForOneMonth,
-        int                $maxRecordingTimeInSeconds
+        int                $maxRecordingTimeInSeconds,
+        int                $maxVideoUploadFilesizeInBytes
     )
     {
         $this->name = $name;
@@ -52,6 +55,7 @@ readonly class MembershipPlan
 
         $this->numberOfTranslatableVideoSecondsForOneMonth = $numberOfTranslatableVideoSecondsForOneMonth;
         $this->maxRecordingTimeInSeconds = $maxRecordingTimeInSeconds;
+        $this->maxVideoUploadFilesizeInBytes = $maxVideoUploadFilesizeInBytes;
     }
 
     public function getName(): MembershipPlanName
@@ -100,5 +104,10 @@ readonly class MembershipPlan
     public function getMaxRecordingTimeInSeconds(): int
     {
         return $this->maxRecordingTimeInSeconds;
+    }
+
+    public function getMaxVideoUploadFilesizeInBytes(): int
+    {
+        return $this->maxVideoUploadFilesizeInBytes;
     }
 }

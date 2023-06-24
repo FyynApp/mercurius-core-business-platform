@@ -241,19 +241,4 @@ readonly class VideoDomainService
             ['createdAt' => Criteria::DESC]
         );
     }
-
-    public function getMaxVideoUploadFilesize(
-        User $user
-    ): int
-    {
-        if (   $this->containerBag->get('kernel.environment') === 'preprod'
-            || $user->isAdmin()
-            || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Independent
-            || $this->membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)->getName() === MembershipPlanName::Professional
-        ) {
-            return 2684354560; // 2.5 GiB
-        }
-
-        return 104857600; // 100 MiB
-    }
 }

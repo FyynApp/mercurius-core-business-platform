@@ -152,7 +152,8 @@ readonly class MembershipService
                 0.0,
                 [],
                 0.0,
-                60 * 5
+                60 * 5,
+                100 * 1024 * 1024 // 100 MiB
             ),
 
             MembershipPlanName::Independent =>
@@ -169,7 +170,8 @@ readonly class MembershipService
                     Capability::VideoTranslation,
                 ],
                 (float)(60 * 60 * 0.5),
-                60 * 20
+                60 * 20,
+                512 * 1024 * 1024 // 0.5 GiB
             ),
 
             MembershipPlanName::Professional =>
@@ -186,7 +188,8 @@ readonly class MembershipService
                     Capability::VideoTranslation,
                 ],
                 (float)(60 * 60),
-                60 * 60
+                60 * 60,
+                1024 * 1024 * 1024 // 1 GiB
             ),
 
             MembershipPlanName::Ultimate =>
@@ -203,7 +206,8 @@ readonly class MembershipService
                     Capability::VideoTranslation,
                 ],
                 (float)(60 * 60 * 3),
-                60 * 60 * 2
+                60 * 60 * 2,
+                2 * 1024 * 1024 * 1024 // 2 GiB
             ),
         };
     }
