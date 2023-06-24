@@ -6,7 +6,7 @@
 
 {% if TwigHelperService.capabilitiesService.canTranslateVideos(app.user) %}
 
-    <div class="flex flex-row justify-between mb-8">
+    <div class="flex flex-row justify-between mb-4">
 
         <div class="flex flex-row gap-2 items-center text-black">
             <span class="font-bold">{{ 'start_process_modal.headline'|trans }}</span>
@@ -47,12 +47,12 @@
                     value="{{ video.id }}"
             >
 
-            <div class="mt-8 mb-4 font-semibold">
+            <div class="mt-8 mb-2 font-semibold">
                 {{ 'start_process_modal.choose_original_language'|trans }}
             </div>
 
             {% for languageCode in TwigHelperService.lingoSyncDomainService.supportedOriginalLanguages %}
-                <div class="mb-1">
+                <div class="mb-0.5">
                     <input
                             class="radio-default"
                             type="radio"
@@ -68,12 +68,12 @@
             {% endfor %}
 
 
-            <div class="mt-8 mb-4 font-semibold">
+            <div class="mt-8 mb-2 font-semibold">
                 {{ 'start_process_modal.choose_original_gender'|trans }}
             </div>
 
             {% for gender in TwigHelperService.lingoSyncDomainService.supportedOriginalGenders %}
-                <div class="mb-1">
+                <div class="mb-0.5">
                     <input
                             class="radio-default"
                             type="radio"
@@ -94,7 +94,7 @@
             </div>
 
             {% for languageCode in TwigHelperService.lingoSyncDomainService.supportedTargetLanguages %}
-                <div class="mb-1">
+                <div class="mb-0.5">
                     <input
                             class="radio-default"
                             type="radio"
