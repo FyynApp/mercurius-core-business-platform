@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Api\NativeBrowserRecorder\V1\Contro
 
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Service\RecordingSessionDomainService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Enum\AssetMimeType;
@@ -30,7 +31,8 @@ class RecordingSessionController
     )]
     public function createRecordingSessionAction(
         RecordingSessionDomainService $recordingSessionDomainService,
-        RouterInterface               $router
+        RouterInterface               $router,
+        CapabilitiesService           $capabilitiesService
     ): Response
     {
         $user = $this->getUser();
@@ -58,7 +60,7 @@ class RecordingSessionController
                 ),
 
                 'postChunkSize' => 5,
-                'maxRecordingTime' => $recordingSessionDomainService->getMaxRecordingTime($user),
+                'maxRecordingTime' => $capabilitiesService->getMaxRecordingTimeInSeconds($user),
                 'videoBitsPerSecond' => 1250000, // 0.15 MiB, 5-second chunks are ~1.2 MiB. See https://developers.google.com/media/vp9/settings/vod#recommended_settings
                 'audioBitsPerSecond' => 64000,
 

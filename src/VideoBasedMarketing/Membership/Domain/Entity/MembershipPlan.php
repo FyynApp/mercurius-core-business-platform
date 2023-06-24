@@ -22,6 +22,8 @@ readonly class MembershipPlan
 
     private float $numberOfTranslatableVideoSecondsForOneMonth;
 
+    private int $maxRecordingTimeInSeconds;
+
 
     /** @param array|Capability[] $capabilities */
     public function __construct(
@@ -30,7 +32,8 @@ readonly class MembershipPlan
         float              $pricePerMonth,
         float              $pricePerYear,
         array              $capabilities,
-        float              $numberOfTranslatableVideoSecondsForOneMonth
+        float              $numberOfTranslatableVideoSecondsForOneMonth,
+        int                $maxRecordingTimeInSeconds
     )
     {
         $this->name = $name;
@@ -48,6 +51,7 @@ readonly class MembershipPlan
         $this->capabilities = $capabilities;
 
         $this->numberOfTranslatableVideoSecondsForOneMonth = $numberOfTranslatableVideoSecondsForOneMonth;
+        $this->maxRecordingTimeInSeconds = $maxRecordingTimeInSeconds;
     }
 
     public function getName(): MembershipPlanName
@@ -88,11 +92,13 @@ readonly class MembershipPlan
         return $this->capabilities;
     }
 
-    /**
-     * @return float
-     */
     public function getNumberOfTranslatableVideoSecondsForOneMonth(): float
     {
         return $this->numberOfTranslatableVideoSecondsForOneMonth;
+    }
+
+    public function getMaxRecordingTimeInSeconds(): int
+    {
+        return $this->maxRecordingTimeInSeconds;
     }
 }

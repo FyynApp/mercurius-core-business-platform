@@ -241,6 +241,21 @@ readonly class CapabilitiesService
         return $plan->getNumberOfTranslatableVideoSecondsForOneMonth();
     }
 
+    public function getMaxRecordingTimeInSeconds(
+        User $user
+    ): int
+    {
+        if ($user->isAdmin()) {
+            return 60 * 60;
+        }
+
+        $plan = $this
+            ->membershipService
+            ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user);
+
+        return $plan->getMaxRecordingTimeInSeconds();
+    }
+
     private function hasCapability(
         ?User      $user,
         Capability $capability

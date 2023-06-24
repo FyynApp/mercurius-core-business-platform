@@ -151,7 +151,8 @@ readonly class MembershipService
                 0.0,
                 0.0,
                 [],
-                0.0
+                0.0,
+                60 * 5
             ),
 
             MembershipPlanName::Independent =>
@@ -167,7 +168,8 @@ readonly class MembershipService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                (float)(60 * 60 * 0.5)
+                (float)(60 * 60 * 0.5),
+                60 * 20
             ),
 
             MembershipPlanName::Professional =>
@@ -183,7 +185,8 @@ readonly class MembershipService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                (float)(60 * 60 * 1)
+                (float)(60 * 60),
+                60 * 60
             ),
 
             MembershipPlanName::Ultimate =>
@@ -199,7 +202,8 @@ readonly class MembershipService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                (float)(60 * 60 * 3)
+                (float)(60 * 60 * 3),
+                60 * 60 * 2
             ),
         };
     }
