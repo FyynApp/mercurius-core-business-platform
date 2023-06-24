@@ -149,6 +149,18 @@ readonly class CapabilitiesService
         return $this->hasCapability($user, Capability::AdFreeLandingpages);
     }
 
+    public function canTranslateVideos(User $user): bool
+    {
+        return str_ends_with($user->getEmail(), '@kiessling.net')
+            || str_ends_with($user->getEmail(), '@smart-dsgvo.de')
+            || str_ends_with($user->getEmail(), '@maik-becker.de')
+            || str_ends_with($user->getEmail(), '@fyyn.io')
+            || (
+                   str_starts_with($user->getEmail(), 'kiessling.manuel')
+                && str_ends_with($user->getEmail(), '@gmail.com')
+            );
+    }
+
 
     public function canInviteOrganizationMembers(User $user): bool
     {

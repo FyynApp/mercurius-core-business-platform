@@ -1,5 +1,5 @@
-{# @var this \App\VideoBasedMarketing\Recordings\Presentation\Component\VideoManageWidgetLiveComponent #}
 {# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var this \App\VideoBasedMarketing\Recordings\Presentation\Component\VideoManageWidgetLiveComponent #}
 
 {% trans_default_domain 'videobasedmarketing.recordings' %}
 
@@ -1019,133 +1019,17 @@
                     p-6
                 "
         >
-            <div class="
-                bg-white max-w-screen-lg max-h-screen max-w-full
-                p-4 w-fit rounded-md
-                flex flex-col justify-start
-            ">
-                <div class="flex flex-row justify-between mb-8">
-
-                    <div class="flex flex-row gap-2 items-center text-black">
-                        {# Heroicon: code-bracket-square solid #}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm14.25 6a.75.75 0 01-.22.53l-2.25 2.25a.75.75 0 11-1.06-1.06L15.44 12l-1.72-1.72a.75.75 0 111.06-1.06l2.25 2.25c.141.14.22.331.22.53zm-10.28-.53a.75.75 0 000 1.06l2.25 2.25a.75.75 0 101.06-1.06L8.56 12l1.72-1.72a.75.75 0 10-1.06-1.06l-2.25 2.25z" clip-rule="evenodd" />
-                        </svg>
-                        <span class="font-bold">
-                            {{ 'video_manage_widget.lingo_sync_modal.headline'|trans }}
-                        </span>
-                    </div>
-
-                    <button
-                            class=""
-                            data-action="live#action"
-                            data-action-name="hideLingoSyncModal"
-                    >
-                        {# Heroicon: x-mark solid #}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="flex flex-row gap-2 justify-center items-start w-full">
-
-                    <form
-                            action="{{ path('videobasedmarketing.lingo_sync.presentation.process.start') }}"
-                            method="post"
-                    >
-                        <input
-                                type="hidden"
-                                name="_csrf_token"
-                                value="{{ csrf_token(
-                                    'start-lingo-sync-process-'
-                                    ~ this.video.id
-                                ) }}"
-                        >
-
-                        <input
-                                type="hidden"
-                                name="videoId"
-                                value="{{ this.video.id }}"
-                        >
-
-                        <div class="text-neutral-800 mt-8 text-sm">
-                            {{ 'video_manage_widget.lingo_sync_modal.choose_original_language'|trans }}
-                        </div>
-
-                        {% for languageCode in TwigHelperService.lingoSyncDomainService.supportedOriginalLanguages %}
-                            <div>
-                                <input
-                                        type="radio"
-                                        name="originalLanguage"
-                                        value="{{ languageCode.value }}"
-                                        id="lingoSync-originalLanguage-{{ languageCode.value }}"
-                                >
-                                <label for="lingoSync-originalLanguage-{{ languageCode.value }}">
-                                    {{ ('video_manage_widget.lingo_sync_modal.language.' ~ languageCode.value)|trans }}
-                                </label>
-                            </div>
-                        {% endfor %}
-
-
-                        <div class="text-neutral-800 mt-8 text-sm">
-                            {{ 'video_manage_widget.lingo_sync_modal.choose_original_gender'|trans }}
-                        </div>
-
-                        {% for gender in TwigHelperService.lingoSyncDomainService.supportedOriginalGenders %}
-                            <div>
-                                <input
-                                        type="radio"
-                                        name="originalGender"
-                                        value="{{ gender.value }}"
-                                        id="lingoSync-originalGender-{{ gender.value }}"
-                                >
-                                <label for="lingoSync-originalGender-{{ gender.value }}">
-                                    {{ ('video_manage_widget.lingo_sync_modal.gender.' ~ gender.value)|trans }}
-                                </label>
-                            </div>
-                        {% endfor %}
-
-
-                        <div class="text-neutral-800 mt-8 text-sm">
-                            {{ 'video_manage_widget.lingo_sync_modal.choose_target_language'|trans }}
-                        </div>
-
-                        {% for languageCode in TwigHelperService.lingoSyncDomainService.supportedTargetLanguages %}
-                            <div>
-                                <input
-                                        type="radio"
-                                        name="targetLanguage"
-                                        value="{{ languageCode.value }}"
-                                        id="lingoSync-targetLanguage-{{ languageCode.value }}"
-                                >
-                                <label for="lingoSync-targetLanguage-{{ languageCode.value }}">
-                                    {{ ('video_manage_widget.lingo_sync_modal.language.' ~ languageCode.value)|trans }}
-                                </label>
-                            </div>
-                        {% endfor %}
-
-                        <div class="w-full mt-8 flex flex-row gap-2 justify-between items-center">
-                            <button
-                                    type="submit"
-                                    class="cta-with-icon-primary"
-                            >
-                                {{ 'video_manage_widget.lingo_sync_modal.cta_submit'|trans }}
-                            </button>
-
-                            <a
-                                    class="text-sm text-neutral-700"
-                                    href="{{ path(
-                                        'videobasedmarketing.lingo_sync.presentation.processes.status',
-                                        { videoId: this.video.id }
-                                    ) }}"
-                            >
-                                {{ 'video_manage_widget.lingo_sync_modal.cta_show_status'|trans }}
-                            </a>
-                        </div>
-                    </form>
-                </div>
-
+            <div
+                    class="
+                        bg-white max-h-screen max-w-full
+                        p-8 w-fit rounded-md
+                        flex flex-col justify-start
+                    "
+            >
+                {% include
+                    '@videobasedmarketing.lingo_sync/start_process_modal.html.twig'
+                    with { 'video': this.video }
+                %}
             </div>
         </div>
     {% endif %}

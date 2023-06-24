@@ -27,3 +27,18 @@ status_page:
   cta_restart: 'Restart process'
 process_started: 'LingoSync process has been started.'
 process_restarted: 'LingoSync process has been restarted.'
+start_process_modal:
+  headline: 'Generate a translated video with LingoSync'
+  choose_original_language: 'Please choose the language that is spoken in the original video:'
+  choose_original_gender: 'Please choose the gender of the speaker in the original video:'
+  choose_target_language: 'Please choose the target language:'
+  language:
+    de-DE: 'German'
+    en-US: 'English'
+    es-ES: 'Spanish'
+    fr-FR: 'French'
+  gender:
+    male: 'male'
+    female: 'female'
+  cta_submit: 'Start LingoSync process'
+  cta_show_status: 'Show process status'

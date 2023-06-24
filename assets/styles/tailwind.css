@@ -206,4 +206,17 @@
         focus:bg-mercurius-blue-50
         ;
     }
+
+    .radio-default {
+        @apply
+        w-4
+        h-4
+        text-mercurius-blue-600
+        bg-white
+        border-neutral-500
+        focus:ring-mercurius-blue-500
+        focus:ring-2
+        mr-4
+        align-middle
+    }
 }
