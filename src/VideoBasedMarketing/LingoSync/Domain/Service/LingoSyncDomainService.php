@@ -4,7 +4,10 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Service;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
+use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Utility\ArrayUtility;
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
@@ -14,6 +17,7 @@ use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskStatus;
 use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncProcessTaskType;
 use App\VideoBasedMarketing\LingoSync\Domain\SymfonyMessage\HandleTaskCommandSymfonyMessage;
 use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\LingoSyncInfrastructureService;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\SymfonyMessage\GenerateMissingVideoAssetsCommandSymfonyMessage;
@@ -39,7 +43,8 @@ readonly class LingoSyncDomainService
         private MessageBusInterface             $messageBus,
         private LingoSyncInfrastructureService  $lingoSyncInfrastructureService,
         private RecordingsInfrastructureService $recordingsInfrastructureService,
-        private LoggerInterface                 $logger
+        private LoggerInterface                 $logger,
+        private CapabilitiesService             $capabilitiesService
     )
     {
     }
@@ -627,6 +632,60 @@ readonly class LingoSyncDomainService
         }
     }
 
+    /**
+     * @throws Exception
+     */
+    public function getNumberOfTranslatedSecondsDuringLastMonth(
+        Organization $organization
+    ): float
+    {
+        $sql = "
+            SELECT lsp.id AS id
+
+            FROM {$this->entityManager->getClassMetadata(LingoSyncProcess::class)->getTableName()} lsp
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+            ON v.id = lsp.videos_id
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(Organization::class)->getTableName()} o
+            ON o.id = v.organizations_id
+            
+            WHERE
+                o.id = :oid
+            ;
+        ";
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue(':oid', $organization->getId());
+        $resultSet = $stmt->executeQuery();
+
+        $seconds = 0.0;
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            /** @var LingoSyncProcess $process */
+            $process = $this->entityManager->find(LingoSyncProcess::class, $row['id']);
+            if ($process->getCreatedAt() < DateAndTimeService::getDateTime('-1 month')) {
+                continue;
+            }
+            $seconds += (float)$process->getVideo()->getSeconds();
+        }
+
+        return $seconds;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function hasRemainingTranslationSeconds(
+        User  $user,
+        Video $video
+    ): bool
+    {
+        return
+            $this->getNumberOfTranslatedSecondsDuringLastMonth(
+                $video->getOrganization()
+            ) + $video->getSeconds()
+        <
+        $this->capabilitiesService->getNumberOfTranslatableVideoSecondsForOneMonth($user);
+    }
 
     private function findProcessTask(
         LingoSyncProcess         $lingoSyncProcess,

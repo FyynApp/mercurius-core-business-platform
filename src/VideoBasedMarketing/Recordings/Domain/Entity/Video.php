@@ -1004,12 +1004,7 @@ class Video
 
     public function getDuration(): ?string
     {
-        $seconds = null;
-        if (!is_null($this->getAssetFullMp4Seconds())) {
-            $seconds = $this->getAssetFullMp4Seconds();
-        } elseif (!is_null($this->getAssetFullWebmSeconds())) {
-            $seconds = $this->getAssetFullWebmSeconds();
-        }
+        $seconds = $this->getSeconds();
 
         if (is_null($seconds)) {
             return null;
@@ -1025,6 +1020,8 @@ class Video
             $seconds = $this->getAssetFullMp4Seconds();
         } elseif (!is_null($this->getAssetFullWebmSeconds())) {
             $seconds = $this->getAssetFullWebmSeconds();
+        } elseif (!is_null($this->getAssetOriginalSeconds())) {
+            $seconds = $this->getAssetOriginalSeconds();
         }
 
         return $seconds;

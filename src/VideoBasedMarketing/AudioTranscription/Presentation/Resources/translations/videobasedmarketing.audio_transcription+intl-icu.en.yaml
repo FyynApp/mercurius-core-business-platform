@@ -16,6 +16,7 @@ overview:
     'bn-BD': '🇧🇩 Bengali (Bangladesh)'
     'bn-IN': '🇮🇳 Bengali (India)'
     'cmn-Hans-CN': '🇨🇳 Mandarin (China)'
+    'ru-RU': '🇷🇺 Russian (Russia)'
   show_webvtt_file: 'Show WebVTT file'
   suggested_summary: 'Audio summary suggested by our AI:'
 edit_web_vtt:

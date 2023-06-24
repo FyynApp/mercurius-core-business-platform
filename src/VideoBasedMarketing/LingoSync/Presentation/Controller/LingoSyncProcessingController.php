@@ -68,6 +68,26 @@ class LingoSyncProcessingController
             );
         }
 
+        if (!$lingoSyncDomainService->hasRemainingTranslationSeconds($r->getUser(), $video)) {
+            $this->addFlash(
+                FlashMessageLabel::Warning->value,
+                $translator->trans(
+                    'no_remaining_translation_seconds',
+                    [],
+                    'videobasedmarketing.lingo_sync'
+                )
+            );
+
+            return $this
+                ->redirectToRoute(
+                    'videobasedmarketing.recordings.presentation.videos.overview',
+                    [
+                        VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME =>
+                            $video->getVideoFolder()?->getId()
+                    ]
+                );
+        }
+
         $lingoSyncDomainService->startProcess(
             $video,
             Bcp47LanguageCode::from(
@@ -96,7 +116,8 @@ class LingoSyncProcessingController
             ->redirectToRoute(
                 'videobasedmarketing.recordings.presentation.videos.overview',
                 [
-                    VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME => $video->getVideoFolder()?->getId()
+                    VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME =>
+                        $video->getVideoFolder()?->getId()
                 ]
             );
     }
@@ -135,6 +156,26 @@ class LingoSyncProcessingController
 
         /** @var LingoSyncProcess $lingoSyncProcess */
         $lingoSyncProcess = $r->getEntity();
+
+        if (!$lingoSyncDomainService->hasRemainingTranslationSeconds($r->getUser(), $lingoSyncProcess->getVideo())) {
+            $this->addFlash(
+                FlashMessageLabel::Warning->value,
+                $translator->trans(
+                    'no_remaining_translation_seconds',
+                    [],
+                    'videobasedmarketing.lingo_sync'
+                )
+            );
+
+            return $this
+                ->redirectToRoute(
+                    'videobasedmarketing.recordings.presentation.videos.overview',
+                    [
+                        VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME =>
+                            $lingoSyncProcess->getVideo()->getVideoFolder()?->getId()
+                    ]
+                );
+        }
 
         $lingoSyncDomainService->restartProcess($lingoSyncProcess);
 

@@ -114,9 +114,14 @@ readonly class GoogleCloudTextToSpeechApiClient
                 Gender::Female => 'hi-IN-Wavenet-A',
             },
 
-            Bcp47LanguageCode::cmnHansCn => match ($gender) {
+            Bcp47LanguageCode::CmnHansCn => match ($gender) {
                 Gender::Male => 'cmn-CN-Wavenet-B',
                 Gender::Female => 'cmn-CN-Wavenet-A',
+            },
+
+            Bcp47LanguageCode::RuRu => match ($gender) {
+                Gender::Male => 'ru-RU-Wavenet-B',
+                Gender::Female => 'ru-RU-Wavenet-A',
             },
         };
     }

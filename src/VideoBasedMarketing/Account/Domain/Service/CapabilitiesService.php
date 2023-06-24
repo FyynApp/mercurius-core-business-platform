@@ -222,6 +222,24 @@ readonly class CapabilitiesService
         );
     }
 
+    public function getNumberOfTranslatableVideoSecondsForOneMonth(
+        User $user
+    ): float
+    {
+        if (str_ends_with($user->getEmail(), '@kiessling.net')
+            || str_ends_with($user->getEmail(), '@smart-dsgvo.de')
+            || str_ends_with($user->getEmail(), '@maik-becker.de')
+            || str_ends_with($user->getEmail(), '@fyyn.io')
+        ) {
+            return 60 * 60 * 6;
+        }
+
+        $plan = $this
+            ->membershipService
+            ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user);
+
+        return $plan->getNumberOfTranslatableVideoSecondsForOneMonth();
+    }
 
     private function hasCapability(
         ?User      $user,

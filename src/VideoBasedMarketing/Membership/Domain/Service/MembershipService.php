@@ -150,7 +150,8 @@ readonly class MembershipService
                 false,
                 0.0,
                 0.0,
-                []
+                [],
+                0.0
             ),
 
             MembershipPlanName::Independent =>
@@ -165,7 +166,8 @@ readonly class MembershipService
                     Capability::AdFreeLandingpages,
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
-                ]
+                ],
+                (float)(60 * 60 * 0.5)
             ),
 
             MembershipPlanName::Professional =>
@@ -180,7 +182,8 @@ readonly class MembershipService
                     Capability::AdFreeLandingpages,
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
-                ]
+                ],
+                (float)(60 * 60 * 1)
             ),
 
             MembershipPlanName::Ultimate =>
@@ -195,7 +198,8 @@ readonly class MembershipService
                     Capability::AdFreeLandingpages,
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
-                ]
+                ],
+                (float)(60 * 60 * 3)
             ),
         };
     }

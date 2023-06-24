@@ -67,6 +67,7 @@ video_manage_widget:
       'bn-BD': '🇧🇩 Bengali (Bangladesh)'
       'bn-IN': '🇮🇳 Bengali (India)'
       'cmn-Hans-CN': '🇨🇳 Mandarin (China)'
+      'ru-RU': '🇷🇺 Russian (Russia)'
     cta_start_process: 'Start audio transcription'
   delete_modal:
     title: 'Delete video'

@@ -2,6 +2,8 @@ title: 'LingoSync'
 status_page:
   title: 'Process status overview'
   no_processes: 'There are no LingoSync processes for this video.'
+  number_of_minutes: 'Used up translation minutes for current month:'
+  number_of_minutes_of: 'of'
   from_language: 'From '
   with_gender: ' with gender '
   stopped_yes: 'Process was stopped.'
@@ -27,6 +29,7 @@ status_page:
   cta_restart: 'Restart process'
 process_started: 'LingoSync process has been started.'
 process_restarted: 'LingoSync process has been restarted.'
+no_remaining_translation_seconds: "This video's duration is longer than the remaining amount of translation time for the current month."
 start_process_modal:
   not_yet_available:
     headline: 'LingoSync will be available soon!'
@@ -48,6 +51,7 @@ start_process_modal:
     'bn-BD': '🇧🇩 Bengali (Bangladesh)'
     'bn-IN': '🇮🇳 Bengali (India)'
     'cmn-Hans-CN': '🇨🇳 Mandarin (China)'
+    'ru-RU': '🇷🇺 Russian (Russia)'
   gender:
     male: '🧔🏽‍ male'
     female: '👩🏽 female'
