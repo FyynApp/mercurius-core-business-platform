@@ -51,21 +51,29 @@
                 {{ 'start_process_modal.choose_original_language'|trans }}
             </div>
 
-            {% for languageCode in TwigHelperService.lingoSyncDomainService.supportedOriginalLanguages %}
-                <div class="mb-0.5">
-                    <input
-                            class="radio-default"
-                            type="radio"
-                            name="originalLanguage"
-                            value="{{ languageCode.value }}"
-                            id="lingoSync-originalLanguage-{{ languageCode.value }}"
-                            required
-                    >
-                    <label for="lingoSync-originalLanguage-{{ languageCode.value }}">
-                        {{ ('start_process_modal.language.' ~ languageCode.value)|trans }}
-                    </label>
-                </div>
-            {% endfor %}
+            <div class="grid sm:grid-cols-2">
+                {% for languageCode in TwigHelperService.lingoSyncDomainService.supportedOriginalLanguages %}
+                    <div class="mb-0.5">
+                        <input
+                                class="radio-default"
+                                type="radio"
+                                name="originalLanguage"
+                                value="{{ languageCode.value }}"
+                                id="lingoSync-originalLanguage-{{ languageCode.value }}"
+                                required
+                        >
+                        <label for="lingoSync-originalLanguage-{{ languageCode.value }}">
+                            <span>
+                                {{ (('start_process_modal.language.' ~ languageCode.value)|trans) | split('(', 2)[0] }}
+                            </span>
+                            <span class="text-xs font-extralight text-neutral-500">
+                                {{ (('start_process_modal.language.' ~ languageCode.value)|trans) | split('(', 2)[1] | split(')', 2)[0] }}
+                            </span>
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+
 
 
             <div class="mt-8 mb-2 font-semibold">
@@ -93,21 +101,28 @@
                 {{ 'start_process_modal.choose_target_language'|trans }}
             </div>
 
-            {% for languageCode in TwigHelperService.lingoSyncDomainService.supportedTargetLanguages %}
-                <div class="mb-0.5">
-                    <input
-                            class="radio-default"
-                            type="radio"
-                            name="targetLanguage"
-                            value="{{ languageCode.value }}"
-                            id="lingoSync-targetLanguage-{{ languageCode.value }}"
-                            required
-                    >
-                    <label for="lingoSync-targetLanguage-{{ languageCode.value }}">
-                        {{ ('start_process_modal.language.' ~ languageCode.value)|trans }}
-                    </label>
-                </div>
-            {% endfor %}
+            <div class="grid sm:grid-cols-2">
+                {% for languageCode in TwigHelperService.lingoSyncDomainService.supportedTargetLanguages %}
+                    <div class="mb-0.5">
+                        <input
+                                class="radio-default"
+                                type="radio"
+                                name="targetLanguage"
+                                value="{{ languageCode.value }}"
+                                id="lingoSync-targetLanguage-{{ languageCode.value }}"
+                                required
+                        >
+                        <label for="lingoSync-targetLanguage-{{ languageCode.value }}">
+                            <span>
+                                {{ (('start_process_modal.language.' ~ languageCode.value)|trans) | split('(', 2)[0] }}
+                            </span>
+                            <span class="text-xs font-extralight text-neutral-500">
+                                {{ (('start_process_modal.language.' ~ languageCode.value)|trans) | split('(', 2)[1] | split(')', 2)[0] }}
+                            </span>
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
 
             <div class="w-full mt-8 flex flex-row gap-2 justify-between items-center">
                 <button
