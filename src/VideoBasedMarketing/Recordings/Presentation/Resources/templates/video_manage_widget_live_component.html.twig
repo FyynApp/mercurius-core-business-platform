@@ -61,6 +61,7 @@
         {% else %}
             <div class="relative -mb-1.5">
                 <a
+                        data-video-folder-drag-and-drop-video-id="{{ this.video.id }}"
                         target="_blank"
                         href="{{ TwigHelperService.recordingsPresentationService.videoShareLinkUrl(this.video) }}"
                 >
