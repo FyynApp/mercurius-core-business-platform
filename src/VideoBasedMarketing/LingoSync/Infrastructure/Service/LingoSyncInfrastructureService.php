@@ -105,6 +105,8 @@ readonly class LingoSyncInfrastructureService
 
     public static function compactizeWebVtt(string $webvtt): string
     {
+        $webvtt = mb_eregi_replace('。', '.', $webvtt);
+
         // Split the input into cues
         $cues = explode("\n\n", trim($webvtt));
 

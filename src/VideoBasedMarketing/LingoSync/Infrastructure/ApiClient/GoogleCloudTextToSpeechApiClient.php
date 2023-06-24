@@ -94,6 +94,11 @@ readonly class GoogleCloudTextToSpeechApiClient
                 Gender::Female => 'it-IT-Wavenet-A',
             },
 
+            Bcp47LanguageCode::TrTr => match ($gender) {
+                Gender::Male => 'tr-TR-Wavenet-B',
+                Gender::Female => 'tr-TR-Wavenet-A',
+            },
+
             Bcp47LanguageCode::BnBd, Bcp47LanguageCode::BnIn => match ($gender) {
                 Gender::Male => 'bn-IN-Wavenet-B',
                 Gender::Female => 'bn-IN-Wavenet-A',
@@ -102,6 +107,11 @@ readonly class GoogleCloudTextToSpeechApiClient
             Bcp47LanguageCode::HiIn => match ($gender) {
                 Gender::Male => 'hi-IN-Wavenet-B',
                 Gender::Female => 'hi-IN-Wavenet-A',
+            },
+
+            Bcp47LanguageCode::cmnHansCn => match ($gender) {
+                Gender::Male => 'cmn-CN-Wavenet-B',
+                Gender::Female => 'cmn-CN-Wavenet-A',
             },
         };
     }

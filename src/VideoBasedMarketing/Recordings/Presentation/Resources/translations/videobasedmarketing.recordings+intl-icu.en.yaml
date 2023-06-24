@@ -61,9 +61,11 @@ video_manage_widget:
       'es-ES': 'Spanish'
       'fr-FR': 'French'
       'it-IT': 'Italian'
+      'tr-TR': 'Turkish'
       'hi-IN': 'Hindi'
       'bn-BD': 'Bengali (Bangladesh)'
       'bn-IN': 'Bengali (India)'
+      'cmn-Hans-CN': 'Mandarin (China)'
     cta_start_process: 'Start audio transcription'
   delete_modal:
     title: 'Delete video'

@@ -42,9 +42,11 @@ start_process_modal:
     'es-ES': 'Spanish'
     'fr-FR': 'French'
     'it-IT': 'Italian'
+    'tr-TR': 'Turkish'
     'hi-IN': 'Hindi'
     'bn-BD': 'Bengali (Bangladesh)'
     'bn-IN': 'Bengali (India)'
+    'cmn-Hans-CN': 'Mandarin (China)'
   gender:
     male: 'male'
     female: 'female'

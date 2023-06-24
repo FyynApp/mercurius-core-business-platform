@@ -9,7 +9,11 @@ enum Bcp47LanguageCode: string
     case EsEs = 'es-ES';
     case FrFr = 'fr-FR';
     case ItIt = 'it-IT';
+    case TrTr = 'tr-TR';
+
     case HiIn = 'hi-IN';
     case BnBd = 'bn-BD';
     case BnIn = 'bn-IN';
+
+    case cmnHansCn = 'cmn-Hans-CN';
 }

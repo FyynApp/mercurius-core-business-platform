@@ -10,9 +10,11 @@ overview:
     'es-ES': 'Spanish'
     'fr-FR': 'French'
     'it-IT': 'Italian'
+    'tr-TR': 'Turkish'
     'hi-IN': 'Hindi'
     'bn-BD': 'Bengali (Bangladesh)'
     'bn-IN': 'Bengali (India)'
+    'cmn-Hans-CN': 'Mandarin (China)'
   show_webvtt_file: 'Show WebVTT file'
   suggested_summary: 'Audio summary suggested by our AI:'
 edit_web_vtt:
