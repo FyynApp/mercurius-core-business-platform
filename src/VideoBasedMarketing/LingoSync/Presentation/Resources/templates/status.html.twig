@@ -113,10 +113,10 @@
 
                                     <div class="flex flex-col gap-0">
                                         <div>
+                                            <span class="font-semibold">{{ ('status_page.task_type.' ~ task.type.value)|trans }}</span>
                                             {% if task.targetLanguage is not null %}
                                                 <span class="text-neutral-600">[{{ task.targetLanguage.value }}]</span>
                                             {% endif %}
-                                            <span class="font-semibold">{{ ('status_page.task_type.' ~ task.type.value)|trans }}</span>
                                         </div>
 
                                         {% if task.lastHandledAt is not null %}

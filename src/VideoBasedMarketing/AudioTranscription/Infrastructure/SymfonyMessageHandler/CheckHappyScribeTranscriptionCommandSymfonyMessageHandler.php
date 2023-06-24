@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\AudioTranscription\Infrastructure\SymfonyMessa
 
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Entity\HappyScribeTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeExportFormat;
 use App\VideoBasedMarketing\AudioTranscription\Infrastructure\Enum\HappyScribeTranscriptionState;
@@ -23,9 +24,10 @@ use Throwable;
 readonly class CheckHappyScribeTranscriptionCommandSymfonyMessageHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private HappyScribeApiService  $happyScribeApiService,
-        private MessageBusInterface    $messageBus
+        private EntityManagerInterface          $entityManager,
+        private HappyScribeApiService           $happyScribeApiService,
+        private MessageBusInterface             $messageBus,
+        private AudioTranscriptionDomainService $audioTranscriptionDomainService
     )
     {
     }
@@ -120,7 +122,7 @@ readonly class CheckHappyScribeTranscriptionCommandSymfonyMessageHandler
             if (    $happyScribeTranscription->getBcp47LanguageCode()
                 === $happyScribeTranscription->getAudioTranscription()->getOriginalLanguageBcp47LanguageCode()
             ) {
-                foreach (Bcp47LanguageCode::cases() as $languageCode) {
+                foreach ($this->audioTranscriptionDomainService->getSupportedTranslationTargetLanguages() as $languageCode) {
                     if ($languageCode === $happyScribeTranscription->getBcp47LanguageCode()) {
                         continue;
                     }

@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Service;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
 use App\Shared\Utility\ArrayUtility;
+use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
@@ -514,8 +515,10 @@ readonly class LingoSyncDomainService
         $this->entityManager->persist($generateTranslatedVideoTask);
         $this->entityManager->flush();
 
+        $originalVideo = $generateTranslatedVideoTask->getLingoSyncProcess()->getVideo();
+
         $translatedVideoPath = $this->lingoSyncInfrastructureService->createVideoFileFromVideoAndAudioFile(
-            $generateTranslatedVideoTask->getLingoSyncProcess()->getVideo(),
+            $originalVideo,
             $concatenatedAudioFilePath
         );
 
@@ -541,6 +544,28 @@ readonly class LingoSyncDomainService
 
         $this->entityManager->persist($video);
         $this->entityManager->flush();
+
+        $originalVideoAudioTranscription = $this->audioTranscriptionDomainService->getAudioTranscription($originalVideo);
+
+        if (!is_null($originalVideoAudioTranscription)) {
+            $newVideoAudioTranscription = new AudioTranscription(
+                $video,
+                $generateTranslatedVideoTask->getTargetLanguage()
+            );
+
+            $this->entityManager->persist($newVideoAudioTranscription);
+
+            foreach ($this->audioTranscriptionDomainService->getWebVtts($originalVideo) as $webVtt) {
+                $newWebVtt = new AudioTranscriptionWebVtt(
+                    $newVideoAudioTranscription,
+                    $webVtt->getBcp47LanguageCode(),
+                    $webVtt->getVttContent()
+                );
+                $this->entityManager->persist($newWebVtt);
+            }
+
+            $this->entityManager->flush();
+        }
 
         $this
             ->recordingsInfrastructureService

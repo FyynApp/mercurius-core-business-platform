@@ -37,10 +37,14 @@ start_process_modal:
   choose_original_gender: 'Please choose the gender of the speaker in the original video:'
   choose_target_language: 'Please choose the target language:'
   language:
-    de-DE: 'German'
-    en-US: 'English'
-    es-ES: 'Spanish'
-    fr-FR: 'French'
+    'de-DE': 'German'
+    'en-US': 'English'
+    'es-ES': 'Spanish'
+    'fr-FR': 'French'
+    'it-IT': 'Italian'
+    'hi-IN': 'Hindi'
+    'bn-BD': 'Bengali (Bangladesh)'
+    'bn-IN': 'Bengali (India)'
   gender:
     male: 'male'
     female: 'female'

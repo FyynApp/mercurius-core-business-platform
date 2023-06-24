@@ -14,6 +14,7 @@ use Google\ApiCore\ApiException;
 use Google\ApiCore\ValidationException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use ValueError;
 
 
@@ -22,7 +23,8 @@ readonly class LingoSyncInfrastructureService
     public function __construct(
         private GoogleCloudTextToSpeechApiClient $googleCloudTextToSpeechApiClient,
         private RecordingsInfrastructureService  $recordingsInfrastructureService,
-        private OpenAiService                    $openAiService
+        private OpenAiService                    $openAiService,
+        private TranslatorInterface              $translator
     )
     {
     }
@@ -236,9 +238,9 @@ readonly class LingoSyncInfrastructureService
                 }
             }
 
-            $prompt = "Below, starting with the keyword 'WEBVTT' on a line of its own, is a part of the content of a WebVTT file, with cue text lines in BCP47 language $originalLanguage->value.";
+            $prompt = "Below, starting with the keyword 'WEBVTT' on a line of its own, is a part of the content of a WebVTT file, with cue text lines in BCP47 language $originalLanguage->value ({$this->translator->trans('start_process_modal.language.' . $originalLanguage->value, [], 'videobasedmarketing.lingo_sync')}).";
             $prompt .= "\n";
-            $prompt .= "Please translate its cue text lines into BCP47 language $targetLanguage->value.";
+            $prompt .= "Please translate its cue text lines into BCP47 language $targetLanguage->value ({$this->translator->trans('start_process_modal.language.' . $originalLanguage->value, [], 'videobasedmarketing.lingo_sync')}).";
             $prompt .= "\n";
             $prompt .= 'You MUST keep the cue index numbers intact.';
             $prompt .= "\n";

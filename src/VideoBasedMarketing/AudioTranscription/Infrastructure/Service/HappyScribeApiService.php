@@ -277,7 +277,10 @@ readonly class HappyScribeApiService
             Bcp47LanguageCode::DeDe => 'de',
             Bcp47LanguageCode::EnUs => 'en',
             Bcp47LanguageCode::EsEs => 'es',
-            Bcp47LanguageCode::FrFr => 'fr'
+            Bcp47LanguageCode::FrFr => 'fr',
+            Bcp47LanguageCode::ItIt => 'it',
+            Bcp47LanguageCode::BnBd, Bcp47LanguageCode::BnIn => 'bn',
+            Bcp47LanguageCode::HiIn => 'hi',
         };
 
         $body = <<<EOT

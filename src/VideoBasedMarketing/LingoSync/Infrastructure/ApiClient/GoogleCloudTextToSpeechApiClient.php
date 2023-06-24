@@ -88,6 +88,21 @@ readonly class GoogleCloudTextToSpeechApiClient
                 Gender::Male => 'fr-FR-Wavenet-B',
                 Gender::Female => 'fr-FR-Wavenet-A',
             },
+
+            Bcp47LanguageCode::ItIt => match ($gender) {
+                Gender::Male => 'it-IT-Wavenet-C',
+                Gender::Female => 'it-IT-Wavenet-A',
+            },
+
+            Bcp47LanguageCode::BnBd, Bcp47LanguageCode::BnIn => match ($gender) {
+                Gender::Male => 'bn-IN-Wavenet-B',
+                Gender::Female => 'bn-IN-Wavenet-A',
+            },
+
+            Bcp47LanguageCode::HiIn => match ($gender) {
+                Gender::Male => 'hi-IN-Wavenet-B',
+                Gender::Female => 'hi-IN-Wavenet-A',
+            },
         };
     }
 }

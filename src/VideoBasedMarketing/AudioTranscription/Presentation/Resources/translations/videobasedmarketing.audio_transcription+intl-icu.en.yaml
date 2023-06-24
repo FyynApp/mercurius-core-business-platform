@@ -9,6 +9,10 @@ overview:
     'en-US': 'English'
     'es-ES': 'Spanish'
     'fr-FR': 'French'
+    'it-IT': 'Italian'
+    'hi-IN': 'Hindi'
+    'bn-BD': 'Bengali (Bangladesh)'
+    'bn-IN': 'Bengali (India)'
   show_webvtt_file: 'Show WebVTT file'
   suggested_summary: 'Audio summary suggested by our AI:'
 edit_web_vtt:

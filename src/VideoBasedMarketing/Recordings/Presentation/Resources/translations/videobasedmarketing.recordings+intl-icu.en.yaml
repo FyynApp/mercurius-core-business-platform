@@ -56,10 +56,14 @@ video_manage_widget:
     headline: 'Generate audio transcriptions'
     choose_language: 'Please choose the language that is spoken in this video:'
     language:
-      de-DE: 'German'
-      en-US: 'English'
-      es-ES: 'Spanish'
-      fr-FR: 'French'
+      'de-DE': 'German'
+      'en-US': 'English'
+      'es-ES': 'Spanish'
+      'fr-FR': 'French'
+      'it-IT': 'Italian'
+      'hi-IN': 'Hindi'
+      'bn-BD': 'Bengali (Bangladesh)'
+      'bn-IN': 'Bengali (India)'
     cta_start_process: 'Start audio transcription'
   delete_modal:
     title: 'Delete video'

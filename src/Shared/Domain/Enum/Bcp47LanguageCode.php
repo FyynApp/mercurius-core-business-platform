@@ -8,4 +8,8 @@ enum Bcp47LanguageCode: string
     case DeDe = 'de-DE';
     case EsEs = 'es-ES';
     case FrFr = 'fr-FR';
+    case ItIt = 'it-IT';
+    case HiIn = 'hi-IN';
+    case BnBd = 'bn-BD';
+    case BnIn = 'bn-IN';
 }
