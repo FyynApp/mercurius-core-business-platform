@@ -154,13 +154,8 @@ readonly class CapabilitiesService
         return str_ends_with($user->getEmail(), '@kiessling.net')
             || str_ends_with($user->getEmail(), '@smart-dsgvo.de')
             || str_ends_with($user->getEmail(), '@maik-becker.de')
-            || str_ends_with($user->getEmail(), '@fyyn.io')
-            || (
-                   str_starts_with($user->getEmail(), 'kiessling.manuel')
-                && str_ends_with($user->getEmail(), '@gmail.com')
-            );
+            || str_ends_with($user->getEmail(), '@fyyn.io');
     }
-
 
     public function canInviteOrganizationMembers(User $user): bool
     {

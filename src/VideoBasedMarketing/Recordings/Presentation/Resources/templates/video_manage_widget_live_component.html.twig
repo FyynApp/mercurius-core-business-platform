@@ -869,16 +869,12 @@
         >
             <div class="
                 bg-white max-w-screen-lg max-h-screen max-w-full
-                p-4 w-fit rounded-md
+                p-8 w-fit rounded-md
                 flex flex-col justify-start
             ">
                 <div class="flex flex-row justify-between mb-8">
 
                     <div class="flex flex-row gap-2 items-center text-black">
-                        {# Heroicon: code-bracket-square solid #}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm14.25 6a.75.75 0 01-.22.53l-2.25 2.25a.75.75 0 11-1.06-1.06L15.44 12l-1.72-1.72a.75.75 0 111.06-1.06l2.25 2.25c.141.14.22.331.22.53zm-10.28-.53a.75.75 0 000 1.06l2.25 2.25a.75.75 0 101.06-1.06L8.56 12l1.72-1.72a.75.75 0 10-1.06-1.06l-2.25 2.25z" clip-rule="evenodd" />
-                        </svg>
                         <span class="font-bold">
                             {{ 'video_manage_widget.audio_transcription_modal.headline'|trans }}
                         </span>
@@ -896,11 +892,11 @@
                     </button>
                 </div>
 
-                <div class="text-neutral-800 mb-8 text-sm">
+                <div class="mt-4 mb-4 font-semibold">
                     {{ 'video_manage_widget.audio_transcription_modal.choose_language'|trans }}
                 </div>
 
-                <div class="flex flex-row gap-2 justify-center items-start w-full">
+                <div class="flex flex-row gap-2 justify-start items-start w-full">
                     <form
                             action="{{ path('videobasedmarketing.audio_transcription.presentation.processing.start') }}"
                             method="post"
@@ -911,11 +907,21 @@
                                 value="{{ this.video.id }}"
                         >
 
-                        <input
-                                type="hidden"
-                                name="bcp47LanguageCode"
-                                value="{{ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::EnUs').value }}"
-                        >
+                        {% for languageCode in TwigHelperService.audioTranscriptionDomainService.supportedOriginalLanguages %}
+                            <div class="mb-1">
+                                <input
+                                        class="radio-default"
+                                        type="radio"
+                                        name="bcp47LanguageCode"
+                                        value="{{ languageCode.value }}"
+                                        id="audioTranscription-bcp47LanguageCode-{{ languageCode.value }}"
+                                        required
+                                >
+                                <label for="audioTranscription-bcp47LanguageCode-{{ languageCode.value }}">
+                                    {{ ('video_manage_widget.audio_transcription_modal.language.' ~ languageCode.value)|trans }}
+                                </label>
+                            </div>
+                        {% endfor %}
 
                         <input
                                 type="hidden"
@@ -923,86 +929,14 @@
                                 value="{{ csrf_token(
                                     'start-audio-transcription-'
                                     ~ this.video.id
-                                    ~ '-'
-                                    ~ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::EnUs').value
                                 ) }}"
                         >
 
                         <button
                                 type="submit"
-                                class="cta-with-icon-primary"
+                                class="cta-with-icon-primary mt-8"
                         >
-                            {{ 'video_manage_widget.audio_transcription_modal.cta_language.en_US'|trans }}
-                        </button>
-                    </form>
-
-                    <form
-                            action="{{ path('videobasedmarketing.audio_transcription.presentation.processing.start') }}"
-                            method="post"
-                    >
-                        <input
-                                type="hidden"
-                                name="videoId"
-                                value="{{ this.video.id }}"
-                        >
-
-                        <input
-                                type="hidden"
-                                name="bcp47LanguageCode"
-                                value="{{ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::DeDe').value }}"
-                        >
-
-                        <input
-                                type="hidden"
-                                name="_csrf_token"
-                                value="{{ csrf_token(
-                                    'start-audio-transcription-'
-                                    ~ this.video.id
-                                    ~ '-'
-                                    ~ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::DeDe').value
-                                ) }}"
-                        >
-
-                        <button
-                                type="submit"
-                                class="cta-with-icon-primary"
-                        >
-                            {{ 'video_manage_widget.audio_transcription_modal.cta_language.de_DE'|trans }}
-                        </button>
-                    </form>
-
-                    <form
-                            action="{{ path('videobasedmarketing.audio_transcription.presentation.processing.start') }}"
-                            method="post"
-                    >
-                        <input
-                                type="hidden"
-                                name="videoId"
-                                value="{{ this.video.id }}"
-                        >
-
-                        <input
-                                type="hidden"
-                                name="bcp47LanguageCode"
-                                value="{{ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::EsEs').value }}"
-                        >
-
-                        <input
-                                type="hidden"
-                                name="_csrf_token"
-                                value="{{ csrf_token(
-                                    'start-audio-transcription-'
-                                    ~ this.video.id
-                                    ~ '-'
-                                    ~ constant('App\\Shared\\Domain\\Enum\\Bcp47LanguageCode::DeDe').value
-                                ) }}"
-                        >
-
-                        <button
-                                type="submit"
-                                class="cta-with-icon-primary"
-                        >
-                            {{ 'video_manage_widget.audio_transcription_modal.cta_language.es_ES'|trans }}
+                            {{ 'video_manage_widget.audio_transcription_modal.cta_start_process'|trans }}
                         </button>
                     </form>
                 </div>

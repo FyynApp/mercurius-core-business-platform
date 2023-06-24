@@ -70,23 +70,23 @@ readonly class GoogleCloudTextToSpeechApiClient
     {
         return match ($languageCode) {
             Bcp47LanguageCode::EnUs => match ($gender) {
-                Gender::Male => 'en-US-Standard-B',
-                Gender::Female => 'en-US-Standard-C',
+                Gender::Male => 'en-US-Wavenet-B',
+                Gender::Female => 'en-US-Wavenet-C',
             },
 
             Bcp47LanguageCode::DeDe => match ($gender) {
-                Gender::Male => 'de-DE-Standard-B',
-                Gender::Female => 'de-DE-Standard-A',
+                Gender::Male => 'de-DE-Wavenet-B',
+                Gender::Female => 'de-DE-Wavenet-A',
             },
 
             Bcp47LanguageCode::EsEs => match ($gender) {
-                Gender::Male => 'es-ES-Standard-B',
-                Gender::Female => 'es-ES-Standard-A',
+                Gender::Male => 'es-ES-Wavenet-B',
+                Gender::Female => 'es-ES-Wavenet-C',
             },
 
             Bcp47LanguageCode::FrFr => match ($gender) {
-                Gender::Male => 'fr-FR-Standard-B',
-                Gender::Female => 'fr-FR-Standard-A',
+                Gender::Male => 'fr-FR-Wavenet-B',
+                Gender::Female => 'fr-FR-Wavenet-A',
             },
         };
     }

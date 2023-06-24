@@ -55,11 +55,12 @@ video_manage_widget:
   audio_transcription_modal:
     headline: 'Generate audio transcriptions'
     choose_language: 'Please choose the language that is spoken in this video:'
-    cta_language:
-      de_DE: 'German'
-      en_US: 'English'
-      es_ES: 'Spanish'
-      fr_FR: 'French'
+    language:
+      de-DE: 'German'
+      en-US: 'English'
+      es-ES: 'Spanish'
+      fr-FR: 'French'
+    cta_start_process: 'Start audio transcription'
   delete_modal:
     title: 'Delete video'
     really: 'Do you really want to delete this video?'

@@ -40,7 +40,7 @@ class AudioTranscriptionProcessingController
     ): Response
     {
         if (!$this->isCsrfTokenValid(
-            "start-audio-transcription-{$request->get('videoId')}-{$request->get('bcp47LanguageCode')}",
+            "start-audio-transcription-{$request->get('videoId')}",
             $request->get('_csrf_token')
         )) {
             throw new BadRequestHttpException('Invalid CSRF token.');

@@ -28,6 +28,10 @@ status_page:
 process_started: 'LingoSync process has been started.'
 process_restarted: 'LingoSync process has been restarted.'
 start_process_modal:
+  not_yet_available:
+    headline: 'LingoSync will be available soon!'
+    text: 'Our AI-powered video translation system will launch in'
+    cta_close: 'Dismiss'
   headline: 'Generate a translated video with LingoSync'
   choose_original_language: 'Please choose the language that is spoken in the original video:'
   choose_original_gender: 'Please choose the gender of the speaker in the original video:'

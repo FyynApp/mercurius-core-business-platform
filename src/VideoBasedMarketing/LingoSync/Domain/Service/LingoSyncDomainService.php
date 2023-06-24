@@ -16,6 +16,8 @@ use App\VideoBasedMarketing\LingoSync\Infrastructure\Service\LingoSyncInfrastruc
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Infrastructure\Service\RecordingsInfrastructureService;
 use App\VideoBasedMarketing\Recordings\Infrastructure\SymfonyMessage\GenerateMissingVideoAssetsCommandSymfonyMessage;
+use DateTime;
+use DateTimeZone;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
@@ -39,6 +41,20 @@ readonly class LingoSyncDomainService
         private LoggerInterface                 $logger
     )
     {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function countdownToLaunch(): string
+    {
+        $datetime1 = new DateTime();
+        $datetime2 = new DateTime(
+            '2023-06-25 10:00:00',
+            new DateTimeZone('Etc/UTC')
+        );
+        $interval = $datetime1->diff($datetime2);
+        return $interval->format('%d day, %h hours, and %i minutes');
     }
 
     public function videoHasRunningProcesses(Video $video): bool
@@ -69,6 +85,9 @@ readonly class LingoSyncDomainService
         );
     }
 
+    /**
+     * @return Bcp47LanguageCode[]
+     */
     public function getSupportedOriginalLanguages(): array
     {
         return Bcp47LanguageCode::cases();

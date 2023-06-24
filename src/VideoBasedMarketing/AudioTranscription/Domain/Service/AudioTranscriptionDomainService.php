@@ -26,6 +26,14 @@ readonly class AudioTranscriptionDomainService
     }
 
     /**
+     * @return Bcp47LanguageCode[]
+     */
+    public function getSupportedOriginalLanguages(): array
+    {
+        return Bcp47LanguageCode::cases();
+    }
+
+    /**
      * @throws \Exception
      */
     public function startProcessingVideo(

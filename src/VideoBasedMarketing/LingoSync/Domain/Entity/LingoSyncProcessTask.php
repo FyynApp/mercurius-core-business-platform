@@ -70,6 +70,7 @@ class LingoSyncProcessTask
     #[ORM\ManyToOne(
         targetEntity: LingoSyncProcess::class,
         cascade: ['persist'],
+        inversedBy: 'tasks'
     )]
     #[ORM\JoinColumn(
         name: 'lingosync_processes_id',

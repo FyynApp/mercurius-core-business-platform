@@ -7,6 +7,7 @@ use App\Shared\Domain\Enum\Gender;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
 use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
@@ -37,7 +38,8 @@ class LingoSyncProcessingController
     public function startProcessAction(
         Request                $request,
         LingoSyncDomainService $lingoSyncDomainService,
-        TranslatorInterface    $translator
+        TranslatorInterface    $translator,
+        CapabilitiesService    $capabilitiesService
     ): Response
     {
         if (!$this->isCsrfTokenValid(
@@ -52,6 +54,10 @@ class LingoSyncProcessingController
             $request->get('videoId'),
             AccessAttribute::Use
         );
+
+        if (!$capabilitiesService->canTranslateVideos($r->getUser())) {
+            throw $this->createAccessDeniedException();
+        }
 
         /** @var Video $video */
         $video = $r->getEntity();
