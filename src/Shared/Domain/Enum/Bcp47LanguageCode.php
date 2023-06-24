@@ -6,6 +6,7 @@ enum Bcp47LanguageCode: string
 {
     case EnUs = 'en-US';
     case DeDe = 'de-DE';
+    case NlNl = 'nl-NL';
     case EsEs = 'es-ES';
     case FrFr = 'fr-FR';
     case ItIt = 'it-IT';
