@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Component;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -24,6 +25,9 @@ class VideoDurationLiveComponent
     #[LiveProp]
     public Video $video;
 
+    /**
+     * @throws Exception
+     */
     public function shouldPoll(): bool
     {
         $isNew =

@@ -105,6 +105,15 @@ class LingoSyncProcess
         return $this->originalLanguageBcp47LanguageCode;
     }
 
+    public function getTargetLanguage(): ?Bcp47LanguageCode
+    {
+        foreach ($this->getTasks() as $task) {
+            if (!is_null($task->getTargetLanguage())) {
+                return $task->getTargetLanguage();
+            }
+        }
+        return null;
+    }
 
     #[ORM\Column(
         type: Types::STRING,

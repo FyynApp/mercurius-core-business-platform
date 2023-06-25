@@ -30,6 +30,35 @@ status_page:
 process_started: 'LingoSync process has been started.'
 process_restarted: 'LingoSync process has been restarted.'
 no_remaining_translation_seconds: "This video's duration is longer than the remaining amount of translation time for the current month."
+status_widget:
+  title: 'LingoSync Status'
+  remaining_minutes:
+    used: 'Minutes used:'
+    of: 'of'
+  status:
+    running: 'Running'
+    finished: 'Finished'
+    errored: 'Errored'
+    stopped: 'Stopped'
+  step:
+    step: 'Processing step'
+    of: 'of'
+  gender:
+    male: '🧔🏽‍'
+    female: '👩🏽'
+  language:
+    'de-DE': '🇩🇪'
+    'nl-NL': '🇳🇱'
+    'en-US': '🇺🇸'
+    'es-ES': '🇪🇸'
+    'fr-FR': '🇫🇷'
+    'it-IT': '🇮🇹'
+    'tr-TR': '🇹🇷'
+    'hi-IN': '🇮🇳'
+    'bn-BD': '🇧🇩'
+    'bn-IN': '🇮🇳'
+    'cmn-Hans-CN': '🇨🇳'
+    'ru-RU': '🇷🇺'
 start_process_modal:
   not_yet_available:
     headline: 'LingoSync will be available soon!'

@@ -47,7 +47,7 @@
 
                     <div class="font-semibold">
                         {{ (TwigHelperService.lingoSyncDomainService.numberOfTranslatedSecondsDuringLastMonth(
-                            app.user.currentlyActiveOrganization
+                            app.user
                         )/60)|number_format(0) }}
                     </div>
 

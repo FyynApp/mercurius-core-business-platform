@@ -1,0 +1,162 @@
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var this \App\VideoBasedMarketing\LingoSync\Presentation\Component\StatusWidgetLiveComponent #}
+
+{% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+<div
+        {{ attributes }}
+        {% if this.shouldPoll %}
+            data-poll
+        {% endif %}
+
+        class="opacity-30 hover:opacity-100 saturate-0 hover:saturate-100 transition-all duration-200 ease-in-out"
+>
+    {% if this.processes|length is same as 0 %}
+
+    {% else %}
+
+        {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+        <div
+                class="
+                    mt-8 ml-2
+                    flex flex-col gap-2
+                    w-full bg-mercurius-blue-50
+                    border-1 border-mercurius-blue-100
+                    p-2 text-xs
+                    rounded-md
+                "
+        >
+            <div class="font-light -mb-1.5 w-full border-1 border-l-0 border-r-0 border-t-0 border-black border-opacity-50">
+                {{ 'status_widget.title'|trans }}
+            </div>
+
+            <div class="flex flex-row justify-between items-center font-light opacity-50">
+                <div>
+                    {{ 'status_widget.remaining_minutes.used'|trans }}
+                </div>
+                <div class="min-w-fit flex flex-row gap-1">
+                    <div class="font-normal">
+                        {{ (TwigHelperService.lingoSyncDomainService.numberOfTranslatedSecondsDuringLastMonth(
+                            app.user
+                        )/60)|number_format(0) }}
+                    </div>
+
+                    <div>
+                        {{ 'status_widget.remaining_minutes.of'|trans }}
+                    </div>
+
+                    <div class="font-normal">
+                        {{ (TwigHelperService.capabilitiesService.numberOfTranslatableVideoSecondsForOneMonth(
+                            app.user
+                        )/60)|number_format(0) }}
+                    </div>
+                </div>
+            </div>
+
+
+            {% for process in this.processes %}
+
+                {# @var this \App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess #}
+
+                <a
+                        {% if process.finished
+                            and not process.wasStopped
+                            and not process.errored
+                            and TwigHelperService.lingoSyncDomainService.translatedVideo(process) is not null
+                        %}
+                            href="{{ path(
+                                'videobasedmarketing.recordings.presentation.videos.overview',
+                                { videoFolderId: TwigHelperService.lingoSyncDomainService.translatedVideo(process).videoFolder.id ?? '' }
+                            ) }}"
+
+                        {% else %}
+                            href="{{ path(
+                                'videobasedmarketing.lingo_sync.presentation.processes.status',
+                                { videoId: process.video.id }
+                            ) }}"
+                        {% endif %}
+                >
+
+                    <div class="flex flex-col gap-0 {% if not loop.last %} border-1 border-t-0 border-r-0 border-l-0 border-black border-opacity-5 {% endif %}">
+                        <div class="flex flex-row justify-between items-center mb-1 mt-1">
+                            <div class="h-4 w-32 truncate font-semibold">
+                                {{ process.video.title }}
+                            </div>
+                            <div>
+
+                                {% if process.finished and not process.wasStopped and not process.errored %}
+                                    {# Heroicon: check-circle mini #}
+                                    <svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                            class="w-4 h-4 text-mercurius-green-600"
+                                    >
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+                                    </svg>
+                                {% endif %}
+
+                                {% if not process.finished and not process.wasStopped %}
+                                    {# Heroicon: cog-8-tooth #}
+                                    <svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="w-4 h-4 animate-spin-slow"
+                                    >
+                                        <path fill-rule="evenodd" d="M11.828 2.25c-.916 0-1.699.663-1.85 1.567l-.091.549a.798.798 0 01-.517.608 7.45 7.45 0 00-.478.198.798.798 0 01-.796-.064l-.453-.324a1.875 1.875 0 00-2.416.2l-.243.243a1.875 1.875 0 00-.2 2.416l.324.453a.798.798 0 01.064.796 7.448 7.448 0 00-.198.478.798.798 0 01-.608.517l-.55.092a1.875 1.875 0 00-1.566 1.849v.344c0 .916.663 1.699 1.567 1.85l.549.091c.281.047.508.25.608.517.06.162.127.321.198.478a.798.798 0 01-.064.796l-.324.453a1.875 1.875 0 00.2 2.416l.243.243c.648.648 1.67.733 2.416.2l.453-.324a.798.798 0 01.796-.064c.157.071.316.137.478.198.267.1.47.327.517.608l.092.55c.15.903.932 1.566 1.849 1.566h.344c.916 0 1.699-.663 1.85-1.567l.091-.549a.798.798 0 01.517-.608 7.52 7.52 0 00.478-.198.798.798 0 01.796.064l.453.324a1.875 1.875 0 002.416-.2l.243-.243c.648-.648.733-1.67.2-2.416l-.324-.453a.798.798 0 01-.064-.796c.071-.157.137-.316.198-.478.1-.267.327-.47.608-.517l.55-.091a1.875 1.875 0 001.566-1.85v-.344c0-.916-.663-1.699-1.567-1.85l-.549-.091a.798.798 0 01-.608-.517 7.507 7.507 0 00-.198-.478.798.798 0 01.064-.796l.324-.453a1.875 1.875 0 00-.2-2.416l-.243-.243a1.875 1.875 0 00-2.416-.2l-.453.324a.798.798 0 01-.796.064 7.462 7.462 0 00-.478-.198.798.798 0 01-.517-.608l-.091-.55a1.875 1.875 0 00-1.85-1.566h-.344zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" clip-rule="evenodd" />
+                                    </svg>
+                                {% endif %}
+
+                                {% if process.wasStopped %}
+                                    {# Heroicon: stop #}
+                                    <svg
+                                            class="w-4 h-4 text-orange-600"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                    >
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z" />
+                                    </svg>
+                                {% endif %}
+
+                                {% if process.errored %}
+                                    {# Heroicon: exclamation-circle mini #}
+                                    <svg
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                            class="w-4 h-4 text-red-800"
+                                    >
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                    </svg>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="font-mono opacity-50">
+                            {{ dateAndTimeMacros.shortDateAndTime(process.createdAt) }}
+                        </div>
+
+                        <div class="text-xl -mt-1">
+                            <span class="text-lg">{{ ('status_widget.gender.' ~ process.originalGender.value)|trans }}</span>
+
+                            {{ ('status_widget.language.' ~ process.originalLanguage.value)|trans }}
+                            <span class="opacity-25">⇢</span>
+                            {{ ('status_widget.language.' ~ process.targetLanguage.value)|trans }}
+                        </div>
+
+                        {% if not process.finished and not process.wasStopped %}
+                            <div class="mb-1">
+                                {{ 'status_widget.step.step'|trans }}
+                                {{ TwigHelperService.lingoSyncDomainService.numberOfFinishedTasks(process) }}
+                                {{ 'status_widget.step.of'|trans }}
+                                {{ TwigHelperService.lingoSyncDomainService.totalNumberOfTasks(process) }}…
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </a>
+
+            {% endfor %}
+        </div>
+
+    {% endif %}
+</div>

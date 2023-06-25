@@ -4,6 +4,7 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Service;
 
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
 use App\Shared\Domain\Enum\Gender;
+use App\Shared\Infrastructure\Enum\DateTimeFormat;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Utility\ArrayUtility;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
@@ -636,7 +637,7 @@ readonly class LingoSyncDomainService
      * @throws Exception
      */
     public function getNumberOfTranslatedSecondsDuringLastMonth(
-        Organization $organization
+        User $user
     ): float
     {
         $sql = "
@@ -655,7 +656,7 @@ readonly class LingoSyncDomainService
             ;
         ";
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue(':oid', $organization->getId());
+        $stmt->bindValue(':oid', $user->getCurrentlyActiveOrganization()->getId());
         $resultSet = $stmt->executeQuery();
 
         $seconds = 0.0;
@@ -681,10 +682,104 @@ readonly class LingoSyncDomainService
     {
         return
             $this->getNumberOfTranslatedSecondsDuringLastMonth(
-                $video->getOrganization()
+                $user
             ) + $video->getSeconds()
         <
         $this->capabilitiesService->getNumberOfTranslatableVideoSecondsForOneMonth($user);
+    }
+
+    /**
+     * @throws Exception
+     * @return LingoSyncProcess[]
+     */
+    public function getProcessesNotOlderThan(
+        User     $user,
+        DateTime $dateTime
+    ): array
+    {
+        $sql = "
+            SELECT lsp.id AS id
+
+            FROM {$this->entityManager->getClassMetadata(LingoSyncProcess::class)->getTableName()} lsp
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+            ON v.id = lsp.videos_id
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(Organization::class)->getTableName()} o
+            ON o.id = v.organizations_id
+            
+            WHERE
+                    o.id = :oid
+                AND lsp.created_at > :dt
+                
+            ORDER BY lsp.created_at DESC
+            ;
+        ";
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue(':oid', $user->getCurrentlyActiveOrganization()->getId());
+        $stmt->bindValue(':dt', $dateTime->format(DateTimeFormat::DatabaseFull->value));
+        $resultSet = $stmt->executeQuery();
+
+        $processes = [];
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $processes[] = $this->entityManager->find(LingoSyncProcess::class, $row['id']);
+        }
+
+        return $processes;
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getTranslatedVideo(
+        LingoSyncProcess $process
+    ): ?Video
+    {
+        foreach ($process->getTasks() as $task) {
+            if ($task->getType() === LingoSyncProcessTaskType::GenerateTranslatedVideo) {
+                if ($task->getStatus() === LingoSyncProcessTaskStatus::Finished) {
+                    $sql = "
+                        SELECT v.id AS id
+            
+                        FROM {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+                        
+                        INNER JOIN {$this->entityManager->getClassMetadata(LingoSyncProcessTask::class)->getTableName()} t
+                        ON v.created_by_lingosync_process_tasks_id = t.id
+                        
+                        WHERE t.id = :tid
+                        ;
+                    ";
+                    $stmt = $this->entityManager->getConnection()->prepare($sql);
+                    $stmt->bindValue(':tid', $task->getId());
+                    $resultSet = $stmt->executeQuery();
+
+                    foreach ($resultSet->fetchAllAssociative() as $row) {
+                        return $this->entityManager->find(Video::class, $row['id']);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public function getTotalNumberOfTasks(
+        LingoSyncProcess $process
+    ): int
+    {
+        return sizeof($process->getTasks());
+    }
+
+    public function getNumberOfFinishedTasks(
+        LingoSyncProcess $process
+    ): int
+    {
+        $numberOfFinishedTasks = 0;
+        foreach ($process->getTasks() as $task) {
+            if ($task->getStatus() === LingoSyncProcessTaskStatus::Finished) {
+                $numberOfFinishedTasks++;
+            }
+        }
+        return $numberOfFinishedTasks;
     }
 
     private function findProcessTask(
