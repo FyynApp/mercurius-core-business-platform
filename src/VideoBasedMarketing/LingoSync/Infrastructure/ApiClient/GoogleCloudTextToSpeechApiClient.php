@@ -104,6 +104,11 @@ readonly class GoogleCloudTextToSpeechApiClient
                 Gender::Female => 'tr-TR-Wavenet-A',
             },
 
+            Bcp47LanguageCode::PtPt => match ($gender) {
+                Gender::Male => 'pt-PT-Wavenet-B',
+                Gender::Female => 'pt-PT-Wavenet-A',
+            },
+
             Bcp47LanguageCode::BnBd, Bcp47LanguageCode::BnIn => match ($gender) {
                 Gender::Male => 'bn-IN-Wavenet-B',
                 Gender::Female => 'bn-IN-Wavenet-A',

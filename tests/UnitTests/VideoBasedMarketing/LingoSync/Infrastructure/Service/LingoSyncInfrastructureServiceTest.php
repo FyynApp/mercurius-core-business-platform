@@ -478,4 +478,23 @@ Zeile sechs.
             LingoSyncInfrastructureService::insertMissingLinebreaksToWebVtt($InvalidWebVtt)
         );
     }
+
+    public function testWebVttIsValid(): void
+    {
+        $validWebVtt = "WEBVTT
+        
+1
+00:00:00.000 --> 00:00:01.440
+Hello, World.
+";
+
+        $this->assertTrue(LingoSyncInfrastructureService::webVttIsValid($validWebVtt));
+
+
+        $invalidWebVtt = "WEBVTT
+
+";
+
+        $this->assertFalse(LingoSyncInfrastructureService::webVttIsValid($invalidWebVtt));
+    }
 }

@@ -29,6 +29,21 @@ readonly class LingoSyncInfrastructureService
     {
     }
 
+    public static function webVttIsValid(
+        string $webvtt
+    ): bool
+    {
+        if (!str_starts_with(trim($webvtt), 'WEBVTT')) {
+            return false;
+        }
+
+        if (!mb_stristr($webvtt, ' --> ')) {
+            return false;
+        }
+
+        return true;
+    }
+
     public static function cleanupPseudoSentencesInWebVtt(
         string $webvtt,
         array  $abbreviations

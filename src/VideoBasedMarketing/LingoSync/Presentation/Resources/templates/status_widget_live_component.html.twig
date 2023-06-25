@@ -98,7 +98,7 @@
                                     </svg>
                                 {% endif %}
 
-                                {% if not process.finished and not process.wasStopped %}
+                                {% if not process.finished and not process.wasStopped and not process.errored %}
                                     {# Heroicon: cog-8-tooth #}
                                     <svg
                                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -146,7 +146,7 @@
                             {{ ('status_widget.language.' ~ process.targetLanguage.value)|trans }}
                         </div>
 
-                        {% if not process.finished and not process.wasStopped %}
+                        {% if not process.finished and not process.wasStopped and not process.errored %}
                             <div class="mb-1">
                                 {{ 'status_widget.step.step'|trans }}
                                 {{ TwigHelperService.lingoSyncDomainService.numberOfFinishedTasks(process) }}

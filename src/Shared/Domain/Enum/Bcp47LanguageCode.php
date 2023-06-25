@@ -11,6 +11,7 @@ enum Bcp47LanguageCode: string
     case FrFr = 'fr-FR';
     case ItIt = 'it-IT';
     case TrTr = 'tr-TR';
+    case PtPt = 'pt-PT';
 
     case HiIn = 'hi-IN';
     case BnBd = 'bn-BD';

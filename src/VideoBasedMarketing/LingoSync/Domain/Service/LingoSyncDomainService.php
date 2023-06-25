@@ -361,6 +361,14 @@ readonly class LingoSyncDomainService
         foreach ($existingWebVtts as $existingWebVtt) {
             if ($existingWebVtt->getBcp47LanguageCode() === $generateTargetLanguageTranscriptionTask->getLingoSyncProcess()->getOriginalLanguage()) {
 
+                if (!$this->lingoSyncInfrastructureService::webVttIsValid($existingWebVtt->getVttContent())) {
+                    $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Errored);
+                    $generateTargetLanguageTranscriptionTask->setResult('Original language WebVTT content is not valid.');
+                    $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
+                    $this->entityManager->flush();
+                    return;
+                }
+
                 try {
                     $compactizedWebVttContent = $this->lingoSyncInfrastructureService::compactizeWebVtt(
                         $existingWebVtt->getVttContent()
@@ -374,11 +382,27 @@ readonly class LingoSyncDomainService
                     return;
                 }
 
+                if (!$this->lingoSyncInfrastructureService::webVttIsValid($compactizedWebVttContent)) {
+                    $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Errored);
+                    $generateTargetLanguageTranscriptionTask->setResult('Compactized original language WebVTT content is not valid.');
+                    $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
+                    $this->entityManager->flush();
+                    return;
+                }
+
                 $translatedWebVtt = $this->lingoSyncInfrastructureService->translateWebVtt(
                     $compactizedWebVttContent,
                     $generateTargetLanguageTranscriptionTask->getLingoSyncProcess()->getOriginalLanguage(),
                     $generateTargetLanguageTranscriptionTask->getTargetLanguage()
                 );
+
+                if (!$this->lingoSyncInfrastructureService::webVttIsValid($translatedWebVtt)) {
+                    $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Errored);
+                    $generateTargetLanguageTranscriptionTask->setResult('Translated WebVTT content is not valid.');
+                    $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
+                    $this->entityManager->flush();
+                    return;
+                }
 
                 $generateTargetLanguageTranscriptionTask->setResult($translatedWebVtt);
                 $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Finished);
