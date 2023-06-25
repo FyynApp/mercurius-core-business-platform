@@ -12,6 +12,7 @@ enum Bcp47LanguageCode: string
     case ItIt = 'it-IT';
     case TrTr = 'tr-TR';
     case PtPt = 'pt-PT';
+    case PtBr = 'pt-BR';
 
     case HiIn = 'hi-IN';
     case BnBd = 'bn-BD';
