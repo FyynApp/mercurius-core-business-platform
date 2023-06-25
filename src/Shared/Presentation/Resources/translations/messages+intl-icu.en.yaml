@@ -22,7 +22,10 @@ sidenav:
   settings_custom_logo: 'Logo'
   settings_custom_domain: 'Domain'
   organization: 'Organization'
-
+  lingo_sync_promotion:
+    text1: 'AI-powered video translation'
+    text2: 'Upgrade your plan to get access to our LingoSync tool.'
+    text3: 'Click here!'
 
 footernav:
   german: 'Deutsch'

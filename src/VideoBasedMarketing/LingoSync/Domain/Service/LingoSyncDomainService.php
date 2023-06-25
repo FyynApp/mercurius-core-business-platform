@@ -363,7 +363,7 @@ readonly class LingoSyncDomainService
 
                 if (!$this->lingoSyncInfrastructureService::webVttIsValid($existingWebVtt->getVttContent())) {
                     $generateTargetLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Errored);
-                    $generateTargetLanguageTranscriptionTask->setResult('Original language WebVTT content is not valid.');
+                    $generateTargetLanguageTranscriptionTask->setResult("Original language WebVTT content is not valid: '{$existingWebVtt->getVttContent()}'.");
                     $this->entityManager->persist($generateTargetLanguageTranscriptionTask);
                     $this->entityManager->flush();
                     $this->stopAllOpenTasks($generateTargetLanguageTranscriptionTask->getLingoSyncProcess());

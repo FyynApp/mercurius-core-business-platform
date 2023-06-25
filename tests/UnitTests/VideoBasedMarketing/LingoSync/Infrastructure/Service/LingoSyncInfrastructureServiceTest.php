@@ -482,10 +482,12 @@ Zeile sechs.
     public function testWebVttIsValid(): void
     {
         $validWebVtt = "WEBVTT
-        
+
 1
-00:00:00.000 --> 00:00:01.440
-Hello, World.
+00:00:00.560 --> 00:00:04.600
+So, das ist ein
+Test Video Test Test 1 2 3.
+
 ";
 
         $this->assertTrue(LingoSyncInfrastructureService::webVttIsValid($validWebVtt));

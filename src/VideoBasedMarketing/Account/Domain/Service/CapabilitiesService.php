@@ -151,10 +151,16 @@ readonly class CapabilitiesService
 
     public function canTranslateVideos(User $user): bool
     {
-        return str_ends_with($user->getEmail(), '@kiessling.net')
+        /*
+        if (str_ends_with($user->getEmail(), '@kiessling.net')
             || str_ends_with($user->getEmail(), '@smart-dsgvo.de')
             || str_ends_with($user->getEmail(), '@maik-becker.de')
-            || str_ends_with($user->getEmail(), '@fyyn.io');
+            || str_ends_with($user->getEmail(), '@fyyn.io')
+        ) {
+            return true;
+        }*/
+
+        return $this->hasCapability($user, Capability::VideoTranslation);
     }
 
     public function canInviteOrganizationMembers(User $user): bool

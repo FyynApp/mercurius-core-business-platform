@@ -149,7 +149,7 @@
                         {% if not process.finished and not process.wasStopped and not process.errored %}
                             <div class="mb-1">
                                 {{ 'status_widget.step.step'|trans }}
-                                {{ TwigHelperService.lingoSyncDomainService.numberOfFinishedTasks(process) }}
+                                {{ (TwigHelperService.lingoSyncDomainService.numberOfFinishedTasks(process) + 1) }}
                                 {{ 'status_widget.step.of'|trans }}
                                 {{ TwigHelperService.lingoSyncDomainService.totalNumberOfTasks(process) }}…
                             </div>
