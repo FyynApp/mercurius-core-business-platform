@@ -60,6 +60,7 @@ status_widget:
     'bn-IN': '🇮🇳'
     'cmn-Hans-CN': '🇨🇳'
     'ru-RU': '🇷🇺'
+    'he-IL': '🇮🇱'
 start_process_modal:
   not_yet_available:
     headline: 'LingoSync will be available soon!'
@@ -83,6 +84,7 @@ start_process_modal:
     'bn-IN': '🇮🇳 Bengali (India)'
     'cmn-Hans-CN': '🇨🇳 Mandarin (China)'
     'ru-RU': '🇷🇺 Russian (Russia)'
+    'he-IL': '🇮🇱 Hebrew (Israel)'
   gender:
     male: '🧔🏽‍ male'
     female: '👩🏽 female'

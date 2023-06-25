@@ -19,4 +19,6 @@ enum Bcp47LanguageCode: string
 
     case RuRu = 'ru-RU';
     case CmnHansCn = 'cmn-Hans-CN';
+
+    case HeIl = 'he-IL';
 }

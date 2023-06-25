@@ -33,7 +33,7 @@ readonly class LingoSyncInfrastructureService
         string $webvtt
     ): bool
     {
-        if (!str_starts_with(trim($webvtt), 'WEBVTT')) {
+        if (!mb_stristr($webvtt, 'WEBVTT')) {
             return false;
         }
 

@@ -288,6 +288,8 @@ readonly class HappyScribeApiService
 
             Bcp47LanguageCode::CmnHansCn => 'zh',
             Bcp47LanguageCode::RuRu => 'ru',
+
+            Bcp47LanguageCode::HeIl => 'he',
         };
 
         $body = <<<EOT
