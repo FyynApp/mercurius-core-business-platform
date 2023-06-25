@@ -690,6 +690,11 @@ readonly class LingoSyncDomainService
             if ($process->getCreatedAt() < DateAndTimeService::getDateTime('-1 month')) {
                 continue;
             }
+
+            if ($process->hasErrored()) {
+                continue;
+            }
+
             $seconds += (float)$process->getVideo()->getSeconds();
         }
 
