@@ -66,6 +66,8 @@ class PaymentProcessorStripeService
                     'membership_plan_name' => $membershipPlan->getName()->value
                 ],
 
+                'allow_promotion_codes' => true,
+
                 'line_items' => [[
                     'price' => match ($paymentCycle) {
                         PaymentCycle::Monthly => match ($membershipPlan->getName()) {
