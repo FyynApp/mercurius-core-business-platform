@@ -108,7 +108,7 @@
                                     </svg>
                                 {% endif %}
 
-                                {% if process.wasStopped %}
+                                {% if process.wasStopped and not process.errored %}
                                     {# Heroicon: stop #}
                                     <svg
                                             class="w-4 h-4 text-orange-600"
