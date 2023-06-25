@@ -161,7 +161,7 @@ readonly class MembershipService
                 $name,
                 true,
                 4.99,
-                49.99,
+                48.00,
                 [
                     Capability::CustomDomain,
                     Capability::CustomLogoOnLandingpage,
