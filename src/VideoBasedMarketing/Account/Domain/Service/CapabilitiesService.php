@@ -232,6 +232,7 @@ readonly class CapabilitiesService
         User $user
     ): float
     {
+        /*
         if (str_ends_with($user->getEmail(), '@kiessling.net')
             || str_ends_with($user->getEmail(), '@smart-dsgvo.de')
             || str_ends_with($user->getEmail(), '@maik-becker.de')
@@ -239,6 +240,7 @@ readonly class CapabilitiesService
         ) {
             return 60 * 60 * 6;
         }
+        */
 
         $plan = $this
             ->membershipService
