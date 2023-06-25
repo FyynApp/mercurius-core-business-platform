@@ -4,8 +4,6 @@ namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Domain\SymfonyEvent\RecordingSessionWillBeRemovedSymfonyEvent;
@@ -24,7 +22,6 @@ readonly class RecordingSessionDomainService
         private RecordingsInfrastructureService $recordingsInfrastructureService,
         private EventDispatcherInterface        $eventDispatcher,
         private ShortIdService                  $shortIdService,
-        private MembershipService               $membershipService
     )
     {
     }

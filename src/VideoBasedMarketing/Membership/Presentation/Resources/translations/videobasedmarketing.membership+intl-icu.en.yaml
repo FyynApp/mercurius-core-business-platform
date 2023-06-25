@@ -2,6 +2,9 @@ plan:
   basic:
     title: 'Base'
     description: ''
+  testdrive:
+    title: 'Testdrive'
+    description: ''
   independent:
     title: 'Independent'
     description: ''

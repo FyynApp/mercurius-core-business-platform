@@ -5,7 +5,6 @@ namespace App\VideoBasedMarketing\Recordings\Domain\Service;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\RecordingSession;
@@ -26,9 +25,7 @@ readonly class VideoDomainService
         private EntityManagerInterface   $entityManager,
         private PresentationpagesService $presentationpagesService,
         private ShortIdService           $shortIdService,
-        private MembershipService        $membershipService,
-        private VideoFolderDomainService $videoFolderDomainService,
-        private ContainerBagInterface    $containerBag,
+        private VideoFolderDomainService $videoFolderDomainService
     )
     {
     }

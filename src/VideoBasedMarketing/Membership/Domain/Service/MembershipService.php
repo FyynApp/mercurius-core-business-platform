@@ -156,6 +156,24 @@ readonly class MembershipService
                 100 * 1024 * 1024 // 100 MiB
             ),
 
+            MembershipPlanName::Testdrive =>
+            new MembershipPlan(
+                $name,
+                true,
+                4.99,
+                49.99,
+                [
+                    Capability::CustomDomain,
+                    Capability::CustomLogoOnLandingpage,
+                    Capability::AdFreeLandingpages,
+                    Capability::BrandingFreeEmbeddableVideoPlayer,
+                    Capability::VideoTranslation,
+                ],
+                (float)(60 * 5),
+                60 * 10,
+                256 * 1024 * 1024 // 0.25 GiB
+            ),
+
             MembershipPlanName::Independent =>
             new MembershipPlan(
                 $name,

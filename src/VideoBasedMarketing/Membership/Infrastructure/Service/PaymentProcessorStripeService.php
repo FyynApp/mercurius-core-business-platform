@@ -69,6 +69,7 @@ class PaymentProcessorStripeService
                 'line_items' => [[
                     'price' => match ($paymentCycle) {
                         PaymentCycle::Monthly => match ($membershipPlan->getName()) {
+                            MembershipPlanName::Testdrive => $_ENV['STRIPE_PRICE_ID_TESTDRIVE_MONTHLY'],
                             MembershipPlanName::Independent => $_ENV['STRIPE_PRICE_ID_INDEPENDENT_MONTHLY'],
                             MembershipPlanName::Professional => $_ENV['STRIPE_PRICE_ID_PROFESSIONAL_MONTHLY'],
                             MembershipPlanName::Ultimate => $_ENV['STRIPE_PRICE_ID_ULTIMATE_MONTHLY'],
@@ -79,6 +80,7 @@ class PaymentProcessorStripeService
                             default => throw new InvalidArgumentException("Cannot handle plan '{$membershipPlan->getName()->value}'.")
                         },
                         PaymentCycle::Yearly => match ($membershipPlan->getName()) {
+                            MembershipPlanName::Testdrive => $_ENV['STRIPE_PRICE_ID_TESTDRIVE_YEARLY'],
                             MembershipPlanName::Independent => $_ENV['STRIPE_PRICE_ID_INDEPENDENT_YEARLY'],
                             MembershipPlanName::Professional => $_ENV['STRIPE_PRICE_ID_PROFESSIONAL_YEARLY'],
                             MembershipPlanName::Ultimate => $_ENV['STRIPE_PRICE_ID_ULTIMATE_YEARLY'],
