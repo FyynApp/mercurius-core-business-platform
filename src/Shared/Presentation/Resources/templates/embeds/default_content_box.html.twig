@@ -38,13 +38,13 @@
                         </a>
 
                         <div
-                                {% if TwigHelperService.membershipService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).mustBeBought %}
+                                {% if TwigHelperService.membershipPlanService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).mustBeBought %}
                                     class="bg-gradient-to-r from-mercurius-blue-500 to-mercurius-green-500 text-mercurius-green-50 border-1 border-mercurius-green-500 p-0.5 px-1 rounded-md w-fit flex flex-row gap-0.5 items-center"
                                 {% else %}
                                     class="bg-neutral-100 border-1 border-neutral-200 text-neutral-400 p-0.5 px-1 rounded-md w-fit flex flex-row gap-0.5 items-center"
                                 {% endif %}
                         >
-                            {{ TwigHelperService.membershipService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).niceName }}
+                            {{ TwigHelperService.membershipPlanService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).niceName }}
                         </div>
 
                         {% if TwigHelperService.organizationDomainService.userCanSwitchOrganizations(app.user) %}

@@ -56,7 +56,7 @@
                             </div>
                         {% endif %}
 
-                        {% if TwigHelperService.membershipService.planBookableForUser(plan, app.user) %}
+                        {% if TwigHelperService.membershipPlanService.planBookableForUser(plan, app.user) %}
                             <a
                                     href="{{ path('videobasedmarketing.membership.presentation.subscription.checkout.start', { 'planName': plan.name.value }) }}"
                                     class="

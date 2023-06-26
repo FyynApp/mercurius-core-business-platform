@@ -9,7 +9,7 @@ use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentCycle;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Membership\Infrastructure\Service\PaymentProcessorStripeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Exception\ApiErrorException;
@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 
-class PaymentProcessorStripeCheckoutController
+class PaymentProcessorStripeSubscriptionCheckoutController
 extends AbstractController
 {
     /**
@@ -38,13 +38,14 @@ extends AbstractController
     public function subscriptionCheckoutStartAction(
         string                        $planName,
         PaymentCycle                  $paymentCycle,
-        MembershipService             $membershipService,
+        MembershipPlanService         $membershipPlanService,
         PaymentProcessorStripeService $stripeService
-    ): Response {
+    ): Response
+    {
         $user = $this->getUser();
 
-        $plan = $membershipService->getMembershipPlanByName(MembershipPlanName::from($planName));
-        $paymentProcessor = $membershipService->getPaymentProcessorForUser($user);
+        $plan = $membershipPlanService->getMembershipPlanByName(MembershipPlanName::from($planName));
+        $paymentProcessor = $membershipPlanService->getPaymentProcessorForUser($user);
 
         if ($paymentProcessor !== PaymentProcessor::Stripe) {
             throw new BadRequestHttpException("Unexpectedly, the payment processor for this user is '$paymentProcessor->value'.");
@@ -67,11 +68,11 @@ extends AbstractController
         methods     : [Request::METHOD_GET]
     )]
     public function subscriptionCheckoutSuccessAction(
-        string $subscriptionId,
-        Request $request,
+        string                        $subscriptionId,
+        Request                       $request,
         PaymentProcessorStripeService $stripeService,
-        TranslatorInterface $translator,
-        EntityManagerInterface $entityManager
+        TranslatorInterface           $translator,
+        EntityManagerInterface        $entityManager
     ): Response
     {
         $subscription = $entityManager->find(Subscription::class, $subscriptionId);

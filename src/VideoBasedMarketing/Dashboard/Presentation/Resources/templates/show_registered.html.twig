@@ -68,13 +68,13 @@
                     {% endblock %}
                     {% block contentRight %}
                         {{ ('overview.plan.'
-                            ~ TwigHelperService.membershipService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).name.value
+                            ~ TwigHelperService.membershipPlanService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).name.value
                             ~ '.title'
                             )|trans({}, 'videobasedmarketing.membership')
                         }}
                         <div class="mt-1 text-sm text-gray-500 sm:mt-0 sm:col-span-2">
                             {{ ('overview.plan.'
-                                ~ TwigHelperService.membershipService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).name.value
+                                ~ TwigHelperService.membershipPlanService.subscribedMembershipPlanForCurrentlyActiveOrganization(app.user).name.value
                                 ~ '.description'
                                 )|trans({}, 'videobasedmarketing.membership')
                             }}

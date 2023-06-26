@@ -9,7 +9,7 @@ use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentCycle;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Polyfill\Intl\Icu\Exception\NotImplementedException;
 
 
-class MembershipController
+class MembershipPlanController
     extends AbstractController
 {
     #[Route(
@@ -30,16 +30,16 @@ class MembershipController
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function overviewAction(MembershipService $membershipService): Response
+    public function overviewAction(MembershipPlanService $membershipPlanService): Response
     {
         $user = $this->getUser();
 
         return $this->render(
             '@videobasedmarketing.membership/overview.html.twig',
             [
-                'isSubscribed' => $membershipService->userIsSubscribedToPlanThatMustBeBought($user),
-                'currentPlan' => $membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user),
-                'availablePlans' => $membershipService->getAvailablePlansForUser($user)
+                'isSubscribed' => $membershipPlanService->userIsSubscribedToPlanThatMustBeBought($user),
+                'currentPlan' => $membershipPlanService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user),
+                'availablePlans' => $membershipPlanService->getAvailablePlansForUser($user)
             ]
         );
     }
@@ -56,11 +56,11 @@ class MembershipController
     public function subscriptionCheckoutStartAction(
         string            $planName,
         PaymentCycle      $paymentCycle,
-        MembershipService $membershipService,
+        MembershipPlanService $membershipPlanService,
     ): Response {
         $user = $this->getUser();
 
-        $paymentProcessor = $membershipService->getPaymentProcessorForUser($user);
+        $paymentProcessor = $membershipPlanService->getPaymentProcessorForUser($user);
 
         if ($paymentProcessor === PaymentProcessor::Stripe) {
             return $this->redirectToRoute(
@@ -86,7 +86,7 @@ class MembershipController
     )]
     public function showUpgradeOfferForCapabilities(
         Request             $request,
-        MembershipService   $membershipService,
+        MembershipPlanService   $membershipPlanService,
         TranslatorInterface $translator
     ): Response
     {
@@ -108,7 +108,7 @@ class MembershipController
             throw new BadRequestHttpException("Got zero capabilities.");
         }
 
-        $membershipPlan = $membershipService
+        $membershipPlan = $membershipPlanService
             ->getCheapestMembershipPlanRequiredForCapabilities($capabilities);
 
         if (is_null($membershipPlan)) {
@@ -128,7 +128,7 @@ class MembershipController
             [
                 'capabilities' => $capabilities,
                 'membershipPlan' => $membershipPlan,
-                'currentMembershipPlan' => $membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
+                'currentMembershipPlan' => $membershipPlanService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
             ]
         );
     }
@@ -144,7 +144,7 @@ class MembershipController
     )]
     public function showUpgradeOfferForPlan(
         Request           $request,
-        MembershipService $membershipService
+        MembershipPlanService $membershipPlanService
     ): Response
     {
         /** @var User $user */
@@ -157,14 +157,14 @@ class MembershipController
             throw $this->createNotFoundException("No membership plan name '$membershipPlanNameValue'.");
         }
 
-        $membershipPlan = $membershipService
+        $membershipPlan = $membershipPlanService
             ->getMembershipPlanByName($membershipPlanName);
 
         return $this->render(
             '@videobasedmarketing.membership/upgrade_offer.html.twig',
             [
                 'membershipPlan' => $membershipPlan,
-                'currentMembershipPlan' => $membershipService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
+                'currentMembershipPlan' => $membershipPlanService->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
             ]
         );
     }

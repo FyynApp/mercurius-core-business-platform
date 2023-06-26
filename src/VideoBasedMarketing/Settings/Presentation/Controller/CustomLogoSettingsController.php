@@ -6,7 +6,7 @@ use App\Shared\Infrastructure\Controller\AbstractController;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use App\VideoBasedMarketing\Settings\Infrastructure\Entity\LogoUpload;
 use App\VideoBasedMarketing\Settings\Infrastructure\Service\SettingsInfrastructureService;
@@ -27,7 +27,7 @@ class CustomLogoSettingsController
         methods     : [Request::METHOD_GET]
     )]
     public function customLogoAction(
-        MembershipService             $membershipService,
+        MembershipPlanService             $membershipPlanService,
         CapabilitiesService           $capabilitiesService,
         SettingsInfrastructureService $settingsInfrastructureService
     ): Response
@@ -43,7 +43,7 @@ class CustomLogoSettingsController
             [
                 'hasCapability' => $capabilitiesService->canPresentOwnLogoOnLandingpage($user),
 
-                'requiredMembershipPlan' => $membershipService
+                'requiredMembershipPlan' => $membershipPlanService
                     ->getCheapestMembershipPlanRequiredForCapabilities([
                         Capability::CustomLogoOnLandingpage
                     ]),

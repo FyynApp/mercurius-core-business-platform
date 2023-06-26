@@ -16,7 +16,7 @@ use Exception;
 use ValueError;
 
 
-readonly class MembershipService
+readonly class MembershipPlanService
 {
     public function __construct(
         private EntityManagerInterface    $entityManager,
@@ -39,8 +39,7 @@ readonly class MembershipService
         $orgOwningUser = $this
             ->organizationDomainService
             ->getCurrentlyActiveOrganizationOfUser($user)
-            ->getOwningUser()
-        ;
+            ->getOwningUser();
 
         foreach ($orgOwningUser->getSubscriptions() as $subscription) {
             if ($subscription->getStatus() === SubscriptionStatus::Active) {

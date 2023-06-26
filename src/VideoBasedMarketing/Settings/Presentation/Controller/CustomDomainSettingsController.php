@@ -6,7 +6,7 @@ use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Settings\Domain\Enum\SetCustomDomainNameResult;
 use App\VideoBasedMarketing\Settings\Domain\Service\SettingsDomainService;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ class CustomDomainSettingsController
         methods     : [Request::METHOD_GET]
     )]
     public function customDomainAction(
-        MembershipService     $membershipService,
+        MembershipPlanService     $membershipPlanService,
         CapabilitiesService   $capabilitiesService,
         SettingsDomainService $settingsDomainService
     ): Response
@@ -39,7 +39,7 @@ class CustomDomainSettingsController
             [
                 'hasCapability' => $capabilitiesService->canPresentLandingpageOnCustomDomain($user),
 
-                'requiredMembershipPlan' => $membershipService
+                'requiredMembershipPlan' => $membershipPlanService
                     ->getCheapestMembershipPlanRequiredForCapabilities([
                         Capability::CustomDomain
                     ]),

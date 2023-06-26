@@ -13,7 +13,7 @@ use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
 use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncDomainService;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\RecordingRequests\Domain\Service\RecordingRequestsDomainService;
@@ -36,7 +36,7 @@ class TwigHelperService
 
     private AccountAssetsService $accountAssetsService;
 
-    private MembershipService $membershipService;
+    private MembershipPlanService $membershipPlanService;
 
     private CookiesService $cookiesService;
 
@@ -76,7 +76,7 @@ class TwigHelperService
         ContentDeliveryService                   $contentDeliveryService,
         AccountDomainService                     $accountDomainService,
         AccountAssetsService                     $accountAssetsService,
-        MembershipService                        $membershipService,
+        MembershipPlanService                        $membershipPlanService,
         CookiesService                           $cookiesService,
         VideoDomainService                       $videoDomainService,
         VideoFolderDomainService                 $videoFolderDomainService,
@@ -99,7 +99,7 @@ class TwigHelperService
         $this->contentDeliveryService = $contentDeliveryService;
         $this->accountDomainService = $accountDomainService;
         $this->accountAssetsService = $accountAssetsService;
-        $this->membershipService = $membershipService;
+        $this->membershipPlanService = $membershipPlanService;
         $this->cookiesService = $cookiesService;
         $this->videoDomainService = $videoDomainService;
         $this->videoFolderDomainService = $videoFolderDomainService;
@@ -144,9 +144,9 @@ class TwigHelperService
         return $this->accountAssetsService;
     }
 
-    public function getMembershipService(): MembershipService
+    public function getMembershipPlanService(): MembershipPlanService
     {
-        return $this->membershipService;
+        return $this->membershipPlanService;
     }
 
     public function getCookiesService(): CookiesService

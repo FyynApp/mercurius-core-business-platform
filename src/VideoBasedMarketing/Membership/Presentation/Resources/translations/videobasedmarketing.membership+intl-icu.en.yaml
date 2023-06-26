@@ -66,3 +66,7 @@ capabilities:
 subscription_checkout:
   success_flash_message: 'Plan has been booked successfully.'
   cancel_flash_message: 'Booking aborted. No payment has been charged, and no subscription has been activated.'
+
+purchase_checkout:
+  success_flash_message: 'The package has been booked successfully.'
+  cancel_flash_message: 'Booking aborted. No payment has been charged, and no package has been purchased.'

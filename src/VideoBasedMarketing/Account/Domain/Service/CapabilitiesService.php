@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Account\Domain\Service;
 
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Organization\Domain\Enum\AccessRight;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 
@@ -12,7 +12,7 @@ use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainServic
 readonly class CapabilitiesService
 {
     public function __construct(
-        private MembershipService         $membershipService,
+        private MembershipPlanService         $membershipPlanService,
         private OrganizationDomainService $organizationDomainService
     )
     {}
@@ -243,7 +243,7 @@ readonly class CapabilitiesService
         */
 
         $plan = $this
-            ->membershipService
+            ->membershipPlanService
             ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user);
 
         return $plan->getNumberOfTranslatableVideoSecondsForOneMonth();
@@ -258,7 +258,7 @@ readonly class CapabilitiesService
         }
 
         $plan = $this
-            ->membershipService
+            ->membershipPlanService
             ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user);
 
         return $plan->getMaxRecordingTimeInSeconds();
@@ -273,7 +273,7 @@ readonly class CapabilitiesService
         }
 
         $plan = $this
-            ->membershipService
+            ->membershipPlanService
             ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user);
 
         return $plan->getMaxVideoUploadFilesizeInBytes();
@@ -289,7 +289,7 @@ readonly class CapabilitiesService
         }
 
         return $this
-            ->membershipService
+            ->membershipPlanService
             ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user)
             ->hasCapability($capability);
     }

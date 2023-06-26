@@ -4,7 +4,7 @@ namespace App\VideoBasedMarketing\Recordings\Presentation\Service;
 
 use App\Shared\Infrastructure\Service\ShortIdService;
 use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
-use App\VideoBasedMarketing\Membership\Domain\Service\MembershipService;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Exception;
 use Twig\Environment;
@@ -13,7 +13,7 @@ readonly class EmbeddableVideoPlayerPresentationService
 {
     public function __construct(
         private Environment       $twigEnvironment,
-        private MembershipService $membershipService,
+        private MembershipPlanService $membershipPlanService,
         private ShortIdService    $shortIdService
     )
     {}
@@ -43,7 +43,7 @@ readonly class EmbeddableVideoPlayerPresentationService
         Video $video
     ): bool
     {
-        return !$this->membershipService->subscriptionOfOrganizationOwnedEntityHasCapability(
+        return !$this->membershipPlanService->subscriptionOfOrganizationOwnedEntityHasCapability(
             $video,
             Capability::BrandingFreeEmbeddableVideoPlayer
         );
