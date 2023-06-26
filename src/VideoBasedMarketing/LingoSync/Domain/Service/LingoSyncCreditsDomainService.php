@@ -27,6 +27,29 @@ readonly class LingoSyncCreditsDomainService
     /**
      * @throws \Exception
      */
+    public function depleteCreditsFromLingoSyncProcess(
+        LingoSyncProcess $lingoSyncProcess
+    ): void
+    {
+        $amount = (int)floor($lingoSyncProcess->getVideo()->getSeconds());
+        if ($amount === 0) {
+            $amount = 1;
+        }
+
+        $lingoSyncCreditPosition = new LingoSyncCreditPosition(
+            $amount * -1,
+            null,
+            null,
+            $lingoSyncProcess
+        );
+
+        $this->entityManager->persist($lingoSyncCreditPosition);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function topUpCreditsFromMembershipPlanSubscription(
         Subscription $subscription
     ): void
@@ -79,19 +102,7 @@ readonly class LingoSyncCreditsDomainService
     /**
      * @throws Exception
      */
-    public function getTotalAmountOfCreditsForUser(
-        User $user
-    ): int
-    {
-        return $this->getTotalAmountOfCreditsForOrganization(
-            $user->getCurrentlyActiveOrganization()
-        );
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getTotalAmountOfCreditsForOrganization(
+    public function getTotalAmountOfPositiveCreditsForOrganization(
         Organization $organization
     ): int
     {
@@ -106,7 +117,6 @@ readonly class LingoSyncCreditsDomainService
             ON s.id = c.subscriptions_id
             
             INNER JOIN {$this->entityManager->getClassMetadata(User::class)->getTableName()} u
-            
             ON s.users_id = u.id
             
             WHERE u.id = :userId
@@ -132,8 +142,7 @@ readonly class LingoSyncCreditsDomainService
             ON p.id = c.purchases_id
             
             INNER JOIN {$this->entityManager->getClassMetadata(User::class)->getTableName()} u
-            
-            ON s.users_id = u.id
+            ON p.users_id = u.id
             
             WHERE u.id = :userId
             
@@ -154,43 +163,36 @@ readonly class LingoSyncCreditsDomainService
     /**
      * @throws Exception
      */
-    public function getAmountOfUsedCreditsForOrganization(
+    public function getAmountOfNegativeCreditsForOrganization(
         Organization $organization
     ): int
     {
+        $amount = 0;
         $sql = "
-            SELECT p.id AS id
+            SELECT SUM(c.amount) AS amount
             
-            FROM {$this->entityManager->getClassMetadata(LingoSyncProcess::class)->getTableName()} p
+            FROM {$this->entityManager->getClassMetadata(LingoSyncCreditPosition::class)->getTableName()} c
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(LingoSyncProcess::class)->getTableName()} p
+            ON p.id = c.lingo_sync_processes_id
             
             INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
-            ON p.videos_id = v.id
-                    
-            INNER JOIN {$this->entityManager->getClassMetadata(Organization::class)->getTableName()} o
-            ON v.organizations_id = o.id            
+            ON v.id = p.videos_id
             
-            WHERE o.owning_users_id = :userId
-
+            WHERE o.id = :organizationId
+            
             ;
         ";
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue(':userId', $organization->getOwningUser()->getId());
+        $stmt->bindValue(':organizationId', $organization->getId());
         $resultSet = $stmt->executeQuery();
 
-        $seconds = 0.0;
         foreach ($resultSet->fetchAllAssociative() as $row) {
-            /** @var LingoSyncProcess $process */
-            $process = $this->entityManager->find(LingoSyncProcess::class, $row['id']);
-
-            if ($process->hasErrored()) {
-                continue;
-            }
-
-            $seconds += (float)$process->getVideo()->getSeconds();
+            $amount += (int)$row['amount'];
         }
 
-        return (int)floor($seconds);
+        return $amount;
     }
 
     /**
@@ -200,8 +202,8 @@ readonly class LingoSyncCreditsDomainService
         Organization $organization
     ): int
     {
-        return $this->getTotalAmountOfCreditsForOrganization($organization)
-            - $this->getAmountOfUsedCreditsForOrganization($organization);
+        return $this->getTotalAmountOfPositiveCreditsForOrganization($organization)
+            - $this->getAmountOfNegativeCreditsForOrganization($organization);
     }
 
     /**

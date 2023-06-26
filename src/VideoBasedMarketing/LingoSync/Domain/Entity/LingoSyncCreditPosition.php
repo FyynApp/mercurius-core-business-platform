@@ -28,29 +28,35 @@ class LingoSyncCreditPosition
      * @throws Exception
      */
     public function __construct(
-        int           $amount,
-        ?Subscription $subscription = null,
-        ?Purchase     $purchase     = null
+        int               $amount,
+        ?Subscription     $subscription = null,
+        ?Purchase         $purchase = null,
+        ?LingoSyncProcess $lingoSyncProcess = null
     )
     {
-        if ($amount < 1) {
-            throw new ValueError('Amount must be greater than 0');
+        $notNullCount = 0;
+        foreach ([$subscription, $purchase, $lingoSyncProcess] as $object) {
+            if (!is_null($object)) {
+                $notNullCount++;
+            }
         }
 
-        if (   is_null($subscription)
-            && is_null($purchase)
-        ) {
-            throw new ValueError('Either a subscription or a purchase must be provided');
+        if ($notNullCount !== 1) {
+            throw new ValueError('Exactly one of $subscription, $purchase or $lingoSyncProcess must not be null.');
         }
 
-        if (   !is_null($subscription)
-            && !is_null($purchase)
+        // if we received a $subscription or a $purchase, then $amount must be positive,
+        // and if we received a $lingoSyncProcess, then $amount must be negative
+        if (   ($amount < 0 && !is_null($subscription))
+            || ($amount < 0 && !is_null($purchase))
+            || ($amount > 0 && !is_null($lingoSyncProcess))
         ) {
-            throw new ValueError('Either a subscription or a purchase must be provided, not both');
+            throw new ValueError('Invalid combination of $amount and $subscription, $purchase or $lingoSyncProcess.');
         }
 
         $this->subscription = $subscription;
-        $this->purchase     = $purchase;
+        $this->purchase = $purchase;
+        $this->lingoSyncProcess = $lingoSyncProcess;
 
         $this->createdAt = DateAndTimeService::getDateTimeImmutable();
     }
@@ -129,6 +135,24 @@ class LingoSyncCreditPosition
     public function getPurchase(): Purchase
     {
         return $this->purchase;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: LingoSyncProcess::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'lingosync_processes_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'CASCADE'
+    )]
+    private readonly ?LingoSyncProcess $lingoSyncProcess;
+
+    public function getLingoSyncProcess(): LingoSyncProcess
+    {
+        return $this->lingoSyncProcess;
     }
 
 
