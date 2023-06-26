@@ -9,6 +9,7 @@ use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
+use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncCreditsDomainService;
 use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Presentation\Controller\VideoFoldersController;
@@ -36,10 +37,11 @@ class LingoSyncProcessingController
         methods     : [Request::METHOD_POST]
     )]
     public function startProcessAction(
-        Request                $request,
-        LingoSyncDomainService $lingoSyncDomainService,
-        TranslatorInterface    $translator,
-        CapabilitiesService    $capabilitiesService
+        Request                       $request,
+        LingoSyncDomainService        $lingoSyncDomainService,
+        LingoSyncCreditsDomainService $lingoSyncCreditsDomainService,
+        TranslatorInterface           $translator,
+        CapabilitiesService           $capabilitiesService
     ): Response
     {
         if (!$this->isCsrfTokenValid(
@@ -68,7 +70,7 @@ class LingoSyncProcessingController
             );
         }
 
-        if (!$lingoSyncDomainService->hasRemainingTranslationSeconds($r->getUser(), $video)) {
+        if (!$lingoSyncCreditsDomainService->organizationHasEnoughAvailableCreditsForVideo($video)) {
             $this->addFlash(
                 FlashMessageLabel::Warning->value,
                 $translator->trans(
@@ -135,10 +137,11 @@ class LingoSyncProcessingController
         methods     : [Request::METHOD_POST]
     )]
     public function restartProcessAction(
-        string                 $lingoSyncProcessId,
-        Request                $request,
-        LingoSyncDomainService $lingoSyncDomainService,
-        TranslatorInterface    $translator
+        string                        $lingoSyncProcessId,
+        Request                       $request,
+        LingoSyncDomainService        $lingoSyncDomainService,
+        LingoSyncCreditsDomainService $lingoSyncCreditsDomainService,
+        TranslatorInterface           $translator
     ): Response
     {
         if (!$this->isCsrfTokenValid(
@@ -157,7 +160,7 @@ class LingoSyncProcessingController
         /** @var LingoSyncProcess $lingoSyncProcess */
         $lingoSyncProcess = $r->getEntity();
 
-        if (!$lingoSyncDomainService->hasRemainingTranslationSeconds($r->getUser(), $lingoSyncProcess->getVideo())) {
+        if (!$lingoSyncCreditsDomainService->organizationHasEnoughAvailableCreditsForVideo($lingoSyncProcess->getVideo())) {
             $this->addFlash(
                 FlashMessageLabel::Warning->value,
                 $translator->trans(

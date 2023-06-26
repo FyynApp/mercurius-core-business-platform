@@ -12,11 +12,12 @@ use Twig\Environment;
 readonly class EmbeddableVideoPlayerPresentationService
 {
     public function __construct(
-        private Environment       $twigEnvironment,
+        private Environment           $twigEnvironment,
         private MembershipPlanService $membershipPlanService,
-        private ShortIdService    $shortIdService
+        private ShortIdService        $shortIdService
     )
-    {}
+    {
+    }
 
     /**
      * @throws Exception

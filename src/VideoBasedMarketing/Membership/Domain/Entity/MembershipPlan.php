@@ -2,7 +2,6 @@
 
 namespace App\VideoBasedMarketing\Membership\Domain\Entity;
 
-
 use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use ValueError;
@@ -20,7 +19,7 @@ readonly class MembershipPlan
 
     private array $capabilities;
 
-    private float $numberOfTranslatableVideoSecondsForOneMonth;
+    private int $amountOfLingoSyncCreditsPerMonth;
 
     private int $maxRecordingTimeInSeconds;
 
@@ -34,7 +33,7 @@ readonly class MembershipPlan
         float              $pricePerMonth,
         float              $pricePerYear,
         array              $capabilities,
-        float              $numberOfTranslatableVideoSecondsForOneMonth,
+        int                $amountOfLingoSyncCreditsPerMonth,
         int                $maxRecordingTimeInSeconds,
         int                $maxVideoUploadFilesizeInBytes
     )
@@ -53,7 +52,7 @@ readonly class MembershipPlan
 
         $this->capabilities = $capabilities;
 
-        $this->numberOfTranslatableVideoSecondsForOneMonth = $numberOfTranslatableVideoSecondsForOneMonth;
+        $this->amountOfLingoSyncCreditsPerMonth = $amountOfLingoSyncCreditsPerMonth;
         $this->maxRecordingTimeInSeconds = $maxRecordingTimeInSeconds;
         $this->maxVideoUploadFilesizeInBytes = $maxVideoUploadFilesizeInBytes;
     }
@@ -96,9 +95,9 @@ readonly class MembershipPlan
         return $this->capabilities;
     }
 
-    public function getNumberOfTranslatableVideoSecondsForOneMonth(): float
+    public function getAmountOfLingoSyncCreditsPerMonth(): int
     {
-        return $this->numberOfTranslatableVideoSecondsForOneMonth;
+        return $this->amountOfLingoSyncCreditsPerMonth;
     }
 
     public function getMaxRecordingTimeInSeconds(): int

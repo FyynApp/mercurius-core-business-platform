@@ -12,10 +12,11 @@ use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainServic
 readonly class CapabilitiesService
 {
     public function __construct(
-        private MembershipPlanService         $membershipPlanService,
+        private MembershipPlanService     $membershipPlanService,
         private OrganizationDomainService $organizationDomainService
     )
-    {}
+    {
+    }
 
     public function canOpenRecordingStudio(User $user): bool
     {
@@ -226,27 +227,6 @@ readonly class CapabilitiesService
             $user,
             AccessRight::CAN_STORE_NEW_RECORDINGS_IN_DEFAULT_FOLDER_FOR_ADMINISTRATOR_RECORDINGS
         );
-    }
-
-    public function getNumberOfTranslatableVideoSecondsForOneMonth(
-        User $user
-    ): float
-    {
-        /*
-        if (str_ends_with($user->getEmail(), '@kiessling.net')
-            || str_ends_with($user->getEmail(), '@smart-dsgvo.de')
-            || str_ends_with($user->getEmail(), '@maik-becker.de')
-            || str_ends_with($user->getEmail(), '@fyyn.io')
-        ) {
-            return 60 * 60 * 6;
-        }
-        */
-
-        $plan = $this
-            ->membershipPlanService
-            ->getSubscribedMembershipPlanForCurrentlyActiveOrganization($user);
-
-        return $plan->getNumberOfTranslatableVideoSecondsForOneMonth();
     }
 
     public function getMaxRecordingTimeInSeconds(

@@ -47,7 +47,7 @@ readonly class PaymentProcessorStripeService
     ): string
     {
         $subscription = new Subscription(
-            $user,
+            $user->getCurrentlyActiveOrganization()->getOwningUser(),
             $membershipPlan->getName(),
             SubscriptionStatus::Pending
         );
@@ -60,8 +60,14 @@ readonly class PaymentProcessorStripeService
         $checkoutSession = Session::create(
             [
                 'metadata' => [
-                    'user_id' => $user->getId(),
-                    'membership_plan_name' => $membershipPlan->getName()->value
+                    'purchasing_user_id' =>
+                        $user->getId(),
+                    'organization_id' =>
+                        $user->getCurrentlyActiveOrganization()->getId(),
+                    'organization_owning_user_id' =>
+                        $user->getCurrentlyActiveOrganization()->getOwningUser()->getId(),
+                    'membership_plan_name' =>
+                        $membershipPlan->getName()->value
                 ],
 
                 'allow_promotion_codes' => true,
@@ -149,12 +155,12 @@ readonly class PaymentProcessorStripeService
      * @throws Exception
      */
     public function getPurchaseCheckoutUrl(
-        User         $user,
-        Package      $package
+        User    $user,
+        Package $package
     ): string
     {
         $purchase = new Purchase(
-            $user,
+            $user->getCurrentlyActiveOrganization()->getOwningUser(),
             $package->getName(),
             PurchaseStatus::Pending
         );
@@ -167,8 +173,14 @@ readonly class PaymentProcessorStripeService
         $checkoutSession = Session::create(
             [
                 'metadata' => [
-                    'user_id' => $user->getId(),
-                    'membership_plan_name' => $package->getName()->value
+                    'purchasing_user_id' =>
+                        $user->getId(),
+                    'organization_id' =>
+                        $user->getCurrentlyActiveOrganization()->getId(),
+                    'organization_owning_user_id' =>
+                        $user->getCurrentlyActiveOrganization()->getOwningUser()->getId(),
+                    'package_name' =>
+                        $package->getName()->value
                 ],
 
                 'allow_promotion_codes' => true,

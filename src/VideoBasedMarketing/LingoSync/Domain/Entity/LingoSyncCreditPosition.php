@@ -16,12 +16,12 @@ use ValueError;
 
 
 #[ORM\Entity]
-#[ORM\Table(name: 'lingosync_credits')]
+#[ORM\Table(name: 'lingosync_credit_positions')]
 #[ORM\Index(
     fields: ['createdAt'],
     name: 'created_at_idx'
 )]
-class LingoSyncCredit
+class LingoSyncCreditPosition
     implements UserOwnedEntityInterface
 {
     /**

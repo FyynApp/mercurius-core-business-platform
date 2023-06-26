@@ -33,22 +33,12 @@
 
             <div class="flex flex-row justify-between items-center font-light opacity-50">
                 <div>
-                    {{ 'status_widget.remaining_minutes.used'|trans }}
+                    {{ 'status_widget.remaining_minutes'|trans }}
                 </div>
                 <div class="min-w-fit flex flex-row gap-1">
                     <div class="font-normal">
-                        {{ (TwigHelperService.lingoSyncDomainService.numberOfTranslatedSecondsDuringLastMonth(
-                            app.user
-                        )/60)|number_format(0) }}
-                    </div>
-
-                    <div>
-                        {{ 'status_widget.remaining_minutes.of'|trans }}
-                    </div>
-
-                    <div class="font-normal">
-                        {{ (TwigHelperService.capabilitiesService.numberOfTranslatableVideoSecondsForOneMonth(
-                            app.user
+                        {{ (TwigHelperService.lingoSyncCreditsDomainService.amountOfAvailableCreditsForOrganization(
+                            app.user.currentlyActiveOrganization
                         )/60)|number_format(0) }}
                     </div>
                 </div>

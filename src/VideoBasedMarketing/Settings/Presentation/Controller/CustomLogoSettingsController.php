@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class CustomLogoSettingsController
     extends AbstractController
 {
@@ -27,7 +28,7 @@ class CustomLogoSettingsController
         methods     : [Request::METHOD_GET]
     )]
     public function customLogoAction(
-        MembershipPlanService             $membershipPlanService,
+        MembershipPlanService         $membershipPlanService,
         CapabilitiesService           $capabilitiesService,
         SettingsInfrastructureService $settingsInfrastructureService
     ): Response

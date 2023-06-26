@@ -2,8 +2,7 @@ title: 'LingoSync'
 status_page:
   title: 'Process status overview'
   no_processes: 'There are no LingoSync processes for this video.'
-  number_of_minutes: 'Used up translation minutes for current month:'
-  number_of_minutes_of: 'of'
+  available_minutes: 'Available translation minutes:'
   from_language: 'From '
   with_gender: ' with gender '
   stopped_yes: 'Process was stopped.'
@@ -32,9 +31,7 @@ process_restarted: 'LingoSync process has been restarted.'
 no_remaining_translation_seconds: "This video's duration is longer than the remaining amount of translation time for the current month."
 status_widget:
   title: 'LingoSync Status'
-  remaining_minutes:
-    used: 'Minutes used:'
-    of: 'of'
+  remaining_minutes: 'Remaining minutes:'
   status:
     running: 'Running'
     finished: 'Finished'

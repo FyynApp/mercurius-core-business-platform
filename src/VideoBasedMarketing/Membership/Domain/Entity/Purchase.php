@@ -23,7 +23,6 @@ class Purchase
      * @throws Exception
      */
     public function __construct(
-
         #[ORM\ManyToOne(
             targetEntity: User::class,
             cascade: ['persist']
@@ -41,7 +40,7 @@ class Purchase
             nullable: false,
             enumType: PackageName::class
         )]
-        private readonly PackageName $purchaseType,
+        private readonly PackageName $packageName,
 
         #[ORM\Column(
             type: Types::STRING,
@@ -88,9 +87,9 @@ class Purchase
     }
 
 
-    public function getPurchaseType(): PackageName
+    public function getPackageName(): PackageName
     {
-        return $this->purchaseType;
+        return $this->packageName;
     }
 
 
@@ -99,7 +98,9 @@ class Purchase
         return $this->status;
     }
 
-    public function setStatus(PurchaseStatus $status): void
+    public function setStatus(
+        PurchaseStatus $status
+    ): void
     {
         $this->status = $status;
     }

@@ -54,10 +54,11 @@ class MembershipPlanController
         methods     : [Request::METHOD_GET]
     )]
     public function subscriptionCheckoutStartAction(
-        string            $planName,
-        PaymentCycle      $paymentCycle,
+        string                $planName,
+        PaymentCycle          $paymentCycle,
         MembershipPlanService $membershipPlanService,
-    ): Response {
+    ): Response
+    {
         $user = $this->getUser();
 
         $paymentProcessor = $membershipPlanService->getPaymentProcessorForUser($user);
@@ -85,9 +86,9 @@ class MembershipPlanController
         methods     : [Request::METHOD_GET]
     )]
     public function showUpgradeOfferForCapabilities(
-        Request             $request,
-        MembershipPlanService   $membershipPlanService,
-        TranslatorInterface $translator
+        Request               $request,
+        MembershipPlanService $membershipPlanService,
+        TranslatorInterface   $translator
     ): Response
     {
         /** @var User $user */

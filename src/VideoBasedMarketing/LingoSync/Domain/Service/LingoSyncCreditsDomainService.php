@@ -1,0 +1,130 @@
+<?php
+
+namespace App\VideoBasedMarketing\LingoSync\Domain\Service;
+
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
+use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncCreditPosition;
+use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
+use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
+use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+
+
+readonly class LingoSyncCreditsDomainService
+{
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    )
+    {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getTotalAmountOfCreditsForUser(
+        User $user
+    ): int
+    {
+        return $this->getTotalAmountOfCreditsForOrganization(
+            $user->getCurrentlyActiveOrganization()
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getTotalAmountOfCreditsForOrganization(
+        Organization $organization
+    ): int
+    {
+        $sql = "
+            SELECT SUM(c.amount) AS amount
+            
+            FROM {$this->entityManager->getClassMetadata(LingoSyncCreditPosition::class)->getTableName()} c
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(User::class)->getTableName()} u
+            
+            ON c.users_id = u.id
+            
+            WHERE u.id = :userId
+            
+            ;
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue(':userId', $organization->getOwningUser()->getId());
+        $resultSet = $stmt->executeQuery();
+
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            return (int)$row['amount'];
+        }
+
+        return 0;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAmountOfUsedCreditsForOrganization(
+        Organization $organization
+    ): int
+    {
+        $sql = "
+            SELECT p.id AS id
+            
+            FROM {$this->entityManager->getClassMetadata(LingoSyncProcess::class)->getTableName()} p
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
+            ON p.videos_id = v.id
+                    
+            INNER JOIN {$this->entityManager->getClassMetadata(Organization::class)->getTableName()} o
+            ON v.organizations_id = o.id            
+            
+            WHERE o.owning_users_id = :userId
+
+            ;
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue(':userId', $organization->getOwningUser()->getId());
+        $resultSet = $stmt->executeQuery();
+
+        $seconds = 0.0;
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            /** @var LingoSyncProcess $process */
+            $process = $this->entityManager->find(LingoSyncProcess::class, $row['id']);
+
+            if ($process->hasErrored()) {
+                continue;
+            }
+
+            $seconds += (float)$process->getVideo()->getSeconds();
+        }
+
+        return (int)floor($seconds);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getAmountOfAvailableCreditsForOrganization(
+        Organization $organization
+    ): int
+    {
+        return $this->getTotalAmountOfCreditsForOrganization($organization)
+            - $this->getAmountOfUsedCreditsForOrganization($organization);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function organizationHasEnoughAvailableCreditsForVideo(
+        Video $video
+    ): bool
+    {
+        return $this->getAmountOfAvailableCreditsForOrganization(
+                $video->getOrganization()
+            ) >= (int)floor($video->getSeconds());
+    }
+}

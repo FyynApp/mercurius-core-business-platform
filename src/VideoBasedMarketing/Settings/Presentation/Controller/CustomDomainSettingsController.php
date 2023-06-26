@@ -27,7 +27,7 @@ class CustomDomainSettingsController
         methods     : [Request::METHOD_GET]
     )]
     public function customDomainAction(
-        MembershipPlanService     $membershipPlanService,
+        MembershipPlanService $membershipPlanService,
         CapabilitiesService   $capabilitiesService,
         SettingsDomainService $settingsDomainService
     ): Response

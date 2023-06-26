@@ -8,17 +8,17 @@ use App\VideoBasedMarketing\Membership\Domain\Entity\Purchase;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PackageName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PurchaseStatus;
-use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
+use App\VideoBasedMarketing\Membership\Domain\SymfonyEvent\PackageWasPurchasedSymfonyEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Exception;
-use ValueError;
 
 
 readonly class PackageService
 {
     public function __construct(
-        private EntityManagerInterface    $entityManager,
-        private OrganizationDomainService $organizationDomainService
+        private EntityManagerInterface   $entityManager,
+        private EventDispatcherInterface $eventDispatcher
     )
     {
     }
@@ -62,9 +62,13 @@ readonly class PackageService
         Purchase $purchase
     ): bool
     {
-        $purchase->setStatus(PurchaseStatus::Active);
+        $purchase->setStatus(PurchaseStatus::Finished);
         $this->entityManager->persist($purchase);
         $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(
+            new PackageWasPurchasedSymfonyEvent($purchase)
+        );
 
         return true;
     }

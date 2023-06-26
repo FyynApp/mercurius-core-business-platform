@@ -9,10 +9,12 @@ use App\VideoBasedMarketing\Membership\Domain\Enum\Capability;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
+use App\VideoBasedMarketing\Membership\Domain\SymfonyEvent\MembershipPlanWasSubscribedSymfonyEvent;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use ValueError;
 
 
@@ -20,7 +22,8 @@ readonly class MembershipPlanService
 {
     public function __construct(
         private EntityManagerInterface    $entityManager,
-        private OrganizationDomainService $organizationDomainService
+        private OrganizationDomainService $organizationDomainService,
+        private EventDispatcherInterface  $eventDispatcher
     )
     {
     }
@@ -239,6 +242,10 @@ readonly class MembershipPlanService
         $subscription->setStatus(SubscriptionStatus::Active);
         $this->entityManager->persist($subscription);
         $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(
+            new MembershipPlanWasSubscribedSymfonyEvent($subscription)
+        );
 
         return true;
     }

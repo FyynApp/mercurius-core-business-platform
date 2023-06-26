@@ -16,8 +16,8 @@ class SessionService
     private AccountDomainService $accountDomainService;
 
     public function __construct(
-        MembershipPlanService    $membershipPlanService,
-        AccountDomainService $accountDomainService
+        MembershipPlanService $membershipPlanService,
+        AccountDomainService  $accountDomainService
     )
     {
         $this->membershipPlanService = $membershipPlanService;

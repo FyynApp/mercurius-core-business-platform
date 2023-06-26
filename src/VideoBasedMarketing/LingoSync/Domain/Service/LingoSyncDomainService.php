@@ -731,22 +731,6 @@ readonly class LingoSyncDomainService
 
     /**
      * @throws Exception
-     */
-    public function hasRemainingTranslationSeconds(
-        User  $user,
-        Video $video
-    ): bool
-    {
-        return
-            $this->getNumberOfTranslatedSecondsDuringLastMonth(
-                $user
-            ) + $video->getSeconds()
-        <
-        $this->capabilitiesService->getNumberOfTranslatableVideoSecondsForOneMonth($user);
-    }
-
-    /**
-     * @throws Exception
      * @return LingoSyncProcess[]
      */
     public function getProcessesNotOlderThan(

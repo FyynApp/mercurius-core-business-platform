@@ -42,22 +42,12 @@
                         "
                 >
                     <div>
-                        {{ 'status_page.number_of_minutes'|trans }}
+                        {{ 'status_page.available_minutes'|trans }}
                     </div>
 
                     <div class="font-semibold">
-                        {{ (TwigHelperService.lingoSyncDomainService.numberOfTranslatedSecondsDuringLastMonth(
-                            app.user
-                        )/60)|number_format(0) }}
-                    </div>
-
-                    <div>
-                        {{ 'status_page.number_of_minutes_of'|trans }}
-                    </div>
-
-                    <div class="font-semibold">
-                        {{ (TwigHelperService.capabilitiesService.numberOfTranslatableVideoSecondsForOneMonth(
-                            app.user
+                        {{ (TwigHelperService.lingoSyncCreditsDomainService.amountOfAvailableCreditsForOrganization(
+                            app.user.currentlyActiveOrganization
                         )/60)|number_format(0) }}
                     </div>
                 </div>

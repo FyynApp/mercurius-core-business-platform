@@ -12,6 +12,7 @@ use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\AccountAssetsService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\Dashboard\Domain\Service\DashboardDomainService;
+use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncCreditsDomainService;
 use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
@@ -72,11 +73,13 @@ class TwigHelperService
 
     private LingoSyncDomainService $lingoSyncDomainService;
 
+    private LingoSyncCreditsDomainService $lingoSyncCreditsDomainService;
+
     public function __construct(
         ContentDeliveryService                   $contentDeliveryService,
         AccountDomainService                     $accountDomainService,
         AccountAssetsService                     $accountAssetsService,
-        MembershipPlanService                        $membershipPlanService,
+        MembershipPlanService                    $membershipPlanService,
         CookiesService                           $cookiesService,
         VideoDomainService                       $videoDomainService,
         VideoFolderDomainService                 $videoFolderDomainService,
@@ -93,7 +96,8 @@ class TwigHelperService
         SettingsInfrastructureService            $settingsInfrastructureService,
         OrganizationDomainService                $organizationDomainService,
         AudioTranscriptionDomainService          $audioTranscriptionDomainService,
-        LingoSyncDomainService                   $lingoSyncDomainService
+        LingoSyncDomainService                   $lingoSyncDomainService,
+        LingoSyncCreditsDomainService            $lingoSyncCreditsDomainService
     )
     {
         $this->contentDeliveryService = $contentDeliveryService;
@@ -117,6 +121,7 @@ class TwigHelperService
         $this->organizationDomainService = $organizationDomainService;
         $this->audioTranscriptionDomainService = $audioTranscriptionDomainService;
         $this->lingoSyncDomainService = $lingoSyncDomainService;
+        $this->lingoSyncCreditsDomainService = $lingoSyncCreditsDomainService;
     }
 
     public function getSymfonyEnv(): string
@@ -232,6 +237,11 @@ class TwigHelperService
     public function getLingoSyncDomainService(): LingoSyncDomainService
     {
         return $this->lingoSyncDomainService;
+    }
+
+    public function getLingoSyncCreditsDomainService(): LingoSyncCreditsDomainService
+    {
+        return $this->lingoSyncCreditsDomainService;
     }
 
     public function routeStartsWith(

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use ValueError;
 
 
 class PaymentProcessorStripePurchaseCheckoutController
@@ -24,11 +25,12 @@ extends AbstractController
 {
     /**
      * @throws ApiErrorException
+     * @throws \Exception
      */
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/purchase/checkout-with-stripe/{packageName}/start',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/erwerb/kauf-über-stripe/{packageName}/start',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/purchase-package/checkout-with-stripe/{packageName}/start',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/paket-erwerben/kauf-über-stripe/{packageName}/start',
         ],
         name        : 'videobasedmarketing.membership.infrastructure.purchase.checkout_with_payment_processor_stripe.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -60,8 +62,8 @@ extends AbstractController
      */
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/purchase/{purchaseId}/checkout-with-stripe/success',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/erwerb/{purchaseId}/kauf-über-stripe/erfolg',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/purchase-package/{purchaseId}/checkout-with-stripe/success',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/paket-erwerben/{purchaseId}/kauf-über-stripe/erfolg',
         ],
         name        : 'videobasedmarketing.membership.infrastructure.purchase.checkout_with_payment_processor_stripe.success',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -105,8 +107,8 @@ extends AbstractController
 
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/purchase/{purchaseId}/checkout-with-stripe/cancellation',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/erwerb/{purchaseId}/kauf-über-stripe/abbruch',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/purchase-package/{purchaseId}/checkout-with-stripe/cancellation',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/mitgliedschaft/paket-erwerben/{purchaseId}/kauf-über-stripe/abbruch',
         ],
         name        : 'videobasedmarketing.membership.infrastructure.purchase.checkout_with_payment_processor_stripe.cancellation',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
