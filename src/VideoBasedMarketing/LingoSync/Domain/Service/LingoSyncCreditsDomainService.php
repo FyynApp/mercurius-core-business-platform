@@ -28,10 +28,10 @@ readonly class LingoSyncCreditsDomainService
      * @throws \Exception
      */
     public function depleteCreditsFromLingoSyncProcess(
-        LingoSyncProcess $lingoSyncProcess
+        LingoSyncProcess $causingLingoSyncProcess
     ): void
     {
-        $amount = (int)floor($lingoSyncProcess->getVideo()->getSeconds());
+        $amount = (int)floor($causingLingoSyncProcess->getVideo()->getSeconds());
         if ($amount === 0) {
             $amount = 1;
         }
@@ -40,7 +40,7 @@ readonly class LingoSyncCreditsDomainService
             $amount * -1,
             null,
             null,
-            $lingoSyncProcess
+            $causingLingoSyncProcess
         );
 
         $this->entityManager->persist($lingoSyncCreditPosition);
@@ -51,20 +51,20 @@ readonly class LingoSyncCreditsDomainService
      * @throws \Exception
      */
     public function topUpCreditsFromMembershipPlanSubscription(
-        Subscription $subscription
+        Subscription $causingSubscription
     ): void
     {
         $membershipPlan = $this
             ->membershipPlanService
             ->getMembershipPlanByName(
-                $subscription->getMembershipPlanName()
+                $causingSubscription->getMembershipPlanName()
             );
 
         $creditsAmount = $membershipPlan->getAmountOfLingoSyncCreditsPerMonth();
 
         $lingoSyncCreditPosition = new LingoSyncCreditPosition(
             $creditsAmount,
-            $subscription
+            $causingSubscription
         );
 
         $this->entityManager->persist($lingoSyncCreditPosition);
@@ -75,10 +75,10 @@ readonly class LingoSyncCreditsDomainService
      * @throws \Exception
      */
     public function topUpCreditsFromPackagePurchase(
-        Purchase $purchase
+        Purchase $causingPurchase
     ): void
     {
-        $creditsAmount = match ($purchase->getPackageName()) {
+        $creditsAmount = match ($causingPurchase->getPackageName()) {
             PackageName::FreeLingoSyncCreditsFor10Minutes, PackageName::LingoSyncCreditsFor10Minutes => 10,
             PackageName::LingoSyncCreditsFor5Minutes => 5,
 
@@ -92,7 +92,26 @@ readonly class LingoSyncCreditsDomainService
         $lingoSyncCreditPosition = new LingoSyncCreditPosition(
             $creditsAmount,
             null,
-            $purchase
+            $causingPurchase
+        );
+
+        $this->entityManager->persist($lingoSyncCreditPosition);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function topUpCreditsFromUserVerification(
+        User $causingUser
+    ): void
+    {
+        $lingoSyncCreditPosition = new LingoSyncCreditPosition(
+            60 * 5,
+            null,
+            null,
+            null,
+            $causingUser
         );
 
         $this->entityManager->persist($lingoSyncCreditPosition);
@@ -102,108 +121,31 @@ readonly class LingoSyncCreditsDomainService
     /**
      * @throws Exception
      */
-    public function getTotalAmountOfPositiveCreditsForOrganization(
-        Organization $organization
-    ): int
-    {
-        $amount = 0;
-
-        $sql = "
-            SELECT SUM(c.amount) AS amount
-            
-            FROM {$this->entityManager->getClassMetadata(LingoSyncCreditPosition::class)->getTableName()} c
-            
-            INNER JOIN {$this->entityManager->getClassMetadata(Subscription::class)->getTableName()} s
-            ON s.id = c.subscriptions_id
-            
-            INNER JOIN {$this->entityManager->getClassMetadata(User::class)->getTableName()} u
-            ON s.users_id = u.id
-            
-            WHERE u.id = :userId
-            
-            ;
-        ";
-
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue(':userId', $organization->getOwningUser()->getId());
-        $resultSet = $stmt->executeQuery();
-
-        foreach ($resultSet->fetchAllAssociative() as $row) {
-            $amount += (int)$row['amount'];
-        }
-
-
-        $sql = "
-            SELECT SUM(c.amount) AS amount
-            
-            FROM {$this->entityManager->getClassMetadata(LingoSyncCreditPosition::class)->getTableName()} c
-            
-            INNER JOIN {$this->entityManager->getClassMetadata(Purchase::class)->getTableName()} p
-            ON p.id = c.purchases_id
-            
-            INNER JOIN {$this->entityManager->getClassMetadata(User::class)->getTableName()} u
-            ON p.users_id = u.id
-            
-            WHERE u.id = :userId
-            
-            ;
-        ";
-
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue(':userId', $organization->getOwningUser()->getId());
-        $resultSet = $stmt->executeQuery();
-
-        foreach ($resultSet->fetchAllAssociative() as $row) {
-            $amount += (int)$row['amount'];
-        }
-
-        return $amount;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getAmountOfNegativeCreditsForOrganization(
-        Organization $organization
-    ): int
-    {
-        $amount = 0;
-        $sql = "
-            SELECT SUM(c.amount) AS amount
-            
-            FROM {$this->entityManager->getClassMetadata(LingoSyncCreditPosition::class)->getTableName()} c
-            
-            INNER JOIN {$this->entityManager->getClassMetadata(LingoSyncProcess::class)->getTableName()} p
-            ON p.id = c.lingo_sync_processes_id
-            
-            INNER JOIN {$this->entityManager->getClassMetadata(Video::class)->getTableName()} v
-            ON v.id = p.videos_id
-            
-            WHERE o.id = :organizationId
-            
-            ;
-        ";
-
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue(':organizationId', $organization->getId());
-        $resultSet = $stmt->executeQuery();
-
-        foreach ($resultSet->fetchAllAssociative() as $row) {
-            $amount += (int)$row['amount'];
-        }
-
-        return $amount;
-    }
-
-    /**
-     * @throws Exception
-     */
     public function getAmountOfAvailableCreditsForOrganization(
         Organization $organization
     ): int
     {
-        return $this->getTotalAmountOfPositiveCreditsForOrganization($organization)
-            - $this->getAmountOfNegativeCreditsForOrganization($organization);
+        $amount = 0;
+
+        $sql = "
+            SELECT SUM(c.amount) AS amount
+            
+            FROM {$this->entityManager->getClassMetadata(LingoSyncCreditPosition::class)->getTableName()} c
+            
+            WHERE c.owning_users_id = :userId
+            
+            ;
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue(':userId', $organization->getOwningUser()->getId());
+        $resultSet = $stmt->executeQuery();
+
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $amount += (int)$row['amount'];
+        }
+
+        return $amount;
     }
 
     /**

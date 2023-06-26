@@ -29,36 +29,52 @@ class LingoSyncCreditPosition
      */
     public function __construct(
         int               $amount,
-        ?Subscription     $subscription = null,
-        ?Purchase         $purchase = null,
-        ?LingoSyncProcess $lingoSyncProcess = null
+        ?Subscription     $causingSubscription = null,
+        ?Purchase         $causingPurchase = null,
+        ?LingoSyncProcess $causingLingoSyncProcess = null,
+        ?User             $causingUser = null
     )
     {
         $notNullCount = 0;
-        foreach ([$subscription, $purchase, $lingoSyncProcess] as $object) {
+        foreach ([$causingSubscription, $causingPurchase, $causingLingoSyncProcess, $causingUser] as $object) {
             if (!is_null($object)) {
                 $notNullCount++;
             }
         }
 
         if ($notNullCount !== 1) {
-            throw new ValueError('Exactly one of $subscription, $purchase or $lingoSyncProcess must not be null.');
+            throw new ValueError('Exactly one of $causingSubscription, $causingPurchase, $causingLingoSyncProcess or $causingUser must be provided.');
         }
 
-        // if we received a $subscription or a $purchase, then $amount must be positive,
-        // and if we received a $lingoSyncProcess, then $amount must be negative
-        if (   ($amount < 0 && !is_null($subscription))
-            || ($amount < 0 && !is_null($purchase))
-            || ($amount > 0 && !is_null($lingoSyncProcess))
+        if (   ($amount < 0 && !is_null($causingSubscription))
+            || ($amount < 0 && !is_null($causingPurchase))
+            || ($amount < 0 && !is_null($causingUser))
+            || ($amount > 0 && !is_null($causingLingoSyncProcess))
         ) {
-            throw new ValueError('Invalid combination of $amount and $subscription, $purchase or $lingoSyncProcess.');
+            throw new ValueError('The amount must be positive for a LingoSyncProcess and negative for a Subscription, Purchase or User.');
         }
 
-        $this->subscription = $subscription;
-        $this->purchase = $purchase;
-        $this->lingoSyncProcess = $lingoSyncProcess;
+        $this->subscription = $causingSubscription;
+        $this->purchase = $causingPurchase;
+        $this->lingoSyncProcess = $causingLingoSyncProcess;
+        $this->causingUser = $causingUser;
 
+        $this->amount = $amount;
         $this->createdAt = DateAndTimeService::getDateTimeImmutable();
+
+        $owningUser = null;
+
+        if (!is_null($causingUser)) {
+            $owningUser = $causingUser;
+        } elseif (!is_null($causingSubscription)) {
+            $owningUser = $causingSubscription->getUser();
+        } elseif (!is_null($causingPurchase)) {
+            $owningUser = $causingPurchase->getUser();
+        } elseif (!is_null($causingLingoSyncProcess)) {
+            $owningUser = $causingLingoSyncProcess->getVideo()->getOrganization()->getOwningUser();
+        }
+
+        $this->owningUser = $owningUser;
     }
 
 
@@ -91,8 +107,7 @@ class LingoSyncCreditPosition
 
     #[ORM\Column(
         type: Types::INTEGER,
-        nullable: false,
-        options: ['unsigned' => true]
+        nullable: false
     )]
     private readonly int $amount;
 
@@ -107,7 +122,7 @@ class LingoSyncCreditPosition
         cascade: ['persist']
     )]
     #[ORM\JoinColumn(
-        name: 'subscriptions_id',
+        name: 'causing_subscriptions_id',
         referencedColumnName: 'id',
         nullable: true,
         onDelete: 'CASCADE'
@@ -125,14 +140,14 @@ class LingoSyncCreditPosition
         cascade: ['persist']
     )]
     #[ORM\JoinColumn(
-        name: 'purchases_id',
+        name: 'causing_purchases_id',
         referencedColumnName: 'id',
         nullable: true,
         onDelete: 'CASCADE'
     )]
     private readonly ?Purchase $purchase;
 
-    public function getPurchase(): Purchase
+    public function getPurchase(): ?Purchase
     {
         return $this->purchase;
     }
@@ -143,25 +158,57 @@ class LingoSyncCreditPosition
         cascade: ['persist']
     )]
     #[ORM\JoinColumn(
-        name: 'lingosync_processes_id',
+        name: 'causing_lingosync_processes_id',
         referencedColumnName: 'id',
         nullable: true,
         onDelete: 'CASCADE'
     )]
     private readonly ?LingoSyncProcess $lingoSyncProcess;
 
-    public function getLingoSyncProcess(): LingoSyncProcess
+    public function getLingoSyncProcess(): ?LingoSyncProcess
     {
         return $this->lingoSyncProcess;
     }
 
 
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'causing_users_id',
+        referencedColumnName: 'id',
+        nullable: true,
+        onDelete: 'CASCADE'
+    )]
+    private readonly ?User $causingUser;
+
+    public function getCausingUser(): ?User
+    {
+        return $this->causingUser;
+    }
+
+
+    #[ORM\ManyToOne(
+        targetEntity: User::class,
+        cascade: ['persist']
+    )]
+    #[ORM\JoinColumn(
+        name: 'owning_users_id',
+        referencedColumnName: 'id',
+        nullable: false,
+        onDelete: 'CASCADE'
+    )]
+    private readonly User $owningUser;
+
+    public function getOwningUser(): User
+    {
+        return $this->owningUser;
+    }
+
+
     public function getUser(): User
     {
-        if (!is_null($this->subscription)) {
-            return $this->subscription->getUser();
-        }
-
-        return $this->purchase->getUser();
+        return $this->owningUser;
     }
 }

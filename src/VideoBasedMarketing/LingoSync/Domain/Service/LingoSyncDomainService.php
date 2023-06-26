@@ -8,7 +8,6 @@ use App\Shared\Infrastructure\Enum\DateTimeFormat;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\Shared\Utility\ArrayUtility;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
-use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscription;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Entity\AudioTranscriptionWebVtt;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
@@ -43,9 +42,9 @@ readonly class LingoSyncDomainService
         private AudioTranscriptionDomainService $audioTranscriptionDomainService,
         private MessageBusInterface             $messageBus,
         private LingoSyncInfrastructureService  $lingoSyncInfrastructureService,
+        private LingoSyncCreditsDomainService   $lingoSyncCreditsDomainService,
         private RecordingsInfrastructureService $recordingsInfrastructureService,
-        private LoggerInterface                 $logger,
-        private CapabilitiesService             $capabilitiesService
+        private LoggerInterface                 $logger
     )
     {
     }
@@ -222,8 +221,16 @@ readonly class LingoSyncDomainService
         LingoSyncProcess $lingoSyncProcess
     ): LingoSyncProcess
     {
+        if (!$lingoSyncProcess->hasErrored()) {
+            $this
+                ->lingoSyncCreditsDomainService
+                ->depleteCreditsFromLingoSyncProcess($lingoSyncProcess);
+        }
+
         foreach ($lingoSyncProcess->getTasks() as $task) {
-            if ($task->getStatus() !== LingoSyncProcessTaskStatus::Finished) {
+            if (   $task->getStatus() !== LingoSyncProcessTaskStatus::Finished
+                && $task->getStatus() !== LingoSyncProcessTaskStatus::Errored
+            ) {
                 $task->setStatus(LingoSyncProcessTaskStatus::Stopped);
                 $this->entityManager->persist($task);
                 $this->entityManager->flush();
@@ -624,6 +631,10 @@ readonly class LingoSyncDomainService
             $generateTranslatedVideoTask->setStatus(LingoSyncProcessTaskStatus::Finished);
             $this->entityManager->persist($generateTranslatedVideoTask);
             $this->entityManager->flush();
+
+            $this->lingoSyncCreditsDomainService->depleteCreditsFromLingoSyncProcess(
+                $generateTranslatedVideoTask->getLingoSyncProcess()
+            );
         } catch (Throwable $t) {
             $generateTranslatedVideoTask->setStatus(LingoSyncProcessTaskStatus::Errored);
             $generateTranslatedVideoTask->setResult($t->getMessage());
