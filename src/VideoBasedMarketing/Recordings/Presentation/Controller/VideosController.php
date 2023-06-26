@@ -39,8 +39,8 @@ class VideosController
     {
         $videoFolderId = $request->get(VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME);
 
-        if (   trim($videoFolderId) === ''
-            || trim($videoFolderId) === 'null'
+        if (   trim((string)$videoFolderId) === ''
+            || trim((string)$videoFolderId) === 'null'
         ) {
             $videoFolderId = null;
         }
