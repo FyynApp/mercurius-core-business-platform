@@ -152,7 +152,7 @@ readonly class MembershipPlanService
                 false,
                 0.0,
                 0.0,
-                [],
+                [Capability::VideoTranslation],
                 0,
                 60 * 5,
                 100 * 1024 * 1024 // 100 MiB

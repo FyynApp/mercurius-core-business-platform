@@ -28,7 +28,7 @@ status_page:
   cta_restart: 'Restart process'
 process_started: 'LingoSync process has been started.'
 process_restarted: 'LingoSync process has been restarted.'
-no_remaining_translation_seconds: "This video's duration is longer than the remaining amount of translation time for the current month."
+no_remaining_translation_seconds: "This video's duration is longer than the available amount of translation time."
 status_widget:
   title: 'LingoSync Status'
   remaining_minutes: 'Remaining minutes:'
