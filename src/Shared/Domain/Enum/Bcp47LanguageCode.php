@@ -13,6 +13,7 @@ enum Bcp47LanguageCode: string
     case TrTr = 'tr-TR';
     case PtPt = 'pt-PT';
     case PtBr = 'pt-BR';
+    case PlPl = 'pl-PL';
 
     case HiIn = 'hi-IN';
     case BnBd = 'bn-BD';

@@ -282,6 +282,7 @@ readonly class HappyScribeApiService
             Bcp47LanguageCode::ItIt => 'it',
             Bcp47LanguageCode::TrTr => 'tr',
             Bcp47LanguageCode::PtPt, Bcp47LanguageCode::PtBr => 'pt',
+            Bcp47LanguageCode::PlPl => 'pl',
 
             Bcp47LanguageCode::BnBd, Bcp47LanguageCode::BnIn => 'bn',
             Bcp47LanguageCode::HiIn => 'hi',
