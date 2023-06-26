@@ -195,7 +195,7 @@ readonly class PaymentProcessorStripeService
                     'quantity' => 1,
                 ]],
 
-                'mode' => 'purchase',
+                'mode' => 'payment',
 
                 'success_url' => $this->router->generate(
                     'videobasedmarketing.membership.infrastructure.purchase.checkout_with_payment_processor_stripe.success',
