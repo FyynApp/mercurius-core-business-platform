@@ -153,7 +153,7 @@ readonly class MembershipPlanService
                 0.0,
                 0.0,
                 [],
-                0.0,
+                0,
                 60 * 5,
                 100 * 1024 * 1024 // 100 MiB
             ),
@@ -171,7 +171,7 @@ readonly class MembershipPlanService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                (float)(60 * 5),
+                60 * 5,
                 60 * 10,
                 256 * 1024 * 1024 // 0.25 GiB
             ),
@@ -189,7 +189,7 @@ readonly class MembershipPlanService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                (float)(60 * 60 * 0.5),
+                (int)(60 * 60 * 0.5),
                 60 * 20,
                 512 * 1024 * 1024 // 0.5 GiB
             ),
@@ -207,7 +207,7 @@ readonly class MembershipPlanService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                (float)(60 * 60),
+                60 * 60,
                 60 * 60,
                 1024 * 1024 * 1024 // 1 GiB
             ),
@@ -225,7 +225,7 @@ readonly class MembershipPlanService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                (float)(60 * 60 * 3),
+                (60 * 60 * 3),
                 60 * 60 * 2,
                 2 * 1024 * 1024 * 1024 // 2 GiB
             ),
