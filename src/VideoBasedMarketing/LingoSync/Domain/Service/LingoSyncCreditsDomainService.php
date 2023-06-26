@@ -5,6 +5,8 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Service;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncCreditPosition;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
+use App\VideoBasedMarketing\Membership\Domain\Entity\Purchase;
+use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\DBAL\Exception;
@@ -38,14 +40,19 @@ readonly class LingoSyncCreditsDomainService
         Organization $organization
     ): int
     {
+        $amount = 0;
+
         $sql = "
             SELECT SUM(c.amount) AS amount
             
             FROM {$this->entityManager->getClassMetadata(LingoSyncCreditPosition::class)->getTableName()} c
             
+            INNER JOIN {$this->entityManager->getClassMetadata(Subscription::class)->getTableName()} s
+            ON s.id = c.subscriptions_id
+            
             INNER JOIN {$this->entityManager->getClassMetadata(User::class)->getTableName()} u
             
-            ON c.users_id = u.id
+            ON s.users_id = u.id
             
             WHERE u.id = :userId
             
@@ -57,10 +64,36 @@ readonly class LingoSyncCreditsDomainService
         $resultSet = $stmt->executeQuery();
 
         foreach ($resultSet->fetchAllAssociative() as $row) {
-            return (int)$row['amount'];
+            $amount += (int)$row['amount'];
         }
 
-        return 0;
+
+        $sql = "
+            SELECT SUM(c.amount) AS amount
+            
+            FROM {$this->entityManager->getClassMetadata(LingoSyncCreditPosition::class)->getTableName()} c
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(Purchase::class)->getTableName()} p
+            ON p.id = c.purchases_id
+            
+            INNER JOIN {$this->entityManager->getClassMetadata(User::class)->getTableName()} u
+            
+            ON s.users_id = u.id
+            
+            WHERE u.id = :userId
+            
+            ;
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue(':userId', $organization->getOwningUser()->getId());
+        $resultSet = $stmt->executeQuery();
+
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $amount += (int)$row['amount'];
+        }
+
+        return $amount;
     }
 
     /**
