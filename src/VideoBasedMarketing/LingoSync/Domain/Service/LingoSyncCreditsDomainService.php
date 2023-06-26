@@ -7,6 +7,8 @@ use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncCreditPosition;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Purchase;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
+use App\VideoBasedMarketing\Membership\Domain\Enum\PackageName;
+use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use Doctrine\DBAL\Exception;
@@ -16,9 +18,62 @@ use Doctrine\ORM\EntityManagerInterface;
 readonly class LingoSyncCreditsDomainService
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private MembershipPlanService $membershipPlanService
     )
     {
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function topUpCreditsFromMembershipPlanSubscription(
+        Subscription $subscription
+    ): void
+    {
+        $membershipPlan = $this
+            ->membershipPlanService
+            ->getMembershipPlanByName(
+                $subscription->getMembershipPlanName()
+            );
+
+        $creditsAmount = $membershipPlan->getAmountOfLingoSyncCreditsPerMonth();
+
+        $lingoSyncCreditPosition = new LingoSyncCreditPosition(
+            $creditsAmount,
+            $subscription
+        );
+
+        $this->entityManager->persist($lingoSyncCreditPosition);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function topUpCreditsFromPackagePurchase(
+        Purchase $purchase
+    ): void
+    {
+        $creditsAmount = match ($purchase->getPackageName()) {
+            PackageName::FreeLingoSyncCreditsFor10Minutes, PackageName::LingoSyncCreditsFor10Minutes => 10,
+            PackageName::LingoSyncCreditsFor5Minutes => 5,
+
+            default => null,
+        };
+
+        if (is_null($creditsAmount)) {
+            return;
+        }
+
+        $lingoSyncCreditPosition = new LingoSyncCreditPosition(
+            $creditsAmount,
+            null,
+            $purchase
+        );
+
+        $this->entityManager->persist($lingoSyncCreditPosition);
+        $this->entityManager->flush();
     }
 
     /**
