@@ -94,7 +94,7 @@ start_process_modal:
   cta_submit: 'Start LingoSync process'
   cta_show_status: 'Show process status'
 
-buy_credits:
+purchase_credits:
   title: 'Buy LingoSync minutes'
   introduction: 'Buying additional minutes will allow you to translate more videos with LingoSync.'
   choose_package: 'Please choose the package that fits your needs:'
@@ -106,3 +106,14 @@ buy_credits:
     lingoSyncCreditsFor10Minutes:
         name: 'Buy 10 additional LingoSync minutes'
         price_info: 'Price: $7 — only $0.70 per minute'
+
+credit_positions:
+  title: 'LingoSync minutes usage history'
+  datetime: 'Date and time'
+  amount: 'Minutes added or used'
+  cause_title: 'Reason'
+  cause:
+    userVerification: 'The user account has been verified.'
+    purchase: 'Additional minutes have been purchased.'
+    subscription: 'Subscribed to membership plan or subscription prolonged.'
+    lingoSyncProcess: 'Video translation:'

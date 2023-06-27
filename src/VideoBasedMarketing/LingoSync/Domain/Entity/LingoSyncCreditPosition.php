@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\LingoSync\Domain\Entity;
 use App\Shared\Infrastructure\Service\DateAndTimeService;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
+use App\VideoBasedMarketing\LingoSync\Domain\Enum\LingoSyncCreditPositionCause;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Purchase;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use DateTimeImmutable;
@@ -210,5 +211,21 @@ class LingoSyncCreditPosition
     public function getUser(): User
     {
         return $this->owningUser;
+    }
+
+
+    public function getCause(): LingoSyncCreditPositionCause
+    {
+        if (!is_null($this->subscription)) {
+            return LingoSyncCreditPositionCause::Subscription;
+        } elseif (!is_null($this->purchase)) {
+            return LingoSyncCreditPositionCause::Purchase;
+        } elseif (!is_null($this->lingoSyncProcess)) {
+            return LingoSyncCreditPositionCause::LingoSyncProcess;
+        } elseif (!is_null($this->causingUser)) {
+            return LingoSyncCreditPositionCause::UserVerification;
+        } else {
+            throw new ValueError('The cause of this LingoSyncCreditPosition could not be determined.');
+        }
     }
 }

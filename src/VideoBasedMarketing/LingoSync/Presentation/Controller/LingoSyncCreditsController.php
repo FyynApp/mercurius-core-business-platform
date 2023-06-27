@@ -30,14 +30,14 @@ class LingoSyncCreditsController
      */
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/buy-lingo-sync-minutes',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync-minuten-kaufen',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/lingo-sync/purchase-minutes',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync/minuten-kaufen',
         ],
-        name        : 'videobasedmarketing.lingo_sync.presentation.buy_credits',
+        name        : 'videobasedmarketing.lingo_sync.presentation.purchase_credits',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
         methods     : [Request::METHOD_GET]
     )]
-    public function buyCreditsAction(
+    public function purchaseCreditsAction(
         CapabilitiesService $capabilitiesService
     ): Response
     {
@@ -47,6 +47,31 @@ class LingoSyncCreditsController
             throw new AccessDeniedHttpException('The user is not allowed to purchase packages.');
         }
 
-        return $this->render('@videobasedmarketing.lingo_sync/buy_credits.html.twig');
+        return $this->render('@videobasedmarketing.lingo_sync/purchase_credits.html.twig');
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route(
+        path        : [
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/lingo-sync/minutes-history',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync/minuten-übersicht',
+        ],
+        name        : 'videobasedmarketing.lingo_sync.presentation.credit_positions',
+        requirements: ['_locale' => '%app.routing.locale_requirement%'],
+        methods     : [Request::METHOD_GET]
+    )]
+    public function creditPositionsAction(
+        LingoSyncCreditsDomainService $lingoSyncCreditsDomainService
+    ): Response
+    {
+        return $this->render(
+            '@videobasedmarketing.lingo_sync/credit_positions.html.twig',
+            ['positions' =>
+                $lingoSyncCreditsDomainService
+                    ->getPositionsForOrganization($this->getUser()->getCurrentlyActiveOrganization())
+            ]
+        );
     }
 }

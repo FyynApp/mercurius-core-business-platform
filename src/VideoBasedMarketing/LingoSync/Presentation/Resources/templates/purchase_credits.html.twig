@@ -5,7 +5,7 @@
 {% trans_default_domain 'videobasedmarketing.lingo_sync' %}
 
 {% block title %}{{ 'title'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'buy_credits.title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'purchase_credits.title'|trans }}{% endblock %}
 
 {% block body %}
 
@@ -20,15 +20,15 @@
         {% block contentBoxContent %}
 
             <div class="text-2xl font-semibold mb-4">
-                {{ 'buy_credits.title'|trans }}
+                {{ 'purchase_credits.title'|trans }}
             </div>
 
             <div>
-                {{ 'buy_credits.introduction'|trans }}
+                {{ 'purchase_credits.introduction'|trans }}
             </div>
 
             <div class="mt-16 font-semibold text-lg">
-                {{ 'buy_credits.choose_package'|trans }}
+                {{ 'purchase_credits.choose_package'|trans }}
             </div>
 
             <div class="flex flex-col gap-4 mt-4 w-fit">
@@ -52,15 +52,15 @@
                                 "
                         >
                             <div class="text-lg font-semibold mb-2">
-                                {{ ('buy_credits.package.' ~ packageName.value ~ '.name')|trans }}
+                                {{ ('purchase_credits.package.' ~ packageName.value ~ '.name')|trans }}
                             </div>
 
                             <div class="text-mercurius-green-700">
-                                {{ ('buy_credits.package.' ~ packageName.value ~ '.price_info')|trans }}
+                                {{ ('purchase_credits.package.' ~ packageName.value ~ '.price_info')|trans }}
                             </div>
 
                             <div class="text-mercurius-green-600 text-xs">
-                                {{ 'buy_credits.unused_minutes_info'|trans }}
+                                {{ 'purchase_credits.unused_minutes_info'|trans }}
                             </div>
                         </a>
                     </div>

@@ -168,4 +168,36 @@ readonly class LingoSyncCreditsDomainService
                 $video->getOrganization()
             ) >= (int)floor($video->getSeconds());
     }
+
+    /**
+     * @throws Exception
+     * @return LingoSyncCreditPosition[]
+     */
+    public function getPositionsForOrganization(
+        Organization $organization
+    ): array
+    {
+        $sql = "
+            SELECT p.id
+            
+            FROM {$this->entityManager->getClassMetadata(LingoSyncCreditPosition::class)->getTableName()} p
+            
+            WHERE p.owning_users_id = :userId
+            
+            ORDER BY p.created_at DESC
+            
+            ;
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue(':userId', $organization->getOwningUser()->getId());
+        $resultSet = $stmt->executeQuery();
+
+        $positions = [];
+        foreach ($resultSet->fetchAllAssociative() as $row) {
+            $positions[] = $this->entityManager->find(LingoSyncCreditPosition::class, $row['id']);
+        }
+
+        return $positions;
+    }
 }

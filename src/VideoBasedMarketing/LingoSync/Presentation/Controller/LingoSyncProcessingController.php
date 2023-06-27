@@ -29,8 +29,8 @@ class LingoSyncProcessingController
      */
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/lingo-sync-processes/',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync-prozesse/',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/lingo-sync/processes/',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync/prozesse/',
         ],
         name        : 'videobasedmarketing.lingo_sync.presentation.process.start',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -83,7 +83,7 @@ class LingoSyncProcessingController
             if ($capabilitiesService->canPurchasePackages($r->getUser())) {
                 return $this
                     ->redirectToRoute(
-                        'videobasedmarketing.lingo_sync.presentation.buy_credits'
+                        'videobasedmarketing.lingo_sync.presentation.purchase_credits'
                     );
             } else {
                 return $this
@@ -136,8 +136,8 @@ class LingoSyncProcessingController
      */
     #[Route(
         path        : [
-            'en' => '%app.routing.route_prefix.with_locale.protected.en%/lingo-sync-processes/{lingoSyncProcessId}/restart',
-            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync-prozesse/{lingoSyncProcessId}/neu-starten',
+            'en' => '%app.routing.route_prefix.with_locale.protected.en%/lingo-sync/processes/{lingoSyncProcessId}/restart',
+            'de' => '%app.routing.route_prefix.with_locale.protected.de%/lingo-sync/prozesse/{lingoSyncProcessId}/neu-starten',
         ],
         name        : 'videobasedmarketing.lingo_sync.presentation.process.restart',
         requirements: ['_locale' => '%app.routing.locale_requirement%'],
@@ -181,7 +181,7 @@ class LingoSyncProcessingController
             if ($capabilitiesService->canPurchasePackages($r->getUser())) {
                 return $this
                     ->redirectToRoute(
-                        'videobasedmarketing.lingo_sync.presentation.buy_credits'
+                        'videobasedmarketing.lingo_sync.presentation.purchase_credits'
                     );
             } else {
                 return $this

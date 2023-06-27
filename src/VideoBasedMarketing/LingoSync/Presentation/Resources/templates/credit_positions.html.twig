@@ -1,0 +1,61 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var positions \App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncCreditPosition[] #}
+
+{% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+{% block title %}{{ 'title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'credit_positions.title'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+        {% block contentBoxTitle %}
+            {{ 'title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxSubtitle %}
+            {{ 'credit_positions.title'|trans }}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            {% import '@shared/macros/date_and_time.html.twig' as dateAndTimeMacros %}
+
+            <div class="grid grid-cols-3 w-full gap-4">
+
+                <div class="font-semibold">{{ 'credit_positions.datetime'|trans }}</div>
+                <div class="font-semibold">{{ 'credit_positions.amount'|trans }}</div>
+                <div class="font-semibold">{{ 'credit_positions.cause_title'|trans }}</div>
+
+                {% for position in positions %}
+                    <div>
+                        {{ dateAndTimeMacros.full(position.createdAt) }}
+                    </div>
+
+                    <div>
+                        {{ ((position.amount)/60)|number_format(0) }}
+                    </div>
+
+                    <div>
+                        {{ ('credit_positions.cause.' ~ position.cause.value)|trans }}
+
+                        {% if position.lingoSyncProcess is not null %}
+                            <span class="text-neutral-500">
+                                {{ position.lingoSyncProcess.video.title }}
+                            </span>
+                        {% endif %}
+                    </div>
+
+                {% endfor %}
+            </div>
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}
