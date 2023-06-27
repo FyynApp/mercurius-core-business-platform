@@ -33,12 +33,20 @@
                 <div class="font-semibold">{{ 'credit_positions.cause_title'|trans }}</div>
 
                 {% for position in positions %}
-                    <div>
+                    <div class="text-neutral-500 font-light">
                         {{ dateAndTimeMacros.full(position.createdAt) }}
                     </div>
 
                     <div>
-                        {{ ((position.amount)/60)|number_format(0) }}
+                        {% if position.amount <= 0 %}
+                            <div class="font-mono bg-red-200 text-red-800 rounded-md p-1 px-2 w-fit">
+                                - {{ ((position.amount) / 60 * -1)|number_format(2) }}
+                            </div>
+                        {% else %}
+                            <div class="font-mono bg-mercurius-green-200 text-mercurius-green-800 rounded-md p-1 px-2 w-fit">
+                                + {{ ((position.amount)/60)|number_format(0) }}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <div>
