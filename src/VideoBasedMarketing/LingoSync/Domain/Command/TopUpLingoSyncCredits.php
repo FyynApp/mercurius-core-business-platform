@@ -2,11 +2,13 @@
 
 namespace App\VideoBasedMarketing\LingoSync\Domain\Command;
 
+use App\Shared\Infrastructure\Enum\DateTimeFormat;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\LingoSync\Domain\Entity\LingoSyncProcess;
 use App\VideoBasedMarketing\LingoSync\Domain\Service\LingoSyncCreditsDomainService;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Membership\Domain\Enum\SubscriptionStatus;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -68,10 +70,17 @@ class TopUpLingoSyncCredits
                 $row['id']
             );
 
+            if (is_null($user->getCreatedAt())) {
+                $dateTime = null;
+            } else {
+                $dateTime = new DateTimeImmutable($user->getCreatedAt()->format(DateTimeFormat::Iso8601->value));
+            }
+
             $this
                 ->lingoSyncCreditsDomainService
                 ->topUpCreditsFromUserVerification(
-                    $user
+                    $user,
+                    $dateTime
                 );
         }
 
@@ -98,7 +107,8 @@ class TopUpLingoSyncCredits
             $this
                 ->lingoSyncCreditsDomainService
                 ->topUpCreditsFromMembershipPlanSubscription(
-                    $subscription
+                    $subscription,
+                    new DateTimeImmutable($subscription->getCreatedAt()->format(DateTimeFormat::Iso8601->value))
                 );
         }
 
@@ -127,7 +137,8 @@ class TopUpLingoSyncCredits
                 $this
                     ->lingoSyncCreditsDomainService
                     ->depleteCreditsFromLingoSyncProcess(
-                        $lingoSyncProcess
+                        $lingoSyncProcess,
+                        new DateTimeImmutable($lingoSyncProcess->getCreatedAt()->format(DateTimeFormat::Iso8601->value))
                     );
             }
         }

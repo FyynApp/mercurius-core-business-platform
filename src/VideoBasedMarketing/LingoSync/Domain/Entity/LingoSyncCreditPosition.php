@@ -29,11 +29,12 @@ class LingoSyncCreditPosition
      * @throws Exception
      */
     public function __construct(
-        int               $amount,
-        ?Subscription     $causingSubscription = null,
-        ?Purchase         $causingPurchase = null,
-        ?LingoSyncProcess $causingLingoSyncProcess = null,
-        ?User             $causingUser = null
+        int                $amount,
+        ?Subscription      $causingSubscription = null,
+        ?Purchase          $causingPurchase = null,
+        ?LingoSyncProcess  $causingLingoSyncProcess = null,
+        ?User              $causingUser = null,
+        ?DateTimeImmutable $createdAt = null
     )
     {
         $notNullCount = 0;
@@ -61,7 +62,8 @@ class LingoSyncCreditPosition
         $this->causingUser = $causingUser;
 
         $this->amount = $amount;
-        $this->createdAt = DateAndTimeService::getDateTimeImmutable();
+
+        $this->createdAt = is_null($createdAt) ? DateAndTimeService::getDateTimeImmutable() : $createdAt;
 
         $owningUser = null;
 

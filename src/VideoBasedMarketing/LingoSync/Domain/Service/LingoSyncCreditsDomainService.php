@@ -11,6 +11,7 @@ use App\VideoBasedMarketing\Membership\Domain\Enum\PackageName;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Organization\Domain\Entity\Organization;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
+use DateTimeImmutable;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -37,7 +38,8 @@ readonly class LingoSyncCreditsDomainService
      * @throws \Exception
      */
     public function depleteCreditsFromLingoSyncProcess(
-        LingoSyncProcess $causingLingoSyncProcess
+        LingoSyncProcess   $causingLingoSyncProcess,
+        ?DateTimeImmutable $createdAt = null
     ): void
     {
         $amount = (int)floor($causingLingoSyncProcess->getVideo()->getSeconds());
@@ -49,7 +51,9 @@ readonly class LingoSyncCreditsDomainService
             $amount * -1,
             null,
             null,
-            $causingLingoSyncProcess
+            $causingLingoSyncProcess,
+            null,
+            $createdAt
         );
 
         $this->entityManager->persist($lingoSyncCreditPosition);
@@ -60,7 +64,8 @@ readonly class LingoSyncCreditsDomainService
      * @throws \Exception
      */
     public function topUpCreditsFromMembershipPlanSubscription(
-        Subscription $causingSubscription
+        Subscription       $causingSubscription,
+        ?DateTimeImmutable $createdAt = null
     ): void
     {
         $membershipPlan = $this
@@ -73,7 +78,11 @@ readonly class LingoSyncCreditsDomainService
 
         $lingoSyncCreditPosition = new LingoSyncCreditPosition(
             $creditsAmount,
-            $causingSubscription
+            $causingSubscription,
+            null,
+            null,
+            null,
+            $createdAt
         );
 
         $this->entityManager->persist($lingoSyncCreditPosition);
@@ -84,7 +93,8 @@ readonly class LingoSyncCreditsDomainService
      * @throws \Exception
      */
     public function topUpCreditsFromPackagePurchase(
-        Purchase $causingPurchase
+        Purchase           $causingPurchase,
+        ?DateTimeImmutable $createdAt = null
     ): void
     {
         $creditsAmount = match ($causingPurchase->getPackageName()) {
@@ -101,7 +111,10 @@ readonly class LingoSyncCreditsDomainService
         $lingoSyncCreditPosition = new LingoSyncCreditPosition(
             $creditsAmount,
             null,
-            $causingPurchase
+            $causingPurchase,
+            null,
+            null,
+            $createdAt
         );
 
         $this->entityManager->persist($lingoSyncCreditPosition);
@@ -112,7 +125,8 @@ readonly class LingoSyncCreditsDomainService
      * @throws \Exception
      */
     public function topUpCreditsFromUserVerification(
-        User $causingUser
+        User               $causingUser,
+        ?DateTimeImmutable $createdAt = null
     ): void
     {
         $lingoSyncCreditPosition = new LingoSyncCreditPosition(
@@ -120,7 +134,8 @@ readonly class LingoSyncCreditsDomainService
             null,
             null,
             null,
-            $causingUser
+            $causingUser,
+            $createdAt
         );
 
         $this->entityManager->persist($lingoSyncCreditPosition);
