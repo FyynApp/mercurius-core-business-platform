@@ -10,14 +10,21 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <div class="flex flex-col gap-2 mx-auto w-56 mt-16">
+    <div class="flex flex-col gap-2 mx-auto w-96 max-w-full mt-16">
         <div class="font-light text-neutral-500">
-            <span class="font-semibold">NEW:</span> Fyyn.io now features LingoSync — Translate your videos into multiple languages with a simple click!
+            <span class="font-semibold">NEW:</span> Fyyn.io now features <span class="font-semibold">LingoSync</span>.
+            <br>
+            Translate your videos into multiple languages with a simple click!
         </div>
         <img
                 class="w-56"
                 src="{{ asset('assets/images/videobasedmarketing/lingosync/lingosync-logo.svg') }}"
         >
+        <div class="font-light text-neutral-500">
+            Once you've signed up, you can try it out for free.
+            <br>
+            <span class="font-semibold">No credit card required!</span>
+        </div>
     </div>
 
     <div class="mt-4">

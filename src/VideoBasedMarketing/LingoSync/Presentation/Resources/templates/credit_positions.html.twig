@@ -50,12 +50,19 @@
                     </div>
 
                     <div>
-                        {{ ('credit_positions.cause.' ~ position.cause.value)|trans }}
+                        <span class="font-semibold">{{ ('credit_positions.cause.' ~ position.cause.value)|trans }}</span>
 
                         {% if position.lingoSyncProcess is not null %}
-                            <span class="text-neutral-500">
-                                {{ position.lingoSyncProcess.video.title }}
-                            </span>
+                            <div class="text-sm">
+                                <div class="text-black">
+                                    {{ 'credit_positions.lingosync_process.title'|trans }}
+                                    <span class="text-neutral-500">{{ position.lingoSyncProcess.video.title }}</span>
+                                </div>
+                                <div class="text-black">
+                                    {{ 'credit_positions.lingosync_process.started_by'|trans }}
+                                    <span class="text-neutral-500">{{ position.lingoSyncProcess.user.userIdentifier }}</span>
+                                </div>
+                            </div>
                         {% endif %}
                     </div>
 
