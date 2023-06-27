@@ -28,32 +28,6 @@
         {% block contentBoxContent %}
 
             <div
-                    class="
-                        w-full flex justify-end items-center
-                        mb-8 -mt-8
-                    "
-            >
-                <div
-                        class="
-                            bg-mercurius-green-50 rounded-md p-2
-                            text-xs border-1 border-mercurius-green-300
-                            text-mercurius-green-600
-                            flex flex-row gap-1
-                        "
-                >
-                    <div>
-                        {{ 'status_page.available_minutes'|trans }}
-                    </div>
-
-                    <div class="font-semibold">
-                        {{ (TwigHelperService.lingoSyncCreditsDomainService.amountOfAvailableCreditsForOrganization(
-                            app.user.currentlyActiveOrganization
-                        )/60)|number_format(0) }}
-                    </div>
-                </div>
-            </div>
-
-            <div
                     class="flex flex-col gap-8"
             >
                 {% if lingoSyncProcesses|length is same as 0 %}

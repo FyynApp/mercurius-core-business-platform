@@ -24,6 +24,15 @@ readonly class LingoSyncCreditsDomainService
     {
     }
 
+    /** @return PackageName[] */
+    public function getBuyableCreditPackageNames(): array
+    {
+        return [
+            PackageName::LingoSyncCreditsFor5Minutes,
+            PackageName::LingoSyncCreditsFor10Minutes,
+        ];
+    }
+
     /**
      * @throws \Exception
      */

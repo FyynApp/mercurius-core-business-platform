@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Membership\Infrastructure\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Purchase;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PackageName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
@@ -15,6 +16,7 @@ use Exception;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -40,13 +42,14 @@ extends AbstractController
     public function purchaseCheckoutStartAction(
         string                        $packageName,
         PackageService                $packageService,
-        PaymentProcessorStripeService $stripeService
+        PaymentProcessorStripeService $stripeService,
+        CapabilitiesService           $capabilitiesService
     ): Response
     {
         $user = $this->getUser();
 
-        if ($user->ownsCurrentlyActiveOrganization()) {
-            throw new BadRequestHttpException("Unexpectedly, the user is not the owning user of the currently active organization.");
+        if (!$capabilitiesService->canPurchasePackages($user)) {
+            throw new AccessDeniedHttpException('The user is not allowed to purchase packages.');
         }
 
         $plan = $packageService->getPackageByName(PackageName::from($packageName));

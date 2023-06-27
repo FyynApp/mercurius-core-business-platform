@@ -1,0 +1,74 @@
+{% extends '@shared/base_default.html.twig' %}
+
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+{% block title %}{{ 'title'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'buy_credits.title'|trans }}{% endblock %}
+
+{% block body %}
+
+    {% embed '@shared/embeds/default_content_box.html.twig' %}
+
+        {% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+        {% block contentBoxTitle %}
+            {% block title %}{{ 'title'|trans }}{% endblock %}
+        {% endblock %}
+
+        {% block contentBoxContent %}
+
+            <div class="text-2xl font-semibold mb-4">
+                {{ 'buy_credits.title'|trans }}
+            </div>
+
+            <div>
+                {{ 'buy_credits.introduction'|trans }}
+            </div>
+
+            <div class="mt-16 font-semibold text-lg">
+                {{ 'buy_credits.choose_package'|trans }}
+            </div>
+
+            <div class="flex flex-col gap-4 mt-4 w-fit">
+
+                {% for packageName in TwigHelperService.lingoSyncCreditsDomainService.buyableCreditPackageNames %}
+                    <div>
+                        <a
+                                href="{{ path(
+                                    'videobasedmarketing.membership.infrastructure.purchase.checkout_with_payment_processor_stripe.start',
+                                    { 'packageName': packageName.value }
+                                ) }}"
+
+                                class="
+                                       inline-block w-full
+                                       bg-mercurius-green-300 rounded-md p-4
+                                       border-1 border-mercurius-green-50
+                                       text-mercurius-green-900
+                                       hover:bg-mercurius-green-400
+                                       hover:text-black
+                                       hover:border-mercurius-green-100
+                                "
+                        >
+                            <div class="text-lg font-semibold mb-2">
+                                {{ ('buy_credits.package.' ~ packageName.value ~ '.name')|trans }}
+                            </div>
+
+                            <div class="text-mercurius-green-700">
+                                {{ ('buy_credits.package.' ~ packageName.value ~ '.price_info')|trans }}
+                            </div>
+
+                            <div class="text-mercurius-green-600 text-xs">
+                                {{ 'buy_credits.unused_minutes_info'|trans }}
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% endblock %}
+
+    {% endembed %}
+
+{% endblock %}

@@ -5,6 +5,7 @@ namespace App\VideoBasedMarketing\Membership\Infrastructure\Controller;
 use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\Membership\Domain\Entity\Subscription;
 use App\VideoBasedMarketing\Membership\Domain\Enum\MembershipPlanName;
 use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentCycle;
@@ -16,6 +17,7 @@ use Exception;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -40,13 +42,14 @@ extends AbstractController
         string                        $planName,
         PaymentCycle                  $paymentCycle,
         MembershipPlanService         $membershipPlanService,
-        PaymentProcessorStripeService $stripeService
+        PaymentProcessorStripeService $stripeService,
+        CapabilitiesService           $capabilitiesService
     ): Response
     {
         $user = $this->getUser();
 
-        if ($user->ownsCurrentlyActiveOrganization()) {
-            throw new BadRequestHttpException("Unexpectedly, the user is not the owning user of the currently active organization.");
+        if (!$capabilitiesService->canSubscribeToMembershipPlans($user)) {
+            throw new AccessDeniedHttpException('The user is not allowed to subscribe to membership plans.');
         }
 
         $plan = $membershipPlanService->getMembershipPlanByName(MembershipPlanName::from($planName));

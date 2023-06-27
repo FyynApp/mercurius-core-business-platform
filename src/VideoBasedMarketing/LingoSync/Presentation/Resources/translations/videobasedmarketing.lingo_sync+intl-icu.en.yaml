@@ -1,8 +1,10 @@
 title: 'LingoSync'
+credits_widget:
+  available_minutes: 'Available LingoSync minutes:'
+  buy_more: 'Buy minutes'
 status_page:
   title: 'Process status overview'
   no_processes: 'There are no LingoSync processes for this video.'
-  available_minutes: 'Available translation minutes:'
   from_language: 'From '
   with_gender: ' with gender '
   stopped_yes: 'Process was stopped.'
@@ -91,3 +93,16 @@ start_process_modal:
     female: '👩🏽 female'
   cta_submit: 'Start LingoSync process'
   cta_show_status: 'Show process status'
+
+buy_credits:
+  title: 'Buy LingoSync minutes'
+  introduction: 'Buying additional minutes will allow you to translate more videos with LingoSync.'
+  choose_package: 'Please choose the package that fits your needs:'
+  unused_minutes_info: 'Unused minutes never expire.'
+  package:
+    lingoSyncCreditsFor5Minutes:
+      name: 'Buy 5 additional LingoSync minutes'
+      price_info: 'Price: $4 — only $0.80 per minute'
+    lingoSyncCreditsFor10Minutes:
+        name: 'Buy 10 additional LingoSync minutes'
+        price_info: 'Price: $7 — only $0.70 per minute'

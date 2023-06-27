@@ -1,0 +1,51 @@
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+
+{% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+<div
+        class="w-full flex flex-row justify-end items-center mt-2 gap-1"
+>
+    <div
+            class="
+                {% if TwigHelperService.lingoSyncCreditsDomainService.amountOfAvailableCreditsForOrganization(app.user.currentlyActiveOrganization) <= 0 %}
+                    bg-orange-50
+                    border-orange-300
+                    text-orange-600
+                {% else %}
+                    bg-mercurius-green-50
+                    border-mercurius-green-300
+                    text-mercurius-green-600
+                {% endif %}
+
+                rounded-md p-1.5
+                text-xs border-1
+                flex flex-row gap-1
+            "
+    >
+        <div>
+            {{ 'credits_widget.available_minutes'|trans }}
+        </div>
+
+        <div class="font-semibold">
+            {{ (TwigHelperService.lingoSyncCreditsDomainService.amountOfAvailableCreditsForOrganization(
+                app.user.currentlyActiveOrganization
+            )/60)|number_format(0) }}
+        </div>
+    </div>
+
+    {% if TwigHelperService.capabilitiesService.canPurchasePackages(app.user) %}
+        <a
+                href="{{ path('videobasedmarketing.lingo_sync.presentation.buy_credits') }}"
+                class="
+                       bg-mercurius-green-300 rounded-md p-1.5
+                       text-xs border-1 border-mercurius-green-50
+                       text-mercurius-green-700
+                       hover:bg-mercurius-green-400
+                       hover:text-mercurius-green-900
+                       hover:border-mercurius-green-100
+                "
+        >
+            {{ 'credits_widget.buy_more'|trans }}
+        </a>
+    {% endif %}
+</div>

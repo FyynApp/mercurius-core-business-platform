@@ -18,6 +18,16 @@ readonly class CapabilitiesService
     {
     }
 
+    public function canSubscribeToMembershipPlans(User $user): bool
+    {
+        return $user->ownsCurrentlyActiveOrganization();
+    }
+
+    public function canPurchasePackages(User $user): bool
+    {
+        return $user->ownsCurrentlyActiveOrganization();
+    }
+
     public function canOpenRecordingStudio(User $user): bool
     {
         return false;
