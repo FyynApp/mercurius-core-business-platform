@@ -189,7 +189,7 @@ readonly class MembershipPlanService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                (int)(60 * 60 * 0.5),
+                60 * 45,
                 60 * 20,
                 512 * 1024 * 1024 // 0.5 GiB
             ),
@@ -207,7 +207,7 @@ readonly class MembershipPlanService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                60 * 60,
+                60 * 90,
                 60 * 60,
                 1024 * 1024 * 1024 // 1 GiB
             ),
@@ -225,7 +225,7 @@ readonly class MembershipPlanService
                     Capability::BrandingFreeEmbeddableVideoPlayer,
                     Capability::VideoTranslation,
                 ],
-                (60 * 60 * 3),
+                60 * 60 * 5,
                 60 * 60 * 2,
                 2 * 1024 * 1024 * 1024 // 2 GiB
             ),
