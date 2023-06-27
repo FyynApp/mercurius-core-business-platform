@@ -6,5 +6,6 @@ enum PackageName: string
 {
     case LingoSyncCreditsFor5Minutes = 'lingoSyncCreditsFor5Minutes';
     case LingoSyncCreditsFor10Minutes = 'lingoSyncCreditsFor10Minutes';
-    case FreeLingoSyncCreditsFor10Minutes = 'freeLingoSyncCreditsFor10Minutes';
+    case LingoSyncCreditsFor30Minutes = 'lingoSyncCreditsFor30Minutes';
+    case LingoSyncCreditsFor60Minutes = 'lingoSyncCreditsFor60Minutes';
 }

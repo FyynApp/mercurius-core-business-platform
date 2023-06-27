@@ -30,17 +30,14 @@ readonly class PackageService
         return PaymentProcessor::Stripe;
     }
 
+    /**
+     * @throws Exception
+     */
     public function getPackageByName(
         PackageName $name
     ): Package
     {
         return match ($name) {
-            PackageName::FreeLingoSyncCreditsFor10Minutes =>
-            new Package(
-                $name,
-                0.0
-            ),
-
             PackageName::LingoSyncCreditsFor5Minutes =>
             new Package(
                 $name,
@@ -52,6 +49,20 @@ readonly class PackageService
                 $name,
                 10 * 0.70
             ),
+
+            PackageName::LingoSyncCreditsFor30Minutes =>
+            new Package(
+                $name,
+                30 * 0.60
+            ),
+
+            PackageName::LingoSyncCreditsFor60Minutes =>
+            new Package(
+                $name,
+                60 * 0.50
+            ),
+
+            default => throw new Exception('Unknown package name: ' . $name->value)
         };
     }
 

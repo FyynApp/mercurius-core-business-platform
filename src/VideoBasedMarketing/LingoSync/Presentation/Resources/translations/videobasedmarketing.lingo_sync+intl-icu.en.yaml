@@ -106,6 +106,12 @@ purchase_credits:
     lingoSyncCreditsFor10Minutes:
         name: 'Buy 10 additional LingoSync minutes'
         price_info: 'Price: $7 — only $0.70 per minute'
+    lingoSyncCreditsFor30Minutes:
+        name: 'Buy 30 additional LingoSync minutes'
+        price_info: 'Price: $18 — only $0.60 per minute'
+    lingoSyncCreditsFor60Minutes:
+        name: 'Buy 60 additional LingoSync minutes'
+        price_info: 'Price: $30 — only $0.50 per minute'
 
 credit_positions:
   title: 'LingoSync minutes usage history'

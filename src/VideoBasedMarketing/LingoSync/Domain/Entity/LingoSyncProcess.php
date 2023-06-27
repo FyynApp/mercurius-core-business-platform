@@ -210,6 +210,24 @@ class LingoSyncProcess
         $audioTranscription->setLingoSyncProcess($this);
     }
 
+    #[ORM\Column(
+        type: Types::BOOLEAN,
+        nullable: false
+    )]
+    private bool $audioTranscriptionWasTriggered = false;
+
+    public function setAudioTranscriptionWasTriggered(
+        bool $audioTranscriptionWasTriggered
+    ): void
+    {
+        $this->audioTranscriptionWasTriggered = $audioTranscriptionWasTriggered;
+    }
+
+    public function getAudioTranscriptionWasTriggered(): bool
+    {
+        return $this->audioTranscriptionWasTriggered;
+    }
+
 
     /** @return Bcp47LanguageCode[] */
     public function getTargetLanguages(): array

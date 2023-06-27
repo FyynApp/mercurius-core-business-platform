@@ -189,6 +189,8 @@ readonly class PaymentProcessorStripeService
                     'price' => match ($package->getName()) {
                         PackageName::LingoSyncCreditsFor5Minutes => $_ENV['STRIPE_PRICE_ID_PACKAGE_LINGO_SYNC_CREDITS_FOR_5_MINUTES'],
                         PackageName::LingoSyncCreditsFor10Minutes => $_ENV['STRIPE_PRICE_ID_PACKAGE_LINGO_SYNC_CREDITS_FOR_10_MINUTES'],
+                        PackageName::LingoSyncCreditsFor30Minutes => $_ENV['STRIPE_PRICE_ID_PACKAGE_LINGO_SYNC_CREDITS_FOR_30_MINUTES'],
+                        PackageName::LingoSyncCreditsFor60Minutes => $_ENV['STRIPE_PRICE_ID_PACKAGE_LINGO_SYNC_CREDITS_FOR_60_MINUTES'],
 
                         default => throw new ValueError("Cannot handle package '{$package->getName()->value}'.")
                     },

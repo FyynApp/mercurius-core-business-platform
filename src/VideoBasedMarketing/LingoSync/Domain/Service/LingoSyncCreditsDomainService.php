@@ -31,6 +31,8 @@ readonly class LingoSyncCreditsDomainService
         return [
             PackageName::LingoSyncCreditsFor5Minutes,
             PackageName::LingoSyncCreditsFor10Minutes,
+            PackageName::LingoSyncCreditsFor30Minutes,
+            PackageName::LingoSyncCreditsFor60Minutes,
         ];
     }
 
@@ -98,8 +100,10 @@ readonly class LingoSyncCreditsDomainService
     ): void
     {
         $creditsAmount = match ($causingPurchase->getPackageName()) {
-            PackageName::FreeLingoSyncCreditsFor10Minutes, PackageName::LingoSyncCreditsFor10Minutes => 10 * 60,
-            PackageName::LingoSyncCreditsFor5Minutes => 5 * 60,
+            PackageName::LingoSyncCreditsFor5Minutes  =>  5 * 60,
+            PackageName::LingoSyncCreditsFor10Minutes => 10 * 60,
+            PackageName::LingoSyncCreditsFor30Minutes => 30 * 60,
+            PackageName::LingoSyncCreditsFor60Minutes => 60 * 60,
 
             default => null,
         };

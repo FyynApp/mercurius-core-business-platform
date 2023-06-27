@@ -221,7 +221,10 @@ readonly class LingoSyncDomainService
         LingoSyncProcess $lingoSyncProcess
     ): LingoSyncProcess
     {
-        if (!$lingoSyncProcess->hasErrored()) {
+        if (   !$lingoSyncProcess->isFinished()
+            && !$lingoSyncProcess->hasErrored()
+            &&  $lingoSyncProcess->getAudioTranscriptionWasTriggered()
+        ) {
             $this
                 ->lingoSyncCreditsDomainService
                 ->depleteCreditsFromLingoSyncProcess($lingoSyncProcess);
@@ -308,6 +311,8 @@ readonly class LingoSyncDomainService
             );
 
             $generateOriginalLanguageTranscriptionTask->setStatus(LingoSyncProcessTaskStatus::Running);
+
+            $generateOriginalLanguageTranscriptionTask->getLingoSyncProcess()->setAudioTranscriptionWasTriggered(true);
 
             $this->entityManager->persist($generateOriginalLanguageTranscriptionTask->getLingoSyncProcess());
             $this->entityManager->persist($generateOriginalLanguageTranscriptionTask);
@@ -632,9 +637,11 @@ readonly class LingoSyncDomainService
             $this->entityManager->persist($generateTranslatedVideoTask);
             $this->entityManager->flush();
 
-            $this->lingoSyncCreditsDomainService->depleteCreditsFromLingoSyncProcess(
-                $generateTranslatedVideoTask->getLingoSyncProcess()
-            );
+            if ($generateTranslatedVideoTask->getLingoSyncProcess()->getAudioTranscriptionWasTriggered()) {
+                $this->lingoSyncCreditsDomainService->depleteCreditsFromLingoSyncProcess(
+                    $generateTranslatedVideoTask->getLingoSyncProcess()
+                );
+            }
         } catch (Throwable $t) {
             $generateTranslatedVideoTask->setStatus(LingoSyncProcessTaskStatus::Errored);
             $generateTranslatedVideoTask->setResult($t->getMessage());
