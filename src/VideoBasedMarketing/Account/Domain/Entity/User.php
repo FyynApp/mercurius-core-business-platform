@@ -157,6 +157,11 @@ class User
         );
     }
 
+    public function ownsCurrentlyActiveOrganization(): bool
+    {
+        return $this->getId() === $this->currentlyActiveOrganization->getOwningUser()->getId();
+    }
+
 
     /**
      * @var Collection|Organization[]

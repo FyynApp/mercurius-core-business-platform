@@ -12,6 +12,7 @@ use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Service\MembershipPlanService;
 use App\VideoBasedMarketing\Membership\Infrastructure\Service\PaymentProcessorStripeService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,6 +45,10 @@ extends AbstractController
     {
         $user = $this->getUser();
 
+        if ($user->ownsCurrentlyActiveOrganization()) {
+            throw new BadRequestHttpException("Unexpectedly, the user is not the owning user of the currently active organization.");
+        }
+
         $plan = $membershipPlanService->getMembershipPlanByName(MembershipPlanName::from($planName));
         $paymentProcessor = $membershipPlanService->getPaymentProcessorForUser($user);
 
@@ -58,6 +63,9 @@ extends AbstractController
         ));
     }
 
+    /**
+     * @throws Exception
+     */
     #[Route(
         path        : [
             'en' => '%app.routing.route_prefix.with_locale.protected.en%/membership/subscription/{subscriptionId}/checkout-with-stripe/success',

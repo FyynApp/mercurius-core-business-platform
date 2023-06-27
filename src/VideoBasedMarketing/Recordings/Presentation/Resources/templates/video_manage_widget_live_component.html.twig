@@ -378,6 +378,157 @@
                 </div>
             </a>
 
+
+            <div
+                    class="
+                        text-mercurius-blue-900 hover:font-bold
+                        bg-gradient-to-tr from-mercurius-blue-100 to-mercurius-green-100
+                        hover:from-mercurius-blue-200 hover:to-mercurius-green-200
+                    "
+            >
+
+                {% if TwigHelperService.lingoSyncDomainService.processCanBeStarted(this.video) %}
+
+                    <button
+                            class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                            data-action="live#action"
+                            data-action-name="showLingoSyncModal"
+                    >
+                            <span class="flex flex-row justify-between items-center gap-2">
+                                <span>
+                                    {{ 'video_manage_widget.overview_box.cta_show_lingo_sync_modal'|trans }}
+                                </span>
+                                <span>
+                                    {# Heroicon: language #}
+                                    <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="2.5"
+                                            stroke="currentColor"
+                                            class="w-4 h-4"
+                                    >
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" />
+                                    </svg>
+                                </span>
+                            </span>
+                    </button>
+
+                {% else %}
+
+                    {% if TwigHelperService.lingoSyncDomainService.videoHasRunningProcesses(this.video) %}
+
+                        <a
+                                href="{{ path(
+                                    'videobasedmarketing.lingo_sync.presentation.processes.status',
+                                    { 'videoId': this.video.id }
+                                ) }}"
+                        >
+                            <div class="p-2 pl-4 pr-4 w-full h-full text-left text-sm">
+                                <div class="flex flex-row justify-between items-center gap-2">
+                                    <div>
+                                        {{ 'video_manage_widget.overview_box.cta_show_lingo_sync_modal'|trans }}
+                                    </div>
+
+                                    {{ component(
+                                        'videobasedmarketing_recordings_video_lingo_sync_processing',
+                                        { 'video': this.video }
+                                    ) }}
+
+                                </div>
+                            </div>
+                        </a>
+
+                    {% else %}
+
+                        <button
+                                class="p-2 pl-4 pr-4 w-full h-full text-left text-sm text-neutral-500"
+                                title="{{ 'video_manage_widget.overview_box.lingo_sync_cannot_be_started_info'|trans }}"
+                                disabled
+                        >
+                            <span class="flex flex-row justify-between items-center gap-2">
+                                <span>
+                                    {{ 'video_manage_widget.overview_box.cta_lingo_sync_cannot_be_started'|trans }}
+                                </span>
+                                <span>
+                                    {# Heroicon: language #}
+                                    <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="2.5"
+                                            stroke="currentColor"
+                                            class="w-4 h-4"
+                                    >
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" />
+                                    </svg>
+                                </span>
+                            </span>
+                        </button>
+
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
+
+                {% if TwigHelperService.audioTranscriptionDomainService.audioTranscription(this.video) is same as null %}
+
+                    {% if TwigHelperService.capabilitiesService.canManuallyStartAudioTranscription(app.user) %}
+
+                        <button
+                                class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
+                                data-action="live#action"
+                                data-action-name="showAudioTranscriptionModal"
+                        >
+                            <span class="flex flex-row justify-between items-center gap-2">
+                                <span>
+                                    {{ 'video_manage_widget.overview_box.cta_show_audio_transcription_modal'|trans }}
+                                </span>
+                                <span>
+                                    {# Heroicon: chat-bubble-bottom-center-text solid #}
+                                    <svg
+                                            class="h-4 w-4"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 24 24"
+                                    >
+                                        <path fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 01-3.476.383.39.39 0 00-.297.17l-2.755 4.133a.75.75 0 01-1.248 0l-2.755-4.133a.39.39 0 00-.297-.17 48.9 48.9 0 01-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97zM6.75 8.25a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H7.5z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            </span>
+                        </button>
+
+                    {% endif %}
+
+                {% else %}
+                    <a
+                            href="{{ path(
+                                'videobasedmarketing.audio_transcription.presentation.overview',
+                                { 'audioTranscriptionId': TwigHelperService.audioTranscriptionDomainService.audioTranscription(this.video).id }
+                            ) }}"
+                    >
+                        <div class="p-2 pl-4 pr-4 w-full h-full text-left text-sm">
+                            <div class="flex flex-row justify-between items-center gap-2">
+                                <div>
+                                    {{ 'video_manage_widget.overview_box.cta_show_audio_transcription_modal'|trans }}
+                                </div>
+
+                                {{ component(
+                                    'videobasedmarketing_recordings_video_audio_transcription_processing',
+                                    { 'audioTranscription': TwigHelperService.audioTranscriptionDomainService.audioTranscription(this.video) }
+                                ) }}
+
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+            </div>
+
+
             {% if TwigHelperService.capabilitiesService.canSendVideoMailing(app.user) %}
                 <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
                     <form
@@ -471,144 +622,6 @@
                         </span>
                     </span>
                 </button>
-            </div>
-
-
-            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
-
-                {% if TwigHelperService.audioTranscriptionDomainService.audioTranscription(this.video) is same as null %}
-                    <button
-                            class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
-                            data-action="live#action"
-                            data-action-name="showAudioTranscriptionModal"
-                    >
-                        <span class="flex flex-row justify-between items-center gap-2">
-                            <span>
-                                {{ 'video_manage_widget.overview_box.cta_show_audio_transcription_modal'|trans }}
-                            </span>
-                            <span>
-                                {# Heroicon: chat-bubble-bottom-center-text solid #}
-                                <svg
-                                        class="h-4 w-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor"
-                                        viewBox="0 0 24 24"
-                                >
-                                    <path fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0112 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97a48.901 48.901 0 01-3.476.383.39.39 0 00-.297.17l-2.755 4.133a.75.75 0 01-1.248 0l-2.755-4.133a.39.39 0 00-.297-.17 48.9 48.9 0 01-3.476-.384c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97zM6.75 8.25a.75.75 0 01.75-.75h9a.75.75 0 010 1.5h-9a.75.75 0 01-.75-.75zm.75 2.25a.75.75 0 000 1.5H12a.75.75 0 000-1.5H7.5z" clip-rule="evenodd" />
-                                </svg>
-                            </span>
-                        </span>
-                    </button>
-                {% else %}
-                    <a
-                            href="{{ path(
-                                'videobasedmarketing.audio_transcription.presentation.overview',
-                                { 'audioTranscriptionId': TwigHelperService.audioTranscriptionDomainService.audioTranscription(this.video).id }
-                            ) }}"
-                    >
-                        <div class="p-2 pl-4 pr-4 w-full h-full text-left text-sm">
-                            <div class="flex flex-row justify-between items-center gap-2">
-                                <div>
-                                    {{ 'video_manage_widget.overview_box.cta_show_audio_transcription_modal'|trans }}
-                                </div>
-
-                                {{ component(
-                                    'videobasedmarketing_recordings_video_audio_transcription_processing',
-                                    { 'audioTranscription': TwigHelperService.audioTranscriptionDomainService.audioTranscription(this.video) }
-                                ) }}
-
-                            </div>
-                        </div>
-                    </a>
-                {% endif %}
-            </div>
-
-
-            <div class="text-mercurius-blue-900 hover:font-bold hover:bg-mercurius-blue-200">
-
-                {% if TwigHelperService.lingoSyncDomainService.processCanBeStarted(this.video) %}
-
-                    <button
-                            class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
-                            data-action="live#action"
-                            data-action-name="showLingoSyncModal"
-                    >
-                            <span class="flex flex-row justify-between items-center gap-2">
-                                <span>
-                                    {{ 'video_manage_widget.overview_box.cta_show_lingo_sync_modal'|trans }}
-                                </span>
-                                <span>
-                                    {# Heroicon: language #}
-                                    <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="2.5"
-                                            stroke="currentColor"
-                                            class="w-4 h-4"
-                                    >
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" />
-                                    </svg>
-                                </span>
-                            </span>
-                    </button>
-
-                {% else %}
-
-                    {% if TwigHelperService.lingoSyncDomainService.videoHasRunningProcesses(this.video) %}
-
-                        <a
-                                href="{{ path(
-                                    'videobasedmarketing.lingo_sync.presentation.processes.status',
-                                    { 'videoId': this.video.id }
-                                ) }}"
-                        >
-                            <div class="p-2 pl-4 pr-4 w-full h-full text-left text-sm">
-                                <div class="flex flex-row justify-between items-center gap-2">
-                                    <div>
-                                        {{ 'video_manage_widget.overview_box.cta_show_lingo_sync_modal'|trans }}
-                                    </div>
-
-                                    {{ component(
-                                        'videobasedmarketing_recordings_video_lingo_sync_processing',
-                                        { 'video': this.video }
-                                    ) }}
-
-                                </div>
-                            </div>
-                        </a>
-
-                    {% else %}
-
-                        <button
-                                class="p-2 pl-4 pr-4 w-full h-full text-left text-sm text-neutral-500"
-                                title="{{ 'video_manage_widget.overview_box.lingo_sync_cannot_be_started_info'|trans }}"
-                                disabled
-                        >
-                            <span class="flex flex-row justify-between items-center gap-2">
-                                <span>
-                                    {{ 'video_manage_widget.overview_box.cta_lingo_sync_cannot_be_started'|trans }}
-                                </span>
-                                <span>
-                                    {# Heroicon: language #}
-                                    <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="2.5"
-                                            stroke="currentColor"
-                                            class="w-4 h-4"
-                                    >
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" />
-                                    </svg>
-                                </span>
-                            </span>
-                        </button>
-
-                    {% endif %}
-
-                {% endif %}
-
             </div>
 
 

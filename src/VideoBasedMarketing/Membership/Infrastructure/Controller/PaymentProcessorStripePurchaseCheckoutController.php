@@ -11,6 +11,7 @@ use App\VideoBasedMarketing\Membership\Domain\Enum\PaymentProcessor;
 use App\VideoBasedMarketing\Membership\Domain\Service\PackageService;
 use App\VideoBasedMarketing\Membership\Infrastructure\Service\PaymentProcessorStripeService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Stripe\Exception\ApiErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ extends AbstractController
 {
     /**
      * @throws ApiErrorException
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route(
         path        : [
@@ -44,6 +45,10 @@ extends AbstractController
     {
         $user = $this->getUser();
 
+        if ($user->ownsCurrentlyActiveOrganization()) {
+            throw new BadRequestHttpException("Unexpectedly, the user is not the owning user of the currently active organization.");
+        }
+
         $plan = $packageService->getPackageByName(PackageName::from($packageName));
         $paymentProcessor = $packageService->getPaymentProcessorForUser($user);
 
@@ -58,7 +63,7 @@ extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route(
         path        : [

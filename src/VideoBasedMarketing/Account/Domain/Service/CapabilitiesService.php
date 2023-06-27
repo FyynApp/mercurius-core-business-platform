@@ -150,6 +150,15 @@ readonly class CapabilitiesService
         return $this->hasCapability($user, Capability::AdFreeLandingpages);
     }
 
+    public function canManuallyStartAudioTranscription(User $user): bool
+    {
+        return $this
+            ->membershipPlanService
+            ->getSubscribedMembershipPlanForCurrentlyActiveOrganization(
+                $user
+            )->mustBeBought();
+    }
+
     public function canTranslateVideos(User $user): bool
     {
         /*

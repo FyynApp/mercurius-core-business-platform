@@ -7,6 +7,7 @@ use App\Shared\Infrastructure\Controller\AbstractController;
 use App\Shared\Presentation\Enum\FlashMessageLabel;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\Shared\Domain\Enum\Bcp47LanguageCode;
+use App\VideoBasedMarketing\Account\Domain\Service\CapabilitiesService;
 use App\VideoBasedMarketing\AudioTranscription\Domain\Service\AudioTranscriptionDomainService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
 use App\VideoBasedMarketing\Recordings\Presentation\Controller\VideoFoldersController;
@@ -36,7 +37,8 @@ class AudioTranscriptionProcessingController
     public function startProcessingAction(
         Request                         $request,
         AudioTranscriptionDomainService $audioTranscriptionDomainService,
-        TranslatorInterface             $translator
+        TranslatorInterface             $translator,
+        CapabilitiesService             $capabilitiesService
     ): Response
     {
         if (!$this->isCsrfTokenValid(
@@ -51,6 +53,12 @@ class AudioTranscriptionProcessingController
             $request->get('videoId'),
             AccessAttribute::Use
         );
+
+        if (!$capabilitiesService->canManuallyStartAudioTranscription($r->getUser())) {
+            throw new BadRequestHttpException(
+                "User '{$r->getUser()->getId()}' is not allowed to manually start audio transcription."
+            );
+        }
 
         /** @var Video $video */
         $video = $r->getEntity();
