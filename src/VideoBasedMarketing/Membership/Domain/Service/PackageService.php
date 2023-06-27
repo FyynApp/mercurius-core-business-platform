@@ -50,7 +50,7 @@ readonly class PackageService
             PackageName::LingoSyncCreditsFor10Minutes =>
             new Package(
                 $name,
-                10 * 0.80
+                10 * 0.70
             ),
         };
     }

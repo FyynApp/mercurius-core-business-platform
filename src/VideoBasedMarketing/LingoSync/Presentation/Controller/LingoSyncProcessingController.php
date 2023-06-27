@@ -80,14 +80,21 @@ class LingoSyncProcessingController
                 )
             );
 
-            return $this
-                ->redirectToRoute(
-                    'videobasedmarketing.recordings.presentation.videos.overview',
-                    [
-                        VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME =>
-                            $video->getVideoFolder()?->getId()
-                    ]
-                );
+            if ($capabilitiesService->canPurchasePackages($r->getUser())) {
+                return $this
+                    ->redirectToRoute(
+                        'videobasedmarketing.lingo_sync.presentation.buy_credits'
+                    );
+            } else {
+                return $this
+                    ->redirectToRoute(
+                        'videobasedmarketing.recordings.presentation.videos.overview',
+                        [
+                            VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME =>
+                                $video->getVideoFolder()?->getId()
+                        ]
+                    );
+            }
         }
 
         $lingoSyncDomainService->startProcess(
@@ -141,7 +148,8 @@ class LingoSyncProcessingController
         Request                       $request,
         LingoSyncDomainService        $lingoSyncDomainService,
         LingoSyncCreditsDomainService $lingoSyncCreditsDomainService,
-        TranslatorInterface           $translator
+        TranslatorInterface           $translator,
+        CapabilitiesService           $capabilitiesService
     ): Response
     {
         if (!$this->isCsrfTokenValid(
@@ -170,14 +178,21 @@ class LingoSyncProcessingController
                 )
             );
 
-            return $this
-                ->redirectToRoute(
-                    'videobasedmarketing.recordings.presentation.videos.overview',
-                    [
-                        VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME =>
-                            $lingoSyncProcess->getVideo()->getVideoFolder()?->getId()
-                    ]
-                );
+            if ($capabilitiesService->canPurchasePackages($r->getUser())) {
+                return $this
+                    ->redirectToRoute(
+                        'videobasedmarketing.lingo_sync.presentation.buy_credits'
+                    );
+            } else {
+                return $this
+                    ->redirectToRoute(
+                        'videobasedmarketing.recordings.presentation.videos.overview',
+                        [
+                            VideoFoldersController::VIDEO_FOLDER_ID_REQUEST_PARAM_NAME =>
+                                $lingoSyncProcess->getVideo()->getVideoFolder()?->getId()
+                        ]
+                    );
+            }
         }
 
         $lingoSyncDomainService->restartProcess($lingoSyncProcess);
