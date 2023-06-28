@@ -327,6 +327,18 @@
                                 </a>
                             {% endif %}
 
+                            <a
+                                    href="mailto:team@fyyn.io"
+                                    class="
+                                        block
+                                        bg-mercurius-blue-50 border-1 border-mercurius-blue-100 rounded-md p-2 ml-2 -mr-2 text-xs text-mercurius-blue-900
+                                        mt-8
+                                    "
+                            >
+                                {{ 'contact_box.text'|trans }}
+                                <span class="font-semibold">{{ 'contact_box.cta'|trans }}</span>
+                            </a>
+
                             {% if TwigHelperService.capabilitiesService.canTranslateVideos(app.user) %}
                                 <div>
                                     {{ component('videobasedmarketing_lingo_sync_status_widget') }}
