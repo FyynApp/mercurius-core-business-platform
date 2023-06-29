@@ -16,7 +16,8 @@ mainnav:
 
 contact_box:
   text: 'Need help? Got feedback?'
-  cta: 'Contact us: team@fyyn.io'
+  contact: 'Contact us:'
+  address: 'team@fyyn.io'
 
 sidenav:
   sign_in: 'Einloggen'
