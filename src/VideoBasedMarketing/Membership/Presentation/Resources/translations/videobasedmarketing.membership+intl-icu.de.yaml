@@ -8,7 +8,7 @@ overview:
   this_is_current_plan: 'Dies ist dein aktuelles Paket'
   plan:
     basic:
-      title: 'Basis-Paket'
+      title: 'Free-Paket'
       description: 'Mit diesem Paket kannst du maximal 3 Videos mit einer Länge von bis zu einer Minute aufzeichnen.'
     independent:
       title: 'Independent-Paket'
