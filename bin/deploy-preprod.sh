@@ -27,6 +27,7 @@ rsync \
   --exclude var/log/ \
   --exclude drivers/ \
   --exclude public/generated-content/ \
+  --exclude public/phpmyadmin/ \
   --delete \
   "$SCRIPT_FOLDER"/../ \
   www-data@preprod.fyyn.io:/var/www/mercurius-core-business-platform/preprod/

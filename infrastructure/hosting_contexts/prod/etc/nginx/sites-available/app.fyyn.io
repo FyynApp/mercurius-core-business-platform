@@ -64,6 +64,10 @@ server {
       set $auth_basic "Login required";
   }
 
+  if ($uri ~ "^/phpmyadmin") {
+      set $auth_basic "Login required";
+  }
+
   location ~ \.php$ {
     auth_basic $auth_basic;
     auth_basic_user_file /etc/nginx/htpasswd;
