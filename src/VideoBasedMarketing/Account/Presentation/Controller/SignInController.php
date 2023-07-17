@@ -3,8 +3,6 @@
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
-use App\Shared\Presentation\Service\MailService;
-use App\VideoBasedMarketing\Account\Infrastructure\Service\RequestParametersBasedUserAuthService;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
 use App\VideoBasedMarketing\Account\Presentation\Service\AccountPresentationService;
 use Symfony\Component\HttpFoundation\Request;
