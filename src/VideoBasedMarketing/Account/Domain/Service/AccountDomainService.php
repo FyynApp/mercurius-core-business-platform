@@ -317,6 +317,8 @@ readonly class AccountDomainService
                 $plainPassword
             )
         );
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 
     public function switchVideosListViewMode(
