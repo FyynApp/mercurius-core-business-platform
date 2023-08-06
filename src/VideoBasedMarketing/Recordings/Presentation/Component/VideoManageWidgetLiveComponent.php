@@ -47,6 +47,9 @@ class VideoManageWidgetLiveComponent
     public bool $audioTranscriptionModalIsOpen = false;
 
     #[LiveProp(writable: false)]
+    public bool $lingoSyncExplanationModalIsOpen = true;
+
+    #[LiveProp(writable: false)]
     public bool $lingoSyncModalIsOpen = false;
 
     #[LiveProp(writable: false)]
@@ -189,6 +192,19 @@ class VideoManageWidgetLiveComponent
     public function hideAudioTranscriptionModal(): void
     {
         $this->audioTranscriptionModalIsOpen = false;
+    }
+
+
+    #[LiveAction]
+    public function showLingoSyncExplanationModal(): void
+    {
+        $this->lingoSyncExplanationModalIsOpen = true;
+    }
+
+    #[LiveAction]
+    public function hideLingoSyncExplanationModal(): void
+    {
+        $this->lingoSyncExplanationModalIsOpen = false;
     }
 
 

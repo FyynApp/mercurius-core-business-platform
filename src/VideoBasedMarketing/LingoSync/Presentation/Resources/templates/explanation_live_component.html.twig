@@ -1,0 +1,116 @@
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var this \App\VideoBasedMarketing\LingoSync\Presentation\Component\ExplanationLiveComponent #}
+
+{% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+<div
+        {{ attributes }}
+
+        class="w-full h-screen bg-gradient-to-tr from-mercurius-blue-500 to-mercurius-green-500"
+>
+    <div class="flex flex-col justify-start items-center gap-8 m-16 h-full">
+
+        {% if this.slide is same as 1 %}
+            <div>
+                <div class="text-7xl text-white font-bold mb-4">
+                    {{ 'explanation.slide.1.title'|trans }}
+                </div>
+                <div class="text-4xl text-white font-semibold">
+                    {{ 'explanation.slide.1.subtitle'|trans }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 2 %}
+            <div>
+                <div class="text-7xl text-white font-bold mb-4">
+                    {{ 'explanation.slide.2.title'|trans }}
+                </div>
+                <div class="text-4xl text-white font-semibold">
+                    {{ 'explanation.slide.2.subtitle'|trans }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 3 %}
+            <div>
+                <div class="text-4xl text-white font-semibold">
+                    <ul class="flex flex-col gap-8">
+                        <li class="font-normal">{{ 'explanation.slide.3.title'|trans }}</li>
+                        <li>{{ 'explanation.slide.3.text_1'|trans }}</li>
+                        <li>{{ 'explanation.slide.3.text_2'|trans }}</li>
+                        <li>{{ 'explanation.slide.3.text_3'|trans }}</li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 4 %}
+            <div class="flex lg:flex-row flex-col justify-center items-start gap-8">
+                <div>
+                    <img
+                            src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-1.png') }}"
+                    >
+                </div>
+                <div class="text-4xl text-white font-semibold max-w-lg">
+                    {{ 'explanation.slide.4.text'|trans }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 5 %}
+            <div>
+                <div class="text-7xl text-white font-bold mb-4">
+                    {{ 'explanation.slide.5.title'|trans }}
+                </div>
+                <div class="text-4xl text-white font-semibold">
+                    {{ 'explanation.slide.5.subtitle'|trans }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        <div class="fixed bottom-16 right-16 flex flex-row justify-end items-end w-full">
+            <div class="flex flex-col gap-1 justify-center items-end text-white text-2xl font-semibold">
+
+                <div class="font-extralight">
+                    {{ 'explanation.current_slide'|trans }}
+                    {{ this.slide }}
+                    {{ 'explanation.current_slide_of'|trans }}
+                    {{ this.maxSlides }}
+                </div>
+
+                <div class="flex flex-row gap-4">
+                    {% if this.slide > 1 %}
+                        <button
+                                data-action="live#action"
+                                data-action-name="previousSlide"
+                        >
+                            {{ 'explanation.previous_slide'|trans }}
+                        </button>
+                    {% endif %}
+
+                    {% if this.slide < this.maxSlides %}
+                        <button
+                                data-action="live#action"
+                                data-action-name="nextSlide"
+                        >
+                            {{ 'explanation.next_slide'|trans }}
+                        </button>
+                    {% endif %}
+
+                    <button
+                            data-action="live#action"
+                            data-action-name="nextSlide"
+                    >
+                        {{ 'explanation.skip'|trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

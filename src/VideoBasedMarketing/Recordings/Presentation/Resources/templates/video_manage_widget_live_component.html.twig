@@ -392,7 +392,7 @@
                     <button
                             class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                             data-action="live#action"
-                            data-action-name="showLingoSyncModal"
+                            data-action-name="showLingoSyncExplanationModal"
                     >
                             <span class="flex flex-row justify-between items-center gap-2">
                                 <span>
@@ -955,6 +955,17 @@
                     </form>
                 </div>
             </div>
+        </div>
+    {% endif %}
+
+    {% if this.lingoSyncExplanationModalIsOpen %}
+        <div
+                class="
+                    fixed w-full h-full top-0 left-0 bg-opacity-90 bg-neutral-900
+                    z-30 flex flex-row justify-center items-center
+                "
+        >
+            {{ component('videobasedmarketing_lingo_sync_explanation') }}
         </div>
     {% endif %}
 

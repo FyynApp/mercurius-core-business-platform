@@ -126,3 +126,27 @@ credit_positions:
   lingosync_process:
     title: 'Title:'
     started_by: 'Started by:'
+
+explanation:
+  previous_slide: '← Previous'
+  next_slide: 'Next →'
+  skip: 'Skip ↠'
+  current_slide: 'Slide'
+  current_slide_of: 'of'
+  slide:
+    1:
+      title: 'How to translate videos with LingoSync'
+      subtitle: 'A quick introduction.'
+    2:
+      title: 'Step 1'
+      subtitle: 'Make sure you have a suitable video.'
+    3:
+      title: 'A suitable video...'
+      text_1: '...has very little or no background sound.'
+      text_2: '...contains at best only one person speaking.'
+      text_3: '...has that person speaking clearly and understandably.'
+    4:
+      text: 'The best videos for translation with LingoSync are simple „talking head“ videos!'
+    5:
+      title: 'Step 2'
+      subtitle: 'Create or upload your video.'
