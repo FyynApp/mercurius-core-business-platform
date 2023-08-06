@@ -8,7 +8,7 @@
 
         class="w-full h-screen bg-gradient-to-tr from-mercurius-blue-500 to-mercurius-green-500"
 >
-    <div class="flex flex-col justify-start items-center gap-8 m-16 h-full">
+    <div class="flex flex-col justify-start items-start gap-8 m-16 h-full max-w-6xl">
 
         {% if this.slide is same as 1 %}
             <div>
@@ -50,13 +50,14 @@
 
         {% if this.slide is same as 4 %}
             <div class="flex lg:flex-row flex-col justify-center items-start gap-8">
-                <div>
-                    <img
-                            src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-1.png') }}"
-                    >
-                </div>
                 <div class="text-4xl text-white font-semibold max-w-lg">
                     {{ 'explanation.slide.4.text'|trans }}
+                </div>
+                <div>
+                    <img
+                            class="rounded-lg drop-shadow-lg"
+                            src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-1.jpg') }}"
+                    >
                 </div>
             </div>
         {% endif %}
@@ -74,7 +75,131 @@
         {% endif %}
 
 
-        <div class="fixed bottom-16 right-16 flex flex-row justify-end items-end w-full">
+        {% if this.slide is same as 6 %}
+            <div class="flex lg:flex-row flex-col justify-center items-start gap-8">
+                <div class="text-4xl text-white font-semibold">
+                    <ul class="flex flex-col gap-8">
+                        <li>{{ 'explanation.slide.6.text_1'|trans }}</li>
+                        <li>{{ 'explanation.slide.6.text_2'|trans }}</li>
+                        <li>{{ 'explanation.slide.6.text_3'|trans }}</li>
+                    </ul>
+                </div>
+                <div class="max-w-xl">
+                    <img
+                            class="rounded-lg drop-shadow-lg"
+                            src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-2.jpg') }}"
+                    >
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 7 %}
+            <div>
+                <div class="text-7xl text-white font-bold mb-4">
+                    {{ 'explanation.slide.7.title'|trans }}
+                </div>
+                <div class="text-4xl text-white font-semibold">
+                    {{ 'explanation.slide.7.subtitle'|trans }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 8 %}
+            <div class="flex lg:flex-row flex-col justify-center items-start gap-8">
+                <div class="text-4xl text-white font-semibold">
+                    <ul class="flex flex-col gap-8">
+                        <li>{{ 'explanation.slide.8.text_1'|trans }}</li>
+                        <li>{{ 'explanation.slide.8.text_2'|trans }}</li>
+                        <li>{{ 'explanation.slide.8.text_3'|trans }}</li>
+                    </ul>
+                </div>
+                <div class="max-w-xl">
+                    <img
+                            class="rounded-lg drop-shadow-lg"
+                            src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-3-1.png') }}"
+                    >
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 9 %}
+            <div class="flex lg:flex-row flex-col justify-center items-start gap-8">
+                <div class="text-4xl text-white font-semibold">
+                    <ul class="flex flex-col gap-8">
+                        <li>{{ 'explanation.slide.9.text_1'|trans }}</li>
+                        <li>{{ 'explanation.slide.9.text_2'|trans }}</li>
+                    </ul>
+                </div>
+                <div class="max-w-xl">
+                    <img
+                            class="rounded-lg drop-shadow-lg"
+                            src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-3-2.png') }}"
+                    >
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 10 %}
+            <div class="flex lg:flex-row flex-col justify-center items-start gap-8">
+                <div class="text-4xl text-white font-semibold">
+                    <ul class="flex flex-col gap-8">
+                        <li>{{ 'explanation.slide.10.text_1'|trans }}</li>
+                        <li>{{ 'explanation.slide.10.text_2'|trans }}</li>
+                    </ul>
+                </div>
+                <div class="max-w-xl">
+                    <img
+                            class="rounded-lg drop-shadow-lg"
+                            src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-3-2.png') }}"
+                    >
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 11 %}
+            <div class="flex lg:flex-row flex-col justify-center items-start gap-8">
+                <div class="text-4xl text-white font-semibold">
+                    {{ 'explanation.slide.11.text'|trans }}
+                </div>
+                <div class="max-w-xl">
+                    <img
+                            class="rounded-lg drop-shadow-lg"
+                            src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-3-3.png') }}"
+                    >
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 12 %}
+            <div class="flex lg:flex-row flex-col justify-center items-start gap-8">
+                <div class="text-4xl text-white font-semibold">
+                    <ul class="flex flex-col gap-8">
+                        <li>{{ 'explanation.slide.12.text_1'|trans }}</li>
+                        <li>{{ 'explanation.slide.12.text_2'|trans }}</li>
+                    </ul>
+                </div>
+                <div class="max-w-xl">
+                    <img
+                            class="rounded-lg drop-shadow-lg"
+                            src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-3-4.png') }}"
+                    >
+                </div>
+            </div>
+        {% endif %}
+
+
+        <div
+                class="
+                    fixed bottom-16 right-16 flex flex-row justify-end items-end
+                    w-full bg-gradient-to-r from-transparent to-mercurius-blue-900 p-4 pr-6 rounded-r-md
+                "
+        >
             <div class="flex flex-col gap-1 justify-center items-end text-white text-2xl font-semibold">
 
                 <div class="font-extralight">
@@ -94,18 +219,21 @@
                         </button>
                     {% endif %}
 
-                    {% if this.slide < this.maxSlides %}
-                        <button
-                                data-action="live#action"
-                                data-action-name="nextSlide"
-                        >
-                            {{ 'explanation.next_slide'|trans }}
-                        </button>
-                    {% endif %}
 
                     <button
+                            {% if this.slide >= this.maxSlides %}
+                                class="opacity-0"
+                                disabled="disabled"
+                            {% endif %}
                             data-action="live#action"
                             data-action-name="nextSlide"
+                    >
+                        {{ 'explanation.next_slide'|trans }}
+                    </button>
+
+                    <button
+                            data-action="live#emit"
+                            data-event="lingoSyncExplanationSkipped"
                     >
                         {{ 'explanation.skip'|trans }}
                     </button>

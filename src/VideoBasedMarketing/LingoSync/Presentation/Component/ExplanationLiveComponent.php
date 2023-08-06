@@ -22,7 +22,7 @@ class ExplanationLiveComponent
     public int $slide = 1;
 
     #[LiveProp(writable: false)]
-    public int $maxSlides = 10;
+    public int $maxSlides = 12;
 
     #[LiveAction]
     public function nextSlide(): void

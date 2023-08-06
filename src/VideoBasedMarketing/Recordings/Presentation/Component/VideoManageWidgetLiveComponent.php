@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
@@ -47,7 +48,7 @@ class VideoManageWidgetLiveComponent
     public bool $audioTranscriptionModalIsOpen = false;
 
     #[LiveProp(writable: false)]
-    public bool $lingoSyncExplanationModalIsOpen = true;
+    public bool $lingoSyncExplanationModalIsOpen = false;
 
     #[LiveProp(writable: false)]
     public bool $lingoSyncModalIsOpen = false;
@@ -202,6 +203,7 @@ class VideoManageWidgetLiveComponent
     }
 
     #[LiveAction]
+    #[LiveListener('lingoSyncExplanationSkipped')]
     public function hideLingoSyncExplanationModal(): void
     {
         $this->lingoSyncExplanationModalIsOpen = false;

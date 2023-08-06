@@ -139,7 +139,7 @@ explanation:
       subtitle: 'A quick introduction.'
     2:
       title: 'Step 1'
-      subtitle: 'Make sure you have a suitable video.'
+      subtitle: 'Make sure to use a suitable video.'
     3:
       title: 'A suitable video...'
       text_1: '...has very little or no background sound.'
@@ -150,3 +150,25 @@ explanation:
     5:
       title: 'Step 2'
       subtitle: 'Create or upload your video.'
+    6:
+      text_1: 'Start by going to your Video Library.'
+      text_2: 'To upload an existing video file, choose „Upload video file“.'
+      text_3: 'To create a new video right in your browser, choose „Record webcam or desktop“.'
+    7:
+      title: 'Step 3'
+      subtitle: 'Start the translation process.'
+    8:
+      text_1: 'Once you‘ve uploaded or recorded your video, find its preview tile in the Video Library overview.'
+      text_2: 'There, locate the button labeled „Translate with LingoSync“.'
+      text_3: 'Click this button.'
+    9:
+      text_1: 'A modal opens which asks you to provide three settings for the translation process:'
+      text_2: 'First, choose the language that is spoken in the original video. This is the language you want to translate FROM.'
+    10:
+      text_1: 'Then, choose the gender of the speaker in the original video. The voice used for translation will be of the same gender.'
+      text_2: 'Finally, choose the target language you want to translate TO.'
+    11:
+      text: 'The left hand side navigation will show a status element which informs you about the ongoing and finished translation processes.'
+    12:
+      text_1: 'Once the process has finished, a green check mark is shown in the process status box.'
+      text_2: 'Click on this status entry, and you will be navigated to the Video Library folder which contains the original video and the translated version.'
