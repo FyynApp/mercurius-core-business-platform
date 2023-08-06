@@ -273,8 +273,7 @@ class PresentationspageEditFormLiveComponent
         $form = $this->createForm(PresentationpageType::class, $this->presentationpage);
         $this->formView = $form->createView();
         $this->formValues = $this->extractFormValues(
-            $this->instantiateForm()->createView(),
-            $this->instantiateForm()
+            $this->instantiateForm()->createView()
         );
     }
 

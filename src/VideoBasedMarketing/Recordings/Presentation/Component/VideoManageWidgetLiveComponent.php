@@ -338,8 +338,7 @@ class VideoManageWidgetLiveComponent
         $form = $this->createForm(VideoType::class, $this->video);
         $this->formView = $form->createView();
         $this->formValues = $this->extractFormValues(
-            $this->instantiateForm()->createView(),
-            $this->instantiateForm()
+            $this->instantiateForm()->createView()
         );
     }
 
