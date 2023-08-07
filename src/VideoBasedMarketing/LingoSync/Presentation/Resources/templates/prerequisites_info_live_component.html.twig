@@ -1,0 +1,121 @@
+{# @var TwigHelperService \App\Shared\Presentation\Service\TwigHelperService #}
+{# @var this \App\VideoBasedMarketing\LingoSync\Presentation\Component\PrerequisitesInfoLiveComponent #}
+
+{% trans_default_domain 'videobasedmarketing.lingo_sync' %}
+
+<div
+        {{ attributes }}
+
+        class="max-w-6xl w-full min-h-screen bg-gradient-to-tr from-mercurius-blue-500 to-mercurius-green-500"
+>
+    <div
+            class="
+                    flex flex-row justify-end items-end
+                    w-full bg-gradient-to-r from-transparent to-white p-4 pr-6
+                "
+    >
+        <div class="flex flex-col gap-1 justify-center items-end text-black text-2xl font-semibold">
+
+            <div class="font-extralight">
+                {{ 'prerequisites_info.current_slide'|trans }}
+                {{ this.slide }}
+                {{ 'prerequisites_info.current_slide_of'|trans }}
+                {{ this.maxSlides }}
+            </div>
+
+            <div class="flex flex-row gap-4">
+                {% if this.slide > 1 %}
+                    <button
+                            data-action="live#action"
+                            data-action-name="previousSlide"
+                    >
+                        {{ 'prerequisites_info.previous_slide'|trans }}
+                    </button>
+                {% endif %}
+
+
+                <button
+                        {% if this.slide >= this.maxSlides %}
+                            class="opacity-0"
+                            disabled="disabled"
+                        {% endif %}
+                        data-action="live#action"
+                        data-action-name="nextSlide"
+                >
+                    {{ 'prerequisites_info.next_slide'|trans }}
+                </button>
+
+                <button
+                        data-action="live#emit"
+                        data-event="lingoSyncPrerequisitesInfoSkipped"
+                >
+                    {{ 'prerequisites_info.skip'|trans }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="flex flex-col justify-start items-start gap-8 m-16 h-full max-w-6xl">
+
+        {% if this.slide is same as 1 %}
+            <div>
+                <div class="text-7xl text-white font-bold mb-4">
+                    {{ 'prerequisites_info.slide.1.title'|trans }}
+                </div>
+                <div class="text-4xl text-white font-semibold">
+                    {{ 'prerequisites_info.slide.1.subtitle'|trans }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 2 %}
+            <div>
+                <div class="text-4xl text-white font-semibold">
+                    {{ 'prerequisites_info.slide.2.text'|trans }}
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 3 %}
+            <div>
+                <div class="text-4xl text-white font-semibold">
+                    <ul class="flex flex-col gap-8">
+                        <li class="font-normal">{{ 'prerequisites_info.slide.3.title'|trans }}</li>
+                        <li>{{ 'prerequisites_info.slide.3.text_1'|trans }}</li>
+                        <li>{{ 'prerequisites_info.slide.3.text_2'|trans }}</li>
+                        <li>{{ 'prerequisites_info.slide.3.text_3'|trans }}</li>
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+
+        {% if this.slide is same as 4 %}
+            <div class="flex flex-col gap-16 justify-center items-center">
+                <div class="flex lg:flex-row flex-col justify-center items-start gap-8">
+                    <div class="text-4xl text-white font-semibold max-w-lg">
+                        {{ 'prerequisites_info.slide.4.text'|trans }}
+                    </div>
+                    <div>
+                        <img
+                                class="rounded-lg drop-shadow-lg"
+                                src="{{ asset('assets/images/videobasedmarketing/lingosync/explanation/lingosync-explanation-step-1.jpg') }}"
+                        >
+                    </div>
+                </div>
+                <div>
+                    <button
+                            class="cta-with-icon-primary"
+                            data-action="live#emit"
+                            data-event="lingoSyncPrerequisitesInfoSkipped"
+                    >
+                        {{ 'prerequisites_info.slide.4.cta'|trans }}
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>

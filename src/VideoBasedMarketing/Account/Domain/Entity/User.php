@@ -580,6 +580,20 @@ class User
         $this->videosListViewMode = $videosListViewMode;
     }
 
+    
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $hasSkippedLingoSyncPrerequisitesInfo = false;
+
+    public function hasSkippedLingoSyncPrerequisitesInfo(): bool
+    {
+        return $this->hasSkippedLingoSyncPrerequisitesInfo;
+    }
+
+    public function setHasSkippedLingoSyncPrerequisitesInfo(bool $hasSkippedLingoSyncPrerequisitesInfo): void
+    {
+        $this->hasSkippedLingoSyncPrerequisitesInfo = $hasSkippedLingoSyncPrerequisitesInfo;
+    }
+
 
     public function getUserIdentifier(): string
     {

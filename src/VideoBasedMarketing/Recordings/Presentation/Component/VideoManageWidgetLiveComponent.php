@@ -2,6 +2,7 @@
 
 namespace App\VideoBasedMarketing\Recordings\Presentation\Component;
 
+use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
 use App\VideoBasedMarketing\Presentationpages\Domain\Service\PresentationpagesService;
 use App\VideoBasedMarketing\Recordings\Domain\Entity\Video;
@@ -48,7 +49,7 @@ class VideoManageWidgetLiveComponent
     public bool $audioTranscriptionModalIsOpen = false;
 
     #[LiveProp(writable: false)]
-    public bool $lingoSyncExplanationModalIsOpen = false;
+    public bool $lingoSyncPrerequisitesInfoModalIsOpen = false;
 
     #[LiveProp(writable: false)]
     public bool $lingoSyncModalIsOpen = false;
@@ -197,16 +198,31 @@ class VideoManageWidgetLiveComponent
 
 
     #[LiveAction]
-    public function showLingoSyncExplanationModal(): void
+    public function showLingoSyncPrerequisitesInfoModal(): void
     {
-        $this->lingoSyncExplanationModalIsOpen = true;
+        $this->lingoSyncPrerequisitesInfoModalIsOpen = true;
     }
 
     #[LiveAction]
-    #[LiveListener('lingoSyncExplanationSkipped')]
-    public function hideLingoSyncExplanationModal(): void
+    public function hideLingoSyncPrerequisitesInfoModal(): void
     {
-        $this->lingoSyncExplanationModalIsOpen = false;
+        $this->lingoSyncPrerequisitesInfoModalIsOpen = false;
+    }
+
+    #[LiveListener('lingoSyncPrerequisitesInfoSkipped')]
+    public function onLingoSyncPrerequisitesInfoSkipped(): void
+    {
+        /** @var null|User $user */
+        $user = $this->getUser();
+
+        if (!is_null($user)) {
+            $user->setHasSkippedLingoSyncPrerequisitesInfo(true);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+        }
+
+        $this->lingoSyncPrerequisitesInfoModalIsOpen = false;
+        $this->lingoSyncModalIsOpen = true;
     }
 
 

@@ -392,7 +392,11 @@
                     <button
                             class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                             data-action="live#action"
-                            data-action-name="showLingoSyncExplanationModal"
+                            {% if app.user.skippedLingoSyncPrerequisitesInfo %}
+                                data-action-name="showLingoSyncModal"
+                            {% else %}
+                                data-action-name="showLingoSyncPrerequisitesInfoModal"
+                            {% endif %}
                     >
                             <span class="flex flex-row justify-between items-center gap-2">
                                 <span>
@@ -958,14 +962,14 @@
         </div>
     {% endif %}
 
-    {% if this.lingoSyncExplanationModalIsOpen %}
+    {% if this.lingoSyncPrerequisitesInfoModalIsOpen %}
         <div
                 class="
                     fixed w-full h-full top-0 left-0 bg-opacity-90 bg-neutral-900
                     z-30 flex flex-row justify-center items-center
                 "
         >
-            {{ component('videobasedmarketing_lingo_sync_explanation') }}
+            {{ component('videobasedmarketing_lingo_sync_prerequisites_info') }}
         </div>
     {% endif %}
 

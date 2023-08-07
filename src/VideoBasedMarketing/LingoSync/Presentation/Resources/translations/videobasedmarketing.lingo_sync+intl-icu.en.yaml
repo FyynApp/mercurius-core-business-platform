@@ -172,3 +172,24 @@ explanation:
     12:
       text_1: 'Once the process has finished, a green check mark is shown in the process status box.'
       text_2: 'Click on this status entry, and you will be navigated to the Video Library folder which contains the original video and the translated version.'
+
+prerequisites_info:
+  previous_slide: '← Previous'
+  next_slide: 'Next →'
+  skip: 'Skip →→'
+  current_slide: 'Step'
+  current_slide_of: 'of'
+  slide:
+    1:
+      title: 'Before we start...'
+      subtitle: 'Some words on how to make sure your translation works as expected.'
+    2:
+      text: 'In order to ensure a good translation result, you must make sure to use a suitable video!'
+    3:
+      title: 'A suitable video...'
+      text_1: '...has very little or no background sound.'
+      text_2: '...contains at best only one person speaking.'
+      text_3: '...has that person speaking clearly and understandably.'
+    4:
+      text: 'The best videos for translation with LingoSync are simple „talking head“ videos!'
+      cta: 'I understand, let me translate my video!'
