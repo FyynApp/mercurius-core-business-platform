@@ -191,7 +191,7 @@ readonly class MembershipPlanService
                 ],
                 60 * 45,
                 60 * 60 * 2,
-                512 * 1024 * 1024 // 0.5 GiB
+                2 * 1024 * 1024 * 1024 // 2 GiB
             ),
 
             MembershipPlanName::Professional =>
@@ -209,7 +209,7 @@ readonly class MembershipPlanService
                 ],
                 60 * 90,
                 60 * 60 * 2,
-                1024 * 1024 * 1024 // 1 GiB
+                2 * 1024 * 1024 * 1024 // 2 GiB
             ),
 
             MembershipPlanName::Ultimate =>
