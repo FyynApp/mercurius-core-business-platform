@@ -190,7 +190,7 @@ readonly class MembershipPlanService
                     Capability::VideoTranslation,
                 ],
                 60 * 45,
-                60 * 20,
+                60 * 60 * 2,
                 512 * 1024 * 1024 // 0.5 GiB
             ),
 
@@ -208,7 +208,7 @@ readonly class MembershipPlanService
                     Capability::VideoTranslation,
                 ],
                 60 * 90,
-                60 * 60,
+                60 * 60 * 2,
                 1024 * 1024 * 1024 // 1 GiB
             ),
 
