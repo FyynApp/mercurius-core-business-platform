@@ -6,13 +6,22 @@
 {% block contentTitle %}{{ 'sign_in.content_title'|trans }}{% endblock %}
 
 {% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
     <div class="mt-16">
         <div class="min-h-full flex items-center justify-center py-0 px-4 sm:px-6 lg:px-8">
             <div class="max-w-md w-full space-y-8">
+
+                {% if isAuthForApp %}
+                    <div class="w-full flex justify-center items-center rounded-md ring-1 ring-mercurius-green-300 bg-mercurius-green-200 text-mercurius-green-800 p-4 font-light">
+                        {{ 'sign_in.auth_for_app.note'|trans }}
+                    </div>
+                {% endif %}
+
+                {% if error %}
+                    <div class="w-full flex justify-center items-center rounded-md ring-1 ring-red-300 bg-red-200 text-red-800 p-4 font-light">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
                 <form action="{{ path('videobasedmarketing.account.presentation.sign_in') }}" method="post">
 
                     <div class="mt-8 space-y-6">
@@ -24,6 +33,13 @@
                         </div>
 
                         <input type="hidden" name="remember" value="true">
+
+                        <input
+                                type="hidden"
+                                name="{{ constant('\\App\\VideoBasedMarketing\\Account\\Infrastructure\\Enum\\RequestParameter::IsAuthForApp').value }}"
+                                value="{{ isAuthForApp ? 'true' : 'false' }}"
+                        >
+
                         <div class="rounded-md -space-y-px">
                             <div>
                                 <label for="username" class="sr-only">
@@ -95,7 +111,10 @@
                             </div>
                             <div class="ml-4 flex-shrink-0">
                                 <a
-                                        href="{{ path('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start') }}"
+                                        href="{{ path(
+                                            'videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start',
+                                            { (constant('\\App\\VideoBasedMarketing\\Account\\Infrastructure\\Enum\\RequestParameter::IsAuthForApp').value): isAuthForApp ? 'true' : 'false' }
+                                        ) }}"
                                         class="text-center flex items-center justify-center rounded-md border border-transparent bg-mercurius-blue-500 px-6 py-6 text-xs font-medium text-white hover:bg-mercurius-blue-700"
                                 >
                                     {{ 'sign_in.cta.sign_in_with_linkedin'|trans }}

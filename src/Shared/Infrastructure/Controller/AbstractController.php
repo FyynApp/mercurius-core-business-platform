@@ -7,10 +7,12 @@ use App\Shared\Infrastructure\Entity\VerifyAndGetUserAndEntityResult;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Entity\UserOwnedEntityInterface;
 use App\VideoBasedMarketing\Account\Domain\Enum\AccessAttribute;
+use App\VideoBasedMarketing\Account\Infrastructure\Enum\RequestParameter;
 use App\VideoBasedMarketing\Organization\Domain\Entity\OrganizationOwnedEntityInterface;
 use App\VideoBasedMarketing\Organization\Domain\Service\OrganizationDomainService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyAbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 
 abstract class AbstractController
@@ -109,5 +111,20 @@ abstract class AbstractController
             $this->organizationDomainService->getCurrentlyActiveOrganizationOfUser($user),
             $entity
         );
+    }
+
+    protected function valueifyBoolParameter(
+        RequestParameter $requestParameter,
+        Request          $request
+    ): bool
+    {
+        return $request->get($requestParameter->value) === 'true';
+    }
+
+    protected function urlifyBoolValue(
+        bool $value
+    ): string
+    {
+        return ($value ? 'yes' : 'no');
     }
 }

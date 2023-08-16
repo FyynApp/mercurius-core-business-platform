@@ -8,6 +8,8 @@ sign_in:
     sign_in: 'Sign in'
     sign_in_with_linkedin: 'Sign in with LinkedIn'
     forgot_password: 'Forgot password?'
+  auth_for_app:
+    note: 'Sign in to use the desktop app.'
   or: 'or'
   sign_in_with_linkedin_question: 'Already on LinkedIn?'
   sign_in_with_linkedin_info: 'Use LinkedIn to sign in to Fyyn.io with a single click - no sign up required!'
@@ -115,3 +117,7 @@ password:
       not_identical: 'Passwords do not match.'
       too_short: 'Passwords need to be at least 6 characters long.'
     success_message: 'You have successfully changed your password.'
+
+auth_for_app:
+  success:
+    note: 'Please wait while we are authenticating your session for the desktop app...'

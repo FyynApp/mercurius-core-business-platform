@@ -5,31 +5,19 @@ namespace App\VideoBasedMarketing\Account\Infrastructure\SymfonyEventSubscriber;
 use App\VideoBasedMarketing\Account\Domain\Entity\User;
 use App\VideoBasedMarketing\Account\Domain\Service\AccountDomainService;
 use Exception;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
 
 
-class AuthenticationSuccessSymfonyEventSubscriber
+readonly class AuthenticationSuccessSymfonyEventSubscriber
     implements EventSubscriberInterface
 {
-    private AccountDomainService $accountDomainService;
-
-    private LoggerInterface $logger;
-
-    private Security $security;
-
-
     public function __construct(
-        AccountDomainService  $accountDomainService,
-        LoggerInterface       $logger,
-        Security              $security
+        private AccountDomainService $accountDomainService,
+        private Security             $security
     )
     {
-        $this->accountDomainService = $accountDomainService;
-        $this->logger = $logger;
-        $this->security = $security;
     }
 
     public static function getSubscribedEvents(): array

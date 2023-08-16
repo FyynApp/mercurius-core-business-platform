@@ -3,10 +3,12 @@
 namespace App\VideoBasedMarketing\Account\Presentation\Controller;
 
 use App\Shared\Infrastructure\Controller\AbstractController;
+use App\VideoBasedMarketing\Account\Infrastructure\Enum\RequestParameter;
 use App\VideoBasedMarketing\Account\Infrastructure\Service\ThirdPartyAuthService;
 use App\VideoBasedMarketing\Account\Presentation\Service\AccountPresentationService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -30,13 +32,23 @@ class SignInController
         Request               $request
     ): Response
     {
+        $isAuthForApp = $this->valueifyBoolParameter(RequestParameter::IsAuthForApp, $request);
+
+        $request->getSession()->set(
+            RequestParameter::IsAuthForApp->value,
+            $isAuthForApp
+        );
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
         if (   !is_null($error)
             && $thirdPartyAuthService->userMustBeRedirectedToThirdPartyAuthLinkedinEndpoint($lastUsername)
         ) {
-            return $this->redirectToRoute('videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start');
+            return $this->redirectToRoute(
+                'videobasedmarketing.account.infrastructure.thirdpartyauth.linkedin.start',
+                [RequestParameter::IsAuthForApp->value => $this->urlifyBoolValue($isAuthForApp)]
+            );
         }
 
         if (trim($lastUsername) === '') {
@@ -48,6 +60,7 @@ class SignInController
             [
                 'username' => $lastUsername,
                 'error' => $error,
+                'isAuthForApp' => $isAuthForApp
             ]
         );
     }
