@@ -6,7 +6,7 @@
 <div
         {{ attributes }}
         {% if this.shouldPoll %}
-            data-poll
+            data-poll="delay(5000)|$render"
         {% endif %}
 
         class="opacity-30 hover:opacity-100 saturate-0 hover:saturate-100 transition-all duration-200 ease-in-out"
