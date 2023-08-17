@@ -94,7 +94,6 @@ class VideoManageWidgetLiveComponent
     {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
-        $this->entityManager = $entityManager;
         $this->presentationpagesService = $presentationpagesService;
         $this->translator = $translator;
         $this->recordingsPresentationService = $recordingsPresentationService;

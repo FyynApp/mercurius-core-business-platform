@@ -168,7 +168,7 @@
                                 class="rounded-md border-0 w-full"
                                 type="text"
                                 value="{{ this.video.title }}"
-                                data-model="{{ this.form.title.vars.full_name }}"
+                                data-model="{{ this.formView.title.vars.full_name }}"
                         >
 
                     {% else %}
@@ -214,7 +214,7 @@
                                     placeholder="{{ 'video_manage_widget.edit_main_cta.placeholder.text'|trans }}"
                                     type="text"
                                     value="{{ this.video.mainCtaText }}"
-                                    data-model="{{ this.form.mainCtaText.vars.full_name }}"
+                                    data-model="{{ this.formView.mainCtaText.vars.full_name }}"
                             >
                         </div>
 
@@ -226,7 +226,7 @@
                                     placeholder="{{ 'video_manage_widget.edit_main_cta.placeholder.label'|trans }}"
                                     type="text"
                                     value="{{ this.video.mainCtaLabel }}"
-                                    data-model="{{ this.form.mainCtaLabel.vars.full_name }}"
+                                    data-model="{{ this.formView.mainCtaLabel.vars.full_name }}"
                             >
                         </div>
 
@@ -238,7 +238,7 @@
                                     placeholder="{{ 'video_manage_widget.edit_main_cta.placeholder.url'|trans }}"
                                     type="text"
                                     value="{{ this.video.mainCtaUrl }}"
-                                    data-model="{{ this.form.mainCtaUrl.vars.full_name }}"
+                                    data-model="{{ this.formView.mainCtaUrl.vars.full_name }}"
                             >
                         </div>
                     </div>
@@ -290,7 +290,7 @@
                                     placeholder="{{ 'video_manage_widget.edit_calendly.placeholder.text'|trans }}"
                                     type="text"
                                     value="{{ this.video.calendlyText }}"
-                                    data-model="{{ this.form.calendlyText.vars.full_name }}"
+                                    data-model="{{ this.formView.calendlyText.vars.full_name }}"
                             >
                         </div>
 
@@ -302,7 +302,7 @@
                                     placeholder="{{ 'video_manage_widget.edit_calendly.placeholder.url'|trans }}"
                                     type="text"
                                     value="{{ this.video.calendlyUrl }}"
-                                    data-model="{{ this.form.calendlyUrl.vars.full_name }}"
+                                    data-model="{{ this.formView.calendlyUrl.vars.full_name }}"
                             >
                         </div>
                     </div>
@@ -1198,17 +1198,17 @@
 
                             {{ form_start(this.form) }}
 
-                            {{ form_row(this.form.title, {
+                            {{ form_row(this.formView.title, {
                                 attr: {
-                                    'data-model': 'on(input)|debounce(250)|' ~ this.form.title.vars.full_name,
+                                    'data-model': 'on(input)|debounce(250)|' ~ this.formView.title.vars.full_name,
                                     'data-action': 'live#action',
                                     'data-action-name': 'debounce(300)|save'
                                 }
                             }) }}
 
-                            {{ form_row(this.form.videoOnlyPresentationpageTemplate, {
+                            {{ form_row(this.formView.videoOnlyPresentationpageTemplate, {
                                 attr: {
-                                    'data-model': this.form.videoOnlyPresentationpageTemplate.vars.full_name,
+                                    'data-model': this.formView.videoOnlyPresentationpageTemplate.vars.full_name,
                                     'data-action': 'live#action',
                                     'data-action-name': 'save'
                                 }

@@ -20,27 +20,27 @@
 
             {{ form_start(this.form) }}
 
-            {{ form_row(this.form.receiverMailAddress, {
+            {{ form_row(this.formView.receiverMailAddress, {
                 attr: {
-                    'data-model': 'on(input)|debounce(250)|' ~ this.form.receiverMailAddress.vars.full_name,
+                    'data-model': 'on(input)|debounce(250)|' ~ this.formView.receiverMailAddress.vars.full_name,
                     'data-action': 'live#action',
                     'data-action-name': 'debounce(300)|save'
                 }
             }) }}
 
 
-            {{ form_row(this.form.subject, {
+            {{ form_row(this.formView.subject, {
                 attr: {
-                    'data-model': 'on(input)|debounce(250)|' ~ this.form.subject.vars.full_name,
+                    'data-model': 'on(input)|debounce(250)|' ~ this.formView.subject.vars.full_name,
                     'data-action': 'live#action',
                     'data-action-name': 'debounce(300)|save'
                 }
             }) }}
 
             <div class="mt-14">
-                {{ form_row(this.form.bodyAboveVideo, {
+                {{ form_row(this.formView.bodyAboveVideo, {
                     attr: {
-                        'data-model': 'on(input)|debounce(250)|' ~ this.form.bodyAboveVideo.vars.full_name,
+                        'data-model': 'on(input)|debounce(250)|' ~ this.formView.bodyAboveVideo.vars.full_name,
                         'data-action': 'live#action',
                         'data-action-name': 'debounce(300)|save',
                         'rows': 10
@@ -127,9 +127,9 @@
             </div>
 
 
-            {{ form_row(this.form.bodyBelowVideo, {
+            {{ form_row(this.formView.bodyBelowVideo, {
                 attr: {
-                    'data-model': 'on(input)|debounce(250)|' ~ this.form.bodyBelowVideo.vars.full_name,
+                    'data-model': 'on(input)|debounce(250)|' ~ this.formView.bodyBelowVideo.vars.full_name,
                     'data-action': 'live#action',
                     'data-action-name': 'debounce(300)|save',
                     'rows': 10
@@ -150,7 +150,7 @@
             >
                 <button
                         type="submit"
-                        {% if not this.form.vars.valid
+                        {% if not this.formView.vars.valid
                               or this.videoMailing.receiverMailAddress is empty
                               or this.videoMailing.subject is empty
                         %}
