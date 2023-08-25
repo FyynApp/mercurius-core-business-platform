@@ -732,7 +732,8 @@ readonly class LingoSyncInfrastructureService
      */
     public function createVideoFileFromVideoAndAudioFile(
         Video  $video,
-        string $audioFilePath
+        string $audioFilePath,
+        bool   $mergeAudio = true
     ): string
     {
         if ($video->hasAssetFullMp4()) {
@@ -758,34 +759,70 @@ readonly class LingoSyncInfrastructureService
             )
         ;
 
-        $process = new Process(
-            [
-                'ffmpeg',
+        if ($mergeAudio) {
+            $process = new Process(
+                [
+                    'ffmpeg',
 
-                '-i',
-                $this
-                    ->recordingsInfrastructureService
-                    ->getVideoFullAssetFilePath(
-                        $video,
-                        $videoMimeType
-                    ),
+                    '-i',
+                    $this
+                        ->recordingsInfrastructureService
+                        ->getVideoFullAssetFilePath(
+                            $video,
+                            $videoMimeType
+                        ),
 
-                '-i',
-                $audioFilePath,
+                    '-i',
+                    $audioFilePath,
 
-                '-c:v',
-                'copy',
+                    '-filter_complex',
+                    '[0:a]volume=0.03,apad[A];[1:a][A]amerge[out]',
 
-                '-map',
-                '0:v:0',
+                    '-c:v',
+                    'copy',
 
-                '-map',
-                '1:a:0',
+                    '-map',
+                    '0:v',
 
-                '-y',
-                $targetFilePath
-            ]
-        );
+                    '-map',
+                    '[out]',
+
+                    '-y',
+                    $targetFilePath
+                ]
+            );
+
+        } else {
+            $process = new Process(
+                [
+                    'ffmpeg',
+
+                    '-i',
+                    $this
+                        ->recordingsInfrastructureService
+                        ->getVideoFullAssetFilePath(
+                            $video,
+                            $videoMimeType
+                        ),
+
+                    '-i',
+                    $audioFilePath,
+
+                    '-c:v',
+                    'copy',
+
+                    '-map',
+                    '0:v:0',
+
+                    '-map',
+                    '1:a:0',
+
+                    '-y',
+                    $targetFilePath
+                ]
+            );
+        }
+
         $process->setTimeout(60 * 2);
         $process->run();
 
