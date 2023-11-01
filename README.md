@@ -1,4 +1,4 @@
-# Mercurius - Core Business Platform
+# Mercurius - Core Business Platform for Fyyn.io
 #
 ## How to set this project up for local development
 
