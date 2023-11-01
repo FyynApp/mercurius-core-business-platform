@@ -42,7 +42,7 @@ Now clone this repository and cd into the folder containing this `README.md` fil
 
 - In the new Terminal window, in the project folder, run the test suite: `bash bin/run-tests.sh`.
 
-- If this succeeds, run `~/.symfony5/bin/symfony server:start`. Keep the terminal window open and running in the background.
+- If this succeeds, run `symfony server:start`. Keep the terminal window open and running in the background.
 
 - Open a new Terminal window.
 
