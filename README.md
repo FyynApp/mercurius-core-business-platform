@@ -16,6 +16,10 @@
 
 - Install other required packages: `brew install ffmpeg@4 mysql-client`. Note that you need FFmpeg 4.x - a 5.x version will not work!
 
+- `brew link --force ffmpeg@4`
+
+- `brew link --overwrite ffmpeg@4`
+
 - Install the [Symfony CLI](https://symfony.com/download#step-1-install-symfony-cli) (only follow "Step 1" of the instructions).
 
 Now clone this repository and cd into the folder containing this `README.md` file.
