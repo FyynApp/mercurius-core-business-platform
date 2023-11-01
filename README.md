@@ -46,7 +46,7 @@ Now clone this repository and cd into the folder containing this `README.md` fil
 
 - Open a new Terminal window.
 
-- In the new Terminal window, in the project folder, run the background jobs process: `php bin/console --no-debug messenger:consume async`. Keep the terminal window open and running in the background.
+- In the new Terminal window, in the project folder, run the background jobs process: `php bin/console --no-debug messenger:consume async -vv`. Keep the terminal window open and running in the background.
 
 - Open `http://127.0.0.1:8000/` in your browser. Enjoy!
 
