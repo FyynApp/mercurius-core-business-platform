@@ -8,13 +8,13 @@
 
 - Install [Homebrew](https://brew.sh/).
 
-- Install [Docker Desktop](https://www.docker.com/products/docker-desktop) (choose " Intel Chip").
+- Install [Docker Desktop](https://www.docker.com/products/docker-desktop) (choose "Download for Mac - Apple Chip").
 
 - Install NVM (Node Version Manager) by running `brew install nvm`.
 
 - Install all required PHP packages: `brew tap shivammathur/php && brew install php@8.2 composer`.
 
-- Install other required packages: `brew install ffmpeg mysql-client`. Note that you need FFmpeg 4.x - a 5.x version will not work!
+- Install other required packages: `brew install ffmpeg@4 mysql-client`. Note that you need FFmpeg 4.x - a 5.x version will not work!
 
 - Install the [Symfony CLI](https://symfony.com/download#step-1-install-symfony-cli) (only follow "Step 1" of the instructions).
 
