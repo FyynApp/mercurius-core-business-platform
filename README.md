@@ -1,5 +1,5 @@
 # Mercurius - Core Business Platform
-
+#
 ## How to set this project up for local development
 
 ### On an Intel-based macOS system
