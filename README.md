@@ -67,7 +67,7 @@ Coming from the setup described above, you should always be able to get back to 
 
 - In the new Terminal window, run the background jobs process: `php bin/console --no-debug messenger:consume async`. Keep the terminal window open and running in the background.
 
-- In a dedicated Terminal window, start the Symfony web server: `~/.symfony5/bin/symfony server:start`. Keep the terminal window open and running in the background.
+- In a dedicated Terminal window, start the Symfony web server: `symfony server:start`. Keep the terminal window open and running in the background.
 
 - Open `http://127.0.0.1:8000/` in your browser. Enjoy!
 
