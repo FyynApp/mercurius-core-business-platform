@@ -170,6 +170,39 @@ In this video, I'm going to show you how to set up this extension so that you ca
         $this->assertEquals($expectedResult, $actualResult);
     }
 
+    public function testCompactizeWebvttWithoutNumbering()
+    {
+        $webVtt = "WEBVTT
+
+00:00:02.760 --> 00:00:04.220
+Good day.
+
+00:00:04.250 --> 00:00:06.860
+This is a test.
+
+00:00:06.890 --> 00:00:08.160
+Goodbye.
+";
+
+        $expectedResult = "WEBVTT
+
+1
+00:00:02.760 --> 00:00:04.220
+Good day.
+
+2
+00:00:04.250 --> 00:00:06.860
+This is a test.
+
+3
+00:00:06.890 --> 00:00:08.160
+Goodbye.";
+
+        $actualResult = LingoSyncInfrastructureService::compactizeWebVtt($webVtt);
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
     public function testCleanupPseudoSentencesInWebVttOne(): void
     {
         $originalWebVTT = "WEBVTT

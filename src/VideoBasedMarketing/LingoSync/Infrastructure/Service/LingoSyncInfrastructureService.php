@@ -118,8 +118,40 @@ readonly class LingoSyncInfrastructureService
         return preg_replace($pattern, $replacement, $content);
     }
 
+    private static function addCueHeadersToWebVtt($content) {
+        // Check if the first cue already has a header
+        if (preg_match('/^\d+\s*\n\d{2}:\d{2}:\d{2}\.\d{3}/m', $content)) {
+            // Cues are already numbered, return content as-is
+            return $content;
+        }
+
+        // Split the content into lines
+        $lines = explode("\n", $content);
+        $cueNumber = 1;
+        $newContent = "";
+        $inCue = false;
+
+        foreach ($lines as $line) {
+            if (!$inCue && preg_match('/\d{2}:\d{2}:\d{2}\.\d{3} --> \d{2}:\d{2}:\d{2}\.\d{3}/', $line)) {
+                // This line is the start of a cue block
+                $newContent .= $cueNumber++ . "\n";
+                $inCue = true;
+            } elseif ($inCue && trim($line) == "") {
+                // End of a cue block
+                $inCue = false;
+            }
+
+            // Add the line to the new content
+            $newContent .= $line . "\n";
+        }
+
+        return $newContent;
+    }
+
     public static function compactizeWebVtt(string $webvtt): string
     {
+        $webvtt = self::addCueHeadersToWebVtt($webvtt);
+
         $webvtt = mb_eregi_replace('。', '.', $webvtt);
 
         // Split the input into cues
