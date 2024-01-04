@@ -31,7 +31,7 @@ readonly class OpenAiService
         $openAi = new OpenAi($openAiApiKey);
 
         $completion = $openAi->completion([
-            'model' => 'text-davinci-003',
+            'model' => 'gpt-3.5-turbo-instruct',
             'prompt' => $prompt,
             'temperature' => 0.5,
             'max_tokens' => 1796,
@@ -89,7 +89,7 @@ EOT;
         $maxTokens = 2000;
 
         $completion = $openAi->completion([
-            'model' => 'text-davinci-003',
+            'model' => 'gpt-3.5-turbo-instruct',
             'prompt' => $prompt,
             'temperature' => 0.5,
             'max_tokens' => $maxTokens,
@@ -144,7 +144,7 @@ EOT;
         $maxTokens = 2000;
 
         $completion = $openAi->completion([
-            'model' => 'text-davinci-003',
+            'model' => 'gpt-3.5-turbo-instruct',
             'prompt' => $prompt,
             'temperature' => 0.5,
             'max_tokens' => $maxTokens,
