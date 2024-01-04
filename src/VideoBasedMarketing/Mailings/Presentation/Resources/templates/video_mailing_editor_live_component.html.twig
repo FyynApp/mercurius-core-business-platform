@@ -18,7 +18,7 @@
 
             {% form_theme form '@shared/form_themes/form_theme_default.html.twig' %}
 
-            {{ form_start(this.form) }}
+            {{ form_start(this.formView) }}
 
             {{ form_row(this.formView.receiverMailAddress, {
                 attr: {
@@ -136,7 +136,7 @@
                 }
             }) }}
 
-            {{ form_end(this.form) }}
+            {{ form_end(this.formView) }}
 
             <form
                 action="{{
