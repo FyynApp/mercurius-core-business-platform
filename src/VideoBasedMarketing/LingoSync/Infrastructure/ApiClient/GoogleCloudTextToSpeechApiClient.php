@@ -50,7 +50,7 @@ readonly class GoogleCloudTextToSpeechApiClient
         return [
             'type' => 'service_account',
             'project_id' => 'lucky-trail-388810',
-            'private_key_id' => '4ad704c517d1aefcea045dcaa8ee0b5ead3d7934',
+            'private_key_id' => '20bdb2b6b274d598f3d07a5b835c26af0f3f54dd',
             'private_key' => $_ENV['GOOGLE_CLOUD_TEXT_TO_SPEECH_API_PRIVATE_KEY'],
             'client_email' => 'text-to-speech-fyyn-preproddev@lucky-trail-388810.iam.gserviceaccount.com',
             'client_id' => '103366342825442163192',
@@ -59,7 +59,6 @@ readonly class GoogleCloudTextToSpeechApiClient
             'auth_provider_x509_cert_url' => 'https://www.googleapis.com/oauth2/v1/certs',
             'client_x509_cert_url' => 'https://www.googleapis.com/robot/v1/metadata/x509/text-to-speech-fyyn-preproddev%40lucky-trail-388810.iam.gserviceaccount.com',
             'universe_domain' => 'googleapis.com'
-
         ];
     }
 
