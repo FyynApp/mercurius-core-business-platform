@@ -28,13 +28,14 @@ rsync \
   --exclude drivers/ \
   --exclude public/generated-content/ \
   --exclude public/phpmyadmin/ \
+  --exclude public/public-assets.fyyn.io/ \
   --delete \
   "$SCRIPT_FOLDER"/../ \
-  www-data@app.fyyn.io:/var/www/mercurius-core-business-platform/prod/
+  www-data@89.58.33.15:/var/www/mercurius-core-business-platform/prod/
 
 rm -f "$SCRIPT_FOLDER"/../.env.prod.local
 
-ssh www-data@app.fyyn.io -C ' \
+ssh www-data@89.58.33.15 -C ' \
 cd ~/mercurius-core-business-platform/prod; \
 /usr/bin/env php bin/console --env=prod cache:clear; \
 /usr/bin/env php bin/console --env=prod doctrine:database:create --if-not-exists --no-interaction; \

@@ -22,15 +22,15 @@
     ln -s /etc/nginx/sites-available/app.fyyn.io /etc/nginx/sites-enabled/
     rm /etc/nginx/sites-available/default
     rm /etc/nginx/sites-enabled/default
-    service nginx stop 
-    service nginx start 
+    service nginx stop
+    service nginx start
 
     certbot --nginx -d app.fyyn.io
 
     # /etc/passwd -> replace `www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin`
     #                   with `www-data:x:33:33:www-data:/var/www:/bin/bash`
 
-    chown www-data:www-data /var/www    
+    chown www-data:www-data /var/www
     su - www-data
     mkdir .ssh
 
