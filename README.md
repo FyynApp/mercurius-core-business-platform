@@ -12,7 +12,7 @@
 
 - Install NVM (Node Version Manager) by running `brew install nvm`.
 
-- Install all required PHP packages: `brew tap shivammathur/php && brew install php@8.2 composer`.
+- Install all required PHP packages: `brew tap shivammathur/php && brew install php@8.3 composer`.
 
 - Install other required packages: `brew install ffmpeg@4 mysql-client libgd`. Note that you need FFmpeg 4.x - a 5.x version will not work!
 
@@ -57,7 +57,7 @@ Now clone this repository and cd into the folder containing this `README.md` fil
 
 Coming from the setup described above, you should always be able to get back to work after "destructive" events (like reboots) by doing the following (most command require you to `cd` into the project folder containing this `README.md` file):
 
-- Make sure that your Terminal sessions use the right PHP version - `php --version` should show `PHP 8.2.0` or higher. If not, try to fix this by running `brew unlink php && brew link --force php`.
+- Make sure that your Terminal sessions use the right PHP version - `php --version` should show `PHP 8.3.0` or higher. If not, try to fix this by running `brew unlink php && brew link --force php`.
 
 - Make sure that the MariaDB database Docker container is running: `docker start mcbp-db`.
 
@@ -91,7 +91,7 @@ After pulling changes from the repository, you should always run the following c
 
     apt-get update
 
-    apt-get install php8.2-cli php8.2-curl php8.2-fpm php8.2-xml php8.2-mbstring php8.2-mysql php8.2-intl php8.2-gd php8.2-opcache php8.2-bcmath php8.2-zip php8.2-dev php8.2-apcu php-pear php-igbinary composer
+    apt-get install php8.3-cli php8.3-curl php8.3-fpm php8.3-xml php8.3-mbstring php8.3-mysql php8.3-intl php8.3-gd php8.3-opcache php8.3-bcmath php8.3-zip php8.3-dev php8.3-apcu php-pear php-igbinary composer
 
     certbot --nginx -d preprod.fyyn.io
 

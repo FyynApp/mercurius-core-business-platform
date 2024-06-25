@@ -29,7 +29,7 @@
                         attr: {
                             'data-model': 'on(input)|debounce(250)|' ~ form.title.vars.full_name,
                             'data-action': 'live#action',
-                            'data-action-name': "debounce(300)|save"
+                            'data-live-action-param': "debounce(300)|save"
                         }
                     }) }}
 
@@ -46,7 +46,8 @@
                                     class="mr-8 mt-4 mb-4"
                                     type="button"
                                     data-action="live#action"
-                                    data-action-name="setBackground(backgroundValue={{ background.value }})"
+                                    data-live-action-param="setBackground"
+                                    data-live-background-value-param="{{ background.value }}"
                             >
                                 {% if background is same as constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageBackground::BgColor') %}
                                     <div class="
@@ -109,7 +110,8 @@
                                     "
                                     type="button"
                                     data-action="live#action"
-                                    data-action-name="setBgColor(bgColorValue={{ bgColor.value }})"
+                                    data-live-action-param="setBgColor"
+                                    data-live-bg-color-value-param="{{ bgColor.value }}"
                             ></button>
                         {% endfor %}
                     </div>
@@ -141,7 +143,8 @@
                                     "
                                     type="button"
                                     data-action="live#action"
-                                    data-action-name="setFgColor(fgColorValue={{ fgColor.value }})"
+                                    data-live-action-param="setFgColor"
+                                    data-live-fg-color-value-param="{{ fgColor.value }}"
                             ></button>
                         {% endfor %}
                     </div>
@@ -173,7 +176,8 @@
                                     "
                                     type="button"
                                     data-action="live#action"
-                                    data-action-name="setTextColor(textColorValue={{ textColor.value }})"
+                                    data-live-action-param="setTextColor"
+                                    data-live-text-color-value-param="{{ textColor.value }}"
                             ></button>
                         {% endfor %}
                     </div>
@@ -218,7 +222,7 @@
                                                             attr: {
                                                                 'data-model': 'on(input)|debounce(250)|' ~ elementFormRow.vars.full_name,
                                                                 'data-action': 'live#action',
-                                                                'data-action-name': "debounce(300)|save"
+                                                                'data-live-action-param': "debounce(300)|save"
                                                             }
                                                         }) }}
                                                     </div>
@@ -257,7 +261,8 @@
                                                         <button
                                                                 class="p-0 ml-1 mr-0"
                                                                 data-action="live#action"
-                                                                data-action-name="moveElementUp(elementId={{ presentationpageElement.id }})"
+                                                                data-live-action-param="moveElementUp"
+                                                                data-live-element-id-value-param="{{ presentationpageElement.id }}"
                                                                 type="button"
                                                         >
                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ml-1 pt-1 pb-1 w-8 h-8">
@@ -272,7 +277,8 @@
                                                         <button
                                                                 class="p-0 ml-1 mr-0"
                                                                 data-action="live#action"
-                                                                data-action-name="moveElementDown(elementId={{ presentationpageElement.id }})"
+                                                                data-live-action-param="moveElementDown"
+                                                                data-live-element-id-value-param="{{ presentationpageElement.id }}"
                                                                 type="button"
                                                                 title=""
                                                         >
@@ -287,7 +293,8 @@
                                             <div>
                                                 <button
                                                         data-action="live#action"
-                                                        data-action-name="removeElement(elementId={{ presentationpageElement.id }})"
+                                                        data-live-action-param="removeElement"
+                                                        data-live-element-id-value-param="{{ presentationpageElement.id }}"
                                                         type="button"
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="pt-1 pb-1 text-red-600 w-8 h-8">
@@ -317,7 +324,9 @@
                                                     {% endif %}
                                                 "
                                                 data-action="live#action"
-                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left').value }})"
+                                                data-live-action-param="setElementHorizontalPosition"
+                                                data-live-element-id-value-param="{{ presentationpageElement.id }}"
+                                                data-live-horizontal-position-value-param="{{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Left').value }}"
                                                 type="button"
                                         >
                                             <!-- bars-3-bottom-left -->
@@ -336,7 +345,9 @@
                                                     {% endif %}
                                                 "
                                                 data-action="live#action"
-                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center').value }})"
+                                                data-live-action-param="setElementHorizontalPosition"
+                                                data-live-element-id-value-param="{{ presentationpageElement.id }}"
+                                                data-live-horizontal-position-value-param="{{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Center').value }}"
                                                 type="button"
                                         >
                                             <!-- bars-3 -->
@@ -355,7 +366,9 @@
                                                     {% endif %}
                                                 "
                                                 data-action="live#action"
-                                                data-action-name="setElementHorizontalPosition(elementId={{ presentationpageElement.id }}, horizontalPosition={{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Right').value }})"
+                                                data-live-action-param="setElementHorizontalPosition"
+                                                data-live-element-id-value-param="{{ presentationpageElement.id }}"
+                                                data-live-horizontal-position-value-param="{{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementHorizontalPosition::Right').value }}"
                                                 type="button"
                                         >
                                             <!-- bars-3-bottom-right -->
@@ -380,7 +393,8 @@
                             <button
                                     class="cta-link-primary mb-4 w-52"
                                     data-action="live#action"
-                                    data-action-name="addElement(variant={{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::MercuriusVideo').value }})"
+                                    data-live-action-param="addElement"
+                                    data-live-variant-param="{{ constant('\\App\\VideoBasedMarketing\\Presentationpages\\Domain\\Enum\\PresentationpageElementVariant::MercuriusVideo').value }}"
                                     type="button"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -398,7 +412,8 @@
                                 <button
                                         class="cta-link-primary mb-4 w-52"
                                         data-action="live#action"
-                                        data-action-name="addElement(variant={{ elementVariant.value }})"
+                                        data-live-action-param="addElement"
+                                        data-live-variant-param="{{ elementVariant.value }}"
                                         type="button"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">

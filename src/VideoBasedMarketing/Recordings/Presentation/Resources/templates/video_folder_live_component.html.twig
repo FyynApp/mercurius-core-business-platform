@@ -42,7 +42,7 @@
                                 class="ml-8 p-1 px-4 bg-neutral-300 text-black rounded-sm"
                                 type="button"
                                 data-action="live#action"
-                                data-action-name="closeDeleteModal"
+                                data-live-action-param="closeDeleteModal"
                         >
                             {{ 'video_folders.delete.really_delete_cta_no'|trans }}
                         </button>
@@ -65,7 +65,7 @@
 
             <button
                     data-action="live#action"
-                    data-action-name="startEditingName"
+                    data-live-action-param="startEditingName"
             >
                 {# Heroicon: pencil-square mini #}
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-neutral-300 hover:text-black">
@@ -77,8 +77,8 @@
             {% if this.nameIsBeingEdited %}
                 <form
                         class="flex flex-row gap-2"
-                        data-action="live#action"
-                        data-action-name="prevent|stopEditingName"
+                        data-action="live#action:prevent"
+                        data-live-action-param="stopEditingName"
                 >
                     <input
                             class="text-input h-8"
@@ -91,7 +91,7 @@
                             class="cta-with-icon-success h-8 py-1"
                             type="button"
                             data-action="live#action"
-                            data-action-name="stopEditingName"
+                            data-live-action-param="stopEditingName"
                     >
                         {{ 'video_folders.save_edited_name_cta'|trans }}
                     </button>
@@ -167,7 +167,7 @@
                 <button
                         type="button"
                         data-action="live#action"
-                        data-action-name="openDeleteModal"
+                        data-live-action-param="openDeleteModal"
                 >
                     <svg
                             xmlns="http://www.w3.org/2000/svg"

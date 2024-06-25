@@ -1,4 +1,4 @@
-image: thecodingmachine/php:8.2-v4-cli-node18
+image: thecodingmachine/php:8.3-v4-cli-node20
 
 options:
   max-time: 40 # time limit for each step
@@ -24,9 +24,9 @@ pipelines:
           script:
             - sudo apt-get update
             - sudo apt-get install -yy ffmpeg
-            - echo "extension=bcmath.so"  | sudo tee -a /etc/php/8.2/cli/php.ini
-            - echo "extension=intl.so"    | sudo tee -a /etc/php/8.2/cli/php.ini
-            - echo "extension=gd.so"      | sudo tee -a /etc/php/8.2/cli/php.ini
+            - echo "extension=bcmath.so"  | sudo tee -a /etc/php/8.3/cli/php.ini
+            - echo "extension=intl.so"    | sudo tee -a /etc/php/8.3/cli/php.ini
+            - echo "extension=gd.so"      | sudo tee -a /etc/php/8.3/cli/php.ini
             - composer install --no-interaction --no-progress --no-scripts
             - npm install --no-save
             - npm run build

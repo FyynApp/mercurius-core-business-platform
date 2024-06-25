@@ -24,7 +24,7 @@
                 attr: {
                     'data-model': 'on(input)|debounce(250)|' ~ this.formView.receiverMailAddress.vars.full_name,
                     'data-action': 'live#action',
-                    'data-action-name': 'debounce(300)|save'
+                    'data-live-action-param': 'debounce(300)|save'
                 }
             }) }}
 
@@ -33,7 +33,7 @@
                 attr: {
                     'data-model': 'on(input)|debounce(250)|' ~ this.formView.subject.vars.full_name,
                     'data-action': 'live#action',
-                    'data-action-name': 'debounce(300)|save'
+                    'data-live-action-param': 'debounce(300)|save'
                 }
             }) }}
 
@@ -42,7 +42,7 @@
                     attr: {
                         'data-model': 'on(input)|debounce(250)|' ~ this.formView.bodyAboveVideo.vars.full_name,
                         'data-action': 'live#action',
-                        'data-action-name': 'debounce(300)|save',
+                        'data-live-action-param': 'debounce(300)|save',
                         'rows': 10
                     }
                 }) }}
@@ -70,7 +70,7 @@
                         <button
                                 type="button"
                                 data-action="live#action"
-                                data-action-name="improveTexts"
+                                data-live-action-param="improveTexts"
                                 class="cta-with-icon-success"
                         >
                             {# Heroicon: sparkles - solid #}
@@ -87,7 +87,7 @@
                                 <button
                                         type="button"
                                         data-action="live#action"
-                                        data-action-name="useImprovedBodyAboveVideoText"
+                                        data-live-action-param="useImprovedBodyAboveVideoText"
                                         class="cta-with-icon-success mb-3"
                                 >
                                     {# Heroicon: arrow-up-on-square - solid #}
@@ -100,7 +100,7 @@
                                 <button
                                         type="button"
                                         data-action="live#action"
-                                        data-action-name="resetImprovedBodyAboveVideoText"
+                                        data-live-action-param="resetImprovedBodyAboveVideoText"
                                         class="cta-with-icon-neutral mb-3"
                                 >
                                     {# Heroicon: archive-box-x-mark - solid #}
@@ -131,7 +131,7 @@
                 attr: {
                     'data-model': 'on(input)|debounce(250)|' ~ this.formView.bodyBelowVideo.vars.full_name,
                     'data-action': 'live#action',
-                    'data-action-name': 'debounce(300)|save',
+                    'data-live-action-param': 'debounce(300)|save',
                     'rows': 10
                 }
             }) }}

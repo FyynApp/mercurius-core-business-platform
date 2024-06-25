@@ -213,7 +213,7 @@
                     {% if this.slide > 1 %}
                         <button
                                 data-action="live#action"
-                                data-action-name="previousSlide"
+                                data-live-action-param="previousSlide"
                         >
                             {{ 'explanation.previous_slide'|trans }}
                         </button>
@@ -226,7 +226,7 @@
                                 disabled="disabled"
                             {% endif %}
                             data-action="live#action"
-                            data-action-name="nextSlide"
+                            data-live-action-param="nextSlide"
                     >
                         {{ 'explanation.next_slide'|trans }}
                     </button>

@@ -37,7 +37,7 @@
                 <button
                         class="cta-with-icon-danger text-sm w-full"
                         data-action="live#action"
-                        data-action-name="showDeleteModal"
+                        data-live-action-param="showDeleteModal"
                 >
                     <span class="flex flex-row justify-between items-center gap-2">
                         <span>
@@ -155,7 +155,7 @@
                         <button
                                 class="cta-with-icon-success"
                                 data-action="live#action"
-                                data-action-name="debounce(300)|save"
+                                data-live-action-param="debounce(300)|save"
                         >
                             {# Heroicon: check #}
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
@@ -173,9 +173,9 @@
 
                     {% else %}
                         <button
-                                class="mt-2 text-xl font-bold mb-1 break-words flex flex-row justify-between items-start gap-2 text-left flex flex-row w-full"
+                                class="mt-2 text-xl font-bold mb-1 break-words flex flex-row justify-between items-start gap-2 text-left w-full"
                                 data-action="live#action"
-                                data-action-name="startEditingTitle"
+                                data-live-action-param="startEditingTitle"
                                 data-test-class="video-title"
                         >
                             <div>
@@ -200,7 +200,7 @@
                                 <button
                                         class="cta-with-icon-success"
                                         data-action="live#action"
-                                        data-action-name="debounce(300)|save"
+                                        data-live-action-param="debounce(300)|save"
                                 >
                                     {# Heroicon: check #}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
@@ -248,7 +248,7 @@
                         <button
                                 class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                                 data-action="live#action"
-                                data-action-name="startEditingMainCta"
+                                data-live-action-param="startEditingMainCta"
                                 data-test-class="edit-video-main-cta"
                         >
                                 <span class="flex flex-row justify-between items-center gap-2">
@@ -276,7 +276,7 @@
                                 <button
                                         class="cta-with-icon-success"
                                         data-action="live#action"
-                                        data-action-name="debounce(300)|save"
+                                        data-live-action-param="debounce(300)|save"
                                 >
                                     {# Heroicon: check #}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
@@ -312,7 +312,7 @@
                         <button
                                 class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                                 data-action="live#action"
-                                data-action-name="startEditingCalendly"
+                                data-live-action-param="startEditingCalendly"
                                 data-test-class="edit-video-main-cta"
                         >
                                 <span class="flex flex-row justify-between items-center gap-2">
@@ -338,7 +338,7 @@
                 <button
                         class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                         data-action="live#action"
-                        data-action-name="showShareModal"
+                        data-live-action-param="showShareModal"
                 >
                     <span class="flex flex-row justify-between items-center gap-2">
                         <span>
@@ -393,9 +393,9 @@
                             class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                             data-action="live#action"
                             {% if app.user.skippedLingoSyncPrerequisitesInfo %}
-                                data-action-name="showLingoSyncModal"
+                                data-live-action-param="showLingoSyncModal"
                             {% else %}
-                                data-action-name="showLingoSyncPrerequisitesInfoModal"
+                                data-live-action-param="showLingoSyncPrerequisitesInfoModal"
                             {% endif %}
                     >
                             <span class="flex flex-row justify-between items-center gap-2">
@@ -486,7 +486,7 @@
                         <button
                                 class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                                 data-action="live#action"
-                                data-action-name="showAudioTranscriptionModal"
+                                data-live-action-param="showAudioTranscriptionModal"
                         >
                             <span class="flex flex-row justify-between items-center gap-2">
                                 <span>
@@ -607,7 +607,7 @@
                 <button
                         class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                         data-action="live#action"
-                        data-action-name="showEmbedModal"
+                        data-live-action-param="showEmbedModal"
                 >
                     <span class="flex flex-row justify-between items-center gap-2">
                         <span>
@@ -658,7 +658,7 @@
                 <button
                         class="p-2 pl-4 pr-4 w-full h-full text-left text-sm"
                         data-action="live#action"
-                        data-action-name="showDeleteModal"
+                        data-live-action-param="showDeleteModal"
                 >
                     <span class="flex flex-row justify-between items-center gap-2">
                         <span>
@@ -711,7 +711,7 @@
                     <button
                             class=""
                             data-action="live#action"
-                            data-action-name="hideShareModal"
+                            data-live-action-param="hideShareModal"
                     >
                         {# Heroicon: x-mark solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -748,7 +748,7 @@
                     <button
                             class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
                             data-action="live#action"
-                            data-action-name="switchShareUrlDirectLink"
+                            data-live-action-param="switchShareUrlDirectLink"
                     >
                         {# Heroicon: link solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="block w-8 h-8 m-2">
@@ -769,7 +769,7 @@
                     <button
                             class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
                             data-action="live#action"
-                            data-action-name="switchShareUrlInstagram"
+                            data-live-action-param="switchShareUrlInstagram"
                     >
                         <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-instagram.svg') }}">
                         Instagram
@@ -827,7 +827,7 @@
                     <button
                             class=""
                             data-action="live#action"
-                            data-action-name="hideEmbedModal"
+                            data-live-action-param="hideEmbedModal"
                     >
                         {# Heroicon: x-mark solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -901,7 +901,7 @@
                     <button
                             class=""
                             data-action="live#action"
-                            data-action-name="hideAudioTranscriptionModal"
+                            data-live-action-param="hideAudioTranscriptionModal"
                     >
                         {# Heroicon: x-mark solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -1025,7 +1025,7 @@
                     <button
                             class=""
                             data-action="live#action"
-                            data-action-name="hideDeleteModal"
+                            data-live-action-param="hideDeleteModal"
                     >
                         {# Heroicon: x-mark solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -1174,7 +1174,7 @@
                                         <button
                                                 class="cta-with-icon-inline-danger"
                                                 data-action="live#action"
-                                                data-action-name="showDeleteModal"
+                                                data-live-action-param="showDeleteModal"
                                         >
                                             {# Heroicon: trash solid #}
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
@@ -1202,7 +1202,7 @@
                                 attr: {
                                     'data-model': 'on(input)|debounce(250)|' ~ this.formView.title.vars.full_name,
                                     'data-action': 'live#action',
-                                    'data-action-name': 'debounce(300)|save'
+                                    'data-live-action-param': 'debounce(300)|save'
                                 }
                             }) }}
 
@@ -1210,7 +1210,7 @@
                                 attr: {
                                     'data-model': this.formView.videoOnlyPresentationpageTemplate.vars.full_name,
                                     'data-action': 'live#action',
-                                    'data-action-name': 'save'
+                                    'data-live-action-param': 'save'
                                 }
                             }) }}
 
@@ -1233,7 +1233,7 @@
                             <button
                                     class="cta-with-icon-primary"
                                     data-action="live#action"
-                                    data-action-name="showShareModal"
+                                    data-live-action-param="showShareModal"
                             >
                                 {# Heroicon: share solid #}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
@@ -1289,7 +1289,7 @@
                                 <button
                                         class="cta-with-icon-success"
                                         data-action="live#action"
-                                        data-action-name="hideEditModal"
+                                        data-live-action-param="hideEditModal"
                                 >
                                     {# Heroicon: check-circle solid #}
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">

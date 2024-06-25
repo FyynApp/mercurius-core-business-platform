@@ -31,7 +31,7 @@ server {
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     fastcgi_index index.php;
     include fastcgi_params;
-    fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+    fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
   }
 
   location /munin {
@@ -71,7 +71,7 @@ server {
     include snippets/fastcgi-php.conf;
     fastcgi_param APP_ENV "preprod";
     fastcgi_hide_header Forwarded;
-    fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+    fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
     fastcgi_request_buffering off; # Disable request buffering for https://github.com/ankitpokhrel/tus-php
   }
 

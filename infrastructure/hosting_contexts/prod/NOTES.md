@@ -8,12 +8,12 @@
 
     LC_ALL=C.UTF-8 sudo add-apt-repository ppa:ondrej/php
 
-    apt-get install php8.2-cli php8.2-curl php8.2-fpm php8.2-xml php8.2-mbstring php8.2-mysql php8.2-intl php8.2-gd php8.2-opcache php8.2-bcmath php8.2-zip php8.2-dev php8.2-apcu php-pear php-igbinary
+    apt-get install php8.3-cli php8.3-curl php8.3-fpm php8.3-xml php8.3-mbstring php8.3-mysql php8.3-intl php8.3-gd php8.3-opcache php8.3-bcmath php8.3-zip php8.3-dev php8.3-apcu php-pear php-igbinary
 
-    # Copy infrastructure/hosting_contexts/prod/etc/php/8.2/fpm/php.ini
-    # Copy infrastructure/hosting_contexts/prod/etc/php/8.2/fpm/pool.d/www.conf
+    # Copy infrastructure/hosting_contexts/prod/etc/php/8.3/fpm/php.ini
+    # Copy infrastructure/hosting_contexts/prod/etc/php/8.3/fpm/pool.d/www.conf
 
-    service php8.2-fpm restart
+    service php8.3-fpm restart
 
     # Copy infrastructure/hosting_contexts/prod/etc/nginx/sites-available/app.fyyn.io_before_certbot
     #   to /etc/nginx/sites-available/app.fyyn.io

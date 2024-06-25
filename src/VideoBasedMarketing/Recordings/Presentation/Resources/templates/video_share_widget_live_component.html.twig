@@ -11,7 +11,7 @@
     <button
             class="cta-with-icon-primary w-full text-left"
             data-action="live#action"
-            data-action-name="showShareModal"
+            data-live-action-param="showShareModal"
             onclick="
                 document
                     .querySelectorAll('.hide-when-modal-open')
@@ -53,7 +53,7 @@
                     <button
                             class=""
                             data-action="live#action"
-                            data-action-name="hideShareModal"
+                            data-live-action-param="hideShareModal"
                             onclick="
                                 document
                                     .querySelectorAll('.hide-when-modal-open')
@@ -97,7 +97,7 @@
                     <button
                             class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
                             data-action="live#action"
-                            data-action-name="switchShareUrlDirectLink"
+                            data-live-action-param="switchShareUrlDirectLink"
                     >
                         {# Heroicon: link solid #}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="block w-8 h-8 m-2">
@@ -118,7 +118,7 @@
                     <button
                             class="w-20 flex flex-col justify-center items-center p-2 rounded-md hover:bg-mercurius-blue-200"
                             data-action="live#action"
-                            data-action-name="switchShareUrlInstagram"
+                            data-live-action-param="switchShareUrlInstagram"
                     >
                         <img class="w-12 h-12 opacity-50" src="{{ asset('assets/images/social-media-icons/icons8-instagram.svg') }}">
                         Instagram
