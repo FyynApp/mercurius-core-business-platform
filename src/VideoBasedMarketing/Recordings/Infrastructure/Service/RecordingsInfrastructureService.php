@@ -1051,6 +1051,10 @@ readonly class RecordingsInfrastructureService
                 $sourceWidth = $sourceHeight;
                 $sourceHeight = $tmp;
             }
+        } elseif ($video->getSourceType() === VideoSourceType::InternallyCreated) {
+            $sourcePath = $video->getInternallyCreatedSourceFilePath();
+            $sourceWidth = $this->probeForVideoAssetWidth($sourcePath);
+            $sourceHeight = $this->probeForVideoAssetHeight($sourcePath);
         } else {
             throw new Exception(
                 'Expected source type ' . VideoSourceType::RecordingSession->value . ' or ' . VideoSourceType::Upload->value . ' but got ' . $video->getSourceType()->value . " for video '{$video->getId()}'"
