@@ -125,6 +125,15 @@
                     </a>
 
                     <nav class="flex flex-row justify-start items-center mx-2 sm:mx-12 gap-2 sm:gap-4">
+                        {% if TwigHelperService.accountDomainService.userCanSignIn(app.user) %}
+                            <a
+                                    class="hover:underline font-semibold mr-2 sm:mr-8"
+                                    href="{{ path('shared.presentation.contentpages.features') }}"
+                            >
+                                {{ 'topnav.features'|trans }}
+                            </a>
+                        {% endif %}
+
                         {% if TwigHelperService.accountDomainService.userCanSignUp(app.user) %}
                             <a
                                     href="{{ path('videobasedmarketing.account.presentation.sign_up') }}"
