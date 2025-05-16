@@ -4,7 +4,7 @@
 
     mysql
     > GRANT ALL PRIVILEGES ON mercurius_core_business_platform_prod.* TO 'mercurius_prod'@localhost IDENTIFIED BY '<redacted>';
-    # See https://start.1password.com/open/i?a=***REMOVED***&v=***REMOVED***&i=pbsc52v6f5nfhmivmbepyavbsa&h=my.1password.com for password
+    # See https://start.1password.com/open/i?a=&v=&i=pbsc52v6f5nfhmivmbepyavbsa&h=my.1password.com for password
 
     LC_ALL=C.UTF-8 sudo add-apt-repository ppa:ondrej/php
 
@@ -51,7 +51,7 @@
     service supervisor stop
     service supervisor start
 
-    # as user www-data, configure the aws cli for access to Contabo S3 using the credentials in https://start.1password.com/open/i?a=***REMOVED***&v=***REMOVED***&i=swv56noijpqo35w546xxbpf2xq&h=my.1password.com
+    # as user www-data, configure the aws cli for access to Contabo S3 using the credentials in https://start.1password.com/open/i?a=&v=&i=swv56noijpqo35w546xxbpf2xq&h=my.1password.com
 
     aws configure
 
